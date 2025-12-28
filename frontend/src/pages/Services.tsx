@@ -79,7 +79,7 @@ const Services: React.FC = () => {
       </section>
 
       {/* Overview badges */}
-      <section className="py-12 sm:py-16 md:py-20 bg-white relative">
+      <section className="py-12 sm:py-16 md:py-20 bg-white relative overflow-hidden">
         {/* Background decoration */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-accent/5 rounded-full filter blur-3xl translate-x-1/2 -translate-y-1/2"></div>
 
