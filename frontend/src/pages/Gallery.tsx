@@ -11,7 +11,9 @@ gsap.registerPlugin(ScrollTrigger);
 
 // Dynamically import all images from public/gallery to get the file structure
 // Note: In Vite, public assets are served at root, so we reference without /public/ prefix
-const galleryFiles = import.meta.glob('/gallery/**/*.{webp,jpg,jpeg,png}', { query: '?url', import: 'default', eager: true }) as Record<string, string>;
+// Dynamically import all images from public/gallery to get the file structure
+// Note: In Vite, public assets are served at root, so we reference without /public/ prefix
+const galleryFiles = import.meta.glob('/public/gallery/**/*.{webp,jpg,jpeg,png}', { query: '?url', import: 'default', eager: true }) as Record<string, string>;
 
 const toTitle = (s: string) => decodeURIComponent(s.replace(/\+/g, ' ')).replace(/[\/_-]+/g, ' ').trim().replace(/\s+/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
 const toSlug = (s: string) => decodeURIComponent(s.replace(/\+/g, ' ')).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
@@ -20,8 +22,8 @@ const buildGallery = () => {
   type Item = { id: string; title: string; category: string; image: string; code: string };
   const interim: { path: string; title: string; category: string; image: string }[] = [];
   Object.entries(galleryFiles).forEach(([absPath, url]) => {
-    // Remove leading slash to get relative path (e.g., /gallery/... -> gallery/...)
-    const rel = absPath.replace(/^\//, '');
+    // Remove leading slash and 'public' to get relative path (e.g., /public/gallery/... -> gallery/...)
+    const rel = absPath.replace(/^\/public\//, '').replace(/^\//, '');
     const parts = rel.split('/').filter(Boolean); // [gallery, Category, ...path, file]
     const idx = parts.indexOf('gallery');
     if (idx === -1 || !parts[idx + 1]) return;

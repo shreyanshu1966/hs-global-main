@@ -84,7 +84,7 @@ export const ProductsModernVariant: React.FC = () => {
 
 
   // Gallery preview using Cloudinary URLs
-  const galleryFiles = import.meta.glob('/gallery/**/*.{webp,jpg,jpeg,png}', { query: '?url', import: 'default', eager: true }) as Record<string, string>;
+  const galleryFiles = import.meta.glob('/public/gallery/**/*.{webp,jpg,jpeg,png}', { query: '?url', import: 'default', eager: true }) as Record<string, string>;
 
   const [galleryPreview, setGalleryPreview] = useState<string[]>([]);
   useEffect(() => {
@@ -97,8 +97,8 @@ export const ProductsModernVariant: React.FC = () => {
 
     // Convert to Cloudinary URLs
     const cloudinaryUrls = slice.map(absPath => {
-      // Remove leading slash to get relative path (e.g., /gallery/... -> gallery/...)
-      const rel = absPath.replace(/^\//, '');
+      // Remove leading slash and 'public' to get relative path (e.g., /public/gallery/... -> gallery/...)
+      const rel = absPath.replace(/^\/public\//, '').replace(/^\//, '');
       return getCloudinaryUrl(rel);
     });
 
