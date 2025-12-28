@@ -1,0 +1,2112 @@
+{
+  "generated": "2025-12-28T13:23:20.385Z",
+  "cloudName": "dpztytsoz",
+  "stats": {
+    "found": 844,
+    "optimized": 844,
+    "uploaded": 838,
+    "errors": 6,
+    "originalSize": "185.12 MB",
+    "optimizedSize": "69.46 MB",
+    "uploadedSize": "111.52 MB"
+  },
+  "urls": {
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.10 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.10 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923569/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.14.10%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.10 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 67506
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.08 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.08 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923569/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.14.08%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.08 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 84589
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.14 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.14 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923572/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.14.14%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.14 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 76825
+    },
+    "gallery/Antiques/IMG-20250116-WA0304.webp": {
+      "original": "gallery/Antiques/IMG-20250116-WA0304.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923569/hs-global/gallery/Antiques/IMG-20250116-WA0304.jpg",
+      "publicId": "hs-global/gallery/Antiques/IMG-20250116-WA0304",
+      "format": "jpg",
+      "width": 704,
+      "height": 704,
+      "bytes": 45333
+    },
+    "gallery/Antiques/IMG-20250116-WA0315.webp": {
+      "original": "gallery/Antiques/IMG-20250116-WA0315.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923569/hs-global/gallery/Antiques/IMG-20250116-WA0315.jpg",
+      "publicId": "hs-global/gallery/Antiques/IMG-20250116-WA0315",
+      "format": "jpg",
+      "width": 794,
+      "height": 594,
+      "bytes": 89974
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.20 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.20 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923574/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.14.20%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.20 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 99435
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.23 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.23 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923575/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.14.23%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.23 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 82600
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.17 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.17 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923574/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.14.17%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.17 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 81564
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.22 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.22 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923574/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.14.22%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.22 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 107055
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.21 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.21 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923574/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.14.21%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.21 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 104193
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.28 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.28 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923578/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.14.28%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.28 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 101182
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.32 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.32 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923578/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.14.32%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.32 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 73813
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.26 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.26 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923578/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.14.26%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.26 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 100194
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.37 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.37 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923578/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.14.37%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.37 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 93074
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.24 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.24 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923578/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.14.24%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.24 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 84947
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.39 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.39 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923581/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.14.39%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.39 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 74395
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.41 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.41 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923581/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.14.41%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.41 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 82557
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.43 PM (1).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.43 PM (1).webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923581/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.14.43%20PM%20%281%29.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.43 PM (1)",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 80095
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.42 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.42 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923581/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.14.42%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.42 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 84603
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.43 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.43 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923582/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.14.43%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.43 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 84884
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.15.17 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.15.17 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923584/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.15.17%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.15.17 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 100887
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.15.19 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.15.19 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923585/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.15.19%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.15.19 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 80228
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.15.21 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.15.21 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923584/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.15.21%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.15.21 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 93019
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.15.16 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.15.16 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923586/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.15.16%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.15.16 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 108393
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.15.18 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.15.18 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923586/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.15.18%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.15.18 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 100859
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.11 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.11 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923590/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.11%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.11 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 110299
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.15.23 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.15.23 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923589/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.15.23%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.15.23 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 87751
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.05 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.05 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923589/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.05%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.05 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 92921
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.06 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.06 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923590/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.06%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.06 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 91876
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.09 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.09 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923590/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.09%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.09 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 143921
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.16 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.16 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923593/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.16%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.16 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 74578
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.18 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.18 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923593/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.18%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.18 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 83038
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.19 PM (1).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.19 PM (1).webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923594/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.19%20PM%20%281%29.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.19 PM (1)",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 109899
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.16 PM (1).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.16 PM (1).webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923594/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.16%20PM%20%281%29.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.16 PM (1)",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 95806
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.17 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.17 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923593/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.17%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.17 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 77832
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.21 PM (1).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.21 PM (1).webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923597/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.21%20PM%20%281%29.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.21 PM (1)",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 63322
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.20 PM (1).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.20 PM (1).webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923598/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.20%20PM%20%281%29.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.20 PM (1)",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 151544
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.19 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.19 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923598/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.19%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.19 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 118833
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.20 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.20 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923597/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.20%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.20 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 70332
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.19 PM (2).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.19 PM (2).webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923596/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.19%20PM%20%282%29.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.19 PM (2)",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 69339
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.23 PM (1).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.23 PM (1).webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923603/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.23%20PM%20%281%29.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.23 PM (1)",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 88822
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.22 PM (1).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.22 PM (1).webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923601/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.22%20PM%20%281%29.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.22 PM (1)",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 106710
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.21 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.21 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923601/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.21%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.21 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 83534
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.22 PM (2).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.22 PM (2).webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923602/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.22%20PM%20%282%29.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.22 PM (2)",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 81468
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.22 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.22 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923602/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.22%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.22 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 100056
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.25 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.25 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923608/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.25%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.25 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 80104
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.23 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.23 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923606/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.23%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.23 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 89774
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.24 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.24 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923606/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.24%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.24 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 88937
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.25 PM (1).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.25 PM (1).webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923606/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.25%20PM%20%281%29.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.25 PM (1)",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 87101
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.24 PM (1).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.24 PM (1).webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923607/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.24%20PM%20%281%29.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.24 PM (1)",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 74081
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.27 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.27 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923612/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.27%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.27 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 77049
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.26 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.26 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923612/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.26%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.26 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 72975
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.28 PM (2).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.28 PM (2).webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923612/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.28%20PM%20%282%29.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.28 PM (2)",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 75894
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.28 PM (1).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.28 PM (1).webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923614/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.28%20PM%20%281%29.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.28 PM (1)",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 68528
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.26 PM (1).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.26 PM (1).webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923612/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.26%20PM%20%281%29.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.26 PM (1)",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 71668
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.29 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.29 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923616/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.29%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.29 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 75955
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.28 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.28 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923616/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.28%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.28 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 82608
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.31 PM (1).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.31 PM (1).webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923622/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.31%20PM%20%281%29.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.31 PM (1)",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 150296
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.30 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.30 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923620/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.30%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.30 PM",
+      "format": "jpg",
+      "width": 1280,
+      "height": 720,
+      "bytes": 123191
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.30 PM (1).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.30 PM (1).webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923622/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.30%20PM%20%281%29.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.30 PM (1)",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 130223
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.32 PM (1).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.32 PM (1).webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923627/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.32%20PM%20%281%29.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.32 PM (1)",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 135148
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.32 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.32 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923626/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.32%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.32 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 135699
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.34 PM (1).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.34 PM (1).webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923630/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.34%20PM%20%281%29.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.34 PM (1)",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 142901
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.31 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.31 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923625/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.31%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.31 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 128812
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.33 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.33 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923629/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.33%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.33 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 147408
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.35 PM (1).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.35 PM (1).webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923634/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.35%20PM%20%281%29.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.35 PM (1)",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 154783
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.36 PM (1).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.36 PM (1).webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923641/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.36%20PM%20%281%29.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.36 PM (1)",
+      "format": "jpg",
+      "width": 1280,
+      "height": 720,
+      "bytes": 157877
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.35 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.35 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923638/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.35%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.35 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 155454
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.34 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.34 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923633/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.34%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.34 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 128611
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.37 PM (1).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.37 PM (1).webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923639/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.37%20PM%20%281%29.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.37 PM (1)",
+      "format": "jpg",
+      "width": 1280,
+      "height": 720,
+      "bytes": 139786
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.37 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.37 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923644/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.37%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.37 PM",
+      "format": "jpg",
+      "width": 1280,
+      "height": 720,
+      "bytes": 104905
+    },
+    "gallery/Bowls/IMG-20250116-WA0312.webp": {
+      "original": "gallery/Bowls/IMG-20250116-WA0312.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923647/hs-global/gallery/Bowls/IMG-20250116-WA0312.jpg",
+      "publicId": "hs-global/gallery/Bowls/IMG-20250116-WA0312",
+      "format": "jpg",
+      "width": 1400,
+      "height": 1400,
+      "bytes": 124665
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.38 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.38 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923647/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.38%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.38 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 98279
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.39 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.39 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923648/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.39%20PM.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.39 PM",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 137171
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.38 PM (1).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.38 PM (1).webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923646/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.38%20PM%20%281%29.jpg",
+      "publicId": "hs-global/gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.38 PM (1)",
+      "format": "jpg",
+      "width": 720,
+      "height": 1280,
+      "bytes": 137763
+    },
+    "gallery/Coffee Table/IMG-20250116-WA0066.webp": {
+      "original": "gallery/Coffee Table/IMG-20250116-WA0066.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923654/hs-global/gallery/Coffee%20Table/IMG-20250116-WA0066.jpg",
+      "publicId": "hs-global/gallery/Coffee Table/IMG-20250116-WA0066",
+      "format": "jpg",
+      "width": 936,
+      "height": 936,
+      "bytes": 87536
+    },
+    "gallery/Bowls/IMG-20250525-WA0071.webp": {
+      "original": "gallery/Bowls/IMG-20250525-WA0071.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923652/hs-global/gallery/Bowls/IMG-20250525-WA0071.jpg",
+      "publicId": "hs-global/gallery/Bowls/IMG-20250525-WA0071",
+      "format": "jpg",
+      "width": 1050,
+      "height": 1400,
+      "bytes": 190540
+    },
+    "gallery/Bowls/IMG-20250116-WA0321.webp": {
+      "original": "gallery/Bowls/IMG-20250116-WA0321.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923650/hs-global/gallery/Bowls/IMG-20250116-WA0321.jpg",
+      "publicId": "hs-global/gallery/Bowls/IMG-20250116-WA0321",
+      "format": "jpg",
+      "width": 1400,
+      "height": 1400,
+      "bytes": 120748
+    },
+    "gallery/Bowls/IMG-20250116-WA0323.webp": {
+      "original": "gallery/Bowls/IMG-20250116-WA0323.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923650/hs-global/gallery/Bowls/IMG-20250116-WA0323.jpg",
+      "publicId": "hs-global/gallery/Bowls/IMG-20250116-WA0323",
+      "format": "jpg",
+      "width": 1400,
+      "height": 1400,
+      "bytes": 142783
+    },
+    "gallery/Bowls/IMG-20250525-WA0074.webp": {
+      "original": "gallery/Bowls/IMG-20250525-WA0074.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923653/hs-global/gallery/Bowls/IMG-20250525-WA0074.jpg",
+      "publicId": "hs-global/gallery/Bowls/IMG-20250525-WA0074",
+      "format": "jpg",
+      "width": 1050,
+      "height": 1400,
+      "bytes": 108177
+    },
+    "gallery/Coffee Table/IMG-20250116-WA0139.webp": {
+      "original": "gallery/Coffee Table/IMG-20250116-WA0139.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923658/hs-global/gallery/Coffee%20Table/IMG-20250116-WA0139.jpg",
+      "publicId": "hs-global/gallery/Coffee Table/IMG-20250116-WA0139",
+      "format": "jpg",
+      "width": 794,
+      "height": 529,
+      "bytes": 33803
+    },
+    "gallery/Coffee Table/IMG-20250116-WA0136.webp": {
+      "original": "gallery/Coffee Table/IMG-20250116-WA0136.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923659/hs-global/gallery/Coffee%20Table/IMG-20250116-WA0136.jpg",
+      "publicId": "hs-global/gallery/Coffee Table/IMG-20250116-WA0136",
+      "format": "jpg",
+      "width": 1056,
+      "height": 1040,
+      "bytes": 126801
+    },
+    "gallery/Coffee Table/IMG-20250116-WA0126.webp": {
+      "original": "gallery/Coffee Table/IMG-20250116-WA0126.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923656/hs-global/gallery/Coffee%20Table/IMG-20250116-WA0126.jpg",
+      "publicId": "hs-global/gallery/Coffee Table/IMG-20250116-WA0126",
+      "format": "jpg",
+      "width": 704,
+      "height": 704,
+      "bytes": 35909
+    },
+    "gallery/Coffee Table/IMG-20250116-WA0134.webp": {
+      "original": "gallery/Coffee Table/IMG-20250116-WA0134.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923657/hs-global/gallery/Coffee%20Table/IMG-20250116-WA0134.jpg",
+      "publicId": "hs-global/gallery/Coffee Table/IMG-20250116-WA0134",
+      "format": "jpg",
+      "width": 1400,
+      "height": 1400,
+      "bytes": 130201
+    },
+    "gallery/Coffee Table/IMG-20250116-WA0135.webp": {
+      "original": "gallery/Coffee Table/IMG-20250116-WA0135.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923658/hs-global/gallery/Coffee%20Table/IMG-20250116-WA0135.jpg",
+      "publicId": "hs-global/gallery/Coffee Table/IMG-20250116-WA0135",
+      "format": "jpg",
+      "width": 1400,
+      "height": 1050,
+      "bytes": 114809
+    },
+    "gallery/Coffee Table/IMG-20250525-WA0096.webp": {
+      "original": "gallery/Coffee Table/IMG-20250525-WA0096.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923665/hs-global/gallery/Coffee%20Table/IMG-20250525-WA0096.jpg",
+      "publicId": "hs-global/gallery/Coffee Table/IMG-20250525-WA0096",
+      "format": "jpg",
+      "width": 1400,
+      "height": 787,
+      "bytes": 100943
+    },
+    "gallery/Coffee Table/IMG-20250525-WA0088.webp": {
+      "original": "gallery/Coffee Table/IMG-20250525-WA0088.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923663/hs-global/gallery/Coffee%20Table/IMG-20250525-WA0088.jpg",
+      "publicId": "hs-global/gallery/Coffee Table/IMG-20250525-WA0088",
+      "format": "jpg",
+      "width": 1050,
+      "height": 1400,
+      "bytes": 180471
+    },
+    "gallery/Coffee Table/IMG-20250525-WA0046.webp": {
+      "original": "gallery/Coffee Table/IMG-20250525-WA0046.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923663/hs-global/gallery/Coffee%20Table/IMG-20250525-WA0046.jpg",
+      "publicId": "hs-global/gallery/Coffee Table/IMG-20250525-WA0046",
+      "format": "jpg",
+      "width": 1050,
+      "height": 1400,
+      "bytes": 122608
+    },
+    "gallery/Coffee Table/IMG-20250525-WA0050.webp": {
+      "original": "gallery/Coffee Table/IMG-20250525-WA0050.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923662/hs-global/gallery/Coffee%20Table/IMG-20250525-WA0050.jpg",
+      "publicId": "hs-global/gallery/Coffee Table/IMG-20250525-WA0050",
+      "format": "jpg",
+      "width": 1050,
+      "height": 1400,
+      "bytes": 131986
+    },
+    "gallery/Coffee Table/IMG-20250525-WA0062.webp": {
+      "original": "gallery/Coffee Table/IMG-20250525-WA0062.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923665/hs-global/gallery/Coffee%20Table/IMG-20250525-WA0062.jpg",
+      "publicId": "hs-global/gallery/Coffee Table/IMG-20250525-WA0062",
+      "format": "jpg",
+      "width": 1050,
+      "height": 1400,
+      "bytes": 124430
+    },
+    "gallery/Garden Products/IMG-20250116-WA0116.webp": {
+      "original": "gallery/Garden Products/IMG-20250116-WA0116.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923671/hs-global/gallery/Garden%20Products/IMG-20250116-WA0116.jpg",
+      "publicId": "hs-global/gallery/Garden Products/IMG-20250116-WA0116",
+      "format": "jpg",
+      "width": 794,
+      "height": 596,
+      "bytes": 87732
+    },
+    "gallery/Dining Table/IMG-20250116-WA0181.webp": {
+      "original": "gallery/Dining Table/IMG-20250116-WA0181.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923669/hs-global/gallery/Dining%20Table/IMG-20250116-WA0181.jpg",
+      "publicId": "hs-global/gallery/Dining Table/IMG-20250116-WA0181",
+      "format": "jpg",
+      "width": 896,
+      "height": 896,
+      "bytes": 84135
+    },
+    "gallery/Garden Products/IMG-20250116-WA0118.webp": {
+      "original": "gallery/Garden Products/IMG-20250116-WA0118.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923673/hs-global/gallery/Garden%20Products/IMG-20250116-WA0118.jpg",
+      "publicId": "hs-global/gallery/Garden Products/IMG-20250116-WA0118",
+      "format": "jpg",
+      "width": 794,
+      "height": 596,
+      "bytes": 99772
+    },
+    "gallery/Garden Products/IMG-20250116-WA0123.webp": {
+      "original": "gallery/Garden Products/IMG-20250116-WA0123.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923672/hs-global/gallery/Garden%20Products/IMG-20250116-WA0123.jpg",
+      "publicId": "hs-global/gallery/Garden Products/IMG-20250116-WA0123",
+      "format": "jpg",
+      "width": 1280,
+      "height": 1280,
+      "bytes": 229657
+    },
+    "gallery/Coffee Table/IMG-20250525-WA0101.webp": {
+      "original": "gallery/Coffee Table/IMG-20250525-WA0101.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923670/hs-global/gallery/Coffee%20Table/IMG-20250525-WA0101.jpg",
+      "publicId": "hs-global/gallery/Coffee Table/IMG-20250525-WA0101",
+      "format": "jpg",
+      "width": 1050,
+      "height": 1400,
+      "bytes": 136403
+    },
+    "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.18 PM (1).webp": {
+      "original": "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.18 PM (1).webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923679/hs-global/gallery/Slabs/WhatsApp%20Image%202025-11-05%20at%201.45.18%20PM%20%281%29.jpg",
+      "publicId": "hs-global/gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.18 PM (1)",
+      "format": "jpg",
+      "width": 1280,
+      "height": 960,
+      "bytes": 205240
+    },
+    "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.16 PM.webp": {
+      "original": "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.16 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923680/hs-global/gallery/Slabs/WhatsApp%20Image%202025-11-05%20at%201.45.16%20PM.jpg",
+      "publicId": "hs-global/gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.16 PM",
+      "format": "jpg",
+      "width": 1280,
+      "height": 960,
+      "bytes": 166925
+    },
+    "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.18 PM.webp": {
+      "original": "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.18 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923683/hs-global/gallery/Slabs/WhatsApp%20Image%202025-11-05%20at%201.45.18%20PM.jpg",
+      "publicId": "hs-global/gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.18 PM",
+      "format": "jpg",
+      "width": 1280,
+      "height": 960,
+      "bytes": 228662
+    },
+    "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.18 PM (2).webp": {
+      "original": "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.18 PM (2).webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923679/hs-global/gallery/Slabs/WhatsApp%20Image%202025-11-05%20at%201.45.18%20PM%20%282%29.jpg",
+      "publicId": "hs-global/gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.18 PM (2)",
+      "format": "jpg",
+      "width": 1280,
+      "height": 960,
+      "bytes": 206320
+    },
+    "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.19 PM (1).webp": {
+      "original": "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.19 PM (1).webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923683/hs-global/gallery/Slabs/WhatsApp%20Image%202025-11-05%20at%201.45.19%20PM%20%281%29.jpg",
+      "publicId": "hs-global/gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.19 PM (1)",
+      "format": "jpg",
+      "width": 1280,
+      "height": 960,
+      "bytes": 241900
+    },
+    "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.20 PM (1).webp": {
+      "original": "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.20 PM (1).webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923691/hs-global/gallery/Slabs/WhatsApp%20Image%202025-11-05%20at%201.45.20%20PM%20%281%29.jpg",
+      "publicId": "hs-global/gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.20 PM (1)",
+      "format": "jpg",
+      "width": 1280,
+      "height": 960,
+      "bytes": 126016
+    },
+    "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.19 PM.webp": {
+      "original": "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.19 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923689/hs-global/gallery/Slabs/WhatsApp%20Image%202025-11-05%20at%201.45.19%20PM.jpg",
+      "publicId": "hs-global/gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.19 PM",
+      "format": "jpg",
+      "width": 1280,
+      "height": 960,
+      "bytes": 193213
+    },
+    "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.19 PM (2).webp": {
+      "original": "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.19 PM (2).webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923693/hs-global/gallery/Slabs/WhatsApp%20Image%202025-11-05%20at%201.45.19%20PM%20%282%29.jpg",
+      "publicId": "hs-global/gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.19 PM (2)",
+      "format": "jpg",
+      "width": 1280,
+      "height": 960,
+      "bytes": 235980
+    },
+    "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.20 PM (2).webp": {
+      "original": "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.20 PM (2).webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923688/hs-global/gallery/Slabs/WhatsApp%20Image%202025-11-05%20at%201.45.20%20PM%20%282%29.jpg",
+      "publicId": "hs-global/gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.20 PM (2)",
+      "format": "jpg",
+      "width": 1280,
+      "height": 960,
+      "bytes": 186346
+    },
+    "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.20 PM.webp": {
+      "original": "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.20 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923692/hs-global/gallery/Slabs/WhatsApp%20Image%202025-11-05%20at%201.45.20%20PM.jpg",
+      "publicId": "hs-global/gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.20 PM",
+      "format": "jpg",
+      "width": 1280,
+      "height": 960,
+      "bytes": 236554
+    },
+    "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.21 PM.webp": {
+      "original": "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.21 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923702/hs-global/gallery/Slabs/WhatsApp%20Image%202025-11-05%20at%201.45.21%20PM.jpg",
+      "publicId": "hs-global/gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.21 PM",
+      "format": "jpg",
+      "width": 1280,
+      "height": 960,
+      "bytes": 153727
+    },
+    "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.21 PM (1).webp": {
+      "original": "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.21 PM (1).webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923701/hs-global/gallery/Slabs/WhatsApp%20Image%202025-11-05%20at%201.45.21%20PM%20%281%29.jpg",
+      "publicId": "hs-global/gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.21 PM (1)",
+      "format": "jpg",
+      "width": 1280,
+      "height": 960,
+      "bytes": 214814
+    },
+    "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.22 PM (1).webp": {
+      "original": "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.22 PM (1).webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923700/hs-global/gallery/Slabs/WhatsApp%20Image%202025-11-05%20at%201.45.22%20PM%20%281%29.jpg",
+      "publicId": "hs-global/gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.22 PM (1)",
+      "format": "jpg",
+      "width": 1280,
+      "height": 960,
+      "bytes": 209968
+    },
+    "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.23 PM (1).webp": {
+      "original": "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.23 PM (1).webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923705/hs-global/gallery/Slabs/WhatsApp%20Image%202025-11-05%20at%201.45.23%20PM%20%281%29.jpg",
+      "publicId": "hs-global/gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.23 PM (1)",
+      "format": "jpg",
+      "width": 1280,
+      "height": 960,
+      "bytes": 189442
+    },
+    "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.22 PM.webp": {
+      "original": "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.22 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923702/hs-global/gallery/Slabs/WhatsApp%20Image%202025-11-05%20at%201.45.22%20PM.jpg",
+      "publicId": "hs-global/gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.22 PM",
+      "format": "jpg",
+      "width": 1280,
+      "height": 960,
+      "bytes": 214156
+    },
+    "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.23 PM.webp": {
+      "original": "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.23 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923711/hs-global/gallery/Slabs/WhatsApp%20Image%202025-11-05%20at%201.45.23%20PM.jpg",
+      "publicId": "hs-global/gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.23 PM",
+      "format": "jpg",
+      "width": 1280,
+      "height": 960,
+      "bytes": 164119
+    },
+    "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.24 PM.webp": {
+      "original": "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.24 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923711/hs-global/gallery/Slabs/WhatsApp%20Image%202025-11-05%20at%201.45.24%20PM.jpg",
+      "publicId": "hs-global/gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.24 PM",
+      "format": "jpg",
+      "width": 1280,
+      "height": 960,
+      "bytes": 205152
+    },
+    "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.26 PM (1).webp": {
+      "original": "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.26 PM (1).webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923717/hs-global/gallery/Slabs/WhatsApp%20Image%202025-11-05%20at%201.45.26%20PM%20%281%29.jpg",
+      "publicId": "hs-global/gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.26 PM (1)",
+      "format": "jpg",
+      "width": 1280,
+      "height": 960,
+      "bytes": 229530
+    },
+    "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.25 PM.webp": {
+      "original": "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.25 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923712/hs-global/gallery/Slabs/WhatsApp%20Image%202025-11-05%20at%201.45.25%20PM.jpg",
+      "publicId": "hs-global/gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.25 PM",
+      "format": "jpg",
+      "width": 1280,
+      "height": 960,
+      "bytes": 196764
+    },
+    "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.25 PM (1).webp": {
+      "original": "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.25 PM (1).webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923712/hs-global/gallery/Slabs/WhatsApp%20Image%202025-11-05%20at%201.45.25%20PM%20%281%29.jpg",
+      "publicId": "hs-global/gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.25 PM (1)",
+      "format": "jpg",
+      "width": 1280,
+      "height": 960,
+      "bytes": 247172
+    },
+    "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.26 PM (2).webp": {
+      "original": "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.26 PM (2).webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923723/hs-global/gallery/Slabs/WhatsApp%20Image%202025-11-05%20at%201.45.26%20PM%20%282%29.jpg",
+      "publicId": "hs-global/gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.26 PM (2)",
+      "format": "jpg",
+      "width": 1280,
+      "height": 960,
+      "bytes": 244038
+    },
+    "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.29 PM (1).webp": {
+      "original": "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.29 PM (1).webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923726/hs-global/gallery/Slabs/WhatsApp%20Image%202025-11-05%20at%201.45.29%20PM%20%281%29.jpg",
+      "publicId": "hs-global/gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.29 PM (1)",
+      "format": "jpg",
+      "width": 1280,
+      "height": 960,
+      "bytes": 224414
+    },
+    "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.27 PM.webp": {
+      "original": "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.27 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923722/hs-global/gallery/Slabs/WhatsApp%20Image%202025-11-05%20at%201.45.27%20PM.jpg",
+      "publicId": "hs-global/gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.27 PM",
+      "format": "jpg",
+      "width": 1280,
+      "height": 960,
+      "bytes": 178668
+    },
+    "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.28 PM.webp": {
+      "original": "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.28 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923726/hs-global/gallery/Slabs/WhatsApp%20Image%202025-11-05%20at%201.45.28%20PM.jpg",
+      "publicId": "hs-global/gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.28 PM",
+      "format": "jpg",
+      "width": 1280,
+      "height": 960,
+      "bytes": 201146
+    },
+    "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.26 PM.webp": {
+      "original": "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.26 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923724/hs-global/gallery/Slabs/WhatsApp%20Image%202025-11-05%20at%201.45.26%20PM.jpg",
+      "publicId": "hs-global/gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.26 PM",
+      "format": "jpg",
+      "width": 1280,
+      "height": 960,
+      "bytes": 309827
+    },
+    "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.31 PM (1).webp": {
+      "original": "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.31 PM (1).webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923738/hs-global/gallery/Slabs/WhatsApp%20Image%202025-11-05%20at%201.45.31%20PM%20%281%29.jpg",
+      "publicId": "hs-global/gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.31 PM (1)",
+      "format": "jpg",
+      "width": 1280,
+      "height": 960,
+      "bytes": 256635
+    },
+    "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.29 PM (2).webp": {
+      "original": "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.29 PM (2).webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923736/hs-global/gallery/Slabs/WhatsApp%20Image%202025-11-05%20at%201.45.29%20PM%20%282%29.jpg",
+      "publicId": "hs-global/gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.29 PM (2)",
+      "format": "jpg",
+      "width": 1280,
+      "height": 960,
+      "bytes": 231221
+    },
+    "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.29 PM.webp": {
+      "original": "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.29 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923733/hs-global/gallery/Slabs/WhatsApp%20Image%202025-11-05%20at%201.45.29%20PM.jpg",
+      "publicId": "hs-global/gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.29 PM",
+      "format": "jpg",
+      "width": 1280,
+      "height": 960,
+      "bytes": 196936
+    },
+    "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.30 PM (1).webp": {
+      "original": "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.30 PM (1).webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923734/hs-global/gallery/Slabs/WhatsApp%20Image%202025-11-05%20at%201.45.30%20PM%20%281%29.jpg",
+      "publicId": "hs-global/gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.30 PM (1)",
+      "format": "jpg",
+      "width": 1280,
+      "height": 960,
+      "bytes": 242270
+    },
+    "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.30 PM.webp": {
+      "original": "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.30 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923736/hs-global/gallery/Slabs/WhatsApp%20Image%202025-11-05%20at%201.45.30%20PM.jpg",
+      "publicId": "hs-global/gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.30 PM",
+      "format": "jpg",
+      "width": 1280,
+      "height": 960,
+      "bytes": 195229
+    },
+    "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.33 PM.webp": {
+      "original": "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.33 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923742/hs-global/gallery/Slabs/WhatsApp%20Image%202025-11-05%20at%201.45.33%20PM.jpg",
+      "publicId": "hs-global/gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.33 PM",
+      "format": "jpg",
+      "width": 1280,
+      "height": 960,
+      "bytes": 165767
+    },
+    "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.33 PM (1).webp": {
+      "original": "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.33 PM (1).webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923745/hs-global/gallery/Slabs/WhatsApp%20Image%202025-11-05%20at%201.45.33%20PM%20%281%29.jpg",
+      "publicId": "hs-global/gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.33 PM (1)",
+      "format": "jpg",
+      "width": 1280,
+      "height": 960,
+      "bytes": 218282
+    },
+    "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.34 PM (1).webp": {
+      "original": "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.34 PM (1).webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923746/hs-global/gallery/Slabs/WhatsApp%20Image%202025-11-05%20at%201.45.34%20PM%20%281%29.jpg",
+      "publicId": "hs-global/gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.34 PM (1)",
+      "format": "jpg",
+      "width": 1280,
+      "height": 960,
+      "bytes": 184780
+    },
+    "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.31 PM.webp": {
+      "original": "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.31 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923743/hs-global/gallery/Slabs/WhatsApp%20Image%202025-11-05%20at%201.45.31%20PM.jpg",
+      "publicId": "hs-global/gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.31 PM",
+      "format": "jpg",
+      "width": 1280,
+      "height": 960,
+      "bytes": 203017
+    },
+    "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.34 PM.webp": {
+      "original": "gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.34 PM.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923748/hs-global/gallery/Slabs/WhatsApp%20Image%202025-11-05%20at%201.45.34%20PM.jpg",
+      "publicId": "hs-global/gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.34 PM",
+      "format": "jpg",
+      "width": 1280,
+      "height": 960,
+      "bytes": 188202
+    },
+    "gallery/Vase/IMG-20250116-WA0335.webp": {
+      "original": "gallery/Vase/IMG-20250116-WA0335.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923750/hs-global/gallery/Vase/IMG-20250116-WA0335.jpg",
+      "publicId": "hs-global/gallery/Vase/IMG-20250116-WA0335",
+      "format": "jpg",
+      "width": 500,
+      "height": 500,
+      "bytes": 29569
+    },
+    "gallery/Vase/IMG-20250116-WA0331.webp": {
+      "original": "gallery/Vase/IMG-20250116-WA0331.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923750/hs-global/gallery/Vase/IMG-20250116-WA0331.jpg",
+      "publicId": "hs-global/gallery/Vase/IMG-20250116-WA0331",
+      "format": "jpg",
+      "width": 700,
+      "height": 800,
+      "bytes": 71246
+    },
+    "gallery/Vase/IMG-20250116-WA0342.webp": {
+      "original": "gallery/Vase/IMG-20250116-WA0342.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923753/hs-global/gallery/Vase/IMG-20250116-WA0342.jpg",
+      "publicId": "hs-global/gallery/Vase/IMG-20250116-WA0342",
+      "format": "jpg",
+      "width": 736,
+      "height": 735,
+      "bytes": 136482
+    },
+    "gallery/Vase/IMG-20250116-WA0333.webp": {
+      "original": "gallery/Vase/IMG-20250116-WA0333.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923750/hs-global/gallery/Vase/IMG-20250116-WA0333.jpg",
+      "publicId": "hs-global/gallery/Vase/IMG-20250116-WA0333",
+      "format": "jpg",
+      "width": 1080,
+      "height": 810,
+      "bytes": 92409
+    },
+    "gallery/Vase/IMG-20250116-WA0341.webp": {
+      "original": "gallery/Vase/IMG-20250116-WA0341.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923753/hs-global/gallery/Vase/IMG-20250116-WA0341.jpg",
+      "publicId": "hs-global/gallery/Vase/IMG-20250116-WA0341",
+      "format": "jpg",
+      "width": 1400,
+      "height": 1400,
+      "bytes": 153596
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0026.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0026.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923760/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0026.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250116-WA0026",
+      "format": "jpg",
+      "width": 574,
+      "height": 720,
+      "bytes": 50899
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0024.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0024.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923760/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0024.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250116-WA0024",
+      "format": "jpg",
+      "width": 958,
+      "height": 1280,
+      "bytes": 89855
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0025.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0025.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923760/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0025.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250116-WA0025",
+      "format": "jpg",
+      "width": 958,
+      "height": 1280,
+      "bytes": 79376
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0021.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0021.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923757/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0021.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250116-WA0021",
+      "format": "jpg",
+      "width": 1080,
+      "height": 1080,
+      "bytes": 163874
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0022.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0022.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923759/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0022.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250116-WA0022",
+      "format": "jpg",
+      "width": 1280,
+      "height": 1280,
+      "bytes": 374006
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0031.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0031.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923765/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0031.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250116-WA0031",
+      "format": "jpg",
+      "width": 794,
+      "height": 794,
+      "bytes": 62631
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0032.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0032.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923765/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0032.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250116-WA0032",
+      "format": "jpg",
+      "width": 597,
+      "height": 1020,
+      "bytes": 67570
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0030.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0030.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923764/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0030.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250116-WA0030",
+      "format": "jpg",
+      "width": 960,
+      "height": 1280,
+      "bytes": 137636
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0027.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0027.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923766/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0027.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250116-WA0027",
+      "format": "jpg",
+      "width": 794,
+      "height": 794,
+      "bytes": 88201
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0029.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0029.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923763/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0029.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250116-WA0029",
+      "format": "jpg",
+      "width": 794,
+      "height": 794,
+      "bytes": 87389
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0037.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0037.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923771/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0037.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250116-WA0037",
+      "format": "jpg",
+      "width": 1200,
+      "height": 1200,
+      "bytes": 103954
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0039.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0039.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923772/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0039.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250116-WA0039",
+      "format": "jpg",
+      "width": 1104,
+      "height": 1104,
+      "bytes": 127568
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0036.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0036.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923770/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0036.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250116-WA0036",
+      "format": "jpg",
+      "width": 1231,
+      "height": 1231,
+      "bytes": 148285
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0038.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0038.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923772/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0038.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250116-WA0038",
+      "format": "jpg",
+      "width": 876,
+      "height": 876,
+      "bytes": 63612
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0033.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0033.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923770/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0033.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250116-WA0033",
+      "format": "jpg",
+      "width": 1050,
+      "height": 1400,
+      "bytes": 113351
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0043.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0043.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923778/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0043.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250116-WA0043",
+      "format": "jpg",
+      "width": 960,
+      "height": 1280,
+      "bytes": 106959
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0044.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0044.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923778/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0044.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250116-WA0044",
+      "format": "jpg",
+      "width": 500,
+      "height": 500,
+      "bytes": 33463
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0042.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0042.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923776/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0042.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250116-WA0042",
+      "format": "jpg",
+      "width": 1280,
+      "height": 1193,
+      "bytes": 114738
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0040.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0040.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923776/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0040.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250116-WA0040",
+      "format": "jpg",
+      "width": 1080,
+      "height": 1080,
+      "bytes": 168124
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0041.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0041.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923776/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0041.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250116-WA0041",
+      "format": "jpg",
+      "width": 1400,
+      "height": 1400,
+      "bytes": 147065
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0047.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0047.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923782/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0047.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250116-WA0047",
+      "format": "jpg",
+      "width": 764,
+      "height": 764,
+      "bytes": 41390
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0050.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0050.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923783/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0050.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250116-WA0050",
+      "format": "jpg",
+      "width": 706,
+      "height": 590,
+      "bytes": 32160
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0046.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0046.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923782/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0046.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250116-WA0046",
+      "format": "jpg",
+      "width": 990,
+      "height": 725,
+      "bytes": 54831
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0045.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0045.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923782/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0045.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250116-WA0045",
+      "format": "jpg",
+      "width": 706,
+      "height": 692,
+      "bytes": 46387
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0049.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0049.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923783/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0049.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250116-WA0049",
+      "format": "jpg",
+      "width": 706,
+      "height": 478,
+      "bytes": 31599
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0056.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0056.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923795/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0056.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250116-WA0056",
+      "format": "jpg",
+      "width": 1400,
+      "height": 1400,
+      "bytes": 190683
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0055.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0055.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923795/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0055.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250116-WA0055",
+      "format": "jpg",
+      "width": 1280,
+      "height": 1280,
+      "bytes": 292490
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0057.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0057.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923796/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0057.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250116-WA0057",
+      "format": "jpg",
+      "width": 1280,
+      "height": 1280,
+      "bytes": 287317
+    },
+    "gallery/Wash Basins/IMG-20250518-WA0025.webp": {
+      "original": "gallery/Wash Basins/IMG-20250518-WA0025.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923795/hs-global/gallery/Wash%20Basins/IMG-20250518-WA0025.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250518-WA0025",
+      "format": "jpg",
+      "width": 780,
+      "height": 1040,
+      "bytes": 132025
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0054.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0054.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923787/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0054.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250116-WA0054",
+      "format": "jpg",
+      "width": 960,
+      "height": 1280,
+      "bytes": 94712
+    },
+    "gallery/Wash Basins/IMG-20250518-WA0026.webp": {
+      "original": "gallery/Wash Basins/IMG-20250518-WA0026.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923799/hs-global/gallery/Wash%20Basins/IMG-20250518-WA0026.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250518-WA0026",
+      "format": "jpg",
+      "width": 904,
+      "height": 915,
+      "bytes": 81188
+    },
+    "gallery/Wash Basins/IMG-20250518-WA0034.webp": {
+      "original": "gallery/Wash Basins/IMG-20250518-WA0034.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923802/hs-global/gallery/Wash%20Basins/IMG-20250518-WA0034.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250518-WA0034",
+      "format": "jpg",
+      "width": 1400,
+      "height": 1050,
+      "bytes": 128322
+    },
+    "gallery/Wash Basins/IMG-20250522-WA0029.webp": {
+      "original": "gallery/Wash Basins/IMG-20250522-WA0029.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923807/hs-global/gallery/Wash%20Basins/IMG-20250522-WA0029.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250522-WA0029",
+      "format": "jpg",
+      "width": 1280,
+      "height": 1280,
+      "bytes": 355257
+    },
+    "gallery/Wash Basins/IMG-20250521-WA0008.webp": {
+      "original": "gallery/Wash Basins/IMG-20250521-WA0008.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923802/hs-global/gallery/Wash%20Basins/IMG-20250521-WA0008.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250521-WA0008",
+      "format": "jpg",
+      "width": 1400,
+      "height": 1050,
+      "bytes": 202325
+    },
+    "gallery/Wash Basins/IMG-20250522-WA0028.webp": {
+      "original": "gallery/Wash Basins/IMG-20250522-WA0028.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923809/hs-global/gallery/Wash%20Basins/IMG-20250522-WA0028.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250522-WA0028",
+      "format": "jpg",
+      "width": 1280,
+      "height": 1280,
+      "bytes": 289617
+    },
+    "gallery/Wash Basins/IMG-20250525-WA0002.webp": {
+      "original": "gallery/Wash Basins/IMG-20250525-WA0002.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923811/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0002.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250525-WA0002",
+      "format": "jpg",
+      "width": 720,
+      "height": 857,
+      "bytes": 54605
+    },
+    "gallery/Wash Basins/IMG-20250525-WA0042.webp": {
+      "original": "gallery/Wash Basins/IMG-20250525-WA0042.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923819/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0042.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250525-WA0042",
+      "format": "jpg",
+      "width": 1050,
+      "height": 1400,
+      "bytes": 222469
+    },
+    "gallery/Wash Basins/IMG-20250525-WA0007.webp": {
+      "original": "gallery/Wash Basins/IMG-20250525-WA0007.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923812/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0007.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250525-WA0007",
+      "format": "jpg",
+      "width": 720,
+      "height": 817,
+      "bytes": 59087
+    },
+    "gallery/Wash Basins/IMG-20250525-WA0044.webp": {
+      "original": "gallery/Wash Basins/IMG-20250525-WA0044.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923815/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0044.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250525-WA0044",
+      "format": "jpg",
+      "width": 1400,
+      "height": 1400,
+      "bytes": 165821
+    },
+    "gallery/Wash Basins/IMG-20250525-WA0041.webp": {
+      "original": "gallery/Wash Basins/IMG-20250525-WA0041.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923820/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0041.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250525-WA0041",
+      "format": "jpg",
+      "width": 1280,
+      "height": 1280,
+      "bytes": 328372
+    },
+    "gallery/Wash Basins/IMG-20250525-WA0122.webp": {
+      "original": "gallery/Wash Basins/IMG-20250525-WA0122.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923828/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0122.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250525-WA0122",
+      "format": "jpg",
+      "width": 1280,
+      "height": 1280,
+      "bytes": 147039
+    },
+    "gallery/Wash Basins/IMG-20250525-WA0149.webp": {
+      "original": "gallery/Wash Basins/IMG-20250525-WA0149.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923830/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0149.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250525-WA0149",
+      "format": "jpg",
+      "width": 1080,
+      "height": 1080,
+      "bytes": 112588
+    },
+    "gallery/Wash Basins/IMG-20250525-WA0142.webp": {
+      "original": "gallery/Wash Basins/IMG-20250525-WA0142.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923834/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0142.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250525-WA0142",
+      "format": "jpg",
+      "width": 1280,
+      "height": 1280,
+      "bytes": 354930
+    },
+    "gallery/Wash Basins/IMG-20250525-WA0147.webp": {
+      "original": "gallery/Wash Basins/IMG-20250525-WA0147.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923839/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0147.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250525-WA0147",
+      "format": "jpg",
+      "width": 1280,
+      "height": 1280,
+      "bytes": 544609
+    },
+    "gallery/Wash Basins/IMG-20250525-WA0109.webp": {
+      "original": "gallery/Wash Basins/IMG-20250525-WA0109.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923827/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0109.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250525-WA0109",
+      "format": "jpg",
+      "width": 1280,
+      "height": 1280,
+      "bytes": 309491
+    },
+    "gallery/Wash Basins/IMG-20250525-WA0152.webp": {
+      "original": "gallery/Wash Basins/IMG-20250525-WA0152.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923851/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0152.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250525-WA0152",
+      "format": "jpg",
+      "width": 1080,
+      "height": 1080,
+      "bytes": 182496
+    },
+    "gallery/Wash Basins/IMG-20250525-WA0151.webp": {
+      "original": "gallery/Wash Basins/IMG-20250525-WA0151.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923846/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0151.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250525-WA0151",
+      "format": "jpg",
+      "width": 1080,
+      "height": 1080,
+      "bytes": 162009
+    },
+    "gallery/Wash Basins/IMG-20250525-WA0163.webp": {
+      "original": "gallery/Wash Basins/IMG-20250525-WA0163.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923852/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0163.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250525-WA0163",
+      "format": "jpg",
+      "width": 1400,
+      "height": 1400,
+      "bytes": 192790
+    },
+    "gallery/Wash Basins/IMG-20250601-WA0004.webp": {
+      "original": "gallery/Wash Basins/IMG-20250601-WA0004.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923852/hs-global/gallery/Wash%20Basins/IMG-20250601-WA0004.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250601-WA0004",
+      "format": "jpg",
+      "width": 1400,
+      "height": 1050,
+      "bytes": 179700
+    },
+    "gallery/Wash Basins/IMG-20250601-WA0000.webp": {
+      "original": "gallery/Wash Basins/IMG-20250601-WA0000.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923851/hs-global/gallery/Wash%20Basins/IMG-20250601-WA0000.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250601-WA0000",
+      "format": "jpg",
+      "width": 1280,
+      "height": 1280,
+      "bytes": 161212
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0008.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0008.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923855/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0008.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250603-WA0008",
+      "format": "jpg",
+      "width": 1280,
+      "height": 1280,
+      "bytes": 103893
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0012.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0012.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923858/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0012.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250603-WA0012",
+      "format": "jpg",
+      "width": 1280,
+      "height": 1280,
+      "bytes": 108676
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0006.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0006.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923855/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0006.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250603-WA0006",
+      "format": "jpg",
+      "width": 794,
+      "height": 372,
+      "bytes": 43714
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0007.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0007.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923855/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0007.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250603-WA0007",
+      "format": "jpg",
+      "width": 500,
+      "height": 500,
+      "bytes": 41937
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0011.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0011.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923857/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0011.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250603-WA0011",
+      "format": "jpg",
+      "width": 990,
+      "height": 990,
+      "bytes": 186725
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0019.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0019.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923861/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0019.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250603-WA0019",
+      "format": "jpg",
+      "width": 706,
+      "height": 489,
+      "bytes": 65818
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0021.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0021.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923861/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0021.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250603-WA0021",
+      "format": "jpg",
+      "width": 1024,
+      "height": 766,
+      "bytes": 51945
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0020.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0020.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923861/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0020.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250603-WA0020",
+      "format": "jpg",
+      "width": 1280,
+      "height": 960,
+      "bytes": 63942
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0022.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0022.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923865/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0022.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250603-WA0022",
+      "format": "jpg",
+      "width": 1280,
+      "height": 1280,
+      "bytes": 357454
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0014.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0014.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923865/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0014.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250603-WA0014",
+      "format": "jpg",
+      "width": 1280,
+      "height": 960,
+      "bytes": 161734
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0028.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0028.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923867/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0028.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250603-WA0028",
+      "format": "jpg",
+      "width": 706,
+      "height": 643,
+      "bytes": 32107
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0035.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0035.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923869/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0035.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250603-WA0035",
+      "format": "jpg",
+      "width": 960,
+      "height": 1280,
+      "bytes": 88725
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0026.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0026.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923868/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0026.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250603-WA0026",
+      "format": "jpg",
+      "width": 706,
+      "height": 514,
+      "bytes": 63462
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0024.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0024.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923869/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0024.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250603-WA0024",
+      "format": "jpg",
+      "width": 1280,
+      "height": 1280,
+      "bytes": 145713
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0025.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0025.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923868/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0025.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250603-WA0025",
+      "format": "jpg",
+      "width": 1280,
+      "height": 1202,
+      "bytes": 111013
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0036.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0036.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923875/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0036.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250603-WA0036",
+      "format": "jpg",
+      "width": 960,
+      "height": 1280,
+      "bytes": 93689
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0037.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0037.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923874/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0037.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250603-WA0037",
+      "format": "jpg",
+      "width": 960,
+      "height": 1280,
+      "bytes": 126430
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0045.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0045.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923875/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0045.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250603-WA0045",
+      "format": "jpg",
+      "width": 736,
+      "height": 736,
+      "bytes": 46085
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0038.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0038.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923873/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0038.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250603-WA0038",
+      "format": "jpg",
+      "width": 1280,
+      "height": 960,
+      "bytes": 159167
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0042.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0042.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923874/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0042.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250603-WA0042",
+      "format": "jpg",
+      "width": 1280,
+      "height": 1280,
+      "bytes": 79992
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0046.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0046.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923877/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0046.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250603-WA0046",
+      "format": "jpg",
+      "width": 736,
+      "height": 736,
+      "bytes": 42952
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0049.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0049.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923877/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0049.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250603-WA0049",
+      "format": "jpg",
+      "width": 736,
+      "height": 736,
+      "bytes": 46036
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0047.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0047.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923877/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0047.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250603-WA0047",
+      "format": "jpg",
+      "width": 398,
+      "height": 398,
+      "bytes": 20280
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0051.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0051.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923877/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0051.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250603-WA0051",
+      "format": "jpg",
+      "width": 794,
+      "height": 365,
+      "bytes": 44082
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0048.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0048.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923877/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0048.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250603-WA0048",
+      "format": "jpg",
+      "width": 706,
+      "height": 590,
+      "bytes": 32604
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0076.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0076.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923880/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0076.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250603-WA0076",
+      "format": "jpg",
+      "width": 706,
+      "height": 762,
+      "bytes": 79070
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0074.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0074.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923882/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0074.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250603-WA0074",
+      "format": "jpg",
+      "width": 1200,
+      "height": 800,
+      "bytes": 100160
+    },
+    "gallery/Wash Basins/IMG-20250604-WA0001.webp": {
+      "original": "gallery/Wash Basins/IMG-20250604-WA0001.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923883/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0001.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250604-WA0001",
+      "format": "jpg",
+      "width": 1050,
+      "height": 1400,
+      "bytes": 99413
+    },
+    "gallery/Wash Basins/IMG-20250604-WA0002.webp": {
+      "original": "gallery/Wash Basins/IMG-20250604-WA0002.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923883/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0002.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250604-WA0002",
+      "format": "jpg",
+      "width": 1050,
+      "height": 1400,
+      "bytes": 128950
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0071.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0071.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923880/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0071.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250603-WA0071",
+      "format": "jpg",
+      "width": 1080,
+      "height": 985,
+      "bytes": 79783
+    },
+    "gallery/Wash Basins/IMG-20250604-WA0008.webp": {
+      "original": "gallery/Wash Basins/IMG-20250604-WA0008.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923891/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0008.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250604-WA0008",
+      "format": "jpg",
+      "width": 706,
+      "height": 891,
+      "bytes": 49724
+    },
+    "gallery/Wash Basins/IMG-20250604-WA0004.webp": {
+      "original": "gallery/Wash Basins/IMG-20250604-WA0004.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923892/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0004.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250604-WA0004",
+      "format": "jpg",
+      "width": 1000,
+      "height": 1000,
+      "bytes": 163836
+    },
+    "gallery/Wash Basins/IMG-20250604-WA0007.webp": {
+      "original": "gallery/Wash Basins/IMG-20250604-WA0007.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923892/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0007.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250604-WA0007",
+      "format": "jpg",
+      "width": 1280,
+      "height": 1280,
+      "bytes": 247226
+    },
+    "gallery/Wash Basins/IMG-20250604-WA0006.webp": {
+      "original": "gallery/Wash Basins/IMG-20250604-WA0006.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923887/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0006.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250604-WA0006",
+      "format": "jpg",
+      "width": 706,
+      "height": 1110,
+      "bytes": 96351
+    },
+    "gallery/Wash Basins/IMG-20250604-WA0005.webp": {
+      "original": "gallery/Wash Basins/IMG-20250604-WA0005.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923892/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0005.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250604-WA0005",
+      "format": "jpg",
+      "width": 1280,
+      "height": 1280,
+      "bytes": 328779
+    },
+    "gallery/Wash Basins/IMG-20250604-WA0014.webp": {
+      "original": "gallery/Wash Basins/IMG-20250604-WA0014.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923897/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0014.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250604-WA0014",
+      "format": "jpg",
+      "width": 550,
+      "height": 550,
+      "bytes": 31310
+    },
+    "gallery/Wash Basins/IMG-20250604-WA0013.webp": {
+      "original": "gallery/Wash Basins/IMG-20250604-WA0013.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923896/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0013.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250604-WA0013",
+      "format": "jpg",
+      "width": 1400,
+      "height": 787,
+      "bytes": 128406
+    },
+    "gallery/Wash Basins/IMG-20250604-WA0011.webp": {
+      "original": "gallery/Wash Basins/IMG-20250604-WA0011.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923896/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0011.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250604-WA0011",
+      "format": "jpg",
+      "width": 1400,
+      "height": 1400,
+      "bytes": 182801
+    },
+    "gallery/Wash Basins/IMG-20250604-WA0015.webp": {
+      "original": "gallery/Wash Basins/IMG-20250604-WA0015.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923898/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0015.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250604-WA0015",
+      "format": "jpg",
+      "width": 1400,
+      "height": 1400,
+      "bytes": 137802
+    },
+    "gallery/Wash Basins/IMG-20250604-WA0009.webp": {
+      "original": "gallery/Wash Basins/IMG-20250604-WA0009.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923896/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0009.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250604-WA0009",
+      "format": "jpg",
+      "width": 867,
+      "height": 867,
+      "bytes": 97172
+    },
+    "gallery/Wash Basins/IMG-20250604-WA0020.webp": {
+      "original": "gallery/Wash Basins/IMG-20250604-WA0020.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923900/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0020.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250604-WA0020",
+      "format": "jpg",
+      "width": 550,
+      "height": 550,
+      "bytes": 45795
+    },
+    "gallery/Wash Basins/IMG-20250604-WA0016.webp": {
+      "original": "gallery/Wash Basins/IMG-20250604-WA0016.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923900/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0016.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250604-WA0016",
+      "format": "jpg",
+      "width": 550,
+      "height": 550,
+      "bytes": 28829
+    },
+    "gallery/Wash Basins/IMG-20250604-WA0024.webp": {
+      "original": "gallery/Wash Basins/IMG-20250604-WA0024.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923904/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0024.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250604-WA0024",
+      "format": "jpg",
+      "width": 1000,
+      "height": 1000,
+      "bytes": 158024
+    },
+    "gallery/Wash Basins/IMG-20250604-WA0023.webp": {
+      "original": "gallery/Wash Basins/IMG-20250604-WA0023.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923904/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0023.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250604-WA0023",
+      "format": "jpg",
+      "width": 1400,
+      "height": 1400,
+      "bytes": 286789
+    },
+    "gallery/Wash Basins/IMG-20250604-WA0026.webp": {
+      "original": "gallery/Wash Basins/IMG-20250604-WA0026.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923905/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0026.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250604-WA0026",
+      "format": "jpg",
+      "width": 1076,
+      "height": 1076,
+      "bytes": 147420
+    },
+    "gallery/Wash Basins/IMG-20250606-WA0000.webp": {
+      "original": "gallery/Wash Basins/IMG-20250606-WA0000.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923908/hs-global/gallery/Wash%20Basins/IMG-20250606-WA0000.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250606-WA0000",
+      "format": "jpg",
+      "width": 500,
+      "height": 500,
+      "bytes": 36340
+    },
+    "gallery/Wash Basins/IMG-20250604-WA0028.webp": {
+      "original": "gallery/Wash Basins/IMG-20250604-WA0028.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923908/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0028.jpg",
+      "publicId": "hs-global/gallery/Wash Basins/IMG-20250604-WA0028",
+      "format": "jpg",
+      "width": 1050,
+      "height": 1400,
+      "bytes": 113423
+    },
+    "gallery-hero.webp": {
+      "original": "gallery-hero.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766923912/hs-global/gallery/gallery-hero.jpg",
+      "publicId": "hs-global/gallery/gallery-hero",
+      "format": "jpg",
+      "width": 1620,
+      "height": 1080,
+      "bytes": 216166
+    }
+  }
+}

@@ -1,0 +1,1 @@
+export const isRTL = (lang) => ['ar', 'he', 'fa', 'ur'].includes(lang);

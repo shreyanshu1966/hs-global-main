@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ✅ Basic SEO -->
+  <title>HS Global Export - Premium Granite & Marble Solutions</title>
+  <meta name="description"
+    content="Transform your space with HS Global Export's premium granite and marble collections. Custom designs and luxury stone solutions for your interior needs." />
+
+  <!-- ✅ Google Site Verification -->
+  <meta name="google-site-verification" content="eux99bK594jJWaR0E1ayhVAnO5zj0F7UxdHyCdQkZmA" />
+
+  <!-- ✅ Preconnect for better performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://www.googletagmanager.com" />
+  <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+
+  <!-- ✅ Google Fonts (optimized async loading) -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap"
+    rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap"
+      rel="stylesheet" />
+  </noscript>
+
+  <!-- ✅ Preload critical assets -->
+  <link rel="preload" href="/logo.webp" as="image" type="image/webp" />
+
+  <!-- ✅ Hide scrollbars + smooth scrolling -->
+  <style>
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    body {
+      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Loading spinner for better UX */
+    #root:empty::before {
+      content: "";
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 40px;
+      height: 40px;
+      margin: -20px 0 0 -20px;
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #333;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+
+  <!-- ✅ Google Analytics (deferred for performance) -->
+  <script defer src="https://www.googletagmanager.com/gtag/js?id=G-LDEFWLFCYY"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-LDEFWLFCYY", { 'send_page_view': false });
+
+    // Send page view after load
+    window.addEventListener('load', function () {
+      gtag("event", "page_view");
+    });
+  </script>
+
+  <!-- ✅ Google Tag Manager (deferred) -->
+  <script>
+    (function (w, d, s, l, i) {
+      w[l] = w[l] || [];
+      w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+      var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s),
+        dl = l != "dataLayer" ? "&l=" + l : "";
+      j.async = true;
+      j.defer = true;
+      j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+      f.parentNode.insertBefore(j, f);
+    })(window, document, "script", "dataLayer", "GTM-PH7MHF29");
+  </script>
+</head>
+
+<body>
+  <!-- ✅ Google Tag Manager (noscript) -->
+  <noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PH7MHF29" height="0" width="0"
+      style="display: none; visibility: hidden"></iframe>
+  </noscript>
+
+  <div id="root"></div>
+
+  <!-- ✅ Main app entry point -->
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
+</html>

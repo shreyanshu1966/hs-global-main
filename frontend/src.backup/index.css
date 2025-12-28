@@ -1,0 +1,253 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Performance optimizations */
+* {
+  box-sizing: border-box;
+}
+
+html {
+
+}
+
+/* GPU acceleration for animations */
+.animate-spin-slow {
+  animation: spin 3s linear infinite;
+}
+
+[dir="rtl"] {
+  text-align: right;
+}
+
+[dir="ltr"] {
+  text-align: left;
+}
+
+/* Optimize image rendering */
+img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* Reduce layout thrashing */
+.will-change-transform {
+  will-change: transform;
+}
+
+.will-change-opacity {
+  will-change: opacity;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+/* Critical animations */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Content visibility for better performance */
+.content-visibility-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 1000px;
+}
+
+/* Compact black scrollbar for drawers */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.05);
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #000;
+  border-radius: 8px;
+}
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #000 rgba(0,0,0,0.05);
+}
+
+html {
+
+  overflow-x: hidden;
+}
+
+body {
+  overflow-x: hidden;
+  @apply bg-background text-text-primary;
+}
+
+/* Container styles */
+.container {
+  @apply w-full mx-auto px-4;
+  max-width: 100%;
+}
+
+@screen sm {
+  .container {
+    max-width: 640px;
+  }
+}
+
+@screen md {
+  .container {
+    max-width: 768px;
+  }
+}
+
+@screen lg {
+  .container {
+    max-width: 1024px;
+  }
+}
+
+@screen xl {
+  .container {
+    max-width: 1280px;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-secondary;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-accent rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-accent2;
+}
+
+/* Smooth transitions */
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+/* Loading animation */
+.loading-spinner {
+  @apply relative w-20 h-20;
+}
+
+.loading-spinner::before,
+.loading-spinner::after {
+  content: '';
+  @apply absolute inset-0 rounded-full border-4 border-transparent;
+}
+
+.loading-spinner::before {
+  @apply border-t-accent animate-spin;
+  animation-duration: 1s;
+}
+
+.loading-spinner::after {
+  @apply border-accent opacity-20;
+}
+
+/* Image hover effects */
+.image-hover {
+  @apply relative overflow-hidden;
+}
+
+.image-hover img {
+  @apply transition-transform duration-700 ease-in-out;
+}
+
+.image-hover:hover img {
+  @apply scale-110;
+}
+
+/* Text gradient */
+.text-gradient {
+  @apply bg-gradient-to-r from-accent to-accent2 bg-clip-text text-transparent;
+}
+
+/* Responsive typography */
+@layer base {
+  h1 {
+    @apply font-serif text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight;
+  }
+  
+  h2 {
+    @apply font-serif text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight;
+  }
+  
+  h3 {
+    @apply font-serif text-2xl md:text-3xl lg:text-4xl font-semibold;
+  }
+  
+  h4 {
+    @apply font-serif text-xl md:text-2xl font-semibold;
+  }
+  
+  p {
+    @apply font-sans text-base md:text-lg leading-relaxed text-gray-600;
+  }
+}
+
+/* Layout utilities */
+.section-padding {
+  @apply py-12 md:py-16 lg:py-20;
+}
+
+.section-margin {
+  @apply my-12 md:my-16 lg:my-20;
+}
+
+/* Mobile navigation */
+.mobile-nav {
+  @apply fixed inset-0 bg-white z-50;
+  height: 100vh;
+}
+
+/* Grid layouts */
+.responsive-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8;
+}
+
+.responsive-grid-4 {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8;
+}
+
+/* Flex layouts */
+.flex-center {
+  @apply flex items-center justify-center;
+}
+
+.flex-between {
+  @apply flex items-center justify-between;
+}
+
+/* Button styles */
+.btn {
+  @apply px-6 py-2 rounded-full transition-colors duration-300;
+}
+
+.btn-primary {
+  @apply btn bg-accent text-white hover:bg-accent/90;
+}
+
+.btn-secondary {
+  @apply btn bg-white text-accent border-2 border-accent hover:bg-accent hover:text-white;
+}

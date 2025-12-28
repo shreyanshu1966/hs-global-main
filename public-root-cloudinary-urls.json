@@ -1,0 +1,133 @@
+{
+  "generated": "2025-12-28T13:31:36.643Z",
+  "cloudName": "dpztytsoz",
+  "folder": "hs-global/public",
+  "stats": {
+    "found": 13,
+    "optimized": 13,
+    "uploaded": 13,
+    "errors": 0,
+    "originalSize": "19.37 MB",
+    "optimizedSize": "1.78 MB",
+    "uploadedSize": "2.04 MB"
+  },
+  "urls": {
+    "about-hero.webp": {
+      "original": "about-hero.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766928672/hs-global/public/about-hero.jpg",
+      "publicId": "hs-global/public/about-hero",
+      "format": "jpg",
+      "width": 1620,
+      "height": 1080,
+      "bytes": 161358
+    },
+    "banner.webp": {
+      "original": "banner.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766928675/hs-global/public/banner.jpg",
+      "publicId": "hs-global/public/banner",
+      "format": "jpg",
+      "width": 1623,
+      "height": 1080,
+      "bytes": 268823
+    },
+    "banner4.webp": {
+      "original": "banner4.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766928677/hs-global/public/banner4.jpg",
+      "publicId": "hs-global/public/banner4",
+      "format": "jpg",
+      "width": 736,
+      "height": 920,
+      "bytes": 121543
+    },
+    "etsy_logo.webp": {
+      "original": "etsy_logo.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766928678/hs-global/public/etsy_logo.png",
+      "publicId": "hs-global/public/etsy_logo",
+      "format": "png",
+      "width": 724,
+      "height": 800,
+      "bytes": 22404
+    },
+    "export.webp": {
+      "original": "export.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766928681/hs-global/public/export.jpg",
+      "publicId": "hs-global/public/export",
+      "format": "jpg",
+      "width": 1620,
+      "height": 1080,
+      "bytes": 166766
+    },
+    "gallery-hero.webp": {
+      "original": "gallery-hero.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766928684/hs-global/public/gallery-hero.jpg",
+      "publicId": "hs-global/public/gallery-hero",
+      "format": "jpg",
+      "width": 1620,
+      "height": 1080,
+      "bytes": 216166
+    },
+    "granite-solutions.webp": {
+      "original": "granite-solutions.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766928685/hs-global/public/granite-solutions.jpg",
+      "publicId": "hs-global/public/granite-solutions",
+      "format": "jpg",
+      "width": 1620,
+      "height": 1080,
+      "bytes": 192327
+    },
+    "logo.webp": {
+      "original": "logo.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766928687/hs-global/public/logo.png",
+      "publicId": "hs-global/public/logo",
+      "format": "png",
+      "width": 800,
+      "height": 800,
+      "bytes": 18580
+    },
+    "logo_transparent.webp": {
+      "original": "logo_transparent.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766928689/hs-global/public/logo_transparent.png",
+      "publicId": "hs-global/public/logo_transparent",
+      "format": "png",
+      "width": 500,
+      "height": 500,
+      "bytes": 8475
+    },
+    "marble-solutions.webp": {
+      "original": "marble-solutions.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766928691/hs-global/public/marble-solutions.jpg",
+      "publicId": "hs-global/public/marble-solutions",
+      "format": "jpg",
+      "width": 1620,
+      "height": 1080,
+      "bytes": 231402
+    },
+    "products-hero.webp": {
+      "original": "products-hero.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766928692/hs-global/public/products-hero.jpg",
+      "publicId": "hs-global/public/products-hero",
+      "format": "jpg",
+      "width": 1620,
+      "height": 1080,
+      "bytes": 83849
+    },
+    "service.webp": {
+      "original": "service.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766928694/hs-global/public/service.jpg",
+      "publicId": "hs-global/public/service",
+      "format": "jpg",
+      "width": 1600,
+      "height": 1067,
+      "bytes": 246787
+    },
+    "services-hero.webp": {
+      "original": "services-hero.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1766928697/hs-global/public/services-hero.jpg",
+      "publicId": "hs-global/public/services-hero",
+      "format": "jpg",
+      "width": 1620,
+      "height": 1080,
+      "bytes": 402602
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+    "name": "hs-global-root",
+    "private": true,
+    "scripts": {
+        "install:all": "npm install && cd frontend && npm install && cd ../backend && npm install",
+        "dev": "concurrently \"npm run server:dev\" \"npm run client:dev\"",
+        "client:dev": "cd frontend && npm run dev",
+        "server:dev": "cd backend && npm run dev",
+        "start": "concurrently \"npm run server:start\" \"npm run client:build\"",
+        "server:start": "cd backend && npm start",
+        "client:build": "cd frontend && npm run build",
+        "images:optimize": "node scripts/optimize-images.js",
+        "images:upload": "node scripts/upload-to-cloudinary.js",
+        "images:all": "node scripts/optimize-and-upload-all.js",
+        "images:public-root": "node scripts/upload-public-root-images.js",
+        "images:cleanup": "node scripts/cleanup-cloudinary.js"
+    },
+    "dependencies": {
+        "cloudinary": "^2.8.0",
+        "concurrently": "^8.2.2",
+        "dotenv": "^17.2.3"
+    },
+    "devDependencies": {
+        "sharp": "^0.34.5"
+    }
+}
