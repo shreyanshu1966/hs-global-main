@@ -6,6 +6,7 @@ import { useGSAP } from "@gsap/react";
 import { useTranslation } from "react-i18next";
 import LocationSelector from "./LocationSelector";
 import { CartIcon } from "./CartIcon";
+import { getRootImageUrl } from "../utils/rootCloudinary";
 
 const Header = () => {
   const { t } = useTranslation();
@@ -129,7 +130,7 @@ const Header = () => {
             {/* Logo */}
             <Link to="/" className="flex-shrink-0 group relative z-50">
               <img
-                src="https://res.cloudinary.com/dpztytsoz/image/upload/v1766858534/hs-global/root/logo.png"
+                src={getRootImageUrl("logo.webp") || "https://res.cloudinary.com/dpztytsoz/image/upload/v1766858534/hs-global/root/logo.png"}
                 alt="HS Global Export"
                 className={`transition-all duration-300 object-contain ${isScrolled ? "h-10 sm:h-12 w-auto" : "h-12 sm:h-16 w-auto"
                   }`}
