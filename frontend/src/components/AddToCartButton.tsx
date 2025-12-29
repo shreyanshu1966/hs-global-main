@@ -61,7 +61,7 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
 
 
   const handleClick = () => {
-    // For slabs: Request quotation (phone verification first)
+    // For slabs: Request quotation (open modal directly)
     if (product.category === 'slabs') {
       // Apply preselected customization if provided
       if (preselectedCustomization) {
@@ -72,21 +72,12 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
         }));
       }
 
-      // Check if phone is already verified
-      if (!state.isPhoneVerified && onPhoneVerificationRequired) {
-        onPhoneVerificationRequired();
-      } else {
-        openSlabModal(product, state.phoneNumber);
-      }
+      // Open slab customization modal directly
+      openSlabModal(product, state.phoneNumber || '');
       return;
     }
 
-    // For furniture: Add to cart (phone verification required)
-    if (!state.isPhoneVerified && onPhoneVerificationRequired) {
-      onPhoneVerificationRequired();
-      return;
-    }
-
+    // For furniture: Add to cart directly
     addItem({
       id: product.id,
       name: product.name,

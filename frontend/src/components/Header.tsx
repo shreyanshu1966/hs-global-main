@@ -1,15 +1,17 @@
 import { useState, useEffect, memo, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, User } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { useTranslation } from "react-i18next";
 import LocationSelector from "./LocationSelector";
 import { CartIcon } from "./CartIcon";
 import { getRootImageUrl } from "../utils/rootCloudinary";
+import { useAuth } from "../contexts/AuthContext";
 
 const Header = () => {
   const { t } = useTranslation();
+  const { isAuthenticated, user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuRendered, setIsMenuRendered] = useState(false);
@@ -162,6 +164,25 @@ const Header = () => {
 
               <div className="border-l border-gray-200 pl-4 flex items-center gap-3">
                 <CartIcon />
+
+                {/* User Profile/Login */}
+                {isAuthenticated && user ? (
+                  <Link
+                    to="/profile"
+                    className="flex items-center gap-2 px-4 py-2 rounded-full font-medium transition-all shadow-sm text-sm bg-black text-white hover:bg-gray-800"
+                  >
+                    <User className="w-4 h-4" />
+                    <span className="hidden xl:inline">{user.name.split(' ')[0]}</span>
+                  </Link>
+                ) : (
+                  <Link
+                    to="/login"
+                    className="flex items-center gap-2 px-4 py-2 rounded-full font-medium transition-all shadow-sm text-sm bg-black text-white hover:bg-gray-800"
+                  >
+                    <User className="w-4 h-4" />
+                    <span className="hidden xl:inline">Login</span>
+                  </Link>
+                )}
 
                 {/* WhatsApp Button */}
                 <a

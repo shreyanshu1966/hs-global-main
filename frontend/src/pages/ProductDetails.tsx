@@ -7,7 +7,6 @@ import { useGSAP } from "@gsap/react";
 import { AddToCartButton } from "../components/AddToCartButton";
 import { QuantityHandler } from "../components/QuantityHandler";
 import { useCart } from "../contexts/CartContext";
-import { usePhoneVerification } from "../contexts/PhoneVerificationContext";
 
 import {
   getAllProducts,
@@ -29,7 +28,6 @@ const ProductDetails = () => {
   const [selectedThickness, setSelectedThickness] = useState("20mm");
 
   const { state: cartState } = useCart();
-  const { openModal } = usePhoneVerification();
 
   const mainImageRef = useRef<HTMLDivElement>(null);
 
@@ -385,7 +383,6 @@ const ProductDetails = () => {
                   {product.category === "slabs" ? (
                     <AddToCartButton
                       product={product}
-                      onPhoneVerificationRequired={() => openModal(product)}
                       preselectedCustomization={{
                         finish: selectedFinish,
                         thickness: selectedThickness,
@@ -397,7 +394,6 @@ const ProductDetails = () => {
                   ) : (
                     <AddToCartButton
                       product={product}
-                      onPhoneVerificationRequired={() => openModal(product)}
                       className="h-11 inline-flex items-center gap-2 px-6 rounded-full bg-black text-white border-2 border-black hover:bg-white hover:text-black shadow-lg hover:shadow-xl transition-all duration-300"
                     />
                   )}

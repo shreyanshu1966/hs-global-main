@@ -6,6 +6,7 @@ import LoadingSpinner from "./components/LoadingSpinner";
 import ScrollToTop from "./components/ScrollToTop";
 import InitialUserForm from "./components/InitialUserForm";
 import SmoothScroll from "./components/SmoothScroll";
+import { AuthProvider } from "./contexts/AuthContext";
 
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -15,6 +16,17 @@ import Gallery from "./pages/Gallery";
 import GalleryDetails from "./pages/GalleryDetails";
 import Contact from "./pages/Contact";
 import Services from "./pages/Services";
+import Checkout from "./pages/Checkout";
+import CheckoutSuccess from "./pages/CheckoutSuccess";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import Profile from "./pages/Profile";
+import OrderDetails from "./pages/OrderDetails";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+import VerifyEmail from "./pages/VerifyEmail";
+import LoginOTP from "./pages/LoginOTP";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);
@@ -62,25 +74,37 @@ function App() {
   return (
     <HelmetProvider>
       <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-        <SmoothScroll>
-          <ScrollToTop />
-          <Layout>
-            {showInitialForm && <InitialUserForm onSubmit={handleFormSubmit} />}
+        <AuthProvider>
+          <SmoothScroll>
+            <ScrollToTop />
+            <Layout>
+              {showInitialForm && <InitialUserForm onSubmit={handleFormSubmit} />}
 
-            <Routes>
-              <Route path="*" element={<div>404 Not Found</div>} />
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/products" element={<Products />} />
-              <Route path="/productsinfo/:id" element={<ProductDetails />} />
-              <Route path="/gallery" element={<Gallery />} />
-              <Route path="/gallery/:id" element={<GalleryDetails />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/services" element={<Services />} />
-            </Routes>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/products" element={<Products />} />
+                <Route path="/productsinfo/:id" element={<ProductDetails />} />
+                <Route path="/gallery" element={<Gallery />} />
+                <Route path="/gallery/:id" element={<GalleryDetails />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/services" element={<Services />} />
+                <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
+                <Route path="/checkout-success" element={<ProtectedRoute><CheckoutSuccess /></ProtectedRoute>} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/login-otp" element={<LoginOTP />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/reset-password/:token" element={<ResetPassword />} />
+                <Route path="/verify-email/:token" element={<VerifyEmail />} />
+                <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+                <Route path="/orders/:orderId" element={<ProtectedRoute><OrderDetails /></ProtectedRoute>} />
+                <Route path="*" element={<div>404 Not Found</div>} />
+              </Routes>
 
-          </Layout>
-        </SmoothScroll>
+            </Layout>
+          </SmoothScroll>
+        </AuthProvider>
       </BrowserRouter>
     </HelmetProvider>
   );

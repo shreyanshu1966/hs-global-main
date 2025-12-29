@@ -9,7 +9,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Product } from '../data/products';
 import { AddToCartButton } from './AddToCartButton';
 import { QuantityHandler } from './QuantityHandler';
-import { usePhoneVerification } from '../contexts/PhoneVerificationContext';
 import { useCart } from '../contexts/CartContext';
 import { useLocalization } from '../contexts/LocalizationContext';
 
@@ -48,7 +47,6 @@ const getProductVideoUrl = (productName: string, category: string, subcategory: 
 };
 
 export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant, index }) => {
-  const { openModal } = usePhoneVerification();
   const { state } = useCart();
   const { formatPrice, convertINRtoUSD } = useLocalization();
 
@@ -329,7 +327,6 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
                 product={product}
                 variant="compact"
                 className="w-full h-11 md:h-12 bg-black text-white border-2 border-black hover:bg-gray-800 transition-all rounded-lg font-semibold text-xs md:text-sm"
-                onPhoneVerificationRequired={() => openModal(product)}
               />
             )}
           </div>
