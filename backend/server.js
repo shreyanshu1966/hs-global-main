@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const path = require('path');
 const fs = require('fs');
 const connectDB = require('./config/db');
@@ -38,12 +39,16 @@ app.use(cors({
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 // Routes
+app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/otp', require('./routes/otpRoutes'));
 app.use('/api/currency', require('./routes/currencyRoutes'));
 app.use('/api', require('./routes/emailRoutes'));
 app.use('/api', require('./routes/paymentRoutes'));
+app.use('/api', require('./routes/orderRoutes'));
+app.use('/api/webhooks', require('./routes/webhookRoutes')); // Razorpay webhooks
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
