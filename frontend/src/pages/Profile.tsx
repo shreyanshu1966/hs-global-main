@@ -118,21 +118,21 @@ const Profile: React.FC = () => {
             <div className="max-w-4xl mx-auto px-4">
                 <div ref={profileRef} className="space-y-6">
                     {/* Header */}
-                    <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
-                        <div className="flex items-start justify-between">
-                            <div className="flex items-center gap-6">
+                    <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8 border border-gray-200">
+                        <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-6">
+                            <div className="flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
                                 <div className="relative">
-                                    <div className="w-24 h-24 bg-gradient-to-br from-black to-gray-700 rounded-full flex items-center justify-center text-white text-3xl font-bold">
+                                    <div className="w-24 h-24 bg-gradient-to-br from-black to-gray-700 rounded-full flex items-center justify-center text-white text-3xl font-bold border-4 border-white shadow-md">
                                         {user.name.charAt(0).toUpperCase()}
                                     </div>
-                                    <button className="absolute bottom-0 right-0 w-8 h-8 bg-black rounded-full flex items-center justify-center text-white hover:bg-gray-800 transition-colors">
+                                    <button className="absolute bottom-0 right-0 w-8 h-8 bg-black rounded-full flex items-center justify-center text-white hover:bg-gray-800 transition-colors border-2 border-white">
                                         <Camera className="w-4 h-4" />
                                     </button>
                                 </div>
                                 <div>
                                     <h1 className="text-3xl font-bold text-black">{user.name}</h1>
-                                    <p className="text-gray-600 mt-1">{user.email}</p>
-                                    <div className="flex items-center gap-2 mt-2">
+                                    <p className="text-gray-600 mt-1 break-all">{user.email}</p>
+                                    <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 mt-2">
                                         <span className="px-3 py-1 bg-black text-white text-xs font-medium rounded-full">
                                             {user.role}
                                         </span>
@@ -146,7 +146,7 @@ const Profile: React.FC = () => {
                             </div>
                             <button
                                 onClick={handleLogout}
-                                className="flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                                className="w-full md:w-auto flex items-center justify-center gap-2 px-6 py-2.5 text-red-600 hover:bg-red-50 rounded-lg transition-colors border border-transparent hover:border-red-100"
                             >
                                 <LogOut className="w-4 h-4" />
                                 Logout
@@ -156,33 +156,33 @@ const Profile: React.FC = () => {
 
                     {/* Messages */}
                     {error && (
-                        <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
+                        <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm animate-fade-in">
                             {error}
                         </div>
                     )}
                     {success && (
-                        <div className="p-4 bg-green-50 border border-green-200 rounded-lg text-green-600 text-sm">
+                        <div className="p-4 bg-green-50 border border-green-200 rounded-lg text-green-600 text-sm animate-fade-in">
                             {success}
                         </div>
                     )}
 
                     {/* Profile Information */}
-                    <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
-                        <div className="flex items-center justify-between mb-6">
+                    <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8 border border-gray-200">
+                        <div className="flex flex-col sm:flex-row items-center justify-between mb-6 gap-4">
                             <h2 className="text-2xl font-bold text-black">Profile Information</h2>
                             {!isEditing ? (
                                 <button
                                     onClick={() => setIsEditing(true)}
-                                    className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors"
+                                    className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors"
                                 >
                                     <Edit2 className="w-4 h-4" />
                                     Edit Profile
                                 </button>
                             ) : (
-                                <div className="flex gap-2">
+                                <div className="flex gap-2 w-full sm:w-auto">
                                     <button
                                         onClick={() => setIsEditing(false)}
-                                        className="flex items-center gap-2 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                                        className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
                                     >
                                         <X className="w-4 h-4" />
                                         Cancel
@@ -190,7 +190,7 @@ const Profile: React.FC = () => {
                                     <button
                                         onClick={handleSaveProfile}
                                         disabled={isSaving}
-                                        className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50"
+                                        className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50"
                                     >
                                         {isSaving ? (
                                             <Loader2 className="w-4 h-4 animate-spin" />
@@ -314,13 +314,13 @@ const Profile: React.FC = () => {
                     </div>
 
                     {/* Security Section */}
-                    <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
-                        <div className="flex items-center justify-between mb-6">
+                    <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8 border border-gray-200">
+                        <div className="flex flex-col sm:flex-row items-center justify-between mb-6 gap-4">
                             <h2 className="text-2xl font-bold text-black">Security</h2>
                             {!isChangingPassword && (
                                 <button
                                     onClick={() => setIsChangingPassword(true)}
-                                    className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors"
+                                    className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors"
                                 >
                                     <Lock className="w-4 h-4" />
                                     Change Password
@@ -399,7 +399,7 @@ const Profile: React.FC = () => {
                     </div>
 
                     {/* Orders Section */}
-                    <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
+                    <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8 border border-gray-200">
                         <h2 className="text-2xl font-bold text-black mb-6">Order History</h2>
                         <OrderHistory />
                     </div>

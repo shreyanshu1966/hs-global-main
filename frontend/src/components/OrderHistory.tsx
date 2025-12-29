@@ -126,10 +126,14 @@ const OrderHistory: React.FC = () => {
         });
     };
 
-    const formatAmount = (amount: number, currency: string) => {
-        // Amount is in paise, convert to rupees
-        const amountInRupees = amount / 100;
-        return `₹${amountInRupees.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    const formatAmount = (amount: number, currency: string = 'INR') => {
+        // Amount is in paise, convert to rupees (standard unit)
+        const amountInMajorUnit = amount / 100;
+        return new Intl.NumberFormat('en-IN', {
+            style: 'currency',
+            currency: currency,
+            minimumFractionDigits: 2
+        }).format(amountInMajorUnit);
     };
 
     if (loading) {
@@ -179,33 +183,33 @@ const OrderHistory: React.FC = () => {
                     className="border border-gray-200 rounded-xl p-4 hover:shadow-md transition-shadow cursor-pointer"
                     onClick={() => navigate(`/orders/${order.orderId}`)}
                 >
-                    <div className="flex items-start justify-between mb-3">
+                    <div className="flex flex-col sm:flex-row sm:items-start justify-between mb-3 gap-2 sm:gap-0">
                         <div>
-                            <p className="text-sm font-medium text-gray-900">
+                            <p className="text-sm font-medium text-gray-900 break-all">
                                 Order #{order.orderId.slice(-8).toUpperCase()}
                             </p>
                             <p className="text-xs text-gray-500 mt-1">
                                 Placed on {formatDate(order.createdAt)}
                             </p>
                         </div>
-                        <div className="text-right">
+                        <div className="text-left sm:text-right">
                             <p className="text-sm font-bold text-black">
                                 {formatAmount(order.amount, order.currency)}
                             </p>
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-2 mb-3">
+                    <div className="flex flex-wrap items-center gap-2 mb-3">
                         {getStatusBadge(order.status)}
                         {order.status === 'paid' && getDeliveryStatusBadge(order.deliveryStatus)}
                     </div>
 
                     {/* Order Items Preview */}
-                    <div className="flex items-center gap-2 mb-3">
+                    <div className="flex items-center gap-2 mb-3 overflow-x-auto pb-2 sm:pb-0 scrollbar-hide">
                         {order.items.slice(0, 3).map((item, idx) => (
                             <div
                                 key={idx}
-                                className="w-12 h-12 bg-gray-100 rounded-lg overflow-hidden border border-gray-200"
+                                className="w-12 h-12 bg-gray-100 rounded-lg overflow-hidden border border-gray-200 flex-shrink-0"
                             >
                                 {item.image ? (
                                     <img
