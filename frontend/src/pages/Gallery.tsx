@@ -349,33 +349,57 @@ const Gallery = memo(() => {
             </div>
           </div>
 
-          {/* Gallery Grid */}
+          {/* Bento-Style Gallery Grid - Dense, No Gaps */}
           {filteredItems.length > 0 ? (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
-              {filteredItems.slice(0, visibleCount).map((item, index) => (
-                <div
-                  key={item.id}
-                  className="group relative overflow-hidden rounded-2xl border-2 border-black bg-white cursor-pointer"
-                  onClick={() => handleItemClick(item.id)}
-                  ref={(el) => attachObserver(el, index)}
-                  style={{ opacity: 0, transform: 'translateY(20px)' }}
-                >
-                  <div className="w-full h-64 md:h-72 bg-white relative">
-                    {/* Category tag */}
-                    <div className="absolute top-3 left-3 z-[1]">
-                      <span className="px-3 py-1 rounded-full text-xs font-semibold bg-black text-white border border-black group-hover:bg-white group-hover:text-black transition-colors">
-                        {item.category}
-                      </span>
+            <div
+              className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 auto-rows-[180px] gap-2"
+              style={{ gridAutoFlow: 'dense' }}
+            >
+              {filteredItems.slice(0, visibleCount).map((item, index) => {
+                // Create varied bento sizes with more randomness
+                const getBentoClass = (idx: number) => {
+                  // Use multiple factors to create less predictable patterns
+                  const hash = (idx * 7 + 3) % 17;
+
+                  if (hash === 0 || hash === 8) return 'col-span-2 row-span-2'; // Large square
+                  if (hash === 1 || hash === 9 || hash === 13) return 'col-span-1 row-span-2'; // Tall
+                  if (hash === 2 || hash === 10 || hash === 14) return 'col-span-2 row-span-1'; // Wide
+                  if (hash === 3 || hash === 11) return 'md:col-span-2 col-span-1 row-span-2'; // Large on desktop
+                  if (hash === 4 || hash === 12) return 'md:col-span-3 col-span-2 row-span-1'; // Extra wide on desktop
+                  return 'col-span-1 row-span-1'; // Small (most common)
+                };
+
+                return (
+                  <div
+                    key={item.id}
+                    className={`group relative overflow-hidden rounded-xl border-2 border-black bg-white cursor-pointer ${getBentoClass(index)}`}
+                    onClick={() => handleItemClick(item.id)}
+                    ref={(el) => attachObserver(el, index)}
+                    style={{ opacity: 0, transform: 'translateY(20px)' }}
+                  >
+                    <div className="w-full h-full bg-white relative">
+                      {/* Category tag */}
+                      <div className="absolute top-2 left-2 z-[1]">
+                        <span className="px-2 py-1 rounded-full text-xs font-semibold bg-black text-white border border-black group-hover:bg-white group-hover:text-black transition-colors">
+                          {item.category}
+                        </span>
+                      </div>
+                      {/* Overlay gradient on hover */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-[1]" />
+                      {/* Title on hover */}
+                      <div className="absolute bottom-0 left-0 right-0 p-3 text-white font-medium text-xs md:text-sm translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-[2]">
+                        {item.title}
+                      </div>
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+                        loading="lazy"
+                      />
                     </div>
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      loading="lazy"
-                    />
                   </div>
-                </div>
-              ))}
+                );
+              })}
               {/* Sentinel to trigger loading more */}
               {visibleCount < filteredItems.length && (
                 <div ref={setSentinelRef} className="col-span-full h-2" aria-hidden />

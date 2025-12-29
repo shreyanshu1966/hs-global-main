@@ -5,6 +5,8 @@ import CategoriesSlider from "../components/CategoriesSlider";
 import AboutCompany from "../components/AboutCompany";
 import ChooseStone from "../components/ChooseStone";
 import TrustBadges from "../components/TrustBadges";
+import VelocityScroll from "../components/VelocityScroll";
+import StatsSection from "../components/StatsSection";
 
 const Home = () => {
   return (
@@ -38,7 +40,6 @@ const Home = () => {
           }}
         />
 
-
         <title>
           Granite & Marble Collection - Luxury Stone Designs | HS Global Export
         </title>
@@ -60,32 +61,57 @@ const Home = () => {
         <meta property="og:image" content="https://www.hsglobalexport.com/public/banner/banner1.jpg" />
         <link rel="canonical" href="https://www.hsglobalexport.com/" />
 
-        {/* ✅ Optional extra SEO meta */}
         <meta name="author" content="HS Global Export" />
         <meta name="robots" content="index, follow" />
       </Helmet>
 
       {/* Main content */}
-      <section style={{ contentVisibility: 'auto', containIntrinsicSize: '1000px' }}>
-        <Hero />
-      </section>
-      <section style={{ contentVisibility: 'auto', containIntrinsicSize: '1200px' }}>
-        <AboutCompany />
-      </section>
-      <section style={{ contentVisibility: 'auto', containIntrinsicSize: '800px' }}>
-        <CategoriesSlider />
-      </section>
-      <section style={{ contentVisibility: 'auto', containIntrinsicSize: '600px' }}>
-        <TrustBadges />
-      </section>
-      <section style={{ contentVisibility: 'auto', containIntrinsicSize: '1000px' }}>
-        <ChooseStone />
-      </section>
-      <section style={{ contentVisibility: 'auto', containIntrinsicSize: '800px' }}>
-        <Testimonials />
-      </section>
+      <main className="bg-background selection:bg-accent selection:text-white">
+
+        {/* Hero Section */}
+        <section style={{ contentVisibility: 'auto', containIntrinsicSize: '1000px' }}>
+          <Hero />
+        </section>
+
+        {/* Velocity Scroll Separator */}
+        <div id="feature-marquee">
+          <VelocityScroll />
+        </div>
+
+        {/* About Section */}
+        <section style={{ contentVisibility: 'auto', containIntrinsicSize: '1200px' }}>
+          <AboutCompany />
+        </section>
+
+        {/* Stats Section - New */}
+        <section style={{ contentVisibility: 'auto', containIntrinsicSize: '600px' }}>
+          <StatsSection />
+        </section>
+
+        {/* Stone Collection */}
+        <section style={{ contentVisibility: 'auto', containIntrinsicSize: '1400px' }}>
+          <ChooseStone />
+        </section>
+
+        {/* Furniture Categories */}
+        <section style={{ contentVisibility: 'auto', containIntrinsicSize: '800px' }}>
+          <CategoriesSlider />
+        </section>
+
+        {/* Trust Badges */}
+        <section style={{ contentVisibility: 'auto', containIntrinsicSize: '400px' }}>
+          <TrustBadges />
+        </section>
+
+        {/* Testimonials */}
+        <section style={{ contentVisibility: 'auto', containIntrinsicSize: '800px' }}>
+          <Testimonials />
+        </section>
+
+      </main>
     </>
   );
 };
 
 export default Home;
+

@@ -8,7 +8,7 @@
 }
 
 html {
-
+  scroll-behavior: smooth;
 }
 
 /* GPU acceleration for animations */
@@ -44,6 +44,7 @@ img {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -53,10 +54,16 @@ img {
 .animate-fadeIn {
   animation: fadeIn 0.5s ease-out forwards;
 }
+
 /* Critical animations */
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Content visibility for better performance */
@@ -69,26 +76,30 @@ img {
 .custom-scrollbar::-webkit-scrollbar {
   width: 8px;
 }
+
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: rgba(0,0,0,0.05);
+  background: rgba(0, 0, 0, 0.05);
 }
+
 .custom-scrollbar::-webkit-scrollbar-thumb {
   background: #000;
   border-radius: 8px;
 }
+
 .custom-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: #000 rgba(0,0,0,0.05);
+  scrollbar-color: #000 rgba(0, 0, 0, 0.05);
 }
 
 html {
-
   overflow-x: hidden;
 }
 
 body {
   overflow-x: hidden;
   @apply bg-background text-text-primary;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Container styles */
@@ -188,19 +199,19 @@ body {
   h1 {
     @apply font-serif text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight;
   }
-  
+
   h2 {
     @apply font-serif text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight;
   }
-  
+
   h3 {
     @apply font-serif text-2xl md:text-3xl lg:text-4xl font-semibold;
   }
-  
+
   h4 {
     @apply font-serif text-xl md:text-2xl font-semibold;
   }
-  
+
   p {
     @apply font-sans text-base md:text-lg leading-relaxed text-gray-600;
   }
@@ -250,4 +261,121 @@ body {
 
 .btn-secondary {
   @apply btn bg-white text-accent border-2 border-accent hover:bg-accent hover:text-white;
+}
+
+@keyframes shine {
+  0% {
+    background-position: 100%;
+  }
+
+  100% {
+    background-position: -100%;
+  }
+}
+
+.animate-shine {
+  animation-name: shine;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+/* Responsive Scaling Utilities - Awwwards Style */
+/* These utilities maintain layout structure while scaling proportionally */
+
+/* Ensure smooth font rendering at all scales */
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+}
+
+/* Touch-friendly interactions for scaled layouts */
+.touch-manipulation {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Prevent text selection on interactive elements */
+.select-none-touch {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* Optimize transforms for scaled layouts */
+@layer utilities {
+  .gpu-accelerate {
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  .smooth-scroll {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+}
+
+/* Maintain aspect ratios in scaled grids */
+.aspect-maintain {
+  aspect-ratio: attr(data-aspect);
+}
+
+/* Responsive viewport units that work consistently */
+@supports (height: 100svh) {
+  .min-h-screen {
+    min-height: 100svh;
+  }
+}
+
+/* Ensure images scale properly */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Prevent layout shift during loading */
+.prevent-shift {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 500px;
+}
+
+/* Smooth transitions for scaled elements */
+.scale-smooth {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Mobile-first grid that maintains structure */
+.grid-scale-preserve {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+}
+
+/* Optimize for high DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2),
+(min-resolution: 192dpi) {
+  img {
+    image-rendering: -webkit-optimize-contrast;
+  }
+}
+
+/* Ensure proper spacing in scaled layouts */
+.spacing-fluid {
+  margin: clamp(1rem, 3vw, 2rem);
+  padding: clamp(1rem, 3vw, 2rem);
+}
+
+/* Performance optimization for scaled animations */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

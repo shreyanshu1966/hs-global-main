@@ -11,6 +11,7 @@
   "home": {
     "hero_title": "LUXURY DEFINED",
     "hero_subtitle": "BY NATURE",
+    "hero_tagline": "Discover the world's finest natural stones, meticulously sourced and expertly crafted for timeless elegance.",
     "hero_subtitle_2": "Exclusive collection of imported stones",
     "explore_button": "Explore Collection",
     "about_title": "About Company",
@@ -22,7 +23,8 @@
     "choose_stone": "Choose Your Stone",
     "choose_stone_subtitle": "Pick your perfect stone and craft a masterpiece. Click an option to see furniture made from that slab.",
     "view_more": "View More",
-    "testimonials": "What Our Clients Say",
+    "testimonials_title": "Trusted by the World's Best",
+    "testimonials_subtitle": "Hear directly from architects, designers, and homeowners who have transformed their spaces with us.",
     "categories_title": "Explore Marble Furniture",
     "categories_subtitle": "Handcrafted categories carved from premium marble and stone"
   },
@@ -30,22 +32,18 @@
     "hero_title": "Granite & Marble Manufacturer",
     "hero_subtitle": "Export-grade slabs, tiles & countertops with custom finishes & global delivery",
     "hero_button": "See Our Products",
-
     "heritage_tag": "HS Global Export",
     "heritage_title": "Leading Natural Stone Export Excellence",
     "heritage_paragraph_1": "HS Global Export stands as India's premier natural stone export company, specializing in premium granite, marble, and quartzite exports to global markets. With over five decades of expertise in stone processing, manufacturing, and international trade, we have established ourselves as trusted suppliers of high-quality natural stone products to architects, contractors, and distributors worldwide. Our state-of-the-art processing facilities, advanced cutting-edge technology, and stringent quality control measures ensure that every slab, tile, and custom-cut stone meets international standards for durability, aesthetics, and precision. From luxury residential projects to commercial developments, HS Global Export delivers exceptional natural stone solutions that transform spaces with timeless elegance and superior craftsmanship.",
     "heritage_paragraph_2": "As a leading stone export company, we maintain strategic partnerships with quarries across India, ensuring consistent supply of premium natural stone materials. Our comprehensive export services include custom fabrication, precision cutting, quality inspection, and reliable logistics support to over 25 countries worldwide. Whether you're sourcing natural stone for kitchen countertops, bathroom vanities, flooring tiles, or architectural cladding, HS Global Export provides end-to-end solutions with competitive pricing, timely delivery, and exceptional customer service that exceeds international expectations.",
-
     "marble_tag": "About HS Global Export",
     "marble_title": "Granite & Marble Experts for Projects Worldwide",
     "marble_paragraph_1": "HS Global Export delivers export-grade granite, marble, sandstone, onyx and travertine with reliable sourcing, precision processing and on-time logistics. From premium slabs and tiles to bespoke stone furniture, we support architects, builders and homeowners with consistent quality, competitive pricing and expert guidance across selection, finishes and installation.",
     "marble_paragraph_2": "Our catalogs cover kitchen countertops, bathroom vanities, flooring, wall cladding, staircases and exterior applications. Each slab is inspected for color harmony, structural integrity and polish. With strict QA, moisture and thickness checks, and professional packing, we ensure your stone arrives project-ready anywhere in the world.",
     "marble_paragraph_3": "Looking for a specific shade or texture? Share your specification and we will shortlist active quarry lots with live photos and videos. We also offer edge profiling, water-jet cutting, book-matching and custom size calibration to simplify site work and reduce wastage.",
-
     "granite_tag": "Premium Granite Collection",
     "granite_title": "Durable Granite Solutions",
     "granite_paragraph_1": "HS Global Export offers an extensive range of premium granite varieties, featuring the finest Indian granite including Black Galaxy, Absolute Black, Kashmir White, Tan Brown, and Ubatuba Green, each selected for their exceptional durability, unique color variations, and superior quality standards. Our granite collection encompasses a diverse spectrum of colors and patterns, from deep black granite perfect for modern kitchen countertops to light-colored granite ideal for bathroom vanities and commercial flooring. We source our granite from the most reputable quarries across India, Brazil, and other international locations, ensuring consistent quality and authentic natural beauty. Our advanced granite processing facilities employ cutting-edge technology including diamond-tipped saws, precision polishing machines, and computer-controlled cutting systems to create flawless granite slabs, tiles, and custom-cut pieces. Whether you're designing high-traffic commercial spaces, luxury residential kitchens, durable bathroom installations, or robust architectural cladding, our granite products deliver unmatched strength, resistance to heat and scratches, and long-lasting performance. From office buildings to residential homes, HS Global Export provides premium granite solutions that combine natural beauty with exceptional durability and reliability for any application.",
-
     "global_tag": "Global Presence",
     "global_title": "Worldwide Recognition",
     "global_network_title": "Global Network",
@@ -161,20 +159,16 @@
     "sort": "Sort",
     "view_all": "View All"
   },
-
   "product": {
     "hero_title": "Discover Premium Granite & Marble",
     "hero_subtitle": "Export-grade slabs, tiles and custom finishes delivered worldwide",
-
     "customization_title": "All products are customizable",
     "customization_text": "We craft to your dimensions, finish, and design preferences.",
     "customization_button_1": "Get a Custom Quote",
     "customization_button_2": "Explore Gallery",
-
     "gallery_title": "Explore Our Gallery",
     "gallery_viewall": "View All"
   },
-
   "gallery": {
     "hero_title": "Curated Gallery",
     "hero_subtitle": "See real installations across kitchens, baths, living spaces and bespoke art. Browse high‑resolution photos to evaluate finishes, edge profiles and design details before you decide.",
@@ -183,7 +177,6 @@
     "filters": "Filters",
     "loading": "Loading slider..."
   },
-
   "contact": {
     "hero_title": "Get In Touch.",
     "hero_subtitle": "Contact Us.",
@@ -208,7 +201,6 @@
     "cta_success": "Your message has been sent. We will get back to you soon.",
     "cta_close": "Close"
   },
-  
   "services": {
     "hero_title": "End‑to‑End Natural Stone Services",
     "hero_subtitle": "We manufacture, fabricate, and export premium marble and granite with global logistics, strict QA, and bespoke craftsmanship.",
@@ -293,11 +285,10 @@
     "stone_service_4": "Edge profiles: bevel, bullnose, ogee, mitred",
     "stone_service_5": "Surface finishes for design & performance needs",
     "stone_service_6": "Project documentation and maintenance guides",
-    "cta_title":"Let’s build your stone program",
+    "cta_title": "Let’s build your stone program",
     "cta_text": "Share drawings, schedules, and target specs. We’ll propose materials, finishing, and logistics tailored to your project.",
-    "cta_btn": "Chat on WhatsApp"    
+    "cta_btn": "Chat on WhatsApp"
   },
-
   "checkout": {
     "title": "Order Summary",
     "total": "Total",
@@ -310,7 +301,6 @@
     "btn_1": "Proceed to Payment",
     "btn_2": "Continue shopping"
   },
-
   "lead_popup": {
     "title": "Get Your Free Quote",
     "subtitle": "Tell us about your project and we'll get back to you",

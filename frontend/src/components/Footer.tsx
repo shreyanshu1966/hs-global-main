@@ -4,209 +4,119 @@ import {
   MapPin,
   Phone,
   Mail,
-  Facebook,
   Instagram,
   Linkedin,
+  Facebook,
+  ArrowUpRight
 } from "lucide-react";
 
-const FooterVariant1: React.FC = () => {
+import { getRootImageUrl } from "../utils/rootCloudinary";
+
+const Footer: React.FC = () => {
   const { t } = useTranslation();
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-white text-gray-900 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
-          {/* Logo + Description */}
-          <div className="lg:col-span-1 flex flex-col justify-start -mt-6">
-            <div
-              className="mb-4 flex justify-center"
-              style={{ lineHeight: 1, marginTop: 0, marginBottom: 0 }}
-            >
-              <img
-                src="https://res.cloudinary.com/dpztytsoz/image/upload/v1766858537/hs-global/root/logo_transparent.png"
-                alt="HS Global Export Logo"
-                className="w-36 h-auto object-contain transform scale-150"
-                style={{ display: "block", marginTop: 0, marginBottom: 0 }}
-              />
+    <footer className="bg-black text-white pt-24 pb-12 overflow-hidden">
+      <div className="container mx-auto px-4">
+
+        {/* Giant CTA Section */}
+        <div className="border-b border-white/20 pb-20 mb-20">
+          <div className="flex flex-col xl:flex-row justify-between items-start xl:items-end gap-12">
+            <div className="max-w-4xl">
+              <span className="block text-accent text-sm font-bold tracking-[0.2em] uppercase mb-6">Have an Idea?</span>
+              <h2 className="text-6xl md:text-8xl lg:text-9xl font-serif leading-[0.9] tracking-tight">
+                Let's Build <br />
+                <span className="text-white/40">Excellence.</span>
+              </h2>
             </div>
 
-            <p className="text-gray-600 mb-6 leading-relaxed">
-              {t(
-                "footer.description",
-                "Crafting exceptional spaces with the finest marble and granite. Where luxury meets precision in every cut."
-              )}
-            </p>
-          </div>
-
-          {/* Products Section */}
-          <div>
-            <h4 className="text-lg font-semibold mb-6 text-black">
-              {t("footer.products")}
-            </h4>
-            <div className="space-y-4">
-              {/* Slabs */}
-              <div>
-                <div className="font-semibold text-gray-800 mb-1">Slabs</div>
-                <div className="flex flex-wrap text-sm text-gray-600">
-                  {[
-                    { label: t("footer.marble"), href: "/products?cat=slabs#marble" },
-                    { label: t("footer.granite"), href: "/products?cat=slabs#alaska" },
-                    { label: t("footer.onyx"), href: "/products?cat=slabs#onyx" },
-                    { label: t("footer.sandstone"), href: "/products?cat=slabs#sandstone" },
-                    { label: t("footer.travertine"), href: "/products?cat=slabs#travertine" },
-                  ].map((item, index, arr) => (
-                    <React.Fragment key={item.label}>
-                      <a
-                        href={item.href}
-                        className="hover:text-amber-500 transition-colors duration-200"
-                      >
-                        {item.label}
-                      </a>
-                      {index !== arr.length - 1 && (
-                        <span className="mx-2 text-gray-400">•</span>
-                      )}
-                    </React.Fragment>
-                  ))}
-                </div>
-              </div>
-
-              {/* Furniture */}
-              <div>
-                <div className="font-semibold text-gray-800 mb-1">Furniture</div>
-                <div className="flex flex-wrap text-sm text-gray-600">
-                  {[
-                    { label:t("footer.tables"), href: "/products?cat=furniture#dining-tables" },
-                    { label: t("footer.chairs"), href: "/products?cat=furniture#dining-chairs" },
-                    { label: t("footer.benches"), href: "/products?cat=furniture#seating-benches" },
-                    { label: t("footer.planters"), href: "/products?cat=furniture#planters" },
-                    { label: t("footer.wash_basins"), href: "/products?cat=furniture#wash-basins" },
-                  ].map((item, index, arr) => (
-                    <React.Fragment key={item.label}>
-                      <a
-                        href={item.href}
-                        className="hover:text-amber-500 transition-colors duration-200"
-                      >
-                        {item.label}
-                      </a>
-                      {index !== arr.length - 1 && (
-                        <span className="mx-2 text-gray-400">•</span>
-                      )}
-                    </React.Fragment>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Pages */}
-          <div>
-            <h4 className="text-lg font-semibold mb-6 text-black">
-              {t("footer.pages")}
-            </h4>
-            <ul className="space-y-3">
-              {[
-                { label: t("nav.home"), href: "/" },
-                { label: t("nav.about"), href: "/about" },
-                { label: t("nav.products"), href: "/products" },
-                { label: t("nav.gallery"), href: "/gallery" },
-                { label: t("nav.contact"), href: "/contact" },
-              ].map((link) => (
-                <li key={link.label}>
-                  <a
-                    href={link.href}
-                    className="text-gray-600 hover:text-amber-500 transition-colors duration-200 flex items-center group"
-                  >
-                    <span className="w-2 h-2 bg-amber-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></span>
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Contact Section */}
-          <div>
-            <h4 className="text-lg font-semibold mb-6 text-black">
-              {t("footer.get_in_touch")}
-            </h4>
-            <div className="space-y-4">
-              <div className="flex items-center group">
-                <MapPin className="w-5 h-5 text-amber-500 mr-3 group-hover:scale-110 transition-transform duration-200" />
-                <span className="text-gray-600 text-sm">
-                {t('footer.address')}
-                </span>
-              </div>
-              <a href="tel:+918107115116" className="flex items-center group">
-                <Phone className="w-5 h-5 text-amber-500 mr-3 group-hover:scale-110 transition-transform duration-200" />
-                <span className="text-gray-600 text-sm">+91 81071 15116</span>
-              </a>
-              <div className="flex items-center group">
-                <Mail className="w-5 h-5 text-amber-500 mr-3 group-hover:scale-110 transition-transform duration-200" />
-                <a
-                  href="mailto:inquiry@hsglobalexport.com"
-                  className="text-gray-600 text-sm hover:text-amber-500"
-                >
-                  inquiry@hsglobalexport.com
-                </a>
-              </div>
-            </div>
-
-            {/* Social Icons */}
-            <div className="flex space-x-4 mt-10">
-              {[
-                {
-                  name: "Facebook",
-                  Icon: Facebook,
-                  href: "https://www.facebook.com/people/HS-Global-Export/61571531083009/",
-                },
-                {
-                  name: "Instagram",
-                  Icon: Instagram,
-                  href: "https://www.instagram.com/hsglobalexport116/",
-                },
-                {
-                  name: "LinkedIn",
-                  Icon: Linkedin,
-                  href: "https://in.linkedin.com/company/hs-global-export",
-                },
-              ].map(({ name, Icon, href }) => (
-                <a
-                  key={name}
-                  href={href}
-                  aria-label={name}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-amber-400 hover:text-white transition-all duration-300 group"
-                >
-                  <Icon className="w-5 h-5 text-gray-700 group-hover:text-white" />
-                </a>
-              ))}
-            </div>
+            <a href="/contact" className="group relative inline-flex items-center justify-center w-32 h-32 md:w-40 md:h-40 rounded-full border border-white/30 hover:border-accent hover:bg-accent transition-all duration-500">
+              <span className="sr-only">Contact Us</span>
+              <ArrowUpRight className="w-10 h-10 md:w-12 md:h-12 group-hover:scale-110 group-hover:rotate-45 transition-transform duration-500" />
+            </a>
           </div>
         </div>
 
-        {/* Footer Bottom */}
-        <div className="border-t border-gray-200 mt-12 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-gray-500 text-sm">
-              © {currentYear} HS Global Export.
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8 mb-24">
+
+          {/* Brand Column */}
+          <div className="md:col-span-4 lg:col-span-5 space-y-8">
+            <img
+              src="	https://res.cloudinary.com/dpztytsoz/image/upload/v1766928687/hs-global/public/logo.png"
+              alt="HS Global Export"
+              className="w-32 h-auto "
+            />
+            <p className="text-gray-400 text-lg font-light leading-relaxed max-w-sm">
+              Defining the future of luxury stone. We source, fabricate, and deliver the world's most exquisite materials to your doorstep.
             </p>
-            <div className="flex space-x-6 mt-4 md:mt-0">
+            <div className="flex gap-4 pt-4">
               {[
-                { label: t("footer.privacy"), href: "#" },
-                { label: t("footer.terms"), href: "#" },
-                { label: t("footer.cookies"), href: "#" },
-              ].map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  className="text-gray-500 hover:text-amber-500 text-sm transition-colors duration-200"
-                >
-                  {link.label}
+                { Icon: Facebook, href: "https://www.facebook.com/people/HS-Global-Export/61571531083009/" },
+                { Icon: Instagram, href: "https://www.instagram.com/hsglobalexport116/" },
+                { Icon: Linkedin, href: "https://in.linkedin.com/company/hs-global-export" },
+              ].map((social, idx) => (
+                <a key={idx} href={social.href} target="_blank" rel="noopener noreferrer" className="w-12 h-12 border border-white/10 rounded-full flex items-center justify-center hover:bg-white hover:text-black transition-all duration-300">
+                  <social.Icon className="w-5 h-5" />
                 </a>
               ))}
             </div>
+          </div>
+
+          {/* Links Grid */}
+          <div className="md:col-span-8 lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-12">
+
+            {/* Column 1 */}
+            <div>
+              <h4 className="text-lg font-medium mb-8">Sitemap</h4>
+              <ul className="space-y-4 text-gray-400 font-light text-lg">
+                <li><a href="/" className="hover:text-accent transition-colors">Home</a></li>
+                <li><a href="/about" className="hover:text-accent transition-colors">About Us</a></li>
+                <li><a href="/products" className="hover:text-accent transition-colors">Collections</a></li>
+                <li><a href="/gallery" className="hover:text-accent transition-colors">Projects</a></li>
+                <li><a href="/contact" className="hover:text-accent transition-colors">Contact</a></li>
+              </ul>
+            </div>
+
+            {/* Column 2 */}
+            <div>
+              <h4 className="text-lg font-medium mb-8">Products</h4>
+              <ul className="space-y-4 text-gray-400 font-light text-lg">
+                <li><a href="/products?cat=slabs#marble" className="hover:text-accent transition-colors">Italian Marble</a></li>
+                <li><a href="/products?cat=slabs#granite" className="hover:text-accent transition-colors">Premium Granite</a></li>
+                <li><a href="/products?cat=slabs#sandstone" className="hover:text-accent transition-colors">Sandstone</a></li>
+                <li><a href="/products?cat=furniture" className="hover:text-accent transition-colors">Luxury Furniture</a></li>
+              </ul>
+            </div>
+
+            {/* Column 3 */}
+            <div>
+              <h4 className="text-lg font-medium mb-8">Get in Touch</h4>
+              <ul className="space-y-6 text-gray-400 font-light">
+                <li className="flex gap-4 items-start">
+                  <MapPin className="w-5 h-5 flex-shrink-0 text-accent mt-1" />
+                  <span className="leading-relaxed">{t('footer.address')}</span>
+                </li>
+                <li className="flex gap-4 items-center">
+                  <Phone className="w-5 h-5 flex-shrink-0 text-accent" />
+                  <a href="tel:+918107115116" className="hover:text-white transition-colors">+91 81071 15116</a>
+                </li>
+                <li className="flex gap-4 items-center">
+                  <Mail className="w-5 h-5 flex-shrink-0 text-accent" />
+                  <a href="mailto:inquiry@hsglobalexport.com" className="hover:text-white transition-colors">inquiry@hsglobalexport.com</a>
+                </li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/10 text-gray-500 font-light text-sm">
+          <p>© {currentYear} HS Global Export. All rights reserved.</p>
+          <div className="flex gap-8 mt-4 md:mt-0">
+            <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
+            <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
           </div>
         </div>
       </div>
@@ -214,4 +124,4 @@ const FooterVariant1: React.FC = () => {
   );
 };
 
-export default FooterVariant1;
+export default Footer;
