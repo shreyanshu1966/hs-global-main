@@ -340,7 +340,7 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
               className="h-11 md:h-12 px-3 flex items-center justify-center rounded-lg"
               style={{ backgroundColor: "#ff5c01" }}
             >
-              <img src="https://res.cloudinary.com/dpztytsoz/image/upload/v1766858053/hs-global/root/etsy_logo.png" className="w-8 h-8 object-contain" />
+              <img src="/etsy_logo.webp" alt="Etsy" className="w-8 h-8 object-contain" />
             </a>
           )}
 

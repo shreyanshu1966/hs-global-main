@@ -182,7 +182,13 @@ export const CartDrawer: React.FC = () => {
                             key={item.id}
                             className="flex gap-4 p-4 bg-white/60 backdrop-blur-md rounded-xl border border-black/10"
                           >
-                            <div className="w-16 h-16 bg-white rounded-lg overflow-hidden flex-shrink-0 border border-black/10">
+                            <div
+                              className="w-16 h-16 bg-white rounded-lg overflow-hidden flex-shrink-0 border border-black/10 cursor-pointer hover:opacity-80 transition-opacity"
+                              onClick={() => {
+                                handleClose();
+                                navigate(`/productsinfo/${item.id}`);
+                              }}
+                            >
                               <img
                                 src={item.image}
                                 alt={item.name}
@@ -191,7 +197,15 @@ export const CartDrawer: React.FC = () => {
                             </div>
 
                             <div className="flex-1 min-w-0">
-                              <h3 className="font-medium text-black truncate">{item.name}</h3>
+                              <h3
+                                className="font-medium text-black truncate cursor-pointer hover:underline"
+                                onClick={() => {
+                                  handleClose();
+                                  navigate(`/products/${item.id}`);
+                                }}
+                              >
+                                {item.name}
+                              </h3>
                               <p className="text-sm text-gray-700">{formatPrice(convertINRtoUSD(extractPriceInINR(item.price)))}</p>
 
                               <div className="flex items-center gap-2 mt-2">
