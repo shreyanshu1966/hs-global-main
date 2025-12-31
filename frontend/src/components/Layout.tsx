@@ -10,6 +10,7 @@ import { PhoneVerifyModal } from './PhoneVerifyModal';
 import LeadCapturePopup from './LeadCapturePopup';
 import { useLeadCapturePopup } from '../hooks/useLeadCapturePopup';
 import NoiseOverlay from './NoiseOverlay';
+import FloatingWhatsApp from './FloatingWhatsApp';
 
 interface LayoutProps {
     children: React.ReactNode;
@@ -45,6 +46,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 isOpen={isLeadPopupOpen}
                 onClose={closeLeadPopup}
             />
+            <FloatingWhatsApp />
             <NoiseOverlay />
         </div>
     );

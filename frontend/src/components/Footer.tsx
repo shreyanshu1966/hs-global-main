@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useLocation } from "react-router-dom";
 import {
   MapPin,
   Phone,
@@ -14,6 +15,7 @@ import { getRootImageUrl } from "../utils/rootCloudinary";
 
 const Footer: React.FC = () => {
   const { t } = useTranslation();
+  const location = useLocation();
   const currentYear = new Date().getFullYear();
 
   return (
@@ -21,22 +23,24 @@ const Footer: React.FC = () => {
       <div className="container mx-auto px-4">
 
         {/* Giant CTA Section */}
-        <div className="border-b border-white/20 pb-20 mb-20">
-          <div className="flex flex-col xl:flex-row justify-between items-start xl:items-end gap-12">
-            <div className="max-w-4xl">
-              <span className="block text-accent text-sm font-bold tracking-[0.2em] uppercase mb-6">Have an Idea?</span>
-              <h2 className="text-6xl md:text-8xl lg:text-9xl font-serif leading-[0.9] tracking-tight">
-                Let's Build <br />
-                <span className="text-white/40">Excellence.</span>
-              </h2>
-            </div>
+        {location.pathname !== '/contact' && (
+          <div className="border-b border-white/20 pb-20 mb-20">
+            <div className="flex flex-col xl:flex-row justify-between items-start xl:items-end gap-12">
+              <div className="max-w-4xl">
+                <span className="block text-accent text-sm font-bold tracking-[0.2em] uppercase mb-6">Have an Idea?</span>
+                <h2 className="text-6xl md:text-8xl lg:text-9xl font-serif leading-[0.9] tracking-tight">
+                  Let's Build <br />
+                  <span className="text-white/40">Excellence.</span>
+                </h2>
+              </div>
 
-            <a href="/contact" className="group relative inline-flex items-center justify-center w-32 h-32 md:w-40 md:h-40 rounded-full border border-white/30 hover:border-accent hover:bg-accent transition-all duration-500">
-              <span className="sr-only">Contact Us</span>
-              <ArrowUpRight className="w-10 h-10 md:w-12 md:h-12 group-hover:scale-110 group-hover:rotate-45 transition-transform duration-500" />
-            </a>
+              <a href="/contact" className="group relative inline-flex items-center justify-center w-32 h-32 md:w-40 md:h-40 rounded-full border border-white/30 hover:border-accent hover:bg-accent transition-all duration-500">
+                <span className="sr-only">Contact Us</span>
+                <ArrowUpRight className="w-10 h-10 md:w-12 md:h-12 group-hover:scale-110 group-hover:rotate-45 transition-transform duration-500" />
+              </a>
+            </div>
           </div>
-        </div>
+        )}
 
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8 mb-24">
 
