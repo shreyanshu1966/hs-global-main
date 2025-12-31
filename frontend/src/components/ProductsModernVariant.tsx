@@ -44,7 +44,6 @@ export const ProductsModernVariant: React.FC = () => {
     top: 0,
     offsetTop: 0,
   });
-  const [navForceFixed, setNavForceFixed] = useState(false);
 
   const [activeCategory, setActiveCategory] = useState<string>("furniture");
   const [activeSection, setActiveSection] = useState<string>("alaska");
@@ -332,42 +331,7 @@ export const ProductsModernVariant: React.FC = () => {
     return () => observer.disconnect();
   }, [activeCategory, furnitureIds, slabsIds]);
 
-  // Optimized scroll handler with debouncing
-  useEffect(() => {
-    let rafId: number | null = null;
-    let lastScrollY = window.scrollY;
 
-    const onScroll = () => {
-      if (rafId) return; // Skip if already scheduled
-
-      rafId = requestAnimationFrame(() => {
-        const currentScrollY = window.scrollY;
-
-        // Only update if scroll changed significantly (reduces state updates)
-        if (Math.abs(currentScrollY - lastScrollY) > 5) {
-          const hero = heroRef.current;
-          const heroBottomY = hero ? hero.offsetTop + hero.offsetHeight : 0;
-          const shouldBeFixed = currentScrollY >= heroBottomY;
-
-          if (shouldBeFixed !== navForceFixed) {
-            setNavForceFixed(shouldBeFixed);
-          }
-
-          lastScrollY = currentScrollY;
-        }
-
-        rafId = null;
-      });
-    };
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll(); // Initial check
-
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      if (rafId) cancelAnimationFrame(rafId);
-    };
-  }, [navForceFixed]);
 
   useEffect(() => {
     const savedY = sessionStorage.getItem("scrollY");
@@ -646,12 +610,9 @@ export const ProductsModernVariant: React.FC = () => {
         activeSection={activeSection}
         onSectionClick={scrollToSection}
         onMeasure={handleMeasure}
-        forceFixed={navForceFixed}
         activeCategory={activeCategory}
         onCategoryChange={handleCategoryChange}
       />
-
-      {navForceFixed && <div style={{ height: navDims.height }} />}
 
       {/* OPTIMIZED: Show minimal loading indicator for slabs */}
       {activeCategory === 'slabs' && !slabsPreloaded && preloadingRef.current && (

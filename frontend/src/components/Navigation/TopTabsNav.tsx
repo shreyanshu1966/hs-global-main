@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Grid3x3, X } from 'lucide-react';
 import { categories, Subcategory } from '../../data/products';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
@@ -8,7 +8,6 @@ interface TopTabsNavProps {
   activeSection: string;
   onSectionClick: (sectionId: string) => void;
   onMeasure?: (dims: { height: number; top: number; offsetTop: number }) => void;
-  forceFixed?: boolean;
   activeCategory: string;
   onCategoryChange: (categoryId: string) => void;
 }
@@ -17,39 +16,65 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
   activeSection,
   onSectionClick,
   onMeasure,
-  forceFixed,
   activeCategory,
   onCategoryChange,
 }) => {
   const rootRef = useRef<HTMLDivElement | null>(null);
-  const subNavRef = useRef<HTMLDivElement | null>(null);
   const programmaticScrollRef = useRef(false);
   const categoryChangeInProgressRef = useRef(false);
+
+  // State management
   const [selectedChildren, setSelectedChildren] = useState<Record<string, string>>({});
   const [expandedParentId, setExpandedParentId] = useState<string | null>(null);
+  const [showMegaMenu, setShowMegaMenu] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   const { contextSafe } = useGSAP({ scope: rootRef });
 
-  useGSAP(() => {
-    gsap.fromTo(rootRef.current, { opacity: 0, y: 0 }, { opacity: 1, y: 0, duration: 0.25, ease: 'power2.out' });
-  }, []); // Run once on mount
+  // Check if mobile
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
-  const activeCategoryObj = useMemo(() =>
-    categories.find(c => c.id === activeCategory),
+  // Initial animation
+  useGSAP(() => {
+    gsap.fromTo(
+      rootRef.current,
+      { opacity: 0, y: -20 },
+      { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }
+    );
+  }, []);
+
+  // Get active category object
+  const activeCategoryObj = useMemo(
+    () => categories.find(c => c.id === activeCategory),
     [activeCategory]
   );
 
+  // Reset expanded state on category change
   useEffect(() => {
     setExpandedParentId(null);
+    setShowMegaMenu(false);
   }, [activeCategory]);
 
+  // Build first level subcategories
   const firstLevelSubs = useMemo(() => {
-    if (!activeCategoryObj) return [] as Array<{ id: string; name: string; hasChildren: boolean; hasProducts: boolean; children: Subcategory[] }>;
+    if (!activeCategoryObj) return [] as Array<{
+      id: string;
+      name: string;
+      hasChildren: boolean;
+      hasProducts: boolean;
+      children: Subcategory[];
+    }>;
 
     return activeCategoryObj.subcategories.map((s) => {
       const normalizedId = (s.id || '').trim().toLowerCase();
       const isConsolidated = ['marble', 'onyx', 'sandstone', 'travertine'].includes(normalizedId);
       let hasChildren = Array.isArray(s.subcategories) && s.subcategories.length > 0;
+
       if (activeCategory === 'slabs' && isConsolidated) {
         hasChildren = false;
       }
@@ -66,6 +91,7 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
     });
   }, [activeCategoryObj, activeCategory]);
 
+  // Build child to parent mapping
   const childToParent = useMemo(() => {
     const map: Record<string, { parentId: string; parentName: string }> = {};
     const walk = (subs: Subcategory[], parentId?: string, parentName?: string) => {
@@ -84,6 +110,7 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
     return map;
   }, [activeCategoryObj]);
 
+  // Sync selected children with active section
   useEffect(() => {
     const parentInfo = childToParent[activeSection];
     if (parentInfo) {
@@ -94,7 +121,7 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
     }
   }, [activeSection, childToParent]);
 
-  // Report dimensions to parent (ResizeObserver + resize)
+  // Report dimensions to parent
   useEffect(() => {
     const el = rootRef.current;
     if (!el) return;
@@ -118,56 +145,42 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
     };
   }, [onMeasure]);
 
+  // Handle subcategory click
   const handleSubcategoryClick = (subcategory: typeof firstLevelSubs[0]) => {
-    // Set programmatic scroll flag to prevent scroll listener interference
     programmaticScrollRef.current = true;
 
     if (!subcategory.hasChildren) {
       onSectionClick(subcategory.id);
-
-      setTimeout(() => {
-        const el = document.getElementById(subcategory.id);
-        if (el) {
-          const navH = rootRef.current ? rootRef.current.getBoundingClientRect().height : 96;
-          const offset = navH + 16;
-          const targetTop = window.scrollY + el.getBoundingClientRect().top - offset;
-          window.scrollTo({ top: targetTop, behavior: 'smooth' });
-
-          // Clear flag after scroll animation completes
-          setTimeout(() => {
-            programmaticScrollRef.current = false;
-          }, 1000);
-        } else {
-          programmaticScrollRef.current = false;
-        }
-      }, 50);
-
-      // Sync URL hash
-      window.history.replaceState(null, '', `#${subcategory.id}`);
+      scrollToSection(subcategory.id);
       setExpandedParentId(null);
+      setShowMegaMenu(false);
       return;
     }
 
-    programmaticScrollRef.current = false;
-    setExpandedParentId(prev => (prev === subcategory.id ? null : subcategory.id));
+    // On mobile, always show in mega menu
+    if (isMobile) {
+      setExpandedParentId(prev => (prev === subcategory.id ? null : subcategory.id));
+    } else {
+      programmaticScrollRef.current = false;
+      setExpandedParentId(prev => (prev === subcategory.id ? null : subcategory.id));
+    }
   };
 
-  const onLabelClick = (subcategory: typeof firstLevelSubs[0]) => {
-    if (!subcategory.hasChildren) handleSubcategoryClick(subcategory);
-  };
-
+  // Handle child selection
   const handleChildSelection = (parentId: string, childId: string) => {
     programmaticScrollRef.current = true;
-
     setSelectedChildren(prev => ({ ...prev, [parentId]: childId }));
     onSectionClick(childId);
     setExpandedParentId(null);
-
+    setShowMegaMenu(false);
     window.history.replaceState(null, '', `#${childId}`);
+    scrollToSection(childId);
+  };
 
-    // Scroll to the child section
+  // Scroll to section helper
+  const scrollToSection = (sectionId: string) => {
     setTimeout(() => {
-      const el = document.getElementById(childId);
+      const el = document.getElementById(sectionId);
       if (el) {
         const navH = rootRef.current ? rootRef.current.getBoundingClientRect().height : 96;
         const offset = navH + 16;
@@ -183,60 +196,33 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
     }, 50);
   };
 
-  // FIXED: Handle category change with proper navigation
+  // Handle category change
   const handleCategoryChange = (categoryId: string) => {
-    if (categoryChangeInProgressRef.current) return;
-    if (categoryId === activeCategory) return;
+    if (categoryChangeInProgressRef.current || categoryId === activeCategory) return;
 
     categoryChangeInProgressRef.current = true;
     programmaticScrollRef.current = true;
-
-    // Clear scroll restoration flag
     sessionStorage.removeItem('scrollY');
 
-    // Change category
     onCategoryChange(categoryId);
     setExpandedParentId(null);
+    setShowMegaMenu(false);
 
-    // Update URL
     const url = new URL(window.location.href);
     url.search = `?cat=${categoryId}`;
     url.hash = '';
     window.history.replaceState(null, '', url.toString());
 
-    // Wait for React to update, then navigate to first section
     setTimeout(() => {
       const targetCategory = categories.find(c => c.id === categoryId);
       if (targetCategory?.subcategories?.[0]) {
-        const firstSection = targetCategory.subcategories[0];
-        const firstSectionId = firstSection.id;
-
-        // Update active section
+        const firstSectionId = targetCategory.subcategories[0].id;
         onSectionClick(firstSectionId);
+        scrollToSection(firstSectionId);
 
-        // Scroll to first section
         setTimeout(() => {
-          const el = document.getElementById(firstSectionId);
-          if (el) {
-            const navH = rootRef.current ? rootRef.current.getBoundingClientRect().height : 96;
-            const offset = navH + 16;
-            const targetTop = window.scrollY + el.getBoundingClientRect().top - offset;
-
-            window.scrollTo({
-              top: Math.max(0, targetTop),
-              behavior: 'smooth'
-            });
-
-            // Clear flags after animation
-            setTimeout(() => {
-              programmaticScrollRef.current = false;
-              categoryChangeInProgressRef.current = false;
-            }, 1000);
-          } else {
-            programmaticScrollRef.current = false;
-            categoryChangeInProgressRef.current = false;
-          }
-        }, 100);
+          categoryChangeInProgressRef.current = false;
+        }, 1000);
       } else {
         programmaticScrollRef.current = false;
         categoryChangeInProgressRef.current = false;
@@ -244,132 +230,230 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
     }, 50);
   };
 
+  // Get display name for subcategory
   const getDisplayName = (subcategory: typeof firstLevelSubs[0]) => {
     const selectedChildId = selectedChildren[subcategory.id];
     if (selectedChildId && subcategory.hasChildren) {
       const selectedChild = subcategory.children.find(child => child.id === selectedChildId);
       if (selectedChild) {
-        return `${subcategory.name} > ${selectedChild.name}`;
+        return `${subcategory.name} › ${selectedChild.name}`;
       }
     }
     return subcategory.name;
   };
 
+  // GSAP animations (desktop only)
   const handleMouseEnter = contextSafe((e: React.MouseEvent<HTMLButtonElement>) => {
-    gsap.to(e.currentTarget, { scale: 1.02, duration: 0.2 });
+    if (!isMobile) {
+      gsap.to(e.currentTarget, { scale: 1.02, duration: 0.2, ease: 'power2.out' });
+    }
   });
 
   const handleMouseLeave = contextSafe((e: React.MouseEvent<HTMLButtonElement>) => {
-    gsap.to(e.currentTarget, { scale: 1, duration: 0.2 });
+    if (!isMobile) {
+      gsap.to(e.currentTarget, { scale: 1, duration: 0.2, ease: 'power2.out' });
+    }
   });
-
-  const handleMouseDown = contextSafe((e: React.MouseEvent<HTMLButtonElement>) => {
-    gsap.to(e.currentTarget, { scale: 0.98, duration: 0.1 });
-  });
-
-  const handleMouseUp = contextSafe((e: React.MouseEvent<HTMLButtonElement>) => {
-    gsap.to(e.currentTarget, { scale: 1.02, duration: 0.1 });
-  });
-
 
   return (
     <div
       ref={rootRef}
-      className={`${forceFixed ? 'fixed top-0 left-0 right-0' : 'sticky top-0'
-        } z-40 border-b transition-all duration-300 ${forceFixed ? 'bg-white/70 supports-[backdrop-filter]:bg-white/50 backdrop-blur-md border-gray-200/70 shadow-sm' : 'bg-transparent backdrop-blur-0 border-transparent shadow-none'}`}
+      className="sticky top-0 z-50 bg-white/95 backdrop-blur-lg border-b border-gray-200 shadow-sm touch-manipulation"
     >
-      <div className="container mx-auto px-4 md:px-6">
-        {/* Main Categories */}
-        <div className="flex justify-center py-3 md:py-4">
-          <div className="inline-flex items-center gap-1 md:gap-2 bg-white rounded-full p-1 shadow-inner border-2 border-black">
-            {categories.map((category) => (
-              <button
-                key={category.id}
-                onClick={() => handleCategoryChange(category.id)}
-                disabled={categoryChangeInProgressRef.current}
-                className={`px-3 md:px-6 py-2 rounded-full text-sm md:text-base font-semibold tracking-wide transition-all duration-300 disabled:opacity-50 ${activeCategory === category.id
-                    ? 'bg-black text-white border-2 border-black'
-                    : 'text-black hover:text-white hover:bg-black border-2 border-transparent hover:border-black'
-                  }`}
-              >
-                {category.name}
-              </button>
-            ))}
+      <div className="container mx-auto px-3 sm:px-4">
+        {/* Top Bar: Categories + Mega Menu Toggle */}
+        <div className="flex items-center justify-between py-2.5 sm:py-3 md:py-4 gap-2 sm:gap-4">
+          {/* Category Switcher */}
+          <div className="flex items-center gap-1 sm:gap-2">
+            <div className="inline-flex items-center gap-0.5 sm:gap-1 bg-gray-100 rounded-full p-0.5 sm:p-1 shadow-sm">
+              {categories.map((category) => (
+                <button
+                  key={category.id}
+                  onClick={() => handleCategoryChange(category.id)}
+                  disabled={categoryChangeInProgressRef.current}
+                  className={`px-3 sm:px-4 md:px-6 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm md:text-base font-semibold tracking-wide transition-all duration-300 disabled:opacity-50 active:scale-95 ${activeCategory === category.id
+                      ? 'bg-black text-white shadow-md'
+                      : 'text-gray-700 hover:text-black hover:bg-white'
+                    }`}
+                >
+                  {category.name}
+                </button>
+              ))}
+            </div>
           </div>
+
+          {/* Mega Menu Toggle */}
+          <button
+            onClick={() => setShowMegaMenu(!showMegaMenu)}
+            className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-black text-white hover:bg-gray-800 active:scale-95 transition-all duration-300 shadow-md text-xs sm:text-sm"
+            aria-label="Toggle navigation menu"
+          >
+            {showMegaMenu ? (
+              <>
+                <X className="h-4 w-4 sm:h-5 sm:w-5" />
+                <span className="hidden sm:inline font-medium">Close</span>
+              </>
+            ) : (
+              <>
+                <Grid3x3 className="h-4 w-4 sm:h-5 sm:w-5" />
+                <span className="hidden sm:inline font-medium">All</span>
+              </>
+            )}
+          </button>
         </div>
 
-        {/* Subcategories */}
-        {firstLevelSubs.length > 0 && (
-          <div className="pb-3 md:pb-4">
-            <div className="flex items-center gap-3 md:gap-4">
-              <div className="relative flex-1 overflow-hidden">
-                <div
-                  ref={subNavRef}
-                  className="overflow-x-auto overflow-y-visible scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent hover:scrollbar-thumb-gray-400 pb-2"
+        {/* Quick Access Subcategories Bar (Desktop Only) */}
+        {!isMobile && firstLevelSubs.length > 0 && !showMegaMenu && (
+          <div className="pb-3 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent hover:scrollbar-thumb-gray-400">
+            <div className="flex items-center gap-2 min-w-max">
+              {firstLevelSubs.slice(0, 6).map((subcategory) => {
+                const isActive =
+                  activeSection === subcategory.id ||
+                  subcategory.children?.some(child => child.id === activeSection);
+
+                return (
+                  <button
+                    key={subcategory.id}
+                    onClick={() => handleSubcategoryClick(subcategory)}
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
+                    className={`px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 whitespace-nowrap border flex items-center gap-2 ${isActive
+                        ? 'bg-black text-white border-black shadow-md'
+                        : 'text-gray-700 border-gray-300 hover:border-black hover:bg-gray-50'
+                      }`}
+                  >
+                    <span>{getDisplayName(subcategory)}</span>
+                    {subcategory.hasChildren && (
+                      <ChevronDown
+                        className={`h-4 w-4 transition-transform ${expandedParentId === subcategory.id ? 'rotate-180' : ''
+                          }`}
+                      />
+                    )}
+                  </button>
+                );
+              })}
+              {firstLevelSubs.length > 6 && (
+                <button
+                  onClick={() => setShowMegaMenu(true)}
+                  className="px-4 py-2 text-sm font-medium rounded-full text-gray-600 hover:text-black hover:bg-gray-100 transition-all duration-300"
                 >
-                  <div className="flex flex-nowrap gap-2 px-1 md:flex-nowrap md:justify-start">
-                    {firstLevelSubs.map((subcategory) => {
-                      const isActive =
-                        activeSection === subcategory.id ||
-                        subcategory.children?.some(child => child.id === activeSection);
-                      return (
-                        <div key={subcategory.id} className="relative flex-shrink-0">
-                          <button
-                            onClick={() => handleSubcategoryClick(subcategory)}
-                            onMouseEnter={handleMouseEnter}
-                            onMouseLeave={handleMouseLeave}
-                            onMouseDown={handleMouseDown}
-                            onMouseUp={handleMouseUp}
-                            className={`px-3 md:px-4 py-2 md:py-2 text-sm md:text-sm font-medium rounded-full transition-all duration-300 whitespace-nowrap border-2 backdrop-blur flex items-center gap-2 min-w-[8rem] max-w-[12rem] ${isActive
-                                ? 'bg-black text-white border-black shadow-md'
-                                : 'text-black border-black hover:text-white hover:bg-black bg-white'
-                              }`}
-                          >
-                            <span
-                              className="truncate max-w-[200px] md:max-w-none"
-                              onClick={() => onLabelClick(subcategory)}
-                            >
-                              {getDisplayName(subcategory)}
-                            </span>
-                            {subcategory.hasChildren && (
-                              <ChevronDown
-                                className={`h-3 w-3 md:h-4 md:w-4 transition-transform ${expandedParentId === subcategory.id ? 'rotate-180' : ''
-                                  }`}
-                              />
-                            )}
-                          </button>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
+                  +{firstLevelSubs.length - 6} more
+                </button>
+              )}
             </div>
+          </div>
+        )}
+
+        {/* Inline Expanded Children (Desktop) */}
+        {!isMobile && expandedParentId && !showMegaMenu && (
+          <div className="pb-3 border-t border-gray-200 pt-3 animate-fadeIn">
+            {firstLevelSubs
+              .filter(s => s.id === expandedParentId)
+              .map(parent => (
+                <div key={parent.id} className="flex flex-wrap gap-2">
+                  {parent.children.map(child => {
+                    const isActive = activeSection === child.id;
+                    return (
+                      <button
+                        key={child.id}
+                        onClick={() => handleChildSelection(parent.id, child.id)}
+                        className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${isActive
+                            ? 'bg-gray-900 text-white shadow-md'
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                          }`}
+                      >
+                        {child.name}
+                      </button>
+                    );
+                  })}
+                </div>
+              ))}
           </div>
         )}
       </div>
 
-      {/* Inline expanded children */}
-      {expandedParentId && activeCategoryObj && (
-        <div className="border-t border-black/10 bg-white">
-          <div className="container mx-auto px-4 md:px-6 py-2 md:py-3">
-            {firstLevelSubs
-              .filter(s => s.id === expandedParentId)
-              .map(parent => (
-                <div key={parent.id} className="flex flex-wrap gap-2 mt-2">
-                  {parent.children.map(child => (
+      {/* Mega Menu Overlay - Mobile Optimized */}
+      {showMegaMenu && (
+        <div
+          className={`absolute top-full left-0 w-full bg-white border-t border-gray-200 shadow-2xl animate-slideDown z-50 ${isMobile ? 'fixed' : ''
+            }`}
+        >
+          <div className={`container mx-auto px-3 sm:px-4 py-4 sm:py-6 ${isMobile ? 'max-h-[calc(100vh-80px)]' : 'max-h-[70vh]'
+            } overflow-y-auto custom-scrollbar`}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
+              {firstLevelSubs.map((subcategory) => {
+                const isActive =
+                  activeSection === subcategory.id ||
+                  subcategory.children?.some(child => child.id === activeSection);
+                const isExpanded = expandedParentId === subcategory.id;
+
+                return (
+                  <div
+                    key={subcategory.id}
+                    className={`p-3 sm:p-4 rounded-lg border-2 transition-all duration-300 ${isActive
+                        ? 'border-black bg-gray-50'
+                        : 'border-gray-200 hover:border-gray-400 hover:bg-gray-50'
+                      }`}
+                  >
+                    {/* Parent Category */}
                     <button
-                      key={child.id}
-                      onClick={() => handleChildSelection(parent.id, child.id)}
-                      className="px-3 py-1.5 rounded-full border-2 border-black bg-white text-black hover:bg-black hover:text-white text-sm md:text-base min-w-[100px] text-center"
+                      onClick={() => handleSubcategoryClick(subcategory)}
+                      className="w-full text-left active:scale-98 transition-transform"
                     >
-                      {child.name}
+                      <div className="flex items-center justify-between mb-2 sm:mb-3">
+                        <h3 className="text-base sm:text-lg font-bold text-gray-900 pr-2">
+                          {subcategory.name}
+                        </h3>
+                        {subcategory.hasChildren && (
+                          <ChevronDown
+                            className={`h-5 w-5 text-gray-600 transition-transform flex-shrink-0 ${isExpanded ? 'rotate-180' : ''
+                              }`}
+                          />
+                        )}
+                      </div>
                     </button>
-                  ))}
-                </div>
-              ))}
+
+                    {/* Children - Show when expanded on mobile, always show on desktop */}
+                    {subcategory.hasChildren && (isMobile ? isExpanded : true) && (
+                      <div className="space-y-1 pl-2 border-l-2 border-gray-300 animate-fadeIn">
+                        {subcategory.children.map(child => {
+                          const isChildActive = activeSection === child.id;
+                          return (
+                            <button
+                              key={child.id}
+                              onClick={() => handleChildSelection(subcategory.id, child.id)}
+                              className={`w-full text-left px-3 py-2 rounded-md text-xs sm:text-sm font-medium transition-all duration-200 active:scale-98 ${isChildActive
+                                  ? 'bg-black text-white'
+                                  : 'text-gray-700 hover:bg-gray-200 active:bg-gray-300'
+                                }`}
+                            >
+                              {child.name}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    )}
+
+                    {/* Direct Link for No Children */}
+                    {!subcategory.hasChildren && (
+                      <p className="text-xs sm:text-sm text-gray-500">
+                        Tap to view {subcategory.name.toLowerCase()}
+                      </p>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
+      )}
+
+      {/* Mega Menu Backdrop */}
+      {showMegaMenu && (
+        <div
+          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40"
+          onClick={() => setShowMegaMenu(false)}
+        />
       )}
     </div>
   );
