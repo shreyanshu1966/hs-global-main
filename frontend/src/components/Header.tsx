@@ -1,6 +1,6 @@
 import { useState, useEffect, memo, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, User } from "lucide-react";
+import { Menu, X, User, Search } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { useTranslation } from "react-i18next";
@@ -8,6 +8,7 @@ import LocationSelector from "./LocationSelector";
 import { CartIcon } from "./CartIcon";
 import { getRootImageUrl } from "../utils/rootCloudinary";
 import { useAuth } from "../contexts/AuthContext";
+import { SearchModal } from "./SearchModal";
 
 const Header = () => {
   const { t } = useTranslation();
@@ -15,6 +16,7 @@ const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuRendered, setIsMenuRendered] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const location = useLocation();
   const menuRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -147,6 +149,15 @@ const Header = () => {
 
             {/* Right Actions */}
             <div className="hidden lg:flex items-center space-x-4">
+              {/* Search Button */}
+              <button
+                onClick={() => setIsSearchOpen(true)}
+                className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+                aria-label="Search products"
+              >
+                <Search className="w-5 h-5 text-gray-600" />
+              </button>
+
               {/* Location Selector (Integrated) */}
               <div className="relative z-50">
                 <LocationSelector />
@@ -195,6 +206,13 @@ const Header = () => {
                 <LocationSelector />
               </div>
               <CartIcon />
+              <button
+                onClick={() => setIsSearchOpen(true)}
+                className="p-2 rounded-full hover:bg-gray-100 transition-colors z-50"
+                aria-label="Search products"
+              >
+                <Search className="w-5 h-5 text-black" />
+              </button>
               <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="p-2 rounded-full hover:bg-gray-100 transition-colors z-50"
@@ -266,6 +284,9 @@ const Header = () => {
           </div>
         )}
       </header>
+
+      {/* Search Modal */}
+      <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </>
   );
 };
