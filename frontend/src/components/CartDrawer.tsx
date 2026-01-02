@@ -2,13 +2,13 @@ import React, { useEffect, useMemo, useState, useRef } from 'react';
 import { X, Plus, Minus, Trash2, ShoppingBag, MessageCircle } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { useNavigate } from 'react-router-dom';
-import { useLocalization } from '../contexts/LocalizationContext';
+import { useCurrency } from '../contexts/CurrencyContext';
 import { useAuth } from '../contexts/AuthContext';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 
 export const CartDrawer: React.FC = () => {
-  const { formatPrice, getCurrencySymbol, convertPrice, convertINRtoUSD } = useLocalization();
+  const { formatPrice, getCurrencySymbol, convertFromINR } = useCurrency();
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
   const { state, updateQuantity, removeItem, closeCart } = useCart();
@@ -61,21 +61,15 @@ export const CartDrawer: React.FC = () => {
     return isNaN(price) ? 0 : price;
   };
 
-  // 1. Calculate Subtotal in INR (Base)
-  const subtotalINR = useMemo(() => {
+  // Calculate Subtotal (Simplified - Direct INR to User Currency)
+  const subtotal = useMemo(() => {
     return state.items.reduce((sum, item) => {
       const priceInINR = extractPriceInINR(item.price);
-      return sum + priceInINR * item.quantity;
+      const convertedPrice = convertFromINR(priceInINR);
+      return sum + convertedPrice * item.quantity;
     }, 0);
-  }, [state.items]);
+  }, [state.items, convertFromINR]);
 
-  // 2. Convert to USD (Intermediate)
-  const subtotalUSD = useMemo(() => convertINRtoUSD(subtotalINR), [subtotalINR, convertINRtoUSD]);
-
-  // 3. Convert to User's Currency
-  const subtotal = useMemo(() => convertPrice(subtotalUSD), [subtotalUSD, convertPrice]);
-
-  // 4. Total
   const totalAmount = useMemo(() => subtotal, [subtotal]);
 
   const handleClose = () => {
@@ -271,7 +265,7 @@ export const CartDrawer: React.FC = () => {
                               >
                                 {item.name}
                               </h3>
-                              <p className="text-sm text-gray-700">{formatPrice(convertINRtoUSD(extractPriceInINR(item.price)))}</p>
+                              <p className="text-sm text-gray-700">{formatPrice(extractPriceInINR(item.price))}</p>
 
                               <div className="flex items-center gap-2 mt-2">
                                 <button

@@ -7,6 +7,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import InitialUserForm from "./components/InitialUserForm";
 import SmoothScroll from "./components/SmoothScroll";
 import { AuthProvider } from "./contexts/AuthContext";
+import { CurrencyProvider } from "./contexts/CurrencyContext";
 
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -77,40 +78,42 @@ function App() {
   return (
     <HelmetProvider>
       <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-        <AuthProvider>
-          <SmoothScroll>
-            <ScrollToTop />
-            <Layout>
-              {showInitialForm && <InitialUserForm onSubmit={handleFormSubmit} />}
+        <CurrencyProvider>
+          <AuthProvider>
+            <SmoothScroll>
+              <ScrollToTop />
+              <Layout>
+                {showInitialForm && <InitialUserForm onSubmit={handleFormSubmit} />}
 
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/products" element={<Products />} />
-                <Route path="/productsinfo/:id" element={<ProductDetails />} />
-                <Route path="/gallery" element={<Gallery />} />
-                <Route path="/gallery/:id" element={<GalleryDetails />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/services" element={<Services />} />
-                <Route path="/blog" element={<Blogs />} />
-                <Route path="/blog/:slug" element={<BlogDetail />} />
-                <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
-                <Route path="/checkout-success" element={<ProtectedRoute><CheckoutSuccess /></ProtectedRoute>} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/login-otp" element={<LoginOTP />} />
-                <Route path="/signup" element={<Signup />} />
-                <Route path="/forgot-password" element={<ForgotPassword />} />
-                <Route path="/reset-password/:token" element={<ResetPassword />} />
-                <Route path="/verify-email/:token" element={<VerifyEmail />} />
-                <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-                <Route path="/orders/:orderId" element={<ProtectedRoute><OrderDetails /></ProtectedRoute>} />
-                <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
-                <Route path="*" element={<div>404 Not Found</div>} />
-              </Routes>
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/products" element={<Products />} />
+                  <Route path="/productsinfo/:id" element={<ProductDetails />} />
+                  <Route path="/gallery" element={<Gallery />} />
+                  <Route path="/gallery/:id" element={<GalleryDetails />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/services" element={<Services />} />
+                  <Route path="/blog" element={<Blogs />} />
+                  <Route path="/blog/:slug" element={<BlogDetail />} />
+                  <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
+                  <Route path="/checkout-success" element={<ProtectedRoute><CheckoutSuccess /></ProtectedRoute>} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/login-otp" element={<LoginOTP />} />
+                  <Route path="/signup" element={<Signup />} />
+                  <Route path="/forgot-password" element={<ForgotPassword />} />
+                  <Route path="/reset-password/:token" element={<ResetPassword />} />
+                  <Route path="/verify-email/:token" element={<VerifyEmail />} />
+                  <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+                  <Route path="/orders/:orderId" element={<ProtectedRoute><OrderDetails /></ProtectedRoute>} />
+                  <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
+                  <Route path="*" element={<div>404 Not Found</div>} />
+                </Routes>
 
-            </Layout>
-          </SmoothScroll>
-        </AuthProvider>
+              </Layout>
+            </SmoothScroll>
+          </AuthProvider>
+        </CurrencyProvider>
       </BrowserRouter>
     </HelmetProvider>
   );

@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
-import { useLocalization } from './LocalizationContext';
 
 export interface CartItem {
   id: string;

@@ -16,11 +16,11 @@ import {
 } from "../data/products";
 
 import { getFurnitureSpecs, formatFurnitureSpecs } from "../data/furnitureSpecs";
-import { useLocalization } from "../contexts/LocalizationContext";
+import { useCurrency } from "../contexts/CurrencyContext";
 
 const ProductDetails = () => {
   const { id }: { id?: string } = useParams<{ id?: string }>();
-  const { formatPrice, convertINRtoUSD } = useLocalization();
+  const { formatPrice } = useCurrency();
 
 
   const [selectedImage, setSelectedImage] = useState(0);
@@ -99,9 +99,8 @@ const ProductDetails = () => {
     }
 
     // -------------------------------------------
-    // ⭐ FINAL CORRECT PRICING LOGIC (IMPORTANT)
+    // ⭐ SIMPLIFIED PRICING LOGIC
     // -------------------------------------------
-    // NEW — consistent price using INR → USD conversion
     let displayPrice = "Price on Request";
     const isAvailable = resolved?.available !== false;
 
@@ -109,12 +108,9 @@ const ProductDetails = () => {
       displayPrice = "Currently Unavailable";
     }
     else if (resolved?.priceINR) {
-      // Convert INR → USD (or EUR, GBP, whatever)
-      const priceUSD = convertINRtoUSD(resolved.priceINR);
-      displayPrice = formatPrice(priceUSD);
+      // Direct INR → User Currency conversion
+      displayPrice = formatPrice(resolved.priceINR);
     }
-
-    // ❗ DO NOT read furnitureSpecs.priceINR here — already handled in products.ts
 
     const moq = category === "slabs" ? "MOQ: 20 m²" : "";
 

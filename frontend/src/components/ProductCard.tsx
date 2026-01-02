@@ -10,7 +10,7 @@ import { Product } from '../data/products';
 import { AddToCartButton } from './AddToCartButton';
 import { QuantityHandler } from './QuantityHandler';
 import { useCart } from '../contexts/CartContext';
-import { useLocalization } from '../contexts/LocalizationContext';
+import { useCurrency } from '../contexts/CurrencyContext';
 
 import { getFurnitureSpecs } from '../data/furnitureSpecs';
 import { loadImageUrl } from '../data/slabs.loader';
@@ -48,10 +48,10 @@ const getProductVideoUrl = (productName: string, category: string, subcategory: 
 
 export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant, index }) => {
   const { state } = useCart();
-  const { formatPrice, convertINRtoUSD } = useLocalization();
+  const { formatPrice } = useCurrency();
 
   /* ------------------------------------------------------
-     ⭐ PRICING LOGIC (CORRECTED)
+     ⭐ PRICING LOGIC (SIMPLIFIED)
      ------------------------------------------------------ */
 
   const specs = useMemo(() => {
@@ -62,19 +62,17 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
   const displayPrice = useMemo(() => {
     // Case 1: Furniture with price from specs
     if (product.category === 'furniture' && specs?.priceINR) {
-      const usd = convertINRtoUSD(specs.priceINR);
-      return formatPrice(usd);
+      return formatPrice(specs.priceINR);
     }
 
     // Case 2: products.ts priceINR
     if ((product as any).priceINR) {
-      const usd = convertINRtoUSD((product as any).priceINR);
-      return formatPrice(usd);
+      return formatPrice((product as any).priceINR);
     }
 
     // Case 3: slabs or fallback
     return "₹2,499/m²";
-  }, [product, specs, convertINRtoUSD, formatPrice]);
+  }, [product, specs, formatPrice]);
 
   /* ------------------------------------------------------
      Rest of your existing card logic unchanged

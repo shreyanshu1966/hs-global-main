@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState, useRef } from 'react';
 import { useCart } from '../contexts/CartContext';
-import { useLocalization } from '../contexts/LocalizationContext';
+import { useCurrency } from '../contexts/CurrencyContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../contexts/AuthContext';
@@ -17,7 +17,7 @@ declare global {
 
 const Checkout: React.FC = () => {
   const { state, removeItem, updateQuantity, clearCart } = useCart();
-  const { formatPrice, getCurrencySymbol, convertPrice, convertINRtoUSD } = useLocalization();
+  const { formatPrice, getCurrencySymbol, convertFromINR } = useCurrency();
   const { user } = useAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -83,13 +83,14 @@ const Checkout: React.FC = () => {
     document.body.appendChild(script);
   }, []);
 
-  // Price Helpers
+  // Price Helpers (Simplified)
   const extractPriceInINR = (priceString: string): number => {
     const cleaned = priceString.replace(/[^0-9.]/g, '');
     const price = parseFloat(cleaned);
     return isNaN(price) ? 0 : price;
   };
 
+  // Calculate totals in INR (base currency)
   const subtotalINR = useMemo(() => {
     return state.items.reduce((sum, item) => {
       const priceInINR = extractPriceInINR(item.price);
@@ -97,8 +98,8 @@ const Checkout: React.FC = () => {
     }, 0);
   }, [state.items]);
 
-  const subtotalUSD = useMemo(() => convertINRtoUSD(subtotalINR), [subtotalINR, convertINRtoUSD]);
-  const subtotal = useMemo(() => convertPrice(subtotalUSD), [subtotalUSD, convertPrice]);
+  // Convert to user's currency for display
+  const subtotal = useMemo(() => convertFromINR(subtotalINR), [subtotalINR, convertFromINR]);
   const totalAmount = subtotal;
 
   const isEmailValid = useMemo(() => /^(?=.*@).+\..+$/i.test(email.trim()), [email]);
@@ -109,6 +110,18 @@ const Checkout: React.FC = () => {
 
     // Convert total amount to INR for Razorpay (always process in INR)
     const totalInINR = subtotalINR;
+
+    console.log('💰 Payment Debug:', {
+      subtotalINR,
+      totalInINR,
+      willBeSentToPaise: totalInINR * 100,
+      items: state.items.map(item => ({
+        name: item.name,
+        price: item.price,
+        extracted: extractPriceInINR(item.price),
+        quantity: item.quantity
+      }))
+    });
 
     try {
       setIsCreatingOrder(true);
@@ -441,7 +454,7 @@ const Checkout: React.FC = () => {
                     <div className="flex-1 min-w-0 flex flex-col justify-between">
                       <div>
                         <h4 className="text-sm font-semibold text-black truncate">{item.name}</h4>
-                        <p className="text-sm text-gray-500">{formatPrice(convertINRtoUSD(extractPriceInINR(item.price)))}</p>
+                        <p className="text-sm text-gray-500">{formatPrice(extractPriceInINR(item.price))}</p>
                       </div>
                       <div className="flex items-center gap-3">
                         <div className="flex items-center border border-gray-300 rounded-md">
@@ -463,7 +476,7 @@ const Checkout: React.FC = () => {
                     </div>
                     <div className="text-right">
                       <p className="text-sm font-semibold text-black">
-                        {formatPrice(convertPrice(convertINRtoUSD(extractPriceInINR(item.price) * item.quantity)))}
+                        {formatPrice(extractPriceInINR(item.price) * item.quantity)}
                       </p>
                     </div>
                   </div>

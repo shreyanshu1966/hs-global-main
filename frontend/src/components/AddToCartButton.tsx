@@ -3,6 +3,7 @@ import { ShoppingCart, Check, FileText } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { useSlabCustomization } from '../contexts/SlabCustomizationContext';
 import { Product } from '../data/products';
+import { getFurnitureSpecs } from '../data/furnitureSpecs';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 
@@ -31,6 +32,25 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
 
   const { contextSafe } = useGSAP({ scope: buttonRef });
 
+  // Helper to get raw INR price
+  const getRawINRPrice = (): string => {
+    // For furniture, get price from specs
+    if (product.category === 'furniture') {
+      const specs = getFurnitureSpecs(product.name);
+      if (specs?.priceINR) {
+        return specs.priceINR.toString();
+      }
+    }
+
+    // For products with priceINR property
+    if ((product as any).priceINR) {
+      return (product as any).priceINR.toString();
+    }
+
+    // Fallback
+    return '2499';
+  };
+
   // Listen for phone verification completion
   useEffect(() => {
     const handlePhoneVerified = (e: Event) => {
@@ -42,7 +62,7 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
           id: product.id,
           name: product.name,
           image: product.image,
-          price: product.price || '₹2,499',
+          price: getRawINRPrice(), // Store raw INR price
           category: product.category,
           subcategory: product.subcategory,
         });
@@ -77,12 +97,12 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
       return;
     }
 
-    // For furniture: Add to cart directly
+    // For furniture: Add to cart directly with raw INR price
     addItem({
       id: product.id,
       name: product.name,
       image: product.image,
-      price: product.price || '₹2,499',
+      price: getRawINRPrice(), // Store raw INR price
       category: product.category,
       subcategory: product.subcategory,
     });
