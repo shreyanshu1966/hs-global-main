@@ -16,6 +16,8 @@ import Gallery from "./pages/Gallery";
 import GalleryDetails from "./pages/GalleryDetails";
 import Contact from "./pages/Contact";
 import Services from "./pages/Services";
+import Blogs from "./pages/Blogs";
+import BlogDetail from "./pages/BlogDetail";
 import Checkout from "./pages/Checkout";
 import CheckoutSuccess from "./pages/CheckoutSuccess";
 import Login from "./pages/Login";
@@ -90,6 +92,8 @@ function App() {
                 <Route path="/gallery/:id" element={<GalleryDetails />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/services" element={<Services />} />
+                <Route path="/blog" element={<Blogs />} />
+                <Route path="/blog/:slug" element={<BlogDetail />} />
                 <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
                 <Route path="/checkout-success" element={<ProtectedRoute><CheckoutSuccess /></ProtectedRoute>} />
                 <Route path="/login" element={<Login />} />

@@ -28,6 +28,7 @@ const Header = () => {
     { path: "/products", label: t("nav.products") || "Products" },
     { path: "/gallery", label: t("nav.gallery") || "Gallery" },
     { path: "/services", label: t("nav.services") || "Services" },
+    { path: "/blog", label: "Blog" },
     { path: "/contact", label: t("nav.contact") || "Contact" },
   ];
 
