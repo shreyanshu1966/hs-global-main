@@ -157,13 +157,24 @@ const Header = () => {
 
                 {/* User Profile/Login */}
                 {isAuthenticated && user ? (
-                  <Link
-                    to="/profile"
-                    className="flex items-center gap-2 px-4 py-2 rounded-full font-medium transition-all shadow-sm text-sm bg-black text-white hover:bg-gray-800"
-                  >
-                    <User className="w-4 h-4" />
-                    <span className="hidden xl:inline">{user.name.split(' ')[0]}</span>
-                  </Link>
+                  <>
+                    {user.role === 'admin' && (
+                      <Link
+                        to="/admin"
+                        className="flex items-center gap-2 px-4 py-2 rounded-full font-medium transition-all shadow-sm text-sm bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:from-purple-700 hover:to-indigo-700"
+                      >
+                        <span className="hidden xl:inline">Admin</span>
+                        <span className="xl:hidden">⚙️</span>
+                      </Link>
+                    )}
+                    <Link
+                      to="/profile"
+                      className="flex items-center gap-2 px-4 py-2 rounded-full font-medium transition-all shadow-sm text-sm bg-black text-white hover:bg-gray-800"
+                    >
+                      <User className="w-4 h-4" />
+                      <span className="hidden xl:inline">{user.name.split(' ')[0]}</span>
+                    </Link>
+                  </>
                 ) : (
                   <Link
                     to="/login"
@@ -219,6 +230,37 @@ const Header = () => {
                 </div>
               ))}
 
+              {/* Mobile User Links */}
+              <div className="mobile-contact pt-6 border-t border-gray-200 space-y-3" style={{ opacity: 0 }}>
+                {isAuthenticated && user ? (
+                  <>
+                    {user.role === 'admin' && (
+                      <Link
+                        to="/admin"
+                        onClick={() => setIsOpen(false)}
+                        className="block text-xl font-medium text-purple-600 hover:text-purple-700"
+                      >
+                        ⚙️ Admin Dashboard
+                      </Link>
+                    )}
+                    <Link
+                      to="/profile"
+                      onClick={() => setIsOpen(false)}
+                      className="block text-xl font-medium text-black hover:text-gray-600"
+                    >
+                      👤 Profile
+                    </Link>
+                  </>
+                ) : (
+                  <Link
+                    to="/login"
+                    onClick={() => setIsOpen(false)}
+                    className="block text-xl font-medium text-black hover:text-gray-600"
+                  >
+                    👤 Login
+                  </Link>
+                )}
+              </div>
 
             </div>
           </div>

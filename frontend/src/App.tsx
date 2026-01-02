@@ -26,6 +26,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import VerifyEmail from "./pages/VerifyEmail";
 import LoginOTP from "./pages/LoginOTP";
+import Admin from "./pages/Admin";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 
 function App() {
@@ -99,6 +100,7 @@ function App() {
                 <Route path="/verify-email/:token" element={<VerifyEmail />} />
                 <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
                 <Route path="/orders/:orderId" element={<ProtectedRoute><OrderDetails /></ProtectedRoute>} />
+                <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
                 <Route path="*" element={<div>404 Not Found</div>} />
               </Routes>
 
