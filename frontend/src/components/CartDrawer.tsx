@@ -32,6 +32,27 @@ export const CartDrawer: React.FC = () => {
     }
   }, [state.isCartOpen, isRendered]);
 
+  // Lock body scroll when cart is open
+  useEffect(() => {
+    if (state.isCartOpen) {
+      // Store original styles
+      const originalStyle = window.getComputedStyle(document.body).overflow;
+      const originalPaddingRight = window.getComputedStyle(document.body).paddingRight;
+
+      // Get scrollbar width
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+
+      // Apply styles to prevent body scroll
+      document.body.style.overflow = 'hidden';
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+
+      return () => {
+        document.body.style.overflow = originalStyle;
+        document.body.style.paddingRight = originalPaddingRight;
+      };
+    }
+  }, [state.isCartOpen]);
+
   // Helper to extract numeric price from price string (always in INR)
   const extractPriceInINR = (priceString: string): number => {
     // Remove all non-numeric characters except decimal point
@@ -113,6 +134,16 @@ export const CartDrawer: React.FC = () => {
             className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
             onClick={handleClose}
             style={{ opacity: 0 }}
+            onWheel={(e) => {
+              // Prevent all scrolling on backdrop
+              e.preventDefault();
+              e.stopPropagation();
+            }}
+            onTouchMove={(e) => {
+              // Prevent all touch scrolling on backdrop
+              e.preventDefault();
+              e.stopPropagation();
+            }}
           />
 
           {/* Drawer */}
@@ -120,6 +151,20 @@ export const CartDrawer: React.FC = () => {
             ref={drawerRef}
             className="fixed right-0 top-0 h-full w-full max-w-md bg-white/70 backdrop-blur-xl text-black shadow-2xl z-50 flex flex-col border-l border-black/10"
             style={{ transform: 'translateX(100%)' }}
+            onWheel={(e) => {
+              // Prevent scrolling on drawer container (but not on cart body which has its own handler)
+              if (e.target === e.currentTarget) {
+                e.preventDefault();
+                e.stopPropagation();
+              }
+            }}
+            onTouchMove={(e) => {
+              // Prevent touch scrolling on drawer container
+              if (e.target === e.currentTarget) {
+                e.preventDefault();
+                e.stopPropagation();
+              }
+            }}
           >
             {/* Header */}
             <div className="flex items-center justify-between p-6 border-b border-black/10">
@@ -149,7 +194,27 @@ export const CartDrawer: React.FC = () => {
             )}
 
             {/* Body */}
-            <div className="flex-1 p-6 overflow-y-auto custom-scrollbar">
+            <div
+              className="flex-1 p-6 overflow-y-auto custom-scrollbar"
+              onWheel={(e) => {
+                // Stop propagation to prevent background scrolling
+                e.stopPropagation();
+
+                const element = e.currentTarget;
+                const { scrollTop, scrollHeight, clientHeight } = element;
+                const isAtTop = scrollTop === 0;
+                const isAtBottom = scrollTop + clientHeight >= scrollHeight;
+
+                // Prevent default if trying to scroll beyond boundaries
+                if ((isAtTop && e.deltaY < 0) || (isAtBottom && e.deltaY > 0)) {
+                  e.preventDefault();
+                }
+              }}
+              onTouchMove={(e) => {
+                // Also handle touch scrolling on mobile
+                e.stopPropagation();
+              }}
+            >
               {state.items.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full text-center">
                   <div className="w-16 h-16 bg-black rounded-full flex items-center justify-center mb-4 border border-black/10">

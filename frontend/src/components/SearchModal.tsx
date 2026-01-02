@@ -96,6 +96,27 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
         }
     }, [searchResults]);
 
+    // Lock body scroll when modal is open
+    useEffect(() => {
+        if (isOpen) {
+            // Store original styles
+            const originalStyle = window.getComputedStyle(document.body).overflow;
+            const originalPaddingRight = window.getComputedStyle(document.body).paddingRight;
+
+            // Get scrollbar width
+            const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+
+            // Apply styles to prevent body scroll
+            document.body.style.overflow = 'hidden';
+            document.body.style.paddingRight = `${scrollbarWidth}px`;
+
+            return () => {
+                document.body.style.overflow = originalStyle;
+                document.body.style.paddingRight = originalPaddingRight;
+            };
+        }
+    }, [isOpen]);
+
     // Close on escape
     useEffect(() => {
         const handleEscape = (e: KeyboardEvent) => {
@@ -114,13 +135,19 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
             ref={modalRef}
             className="fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm flex items-start justify-center pt-20 px-4"
             onClick={onClose}
+            onWheel={(e) => {
+                // Prevent wheel events on backdrop from propagating
+                if (e.target === e.currentTarget) {
+                    e.preventDefault();
+                }
+            }}
         >
             <div
-                className="modal-content bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[70vh] overflow-hidden"
+                className="modal-content bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[70vh] overflow-hidden flex flex-col"
                 onClick={(e) => e.stopPropagation()}
             >
                 {/* Header */}
-                <div className="flex items-center gap-3 p-4 border-b border-gray-200">
+                <div className="flex items-center gap-3 p-4 border-b border-gray-200 flex-shrink-0">
                     <Search className="w-5 h-5 text-gray-400" />
                     <input
                         ref={inputRef}
@@ -140,7 +167,29 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
                 </div>
 
                 {/* Results */}
-                <div ref={resultsRef} className="overflow-y-auto max-h-[calc(70vh-80px)]">
+                <div
+                    ref={resultsRef}
+                    className="overflow-y-auto flex-1"
+                    style={{ overscrollBehavior: 'contain' }}
+                    onWheel={(e) => {
+                        // Stop propagation to prevent background scrolling
+                        e.stopPropagation();
+
+                        const element = e.currentTarget;
+                        const { scrollTop, scrollHeight, clientHeight } = element;
+                        const isAtTop = scrollTop === 0;
+                        const isAtBottom = scrollTop + clientHeight >= scrollHeight;
+
+                        // Prevent default if trying to scroll beyond boundaries
+                        if ((isAtTop && e.deltaY < 0) || (isAtBottom && e.deltaY > 0)) {
+                            e.preventDefault();
+                        }
+                    }}
+                    onTouchMove={(e) => {
+                        // Also handle touch scrolling on mobile
+                        e.stopPropagation();
+                    }}
+                >
                     {searchQuery.trim() && searchResults.length === 0 && (
                         <div className="p-8 text-center text-gray-500">
                             No products found for "{searchQuery}"

@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { ChevronDown, Grid3x3, X } from 'lucide-react';
+import { ChevronDown, Grid3x3, X, Search } from 'lucide-react';
+import { SearchModal } from '../SearchModal';
 import { categories, Subcategory } from '../../data/products';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
@@ -27,6 +28,7 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
   const [selectedChildren, setSelectedChildren] = useState<Record<string, string>>({});
   const [expandedParentId, setExpandedParentId] = useState<string | null>(null);
   const [showMegaMenu, setShowMegaMenu] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
   const { contextSafe } = useGSAP({ scope: rootRef });
@@ -272,8 +274,8 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
                   onClick={() => handleCategoryChange(category.id)}
                   disabled={categoryChangeInProgressRef.current}
                   className={`px-3 sm:px-4 md:px-6 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm md:text-base font-semibold tracking-wide transition-all duration-300 disabled:opacity-50 active:scale-95 ${activeCategory === category.id
-                      ? 'bg-black text-white shadow-md'
-                      : 'text-gray-700 hover:text-black hover:bg-white'
+                    ? 'bg-black text-white shadow-md'
+                    : 'text-gray-700 hover:text-black hover:bg-white'
                     }`}
                 >
                   {category.name}
@@ -282,24 +284,35 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
             </div>
           </div>
 
-          {/* Mega Menu Toggle */}
-          <button
-            onClick={() => setShowMegaMenu(!showMegaMenu)}
-            className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-black text-white hover:bg-gray-800 active:scale-95 transition-all duration-300 shadow-md text-xs sm:text-sm"
-            aria-label="Toggle navigation menu"
-          >
-            {showMegaMenu ? (
-              <>
-                <X className="h-4 w-4 sm:h-5 sm:w-5" />
-                <span className="hidden sm:inline font-medium">Close</span>
-              </>
-            ) : (
-              <>
-                <Grid3x3 className="h-4 w-4 sm:h-5 sm:w-5" />
-                <span className="hidden sm:inline font-medium">All</span>
-              </>
-            )}
-          </button>
+          {/* Right Actions */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setIsSearchOpen(true)}
+              className="p-2 sm:p-2.5 rounded-full hover:bg-gray-100 active:scale-95 transition-all duration-300"
+              aria-label="Search products"
+            >
+              <Search className="h-5 w-5 text-gray-700" />
+            </button>
+
+            {/* Mega Menu Toggle */}
+            <button
+              onClick={() => setShowMegaMenu(!showMegaMenu)}
+              className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-black text-white hover:bg-gray-800 active:scale-95 transition-all duration-300 shadow-md text-xs sm:text-sm"
+              aria-label="Toggle navigation menu"
+            >
+              {showMegaMenu ? (
+                <>
+                  <X className="h-4 w-4 sm:h-5 sm:w-5" />
+                  <span className="hidden sm:inline font-medium">Close</span>
+                </>
+              ) : (
+                <>
+                  <Grid3x3 className="h-4 w-4 sm:h-5 sm:w-5" />
+                  <span className="hidden sm:inline font-medium">All</span>
+                </>
+              )}
+            </button>
+          </div>
         </div>
 
         {/* Quick Access Subcategories Bar (Desktop Only) */}
@@ -318,8 +331,8 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
                     onMouseEnter={handleMouseEnter}
                     onMouseLeave={handleMouseLeave}
                     className={`px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 whitespace-nowrap border flex items-center gap-2 ${isActive
-                        ? 'bg-black text-white border-black shadow-md'
-                        : 'text-gray-700 border-gray-300 hover:border-black hover:bg-gray-50'
+                      ? 'bg-black text-white border-black shadow-md'
+                      : 'text-gray-700 border-gray-300 hover:border-black hover:bg-gray-50'
                       }`}
                   >
                     <span>{getDisplayName(subcategory)}</span>
@@ -358,8 +371,8 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
                         key={child.id}
                         onClick={() => handleChildSelection(parent.id, child.id)}
                         className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${isActive
-                            ? 'bg-gray-900 text-white shadow-md'
-                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                          ? 'bg-gray-900 text-white shadow-md'
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                           }`}
                       >
                         {child.name}
@@ -391,8 +404,8 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
                   <div
                     key={subcategory.id}
                     className={`p-3 sm:p-4 rounded-lg border-2 transition-all duration-300 ${isActive
-                        ? 'border-black bg-gray-50'
-                        : 'border-gray-200 hover:border-gray-400 hover:bg-gray-50'
+                      ? 'border-black bg-gray-50'
+                      : 'border-gray-200 hover:border-gray-400 hover:bg-gray-50'
                       }`}
                   >
                     {/* Parent Category */}
@@ -423,8 +436,8 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
                               key={child.id}
                               onClick={() => handleChildSelection(subcategory.id, child.id)}
                               className={`w-full text-left px-3 py-2 rounded-md text-xs sm:text-sm font-medium transition-all duration-200 active:scale-98 ${isChildActive
-                                  ? 'bg-black text-white'
-                                  : 'text-gray-700 hover:bg-gray-200 active:bg-gray-300'
+                                ? 'bg-black text-white'
+                                : 'text-gray-700 hover:bg-gray-200 active:bg-gray-300'
                                 }`}
                             >
                               {child.name}
@@ -455,6 +468,8 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
           onClick={() => setShowMegaMenu(false)}
         />
       )}
+
+      <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </div>
   );
 };
