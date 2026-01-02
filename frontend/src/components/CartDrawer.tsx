@@ -201,7 +201,7 @@ export const CartDrawer: React.FC = () => {
                                 className="font-medium text-black truncate cursor-pointer hover:underline"
                                 onClick={() => {
                                   handleClose();
-                                  navigate(`/products/${item.id}`);
+                                  navigate(`/productsinfo/${item.id}`);
                                 }}
                               >
                                 {item.name}
