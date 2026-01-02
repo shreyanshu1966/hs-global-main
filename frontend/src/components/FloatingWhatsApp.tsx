@@ -49,7 +49,7 @@ const FloatingWhatsApp: React.FC = () => {
     return (
         <div
             ref={containerRef}
-            className="fixed bottom-6 right-6 z-40 flex items-end gap-2"
+            className="fixed bottom-20 right-4 sm:bottom-24 sm:right-6 z-40 flex items-end gap-2"
         >
             <div className="relative group">
                 <button

@@ -73,15 +73,15 @@ export const FloatingCartButton: React.FC = () => {
         onMouseDown={handleTap}
         onMouseUp={handleHover}
         style={{ transform: 'scale(0)', opacity: 0 }} // Initial state
-        className="fixed bottom-6 right-6 z-40 bg-black text-white p-4 rounded-full shadow-2xl hover:bg-gray-800 transition-colors border-2 border-white"
+        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 bg-black text-white p-3 sm:p-4 rounded-full shadow-2xl hover:bg-gray-800 transition-colors border-2 border-white"
         aria-label={`Shopping cart with ${totalItems} items`}
       >
         <div className="relative">
-          <ShoppingCart className="w-6 h-6" />
+          <ShoppingCart className="w-5 h-5 sm:w-6 sm:h-6" />
 
           {/* Item count badge */}
           <div
-            className="cart-badge absolute -top-2 -right-2 bg-white text-black text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center shadow-lg border-2 border-black"
+            className="cart-badge absolute -top-2 -right-2 bg-white text-black text-xs font-bold rounded-full w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center shadow-lg border-2 border-black"
           >
             {totalItems > 99 ? '99+' : totalItems}
           </div>

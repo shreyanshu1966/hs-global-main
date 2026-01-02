@@ -13,17 +13,34 @@ import {
     TrendingUp,
     Users,
     Package,
-    Activity,
+    DollarSign,
     Search,
-    Filter,
     Edit2,
     Save,
     X,
     Trash2,
     BarChart3,
     ShoppingCart,
-    UserCog
+    UserCog,
+    LogOut,
+    ChevronLeft,
+    ChevronRight
 } from 'lucide-react';
+import {
+    BarChart,
+    Bar,
+    LineChart,
+    Line,
+    PieChart,
+    Pie,
+    Cell,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    Legend,
+    ResponsiveContainer
+} from 'recharts';
 
 interface Analytics {
     users: {
@@ -80,8 +97,10 @@ interface Order {
     createdAt: string;
 }
 
+const COLORS = ['#10b981', '#f59e0b', '#ef4444', '#3b82f6', '#8b5cf6'];
+
 const Admin = () => {
-    const { user } = useAuth();
+    const { user, logout } = useAuth();
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState<'analytics' | 'orders' | 'users'>('analytics');
     const [loading, setLoading] = useState(true);
@@ -175,6 +194,11 @@ const Admin = () => {
         }
     };
 
+    const handleLogout = () => {
+        logout();
+        navigate('/');
+    };
+
     const formatCurrency = (amount: number, currency: string = 'INR') => {
         return new Intl.NumberFormat('en-IN', {
             style: 'currency',
@@ -198,199 +222,224 @@ const Admin = () => {
         return months[month - 1];
     };
 
+    // Prepare chart data
+    const prepareRevenueChartData = () => {
+        if (!analytics) return [];
+        return analytics.revenue.monthly.map(month => ({
+            name: `${getMonthName(month._id.month)} ${month._id.year}`,
+            revenue: month.revenue / 100,
+            orders: month.count
+        }));
+    };
+
+    const prepareOrderStatusData = () => {
+        if (!analytics) return [];
+        return [
+            { name: 'Paid', value: analytics.orders.paid },
+            { name: 'Pending', value: analytics.orders.pending },
+            { name: 'Failed', value: analytics.orders.failed }
+        ];
+    };
+
+    const prepareDeliveryStatusData = () => {
+        if (!analytics) return [];
+        return analytics.orders.deliveryStatus.map(status => ({
+            name: status._id.charAt(0).toUpperCase() + status._id.slice(1),
+            value: status.count
+        }));
+    };
+
     if (loading && !analytics && users.length === 0 && orders.length === 0) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 flex items-center justify-center">
+            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
                 <div className="text-center">
-                    <div className="w-16 h-16 border-4 border-white/30 border-t-white rounded-full animate-spin mx-auto mb-4"></div>
-                    <p className="text-white text-xl font-semibold">Loading admin dashboard...</p>
+                    <div className="w-16 h-16 border-4 border-gray-200 border-t-blue-600 rounded-full animate-spin mx-auto mb-4"></div>
+                    <p className="text-gray-600 text-lg font-medium">Loading admin dashboard...</p>
                 </div>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 py-8 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-7xl mx-auto">
-                {/* Header */}
-                <div className="text-center mb-8">
-                    <h1 className="text-5xl font-black text-white mb-2 tracking-tight">Admin Dashboard</h1>
-                    <p className="text-xl text-white/90 font-medium">Manage your platform</p>
+        <div className="min-h-screen bg-gray-50">
+            {/* Top Navigation Bar */}
+            <div className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex items-center justify-between h-16">
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                                <BarChart3 className="w-6 h-6 text-white" />
+                            </div>
+                            <div>
+                                <h1 className="text-xl font-bold text-gray-900">Admin Dashboard</h1>
+                                <p className="text-xs text-gray-500">Manage your platform</p>
+                            </div>
+                        </div>
+                        <button
+                            onClick={handleLogout}
+                            className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                        >
+                            <LogOut className="w-4 h-4" />
+                            <span className="text-sm font-medium">Logout</span>
+                        </button>
+                    </div>
                 </div>
+            </div>
 
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 {/* Tabs */}
-                <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-2 mb-8 border border-white/20 shadow-2xl">
-                    <div className="grid grid-cols-3 gap-2">
+                <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-1 mb-6">
+                    <div className="grid grid-cols-3 gap-1">
                         <button
                             onClick={() => setActiveTab('analytics')}
-                            className={`flex items-center justify-center gap-3 px-6 py-4 rounded-xl font-bold text-lg transition-all duration-300 ${activeTab === 'analytics'
-                                    ? 'bg-white text-indigo-600 shadow-xl scale-105'
-                                    : 'text-white/80 hover:text-white hover:bg-white/10'
+                            className={`flex items-center justify-center gap-2 px-4 py-3 rounded-md font-medium text-sm transition-all ${activeTab === 'analytics'
+                                    ? 'bg-blue-600 text-white shadow-sm'
+                                    : 'text-gray-600 hover:bg-gray-50'
                                 }`}
                         >
-                            <BarChart3 className="w-6 h-6" />
-                            <span className="hidden sm:inline">Analytics</span>
+                            <BarChart3 className="w-4 h-4" />
+                            <span>Analytics</span>
                         </button>
                         <button
                             onClick={() => setActiveTab('orders')}
-                            className={`flex items-center justify-center gap-3 px-6 py-4 rounded-xl font-bold text-lg transition-all duration-300 ${activeTab === 'orders'
-                                    ? 'bg-white text-indigo-600 shadow-xl scale-105'
-                                    : 'text-white/80 hover:text-white hover:bg-white/10'
+                            className={`flex items-center justify-center gap-2 px-4 py-3 rounded-md font-medium text-sm transition-all ${activeTab === 'orders'
+                                    ? 'bg-blue-600 text-white shadow-sm'
+                                    : 'text-gray-600 hover:bg-gray-50'
                                 }`}
                         >
-                            <ShoppingCart className="w-6 h-6" />
-                            <span className="hidden sm:inline">Orders</span>
+                            <ShoppingCart className="w-4 h-4" />
+                            <span>Orders</span>
                         </button>
                         <button
                             onClick={() => setActiveTab('users')}
-                            className={`flex items-center justify-center gap-3 px-6 py-4 rounded-xl font-bold text-lg transition-all duration-300 ${activeTab === 'users'
-                                    ? 'bg-white text-indigo-600 shadow-xl scale-105'
-                                    : 'text-white/80 hover:text-white hover:bg-white/10'
+                            className={`flex items-center justify-center gap-2 px-4 py-3 rounded-md font-medium text-sm transition-all ${activeTab === 'users'
+                                    ? 'bg-blue-600 text-white shadow-sm'
+                                    : 'text-gray-600 hover:bg-gray-50'
                                 }`}
                         >
-                            <UserCog className="w-6 h-6" />
-                            <span className="hidden sm:inline">Users</span>
+                            <UserCog className="w-4 h-4" />
+                            <span>Users</span>
                         </button>
                     </div>
                 </div>
 
                 {/* Analytics Tab */}
                 {activeTab === 'analytics' && analytics && (
-                    <div className="space-y-8 animate-fade-in">
+                    <div className="space-y-6">
                         {/* Stats Grid */}
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                             {/* Revenue Card */}
-                            <div className="bg-white rounded-2xl p-6 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:-translate-y-2 border-t-4 border-pink-500">
+                            <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
                                 <div className="flex items-center justify-between mb-4">
-                                    <div className="p-3 bg-gradient-to-br from-pink-500 to-rose-500 rounded-xl shadow-lg">
-                                        <TrendingUp className="w-8 h-8 text-white" />
+                                    <div className="p-3 bg-green-100 rounded-lg">
+                                        <DollarSign className="w-6 h-6 text-green-600" />
                                     </div>
                                 </div>
-                                <h3 className="text-sm font-bold text-gray-600 uppercase tracking-wider mb-2">Total Revenue</h3>
-                                <p className="text-3xl font-black text-gray-900">{formatCurrency(analytics.revenue.total)}</p>
+                                <h3 className="text-sm font-medium text-gray-600 mb-1">Total Revenue</h3>
+                                <p className="text-2xl font-bold text-gray-900">{formatCurrency(analytics.revenue.total)}</p>
                             </div>
 
                             {/* Users Card */}
-                            <div className="bg-white rounded-2xl p-6 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:-translate-y-2 border-t-4 border-blue-500">
+                            <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
                                 <div className="flex items-center justify-between mb-4">
-                                    <div className="p-3 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl shadow-lg">
-                                        <Users className="w-8 h-8 text-white" />
+                                    <div className="p-3 bg-blue-100 rounded-lg">
+                                        <Users className="w-6 h-6 text-blue-600" />
                                     </div>
                                 </div>
-                                <h3 className="text-sm font-bold text-gray-600 uppercase tracking-wider mb-2">Total Users</h3>
-                                <p className="text-3xl font-black text-gray-900">{analytics.users.total}</p>
-                                <p className="text-sm text-gray-600 mt-2">{analytics.users.verified} verified</p>
+                                <h3 className="text-sm font-medium text-gray-600 mb-1">Total Users</h3>
+                                <p className="text-2xl font-bold text-gray-900">{analytics.users.total}</p>
+                                <p className="text-xs text-gray-500 mt-1">{analytics.users.verified} verified</p>
                             </div>
 
                             {/* Orders Card */}
-                            <div className="bg-white rounded-2xl p-6 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:-translate-y-2 border-t-4 border-green-500">
+                            <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
                                 <div className="flex items-center justify-between mb-4">
-                                    <div className="p-3 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl shadow-lg">
-                                        <Package className="w-8 h-8 text-white" />
+                                    <div className="p-3 bg-purple-100 rounded-lg">
+                                        <Package className="w-6 h-6 text-purple-600" />
                                     </div>
                                 </div>
-                                <h3 className="text-sm font-bold text-gray-600 uppercase tracking-wider mb-2">Total Orders</h3>
-                                <p className="text-3xl font-black text-gray-900">{analytics.orders.total}</p>
-                                <p className="text-sm text-gray-600 mt-2">{analytics.orders.paid} paid</p>
+                                <h3 className="text-sm font-medium text-gray-600 mb-1">Total Orders</h3>
+                                <p className="text-2xl font-bold text-gray-900">{analytics.orders.total}</p>
+                                <p className="text-xs text-gray-500 mt-1">{analytics.orders.paid} paid</p>
                             </div>
 
                             {/* Recent Activity Card */}
-                            <div className="bg-white rounded-2xl p-6 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:-translate-y-2 border-t-4 border-orange-500">
+                            <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
                                 <div className="flex items-center justify-between mb-4">
-                                    <div className="p-3 bg-gradient-to-br from-orange-500 to-amber-500 rounded-xl shadow-lg">
-                                        <Activity className="w-8 h-8 text-white" />
+                                    <div className="p-3 bg-orange-100 rounded-lg">
+                                        <TrendingUp className="w-6 h-6 text-orange-600" />
                                     </div>
                                 </div>
-                                <h3 className="text-sm font-bold text-gray-600 uppercase tracking-wider mb-2">Recent Activity</h3>
-                                <p className="text-3xl font-black text-gray-900">{analytics.orders.recent}</p>
-                                <p className="text-sm text-gray-600 mt-2">orders in last 7 days</p>
+                                <h3 className="text-sm font-medium text-gray-600 mb-1">Recent Orders</h3>
+                                <p className="text-2xl font-bold text-gray-900">{analytics.orders.recent}</p>
+                                <p className="text-xs text-gray-500 mt-1">Last 7 days</p>
                             </div>
                         </div>
 
                         {/* Charts Grid */}
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                            {/* Order Status Distribution */}
-                            <div className="bg-white rounded-2xl p-8 shadow-2xl">
-                                <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-                                    <div className="w-1 h-8 bg-gradient-to-b from-indigo-600 to-purple-600 rounded-full"></div>
-                                    Order Status Distribution
-                                </h3>
-                                <div className="space-y-4">
-                                    <div className="space-y-2">
-                                        <div className="flex justify-between text-sm font-semibold">
-                                            <span className="text-gray-700">Paid</span>
-                                            <span className="text-gray-900">{analytics.orders.paid}</span>
-                                        </div>
-                                        <div className="h-4 bg-gray-200 rounded-full overflow-hidden">
-                                            <div
-                                                className="h-full bg-gradient-to-r from-green-500 to-emerald-500 rounded-full transition-all duration-1000"
-                                                style={{ width: `${(analytics.orders.paid / analytics.orders.total) * 100}%` }}
-                                            ></div>
-                                        </div>
-                                    </div>
-                                    <div className="space-y-2">
-                                        <div className="flex justify-between text-sm font-semibold">
-                                            <span className="text-gray-700">Pending</span>
-                                            <span className="text-gray-900">{analytics.orders.pending}</span>
-                                        </div>
-                                        <div className="h-4 bg-gray-200 rounded-full overflow-hidden">
-                                            <div
-                                                className="h-full bg-gradient-to-r from-orange-500 to-amber-500 rounded-full transition-all duration-1000"
-                                                style={{ width: `${(analytics.orders.pending / analytics.orders.total) * 100}%` }}
-                                            ></div>
-                                        </div>
-                                    </div>
-                                    <div className="space-y-2">
-                                        <div className="flex justify-between text-sm font-semibold">
-                                            <span className="text-gray-700">Failed</span>
-                                            <span className="text-gray-900">{analytics.orders.failed}</span>
-                                        </div>
-                                        <div className="h-4 bg-gray-200 rounded-full overflow-hidden">
-                                            <div
-                                                className="h-full bg-gradient-to-r from-pink-500 to-rose-500 rounded-full transition-all duration-1000"
-                                                style={{ width: `${(analytics.orders.failed / analytics.orders.total) * 100}%` }}
-                                            ></div>
-                                        </div>
-                                    </div>
-                                </div>
+                            {/* Revenue Chart */}
+                            <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+                                <h3 className="text-lg font-semibold text-gray-900 mb-4">Monthly Revenue</h3>
+                                <ResponsiveContainer width="100%" height={300}>
+                                    <BarChart data={prepareRevenueChartData()}>
+                                        <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                                        <XAxis dataKey="name" tick={{ fontSize: 12 }} stroke="#6b7280" />
+                                        <YAxis tick={{ fontSize: 12 }} stroke="#6b7280" />
+                                        <Tooltip
+                                            contentStyle={{
+                                                backgroundColor: 'white',
+                                                border: '1px solid #e5e7eb',
+                                                borderRadius: '8px',
+                                                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                                            }}
+                                        />
+                                        <Legend />
+                                        <Bar dataKey="revenue" fill="#3b82f6" radius={[8, 8, 0, 0]} name="Revenue (₹)" />
+                                    </BarChart>
+                                </ResponsiveContainer>
                             </div>
 
-                            {/* Monthly Revenue */}
-                            <div className="bg-white rounded-2xl p-8 shadow-2xl">
-                                <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-                                    <div className="w-1 h-8 bg-gradient-to-b from-indigo-600 to-purple-600 rounded-full"></div>
-                                    Monthly Revenue
-                                </h3>
-                                <div className="flex items-end justify-between h-48 gap-2">
-                                    {analytics.revenue.monthly.map((month) => (
-                                        <div key={`${month._id.year}-${month._id.month}`} className="flex-1 flex flex-col items-center gap-2">
-                                            <div className="w-full bg-gray-200 rounded-t-lg overflow-hidden flex items-end" style={{ height: '160px' }}>
-                                                <div
-                                                    className="w-full bg-gradient-to-t from-indigo-600 to-purple-600 rounded-t-lg transition-all duration-1000 hover:from-indigo-500 hover:to-purple-500"
-                                                    style={{
-                                                        height: `${(month.revenue / Math.max(...analytics.revenue.monthly.map(m => m.revenue))) * 100}%`,
-                                                        minHeight: '20px'
-                                                    }}
-                                                ></div>
-                                            </div>
-                                            <span className="text-xs font-bold text-gray-600">{getMonthName(month._id.month)}</span>
-                                        </div>
-                                    ))}
-                                </div>
+                            {/* Order Status Distribution */}
+                            <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+                                <h3 className="text-lg font-semibold text-gray-900 mb-4">Order Status Distribution</h3>
+                                <ResponsiveContainer width="100%" height={300}>
+                                    <PieChart>
+                                        <Pie
+                                            data={prepareOrderStatusData()}
+                                            cx="50%"
+                                            cy="50%"
+                                            labelLine={false}
+                                            label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                                            outerRadius={100}
+                                            fill="#8884d8"
+                                            dataKey="value"
+                                        >
+                                            {prepareOrderStatusData().map((entry, index) => (
+                                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                            ))}
+                                        </Pie>
+                                        <Tooltip
+                                            contentStyle={{
+                                                backgroundColor: 'white',
+                                                border: '1px solid #e5e7eb',
+                                                borderRadius: '8px',
+                                                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                                            }}
+                                        />
+                                    </PieChart>
+                                </ResponsiveContainer>
                             </div>
                         </div>
 
                         {/* Delivery Status */}
-                        <div className="bg-white rounded-2xl p-8 shadow-2xl">
-                            <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-                                <div className="w-1 h-8 bg-gradient-to-b from-indigo-600 to-purple-600 rounded-full"></div>
-                                Delivery Status
-                            </h3>
+                        <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+                            <h3 className="text-lg font-semibold text-gray-900 mb-4">Delivery Status</h3>
                             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                                {analytics.orders.deliveryStatus.map((status) => (
-                                    <div key={status._id} className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-4 text-center hover:shadow-lg transition-all duration-300">
-                                        <p className="text-3xl font-black text-indigo-600 mb-2">{status.count}</p>
-                                        <p className="text-sm font-bold text-gray-700 capitalize">{status._id}</p>
+                                {analytics.orders.deliveryStatus.map((status, index) => (
+                                    <div key={status._id} className="bg-gray-50 rounded-lg p-4 text-center border border-gray-200">
+                                        <p className="text-2xl font-bold text-gray-900 mb-1">{status.count}</p>
+                                        <p className="text-sm font-medium text-gray-600 capitalize">{status._id}</p>
                                     </div>
                                 ))}
                             </div>
@@ -400,12 +449,12 @@ const Admin = () => {
 
                 {/* Orders Tab */}
                 {activeTab === 'orders' && (
-                    <div className="space-y-6 animate-fade-in">
+                    <div className="space-y-6">
                         {/* Filters */}
-                        <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 shadow-2xl">
+                        <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <div className="relative">
-                                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                                     <input
                                         type="text"
                                         placeholder="Search orders..."
@@ -414,7 +463,7 @@ const Admin = () => {
                                             setOrdersSearch(e.target.value);
                                             setOrdersPage(1);
                                         }}
-                                        className="w-full pl-12 pr-4 py-3 bg-white rounded-xl border-2 border-transparent focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20 transition-all duration-300 font-medium"
+                                        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     />
                                 </div>
                                 <select
@@ -423,7 +472,7 @@ const Admin = () => {
                                         setOrdersStatusFilter(e.target.value);
                                         setOrdersPage(1);
                                     }}
-                                    className="px-4 py-3 bg-white rounded-xl border-2 border-transparent focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20 transition-all duration-300 font-medium"
+                                    className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                 >
                                     <option value="">All Payment Status</option>
                                     <option value="created">Created</option>
@@ -436,7 +485,7 @@ const Admin = () => {
                                         setOrdersDeliveryFilter(e.target.value);
                                         setOrdersPage(1);
                                     }}
-                                    className="px-4 py-3 bg-white rounded-xl border-2 border-transparent focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20 transition-all duration-300 font-medium"
+                                    className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                 >
                                     <option value="">All Delivery Status</option>
                                     <option value="pending">Pending</option>
@@ -449,37 +498,37 @@ const Admin = () => {
                         </div>
 
                         {/* Orders Table */}
-                        <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
+                        <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
                             <div className="overflow-x-auto">
                                 <table className="w-full">
-                                    <thead className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
+                                    <thead className="bg-gray-50 border-b border-gray-200">
                                         <tr>
-                                            <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">Order ID</th>
-                                            <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">Customer</th>
-                                            <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">Amount</th>
-                                            <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">Payment</th>
-                                            <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">Delivery</th>
-                                            <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">Date</th>
-                                            <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">Actions</th>
+                                            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Order ID</th>
+                                            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Customer</th>
+                                            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Amount</th>
+                                            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Payment</th>
+                                            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Delivery</th>
+                                            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Date</th>
+                                            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y divide-gray-200">
-                                        {orders.map((order, index) => (
-                                            <tr key={order._id} className={`${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'} hover:bg-indigo-50 transition-colors duration-200`}>
+                                        {orders.map((order) => (
+                                            <tr key={order._id} className="hover:bg-gray-50 transition-colors">
                                                 <td className="px-6 py-4 whitespace-nowrap">
-                                                    <span className="px-3 py-1 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs font-mono font-bold rounded-lg">
+                                                    <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-mono font-semibold rounded">
                                                         {order.orderId}
                                                     </span>
                                                 </td>
                                                 <td className="px-6 py-4">
-                                                    <div className="text-sm font-bold text-gray-900">{order.customer?.name || 'N/A'}</div>
-                                                    <div className="text-sm text-gray-600">{order.customer?.email || 'N/A'}</div>
+                                                    <div className="text-sm font-medium text-gray-900">{order.customer?.name || 'N/A'}</div>
+                                                    <div className="text-xs text-gray-500">{order.customer?.email || 'N/A'}</div>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
-                                                    <span className="text-lg font-black text-gray-900">{formatCurrency(order.amount, order.currency)}</span>
+                                                    <span className="text-sm font-semibold text-gray-900">{formatCurrency(order.amount, order.currency)}</span>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
-                                                    <span className={`px-3 py-1 rounded-full text-xs font-bold ${order.status === 'paid' ? 'bg-green-100 text-green-800' :
+                                                    <span className={`px-2 py-1 rounded-full text-xs font-semibold ${order.status === 'paid' ? 'bg-green-100 text-green-800' :
                                                             order.status === 'failed' ? 'bg-red-100 text-red-800' :
                                                                 'bg-yellow-100 text-yellow-800'
                                                         }`}>
@@ -499,7 +548,7 @@ const Admin = () => {
                                                                     }
                                                                 })
                                                             }
-                                                            className="px-3 py-1 border-2 border-indigo-500 rounded-lg text-sm font-semibold focus:ring-4 focus:ring-indigo-500/20"
+                                                            className="px-2 py-1 border border-blue-500 rounded text-sm focus:ring-2 focus:ring-blue-500"
                                                         >
                                                             <option value="pending">Pending</option>
                                                             <option value="processing">Processing</option>
@@ -508,7 +557,7 @@ const Admin = () => {
                                                             <option value="cancelled">Cancelled</option>
                                                         </select>
                                                     ) : (
-                                                        <span className={`px-3 py-1 rounded-full text-xs font-bold ${order.deliveryStatus === 'delivered' ? 'bg-green-100 text-green-800' :
+                                                        <span className={`px-2 py-1 rounded-full text-xs font-semibold ${order.deliveryStatus === 'delivered' ? 'bg-green-100 text-green-800' :
                                                                 order.deliveryStatus === 'shipped' ? 'bg-blue-100 text-blue-800' :
                                                                     order.deliveryStatus === 'processing' ? 'bg-yellow-100 text-yellow-800' :
                                                                         order.deliveryStatus === 'cancelled' ? 'bg-red-100 text-red-800' :
@@ -526,7 +575,7 @@ const Admin = () => {
                                                         <div className="flex gap-2">
                                                             <button
                                                                 onClick={() => handleUpdateOrderStatus(order._id)}
-                                                                className="p-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors duration-200"
+                                                                className="p-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors"
                                                             >
                                                                 <Save className="w-4 h-4" />
                                                             </button>
@@ -535,7 +584,7 @@ const Admin = () => {
                                                                     setEditingOrder(null);
                                                                     setOrderFormData({});
                                                                 }}
-                                                                className="p-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg transition-colors duration-200"
+                                                                className="p-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg transition-colors"
                                                             >
                                                                 <X className="w-4 h-4" />
                                                             </button>
@@ -552,7 +601,7 @@ const Admin = () => {
                                                                     }
                                                                 });
                                                             }}
-                                                            className="p-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg transition-colors duration-200"
+                                                            className="p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
                                                         >
                                                             <Edit2 className="w-4 h-4" />
                                                         </button>
@@ -570,19 +619,21 @@ const Admin = () => {
                                     <button
                                         onClick={() => setOrdersPage(ordersPage - 1)}
                                         disabled={ordersPage === 1}
-                                        className="px-6 py-2 bg-indigo-600 text-white rounded-lg font-bold hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+                                        className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                                     >
+                                        <ChevronLeft className="w-4 h-4" />
                                         Previous
                                     </button>
-                                    <span className="text-sm font-bold text-gray-700">
+                                    <span className="text-sm font-medium text-gray-700">
                                         Page {ordersPage} of {ordersPagination.pages}
                                     </span>
                                     <button
                                         onClick={() => setOrdersPage(ordersPage + 1)}
                                         disabled={ordersPage === ordersPagination.pages}
-                                        className="px-6 py-2 bg-indigo-600 text-white rounded-lg font-bold hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+                                        className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                                     >
                                         Next
+                                        <ChevronRight className="w-4 h-4" />
                                     </button>
                                 </div>
                             )}
@@ -592,12 +643,12 @@ const Admin = () => {
 
                 {/* Users Tab */}
                 {activeTab === 'users' && (
-                    <div className="space-y-6 animate-fade-in">
+                    <div className="space-y-6">
                         {/* Filters */}
-                        <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 shadow-2xl">
+                        <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="relative">
-                                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                                     <input
                                         type="text"
                                         placeholder="Search users..."
@@ -606,7 +657,7 @@ const Admin = () => {
                                             setUsersSearch(e.target.value);
                                             setUsersPage(1);
                                         }}
-                                        className="w-full pl-12 pr-4 py-3 bg-white rounded-xl border-2 border-transparent focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20 transition-all duration-300 font-medium"
+                                        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     />
                                 </div>
                                 <select
@@ -615,7 +666,7 @@ const Admin = () => {
                                         setUsersRoleFilter(e.target.value);
                                         setUsersPage(1);
                                     }}
-                                    className="px-4 py-3 bg-white rounded-xl border-2 border-transparent focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20 transition-all duration-300 font-medium"
+                                    className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                 >
                                     <option value="">All Roles</option>
                                     <option value="user">User</option>
@@ -625,26 +676,26 @@ const Admin = () => {
                         </div>
 
                         {/* Users Table */}
-                        <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
+                        <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
                             <div className="overflow-x-auto">
                                 <table className="w-full">
-                                    <thead className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
+                                    <thead className="bg-gray-50 border-b border-gray-200">
                                         <tr>
-                                            <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">Name</th>
-                                            <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">Email</th>
-                                            <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">Phone</th>
-                                            <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">Role</th>
-                                            <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">Verified</th>
-                                            <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">Orders</th>
-                                            <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">Joined</th>
-                                            <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">Actions</th>
+                                            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Name</th>
+                                            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Email</th>
+                                            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Phone</th>
+                                            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Role</th>
+                                            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Verified</th>
+                                            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Orders</th>
+                                            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Joined</th>
+                                            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y divide-gray-200">
-                                        {users.map((userItem, index) => (
-                                            <tr key={userItem._id} className={`${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'} hover:bg-indigo-50 transition-colors duration-200`}>
+                                        {users.map((userItem) => (
+                                            <tr key={userItem._id} className="hover:bg-gray-50 transition-colors">
                                                 <td className="px-6 py-4 whitespace-nowrap">
-                                                    <div className="text-sm font-bold text-gray-900">{userItem.name}</div>
+                                                    <div className="text-sm font-medium text-gray-900">{userItem.name}</div>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <div className="text-sm text-gray-600">{userItem.email}</div>
@@ -657,7 +708,7 @@ const Admin = () => {
                                                         value={userItem.role}
                                                         onChange={(e) => handleUpdateUserRole(userItem._id, e.target.value)}
                                                         disabled={userItem._id === user?.id}
-                                                        className="px-3 py-1 border-2 border-indigo-500 rounded-lg text-sm font-semibold focus:ring-4 focus:ring-indigo-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                                                        className="px-2 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
                                                     >
                                                         <option value="user">User</option>
                                                         <option value="admin">Admin</option>
@@ -665,13 +716,13 @@ const Admin = () => {
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     {userItem.emailVerified ? (
-                                                        <span className="text-green-600 font-bold text-sm">✓ Verified</span>
+                                                        <span className="text-green-600 font-semibold text-sm">✓ Verified</span>
                                                     ) : (
-                                                        <span className="text-red-600 font-bold text-sm">✗ Not Verified</span>
+                                                        <span className="text-red-600 font-semibold text-sm">✗ Not Verified</span>
                                                     )}
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
-                                                    <span className="text-sm font-bold text-gray-900">{userItem.orders?.length || 0}</span>
+                                                    <span className="text-sm font-medium text-gray-900">{userItem.orders?.length || 0}</span>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                                                     {formatDate(userItem.createdAt)}
@@ -680,7 +731,7 @@ const Admin = () => {
                                                     <button
                                                         onClick={() => handleDeleteUser(userItem._id)}
                                                         disabled={userItem._id === user?.id}
-                                                        className="p-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                                                        className="p-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                                     >
                                                         <Trash2 className="w-4 h-4" />
                                                     </button>
@@ -697,19 +748,21 @@ const Admin = () => {
                                     <button
                                         onClick={() => setUsersPage(usersPage - 1)}
                                         disabled={usersPage === 1}
-                                        className="px-6 py-2 bg-indigo-600 text-white rounded-lg font-bold hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+                                        className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                                     >
+                                        <ChevronLeft className="w-4 h-4" />
                                         Previous
                                     </button>
-                                    <span className="text-sm font-bold text-gray-700">
+                                    <span className="text-sm font-medium text-gray-700">
                                         Page {usersPage} of {usersPagination.pages}
                                     </span>
                                     <button
                                         onClick={() => setUsersPage(usersPage + 1)}
                                         disabled={usersPage === usersPagination.pages}
-                                        className="px-6 py-2 bg-indigo-600 text-white rounded-lg font-bold hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+                                        className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                                     >
                                         Next
+                                        <ChevronRight className="w-4 h-4" />
                                     </button>
                                 </div>
                             )}

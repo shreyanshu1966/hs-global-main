@@ -21,6 +21,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     const location = useLocation();
     const mainRef = useRef<HTMLDivElement>(null);
 
+    // Check if we're on the admin page
+    const isAdminPage = location.pathname === '/admin';
+
+    // Check if we're on the products page
+    const isProductsPage = location.pathname === '/products';
+
     useGSAP(() => {
         // Simple entry animation on route change
         gsap.fromTo(mainRef.current,
@@ -31,22 +37,24 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
     return (
         <div className="min-h-screen flex flex-col">
-            <Header />
+            {!isAdminPage && <Header />}
             <main
                 ref={mainRef}
                 className="flex-grow"
             >
                 {children}
             </main>
-            <Footer />
-            <FloatingCartButton />
-            <CartDrawer />
-            <PhoneVerifyModal />
-            <LeadCapturePopup
-                isOpen={isLeadPopupOpen}
-                onClose={closeLeadPopup}
-            />
-            <FloatingWhatsApp />
+            {!isAdminPage && <Footer />}
+            {!isAdminPage && <FloatingCartButton />}
+            {!isAdminPage && <CartDrawer />}
+            {!isAdminPage && <PhoneVerifyModal />}
+            {!isAdminPage && (
+                <LeadCapturePopup
+                    isOpen={isLeadPopupOpen}
+                    onClose={closeLeadPopup}
+                />
+            )}
+            {!isAdminPage && !isProductsPage && <FloatingWhatsApp />}
             <NoiseOverlay />
         </div>
     );
