@@ -89,7 +89,7 @@ function App() {
                   <Route path="/" element={<Home />} />
                   <Route path="/about" element={<About />} />
                   <Route path="/products" element={<Products />} />
-                  <Route path="/productsinfo/:id" element={<ProductDetails />} />
+                  <Route path="/products/:id" element={<ProductDetails />} />
                   <Route path="/gallery" element={<Gallery />} />
                   <Route path="/gallery/:id" element={<GalleryDetails />} />
                   <Route path="/contact" element={<Contact />} />

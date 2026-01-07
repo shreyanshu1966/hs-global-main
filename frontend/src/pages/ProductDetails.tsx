@@ -609,7 +609,7 @@ const ProductDetails = () => {
             {product.relatedProducts.map((p) => (
               <Link
                 key={p.id}
-                to={`/productsinfo/${p.id}`}
+                to={`/products/${p.id}`}
                 className="relative overflow-hidden group transition-transform duration-300 bg-white shadow-md hover:shadow-lg shrink-0"
                 style={{
                   width: `${slideWidth}px`,

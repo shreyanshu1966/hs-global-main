@@ -59,7 +59,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
     // Handle product click
     const handleProductClick = (result: typeof searchResults[0]) => {
         sessionStorage.setItem('scrollY', '0');
-        navigate(`/productsinfo/${result.product.id}`, {
+        navigate(`/products/${result.product.id}`, {
             state: { targetProduct: result.product.name },
         });
         onClose();

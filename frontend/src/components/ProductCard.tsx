@@ -245,7 +245,7 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
     >
       {/* IMAGE + VIDEO */}
       <Link
-        to={`/productsinfo/${product.id}`}
+        to={`/products/${product.id}`}
         onClick={handleCardClick}
         className="relative block overflow-hidden bg-gray-50"
         style={{ aspectRatio: '4/5' }}
@@ -308,7 +308,7 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
 
       {/* BOTTOM CONTENT */}
       <div className="flex flex-col flex-grow p-4 md:p-5">
-        <Link to={`/productsinfo/${product.id}`} onClick={handleCardClick}>
+        <Link to={`/products/${product.id}`} onClick={handleCardClick}>
           <h3 className="text-base md:text-lg font-bold text-gray-900 line-clamp-2 mb-3">
             {product.name}
           </h3>

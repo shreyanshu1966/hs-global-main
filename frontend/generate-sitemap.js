@@ -52,7 +52,7 @@ function collectProductUrls(baseType, dir, parentSlugs = []) {
         urls.push(...collectProductUrls(baseType, fullPath, newSlugs));
       } else {
         const fullSlug = [baseType, ...newSlugs].join('-');
-        urls.push('/productsinfo/' + fullSlug);
+        urls.push('/products/' + fullSlug);
       }
     }
   }

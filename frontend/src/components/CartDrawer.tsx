@@ -245,7 +245,7 @@ export const CartDrawer: React.FC = () => {
                               className="w-16 h-16 bg-white rounded-lg overflow-hidden flex-shrink-0 border border-black/10 cursor-pointer hover:opacity-80 transition-opacity"
                               onClick={() => {
                                 handleClose();
-                                navigate(`/productsinfo/${item.id}`);
+                                navigate(`/products/${item.id}`);
                               }}
                             >
                               <img
@@ -260,7 +260,7 @@ export const CartDrawer: React.FC = () => {
                                 className="font-medium text-black truncate cursor-pointer hover:underline"
                                 onClick={() => {
                                   handleClose();
-                                  navigate(`/productsinfo/${item.id}`);
+                                  navigate(`/products/${item.id}`);
                                 }}
                               >
                                 {item.name}
