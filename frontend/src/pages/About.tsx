@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { useTranslation } from "react-i18next";
+import { Helmet } from "react-helmet-async";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Globe, Award, Target, Users } from "lucide-react";
 import { getRootImageUrl } from "../utils/rootCloudinary";
@@ -19,6 +20,64 @@ const About = () => {
 
   return (
     <div ref={containerRef} className="bg-[#FFFFFF] text-gray-900 selection:bg-black selection:text-white overflow-x-hidden">
+
+      <Helmet>
+        {/* Basic SEO */}
+        <title>About Us - Heritage Etched in Stone | HS Global Export</title>
+        <meta name="description" content="Discover HS Global Export's 25+ year legacy in premium granite and marble. From Rajasthan quarries to global excellence, learn about our commitment to quality and craftsmanship." />
+        <meta name="keywords" content="about HS Global Export, granite supplier history, marble exporter India, Rajasthan stone quarry, premium stone company, natural stone heritage, luxury stone supplier" />
+        <meta name="author" content="HS Global Export" />
+        <meta name="robots" content="index, follow" />
+
+        {/* Canonical URL */}
+        <link rel="canonical" href="https://hsglobalexport.com/about" />
+
+        {/* Open Graph */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://hsglobalexport.com/about" />
+        <meta property="og:site_name" content="HS Global Export" />
+        <meta property="og:title" content="About Us - Heritage Etched in Stone | HS Global Export" />
+        <meta property="og:description" content="Discover HS Global Export's 25+ year legacy in premium granite and marble. From Rajasthan quarries to global excellence." />
+        <meta property="og:image" content="https://hsglobalexport.com/og-image.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="HS Global Export - About Our Company" />
+        <meta property="og:locale" content="en_US" />
+
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://hsglobalexport.com/about" />
+        <meta name="twitter:title" content="About Us - Heritage Etched in Stone | HS Global Export" />
+        <meta name="twitter:description" content="Discover HS Global Export's 25+ year legacy in premium granite and marble. From Rajasthan quarries to global excellence." />
+        <meta name="twitter:image" content="https://hsglobalexport.com/og-image.jpg" />
+        <meta name="twitter:image:alt" content="HS Global Export - About Our Company" />
+
+        {/* Schema.org AboutPage */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "AboutPage",
+            "name": "About HS Global Export",
+            "description": "Learn about HS Global Export's heritage in premium granite and marble supply",
+            "url": "https://hsglobalexport.com/about",
+            "mainEntity": {
+              "@type": "Organization",
+              "name": "HS Global Export",
+              "foundingDate": "1995",
+              "foundingLocation": {
+                "@type": "Place",
+                "address": {
+                  "@type": "PostalAddress",
+                  "addressRegion": "Rajasthan",
+                  "addressCountry": "IN"
+                }
+              },
+              "description": "Premium granite and marble supplier with 25+ years of excellence"
+            }
+          })}
+        </script>
+      </Helmet>
+
 
       {/* 1. HERO SECTION: Typography Centric - Scaled Version */}
       <section className="relative min-h-[100svh] flex flex-col justify-end pb-[clamp(4rem,8vw,8rem)] px-[clamp(1.5rem,4vw,6rem)] pt-[clamp(4rem,8vw,8rem)] overflow-hidden">

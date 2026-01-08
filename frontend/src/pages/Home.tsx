@@ -54,11 +54,25 @@ const Home = () => {
         />
 
         {/* ✅ OpenGraph / Canonical URLs all with www */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.hsglobalexport.com/" />
+        <meta property="og:site_name" content="HS Global Export" />
         <meta property="og:title" content="Granite & Marble Collection - Luxury Stone Designs | HS Global Export" />
         <meta property="og:description" content="Transform your interiors with HS Global Export's granite and marble collection. Unique designs and premium materials for luxurious living spaces." />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://www.hsglobalexport.com/products" />
-        <meta property="og:image" content="https://www.hsglobalexport.com/public/banner/banner1.jpg" />
+        <meta property="og:image" content="https://hsglobalexport.com/og-image.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="HS Global Export - Premium Granite & Marble Collection" />
+        <meta property="og:locale" content="en_US" />
+
+        {/* ✅ Twitter Card Tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://www.hsglobalexport.com/" />
+        <meta name="twitter:title" content="Granite & Marble Collection - Luxury Stone Designs | HS Global Export" />
+        <meta name="twitter:description" content="Transform your interiors with HS Global Export's granite and marble collection. Unique designs and premium materials for luxurious living spaces." />
+        <meta name="twitter:image" content="https://hsglobalexport.com/og-image.jpg" />
+        <meta name="twitter:image:alt" content="HS Global Export - Premium Granite & Marble Collection" />
+
         <link rel="canonical" href="https://www.hsglobalexport.com/" />
 
         <meta name="author" content="HS Global Export" />

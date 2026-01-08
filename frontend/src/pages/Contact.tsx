@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { initEmailJs, sendEmail } from "../lib/email";
 import { Mail, Phone, MapPin, ArrowRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { Helmet } from "react-helmet-async";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
@@ -149,6 +150,78 @@ const Contact = () => {
 
   return (
     <div ref={containerRef} className="min-h-screen bg-white">
+
+      <Helmet>
+        {/* Basic SEO */}
+        <title>Contact Us - Get in Touch | HS Global Export</title>
+        <meta name="description" content="Contact HS Global Export for premium granite and marble solutions. Reach us at +91 81071 15116 or inquiry@hsglobalexport.com. Corporate office in Ahmedabad, factory in Rajasthan." />
+        <meta name="keywords" content="contact HS Global Export, granite supplier contact, marble exporter India, stone inquiry, get quote granite, Ahmedabad office, Rajasthan factory" />
+        <meta name="author" content="HS Global Export" />
+        <meta name="robots" content="index, follow" />
+
+        {/* Canonical URL */}
+        <link rel="canonical" href="https://hsglobalexport.com/contact" />
+
+        {/* Open Graph */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://hsglobalexport.com/contact" />
+        <meta property="og:site_name" content="HS Global Export" />
+        <meta property="og:title" content="Contact Us - Get in Touch | HS Global Export" />
+        <meta property="og:description" content="Contact HS Global Export for premium granite and marble solutions. Corporate office in Ahmedabad, factory in Rajasthan." />
+        <meta property="og:image" content="https://hsglobalexport.com/og-image.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="HS Global Export - Contact Us" />
+        <meta property="og:locale" content="en_US" />
+
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://hsglobalexport.com/contact" />
+        <meta name="twitter:title" content="Contact Us - Get in Touch | HS Global Export" />
+        <meta name="twitter:description" content="Contact HS Global Export for premium granite and marble solutions." />
+        <meta name="twitter:image" content="https://hsglobalexport.com/og-image.jpg" />
+        <meta name="twitter:image:alt" content="HS Global Export - Contact Us" />
+
+        {/* Schema.org LocalBusiness */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "LocalBusiness",
+            "name": "HS Global Export",
+            "image": "https://hsglobalexport.com/logo.webp",
+            "url": "https://hsglobalexport.com",
+            "telephone": "+91-8107115116",
+            "email": "inquiry@hsglobalexport.com",
+            "address": [
+              {
+                "@type": "PostalAddress",
+                "streetAddress": "C-108, Titanium Business Park, Makarba",
+                "addressLocality": "Ahmedabad",
+                "postalCode": "380051",
+                "addressRegion": "Gujarat",
+                "addressCountry": "IN"
+              }
+            ],
+            "geo": {
+              "@type": "GeoCoordinates",
+              "latitude": "23.0225",
+              "longitude": "72.5714"
+            },
+            "openingHoursSpecification": {
+              "@type": "OpeningHoursSpecification",
+              "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+              "opens": "09:00",
+              "closes": "18:00"
+            },
+            "sameAs": [
+              "https://www.instagram.com/hsglobalexport116",
+              "https://www.linkedin.com/company/hsglobalexport",
+              "https://www.facebook.com/hsglobalexport"
+            ]
+          })}
+        </script>
+      </Helmet>
+
       {/* Hero Banner */}
       <section className="relative h-[80vh] overflow-hidden">
         <div

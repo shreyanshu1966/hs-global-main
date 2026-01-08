@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState, useCallback, memo, useRef } from "react";
 import { Search, SlidersHorizontal, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { Helmet } from "react-helmet-async";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -280,6 +281,60 @@ const Gallery = memo(() => {
 
   return (
     <div ref={containerRef} className="min-h-screen bg-white">
+
+      <Helmet>
+        {/* Basic SEO */}
+        <title>Photo Gallery - Stunning Stone Installations | HS Global Export</title>
+        <meta name="description" content="Browse our gallery of premium granite and marble installations. Explore completed projects, custom designs, and luxury stone applications from HS Global Export." />
+        <meta name="keywords" content="granite gallery, marble installations, stone projects, luxury interiors gallery, granite designs, marble applications, stone portfolio, completed projects" />
+        <meta name="author" content="HS Global Export" />
+        <meta name="robots" content="index, follow" />
+
+        {/* Canonical URL */}
+        <link rel="canonical" href="https://hsglobalexport.com/gallery" />
+
+        {/* Open Graph */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://hsglobalexport.com/gallery" />
+        <meta property="og:site_name" content="HS Global Export" />
+        <meta property="og:title" content="Photo Gallery - Stunning Stone Installations | HS Global Export" />
+        <meta property="og:description" content="Browse our gallery of premium granite and marble installations. Explore completed projects and luxury stone applications." />
+        <meta property="og:image" content="https://hsglobalexport.com/og-image.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="HS Global Export - Stone Gallery" />
+        <meta property="og:locale" content="en_US" />
+
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://hsglobalexport.com/gallery" />
+        <meta name="twitter:title" content="Photo Gallery - Stunning Stone Installations | HS Global Export" />
+        <meta name="twitter:description" content="Browse our gallery of premium granite and marble installations." />
+        <meta name="twitter:image" content="https://hsglobalexport.com/og-image.jpg" />
+        <meta name="twitter:image:alt" content="HS Global Export - Stone Gallery" />
+
+        {/* Schema.org ImageGallery */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ImageGallery",
+            "name": "HS Global Export Stone Gallery",
+            "description": "Gallery showcasing premium granite and marble installations and projects",
+            "url": "https://hsglobalexport.com/gallery",
+            "provider": {
+              "@type": "Organization",
+              "name": "HS Global Export",
+              "url": "https://hsglobalexport.com"
+            },
+            "about": {
+              "@type": "Thing",
+              "name": "Natural Stone Installations",
+              "description": "Premium granite, marble, and natural stone applications"
+            }
+          })}
+        </script>
+      </Helmet>
+
       {/* Hero matching Products/About/Services style */}
       <section className="relative h-[80vh] overflow-hidden">
         <div

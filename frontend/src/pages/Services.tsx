@@ -1,5 +1,6 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Helmet } from 'react-helmet-async';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import {
   ArrowRight,
@@ -31,6 +32,95 @@ const Services: React.FC = () => {
 
   return (
     <div ref={containerRef} className="bg-white text-gray-900 selection:bg-black selection:text-white overflow-x-hidden">
+
+      <Helmet>
+        {/* Basic SEO */}
+        <title>Our Services - Premium Stone Solutions | HS Global Export</title>
+        <meta name="description" content="From quarry to installation, HS Global Export offers comprehensive stone services: manufacturing, fabrication, global export, and quality assurance for granite and marble." />
+        <meta name="keywords" content="granite manufacturing, marble fabrication, stone export services, global stone logistics, quality stone processing, custom stone cutting, stone installation services" />
+        <meta name="author" content="HS Global Export" />
+        <meta name="robots" content="index, follow" />
+
+        {/* Canonical URL */}
+        <link rel="canonical" href="https://hsglobalexport.com/services" />
+
+        {/* Open Graph */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://hsglobalexport.com/services" />
+        <meta property="og:site_name" content="HS Global Export" />
+        <meta property="og:title" content="Our Services - Premium Stone Solutions | HS Global Export" />
+        <meta property="og:description" content="From quarry to installation, we deliver excellence at every stage of your stone journey. Manufacturing, fabrication, export & quality assurance." />
+        <meta property="og:image" content="https://hsglobalexport.com/og-image.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="HS Global Export - Stone Services" />
+        <meta property="og:locale" content="en_US" />
+
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://hsglobalexport.com/services" />
+        <meta name="twitter:title" content="Our Services - Premium Stone Solutions | HS Global Export" />
+        <meta name="twitter:description" content="From quarry to installation, we deliver excellence at every stage of your stone journey." />
+        <meta name="twitter:image" content="https://hsglobalexport.com/og-image.jpg" />
+        <meta name="twitter:image:alt" content="HS Global Export - Stone Services" />
+
+        {/* Schema.org Service */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Service",
+            "serviceType": "Stone Manufacturing and Export Services",
+            "provider": {
+              "@type": "Organization",
+              "name": "HS Global Export",
+              "url": "https://hsglobalexport.com"
+            },
+            "areaServed": {
+              "@type": "Place",
+              "name": "Worldwide"
+            },
+            "hasOfferCatalog": {
+              "@type": "OfferCatalog",
+              "name": "Stone Services",
+              "itemListElement": [
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "name": "Manufacturing",
+                    "description": "State-of-the-art stone manufacturing facilities"
+                  }
+                },
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "name": "Fabrication",
+                    "description": "Expert stone fabrication and custom cutting"
+                  }
+                },
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "name": "Global Export",
+                    "description": "Worldwide shipping and logistics for stone products"
+                  }
+                },
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "name": "Quality Assurance",
+                    "description": "Rigorous testing and ISO certification"
+                  }
+                }
+              ]
+            }
+          })}
+        </script>
+      </Helmet>
+
 
       {/* 1. HERO SECTION - Minimal & Typography Focused */}
       <section className="relative min-h-[100svh] flex flex-col justify-center px-[clamp(1.5rem,4vw,6rem)] overflow-hidden bg-gradient-to-br from-gray-50 to-white">
