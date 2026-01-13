@@ -8,7 +8,7 @@ interface ProductsNavigationContextType {
 const ProductsNavigationContext = createContext<ProductsNavigationContextType | undefined>(undefined);
 
 export const ProductsNavigationProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const [activeSection, setActiveSection] = useState<string>('alaska');
+    const [activeSection, setActiveSection] = useState<string>('tables');
 
     return (
         <ProductsNavigationContext.Provider value={{ activeSection, setActiveSection }}>

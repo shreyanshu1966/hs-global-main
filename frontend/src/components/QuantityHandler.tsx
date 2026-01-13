@@ -10,7 +10,7 @@ interface QuantityHandlerProps {
 
 export const QuantityHandler: React.FC<QuantityHandlerProps> = ({ product, className = '' }) => {
   const { state, updateQuantity, removeItem } = useCart();
-  
+
   const cartItem = state.items.find(item => item.id === product.id);
   const quantity = cartItem?.quantity || 0;
 

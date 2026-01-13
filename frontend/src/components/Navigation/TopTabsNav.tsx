@@ -41,6 +41,14 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      categoryChangeInProgressRef.current = false;
+      programmaticScrollRef.current = false;
+    };
+  }, []);
+
   // Initial animation
   useGSAP(() => {
     gsap.fromTo(
@@ -60,6 +68,8 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
   useEffect(() => {
     setExpandedParentId(null);
     setShowMegaMenu(false);
+    // Reset category change progress flag when activeCategory changes externally
+    categoryChangeInProgressRef.current = false;
   }, [activeCategory]);
 
   // Build first level subcategories
@@ -215,6 +225,12 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
     url.hash = '';
     window.history.replaceState(null, '', url.toString());
 
+    // Safety timeout to ensure the flag is always reset
+    const safetyTimeout = setTimeout(() => {
+      categoryChangeInProgressRef.current = false;
+      programmaticScrollRef.current = false;
+    }, 3000);
+
     setTimeout(() => {
       const targetCategory = categories.find(c => c.id === categoryId);
       if (targetCategory?.subcategories?.[0]) {
@@ -223,9 +239,11 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
         scrollToSection(firstSectionId);
 
         setTimeout(() => {
+          clearTimeout(safetyTimeout);
           categoryChangeInProgressRef.current = false;
         }, 1000);
       } else {
+        clearTimeout(safetyTimeout);
         programmaticScrollRef.current = false;
         categoryChangeInProgressRef.current = false;
       }

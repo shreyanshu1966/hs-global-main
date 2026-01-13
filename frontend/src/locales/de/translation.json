@@ -30,22 +30,18 @@
     "hero_title": "Granite & Marble Hersteller",
     "hero_subtitle": "Exportqualitätsplatten, Fliesen & Arbeitsplatten mit individuellen Oberflächen & weltweiter Lieferung",
     "hero_button": "Unsere Produkte ansehen",
-
     "heritage_tag": "HS Global Export",
     "heritage_title": "Führende Exzellenz im Natursteinexport",
     "heritage_paragraph_1": "HS Global Export ist Indiens führendes Natursteinexportunternehmen und spezialisiert auf Premium-Granite, Marmor und Quarzit für internationale Märkte. Mit über fünf Jahrzehnten Erfahrung in Steinverarbeitung, Fertigung und globalem Handel sind wir zuverlässige Lieferanten hochwertiger Natursteinprodukte für Architekten, Bauunternehmen und Händler weltweit.",
     "heritage_paragraph_2": "Als führendes Unternehmen pflegen wir starke Partnerschaften mit Steinbrüchen in ganz Indien und sichern die kontinuierliche Versorgung mit hochwertigen Materialien. Wir bieten maßgeschneiderte Fertigung, präzisen Zuschnitt, Qualitätskontrolle und zuverlässige Logistik in über 25 Länder weltweit.",
-
     "marble_tag": "Über HS Global Export",
     "marble_title": "Experten für Granite & Marmore – weltweit",
     "marble_paragraph_1": "HS Global Export liefert Exportqualität bei Granit, Marmor, Sandstein, Onyx und Travertin mit zuverlässiger Beschaffung, präziser Verarbeitung und pünktlicher Logistik.",
     "marble_paragraph_2": "Unsere Kataloge decken Küchenarbeitsplatten, Waschtischplatten, Bodenbeläge, Wandverkleidung, Treppen und Außenbereiche ab. Jede Platte wird auf Farbharmonie, Struktur und Politur geprüft.",
     "marble_paragraph_3": "Suchen Sie nach einem bestimmten Farbton oder Muster? Teilen Sie uns Ihre Anforderungen mit – wir senden Fotos/Videos aktiver Blöcke.",
-
     "granite_tag": "Premium Granite Kollektion",
     "granite_title": "Langlebige Granitlösungen",
     "granite_paragraph_1": "HS Global Export bietet eine umfangreiche Auswahl an Premiumgranit wie Black Galaxy, Absolute Black, Kashmir White, Tan Brown und Ubatuba Green. Unsere Verarbeitungsanlagen nutzen diamantbeschichtete Sägen, Präzisionspolierer und computergesteuerte Schneidsysteme für makellose Ergebnisse.",
-
     "global_tag": "Globale Präsenz",
     "global_title": "Weltweite Anerkennung",
     "global_network_title": "Globales Netzwerk",
@@ -161,20 +157,16 @@
     "sort": "Sortieren",
     "view_all": "Alle anzeigen"
   },
-
   "product": {
     "hero_title": "Premium Granite & Marble entdecken",
     "hero_subtitle": "Exportqualität – Platten, Fliesen und Sonderanfertigungen weltweit geliefert",
-
     "customization_title": "Alle Produkte sind anpassbar",
     "customization_text": "Wir fertigen nach Ihren Maßen, Oberflächen und Designwünschen.",
     "customization_button_1": "Individuelles Angebot erhalten",
     "customization_button_2": "Galerie erkunden",
-
     "gallery_title": "Unsere Galerie erkunden",
     "gallery_viewall": "Alle anzeigen"
   },
-
   "gallery": {
     "hero_title": "Kuratiere Galerie",
     "hero_subtitle": "Echte Installationen in Küchen, Bädern, Wohnräumen und maßgefertigten Designs. Hochauflösende Fotos zur Bewertung von Oberflächen und Details.",
@@ -183,7 +175,6 @@
     "filters": "Filter",
     "loading": "Lade Slider..."
   },
-
   "contact": {
     "hero_title": "Kontakt aufnehmen.",
     "hero_subtitle": "Kontaktieren Sie uns.",
@@ -208,7 +199,6 @@
     "cta_success": "Ihre Nachricht wurde gesendet. Wir melden uns bald.",
     "cta_close": "Schließen"
   },
-
   "services": {
     "hero_title": "End-to-End Natursteinservices",
     "hero_subtitle": "Wir fertigen, bearbeiten und exportieren Premium Marmor & Granit mit globaler Logistik, strenger QA und handwerklicher Präzision.",
@@ -216,7 +206,6 @@
     "badge_2": "Maßanfertigung",
     "badge_3": "Globale Logistik",
     "badge_4": "Strenge Qualitätskontrolle",
-
     "manufacturing_header": "Fertigung • Bearbeitung",
     "manufacturing_title": "Präzisionsbearbeiteter Marmor & Granit",
     "manufacturing_para_1": "HS Global Export betreibt eigene Fertigungsanlagen ausgestattet mit CNC-Brückensägen, 5-Achs-Wasserstrahlmaschinen, Monodraht- und Gangsägen, Harzbehandlungsanlagen und Polierlinien für perfekte Oberflächen.",
@@ -227,12 +216,10 @@
     "manufacturing_grid_4": "Zonenspezifische Zuschnitte",
     "manufacturing_grid_5": "Detaillierte Zeichnungen & Dry-Lay",
     "manufacturing_grid_6": "Nachhaltige Wasser-/Schlammsysteme",
-
     "manufacturing_box_title_1": "Fertigungskapazitäten",
     "manufacturing_box_para_1": "Arbeitsplatten mit Gehrung, Wasserfallkanten, Rückwänden, komplexen Radien und Inlays mit Wasserstrahlpräzision.",
     "manufacturing_box_title_2": "Installationsbereitschaft",
     "manufacturing_box_para_2": "Jede Lieferung enthält Raumlisten, Kantendetails, Fixierungsempfehlungen und beschriftete Kisten.",
-
     "export_header": "Export • Logistik",
     "export_title": "Weltweiter Versand, Verpackung & Compliance",
     "export_para_1": "Wir kümmern uns um Exportdokumente: Rechnungen, Packlisten, HS-Codes, Ursprungszertifikate, ISPM-15 & Versicherung.",
@@ -241,13 +228,11 @@
     "export_grid_2": "Kisten & Feuchtigkeitsschutz",
     "export_grid_3": "Multi-Land-Compliance",
     "export_grid_4": "Chargen-Tracking",
-
     "export_box_title": "Exportvorteile",
     "export_box_point_1": "ISPM-15 Paletten & Anti-Rost Verpackung",
     "export_box_point_2": "Versicherung & Inspektion",
     "export_box_point_3": "Flexible Hafenwahl",
     "export_box_point_4": "QC-Fotos vor Versand",
-
     "material_header": "Materialien",
     "material_title": "Marmor & Granit Kompetenz",
     "material_para": "Wir kuratieren Premium-Marmore und widerstandsfähige Granite für Innenräume, Fassaden, Außenbereiche und High-Traffic-Zonen.",
@@ -261,7 +246,6 @@
     "material_box_2_point_2": "Rutschfeste Texturen",
     "material_box_2_point_3": "Fassaden- & Landschaftszuschnitt",
     "material_box_2_point_4": "Hitze- & Kratzfest",
-
     "stone_title": "Steinservices für Architekten, Bauunternehmen & Händler",
     "stone_para_1_part_1": "Als Full-Service-Steinunternehmen bietet HS Global Export ",
     "stone_para_1_part_2": "Steinproduktion",
@@ -280,7 +264,6 @@
     "stone_para_1_part_15": "Qualitätskontrolle",
     "stone_para_1_part_16": " und ",
     "stone_para_1_part_17": "Exportverpackung.",
-
     "stone_para_2_part_1": "Ob ",
     "stone_para_2_part_2": "Küchenarbeitsplatten",
     "stone_para_2_part_3": ", ",
@@ -294,19 +277,16 @@
     "stone_para_2_part_11": ", oder ",
     "stone_para_2_part_12": "Fassadenstein",
     "stone_para_2_part_13": ", wir unterstützen den gesamten Ablauf – von Mustern über Dry-Lay bis After-Sales.",
-
     "stone_service_1": "Marmor & Granit Beschaffung aus vertrauenswürdigen Steinbrüchen",
     "stone_service_2": "CAD-Zeichnungen, Nesting & Optimierung",
     "stone_service_3": "Kalibrierte Platten mit engen Toleranzen",
     "stone_service_4": "Kantenprofile: Fase, Rundung, Ogee, Gehrung",
     "stone_service_5": "Oberflächen für Design & Performance",
     "stone_service_6": "Projektdokumentation & Pflegehinweise",
-
     "cta_title": "Lassen Sie uns Ihr Steinprogramm aufbauen",
     "cta_text": "Teilen Sie Zeichnungen & Vorgaben. Wir schlagen Materialien, Oberflächen & Logistik vor.",
     "cta_btn": "Auf WhatsApp chatten"
   },
-
   "checkout": {
     "title": "Bestellübersicht",
     "total": "Gesamt",
@@ -319,7 +299,6 @@
     "btn_1": "Zur Zahlung",
     "btn_2": "Weiter einkaufen"
   },
-
   "lead_popup": {
     "title": "Kostenloses Angebot erhalten",
     "subtitle": "Erzählen Sie uns von Ihrem Projekt",

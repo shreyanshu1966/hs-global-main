@@ -177,7 +177,7 @@ const Checkout: React.FC = () => {
             height: 45,
             label: 'pay'
           },
-          
+
           createOrder: async () => {
             try {
               setIsCreatingOrder(true);

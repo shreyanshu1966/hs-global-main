@@ -19,6 +19,16 @@ export const ProductsModernVariant: React.FC = () => {
 
   const hasRestoredScrollRef = useRef(false);
 
+  // Initialize activeCategory based on URL parameters
+  const getInitialCategory = useCallback(() => {
+    const params = new URLSearchParams(location.search || "");
+    const catParam = (params.get("cat") || "").toLowerCase();
+    if (catParam === "furniture" || catParam === "slabs") {
+      return catParam;
+    }
+    return "furniture"; // Default fallback
+  }, [location.search]);
+
   useEffect(() => {
     if (!hasRestoredScrollRef.current) {
       const savedY = sessionStorage.getItem("scrollY");
@@ -45,8 +55,8 @@ export const ProductsModernVariant: React.FC = () => {
     offsetTop: 0,
   });
 
-  const [activeCategory, setActiveCategory] = useState<string>("furniture");
-  const [activeSection, setActiveSection] = useState<string>("alaska");
+  const [activeCategory, setActiveCategory] = useState<string>(getInitialCategory());
+  const [activeSection, setActiveSection] = useState<string>("tables");
   const programmaticScrollRef = useRef(false);
   const userInteractedRef = useRef(false);
 
@@ -80,6 +90,15 @@ export const ProductsModernVariant: React.FC = () => {
       window.removeEventListener("touchstart", mark);
     };
   }, []);
+
+  // Sync activeCategory with URL changes
+  useEffect(() => {
+    const params = new URLSearchParams(location.search || "");
+    const catParam = (params.get("cat") || "").toLowerCase();
+    if ((catParam === "furniture" || catParam === "slabs") && catParam !== activeCategory) {
+      setActiveCategory(catParam);
+    }
+  }, [location.search, activeCategory]);
 
 
   // Gallery preview using Cloudinary URLs
@@ -142,6 +161,14 @@ export const ProductsModernVariant: React.FC = () => {
         .sort((a, b) => orderedIds.indexOf(a.id) - orderedIds.indexOf(b.id)),
     [allSubcategories, orderedIds]
   );
+
+  // Reset activeSection to first section when category changes
+  useEffect(() => {
+    const firstSectionId = orderedIds[0];
+    if (firstSectionId && activeSection !== firstSectionId) {
+      setActiveSection(firstSectionId);
+    }
+  }, [activeCategory, orderedIds, activeSection]);
 
   // OPTIMIZED: Anticipatory preloading - start loading ONLY first images of slabs after 3 seconds on furniture
   useEffect(() => {

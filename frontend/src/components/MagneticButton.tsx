@@ -15,9 +15,9 @@ const MagneticButton: React.FC<MagneticButtonProps> = ({
     strength = 0.5,
     onClick
 }) => {
-    const buttonRef = useRef<HTMLButtonElement>(null);
+    const buttonRef = useRef<HTMLDivElement>(null);
 
-    const handleMouseMove = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
         const { clientX, clientY } = e;
         const { left, top, width, height } = buttonRef.current!.getBoundingClientRect();
         const x = clientX - (left + width / 2);
@@ -41,15 +41,15 @@ const MagneticButton: React.FC<MagneticButtonProps> = ({
     };
 
     return (
-        <button
+        <div
             ref={buttonRef}
-            className={`${className}`}
+            className={`inline-block ${className}`}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
             onClick={onClick}
         >
             {children}
-        </button>
+        </div>
     );
 };
 

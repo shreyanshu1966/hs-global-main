@@ -95,7 +95,7 @@ const Footer: React.FC = () => {
 
             {/* Column 3 */}
             <div>
-              <h4 className="text-lg font-medium mb-8">Get in Touch</h4>
+              <h4 className="text-lg font-medium mb-8">Get in Touch - HS Global Export</h4>
               <ul className="space-y-6 text-gray-400 font-light">
                 <li className="flex gap-4 items-start">
                   <MapPin className="w-5 h-5 flex-shrink-0 text-accent mt-1" />

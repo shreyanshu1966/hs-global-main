@@ -30,22 +30,18 @@
     "hero_title": "Fabricant de granit et de marbre",
     "hero_subtitle": "Dalles, carreaux et comptoirs de qualité export avec finitions personnalisées et livraison mondiale",
     "hero_button": "Voir nos produits",
-
     "heritage_tag": "HS Global Export",
     "heritage_title": "Excellence dans l’exportation de pierre naturelle",
     "heritage_paragraph_1": "HS Global Export est le premier exportateur indien de pierre naturelle, spécialisé dans le granit, le marbre et le quartzite premium destinés aux marchés internationaux...",
     "heritage_paragraph_2": "Nous entretenons des partenariats stratégiques avec des carrières à travers l’Inde, garantissant un approvisionnement constant en pierres naturelles de haute qualité...",
-
     "marble_tag": "À propos de HS Global Export",
     "marble_title": "Experts en granit et marbre pour projets internationaux",
     "marble_paragraph_1": "HS Global Export fournit du granit et du marbre de qualité export avec traitement précis et logistique fiable...",
     "marble_paragraph_2": "Nos catalogues couvrent comptoirs de cuisine, vasques de salle de bains, revêtements muraux, escaliers et applications extérieures...",
     "marble_paragraph_3": "Vous recherchez une texture particulière ? Envoyez vos spécifications...",
-
     "granite_tag": "Collection de granits premium",
     "granite_title": "Solutions en granit durable",
     "granite_paragraph_1": "Nous proposons une large gamme de granits premium, sélectionnés pour leur durabilité exceptionnelle, leurs variations uniques et leur esthétique naturelle...",
-
     "global_tag": "Présence mondiale",
     "global_title": "Reconnaissance internationale",
     "global_network_title": "Réseau mondial",
@@ -161,20 +157,16 @@
     "sort": "Trier",
     "view_all": "Voir tout"
   },
-
   "product": {
     "hero_title": "Découvrez le granit et marbre premium",
     "hero_subtitle": "Dalles, carreaux et finitions personnalisées avec livraison mondiale",
-
     "customization_title": "Tous les produits sont personnalisables",
     "customization_text": "Nous fabriquons selon vos dimensions, finitions et préférences.",
     "customization_button_1": "Obtenir un devis",
     "customization_button_2": "Explorer la galerie",
-
     "gallery_title": "Explorer notre galerie",
     "gallery_viewall": "Voir tout"
   },
-
   "gallery": {
     "hero_title": "Galerie organisée",
     "hero_subtitle": "Voir des installations réelles dans cuisines, salles de bains, salons et projets artistiques.",
@@ -183,7 +175,6 @@
     "filters": "Filtres",
     "loading": "Chargement du slider..."
   },
-
   "contact": {
     "hero_title": "Contactez-nous",
     "hero_subtitle": "Nous contacter",
@@ -208,7 +199,6 @@
     "cta_success": "Votre message a été envoyé. Nous reviendrons vers vous bientôt.",
     "cta_close": "Fermer"
   },
-
   "services": {
     "hero_title": "Services complets en pierre naturelle",
     "hero_subtitle": "Fabrication, découpe et exportation de marbre et granit premium",
@@ -270,11 +260,10 @@
     "stone_service_4": "Profils de bord : biseau, quart-de-rond, ogée, mitre",
     "stone_service_5": "Finitions de surface pour design & performance",
     "stone_service_6": "Documentation projet & guides d’entretien",
-    "cta_title":"Construisons votre programme pierre",
+    "cta_title": "Construisons votre programme pierre",
     "cta_text": "Envoyez plans & spécifications, nous proposons solutions adaptées.",
     "cta_btn": "Discuter sur WhatsApp"
   },
-
   "checkout": {
     "title": "Résumé de commande",
     "total": "Total",
@@ -287,7 +276,6 @@
     "btn_1": "Procéder au paiement",
     "btn_2": "Continuer vos achats"
   },
-
   "lead_popup": {
     "title": "Obtenez votre devis gratuit",
     "subtitle": "Parlez-nous de votre projet",

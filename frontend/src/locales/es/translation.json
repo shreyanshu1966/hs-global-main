@@ -30,22 +30,18 @@
     "hero_title": "Fabricante de Granito y Mármol",
     "hero_subtitle": "Losas, baldosas y encimeras de calidad exportación con acabados personalizados y envío global",
     "hero_button": "Ver Nuestros Productos",
-
     "heritage_tag": "HS Global Export",
     "heritage_title": "Excelencia en Exportación de Piedra Natural",
     "heritage_paragraph_1": "HS Global Export es la principal empresa de exportación de piedra natural en India, especializada en granito, mármol y cuarcita premium para mercados globales. Con más de cinco décadas de experiencia, ofrecemos productos de alta calidad a arquitectos, contratistas y distribuidores en todo el mundo.",
     "heritage_paragraph_2": "Mantenemos alianzas estratégicas con canteras en toda India, garantizando un suministro constante de materiales premium. Ofrecemos fabricación personalizada, corte preciso, inspección de calidad y logística confiable hacia más de 25 países.",
-
     "marble_tag": "Sobre HS Global Export",
     "marble_title": "Expertos en Granito y Mármol para Proyectos Globales",
     "marble_paragraph_1": "HS Global Export ofrece granito, mármol, arenisca, ónix y travertino de calidad exportación con procesamiento preciso y logística confiable.",
     "marble_paragraph_2": "Nuestro catálogo cubre encimeras, pisos, revestimientos y piezas arquitectónicas. Cada losa se inspecciona para garantizar armonía de color, integridad estructural y pulido impecable.",
     "marble_paragraph_3": "¿Buscas un tono o textura específicos? Compártenos tus especificaciones y te enviaremos lotes activos con fotos y videos en vivo.",
-
     "granite_tag": "Colección Premium de Granito",
     "granite_title": "Soluciones Duraderas de Granito",
     "granite_paragraph_1": "Ofrecemos una amplia gama de granitos premium, como Black Galaxy, Absolute Black, Kashmir White, Tan Brown y Ubatuba Green, seleccionados por su durabilidad y belleza natural.",
-
     "global_tag": "Presencia Global",
     "global_title": "Reconocimiento Mundial",
     "global_network_title": "Red Global",
@@ -57,7 +53,6 @@
     "global_awards_title": "Premios",
     "global_awards_text": "20+ premios de excelencia"
   },
-
   "trust_badges": {
     "customizable": "Personalizable",
     "sustainable_sourcing": "Fuente Sostenible",
@@ -65,7 +60,6 @@
     "superior_quality": "Calidad Superior",
     "exquisite_detailing": "Detalles Exquisitos"
   },
-
   "products": {
     "title": "Descubre Granito y Mármol Premium",
     "subtitle": "Losas, baldosas y acabados personalizados enviados a todo el mundo",
@@ -80,7 +74,6 @@
     "inquiry": "Consultar en WhatsApp",
     "moq": "MOQ"
   },
-
   "product_detail": {
     "about": "Acerca de",
     "finish": "Acabado",
@@ -95,7 +88,6 @@
     "related_photos": "Fotos Relacionadas",
     "details": "Detalles"
   },
-
   "cart": {
     "title": "Carrito de Compras",
     "empty": "Tu carrito está vacío",
@@ -120,7 +112,6 @@
     "address": "Dirección",
     "verified_number": "Número verificado"
   },
-
   "footer": {
     "description": "Creando espacios excepcionales con el mejor mármol y granito. Donde el lujo se encuentra con la precisión.",
     "products": "Productos",
@@ -149,7 +140,6 @@
     "terms": "Términos de Servicio",
     "cookies": "Política de Cookies"
   },
-
   "common": {
     "loading": "Cargando...",
     "error": "Error",
@@ -167,20 +157,16 @@
     "sort": "Ordenar",
     "view_all": "Ver Todo"
   },
-
   "product": {
     "hero_title": "Descubre Granito y Mármol Premium",
     "hero_subtitle": "Losas, baldosas y acabados personalizados enviados a todo el mundo",
-
     "customization_title": "Todos los productos son personalizables",
     "customization_text": "Fabricamos según tus dimensiones, acabado y preferencias.",
     "customization_button_1": "Obtener Presupuesto",
     "customization_button_2": "Explorar Galería",
-
     "gallery_title": "Explora Nuestra Galería",
     "gallery_viewall": "Ver Todo"
   },
-
   "gallery": {
     "hero_title": "Galería Curada",
     "hero_subtitle": "Instalaciones reales en cocinas, baños, salas y arte personalizado.",
@@ -189,7 +175,6 @@
     "filters": "Filtros",
     "loading": "Cargando slider..."
   },
-
   "contact": {
     "hero_title": "Ponte en Contacto.",
     "hero_subtitle": "Contáctanos.",
@@ -214,7 +199,6 @@
     "cta_success": "Tu mensaje ha sido enviado. Nos pondremos en contacto pronto.",
     "cta_close": "Cerrar"
   },
-
   "services": {
     "hero_title": "Servicios Integrales de Piedra Natural",
     "hero_subtitle": "Fabricamos, procesamos y exportamos mármol y granito con logística global y QA estricta.",
@@ -222,56 +206,46 @@
     "badge_2": "Fabricación Personalizada",
     "badge_3": "Logística Global",
     "badge_4": "Control de Calidad",
-
     "manufacturing_header": "Fabricación • Procesamiento",
     "manufacturing_title": "Mármol y Granito con Ingeniería de Precisión",
     "manufacturing_para_1": "Instalaciones equipadas con maquinaria avanzada para transformar bloques en losas, baldosas y componentes personalizados.",
     "manufacturing_para_2": "Apoyamos ingeniería de valor, selección de materiales, acabados, perfilado y preparación para instalación.",
-    
     "manufacturing_grid_1": "Modelado CNC y perfilado 5-axis",
     "manufacturing_grid_2": "Selecciones combinadas por veta",
     "manufacturing_grid_3": "Calibración de superficie",
     "manufacturing_grid_4": "Paquetes a medida por zona",
     "manufacturing_grid_5": "Planos detallados y dry-lay",
     "manufacturing_grid_6": "Reciclaje de agua y residuos",
-
     "manufacturing_box_title_1": "Capacidades de Fabricación",
     "manufacturing_box_para_1": "Encimeras, bordes mitrados, acabados premium y cortes complejos con alta precisión.",
     "manufacturing_box_title_2": "Listo para Instalación",
     "manufacturing_box_para_2": "Manifiestos, recomendaciones de instalación y guías de mantenimiento incluidas.",
-
     "export_header": "Exportación • Logística",
     "export_title": "Envío Global, Embalaje y Cumplimiento",
     "export_para_1": "Manejo completo de documentación de exportación y embalaje seguro.",
     "export_para_2": "Transparencia total con trazabilidad, fotos previas al envío y pruebas externas.",
-
     "export_grid_1": "Flete puerta a puerta",
     "export_grid_2": "Cajones y barreras de humedad",
     "export_grid_3": "Cumplimiento multipaís",
     "export_grid_4": "Trazabilidad por lote",
-
     "export_box_title": "Ventajas de Exportación",
     "export_box_point_1": "Palés ISPM-15 y embalaje resistente",
     "export_box_point_2": "Seguro e inspección coordinados",
     "export_box_point_3": "Flexibilidad de carga",
     "export_box_point_4": "Fotos QC antes del envío",
-
     "material_header": "Materiales",
     "material_title": "Mármol y Granito Premium",
     "material_para": "Curamos colecciones premium y soportamos aplicaciones interiores y exteriores.",
-
     "material_box_1_title": "Programas de Mármol",
     "material_box_1_point_1": "Selección italiana e india",
     "material_box_1_point_2": "Matching por veta",
     "material_box_1_point_3": "Soluciones para cocinas y baños de lujo",
     "material_box_1_point_4": "Acabados: pulido, mate, cuero",
-
     "material_box_2_title": "Programas de Granito",
     "material_box_2_point_1": "Alta durabilidad",
     "material_box_2_point_2": "Texturas antideslizantes",
     "material_box_2_point_3": "Corte a medida",
     "material_box_2_point_4": "Resistencia a calor y rayaduras",
-
     "stone_title": "Servicios para Arquitectos y Contratistas",
     "stone_para_1_part_1": "Como empresa de servicios completos, ofrecemos",
     "stone_para_1_part_2": "fabricación",
@@ -290,7 +264,6 @@
     "stone_para_1_part_15": ", inspección por lote y ",
     "stone_para_1_part_16": "embalaje de exportación",
     "stone_para_1_part_17": " garantizan resultados consistentes.",
-
     "stone_para_2_part_1": "Ya sea",
     "stone_para_2_part_2": "encimeras de cocina",
     "stone_para_2_part_3": ", ",
@@ -304,19 +277,16 @@
     "stone_para_2_part_11": ", o ",
     "stone_para_2_part_12": "piedra para fachada",
     "stone_para_2_part_13": ", apoyamos todo el ciclo desde muestra hasta entrega.",
-
     "stone_service_1": "Suministro de piedra de canteras confiables",
     "stone_service_2": "Planos CAD y optimización",
     "stone_service_3": "Losas calibradas con tolerancias precisas",
     "stone_service_4": "Perfiles de borde: bisel, bullnose, ogee, mitrado",
     "stone_service_5": "Acabados para necesidades de diseño y rendimiento",
     "stone_service_6": "Documentación de proyecto y guías de mantenimiento",
-
     "cta_title": "Construyamos tu programa de piedra",
     "cta_text": "Comparte planos y especificaciones. Te proponemos materiales y logística adaptada.",
     "cta_btn": "Chatear en WhatsApp"
   },
-
   "checkout": {
     "title": "Resumen del Pedido",
     "total": "Total",
@@ -329,7 +299,6 @@
     "btn_1": "Proceder al Pago",
     "btn_2": "Seguir Comprando"
   },
-
   "lead_popup": {
     "title": "Obtén tu Cotización Gratis",
     "subtitle": "Cuéntanos sobre tu proyecto y te responderemos",
