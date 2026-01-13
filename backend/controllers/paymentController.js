@@ -1,14 +1,31 @@
 const Order = require('../models/Order');
 const User = require('../models/User');
-const crypto = require('crypto');
 const { sendOrderConfirmationEmail, sendPaymentFailedEmail } = require('../services/emailService');
 
-const RAZORPAY_KEY_ID = process.env.RAZORPAY_KEY_ID;
-const RAZORPAY_KEY_SECRET = process.env.RAZORPAY_KEY_SECRET;
+// PayPal SDK
+const paypalSdk = require('@paypal/paypal-server-sdk');
+
+const PAYPAL_CLIENT_ID = process.env.PAYPAL_CLIENT_ID;
+const PAYPAL_CLIENT_SECRET = process.env.PAYPAL_CLIENT_SECRET;
+const PAYPAL_ENVIRONMENT = process.env.PAYPAL_ENVIRONMENT || 'sandbox';
+
+// Configure PayPal client
+const paypalClient = paypalSdk.client({
+    clientCredentialsAuthCredentials: {
+        oAuthClientId: PAYPAL_CLIENT_ID,
+        oAuthClientSecret: PAYPAL_CLIENT_SECRET,
+    },
+    environment: PAYPAL_ENVIRONMENT === 'production' ? paypalSdk.Environment.Production : paypalSdk.Environment.Sandbox,
+    logging: {
+        logLevel: paypalSdk.LogLevel.Info,
+        logRequest: { logBody: true },
+        logResponse: { logHeaders: true },
+    },
+});
 
 exports.createOrder = async (req, res) => {
     try {
-        const { amount, currency = 'INR', receipt, items, shippingAddress, customer } = req.body;
+        const { amount, currency = 'USD', receipt, items, shippingAddress, customer } = req.body;
 
         if (!amount) {
             return res.status(400).json({ ok: false, error: 'Amount is required' });
@@ -22,41 +39,73 @@ exports.createOrder = async (req, res) => {
             return res.status(401).json({ ok: false, error: 'Authentication required' });
         }
 
-        if (!RAZORPAY_KEY_ID || !RAZORPAY_KEY_SECRET) {
-            return res.status(500).json({ ok: false, error: 'Razorpay credentials not configured' });
+        if (!PAYPAL_CLIENT_ID || !PAYPAL_CLIENT_SECRET) {
+            return res.status(500).json({ ok: false, error: 'PayPal credentials not configured' });
         }
 
-        const auth = Buffer.from(`${RAZORPAY_KEY_ID}:${RAZORPAY_KEY_SECRET}`).toString('base64');
+        // Check if this is just a request for client credentials (dummy amount = 1)
+        if (amount === 1 && items.length === 1 && items[0].name === 'dummy') {
+            return res.json({ 
+                ok: true, 
+                clientId: PAYPAL_CLIENT_ID,
+                environment: PAYPAL_ENVIRONMENT
+            });
+        }
 
-        const orderData = {
-            amount: parseInt(amount) * 100, // Convert to paise
-            currency,
-            receipt: receipt || `receipt_${Date.now()}`,
+        // Convert INR to USD if needed (assuming 1 INR = 0.012 USD, you should use a real exchange rate API)
+        let finalAmount = amount;
+        let finalCurrency = currency;
+        
+        if (currency === 'INR') {
+            // Convert INR to USD for PayPal (PayPal doesn't support INR in all regions)
+            finalAmount = (amount * 0.012).toFixed(2); // You should use a real exchange rate API
+            finalCurrency = 'USD';
+        }
+
+        // Create PayPal order using new SDK
+        const collect = {
+            body: {
+                intent: paypalSdk.OrdersCreateInputIntent.Capture,
+                purchaseUnits: [{
+                    amount: {
+                        currencyCode: finalCurrency,
+                        value: finalAmount.toString()
+                    },
+                    description: `Order from HS Global Export - ${items.length} items`,
+                    shipping: {
+                        name: {
+                            fullName: customer?.name || req.user.name
+                        },
+                        address: {
+                            addressLine1: shippingAddress?.street || '',
+                            adminArea2: shippingAddress?.city || '',
+                            adminArea1: shippingAddress?.state || '',
+                            postalCode: shippingAddress?.postalCode || '',
+                            countryCode: shippingAddress?.country === 'India' ? 'IN' : 'US'
+                        }
+                    }
+                }],
+                applicationContext: {
+                    returnUrl: `${process.env.FRONTEND_URL}/checkout-success`,
+                    cancelUrl: `${process.env.FRONTEND_URL}/checkout`,
+                    shippingPreference: paypalSdk.ShippingPreference.SetProvidedAddress,
+                    userAction: paypalSdk.UserAction.PayNow
+                }
+            }
         };
 
-        const response = await fetch('https://api.razorpay.com/v1/orders', {
-            method: 'POST',
-            headers: {
-                'Authorization': `Basic ${auth}`,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(orderData),
-        });
-
-        const order = await response.json();
-
-        if (!response.ok) {
-            throw new Error(order.error?.description || 'Failed to create order');
-        }
+        const { result: order } = await paypalClient.orders.create(collect);
 
         // Save Order to DB with all details
         const newOrder = await Order.create({
             orderId: order.id,
             userId: req.user._id,
-            amount: orderData.amount, // stored in paise
-            currency: order.currency,
+            amount: amount, // Store original amount in INR
+            currency: currency, // Store original currency
+            paypalAmount: finalAmount, // Store PayPal amount
+            paypalCurrency: finalCurrency, // Store PayPal currency
             status: 'created',
-            receipt: orderData.receipt,
+            receipt: receipt || `receipt_${Date.now()}`,
             items: items.map(item => ({
                 productId: item.id || item.productId,
                 name: item.name,
@@ -85,8 +134,13 @@ exports.createOrder = async (req, res) => {
             $push: { orders: newOrder._id }
         });
 
-        // Return order and Key ID (frontend needs Key ID)
-        res.json({ ok: true, order, keyId: RAZORPAY_KEY_ID });
+        // Return order and client ID (frontend needs client ID)
+        res.json({ 
+            ok: true, 
+            order: order,
+            clientId: PAYPAL_CLIENT_ID,
+            environment: PAYPAL_ENVIRONMENT
+        });
 
     } catch (error) {
         console.error('Order creation failed:', error);
@@ -94,30 +148,29 @@ exports.createOrder = async (req, res) => {
     }
 };
 
-exports.verifyPayment = async (req, res) => {
+exports.capturePayment = async (req, res) => {
     try {
-        const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
+        const { orderID } = req.body;
 
-        if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
-            return res.status(400).json({ ok: false, error: 'Missing payment details' });
+        if (!orderID) {
+            return res.status(400).json({ ok: false, error: 'OrderID is required' });
         }
 
-        // Verify Signature
-        const body = razorpay_order_id + '|' + razorpay_payment_id;
-        const expectedSignature = crypto
-            .createHmac('sha256', RAZORPAY_KEY_SECRET)
-            .update(body.toString())
-            .digest('hex');
+        // Capture the PayPal payment using new SDK
+        const collect = {
+            id: orderID,
+            body: {}
+        };
 
-        const isAuthentic = expectedSignature === razorpay_signature;
+        const { result: capture } = await paypalClient.orders.capture(collect);
 
-        if (isAuthentic) {
+        if (capture.status === 'COMPLETED') {
             // Update Order in DB
             const order = await Order.findOneAndUpdate(
-                { orderId: razorpay_order_id },
+                { orderId: orderID },
                 {
                     status: 'paid',
-                    paymentId: razorpay_payment_id,
+                    paymentId: capture.purchaseUnits[0].payments.captures[0].id,
                     deliveryStatus: 'processing' // Auto-update delivery status
                 },
                 { new: true } // Return updated document
@@ -145,11 +198,11 @@ exports.verifyPayment = async (req, res) => {
                 }
             }
 
-            res.json({ ok: true, message: 'Payment verified successfully', valid: true });
+            res.json({ ok: true, message: 'Payment captured successfully', capture: capture });
         } else {
             // Update Order in DB as failed
             const order = await Order.findOneAndUpdate(
-                { orderId: razorpay_order_id },
+                { orderId: orderID },
                 { status: 'failed' },
                 { new: true }
             );
@@ -171,12 +224,12 @@ exports.verifyPayment = async (req, res) => {
                 }
             }
 
-            res.status(400).json({ ok: false, error: 'Invalid signature', valid: false });
+            res.status(400).json({ ok: false, error: 'Payment capture failed', capture: capture });
         }
 
     } catch (error) {
-        console.error('Payment verification failed:', error);
-        res.status(500).json({ ok: false, error: 'Payment verification failed' });
+        console.error('Payment capture failed:', error);
+        res.status(500).json({ ok: false, error: 'Payment capture failed' });
     }
 };
 
