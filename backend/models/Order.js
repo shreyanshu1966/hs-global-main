@@ -5,7 +5,7 @@ const orderSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true
-    }, // Razorpay Order ID (e.g., order_DaZ...)
+    }, // PayPal Order ID
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -13,15 +13,21 @@ const orderSchema = new mongoose.Schema({
     }, // Reference to User who placed the order
     paymentId: {
         type: String
-    }, // Razorpay Payment ID (e.g., pay_DaZ...)
+    }, // PayPal Payment/Capture ID
     amount: {
         type: Number,
         required: true
-    }, // Amount in smallest currency unit (e.g., paise)
+    }, // Original amount in original currency
     currency: {
         type: String,
         default: 'INR'
-    },
+    }, // Original currency
+    paypalAmount: {
+        type: Number
+    }, // Amount processed by PayPal (might be converted)
+    paypalCurrency: {
+        type: String
+    }, // Currency used by PayPal
     status: {
         type: String,
         enum: ['created', 'paid', 'failed'],

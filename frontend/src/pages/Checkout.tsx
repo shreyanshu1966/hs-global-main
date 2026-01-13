@@ -11,7 +11,7 @@ import paymentRetryService from '../services/paymentRetryService';
 
 declare global {
   interface Window {
-    Razorpay: any;
+    paypal: any;
   }
 }
 
@@ -37,9 +37,10 @@ const Checkout: React.FC = () => {
   const [paymentError, setPaymentError] = useState<string | null>(null);
   const [currentOrderId, setCurrentOrderId] = useState<string | null>(null);
   const [retryInfo, setRetryInfo] = useState<any>(null);
+  const [paypalLoaded, setPaypalLoaded] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const payButtonRef = useRef<HTMLButtonElement>(null);
+  const paypalRef = useRef<HTMLDivElement>(null);
 
   // Load user details from authenticated user or localStorage
   useEffect(() => {
@@ -65,23 +66,75 @@ const Checkout: React.FC = () => {
         }
       } catch { }
     }
-  }, [user, state.phoneNumber]);
+  }, [user, state.phoneNumber, phone]);
 
   // Sync phone from cart verification
   useEffect(() => {
     if (state.phoneNumber && state.isPhoneVerified && !phone) {
       setPhone(state.phoneNumber);
     }
-  }, [state.phoneNumber, state.isPhoneVerified]);
+  }, [state.phoneNumber, state.isPhoneVerified, phone]);
 
-  // Load Razorpay
+  // Load PayPal SDK
   useEffect(() => {
-    if (window.Razorpay) return;
-    const script = document.createElement('script');
-    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-    script.async = true;
-    document.body.appendChild(script);
-  }, []);
+    if (window.paypal) {
+      setPaypalLoaded(true);
+      return;
+    }
+
+    if (!user) {
+      // Wait for user to be loaded
+      return;
+    }
+
+    const loadPayPal = async () => {
+      try {
+        // Get PayPal client ID from backend
+        const response = await fetch('/api/create-order', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+          },
+          body: JSON.stringify({
+            amount: 1, // Dummy amount just to get client ID
+            items: [{ id: 'dummy', name: 'dummy', quantity: 1, price: 1 }],
+            shippingAddress: {},
+            customer: {}
+          })
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          const clientId = data.clientId;
+          const environment = data.environment || 'sandbox';
+
+          // Check if script already exists
+          const existingScript = document.querySelector('script[src*="paypal.com/sdk"]');
+          if (existingScript) {
+            existingScript.remove();
+          }
+
+          const script = document.createElement('script');
+          script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=USD&intent=capture`;
+          script.onload = () => setPaypalLoaded(true);
+          script.onerror = () => {
+            console.error('Failed to load PayPal SDK script');
+            setPaymentError('Failed to load payment system. Please refresh the page.');
+          };
+          script.async = true;
+          document.body.appendChild(script);
+        } else {
+          throw new Error('Failed to get PayPal configuration');
+        }
+      } catch (error) {
+        console.error('Failed to load PayPal:', error);
+        setPaymentError('Failed to initialize payment system. Please refresh the page.');
+      }
+    };
+
+    loadPayPal();
+  }, [user]);
 
   // Price Helpers (Simplified)
   const extractPriceInINR = (priceString: string): number => {
@@ -105,187 +158,162 @@ const Checkout: React.FC = () => {
   const isEmailValid = useMemo(() => /^(?=.*@).+\..+$/i.test(email.trim()), [email]);
   const isFormValid = name && isEmailValid && phone && address1 && city && region && postalCode && country;
 
-  const handlePay = async () => {
-    if (!isFormValid) return;
+  // Render PayPal buttons when form is valid and PayPal is loaded
+  useEffect(() => {
+    if (!paypalLoaded || !isFormValid || !paypalRef.current || !window.paypal) return;
 
-    // Convert total amount to INR for Razorpay (always process in INR)
-    const totalInINR = subtotalINR;
+    const renderPayPalButtons = async () => {
+      try {
+        // Clear any existing PayPal buttons
+        if (paypalRef.current) {
+          paypalRef.current.innerHTML = '';
+        }
 
-    console.log('💰 Payment Debug:', {
-      subtotalINR,
-      totalInINR,
-      willBeSentToPaise: totalInINR * 100,
-      items: state.items.map(item => ({
-        name: item.name,
-        price: item.price,
-        extracted: extractPriceInINR(item.price),
-        quantity: item.quantity
-      }))
-    });
-
-    try {
-      setIsCreatingOrder(true);
-      setPaymentError(null);
-
-      const orderRes = await fetch('/api/create-order', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('authToken')}` // Use authToken
-        },
-        credentials: 'include', // Include cookies for auth
-        body: JSON.stringify({
-          amount: totalInINR,
-          currency: 'INR',
-          receipt: `rcpt_${Date.now()}`,
-          items: state.items.map(item => ({
-            id: item.id,
-            productId: item.id,
-            name: item.name,
-            quantity: item.quantity,
-            price: extractPriceInINR(item.price),
-            image: item.image,
-            category: item.category || 'Natural Stone'
-          })),
-          shippingAddress: {
-            street: address1,
-            city,
-            state: region,
-            postalCode,
-            country,
-            fullAddress: [address1, address2, city, region, postalCode, country]
-              .filter(Boolean)
-              .join(', ')
+        window.paypal.Buttons({
+          style: {
+            color: 'black',
+            shape: 'rect',
+            layout: 'vertical',
+            height: 45,
+            label: 'pay'
           },
-          customer: {
-            name,
-            email,
-            phone
-          }
-        }),
-      });
+          
+          createOrder: async () => {
+            try {
+              setIsCreatingOrder(true);
+              setPaymentError(null);
 
-      if (!orderRes.ok) {
-        const errorData = await orderRes.json().catch(() => ({}));
-        throw new Error(errorData.error || 'Failed to create payment order');
-      }
+              const response = await fetch('/api/create-order', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                },
+                credentials: 'include',
+                body: JSON.stringify({
+                  amount: subtotalINR,
+                  currency: 'INR',
+                  receipt: `rcpt_${Date.now()}`,
+                  items: state.items.map(item => ({
+                    id: item.id,
+                    productId: item.id,
+                    name: item.name,
+                    quantity: item.quantity,
+                    price: extractPriceInINR(item.price),
+                    image: item.image,
+                    category: item.category || 'Natural Stone'
+                  })),
+                  shippingAddress: {
+                    street: address1,
+                    city,
+                    state: region,
+                    postalCode,
+                    country,
+                    fullAddress: [address1, address2, city, region, postalCode, country]
+                      .filter(Boolean)
+                      .join(', ')
+                  },
+                  customer: {
+                    name,
+                    email,
+                    phone
+                  }
+                })
+              });
 
-      const orderData = await orderRes.json();
+              if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.error || 'Failed to create payment order');
+              }
 
-      if (!orderData.ok || !orderData.order) {
-        throw new Error('Invalid order response from server');
-      }
+              const orderData = await response.json();
 
-      const { order, keyId } = orderData;
+              if (!orderData.ok || !orderData.order) {
+                throw new Error('Invalid order response from server');
+              }
 
-      // Store order ID for retry tracking
-      setCurrentOrderId(order.id);
+              setCurrentOrderId(orderData.order.id);
+              return orderData.order.id;
 
-      if (!window.Razorpay) {
-        alert('Payment library failed to load. Please refresh and try again.');
-        setIsCreatingOrder(false);
-        return;
-      }
+            } catch (error: any) {
+              setPaymentError(error.message || 'Failed to create order');
+              setIsCreatingOrder(false);
+              throw error;
+            }
+          },
 
-      const options = {
-        key: keyId,
-        amount: order.amount,
-        currency: order.currency,
-        name: 'HS Global Export',
-        description: 'Product Order Payment',
-        order_id: order.id,
-        prefill: {
-          name,
-          email,
-          contact: phone
-        },
-        notes: {
-          address: [address1, address2, city, region, postalCode, country]
-            .filter(Boolean)
-            .join(', '),
-          customer_name: name,
-          customer_email: email,
-        },
-        theme: {
-          color: '#000000'
-        },
-        modal: {
-          ondismiss: () => {
-            // Record failed attempt
-            paymentRetryService.recordAttempt(order.id, 'Payment cancelled by user');
-            setRetryInfo(paymentRetryService.getRetryInfo(order.id));
+          onApprove: async (data: any) => {
+            try {
+              const response = await fetch('/api/capture-payment', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  orderID: data.orderID
+                })
+              });
+
+              if (!response.ok) {
+                throw new Error('Payment capture failed');
+              }
+
+              const captureData = await response.json();
+
+              if (captureData.ok) {
+                // Clear retry attempts on success
+                if (currentOrderId) {
+                  paymentRetryService.clearAttempts(currentOrderId);
+                }
+                clearCart();
+                navigate('/checkout-success');
+              } else {
+                throw new Error(captureData.error || 'Payment capture failed');
+              }
+
+            } catch (error: any) {
+              console.error('Payment capture error:', error);
+              if (currentOrderId) {
+                paymentRetryService.recordAttempt(currentOrderId, error.message);
+                setRetryInfo(paymentRetryService.getRetryInfo(currentOrderId));
+              }
+              setPaymentError(error.message || 'Payment capture failed');
+            } finally {
+              setIsCreatingOrder(false);
+            }
+          },
+
+          onError: (err: any) => {
+            console.error('PayPal error:', err);
+            if (currentOrderId) {
+              paymentRetryService.recordAttempt(currentOrderId, 'PayPal payment error');
+              setRetryInfo(paymentRetryService.getRetryInfo(currentOrderId));
+            }
+            setPaymentError('Payment failed. Please try again.');
+            setIsCreatingOrder(false);
+          },
+
+          onCancel: () => {
+            if (currentOrderId) {
+              paymentRetryService.recordAttempt(currentOrderId, 'Payment cancelled by user');
+              setRetryInfo(paymentRetryService.getRetryInfo(currentOrderId));
+            }
             setPaymentError('Payment was cancelled. Please try again.');
             setIsCreatingOrder(false);
-          },
-        },
-        handler: async (response: any) => {
-          try {
-            const verifyRes = await fetch('/api/verify-payment', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                razorpay_order_id: response.razorpay_order_id,
-                razorpay_payment_id: response.razorpay_payment_id,
-                razorpay_signature: response.razorpay_signature,
-              }),
-            });
-
-            if (!verifyRes.ok) throw new Error('Payment verification failed');
-
-            const verifyJson = await verifyRes.json();
-
-            if (verifyJson.ok && verifyJson.valid) {
-              // Clear retry attempts on success
-              paymentRetryService.clearAttempts(order.id);
-              clearCart();
-              navigate('/checkout-success');
-            } else {
-              throw new Error(verifyJson.error || 'Payment verification failed');
-            }
-          } catch (e: any) {
-            console.error('Verify Error', e);
-            // Record failed attempt
-            paymentRetryService.recordAttempt(order.id, e.message);
-            setRetryInfo(paymentRetryService.getRetryInfo(order.id));
-            setPaymentError(e.message || 'Payment verification error.');
-          } finally {
-            setIsCreatingOrder(false);
           }
-        },
-      };
 
-      const rzp = new window.Razorpay(options);
-      rzp.open();
+        }).render(paypalRef.current);
 
-    } catch (e: any) {
-      console.error('Payment Error', e);
-      // Record failed attempt if we have an order ID
-      if (currentOrderId) {
-        paymentRetryService.recordAttempt(currentOrderId, e.message);
-        setRetryInfo(paymentRetryService.getRetryInfo(currentOrderId));
+      } catch (error) {
+        console.error('Failed to render PayPal buttons:', error);
+        setPaymentError('Failed to load payment system');
       }
-      setPaymentError(e.message || 'Payment failed. Please try again.');
-      setIsCreatingOrder(false);
-    }
-  };
+    };
+
+    renderPayPalButtons();
+  }, [paypalLoaded, isFormValid, subtotalINR, name, email, phone, address1, address2, city, region, postalCode, country]);
 
   const { contextSafe } = useGSAP({ scope: containerRef });
-
-  const handleMouseEnter = contextSafe(() => {
-    gsap.to(payButtonRef.current, { scale: 1.02, duration: 0.2 });
-  });
-
-  const handleMouseLeave = contextSafe(() => {
-    gsap.to(payButtonRef.current, { scale: 1, duration: 0.2 });
-  });
-
-  const handleMouseDown = contextSafe(() => {
-    gsap.to(payButtonRef.current, { scale: 0.98, duration: 0.1 });
-  });
-
-  const handleMouseUp = contextSafe(() => {
-    gsap.to(payButtonRef.current, { scale: 1.02, duration: 0.1 });
-  });
 
   if (state.items.length === 0) {
     return (
@@ -532,28 +560,34 @@ const Checkout: React.FC = () => {
                 </div>
               )}
 
-              <button
-                ref={payButtonRef}
-                onClick={handlePay}
-                disabled={!isFormValid || isCreatingOrder}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-                onMouseDown={handleMouseDown}
-                onMouseUp={handleMouseUp}
-                className="w-full mt-6 py-4 bg-black text-white font-bold text-lg rounded-xl hover:bg-gray-900 transition-all shadow-lg flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isCreatingOrder ? (
-                  <>
-                    <Loader2 className="w-5 h-5 animate-spin mr-2" />
-                    Processing...
-                  </>
-                ) : (
-                  `Pay ${getCurrencySymbol()}${totalAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })}`
-                )}
-              </button>
+              {!isFormValid && (
+                <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg text-sm text-yellow-800">
+                  <p className="font-medium">Please fill in all required fields to proceed with payment.</p>
+                </div>
+              )}
+
+              {isFormValid && !paypalLoaded && (
+                <div className="mt-6 py-4 bg-gray-100 text-gray-600 font-bold text-lg rounded-xl flex items-center justify-center">
+                  <Loader2 className="w-5 h-5 animate-spin mr-2" />
+                  Loading PayPal...
+                </div>
+              )}
+
+              {isCreatingOrder && (
+                <div className="mt-6 py-4 bg-blue-100 text-blue-600 font-bold text-lg rounded-xl flex items-center justify-center">
+                  <Loader2 className="w-5 h-5 animate-spin mr-2" />
+                  Creating Order...
+                </div>
+              )}
+
+              {isFormValid && paypalLoaded && (
+                <div className="mt-6">
+                  <div ref={paypalRef} className="w-full"></div>
+                </div>
+              )}
 
               <p className="mt-3 text-xs text-center text-gray-500">
-                Secure Payment by Razorpay. Your data is encrypted.
+                Secure Payment by PayPal. Your data is encrypted and protected.
               </p>
 
             </div>

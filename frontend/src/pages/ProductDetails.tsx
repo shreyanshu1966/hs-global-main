@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { Share2, ChevronRight, Quote, ChevronLeft, ChevronRight as ChevronRightIcon } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -261,6 +262,14 @@ const ProductDetails = () => {
   // ------------------------------
   return (
     <div className="pt-20 min-h-screen">
+      <Helmet>
+        <title>{product.name} | HS Global Export</title>
+        <meta name="title" content={product.name} />
+        <meta name="description" content={product.description} />
+        <meta property="og:title" content={`${product.name} | HS Global Export`} />
+        <meta property="og:description" content={product.description} />
+        <meta property="og:image" content={product.image} />
+      </Helmet>
       {/* Breadcrumb */}
       <div className="container mx-auto px-4 pt-0">
         <div className="flex items-center text-gray-600 text-sm bg-white/60 backdrop-blur rounded-lg px-3 py-2 inline-flex">
