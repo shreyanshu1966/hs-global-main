@@ -369,7 +369,7 @@ const Contact = () => {
                     <div>
                       <h4 className="text-lg font-medium text-gray-900 mb-2">{t('contact.location')}</h4>
                       <div className="space-y-3 text-gray-600">
-                        <a href="https://www.google.com/maps/search/?api=1&query=C-108%2C%20Titanium%20Business%20Park%2C%20Makarba%2C%20Ahmedabad%20-%20380051" target="_blank" rel="noreferrer" className="block hover:underline">
+                        <a href="https://maps.app.goo.gl/SLV59xn17PS7k2z76" target="_blank" rel="noreferrer" className="block hover:underline">
                           <span className="font-medium">{t('contact.corporate_title')}</span><br />
                           {t('contact.corporate_address_1')}<br />
                           {t('contact.corporate_address_2')}

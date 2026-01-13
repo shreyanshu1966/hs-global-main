@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
-import { getProductsForCategory, optimizeCloudinaryUrl } from '../utils/collectionCloudinary';
+import { optimizeCloudinaryUrl } from '../utils/collectionCloudinary';
 
 type MainCategory = "marble" | "granite" | "sandstone" | "onyx" | "travertine";
 
@@ -17,52 +17,57 @@ interface StoneGroup {
   stones: StoneItem[];
 }
 
-function toTitle(text: string): string {
-  return decodeURIComponent(text)
-    .replace(/[-_]+/g, " ")
-    .replace(/\s+/g, " ")
-    .trim()
-    .replace(/\b\w/g, (c) => c.toUpperCase());
-}
 
-function buildGroupsFromCloudinary(): StoneGroup[] {
-  const mainCategories: { key: MainCategory; folder: string; title: string }[] = [
-    { key: "marble", folder: "Marble", title: "Marble" },
-    { key: "granite", folder: "Granite", title: "Granite" },
-    { key: "sandstone", folder: "Sandstone", title: "Sandstone" },
-    { key: "onyx", folder: "Onyx", title: "Onyx" },
-    { key: "travertine", folder: "Travertine", title: "Travertine" },
+
+import { getAllProducts } from '../data/products';
+import { getProductCloudinaryUrl } from '../utils/productCloudinary';
+
+function buildGroupsFromProducts(): StoneGroup[] {
+  const allProducts = getAllProducts();
+
+  const mainCategories: { key: MainCategory; title: string }[] = [
+    { key: "marble", title: "Marble" },
+    { key: "granite", title: "Granite" },
+    { key: "sandstone", title: "Sandstone" },
+    { key: "onyx", title: "Onyx" },
+    { key: "travertine", title: "Travertine" },
   ];
 
   const result: StoneGroup[] = [];
 
   for (const cat of mainCategories) {
-    // Get all products for this category from Cloudinary
-    const products = getProductsForCategory(cat.folder);
+    // Filter products for this category
+    const categoryProducts = allProducts.filter(p =>
+      p.category === 'slabs' &&
+      p.id.startsWith(cat.key)
+    );
 
-    // Convert to StoneItem format with optimized images
-    const items: StoneItem[] = products
-      .filter(p => p.image) // Only include products with images
-      .map((product, idx) => ({
-        id: `${cat.key}-${idx}`,
-        name: toTitle(product.name),
-        image: optimizeCloudinaryUrl(product.image!, {
-          width: 200,
-          height: 200,
-          quality: 85,
-          format: 'auto'
-        }),
-        category: cat.key,
-      }));
+    // Convert to StoneItem format
+    const items: StoneItem[] = categoryProducts
+      .filter(p => p.image || (p.images && p.images.length > 0))
+      .map((product) => {
+        let imageUrl = product.image;
+        if (!imageUrl && product.images && product.images.length > 0) {
+          // Convert /src/assets/Collection/... to Collection/...
+          const relativePath = product.images[0].replace('/src/assets/', '');
+          imageUrl = getProductCloudinaryUrl(relativePath);
+        }
 
-    // Shuffle and take up to 8
-    const shuffled = [...items];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
+        return {
+          id: product.id,
+          name: product.name,
+          image: optimizeCloudinaryUrl(imageUrl, {
+            width: 200,
+            height: 200,
+            quality: 85,
+            format: 'auto'
+          }),
+          category: cat.key,
+        };
+      });
 
-    result.push({ title: cat.title, stones: shuffled.slice(0, 8) });
+    // Take up to 8 items (Selection is stable because allProducts is sorted)
+    result.push({ title: cat.title, stones: items.slice(0, 8) });
   }
 
   return result;
@@ -72,12 +77,10 @@ const ChooseStone: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const DEMO_IMG = "/general/marble.jpg";
-  const groups = useMemo(() => buildGroupsFromCloudinary(), []);
+  const groups = useMemo(() => buildGroupsFromProducts(), []);
 
   const handleClick = (stone: StoneItem) => {
-    // Ensure Onyx works like others; pass state and also set hash to main for fallback
-    const main = stone.category;
-    navigate(`/products#${main}`, { state: { targetProduct: stone.name, targetCategory: 'slabs', targetMain: main } });
+    navigate(`/products/${stone.id}`);
   };
 
   return (

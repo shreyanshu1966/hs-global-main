@@ -99,7 +99,7 @@ const Footer: React.FC = () => {
               <ul className="space-y-6 text-gray-400 font-light">
                 <li className="flex gap-4 items-start">
                   <MapPin className="w-5 h-5 flex-shrink-0 text-accent mt-1" />
-                  <span className="leading-relaxed">{t('footer.address')}</span>
+                  <a href="https://maps.app.goo.gl/SLV59xn17PS7k2z76" target="_blank" rel="noreferrer" className="leading-relaxed hover:text-white transition-colors cursor-pointer">{t('footer.address')}</a>
                 </li>
                 <li className="flex gap-4 items-center">
                   <Phone className="w-5 h-5 flex-shrink-0 text-accent" />
