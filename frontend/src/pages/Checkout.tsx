@@ -8,6 +8,7 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { Minus, Plus, Trash2, ArrowLeft, Loader2, RefreshCw } from 'lucide-react';
 import paymentRetryService from '../services/paymentRetryService';
+import ShippingEstimator from '../components/ShippingEstimator';
 
 declare global {
   interface Window {
@@ -38,6 +39,8 @@ const Checkout: React.FC = () => {
   const [currentOrderId, setCurrentOrderId] = useState<string | null>(null);
   const [retryInfo, setRetryInfo] = useState<any>(null);
   const [paypalLoaded, setPaypalLoaded] = useState(false);
+  const [shippingCost, setShippingCost] = useState<number>(0);
+  const [shippingEstimate, setShippingEstimate] = useState<any>(null);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const paypalRef = useRef<HTMLDivElement>(null);
@@ -153,7 +156,7 @@ const Checkout: React.FC = () => {
 
   // Convert to user's currency for display
   const subtotal = useMemo(() => convertFromINR(subtotalINR), [subtotalINR, convertFromINR]);
-  const totalAmount = subtotal;
+  const totalAmount = subtotal + shippingCost;
 
   const isEmailValid = useMemo(() => /^(?=.*@).+\..+$/i.test(email.trim()), [email]);
   const isFormValid = name && isEmailValid && phone && address1 && city && region && postalCode && country;
@@ -466,6 +469,36 @@ const Checkout: React.FC = () => {
 
               </div>
             </div>
+
+            {/* Shipping Estimator */}
+            {isFormValid && (
+              <div className="mt-6">
+                <ShippingEstimator
+                  items={state.items.map(item => ({
+                    ...item,
+                    category: item.category || 'Natural Stone',
+                    price: extractPriceInINR(item.price)
+                  }))}
+                  destination={{
+                    country,
+                    city,
+                    state: region,
+                    postalCode
+                  }}
+                  onEstimateChange={(estimate) => {
+                    if (estimate) {
+                      // Convert shipping cost from USD to user's currency
+                      const shippingInINR = estimate.cost * 83.5; // Approximate USD to INR
+                      setShippingCost(convertFromINR(shippingInINR));
+                      setShippingEstimate(estimate);
+                    } else {
+                      setShippingCost(0);
+                      setShippingEstimate(null);
+                    }
+                  }}
+                />
+              </div>
+            )}
           </div>
 
           {/* Right: Order Summary (5 cols) */}
@@ -518,7 +551,13 @@ const Checkout: React.FC = () => {
                 </div>
                 <div className="flex justify-between text-sm text-gray-600">
                   <span>Shipping</span>
-                  <span className="text-green-600 font-medium">Free</span>
+                  {shippingCost > 0 ? (
+                    <span className="font-semibold text-gray-900">
+                      {getCurrencySymbol()}{shippingCost.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                    </span>
+                  ) : (
+                    <span className="text-gray-400">Calculated at checkout</span>
+                  )}
                 </div>
                 <div className="flex justify-between text-lg font-bold text-black pt-3 border-t border-gray-100">
                   <span>Total</span>

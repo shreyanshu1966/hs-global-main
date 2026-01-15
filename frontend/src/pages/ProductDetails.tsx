@@ -17,12 +17,14 @@ import {
 } from "../data/products";
 
 import { getFurnitureSpecs, formatFurnitureSpecs } from "../data/furnitureSpecs";
+import { loadImageUrl } from "../data/slabs.loader";
 import { useCurrency } from "../contexts/CurrencyContext";
 
 const ProductDetails = () => {
   const { id }: { id?: string } = useParams<{ id?: string }>();
   const { formatPrice } = useCurrency();
-
+  const [slabImageUrls, setSlabImageUrls] = useState<string[]>([]);
+  const [slabImagesLoaded, setSlabImagesLoaded] = useState(false);
 
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedFinish, setSelectedFinish] = useState("Polish");
@@ -53,16 +55,51 @@ const ProductDetails = () => {
     return null;
   }, [resolved]);
 
+  // Load Cloudinary URLs for slab images
+  useEffect(() => {
+    if (resolved?.category === 'slabs' && resolved?.images && !slabImagesLoaded) {
+      setSlabImagesLoaded(true);
+      
+      Promise.all(resolved.images.map(async (path) => {
+        try {
+          const url = await loadImageUrl(path);
+          return url;
+        } catch (err) {
+          console.error(`[ProductDetails] Failed to convert image path: ${path}`, err);
+          return path; // fallback to original
+        }
+      }))
+        .then(urls => {
+          setSlabImageUrls(urls.filter(Boolean));
+        })
+        .catch(err => {
+          console.error('[ProductDetails] Error loading slab images:', err);
+          setSlabImageUrls(resolved.images); // Fallback to original paths
+        });
+    } else if (resolved?.category !== 'slabs') {
+      setSlabImageUrls([]);
+      setSlabImagesLoaded(false);
+    }
+  }, [resolved?.category, resolved?.images, slabImagesLoaded]);
+
   const etsyUrl = furnitureSpecs?.etsyUrl;
 
   // Build rich product object
   const product = useMemo(() => {
-    const baseImages =
-      resolved?.images && resolved.images.length > 0
+    const baseImages = (() => {
+      if (resolved?.category === 'slabs') {
+        // For slabs, use loaded Cloudinary URLs
+        const result = slabImageUrls.length > 0 ? slabImageUrls : ["/demo2.webp"];
+        return result;
+      }
+      // For other categories, use original logic
+      const result = resolved?.images && resolved.images.length > 0
         ? resolved.images
         : resolved?.image
           ? [resolved.image]
           : ["/demo2.webp"];
+      return result;
+    })();
 
     const category = resolved?.category || "slabs";
     const subcategory = resolved?.subcategory || "marble";
@@ -139,6 +176,7 @@ const ProductDetails = () => {
     selectedThickness,
     furnitureSpecs,
     formatPrice,
+    slabImageUrls,
   ]);
   // ------------------------------
   // 🔗 Breadcrumb Builder
@@ -315,6 +353,37 @@ const ProductDetails = () => {
           <span className="text-gray-900 font-medium">{product.name}</span>
         </div>
       </div>
+
+      {/* DEBUG INFO - Remove in production */}
+      {process.env.NODE_ENV === 'development' && product.category === 'slabs' && (
+        <div className="container mx-auto px-4 py-4 bg-yellow-100 border border-yellow-400 rounded">
+          <h3 className="font-bold text-yellow-800">Debug Info (Slab Images)</h3>
+          <p className="text-sm text-yellow-700 mb-2">
+            Slab images loaded: {slabImagesLoaded ? 'Yes' : 'No'}
+          </p>
+          <p className="text-sm text-yellow-700 mb-2">
+            Cloudinary URLs count: {slabImageUrls.length}
+          </p>
+          <div className="max-h-32 overflow-y-auto">
+            <p className="text-xs text-yellow-600 font-mono break-all">
+              Current image URL: {product.images[selectedImage]}
+            </p>
+            {slabImageUrls.length > 0 && (
+              <div className="mt-2">
+                <strong className="text-xs text-yellow-700">Converted URLs:</strong>
+                {slabImageUrls.slice(0, 3).map((url, idx) => (
+                  <p key={idx} className="text-xs text-yellow-600 font-mono break-all">
+                    {idx + 1}. {url}
+                  </p>
+                ))}
+                <p className="text-xs text-yellow-700 mt-1">
+                  Are they Cloudinary URLs? {slabImageUrls[0]?.includes('cloudinary.com') ? 'Yes ✅' : 'No ❌'}
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Main image*/}
       <div className="container mx-auto px-4 py-3">

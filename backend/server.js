@@ -51,6 +51,7 @@ app.use('/api', require('./routes/orderRoutes'));
 app.use('/api/webhooks', require('./routes/webhookRoutes')); // Razorpay webhooks
 app.use('/api/admin', require('./routes/adminRoutes')); // Admin routes
 app.use('/api/blogs', require('./routes/blog')); // Blog routes
+app.use('/api/shipping', require('./routes/shipping')); // Shipping routes (Freightos integration)
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
