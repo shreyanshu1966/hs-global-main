@@ -4,20 +4,21 @@ const { sendOrderConfirmationEmail, sendPaymentFailedEmail } = require('../servi
 
 // PayPal SDK
 const paypalSdk = require('@paypal/paypal-server-sdk');
+const { Client, Environment, LogLevel } = paypalSdk;
 
 const PAYPAL_CLIENT_ID = process.env.PAYPAL_CLIENT_ID;
 const PAYPAL_CLIENT_SECRET = process.env.PAYPAL_CLIENT_SECRET;
 const PAYPAL_ENVIRONMENT = process.env.PAYPAL_ENVIRONMENT || 'sandbox';
 
 // Configure PayPal client
-const paypalClient = paypalSdk.client({
+const paypalClient = new Client({
     clientCredentialsAuthCredentials: {
         oAuthClientId: PAYPAL_CLIENT_ID,
         oAuthClientSecret: PAYPAL_CLIENT_SECRET,
     },
-    environment: PAYPAL_ENVIRONMENT === 'production' ? paypalSdk.Environment.Production : paypalSdk.Environment.Sandbox,
+    environment: PAYPAL_ENVIRONMENT === 'production' ? Environment.Production : Environment.Sandbox,
     logging: {
-        logLevel: paypalSdk.LogLevel.Info,
+        logLevel: LogLevel.Info,
         logRequest: { logBody: true },
         logResponse: { logHeaders: true },
     },
@@ -45,8 +46,8 @@ exports.createOrder = async (req, res) => {
 
         // Check if this is just a request for client credentials (dummy amount = 1)
         if (amount === 1 && items.length === 1 && items[0].name === 'dummy') {
-            return res.json({ 
-                ok: true, 
+            return res.json({
+                ok: true,
                 clientId: PAYPAL_CLIENT_ID,
                 environment: PAYPAL_ENVIRONMENT
             });
@@ -55,7 +56,7 @@ exports.createOrder = async (req, res) => {
         // Convert INR to USD if needed (assuming 1 INR = 0.012 USD, you should use a real exchange rate API)
         let finalAmount = amount;
         let finalCurrency = currency;
-        
+
         if (currency === 'INR') {
             // Convert INR to USD for PayPal (PayPal doesn't support INR in all regions)
             finalAmount = (amount * 0.012).toFixed(2); // You should use a real exchange rate API
@@ -135,8 +136,8 @@ exports.createOrder = async (req, res) => {
         });
 
         // Return order and client ID (frontend needs client ID)
-        res.json({ 
-            ok: true, 
+        res.json({
+            ok: true,
             order: order,
             clientId: PAYPAL_CLIENT_ID,
             environment: PAYPAL_ENVIRONMENT
