@@ -8,7 +8,6 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { Minus, Plus, Trash2, ArrowLeft, Loader2, RefreshCw } from 'lucide-react';
 import paymentRetryService from '../services/paymentRetryService';
-import ShippingEstimator from '../components/ShippingEstimator';
 
 declare global {
   interface Window {
@@ -39,8 +38,6 @@ const Checkout: React.FC = () => {
   const [currentOrderId, setCurrentOrderId] = useState<string | null>(null);
   const [retryInfo, setRetryInfo] = useState<any>(null);
   const [paypalLoaded, setPaypalLoaded] = useState(false);
-  const [shippingCost, setShippingCost] = useState<number>(0);
-  const [shippingEstimate, setShippingEstimate] = useState<any>(null);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const paypalRef = useRef<HTMLDivElement>(null);
@@ -156,7 +153,7 @@ const Checkout: React.FC = () => {
 
   // Convert to user's currency for display
   const subtotal = useMemo(() => convertFromINR(subtotalINR), [subtotalINR, convertFromINR]);
-  const totalAmount = subtotal + shippingCost;
+  const totalAmount = subtotal;
 
   const isEmailValid = useMemo(() => /^(?=.*@).+\..+$/i.test(email.trim()), [email]);
   const isFormValid = name && isEmailValid && phone && address1 && city && region && postalCode && country;
@@ -469,42 +466,27 @@ const Checkout: React.FC = () => {
 
               </div>
             </div>
-
-            {/* Shipping Estimator */}
-            {isFormValid && (
-              <div className="mt-6">
-                <ShippingEstimator
-                  items={state.items.map(item => ({
-                    ...item,
-                    category: item.category || 'Natural Stone',
-                    price: extractPriceInINR(item.price)
-                  }))}
-                  destination={{
-                    country,
-                    city,
-                    state: region,
-                    postalCode
-                  }}
-                  onEstimateChange={(estimate) => {
-                    if (estimate) {
-                      // Convert shipping cost from USD to user's currency
-                      const shippingInINR = estimate.cost * 83.5; // Approximate USD to INR
-                      setShippingCost(convertFromINR(shippingInINR));
-                      setShippingEstimate(estimate);
-                    } else {
-                      setShippingCost(0);
-                      setShippingEstimate(null);
-                    }
-                  }}
-                />
-              </div>
-            )}
           </div>
 
           {/* Right: Order Summary (5 cols) */}
           <div className="lg:col-span-5">
             <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 md:p-8 sticky top-24">
-              <h2 className="text-xl font-semibold text-black mb-6">Order Summary</h2>
+              <h2 className="text-xl font-semibold text-black mb-4">Order Summary</h2>
+
+              {/* Shipping Notice */}
+              <div className="mb-6 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                <div className="flex items-start gap-2">
+                  <svg className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <div className="flex-1">
+                    <p className="text-sm font-medium text-blue-900">Shipping charges not included</p>
+                    <p className="text-xs text-blue-700 mt-1">
+                      Shipping costs will be calculated and sent to you separately after order placement.
+                    </p>
+                  </div>
+                </div>
+              </div>
 
               <div className="space-y-4 max-h-96 overflow-y-auto custom-scrollbar pr-2">
                 {state.items.map(item => (
@@ -551,13 +533,10 @@ const Checkout: React.FC = () => {
                 </div>
                 <div className="flex justify-between text-sm text-gray-600">
                   <span>Shipping</span>
-                  {shippingCost > 0 ? (
-                    <span className="font-semibold text-gray-900">
-                      {getCurrencySymbol()}{shippingCost.toLocaleString('en-US', { minimumFractionDigits: 2 })}
-                    </span>
-                  ) : (
-                    <span className="text-gray-400">Calculated at checkout</span>
-                  )}
+                  <span className="text-orange-600 font-medium">Not Included</span>
+                </div>
+                <div className="text-xs text-gray-500 -mt-2 text-right">
+                  Shipping charges will be sent separately
                 </div>
                 <div className="flex justify-between text-lg font-bold text-black pt-3 border-t border-gray-100">
                   <span>Total</span>
