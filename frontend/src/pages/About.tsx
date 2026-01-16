@@ -282,39 +282,35 @@ const PhilosophyGrid = () => {
     {
       title: "Premium Quality",
       desc: "Sourced from the finest mines.",
-      icon: <Award className="w-[clamp(1.5rem,3vw,2rem)] h-[clamp(1.5rem,3vw,2rem)]" />,
+      icon: <Award className="w-[clamp(1.5rem,3vw,2rem)] h-[clamp(1.5rem,3vw,2rem)] text-white" />,
       col: "md:col-span-2",
-      bg: "bg-white",
-      dark: false
+      img: "about-premium-quality.png"
     },
     {
       title: "Global Reach",
       desc: "50+ Countries served.",
       icon: <Globe className="w-[clamp(1.5rem,3vw,2rem)] h-[clamp(1.5rem,3vw,2rem)] text-white" />,
       col: "md:col-span-1",
-      bg: "bg-[#1a1a1a]",
-      dark: true
+      img: "about-global-reach.png"
     },
     {
       title: "Precision",
       desc: "Italian Tech Processing.",
-      icon: <Target className="w-[clamp(1.5rem,3vw,2rem)] h-[clamp(1.5rem,3vw,2rem)]" />,
+      icon: <Target className="w-[clamp(1.5rem,3vw,2rem)] h-[clamp(1.5rem,3vw,2rem)] text-white" />,
       col: "md:col-span-1",
-      bg: "bg-[#EAEAE5]",
-      dark: false
+      img: "about-precision.png"
     },
     {
       title: "Client Focus",
       desc: "End-to-end support.",
-      icon: <Users className="w-[clamp(1.5rem,3vw,2rem)] h-[clamp(1.5rem,3vw,2rem)]" />,
+      icon: <Users className="w-[clamp(1.5rem,3vw,2rem)] h-[clamp(1.5rem,3vw,2rem)] text-white" />,
       col: "md:col-span-2",
-      bg: "bg-white",
-      dark: false
+      img: "about-client-focus.png"
     }
   ];
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 gap-[clamp(0.75rem,2vw,1.5rem)]">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[clamp(0.75rem,2vw,1.5rem)]">
       {items.map((item, i) => (
         <motion.div
           key={i}
@@ -322,14 +318,25 @@ const PhilosophyGrid = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ delay: i * 0.1, duration: 0.5 }}
           viewport={{ once: true }}
-          className={`${item.col} ${item.bg} nav-item p-[clamp(1.5rem,4vw,2.5rem)] rounded-[clamp(1rem,3vw,1.5rem)] min-h-[clamp(200px,30vw,300px)] flex flex-col justify-between group hover:shadow-2xl transition-all duration-500 border border-transparent hover:border-black/5 touch-manipulation`}
+          className={`${item.col} relative nav-item p-[clamp(1.5rem,4vw,2.5rem)] rounded-[clamp(1rem,3vw,1.5rem)] min-h-[clamp(250px,35vw,350px)] flex flex-col justify-between group overflow-hidden touch-manipulation`}
         >
-          <div className={`w-[clamp(3rem,8vw,4rem)] h-[clamp(3rem,8vw,4rem)] rounded-full flex items-center justify-center ${item.dark ? 'bg-white/10' : 'bg-black/5'} group-hover:scale-110 transition-transform duration-500`}>
+          {/* Background Image */}
+          <div className="absolute inset-0 z-0">
+            <img
+              src={getRootImageUrl(item.img) || `/${item.img}`}
+              alt={item.title}
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+            />
+            <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors duration-500" />
+          </div>
+
+          <div className="relative z-10 w-[clamp(3rem,8vw,4rem)] h-[clamp(3rem,8vw,4rem)] rounded-full flex items-center justify-center bg-white/20 backdrop-blur-md border border-white/10 group-hover:scale-110 transition-transform duration-500">
             {item.icon}
           </div>
-          <div>
-            <h3 className={`text-[clamp(1.25rem,3vw,1.875rem)] font-serif mb-[clamp(0.25rem,1vw,0.5rem)] ${item.dark ? 'text-white' : 'text-gray-900'}`}>{item.title}</h3>
-            <p className={`text-[clamp(0.75rem,1.5vw,1rem)] ${item.dark ? 'text-white/60' : 'text-gray-500'}`}>{item.desc}</p>
+
+          <div className="relative z-10">
+            <h3 className="text-[clamp(1.25rem,3vw,1.875rem)] font-serif mb-[clamp(0.25rem,1vw,0.5rem)] text-white">{item.title}</h3>
+            <p className="text-[clamp(0.75rem,1.5vw,1rem)] text-white/80">{item.desc}</p>
           </div>
         </motion.div>
       ))}

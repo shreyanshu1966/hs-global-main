@@ -412,49 +412,40 @@ const Services: React.FC = () => {
 // --- Sub-Components ---
 
 const ServicesBentoGrid = () => {
-  const { t } = useTranslation();
 
   const services = [
     {
-      title: t('services.badge_1') || 'Manufacturing',
+      title: 'In-house Manufacturing',
       desc: 'State-of-the-art facilities with precision machinery',
-      icon: <Factory className="w-[clamp(1.5rem,3vw,2rem)] h-[clamp(1.5rem,3vw,2rem)]" />,
+      icon: <Factory className="w-[clamp(1.5rem,3vw,2rem)] h-[clamp(1.5rem,3vw,2rem)] text-white" />,
       col: 'md:col-span-2',
-      bg: 'bg-white',
-      dark: false,
-      gradient: 'from-blue-500 to-blue-600'
+      img: 'services-in-house-manufacturing.png'
     },
     {
-      title: t('services.badge_2') || 'Fabrication',
+      title: 'Custom Fabrication',
       desc: 'Expert craftsmanship meets technology',
       icon: <Hammer className="w-[clamp(1.5rem,3vw,2rem)] h-[clamp(1.5rem,3vw,2rem)] text-white" />,
       col: 'md:col-span-1',
-      bg: 'bg-[#1a1a1a]',
-      dark: true,
-      gradient: 'from-purple-500 to-purple-600'
+      img: 'services-custom-fabrication.png'
     },
     {
-      title: t('services.badge_3') || 'Global Export',
+      title: 'Global Logistics',
       desc: 'Worldwide shipping & logistics',
-      icon: <Truck className="w-[clamp(1.5rem,3vw,2rem)] h-[clamp(1.5rem,3vw,2rem)]" />,
+      icon: <Truck className="w-[clamp(1.5rem,3vw,2rem)] h-[clamp(1.5rem,3vw,2rem)] text-white" />,
       col: 'md:col-span-1',
-      bg: 'bg-[#EAEAE5]',
-      dark: false,
-      gradient: 'from-green-500 to-green-600'
+      img: 'services-global-logistics.png'
     },
     {
-      title: t('services.badge_4') || 'Quality Assurance',
+      title: 'Strict QA',
       desc: 'Rigorous testing and certification',
-      icon: <Shield className="w-[clamp(1.5rem,3vw,2rem)] h-[clamp(1.5rem,3vw,2rem)]" />,
+      icon: <Shield className="w-[clamp(1.5rem,3vw,2rem)] h-[clamp(1.5rem,3vw,2rem)] text-white" />,
       col: 'md:col-span-2',
-      bg: 'bg-white',
-      dark: false,
-      gradient: 'from-amber-500 to-amber-600'
+      img: 'services-strict-qa.png'
     }
   ];
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 gap-[clamp(0.75rem,2vw,1.5rem)]">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[clamp(0.75rem,2vw,1.5rem)]">
       {services.map((service, i) => (
         <motion.div
           key={i}
@@ -462,17 +453,27 @@ const ServicesBentoGrid = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ delay: i * 0.1, duration: 0.5 }}
           viewport={{ once: true }}
-          whileHover={{ y: -10 }}
-          className={`${service.col} ${service.bg} p-[clamp(1.5rem,4vw,2.5rem)] rounded-[clamp(1rem,3vw,1.5rem)] min-h-[clamp(200px,30vw,280px)] flex flex-col justify-between group hover:shadow-2xl transition-all duration-500 border border-transparent hover:border-black/5 touch-manipulation cursor-pointer`}
+          className={`${service.col} relative nav-item p-[clamp(1.5rem,4vw,2.5rem)] rounded-[clamp(1rem,3vw,1.5rem)] min-h-[clamp(250px,35vw,350px)] flex flex-col justify-between group overflow-hidden touch-manipulation`}
         >
-          <div className={`w-[clamp(3rem,8vw,4rem)] h-[clamp(3rem,8vw,4rem)] rounded-full flex items-center justify-center bg-gradient-to-br ${service.gradient} group-hover:scale-110 transition-transform duration-500`}>
+          {/* Background Image */}
+          <div className="absolute inset-0 z-0">
+            <img
+              src={getRootImageUrl(service.img) || `/${service.img}`}
+              alt={service.title}
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+            />
+            <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors duration-500" />
+          </div>
+
+          <div className="relative z-10 w-[clamp(3rem,8vw,4rem)] h-[clamp(3rem,8vw,4rem)] rounded-full flex items-center justify-center bg-white/20 backdrop-blur-md border border-white/10 group-hover:scale-110 transition-transform duration-500">
             {service.icon}
           </div>
-          <div>
-            <h3 className={`text-[clamp(1.25rem,3vw,1.875rem)] font-serif mb-[clamp(0.25rem,1vw,0.5rem)] ${service.dark ? 'text-white' : 'text-gray-900'}`}>
+
+          <div className="relative z-10">
+            <h3 className="text-[clamp(1.25rem,3vw,1.875rem)] font-serif mb-[clamp(0.25rem,1vw,0.5rem)] text-white">
               {service.title}
             </h3>
-            <p className={`text-[clamp(0.75rem,1.5vw,1rem)] ${service.dark ? 'text-white/60' : 'text-gray-500'}`}>
+            <p className="text-[clamp(0.75rem,1.5vw,1rem)] text-white/80">
               {service.desc}
             </p>
           </div>

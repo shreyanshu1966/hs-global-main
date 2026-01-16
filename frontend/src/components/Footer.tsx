@@ -47,9 +47,9 @@ const Footer: React.FC = () => {
           {/* Brand Column */}
           <div className="md:col-span-4 lg:col-span-5 space-y-8">
             <img
-              src="	https://res.cloudinary.com/dpztytsoz/image/upload/v1766928687/hs-global/public/logo.png"
+              src="/Logo_black.png.png"
               alt="HS Global Export"
-              className="w-32 h-auto "
+              className="w-48 h-auto "
             />
             <p className="text-gray-400 text-lg font-light leading-relaxed max-w-sm">
               Defining the future of luxury stone. We source, fabricate, and deliver the world's most exquisite materials to your doorstep.
