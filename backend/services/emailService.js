@@ -660,3 +660,182 @@ exports.sendCustomerConfirmationEmail = async (contactData) => {
         return { success: false, error: error.message };
     }
 };
+
+// Send quotation request notification to admin
+exports.sendQuotationNotificationEmail = async (quotationData) => {
+    try {
+        const transporter = createTransporter();
+        const adminEmail = process.env.EMAIL_TO || 'inquiry@hsglobalexport.com';
+        const fromEmail = process.env.EMAIL_FROM || 'inquiry@hsglobalexport.com';
+
+        const mailOptions = {
+            from: `"HS Global Export - Quotation Request" \u003c${fromEmail}\u003e`,
+            to: adminEmail,
+            replyTo: quotationData.email,
+            subject: `New Slab Quotation Request: ${quotationData.productName}`,
+            html: `
+                \u003c!DOCTYPE html\u003e
+                \u003chtml\u003e
+                \u003chead\u003e
+                    \u003cstyle\u003e
+                        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+                        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+                        .header { background: #000; color: #fff; padding: 20px; text-align: center; }
+                        .content { background: #f9f9f9; padding: 30px; border-radius: 5px; margin-top: 20px; }
+                        .info-box { background: #fff; padding: 15px; border-left: 4px solid #000; margin: 15px 0; }
+                        .label { font-weight: bold; color: #666; display: inline-block; width: 150px; }
+                        .specs-box { background: #fff; padding: 20px; border-radius: 5px; margin: 20px 0; border: 2px solid #f59e0b; }
+                        .footer { text-align: center; margin-top: 20px; font-size: 12px; color: #666; }
+                        .badge { background: #f59e0b; color: white; padding: 5px 10px; border-radius: 3px; font-size: 12px; }
+                    \u003c/style\u003e
+                \u003c/head\u003e
+                \u003cbody\u003e
+                    \u003cdiv class="container"\u003e
+                        \u003cdiv class="header"\u003e
+                            \u003ch1\u003eHS Global Export\u003c/h1\u003e
+                            \u003cp style="margin: 0; font-size: 14px;"\u003eSlab Quotation Request\u003c/p\u003e
+                        \u003c/div\u003e
+                        \u003cdiv class="content"\u003e
+                            \u003cdiv style="text-align: center; margin-bottom: 20px;"\u003e
+                                \u003cspan class="badge"\u003eNEW QUOTATION REQUEST\u003c/span\u003e
+                            \u003c/div\u003e
+                            
+                            \u003ch2 style="margin-top: 0;"\u003eCustomer Details\u003c/h2\u003e
+                            
+                            \u003cdiv class="info-box"\u003e
+                                \u003cp\u003e\u003cspan class="label"\u003eName:\u003c/span\u003e ${quotationData.name}\u003c/p\u003e
+                                \u003cp\u003e\u003cspan class="label"\u003eEmail:\u003c/span\u003e \u003ca href="mailto:${quotationData.email}"\u003e${quotationData.email}\u003c/a\u003e\u003c/p\u003e
+                                \u003cp\u003e\u003cspan class="label"\u003eMobile:\u003c/span\u003e \u003ca href="tel:${quotationData.mobile}"\u003e${quotationData.mobile}\u003c/a\u003e\u003c/p\u003e
+                                \u003cp\u003e\u003cspan class="label"\u003eSubmitted:\u003c/span\u003e ${new Date(quotationData.submittedAt).toLocaleString('en-IN', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            })}\u003c/p\u003e
+                                \u003cp\u003e\u003cspan class="label"\u003eQuotation ID:\u003c/span\u003e ${quotationData.quotationId}\u003c/p\u003e
+                            \u003c/div\u003e
+
+                            \u003ch3\u003eProduct Specifications\u003c/h3\u003e
+                            \u003cdiv class="specs-box"\u003e
+                                \u003cp\u003e\u003cstrong\u003eProduct:\u003c/strong\u003e ${quotationData.productName}\u003c/p\u003e
+                                \u003cp\u003e\u003cstrong\u003eFinish Type:\u003c/strong\u003e ${quotationData.finish}\u003c/p\u003e
+                                \u003cp\u003e\u003cstrong\u003eThickness:\u003c/strong\u003e ${quotationData.thickness}\u003c/p\u003e
+                                \u003cp\u003e\u003cstrong\u003eRequirement:\u003c/strong\u003e ${quotationData.requirement} sq ft\u003c/p\u003e
+                            \u003c/div\u003e
+
+                            \u003cp style="font-size: 14px; color: #666; margin-top: 30px;"\u003e
+                                \u003cstrong\u003eQuick Actions:\u003c/strong\u003e\u003cbr\u003e
+                                • Reply directly to this email to respond to ${quotationData.name}\u003cbr\u003e
+                                • Call customer at ${quotationData.mobile}\u003cbr\u003e
+                                • View in admin panel: \u003ca href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/admin?tab=quotations"\u003eView Details\u003c/a\u003e
+                            \u003c/p\u003e
+                        \u003c/div\u003e
+                        \u003cdiv class="footer"\u003e
+                            \u003cp\u003e\u0026copy; ${new Date().getFullYear()} HS Global Export. All rights reserved.\u003c/p\u003e
+                            \u003cp\u003eThis is an automated notification from your quotation system.\u003c/p\u003e
+                        \u003c/div\u003e
+                    \u003c/div\u003e
+                \u003c/body\u003e
+                \u003c/html\u003e
+            `
+        };
+
+        const info = await transporter.sendMail(mailOptions);
+        console.log('✅ Quotation notification email sent to admin:', info.messageId);
+
+        return { success: true, messageId: info.messageId };
+    } catch (error) {
+        console.error('❌ Quotation notification email failed:', error);
+        return { success: false, error: error.message };
+    }
+};
+
+// Send quotation confirmation email to customer
+exports.sendQuotationConfirmationEmail = async (quotationData) => {
+    try {
+        const transporter = createTransporter();
+        const fromEmail = process.env.EMAIL_FROM || 'inquiry@hsglobalexport.com';
+
+        const mailOptions = {
+            from: `"HS Global Export" \u003c${fromEmail}\u003e`,
+            to: quotationData.email,
+            subject: `Quotation Request Received - ${quotationData.productName}`,
+            html: `
+                \u003c!DOCTYPE html\u003e
+                \u003chtml\u003e
+                \u003chead\u003e
+                    \u003cstyle\u003e
+                        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+                        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+                        .header { background: #000; color: #fff; padding: 30px 20px; text-align: center; }
+                        .content { background: #f9f9f9; padding: 30px; border-radius: 5px; margin-top: 20px; }
+                        .specs-box { background: #fff; padding: 20px; border-radius: 5px; margin: 20px 0; border-left: 4px solid #f59e0b; }
+                        .footer { text-align: center; margin-top: 20px; font-size: 12px; color: #666; }
+                        .contact-info { background: #fff; padding: 15px; border-radius: 5px; margin: 15px 0; }
+                    \u003c/style\u003e
+                \u003c/head\u003e
+                \u003cbody\u003e
+                    \u003cdiv class="container"\u003e
+                        \u003cdiv class="header"\u003e
+                            \u003ch1 style="margin: 0;"\u003eHS Global Export\u003c/h1\u003e
+                            \u003cp style="margin: 10px 0 0 0; font-size: 14px; opacity: 0.9;"\u003ePremium Natural Stones \u0026 Granite\u003c/p\u003e
+                        \u003c/div\u003e
+                        \u003cdiv class="content"\u003e
+                            \u003ch2 style="margin-top: 0; color: #000;"\u003eThank You for Your Quotation Request!\u003c/h2\u003e
+                            
+                            \u003cp\u003eDear ${quotationData.name},\u003c/p\u003e
+                            
+                            \u003cp\u003eWe have successfully received your quotation request for \u003cstrong\u003e${quotationData.productName}\u003c/strong\u003e and appreciate your interest in our premium stone products.\u003c/p\u003e
+                            
+                            \u003cdiv class="specs-box"\u003e
+                                \u003cp style="margin: 0; color: #666; font-size: 14px;"\u003e\u003cstrong\u003eYour Request Details:\u003c/strong\u003e\u003c/p\u003e
+                                \u003cp style="margin: 10px 0 0 0;"\u003e\u003cstrong\u003eProduct:\u003c/strong\u003e ${quotationData.productName}\u003c/p\u003e
+                                \u003cp style="margin: 5px 0 0 0;"\u003e\u003cstrong\u003eFinish:\u003c/strong\u003e ${quotationData.finish}\u003c/p\u003e
+                                \u003cp style="margin: 5px 0 0 0;"\u003e\u003cstrong\u003eThickness:\u003c/strong\u003e ${quotationData.thickness}\u003c/p\u003e
+                                \u003cp style="margin: 5px 0 0 0;"\u003e\u003cstrong\u003eQuantity:\u003c/strong\u003e ${quotationData.requirement} sq ft\u003c/p\u003e
+                            \u003c/div\u003e
+                            
+                            \u003cp\u003e\u003cstrong\u003eWhat happens next?\u003c/strong\u003e\u003c/p\u003e
+                            \u003cul style="color: #666;"\u003e
+                                \u003cli\u003eOur team will review your requirements carefully\u003c/li\u003e
+                                \u003cli\u003eWe will prepare a detailed quotation for you\u003c/li\u003e
+                                \u003cli\u003eYou will receive our quote within 24-48 hours\u003c/li\u003e
+                                \u003cli\u003eWe may contact you at ${quotationData.mobile} for any clarifications\u003c/li\u003e
+                            \u003c/ul\u003e
+                            
+                            \u003cdiv class="contact-info"\u003e
+                                \u003cp style="margin: 0; font-size: 14px;"\u003e\u003cstrong\u003eNeed immediate assistance?\u003c/strong\u003e\u003c/p\u003e
+                                \u003cp style="margin: 10px 0 0 0; font-size: 14px;"\u003e
+                                    📧 Email: inquiry@hsglobalexport.com\u003cbr\u003e
+                                    📞 Phone: +91 81071 15116\u003cbr\u003e
+                                    🏢 Address: C-108, Titanium Business Park, Makarba, Ahmedabad - 380051
+                                \u003c/p\u003e
+                            \u003c/div\u003e
+                            
+                            \u003cp style="margin-top: 30px;"\u003eThank you for considering HS Global Export for your natural stone needs.\u003c/p\u003e
+                            
+                            \u003cp style="margin-top: 20px;"\u003e
+                                Best regards,\u003cbr\u003e
+                                \u003cstrong\u003eHS Global Export Team\u003c/strong\u003e
+                            \u003c/p\u003e
+                        \u003c/div\u003e
+                        \u003cdiv class="footer"\u003e
+                            \u003cp\u003e\u0026copy; ${new Date().getFullYear()} HS Global Export. All rights reserved.\u003c/p\u003e
+                            \u003cp\u003eThis is an automated confirmation email.\u003c/p\u003e
+                        \u003c/div\u003e
+                    \u003c/div\u003e
+                \u003c/body\u003e
+                \u003c/html\u003e
+            `
+        };
+
+        const info = await transporter.sendMail(mailOptions);
+        console.log('✅ Quotation confirmation email sent to customer:', info.messageId);
+
+        return { success: true, messageId: info.messageId };
+    } catch (error) {
+        console.error('❌ Quotation confirmation email failed:', error);
+        return { success: false, error: error.message };
+    }
+};

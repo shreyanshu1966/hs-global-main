@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { X, Ruler, Layers, Send, Loader2, CheckCircle } from 'lucide-react';
+import { X, Ruler, Layers, Send, Loader2, CheckCircle, User, Mail, Phone } from 'lucide-react';
 import { useSlabCustomization } from '../contexts/SlabCustomizationContext';
-import emailjs from '@emailjs/browser';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 
@@ -13,8 +12,11 @@ const FINISHES = [
 const THICKNESSES = ['12mm', '15mm', '18mm', '20mm', '25mm', '30mm'];
 
 export const SlabCustomizationModal: React.FC = () => {
-  const { isModalOpen, pendingProduct, customization, phoneNumber, closeModal, setCustomization } = useSlabCustomization();
+  const { isModalOpen, pendingProduct, customization, closeModal, setCustomization } = useSlabCustomization();
 
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [mobile, setMobile] = useState('');
   const [finish, setFinish] = useState(customization.finish);
   const [thickness, setThickness] = useState(customization.thickness);
   const [requirement, setRequirement] = useState(customization.requirement);
@@ -65,6 +67,9 @@ export const SlabCustomizationModal: React.FC = () => {
 
   useEffect(() => {
     if (isModalOpen) {
+      setName('');
+      setEmail('');
+      setMobile('');
       setFinish(customization.finish);
       setThickness(customization.thickness);
       setRequirement(customization.requirement);
@@ -75,27 +80,57 @@ export const SlabCustomizationModal: React.FC = () => {
   const handleSubmit = async () => {
     if (!pendingProduct) return;
 
+    // Validation
+    if (!name.trim()) {
+      alert('Please enter your name');
+      return;
+    }
+
+    if (!email.trim()) {
+      alert('Please enter your email');
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      alert('Please enter a valid email address');
+      return;
+    }
+
+    if (!mobile.trim()) {
+      alert('Please enter your mobile number');
+      return;
+    }
+
+    if (!thickness) {
+      alert('Please select a thickness');
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
-      // EmailJS configuration
-      const templateParams = {
-        to_email: 'inquiry@hsglobalexport.com',
-        product_name: pendingProduct.name,
-        customer_phone: phoneNumber,
-        finish_type: finish,
-        thickness: thickness,
-        requirement: `${requirement} sq ft`,
-        message: `New quotation request received for ${pendingProduct.name}. Customer details: Phone - ${phoneNumber}, Finish - ${finish}, Thickness - ${thickness}, Requirement - ${requirement} sq ft.`
-      };
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/api/quotations/submit`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: name.trim(),
+          email: email.trim(),
+          mobile: mobile.trim(),
+          productName: pendingProduct.name,
+          finish,
+          thickness,
+          requirement
+        }),
+      });
 
-      // Replace with your EmailJS credentials
-      await emailjs.send(
-        'service_5d0ylks',  // Replace with your EmailJS service ID
-        'template_rq2cw01', // Replace with your EmailJS template ID
-        templateParams,
-        'E7nX2-yGe6MFC64-p'   // Replace with your EmailJS public key
-      );
+      const data = await response.json();
+
+      if (!response.ok || !data.ok) {
+        throw new Error(data.error || 'Failed to submit quotation request');
+      }
 
       setCustomization({ finish, thickness, requirement });
       setIsSuccess(true);
@@ -111,7 +146,7 @@ export const SlabCustomizationModal: React.FC = () => {
 
     } catch (error) {
       console.error('Quote request error:', error);
-      alert('Failed to send quotation request. Please try WhatsApp or contact us directly.');
+      alert(error instanceof Error ? error.message : 'Failed to send quotation request. Please try again or contact us directly.');
     } finally {
       setIsSubmitting(false);
     }
@@ -138,7 +173,7 @@ export const SlabCustomizationModal: React.FC = () => {
                   <CheckCircle className="w-8 h-8 text-white" />
                 </div>
                 <h3 className="text-2xl font-semibold mb-2">Request Sent!</h3>
-                <p className="text-gray-600">We'll contact you shortly with pricing details at {phoneNumber}</p>
+                <p className="text-gray-600">We'll contact you shortly with pricing details at {email}</p>
               </div>
             ) : (
               <>
@@ -163,10 +198,55 @@ export const SlabCustomizationModal: React.FC = () => {
 
                 {/* Content */}
                 <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
-                  {/* Phone Display */}
-                  <div className="bg-gray-50 rounded-lg p-3 sm:p-4">
-                    <div className="text-xs sm:text-sm text-gray-600 mb-1">Contact Email</div>
-                    <div className="font-semibold text-sm sm:text-base">{phoneNumber}</div>
+                  {/* Name Input */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Name <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                      <input
+                        type="text"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        placeholder="Enter your full name"
+                        className="w-full pl-10 pr-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Email Input */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Email <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                      <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="your.email@example.com"
+                        className="w-full pl-10 pr-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Mobile Input */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Mobile Number <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                      <input
+                        type="tel"
+                        value={mobile}
+                        onChange={(e) => setMobile(e.target.value)}
+                        placeholder="+91 XXXXX XXXXX"
+                        className="w-full pl-10 pr-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                      />
+                    </div>
                   </div>
 
                   {/* Finish Selection */}
@@ -185,7 +265,9 @@ export const SlabCustomizationModal: React.FC = () => {
 
                   {/* Thickness Selection */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Thickness</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Thickness <span className="text-red-500">*</span>
+                    </label>
                     <div className="grid grid-cols-3 gap-2">
                       {THICKNESSES.map((t) => (
                         <button
