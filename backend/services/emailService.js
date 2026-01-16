@@ -477,3 +477,186 @@ exports.sendPaymentFailedEmail = async (email, name, orderDetails) => {
         return { success: false, error: error.message };
     }
 };
+
+// Send contact form notification to admin
+exports.sendContactNotificationEmail = async (contactData) => {
+    try {
+        const transporter = createTransporter();
+        const adminEmail = process.env.EMAIL_TO || 'inquiry@hsglobalexport.com';
+        const fromEmail = process.env.EMAIL_FROM || 'inquiry@hsglobalexport.com';
+
+        const mailOptions = {
+            from: `"HS Global Export - Contact Form" <${fromEmail}>`,
+            to: adminEmail,
+            replyTo: contactData.email,
+            subject: `New Contact Form Submission: ${contactData.subject}`,
+            html: `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <style>
+                        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+                        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+                        .header { background: #000; color: #fff; padding: 20px; text-align: center; }
+                        .content { background: #f9f9f9; padding: 30px; border-radius: 5px; margin-top: 20px; }
+                        .info-box { background: #fff; padding: 15px; border-left: 4px solid #000; margin: 15px 0; }
+                        .label { font-weight: bold; color: #666; display: inline-block; width: 120px; }
+                        .message-box { background: #fff; padding: 20px; border-radius: 5px; margin: 20px 0; border: 1px solid #ddd; }
+                        .footer { text-align: center; margin-top: 20px; font-size: 12px; color: #666; }
+                        .badge { background: #28a745; color: white; padding: 5px 10px; border-radius: 3px; font-size: 12px; }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <div class="header">
+                            <h1>HS Global Export</h1>
+                            <p style="margin: 0; font-size: 14px;">Contact Form Submission</p>
+                        </div>
+                        <div class="content">
+                            <div style="text-align: center; margin-bottom: 20px;">
+                                <span class="badge">NEW INQUIRY</span>
+                            </div>
+                            
+                            <h2 style="margin-top: 0;">Contact Details</h2>
+                            
+                            <div class="info-box">
+                                <p><span class="label">Name:</span> ${contactData.name}</p>
+                                <p><span class="label">Email:</span> <a href="mailto:${contactData.email}">${contactData.email}</a></p>
+                                <p><span class="label">Subject:</span> ${contactData.subject}</p>
+                                <p><span class="label">Submitted:</span> ${new Date(contactData.submittedAt).toLocaleString('en-IN', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            })}</p>
+                                <p><span class="label">Contact ID:</span> ${contactData.contactId}</p>
+                            </div>
+
+                            <h3>Message</h3>
+                            <div class="message-box">
+                                ${contactData.message.replace(/\n/g, '<br>')}
+                            </div>
+
+                            ${contactData.referenceImage ? `
+                            <h3>Reference Image</h3>
+                            <div class="message-box" style="text-align: center;">
+                                <img src="${contactData.referenceImage}" alt="Reference Image" style="max-width: 100%; height: auto; border-radius: 5px;" />
+                                <p style="margin-top: 10px; font-size: 12px; color: #666;">
+                                    <a href="${contactData.referenceImage}" target="_blank">View Full Size</a>
+                                </p>
+                            </div>
+                            ` : ''}
+
+                            <p style="font-size: 14px; color: #666; margin-top: 30px;">
+                                <strong>Quick Actions:</strong><br>
+                                • Reply directly to this email to respond to ${contactData.name}<br>
+                                • View in admin panel: <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/admin/contacts/${contactData.contactId}">View Details</a>
+                            </p>
+                        </div>
+                        <div class="footer">
+                            <p>&copy; ${new Date().getFullYear()} HS Global Export. All rights reserved.</p>
+                            <p>This is an automated notification from your contact form.</p>
+                        </div>
+                    </div>
+                </body>
+                </html>
+            `
+        };
+
+        const info = await transporter.sendMail(mailOptions);
+        console.log('✅ Contact notification email sent to admin:', info.messageId);
+
+        return { success: true, messageId: info.messageId };
+    } catch (error) {
+        console.error('❌ Contact notification email failed:', error);
+        return { success: false, error: error.message };
+    }
+};
+
+// Send confirmation email to customer
+exports.sendCustomerConfirmationEmail = async (contactData) => {
+    try {
+        const transporter = createTransporter();
+        const fromEmail = process.env.EMAIL_FROM || 'inquiry@hsglobalexport.com';
+
+        const mailOptions = {
+            from: `"HS Global Export" <${fromEmail}>`,
+            to: contactData.email,
+            subject: `Thank you for contacting HS Global Export`,
+            html: `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <style>
+                        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+                        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+                        .header { background: #000; color: #fff; padding: 30px 20px; text-align: center; }
+                        .content { background: #f9f9f9; padding: 30px; border-radius: 5px; margin-top: 20px; }
+                        .message-box { background: #fff; padding: 20px; border-radius: 5px; margin: 20px 0; border-left: 4px solid #000; }
+                        .footer { text-align: center; margin-top: 20px; font-size: 12px; color: #666; }
+                        .button { display: inline-block; padding: 12px 30px; background: #000; color: #fff; text-decoration: none; border-radius: 5px; margin: 20px 0; }
+                        .contact-info { background: #fff; padding: 15px; border-radius: 5px; margin: 15px 0; }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <div class="header">
+                            <h1 style="margin: 0;">HS Global Export</h1>
+                            <p style="margin: 10px 0 0 0; font-size: 14px; opacity: 0.9;">Premium Natural Stones & Granite</p>
+                        </div>
+                        <div class="content">
+                            <h2 style="margin-top: 0; color: #000;">Thank You for Reaching Out!</h2>
+                            
+                            <p>Dear ${contactData.name},</p>
+                            
+                            <p>We have successfully received your inquiry and appreciate you taking the time to contact us.</p>
+                            
+                            <div class="message-box">
+                                <p style="margin: 0; color: #666; font-size: 14px;"><strong>Your Inquiry:</strong></p>
+                                <p style="margin: 10px 0 0 0;"><strong>Subject:</strong> ${contactData.subject}</p>
+                                <p style="margin: 5px 0 0 0; color: #666;">${contactData.message.substring(0, 150)}${contactData.message.length > 150 ? '...' : ''}</p>
+                            </div>
+                            
+                            <p><strong>What happens next?</strong></p>
+                            <ul style="color: #666;">
+                                <li>Our team will review your inquiry carefully</li>
+                                <li>We will get back to you within 24-48 hours</li>
+                                <li>You will receive a detailed response via email</li>
+                            </ul>
+                            
+                            <div class="contact-info">
+                                <p style="margin: 0; font-size: 14px;"><strong>In the meantime, you can reach us at:</strong></p>
+                                <p style="margin: 10px 0 0 0; font-size: 14px;">
+                                    📧 Email: inquiry@hsglobalexport.com<br>
+                                    📞 Phone: +91 81071 15116<br>
+                                    🏢 Address: C-108, Titanium Business Park, Makarba, Ahmedabad - 380051
+                                </p>
+                            </div>
+                            
+                            <p style="margin-top: 30px;">Thank you for considering HS Global Export for your natural stone needs.</p>
+                            
+                            <p style="margin-top: 20px;">
+                                Best regards,<br>
+                                <strong>HS Global Export Team</strong>
+                            </p>
+                        </div>
+                        <div class="footer">
+                            <p>&copy; ${new Date().getFullYear()} HS Global Export. All rights reserved.</p>
+                            <p>This is an automated confirmation email.</p>
+                        </div>
+                    </div>
+                </body>
+                </html>
+            `
+        };
+
+        const info = await transporter.sendMail(mailOptions);
+        console.log('✅ Confirmation email sent to customer:', info.messageId);
+
+        return { success: true, messageId: info.messageId };
+    } catch (error) {
+        console.error('❌ Customer confirmation email failed:', error);
+        return { success: false, error: error.message };
+    }
+};

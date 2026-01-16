@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from "react";
-import { initEmailJs, sendEmail } from "../lib/email";
 import { Mail, Phone, MapPin, ArrowRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Helmet } from "react-helmet-async";
@@ -64,56 +63,75 @@ const Contact = () => {
 
   const [submitted, setSubmitted] = useState(false);
   const [isSending, setIsSending] = useState(false);
-
-  useEffect(() => {
-    initEmailJs();
-  }, []);
+  const [referenceImage, setReferenceImage] = useState<string>("");
 
   const onSubmit = async (ev: React.FormEvent) => {
     ev.preventDefault();
     if (!validate()) return;
+
     try {
       setSendError("");
       setSubmitted(false);
       setIsSending(true);
-      await sendEmail(
-        (import.meta as any).env.VITE_EMAILJS_TEMPLATE_CONTACT || 'template_urhb0vg',
-        {
-          to_email: 'inquiry@hsglobalexport.com',
-          subject: 'New Contact Form Submission',
+
+      // Submit to backend API
+      const response = await fetch('/api/contact/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
           name,
           email,
-          subject_line: subject,
+          subject,
           message,
-          time: new Date().toLocaleString()
-        }
-      );
-      // Also send to WhatsApp Business via server (if configured)
-      const waText = [
-        'New Contact Form Submission',
-        `Name: ${name}`,
-        `Email: ${email}`,
-        `Subject: ${subject}`,
-        `Message: ${message}`,
-        `Time: ${new Date().toLocaleString()}`
-      ].join('\n');
-      try {
-        await fetch('/api/send-whatsapp', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ to: '918107115116', text: waText })
-        });
-      } catch { }
+          referenceImage: referenceImage || undefined
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.ok) {
+        throw new Error(data.error || 'Failed to send message');
+      }
+
+      // Success
       setSubmitted(true);
       setName("");
       setEmail("");
       setSubject("");
       setMessage("");
+      setReferenceImage("");
       setErrors({});
-    } catch (e) {
-      setSendError('Failed to send message. Please verify EmailJS configuration.');
+
+    } catch (e: any) {
+      setSendError(e.message || 'Failed to send message. Please try again later.');
     } finally {
       setIsSending(false);
+    }
+  };
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // Check file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert('Image size should be less than 5MB');
+        return;
+      }
+
+      // Check file type
+      if (!file.type.startsWith('image/')) {
+        alert('Please upload an image file');
+        return;
+      }
+
+      // Convert to base64
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setReferenceImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -314,6 +332,43 @@ const Contact = () => {
                     />
                     <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gray-900 transition-all duration-300 focus-within:w-full"></div>
                     {errors.message && <p className="text-red-600 text-sm mt-1">{errors.message}</p>}
+                  </div>
+
+                  {/* Reference Image Upload (Optional) */}
+                  <div className="relative">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Reference Image <span className="text-gray-400 font-normal">(Optional)</span>
+                    </label>
+                    <div className="flex items-center gap-4">
+                      <label className="cursor-pointer inline-flex items-center px-4 py-2 border-2 border-gray-300 rounded-lg hover:border-gray-900 transition-colors">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageUpload}
+                          className="hidden"
+                        />
+                        <span className="text-gray-700">Choose Image</span>
+                      </label>
+                      {referenceImage && (
+                        <button
+                          type="button"
+                          onClick={() => setReferenceImage("")}
+                          className="text-red-600 hover:text-red-800 text-sm underline"
+                        >
+                          Remove
+                        </button>
+                      )}
+                    </div>
+                    {referenceImage && (
+                      <div className="mt-4 relative inline-block">
+                        <img
+                          src={referenceImage}
+                          alt="Reference"
+                          className="max-w-xs max-h-48 rounded-lg border-2 border-gray-200"
+                        />
+                      </div>
+                    )}
+                    <p className="text-xs text-gray-500 mt-2">Upload a reference image if needed (Max 5MB)</p>
                   </div>
 
                   {!!sendError && (
