@@ -260,7 +260,7 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
             muted
             loop
             playsInline
-            className="absolute inset-0 w-full h-full object-cover z-20"
+            className="absolute inset-0 w-full h-full object-contain z-20 bg-white"
             onError={(e) => {
               // Gracefully handle video 404 by hiding it
               e.currentTarget.style.display = 'none';
