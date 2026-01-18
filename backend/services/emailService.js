@@ -1,49 +1,64 @@
 const nodemailer = require('nodemailer');
 
-// Create transporter
-// Create transporter
-const createTransporter = () => {
+// Global transporter instance
+let transporter = null;
+
+// Create or return existing transporter
+const getTransporter = () => {
+    if (transporter) return transporter;
+
     // Check for password in either variable
-    const emailPassword = process.env.EMAIL_PASSWORD || process.env.EMAIL_PASS;
+    const emailPassword = process.env.SMTP_PASS || process.env.EMAIL_PASSWORD || process.env.EMAIL_PASS;
+    const emailUser = process.env.SMTP_USER || process.env.EMAIL_USER;
+    const emailHost = process.env.SMTP_HOST || process.env.EMAIL_HOST;
 
     // Check if we are using Gmail (explicit host, service, or gmail address)
     const isGmail =
-        process.env.EMAIL_HOST === 'smtp.gmail.com' ||
+        emailHost === 'smtp.gmail.com' ||
         process.env.EMAIL_SERVICE === 'gmail' ||
-        (process.env.EMAIL_USER && process.env.EMAIL_USER.includes('@gmail.com'));
+        (emailUser && emailUser.includes('@gmail.com'));
 
-    if (process.env.EMAIL_USER && emailPassword) {
+    if (emailUser && emailPassword) {
         // Configuration for Gmail
         if (isGmail) {
             console.log('📧 Configuring email service for Gmail...');
-            return nodemailer.createTransport({
+            transporter = nodemailer.createTransport({
                 service: 'gmail', // Built-in support for Gmail
                 auth: {
-                    user: process.env.EMAIL_USER,
+                    user: emailUser,
                     pass: emailPassword
-                }
+                },
+                pool: true, // Use pooled connections
+                maxConnections: 5, // Limit concurrent connections
+                maxMessages: 100
+            });
+        } else {
+            // Generic SMTP Configuration (GoDaddy, etc.)
+            console.log(`📧 Configuring email service for ${emailHost}...`);
+            transporter = nodemailer.createTransport({
+                host: emailHost,
+                port: parseInt(process.env.SMTP_PORT || process.env.EMAIL_PORT || '587'),
+                secure: (process.env.SMTP_SECURE || process.env.EMAIL_SECURE) === 'true', // true for 465, false for other ports
+                auth: {
+                    user: emailUser,
+                    pass: emailPassword
+                },
+                tls: {
+                    rejectUnauthorized: false // Help with self-signed certificates if needed
+                },
+                pool: true, // Use pooled connections
+                maxConnections: 3, // Lower limit for shared hosts like GoDaddy which have strict limits
+                maxMessages: 100,
+                rateDelta: 1000,
+                rateLimit: 5 // Limit to 5 emails per second
             });
         }
-
-        // Generic SMTP Configuration
-        return nodemailer.createTransport({
-            host: process.env.EMAIL_HOST,
-            port: process.env.EMAIL_PORT || 587,
-            secure: process.env.EMAIL_SECURE === 'true', // true for 465, false for other ports
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: emailPassword
-            },
-            tls: {
-                rejectUnauthorized: false // Help with self-signed certificates if needed
-            }
-        });
     } else {
         // Fallback for development if credentials missing
         console.warn('⚠️  Email credentials missing. Using Ethereal Email (fake).');
-        console.warn('   Please set EMAIL_USER and EMAIL_PASSWORD in .env');
+        console.warn('   Please set SMTP_USER and SMTP_PASS in .env');
 
-        return nodemailer.createTransport({
+        transporter = nodemailer.createTransport({
             host: 'smtp.ethereal.email',
             port: 587,
             auth: {
@@ -52,12 +67,52 @@ const createTransporter = () => {
             }
         });
     }
+
+    // Verify connection configuration
+    transporter.verify(function (error, success) {
+        if (error) {
+            console.error('❌ Email service connection error:', error);
+            transporter = null; // Reset on failure
+        } else {
+            console.log('✅ Email service ready to take messages');
+        }
+    });
+
+    return transporter;
+};
+
+// Helper function to send email with retry logic and connection management
+const sendMailWrapper = async (mailOptions, retries = 3) => {
+    try {
+        const emailTransporter = getTransporter();
+        if (!emailTransporter) {
+            throw new Error('Email transporter not authenticated or initialized');
+        }
+
+        const info = await emailTransporter.sendMail(mailOptions);
+        return { success: true, messageId: info.messageId, info };
+    } catch (error) {
+        console.error(`Attempt failed. Retries left: ${retries}. Error: ${error.message}`);
+
+        // Detailed logging for connection errors
+        if (error.code === 'ESOCKET' || error.command === 'CONN' || error.responseCode === 421) {
+            // If 421 (Too many connections) or Connection error, definitely retry
+            console.log('Detected connection/rate limit issue. Waiting before retry...');
+            await new Promise(resolve => setTimeout(resolve, 2000)); // Wait 2s
+        }
+
+        if (retries > 0) {
+            await new Promise(resolve => setTimeout(resolve, 1000)); // Basic wait
+            return sendMailWrapper(mailOptions, retries - 1);
+        }
+
+        return { success: false, error: error.message };
+    }
 };
 
 // Send email verification
 exports.sendVerificationEmail = async (email, name, token) => {
     try {
-        const transporter = createTransporter();
         const verificationUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/verify-email/${token}`;
 
         const mailOptions = {
@@ -101,17 +156,21 @@ exports.sendVerificationEmail = async (email, name, token) => {
             `
         };
 
-        const info = await transporter.sendMail(mailOptions);
-        console.log('✅ Verification email sent:', info.messageId);
+        const result = await sendMailWrapper(mailOptions);
 
-        // For development, log the preview URL
-        if (process.env.NODE_ENV !== 'production') {
-            console.log('📧 Preview URL:', nodemailer.getTestMessageUrl(info));
+        if (result.success) {
+            console.log('✅ Verification email sent:', result.messageId);
+            // For development, log the preview URL
+            if (process.env.NODE_ENV !== 'production' && result.info && nodemailer.getTestMessageUrl(result.info)) {
+                console.log('📧 Preview URL:', nodemailer.getTestMessageUrl(result.info));
+            }
+        } else {
+            console.error('❌ Verification email failed completely');
         }
 
-        return { success: true, messageId: info.messageId };
+        return result;
     } catch (error) {
-        console.error('❌ Email sending failed:', error);
+        console.error('❌ Email sending logic error:', error);
         return { success: false, error: error.message };
     }
 };
@@ -119,7 +178,6 @@ exports.sendVerificationEmail = async (email, name, token) => {
 // Send password reset email
 exports.sendPasswordResetEmail = async (email, name, token) => {
     try {
-        const transporter = createTransporter();
         const resetUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/reset-password/${token}`;
 
         const mailOptions = {
@@ -170,17 +228,15 @@ exports.sendPasswordResetEmail = async (email, name, token) => {
             `
         };
 
-        const info = await transporter.sendMail(mailOptions);
-        console.log('✅ Password reset email sent:', info.messageId);
+        const result = await sendMailWrapper(mailOptions);
 
-        // For development, log the preview URL
-        if (process.env.NODE_ENV !== 'production') {
-            console.log('📧 Preview URL:', nodemailer.getTestMessageUrl(info));
+        if (result.success) {
+            console.log('✅ Password reset email sent:', result.messageId);
         }
 
-        return { success: true, messageId: info.messageId };
+        return result;
     } catch (error) {
-        console.error('❌ Email sending failed:', error);
+        console.error('❌ Email sending logic error:', error);
         return { success: false, error: error.message };
     }
 };
@@ -188,8 +244,6 @@ exports.sendPasswordResetEmail = async (email, name, token) => {
 // Send OTP email
 exports.sendOTPEmail = async (email, name, otp) => {
     try {
-        const transporter = createTransporter();
-
         const mailOptions = {
             from: `"HS Global Export" <${process.env.EMAIL_FROM || 'noreply@hsglobal.com'}>`,
             to: email,
@@ -229,17 +283,13 @@ exports.sendOTPEmail = async (email, name, otp) => {
             `
         };
 
-        const info = await transporter.sendMail(mailOptions);
-        console.log('✅ OTP email sent:', info.messageId);
-
-        // For development, log the preview URL
-        if (process.env.NODE_ENV !== 'production') {
-            console.log('📧 Preview URL:', nodemailer.getTestMessageUrl(info));
+        const result = await sendMailWrapper(mailOptions);
+        if (result.success) {
+            console.log('✅ OTP email sent:', result.messageId);
         }
-
-        return { success: true, messageId: info.messageId };
+        return result;
     } catch (error) {
-        console.error('❌ Email sending failed:', error);
+        console.error('❌ Email sending logic error:', error);
         return { success: false, error: error.message };
     }
 };
@@ -247,8 +297,6 @@ exports.sendOTPEmail = async (email, name, otp) => {
 // Send order confirmation email
 exports.sendOrderConfirmationEmail = async (email, name, orderDetails) => {
     try {
-        const transporter = createTransporter();
-
         // Format amount (convert from paise to rupees)
         const formatAmount = (amount) => {
             return (amount / 100).toLocaleString('en-IN', {
@@ -389,15 +437,11 @@ exports.sendOrderConfirmationEmail = async (email, name, orderDetails) => {
             `
         };
 
-        const info = await transporter.sendMail(mailOptions);
-        console.log('✅ Order confirmation email sent:', info.messageId);
-
-        // For development, log the preview URL
-        if (process.env.NODE_ENV !== 'production') {
-            console.log('📧 Preview URL:', nodemailer.getTestMessageUrl(info));
+        const result = await sendMailWrapper(mailOptions);
+        if (result.success) {
+            console.log('✅ Order confirmation email sent:', result.messageId);
         }
-
-        return { success: true, messageId: info.messageId };
+        return result;
     } catch (error) {
         console.error('❌ Order confirmation email failed:', error);
         return { success: false, error: error.message };
@@ -407,8 +451,6 @@ exports.sendOrderConfirmationEmail = async (email, name, orderDetails) => {
 // Send payment failed notification
 exports.sendPaymentFailedEmail = async (email, name, orderDetails) => {
     try {
-        const transporter = createTransporter();
-
         const mailOptions = {
             from: `"HS Global Export" <${process.env.EMAIL_FROM || 'noreply@hsglobal.com'}>`,
             to: email,
@@ -468,10 +510,11 @@ exports.sendPaymentFailedEmail = async (email, name, orderDetails) => {
             `
         };
 
-        const info = await transporter.sendMail(mailOptions);
-        console.log('✅ Payment failed email sent:', info.messageId);
-
-        return { success: true, messageId: info.messageId };
+        const result = await sendMailWrapper(mailOptions);
+        if (result.success) {
+            console.log('✅ Payment failed email sent:', result.messageId);
+        }
+        return result;
     } catch (error) {
         console.error('❌ Payment failed email error:', error);
         return { success: false, error: error.message };
@@ -481,7 +524,6 @@ exports.sendPaymentFailedEmail = async (email, name, orderDetails) => {
 // Send contact form notification to admin
 exports.sendContactNotificationEmail = async (contactData) => {
     try {
-        const transporter = createTransporter();
         const adminEmail = process.env.EMAIL_TO || 'inquiry@hsglobalexport.com';
         const fromEmail = process.env.EMAIL_FROM || 'inquiry@hsglobalexport.com';
 
@@ -564,10 +606,11 @@ exports.sendContactNotificationEmail = async (contactData) => {
             `
         };
 
-        const info = await transporter.sendMail(mailOptions);
-        console.log('✅ Contact notification email sent to admin:', info.messageId);
-
-        return { success: true, messageId: info.messageId };
+        const result = await sendMailWrapper(mailOptions);
+        if (result.success) {
+            console.log('✅ Contact notification email sent to admin:', result.messageId);
+        }
+        return result;
     } catch (error) {
         console.error('❌ Contact notification email failed:', error);
         return { success: false, error: error.message };
@@ -577,7 +620,6 @@ exports.sendContactNotificationEmail = async (contactData) => {
 // Send confirmation email to customer
 exports.sendCustomerConfirmationEmail = async (contactData) => {
     try {
-        const transporter = createTransporter();
         const fromEmail = process.env.EMAIL_FROM || 'inquiry@hsglobalexport.com';
 
         const mailOptions = {
@@ -651,10 +693,11 @@ exports.sendCustomerConfirmationEmail = async (contactData) => {
             `
         };
 
-        const info = await transporter.sendMail(mailOptions);
-        console.log('✅ Confirmation email sent to customer:', info.messageId);
-
-        return { success: true, messageId: info.messageId };
+        const result = await sendMailWrapper(mailOptions);
+        if (result.success) {
+            console.log('✅ Confirmation email sent to customer:', result.messageId);
+        }
+        return result;
     } catch (error) {
         console.error('❌ Customer confirmation email failed:', error);
         return { success: false, error: error.message };
@@ -664,20 +707,19 @@ exports.sendCustomerConfirmationEmail = async (contactData) => {
 // Send quotation request notification to admin
 exports.sendQuotationNotificationEmail = async (quotationData) => {
     try {
-        const transporter = createTransporter();
         const adminEmail = process.env.EMAIL_TO || 'inquiry@hsglobalexport.com';
         const fromEmail = process.env.EMAIL_FROM || 'inquiry@hsglobalexport.com';
 
         const mailOptions = {
-            from: `"HS Global Export - Quotation Request" \u003c${fromEmail}\u003e`,
+            from: `"HS Global Export - Quotation Request" <${fromEmail}>`,
             to: adminEmail,
             replyTo: quotationData.email,
             subject: `New Slab Quotation Request: ${quotationData.productName}`,
             html: `
-                \u003c!DOCTYPE html\u003e
-                \u003chtml\u003e
-                \u003chead\u003e
-                    \u003cstyle\u003e
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <style>
                         body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
                         .container { max-width: 600px; margin: 0 auto; padding: 20px; }
                         .header { background: #000; color: #fff; padding: 20px; text-align: center; }
@@ -687,64 +729,65 @@ exports.sendQuotationNotificationEmail = async (quotationData) => {
                         .specs-box { background: #fff; padding: 20px; border-radius: 5px; margin: 20px 0; border: 2px solid #f59e0b; }
                         .footer { text-align: center; margin-top: 20px; font-size: 12px; color: #666; }
                         .badge { background: #f59e0b; color: white; padding: 5px 10px; border-radius: 3px; font-size: 12px; }
-                    \u003c/style\u003e
-                \u003c/head\u003e
-                \u003cbody\u003e
-                    \u003cdiv class="container"\u003e
-                        \u003cdiv class="header"\u003e
-                            \u003ch1\u003eHS Global Export\u003c/h1\u003e
-                            \u003cp style="margin: 0; font-size: 14px;"\u003eSlab Quotation Request\u003c/p\u003e
-                        \u003c/div\u003e
-                        \u003cdiv class="content"\u003e
-                            \u003cdiv style="text-align: center; margin-bottom: 20px;"\u003e
-                                \u003cspan class="badge"\u003eNEW QUOTATION REQUEST\u003c/span\u003e
-                            \u003c/div\u003e
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <div class="header">
+                            <h1>HS Global Export</h1>
+                            <p style="margin: 0; font-size: 14px;">Slab Quotation Request</p>
+                        </div>
+                        <div class="content">
+                            <div style="text-align: center; margin-bottom: 20px;">
+                                <span class="badge">NEW QUOTATION REQUEST</span>
+                            </div>
                             
-                            \u003ch2 style="margin-top: 0;"\u003eCustomer Details\u003c/h2\u003e
+                            <h2 style="margin-top: 0;">Customer Details</h2>
                             
-                            \u003cdiv class="info-box"\u003e
-                                \u003cp\u003e\u003cspan class="label"\u003eName:\u003c/span\u003e ${quotationData.name}\u003c/p\u003e
-                                \u003cp\u003e\u003cspan class="label"\u003eEmail:\u003c/span\u003e \u003ca href="mailto:${quotationData.email}"\u003e${quotationData.email}\u003c/a\u003e\u003c/p\u003e
-                                \u003cp\u003e\u003cspan class="label"\u003eMobile:\u003c/span\u003e \u003ca href="tel:${quotationData.mobile}"\u003e${quotationData.mobile}\u003c/a\u003e\u003c/p\u003e
-                                \u003cp\u003e\u003cspan class="label"\u003eSubmitted:\u003c/span\u003e ${new Date(quotationData.submittedAt).toLocaleString('en-IN', {
+                            <div class="info-box">
+                                <p><span class="label">Name:</span> ${quotationData.name}</p>
+                                <p><span class="label">Email:</span> <a href="mailto:${quotationData.email}">${quotationData.email}</a></p>
+                                <p><span class="label">Mobile:</span> <a href="tel:${quotationData.mobile}">${quotationData.mobile}</a></p>
+                                <p><span class="label">Submitted:</span> ${new Date(quotationData.submittedAt).toLocaleString('en-IN', {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric',
                 hour: '2-digit',
                 minute: '2-digit'
-            })}\u003c/p\u003e
-                                \u003cp\u003e\u003cspan class="label"\u003eQuotation ID:\u003c/span\u003e ${quotationData.quotationId}\u003c/p\u003e
-                            \u003c/div\u003e
+            })}</p>
+                                <p><span class="label">Quotation ID:</span> ${quotationData.quotationId}</p>
+                            </div>
 
-                            \u003ch3\u003eProduct Specifications\u003c/h3\u003e
-                            \u003cdiv class="specs-box"\u003e
-                                \u003cp\u003e\u003cstrong\u003eProduct:\u003c/strong\u003e ${quotationData.productName}\u003c/p\u003e
-                                \u003cp\u003e\u003cstrong\u003eFinish Type:\u003c/strong\u003e ${quotationData.finish}\u003c/p\u003e
-                                \u003cp\u003e\u003cstrong\u003eThickness:\u003c/strong\u003e ${quotationData.thickness}\u003c/p\u003e
-                                \u003cp\u003e\u003cstrong\u003eRequirement:\u003c/strong\u003e ${quotationData.requirement} sq ft\u003c/p\u003e
-                            \u003c/div\u003e
+                            <h3>Product Specifications</h3>
+                            <div class="specs-box">
+                                <p><strong>Product:</strong> ${quotationData.productName}</p>
+                                <p><strong>Finish Type:</strong> ${quotationData.finish}</p>
+                                <p><strong>Thickness:</strong> ${quotationData.thickness}</p>
+                                <p><strong>Requirement:</strong> ${quotationData.requirement} sq ft</p>
+                            </div>
 
-                            \u003cp style="font-size: 14px; color: #666; margin-top: 30px;"\u003e
-                                \u003cstrong\u003eQuick Actions:\u003c/strong\u003e\u003cbr\u003e
-                                • Reply directly to this email to respond to ${quotationData.name}\u003cbr\u003e
-                                • Call customer at ${quotationData.mobile}\u003cbr\u003e
-                                • View in admin panel: \u003ca href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/admin?tab=quotations"\u003eView Details\u003c/a\u003e
-                            \u003c/p\u003e
-                        \u003c/div\u003e
-                        \u003cdiv class="footer"\u003e
-                            \u003cp\u003e\u0026copy; ${new Date().getFullYear()} HS Global Export. All rights reserved.\u003c/p\u003e
-                            \u003cp\u003eThis is an automated notification from your quotation system.\u003c/p\u003e
-                        \u003c/div\u003e
-                    \u003c/div\u003e
-                \u003c/body\u003e
-                \u003c/html\u003e
+                            <p style="font-size: 14px; color: #666; margin-top: 30px;">
+                                <strong>Quick Actions:</strong><br>
+                                • Reply directly to this email to respond to ${quotationData.name}<br>
+                                • Call customer at ${quotationData.mobile}<br>
+                                • View in admin panel: <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/admin?tab=quotations">View Details</a>
+                            </p>
+                        </div>
+                        <div class="footer">
+                            <p>&copy; ${new Date().getFullYear()} HS Global Export. All rights reserved.</p>
+                            <p>This is an automated notification from your quotation system.</p>
+                        </div>
+                    </div>
+                </body>
+                </html>
             `
         };
 
-        const info = await transporter.sendMail(mailOptions);
-        console.log('✅ Quotation notification email sent to admin:', info.messageId);
-
-        return { success: true, messageId: info.messageId };
+        const result = await sendMailWrapper(mailOptions);
+        if (result.success) {
+            console.log('✅ Quotation notification email sent to admin:', result.messageId);
+        }
+        return result;
     } catch (error) {
         console.error('❌ Quotation notification email failed:', error);
         return { success: false, error: error.message };
@@ -754,18 +797,17 @@ exports.sendQuotationNotificationEmail = async (quotationData) => {
 // Send quotation confirmation email to customer
 exports.sendQuotationConfirmationEmail = async (quotationData) => {
     try {
-        const transporter = createTransporter();
         const fromEmail = process.env.EMAIL_FROM || 'inquiry@hsglobalexport.com';
 
         const mailOptions = {
-            from: `"HS Global Export" \u003c${fromEmail}\u003e`,
+            from: `"HS Global Export" <${fromEmail}>`,
             to: quotationData.email,
             subject: `Quotation Request Received - ${quotationData.productName}`,
             html: `
-                \u003c!DOCTYPE html\u003e
-                \u003chtml\u003e
-                \u003chead\u003e
-                    \u003cstyle\u003e
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <style>
                         body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
                         .container { max-width: 600px; margin: 0 auto; padding: 20px; }
                         .header { background: #000; color: #fff; padding: 30px 20px; text-align: center; }
@@ -773,67 +815,59 @@ exports.sendQuotationConfirmationEmail = async (quotationData) => {
                         .specs-box { background: #fff; padding: 20px; border-radius: 5px; margin: 20px 0; border-left: 4px solid #f59e0b; }
                         .footer { text-align: center; margin-top: 20px; font-size: 12px; color: #666; }
                         .contact-info { background: #fff; padding: 15px; border-radius: 5px; margin: 15px 0; }
-                    \u003c/style\u003e
-                \u003c/head\u003e
-                \u003cbody\u003e
-                    \u003cdiv class="container"\u003e
-                        \u003cdiv class="header"\u003e
-                            \u003ch1 style="margin: 0;"\u003eHS Global Export\u003c/h1\u003e
-                            \u003cp style="margin: 10px 0 0 0; font-size: 14px; opacity: 0.9;"\u003ePremium Natural Stones \u0026 Granite\u003c/p\u003e
-                        \u003c/div\u003e
-                        \u003cdiv class="content"\u003e
-                            \u003ch2 style="margin-top: 0; color: #000;"\u003eThank You for Your Quotation Request!\u003c/h2\u003e
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <div class="header">
+                            <h1 style="margin: 0;">HS Global Export</h1>
+                            <p style="margin: 10px 0 0 0; font-size: 14px; opacity: 0.9;">Premium Natural Stones & Granite</p>
+                        </div>
+                        <div class="content">
+                            <h2 style="margin-top: 0; color: #000;">Thank You for Your Quotation Request!</h2>
                             
-                            \u003cp\u003eDear ${quotationData.name},\u003c/p\u003e
+                            <p>Dear ${quotationData.name},</p>
                             
-                            \u003cp\u003eWe have successfully received your quotation request for \u003cstrong\u003e${quotationData.productName}\u003c/strong\u003e and appreciate your interest in our premium stone products.\u003c/p\u003e
+                            <p>We have successfully received your quotation request for <strong>${quotationData.productName}</strong> and appreciate your interest in our premium stone products.</p>
                             
-                            \u003cdiv class="specs-box"\u003e
-                                \u003cp style="margin: 0; color: #666; font-size: 14px;"\u003e\u003cstrong\u003eYour Request Details:\u003c/strong\u003e\u003c/p\u003e
-                                \u003cp style="margin: 10px 0 0 0;"\u003e\u003cstrong\u003eProduct:\u003c/strong\u003e ${quotationData.productName}\u003c/p\u003e
-                                \u003cp style="margin: 5px 0 0 0;"\u003e\u003cstrong\u003eFinish:\u003c/strong\u003e ${quotationData.finish}\u003c/p\u003e
-                                \u003cp style="margin: 5px 0 0 0;"\u003e\u003cstrong\u003eThickness:\u003c/strong\u003e ${quotationData.thickness}\u003c/p\u003e
-                                \u003cp style="margin: 5px 0 0 0;"\u003e\u003cstrong\u003eQuantity:\u003c/strong\u003e ${quotationData.requirement} sq ft\u003c/p\u003e
-                            \u003c/div\u003e
+                            <div class="specs-box">
+                                <p style="margin: 0; color: #666; font-size: 14px;"><strong>Your Request Details:</strong></p>
+                                <p style="margin: 10px 0 0 0;"><strong>Product:</strong> ${quotationData.productName}</p>
+                                <p style="margin: 5px 0 0 0;"><strong>Finish:</strong> ${quotationData.finish}</p>
+                                <p style="margin: 5px 0 0 0;"><strong>Thickness:</strong> ${quotationData.thickness}</p>
+                                <p style="margin: 5px 0 0 0;"><strong>Quantity:</strong> ${quotationData.requirement} sq ft</p>
+                            </div>
                             
-                            \u003cp\u003e\u003cstrong\u003eWhat happens next?\u003c/strong\u003e\u003c/p\u003e
-                            \u003cul style="color: #666;"\u003e
-                                \u003cli\u003eOur team will review your requirements carefully\u003c/li\u003e
-                                \u003cli\u003eWe will prepare a detailed quotation for you\u003c/li\u003e
-                                \u003cli\u003eYou will receive our quote within 24-48 hours\u003c/li\u003e
-                                \u003cli\u003eWe may contact you at ${quotationData.mobile} for any clarifications\u003c/li\u003e
-                            \u003c/ul\u003e
+                            <p><strong>What happens next?</strong></p>
+                            <ul style="color: #666;">
+                                <li>Our team is reviewing your requirements now.</li>
+                                <li>We will prepare a customized quotation for you.</li>
+                                <li>You will receive the quotation via email within 24 hours.</li>
+                            </ul>
                             
-                            \u003cdiv class="contact-info"\u003e
-                                \u003cp style="margin: 0; font-size: 14px;"\u003e\u003cstrong\u003eNeed immediate assistance?\u003c/strong\u003e\u003c/p\u003e
-                                \u003cp style="margin: 10px 0 0 0; font-size: 14px;"\u003e
-                                    📧 Email: inquiry@hsglobalexport.com\u003cbr\u003e
-                                    📞 Phone: +91 81071 15116\u003cbr\u003e
-                                    🏢 Address: C-108, Titanium Business Park, Makarba, Ahmedabad - 380051
-                                \u003c/p\u003e
-                            \u003c/div\u003e
-                            
-                            \u003cp style="margin-top: 30px;"\u003eThank you for considering HS Global Export for your natural stone needs.\u003c/p\u003e
-                            
-                            \u003cp style="margin-top: 20px;"\u003e
-                                Best regards,\u003cbr\u003e
-                                \u003cstrong\u003eHS Global Export Team\u003c/strong\u003e
-                            \u003c/p\u003e
-                        \u003c/div\u003e
-                        \u003cdiv class="footer"\u003e
-                            \u003cp\u003e\u0026copy; ${new Date().getFullYear()} HS Global Export. All rights reserved.\u003c/p\u003e
-                            \u003cp\u003eThis is an automated confirmation email.\u003c/p\u003e
-                        \u003c/div\u003e
-                    \u003c/div\u003e
-                \u003c/body\u003e
-                \u003c/html\u003e
+                            <div class="contact-info">
+                                <p style="margin: 0; font-size: 14px;"><strong>Need assistance? Contact us at:</strong></p>
+                                <p style="margin: 10px 0 0 0; font-size: 14px;">
+                                    📧 Email: inquiry@hsglobalexport.com<br>
+                                    📞 Phone: +91 81071 15116
+                                </p>
+                            </div>
+                        </div>
+                        <div class="footer">
+                            <p>&copy; ${new Date().getFullYear()} HS Global Export. All rights reserved.</p>
+                            <p>This is an automated confirmation email.</p>
+                        </div>
+                    </div>
+                </body>
+                </html>
             `
         };
 
-        const info = await transporter.sendMail(mailOptions);
-        console.log('✅ Quotation confirmation email sent to customer:', info.messageId);
-
-        return { success: true, messageId: info.messageId };
+        const result = await sendMailWrapper(mailOptions);
+        if (result.success) {
+            console.log('✅ Quotation confirmation email sent to customer:', result.messageId);
+        }
+        return result;
     } catch (error) {
         console.error('❌ Quotation confirmation email failed:', error);
         return { success: false, error: error.message };
