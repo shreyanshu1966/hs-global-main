@@ -57,3 +57,4 @@ coverage/
 *.lcov
 .nyc_output/
 frontend/.env.production
+frontend/dist.zip
