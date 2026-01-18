@@ -3,10 +3,8 @@ const nodemailer = require('nodemailer');
 // Global transporter instance
 let transporter = null;
 
-// Create or return existing transporter
-const getTransporter = () => {
-    if (transporter) return transporter;
-
+// Configuration helper
+const createTransporterConfig = () => {
     // Check for password in either variable
     const emailPassword = process.env.SMTP_PASS || process.env.EMAIL_PASSWORD || process.env.EMAIL_PASS;
     const emailUser = process.env.SMTP_USER || process.env.EMAIL_USER;
@@ -22,7 +20,7 @@ const getTransporter = () => {
         // Configuration for Gmail
         if (isGmail) {
             console.log('📧 Configuring email service for Gmail...');
-            transporter = nodemailer.createTransport({
+            return {
                 service: 'gmail', // Built-in support for Gmail
                 auth: {
                     user: emailUser,
@@ -31,52 +29,87 @@ const getTransporter = () => {
                 pool: true, // Use pooled connections
                 maxConnections: 5, // Limit concurrent connections
                 maxMessages: 100
-            });
+            };
         } else {
             // Generic SMTP Configuration (GoDaddy, etc.)
             console.log(`📧 Configuring email service for ${emailHost}...`);
-            transporter = nodemailer.createTransport({
+            return {
                 host: emailHost,
                 port: parseInt(process.env.SMTP_PORT || process.env.EMAIL_PORT || '587'),
-                secure: (process.env.SMTP_SECURE || process.env.EMAIL_SECURE) === 'true', // true for 465, false for other ports
+                secure: (process.env.SMTP_SECURE || process.env.EMAIL_SECURE) === 'true',
                 auth: {
                     user: emailUser,
                     pass: emailPassword
                 },
                 tls: {
-                    rejectUnauthorized: false // Help with self-signed certificates if needed
+                    rejectUnauthorized: false
                 },
-                pool: true, // Use pooled connections
-                maxConnections: 3, // Lower limit for shared hosts like GoDaddy which have strict limits
+                pool: true,
+                maxConnections: 3,
                 maxMessages: 100,
                 rateDelta: 1000,
-                rateLimit: 5 // Limit to 5 emails per second
-            });
+                rateLimit: 5
+            };
         }
     } else {
-        // Fallback for development if credentials missing
+        // Fallback for development
         console.warn('⚠️  Email credentials missing. Using Ethereal Email (fake).');
-        console.warn('   Please set SMTP_USER and SMTP_PASS in .env');
-
-        transporter = nodemailer.createTransport({
+        return {
             host: 'smtp.ethereal.email',
             port: 587,
             auth: {
                 user: 'test@ethereal.email',
                 pass: 'test'
             }
-        });
+        };
+    }
+};
+
+// Initialize email service (connect once at startup)
+const initEmailService = async () => {
+    if (transporter) {
+        // Verify existing connection
+        try {
+            await transporter.verify();
+            console.log('✅ Email service already initialized and connected');
+            return true;
+        } catch (error) {
+            console.warn('⚠️ Existing connection broken, reconnecting...');
+            transporter = null;
+        }
     }
 
-    // Verify connection configuration
-    transporter.verify(function (error, success) {
-        if (error) {
-            console.error('❌ Email service connection error:', error);
-            transporter = null; // Reset on failure
-        } else {
-            console.log('✅ Email service ready to take messages');
-        }
-    });
+    try {
+        const config = createTransporterConfig();
+        const newTransporter = nodemailer.createTransport(config);
+
+        // Verify connection
+        await newTransporter.verify();
+        console.log('✅ Email service connected successfully');
+
+        transporter = newTransporter;
+        return true;
+    } catch (error) {
+        console.error('❌ Email service initialization failed:', error.message);
+        return false;
+    }
+};
+
+// Export init function for server startup
+exports.initEmailService = initEmailService;
+
+// Get valid transporter, re-initializing if necessary
+const getTransporter = async () => {
+    if (!transporter) {
+        console.log('⚠️ Transporter not found, initializing...');
+        await initEmailService();
+    }
+
+    // Optionally verify connection if it's been idle (or trust the pool)
+    // For robustness as requested: check simple validity
+    if (!transporter) {
+        throw new Error('Email service unavailable: Could not initialize transporter');
+    }
 
     return transporter;
 };
@@ -84,25 +117,31 @@ const getTransporter = () => {
 // Helper function to send email with retry logic and connection management
 const sendMailWrapper = async (mailOptions, retries = 3) => {
     try {
-        const emailTransporter = getTransporter();
-        if (!emailTransporter) {
-            throw new Error('Email transporter not authenticated or initialized');
-        }
+        // Ensure we have a transporter
+        let emailTransporter = await getTransporter();
 
+        // Try sending
         const info = await emailTransporter.sendMail(mailOptions);
         return { success: true, messageId: info.messageId, info };
     } catch (error) {
         console.error(`Attempt failed. Retries left: ${retries}. Error: ${error.message}`);
 
-        // Detailed logging for connection errors
-        if (error.code === 'ESOCKET' || error.command === 'CONN' || error.responseCode === 421) {
-            // If 421 (Too many connections) or Connection error, definitely retry
-            console.log('Detected connection/rate limit issue. Waiting before retry...');
-            await new Promise(resolve => setTimeout(resolve, 2000)); // Wait 2s
+        // Handle connection errors
+        if (error.code === 'ESOCKET' || error.command === 'CONN' || error.responseCode === 421 || error.code === 'EAUTH') {
+            console.log('🔄 Detected connection/auth issue. Re-initializing email service...');
+            transporter = null; // Force null to trigger re-init
+
+            // Wait a bit
+            await new Promise(resolve => setTimeout(resolve, 2000));
+
+            // If we have retries, try again (which will call getTransporter and re-init)
+            if (retries > 0) {
+                return sendMailWrapper(mailOptions, retries - 1);
+            }
         }
 
         if (retries > 0) {
-            await new Promise(resolve => setTimeout(resolve, 1000)); // Basic wait
+            await new Promise(resolve => setTimeout(resolve, 1000));
             return sendMailWrapper(mailOptions, retries - 1);
         }
 
