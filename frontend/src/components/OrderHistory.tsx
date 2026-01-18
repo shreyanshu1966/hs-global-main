@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Package, Loader2, ChevronRight, Truck, CheckCircle, XCircle, Clock } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+
 interface OrderItem {
     productId: string;
     name: string;
@@ -54,7 +56,7 @@ const OrderHistory: React.FC = () => {
                 return;
             }
 
-            const response = await fetch('/api/my-orders', {
+            const response = await fetch(`${API_URL}/my-orders`, {
                 headers: {
                     'Authorization': `Bearer ${authToken}`,
                     'Content-Type': 'application/json'

@@ -6,6 +6,8 @@ import { useTranslation } from 'react-i18next';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+
 interface LeadCapturePopupProps {
   isOpen: boolean;
   onClose: () => void;
@@ -194,7 +196,7 @@ const LeadCapturePopup: React.FC<LeadCapturePopupProps> = ({ isOpen, onClose }) 
       ].join('\n');
 
       try {
-        await fetch('/api/send-whatsapp', {
+        await fetch(`${API_URL}/send-whatsapp`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ to: '918107115116', text: waText })
@@ -434,8 +436,8 @@ const LeadCapturePopup: React.FC<LeadCapturePopupProps> = ({ isOpen, onClose }) 
                     type="button"
                     onClick={() => setFormData(prev => ({ ...prev, clientType: 'personal' }))}
                     className={`p-2.5 border-2 rounded-lg flex items-center justify-center space-x-1.5 transition-all ${formData.clientType === 'personal'
-                        ? 'border-black bg-black text-white'
-                        : 'border-gray-300 hover:border-gray-400'
+                      ? 'border-black bg-black text-white'
+                      : 'border-gray-300 hover:border-gray-400'
                       }`}
                   >
                     <Home className="w-3.5 h-3.5" />
@@ -445,8 +447,8 @@ const LeadCapturePopup: React.FC<LeadCapturePopupProps> = ({ isOpen, onClose }) 
                     type="button"
                     onClick={() => setFormData(prev => ({ ...prev, clientType: 'client' }))}
                     className={`p-2.5 border-2 rounded-lg flex items-center justify-center space-x-1.5 transition-all ${formData.clientType === 'client'
-                        ? 'border-black bg-black text-white'
-                        : 'border-gray-300 hover:border-gray-400'
+                      ? 'border-black bg-black text-white'
+                      : 'border-gray-300 hover:border-gray-400'
                       }`}
                   >
                     <Building className="w-3.5 h-3.5" />
@@ -468,8 +470,8 @@ const LeadCapturePopup: React.FC<LeadCapturePopupProps> = ({ isOpen, onClose }) 
                       type="button"
                       onClick={() => handleServiceChange(service)}
                       className={`p-2.5 border-2 rounded-lg text-xs font-medium transition-all ${formData.services.includes(service)
-                          ? 'border-black bg-black text-white'
-                          : 'border-gray-300 hover:border-gray-400'
+                        ? 'border-black bg-black text-white'
+                        : 'border-gray-300 hover:border-gray-400'
                         }`}
                     >
                       {service}

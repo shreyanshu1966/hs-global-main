@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Truck, Plane, Package, Clock, DollarSign, Info, Loader2, AlertCircle } from 'lucide-react';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+
 interface ShippingEstimate {
     cost: number;
     currency: string;
@@ -66,7 +68,7 @@ const ShippingEstimator: React.FC<ShippingEstimatorProps> = ({
             setError(null);
 
             try {
-                const response = await fetch('/api/shipping/estimate', {
+                const response = await fetch(`${API_URL}/shipping/estimate`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -168,8 +170,8 @@ const ShippingEstimator: React.FC<ShippingEstimatorProps> = ({
                     <button
                         onClick={() => setServiceType('ocean')}
                         className={`flex items-center gap-3 p-4 rounded-lg border-2 transition-all ${serviceType === 'ocean'
-                                ? 'border-blue-600 bg-blue-50 text-blue-900'
-                                : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300'
+                            ? 'border-blue-600 bg-blue-50 text-blue-900'
+                            : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300'
                             }`}
                     >
                         <Truck className={`w-5 h-5 ${serviceType === 'ocean' ? 'text-blue-600' : 'text-gray-400'}`} />
@@ -181,8 +183,8 @@ const ShippingEstimator: React.FC<ShippingEstimatorProps> = ({
                     <button
                         onClick={() => setServiceType('air')}
                         className={`flex items-center gap-3 p-4 rounded-lg border-2 transition-all ${serviceType === 'air'
-                                ? 'border-blue-600 bg-blue-50 text-blue-900'
-                                : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300'
+                            ? 'border-blue-600 bg-blue-50 text-blue-900'
+                            : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300'
                             }`}
                     >
                         <Plane className={`w-5 h-5 ${serviceType === 'air' ? 'text-blue-600' : 'text-gray-400'}`} />

@@ -8,6 +8,8 @@ import { Mail } from 'lucide-react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+
 export const PhoneVerifyModal: React.FC = () => {
   const { isModalOpen, pendingProduct, closeModal } = usePhoneVerification();
   const { setPhoneVerified } = useCart();
@@ -93,7 +95,7 @@ export const PhoneVerifyModal: React.FC = () => {
     setIsLoading(true);
     setError('');
     try {
-      const resp = await fetch('/api/otp/send', {
+      const resp = await fetch(`${API_URL}/otp/send`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify({ email })
@@ -130,7 +132,7 @@ export const PhoneVerifyModal: React.FC = () => {
     setIsLoading(true);
     setError('');
     try {
-      const resp = await fetch('/api/otp/verify', {
+      const resp = await fetch(`${API_URL}/otp/verify`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify({ email, code: otp })

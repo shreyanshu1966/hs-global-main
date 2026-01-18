@@ -5,6 +5,8 @@ import { Helmet } from "react-helmet-async";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+
 const Contact = () => {
   const { t } = useTranslation();
 
@@ -75,7 +77,7 @@ const Contact = () => {
       setIsSending(true);
 
       // Submit to backend API
-      const response = await fetch('/api/contact/submit', {
+      const response = await fetch(`${API_URL}/contact/submit`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

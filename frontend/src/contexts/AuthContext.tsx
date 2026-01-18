@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+
 interface User {
     id: string;
     name: string;
@@ -62,7 +64,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
                     // Verify token is still valid by fetching profile
                     try {
-                        const response = await fetch('/api/auth/profile', {
+                        const response = await fetch(`${API_URL}/auth/profile`, {
                             headers: {
                                 'Authorization': `Bearer ${storedToken}`
                             }
@@ -97,7 +99,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     const login = async (email: string, password: string) => {
         try {
-            const response = await fetch('/api/auth/login', {
+            const response = await fetch(`${API_URL}/auth/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -122,7 +124,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     const register = async (name: string, email: string, password: string, phone?: string) => {
         try {
-            const response = await fetch('/api/auth/register', {
+            const response = await fetch(`${API_URL}/auth/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -152,7 +154,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         localStorage.removeItem('authUser');
 
         // Call logout endpoint (optional, for cookie cleanup)
-        fetch('/api/auth/logout', {
+        fetch(`${API_URL}/auth/logout`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -164,7 +166,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         if (!token) throw new Error('Not authenticated');
 
         try {
-            const response = await fetch('/api/auth/profile', {
+            const response = await fetch(`${API_URL}/auth/profile`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -190,7 +192,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         if (!token) throw new Error('Not authenticated');
 
         try {
-            const response = await fetch('/api/auth/change-password', {
+            const response = await fetch(`${API_URL}/auth/change-password`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

@@ -9,6 +9,8 @@ import { useGSAP } from '@gsap/react';
 import { Minus, Plus, Trash2, ArrowLeft, Loader2, RefreshCw } from 'lucide-react';
 import paymentRetryService from '../services/paymentRetryService';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+
 declare global {
   interface Window {
     paypal: any;
@@ -90,7 +92,7 @@ const Checkout: React.FC = () => {
     const loadPayPal = async () => {
       try {
         // Get PayPal client ID from backend
-        const response = await fetch('/api/create-order', {
+        const response = await fetch(`${API_URL}/create-order`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -183,7 +185,7 @@ const Checkout: React.FC = () => {
               setIsCreatingOrder(true);
               setPaymentError(null);
 
-              const response = await fetch('/api/create-order', {
+              const response = await fetch(`${API_URL}/create-order`, {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
@@ -244,7 +246,7 @@ const Checkout: React.FC = () => {
 
           onApprove: async (data: any) => {
             try {
-              const response = await fetch('/api/capture-payment', {
+              const response = await fetch(`${API_URL}/capture-payment`, {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json'
