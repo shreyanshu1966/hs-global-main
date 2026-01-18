@@ -21,7 +21,7 @@ export interface FurnitureSpec {
 const furnitureSpecsData: Record<string, FurnitureSpec> = {
   // Tables - Coffee Table
   'emerald green marble coffee table': {
-    product: 'Table',  
+    product: 'Table',
     type: 'Indoor',
     shape: '3-balled plate',
     material: 'Emerald Green Marble',
@@ -31,12 +31,12 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     height: '1 ft',
     colorName: 'Green',
     packagingDetails: 'As per your requirement',
-    priceINR: 161999,
+    priceINR: 157199,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399209778/emerald-green-marble-coffee-table',
   },
 
   'marble nesting coffee table set': {
-    product: 'Table',  
+    product: 'Table',
     type: 'Indoor',
     shape: 'Nested',
     material: 'Exotic Black Marble, Statuario White Marble',
@@ -46,12 +46,12 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     height: '1 ft',
     colorName: 'White & Black',
     packagingDetails: 'As per your requirement',
-    priceINR: 224999,
+    priceINR: 299999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4403535993/marble-nesting-coffee-table-set-modern',
   },
 
   'beige travertine coffee table': {
-    product: 'Table',  
+    product: 'Table',
     type: 'Indoor',
     shape: 'Oval',
     material: 'Natural Beige Travertine',
@@ -61,12 +61,12 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     height: '1 ft',
     colorName: 'Beige',
     packagingDetails: 'As per your requirement',
-    priceINR: 260999,
+    priceINR: 157199,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4402759334/beige-travertine-coffee-table-oval',
   },
 
   'green marble coffee table': {
-    product: 'Table',  
+    product: 'Table',
     type: 'Indoor',
     shape: '3-balled plate',
     material: 'Green Marble',
@@ -76,11 +76,11 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     height: '1 ft',
     colorName: 'Green',
     packagingDetails: 'As per your requirement',
-    priceINR: 170999,
+    priceINR: 263999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4403536832/green-marble-coffee-table-furniture',
   },
   'makrana white': {
-      product: 'Table',  
+    product: 'Table',
     type: 'Indoor / Outdoor',
     shape: 'Rectangular Fluted base',
     material: 'Makrana White',
@@ -95,7 +95,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
   },
 
   'natural marble pebble cluster': {
-      product: 'Table',
+    product: 'Table',
     type: 'Indoor',
     shape: 'Clustered Round',
     material: 'White Statuario Marble',
@@ -111,7 +111,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
   },
 
   'sandstone marine black coffee table': {
-      product: 'Table',
+    product: 'Table',
     type: 'Indoor',
     shape: 'Round',
     material: 'Sandstone & Marine Black Marble',
@@ -127,7 +127,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
   },
 
   'white marble coffee table': {
-      product: 'Table',
+    product: 'Table',
     type: 'Indoor',
     shape: 'Oval',
     material: 'White Marble',
@@ -143,7 +143,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
   },
 
   'polished travertine coffee table with planter': {
-      product: 'Table',
+    product: 'Table',
     type: 'Indoor',
     shape: 'Round',
     material: 'Travertine Stone',
@@ -153,13 +153,13 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     height: '1 ft',
     colorName: 'Beige',
     packagingDetails: 'As per your requirement',
-    priceINR: 170999,
+    priceINR: 385199,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4403510340/polished-travertine-coffee-table-with',
 
   },
 
   'green marble coffee table furniture': {
-      product: 'Table',
+    product: 'Table',
     type: 'Indoor',
     shape: 'Round',
     material: 'Green Marble',
@@ -169,13 +169,13 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     height: '1 ft',
     colorName: 'Green',
     packagingDetails: 'As per your requirement',
-    priceINR: 287100,
+    priceINR: 395999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4405229601/green-marble-coffee-table-furntiture',
 
   },
 
   'panda white': {
-      product: 'Table',
+    product: 'Table',
     type: 'Indoor',
     shape: '#-balled Plate',
     material: 'Panda White',
@@ -190,7 +190,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
 
   },
   'osaka beige travertine': {
-      product: 'Table',
+    product: 'Table',
     type: 'Indoor',
     shape: 'Osaka Table',
     material: 'Beige travertine',
@@ -205,9 +205,9 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399256525/beige-travertine-side-table-sculptural',
 
   },
-  
+
   'rounded pink marble': {
-      product: 'Table',
+    product: 'Table',
     type: 'Indoor',
     shape: 'Round',
     material: 'Pink Marble',
@@ -221,7 +221,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     priceINR: 38000,
   },
   'rounded white marble': {
-      product: 'Table',
+    product: 'Table',
     type: 'Indoor',
     shape: 'Round',
     material: 'White marble',
@@ -235,7 +235,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     priceINR: 50000,
   },
   'white cluster bullet': {
-      product: 'Table',
+    product: 'Table',
     type: 'Indoor',
     shape: 'Bullet',
     material: 'White marble',
@@ -252,7 +252,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
 
   // Tables - Side Table
   'beige travertine curved round': {
-      product: 'Table',
+    product: 'Table',
     type: 'Indoor / Outdoor',
     shape: 'Rounded Curved Leg',
     material: 'Beige Travertine',
@@ -266,9 +266,9 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     priceINR: 107999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399271425/handcrafted-beige-travertine-marble-side',
   },
-  
+
   'osaka bheslana black': {
-      product: 'Table',
+    product: 'Table',
     type: 'Indoor',
     shape: 'Osaka table',
     material: 'Bheslana Black',
@@ -281,9 +281,9 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     location: 'India',
     priceINR: 56000,
   },
-  
+
   'osaka makrana pink': {
-      product: 'Table',
+    product: 'Table',
     type: 'Indoor',
     shape: 'Osaka marble',
     material: 'Makrana Pink',
@@ -297,7 +297,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     priceINR: 36000,
   },
   'osaka rain forest green': {
-      product: 'Table',
+    product: 'Table',
     type: 'Indoor',
     shape: 'Osaka marble',
     material: 'Rain Forest Green',
@@ -312,7 +312,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
   },
 
   'ashby round side table': {
-      product: 'Table',
+    product: 'Table',
     type: 'Indoor',
     shape: 'Round',
     material: 'Green Marble',
@@ -328,7 +328,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
   },
 
   'fantasy brown marble side table': {
-      product: 'Table',
+    product: 'Table',
     type: 'Indoor',
     shape: 'Rounded',
     material: 'Fantasy Brown Marble',
@@ -339,12 +339,12 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White & Brown',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 62999,
+    priceINR: 137999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4402156223/fantasy-brown-marble-side-table-polished',
   },
 
   'marine black stone side table': {
-      product: 'Table',
+    product: 'Table',
     type: 'Indoor',
     shape: 'Rounded',
     material: 'Marine Black Stone',
@@ -360,7 +360,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
   },
 
   'white cylindrical cluster': {
-      product: 'Table',
+    product: 'Table',
     type: 'Indoor',
     shape: 'Rounded clusters',
     material: 'White Marble',
@@ -376,7 +376,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
   },
 
   'luxury polished black marble side table': {
-      product: 'Table',
+    product: 'Table',
     type: 'Indoor',
     shape: 'Round',
     material: 'Marine Black Stone',
@@ -392,7 +392,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
   },
 
   'travertine stone side table': {
-      product: 'Table',
+    product: 'Table',
     type: 'Indoor',
     shape: 'Rounded',
     material: 'Travertine Stone',
@@ -403,172 +403,172 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Beige',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 152999,
+    priceINR: 253199,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4402195477/travertine-stone-side-table-polished',
   },
 
   'banswara white marble side table': {
     product: 'Table',
-  type: 'Indoor',
-  shape: 'Bullet',
-  material: 'Banswara White Marble',
-  size: '22 x 20 x 15 inch',
-  surfaceFinish: 'Customizable',
-  delivery: '15-20 days',
-  height: '1.5 ft',
-  colorName: 'White',
-  packagingDetails: 'As per requirement',
-  location: 'India',
-  priceINR: 67499,
-  etsyUrl: 'https://www.etsy.com/in-en/listing/4402150822/banswara-white-marble-side-table-modern',
-},
+    type: 'Indoor',
+    shape: 'Bullet',
+    material: 'Banswara White Marble',
+    size: '22 x 20 x 15 inch',
+    surfaceFinish: 'Customizable',
+    delivery: '15-20 days',
+    height: '1.5 ft',
+    colorName: 'White',
+    packagingDetails: 'As per requirement',
+    location: 'India',
+    priceINR: 109199,
+    etsyUrl: 'https://www.etsy.com/in-en/listing/4402150822/banswara-white-marble-side-table-modern',
+  },
 
-'green marble side table': {
+  'green marble side table': {
     product: 'Table',
-  type: 'Indoor',
-  shape: 'Round',
-  material: 'Green Marble',
-  size: '20 x 14 inch',
-  surfaceFinish: 'Customizable',
-  delivery: '15-20 days',
-  height: '1.5 ft',
-  colorName: 'Green',
-  packagingDetails: 'As per requirement',
-  location: 'India',
-  priceINR: 67499,
-  etsyUrl: 'https://www.etsy.com/in-en/listing/4402163799/green-marble-side-table-modern-polished',
-},
+    type: 'Indoor',
+    shape: 'Round',
+    material: 'Green Marble',
+    size: '20 x 14 inch',
+    surfaceFinish: 'Customizable',
+    delivery: '15-20 days',
+    height: '1.5 ft',
+    colorName: 'Green',
+    packagingDetails: 'As per requirement',
+    location: 'India',
+    priceINR: 67499,
+    etsyUrl: 'https://www.etsy.com/in-en/listing/4402163799/green-marble-side-table-modern-polished',
+  },
 
-'mint sandstone side table': {
+  'mint sandstone side table': {
     product: 'Table',
-  type: 'Indoor',
-  shape: 'Half Sphere',
-  material: 'Mint Sandstone',
-  size: '20 x 12 inch',
-  surfaceFinish: 'Customizable',
-  delivery: '15-20 days',
-  height: '1.5 ft',
-  colorName: 'White',
-  packagingDetails: 'As per requirement',
-  location: 'India',
-  priceINR: 66599,
-  etsyUrl: 'https://www.etsy.com/in-en/listing/4402162778/mint-sandstone-side-table-handcrafted',
-},
+    type: 'Indoor',
+    shape: 'Half Sphere',
+    material: 'Mint Sandstone',
+    size: '20 x 12 inch',
+    surfaceFinish: 'Customizable',
+    delivery: '15-20 days',
+    height: '1.5 ft',
+    colorName: 'White',
+    packagingDetails: 'As per requirement',
+    location: 'India',
+    priceINR: 113999,
+    etsyUrl: 'https://www.etsy.com/in-en/listing/4402162778/mint-sandstone-side-table-handcrafted',
+  },
 
-'black marble side table': {
+  'black marble side table': {
     product: 'Table',
-  type: 'Indoor',
-  shape: 'Round',
-  material: 'Black Marble',
-  size: '16 x 15 inch',
-  surfaceFinish: 'Customizable',
-  delivery: '15-20 days',
-  height: '1.5 ft',
-  colorName: 'Black',
-  packagingDetails: 'As per requirement',
-  location: 'India',
-  priceINR: 67499,
-  etsyUrl: 'https://www.etsy.com/in-en/listing/4402168180/black-marble-side-table-hand-carved',
-},
+    type: 'Indoor',
+    shape: 'Round',
+    material: 'Black Marble',
+    size: '16 x 15 inch',
+    surfaceFinish: 'Customizable',
+    delivery: '15-20 days',
+    height: '1.5 ft',
+    colorName: 'Black',
+    packagingDetails: 'As per requirement',
+    location: 'India',
+    priceINR: 113999,
+    etsyUrl: 'https://www.etsy.com/in-en/listing/4402168180/black-marble-side-table-hand-carved',
+  },
 
-'polished modern luxury stone side table': {
+  'polished modern luxury stone side table': {
     product: 'Table',
-  type: 'Indoor',
-  shape: 'Round',
-  material: 'Travertine Stone',
-  size: '28 x 25 inch',
-  surfaceFinish: 'Customizable',
-  delivery: '15-20 days',
-  height: '1.5 ft',
-  colorName: 'Beige',
-  packagingDetails: 'As per requirement',
-  location: 'India',
-  priceINR: 134999,
-  etsyUrl: 'https://www.etsy.com/in-en/listing/4402171848/travertine-stone-side-table-polished',
-},
+    type: 'Indoor',
+    shape: 'Round',
+    material: 'Travertine Stone',
+    size: '28 x 25 inch',
+    surfaceFinish: 'Customizable',
+    delivery: '15-20 days',
+    height: '1.5 ft',
+    colorName: 'Beige',
+    packagingDetails: 'As per requirement',
+    location: 'India',
+    priceINR: 193199,
+    etsyUrl: 'https://www.etsy.com/in-en/listing/4402171848/travertine-stone-side-table-polished',
+  },
 
-'black and white marble cube table': {
+  'black and white marble cube table': {
     product: 'Table',
-  type: 'Indoor',
-  shape: 'Cube',
-  material: 'White & Black Marble',
-  size: '18 x 18 x 18 inch',
-  surfaceFinish: 'Customizable',
-  delivery: '15-20 days',
-  height: '1.5 ft',
-  colorName: 'White & Black',
-  packagingDetails: 'As per requirement',
-  location: 'India',
-  priceINR: 71999,
-  etsyUrl: 'https://www.etsy.com/in-en/listing/4402205153/black-and-white-marble-cube-table',
-},
+    type: 'Indoor',
+    shape: 'Cube',
+    material: 'White & Black Marble',
+    size: '18 x 18 x 18 inch',
+    surfaceFinish: 'Customizable',
+    delivery: '15-20 days',
+    height: '1.5 ft',
+    colorName: 'White & Black',
+    packagingDetails: 'As per requirement',
+    location: 'India',
+    priceINR: 131999,
+    etsyUrl: 'https://www.etsy.com/in-en/listing/4402205153/black-and-white-marble-cube-table',
+  },
 
-'panda white marble side table': {
+  'panda white marble side table': {
     product: 'Table',
-  type: 'Indoor',
-  shape: 'Rounded',
-  material: 'Panda White Marble',
-  size: '18 x 15 inch',
-  surfaceFinish: 'Customizable',
-  delivery: '15-20 days',
-  height: '1.5 ft',
-  colorName: 'Black & White Veins',
-  packagingDetails: 'As per requirement',
-  location: 'India',
-  priceINR: 62999,
-  etsyUrl: 'https://www.etsy.com/in-en/listing/4402716935/panda-white-marble-side-table',
-},
+    type: 'Indoor',
+    shape: 'Rounded',
+    material: 'Panda White Marble',
+    size: '18 x 15 inch',
+    surfaceFinish: 'Customizable',
+    delivery: '15-20 days',
+    height: '1.5 ft',
+    colorName: 'Black & White Veins',
+    packagingDetails: 'As per requirement',
+    location: 'India',
+    priceINR: 62999,
+    etsyUrl: 'https://www.etsy.com/in-en/listing/4402716935/panda-white-marble-side-table',
+  },
 
-'marine black marble side table': {
+  'marine black marble side table': {
     product: 'Table',
-  type: 'Indoor',
-  shape: 'Round',
-  material: 'Marine Black Marble',
-  size: '18 x 13 inch',
-  surfaceFinish: 'Customizable',
-  delivery: '15-20 days',
-  height: '1.5 ft',
-  colorName: 'Black & White Veins',
-  packagingDetails: 'As per requirement',
-  location: 'India',
-  priceINR: 65699,
-  etsyUrl: 'https://www.etsy.com/in-en/listing/4402713770/marine-black-marble-side-table-luxury',
-},
+    type: 'Indoor',
+    shape: 'Round',
+    material: 'Marine Black Marble',
+    size: '18 x 13 inch',
+    surfaceFinish: 'Customizable',
+    delivery: '15-20 days',
+    height: '1.5 ft',
+    colorName: 'Black & White Veins',
+    packagingDetails: 'As per requirement',
+    location: 'India',
+    priceINR: 112799,
+    etsyUrl: 'https://www.etsy.com/in-en/listing/4402713770/marine-black-marble-side-table-luxury',
+  },
 
-'white marble side table': {
+  'white marble side table': {
     product: 'Table',
-  type: 'Indoor',
-  shape: 'Rounded',
-  material: 'White Marble',
-  size: '18 x 20 inch',
-  surfaceFinish: 'Customizable',
-  delivery: '15-20 days',
-  height: '1.5 ft',
-  colorName: 'White',
-  packagingDetails: 'As per requirement',
-  location: 'India',
-  priceINR: 94499,
-  etsyUrl: 'https://www.etsy.com/in-en/listing/4402717342/white-marble-side-table-polished',
-},
+    type: 'Indoor',
+    shape: 'Rounded',
+    material: 'White Marble',
+    size: '18 x 20 inch',
+    surfaceFinish: 'Customizable',
+    delivery: '15-20 days',
+    height: '1.5 ft',
+    colorName: 'White',
+    packagingDetails: 'As per requirement',
+    location: 'India',
+    priceINR: 94499,
+    etsyUrl: 'https://www.etsy.com/in-en/listing/4402717342/white-marble-side-table-polished',
+  },
 
-'vondel side table': {
+  'vondel side table': {
     product: 'Table',
-  type: 'Indoor',
-  shape: 'Rectangular',
-  material: 'Green Marble',
-  size: '20 x 14 x 12 inch',
-  surfaceFinish: 'Customizable',
-  delivery: '15-20 days',
-  height: '1.5 ft',
-  colorName: 'Green',
-  packagingDetails: 'As per requirement',
-  location: 'India',
-  priceINR: 67499,
-  etsyUrl: 'https://www.etsy.com/in-en/listing/4402734715/green-marble-side-table-handcrafted',
-},
+    type: 'Indoor',
+    shape: 'Rectangular',
+    material: 'Green Marble',
+    size: '20 x 14 x 12 inch',
+    surfaceFinish: 'Customizable',
+    delivery: '15-20 days',
+    height: '1.5 ft',
+    colorName: 'Green',
+    packagingDetails: 'As per requirement',
+    location: 'India',
+    priceINR: 67499,
+    etsyUrl: 'https://www.etsy.com/in-en/listing/4402734715/green-marble-side-table-handcrafted',
+  },
   // Tables - Dining Table
   'bheslana albetta': {
-      product: 'Table',
+    product: 'Table',
     type: 'Indoor / Outdoor',
     shape: 'Center Stand Rectangular',
     material: 'Bheslana Albetta Marble',
@@ -583,7 +583,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
 
   // Tables - Center Table
   'black rectangular block': {
-      product: 'Table',
+    product: 'Table',
     type: 'Indoor',
     shape: 'Rectangular block',
     material: 'Black Marble',
@@ -598,7 +598,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399292262/black-green-marble-block-coffee-tables?sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_2&pro=1&frs=1&logging_key=4c770c06513f0117caa8c714c8e5bc424a58fb46%3A4399292262&variation0=6027985136',
   },
   'forest green rectangular block': {
-      product: 'Table',
+    product: 'Table',
     type: 'Indoor',
     shape: 'Rectangular block',
     material: 'Dark Green',
@@ -613,7 +613,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399292262/black-green-marble-block-coffee-tables?sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_2&pro=1&frs=1&logging_key=4c770c06513f0117caa8c714c8e5bc424a58fb46%3A4399292262&variation0=6015423983',
   },
   'green marble console table': {
-      product: 'Table',
+    product: 'Table',
     type: 'Indoor',
     shape: 'Oval',
     material: 'Green Marble',
@@ -627,10 +627,10 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     priceINR: 305999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4403496234/green-marble-console-table-polished',
   },
-  
+
 
   'exotic white marble arch console table': {
-      product: 'Table',
+    product: 'Table',
     type: 'Indoor',
     shape: 'Rectangular',
     material: 'Exotic White Marble',
@@ -641,12 +641,12 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 305999,
+    priceINR: 467999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4403485123/exotic-white-marble-arch-console-table',
   },
 
   'handcrafted marine black marble console table': {
-      product: 'Table',
+    product: 'Table',
     type: 'Indoor',
     shape: 'Oval',
     material: 'Marine Black Marble',
@@ -657,12 +657,12 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Green',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 259199,
+    priceINR: 529199,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4403502089/handcrafted-marine-black-marble-console',
   },
 
   'handcrafted exotic white marble console table': {
-      product: 'Table',
+    product: 'Table',
     type: 'Indoor',
     shape: 'Rectangular',
     material: 'Exotic White Marble',
@@ -673,12 +673,12 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 242999,
+    priceINR: 385199,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4403474850/handcrafted-exotic-white-marble-console',
   },
 
   'travertine stone arch console table': {
-      product: 'Table',
+    product: 'Table',
     type: 'Indoor',
     shape: 'Rectangular',
     material: 'Travertine Stone',
@@ -689,12 +689,12 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Beige',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 287999,
+    priceINR: 487199,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4403478665/travertine-stone-arch-console-table',
   },
 
   'travertine stone console table': {
-      product: 'Table',
+    product: 'Table',
     type: 'Indoor',
     shape: 'Rectangular',
     material: 'Travertine Stone',
@@ -710,7 +710,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
   },
 
   'cappuccino brown marble console table': {
-      product: 'Table',
+    product: 'Table',
     type: 'Indoor',
     shape: 'Rectangular',
     material: 'Brown Marble',
@@ -726,7 +726,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
   },
 
   'handcrafted banswara white marble console table': {
-      product: 'Table',
+    product: 'Table',
     type: 'Indoor',
     shape: 'Rectangular',
     material: 'Banswara White Marble',
@@ -737,12 +737,12 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 242999,
+    priceINR: 589199,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4403411683/handcrafted-banswara-white-marble',
   },
 
   'green marble polished console table': {
-      product: 'Table',
+    product: 'Table',
     type: 'Indoor',
     shape: 'Oval',
     material: 'Green Marble',
@@ -753,12 +753,12 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 314999,
+    priceINR: 659999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4403397937/green-marble-console-table-polished',
   },
 
   'white marble console table with metal legs': {
-      product: 'Table',
+    product: 'Table',
     type: 'Indoor',
     shape: 'Rectangular',
     material: 'White Marble',
@@ -774,7 +774,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
   },
 
   'green marble entryway console table': {
-      product: 'Table',
+    product: 'Table',
     type: 'Indoor',
     shape: 'Oval',
     material: 'Green Marble',
@@ -785,12 +785,12 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Green',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 215999,
+    priceINR: 455999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4402861535/green-marble-console-table-polished',
   },
 
   'banswara white marble console table': {
-      product: 'Table',
+    product: 'Table',
     type: 'Indoor',
     shape: 'Rectangular',
     material: 'Banswara White Marble',
@@ -806,7 +806,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
   },
 
   'modern sculptural marble console table': {
-      product: 'Table',
+    product: 'Table',
     type: 'Indoor',
     shape: 'Modern Sculpture',
     material: 'Banswara White Marble & Marine Black Marble',
@@ -821,7 +821,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     etsyUrl: 'https://www.etsy.com/in-en/listing/4403505937/modern-sculptural-marble-console-table',
   },
   'lava oro spherical base table': {
-      product: 'Table',
+    product: 'Table',
     type: 'Indoor',
     shape: '4 spherical base',
     material: 'Lava Oro',
@@ -832,12 +832,12 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Blackish orange',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 179999,
+    priceINR: 373199,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399222988/lava-oro-marble-coffee-table-sculptural',
 
   },
   'luxury katni onyx marble coffee table': {
-      product: 'Table',
+    product: 'Table',
     type: 'Indoor',
     shape: 'Spherical base',
     material: 'Katni Onyx Marble',
@@ -852,7 +852,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399770173/luxury-katni-onyx-marble-coffee-table',
   },
   'spider green beige designer': {
-      product: 'Table',
+    product: 'Table',
     type: 'Indoor',
     shape: 'Designer',
     material: 'Spider Green and Beige marble',
@@ -866,7 +866,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399775095/luxury-dual-stone-side-table-dark-green',
   },
   'statuario block leg rounded': {
-      product: 'Table',
+    product: 'Table',
     type: 'Indoor',
     shape: 'pedestal stand leg',
     material: 'Satvario marble',
@@ -880,9 +880,9 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399778769/handcrafted-white-marble-round-side',
   },
 
-  
+
   'statuario oval shaped': {
-      product: 'Table',
+    product: 'Table',
     type: 'Indoor',
     shape: 'Oval',
     material: 'Statuario Marble',
@@ -897,7 +897,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
   },
 
   // Wash Basins - Pedestal
-  
+
   'striped white marble pedestal sink': {
     product: 'Wash Basin',
     type: 'Pedestal',
@@ -926,12 +926,12 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Green',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 90000,
+    priceINR: 157199,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399895782/green-marble-pedestal-wash-basin',
   },
 
   'black rugged finish': {
-      product: 'Wash Basin',
+    product: 'Wash Basin',
     type: 'Pedestal',
     shape: 'Cylindrical',
     material: 'Absolute Black',
@@ -944,9 +944,9 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     location: 'India',
     priceINR: 38000,
   },
-  
+
   'brown grey marble pedestal sink': {
-      product: 'Wash Basin',
+    product: 'Wash Basin',
     type: 'Pedestal',
     shape: 'Oval Shape',
     material: 'Natural Brown Marble',
@@ -960,10 +960,10 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     priceINR: 80999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4405289844/brown-grey-marble-pedestal-sink-hand',
   },
-  
+
   'italic brown cylindrical shaped': {
-      product: 'Wash Basin',
-      type: 'Pedestal',
+    product: 'Wash Basin',
+    type: 'Pedestal',
     shape: 'Cylindrical',
     material: 'Italic Brown',
     size: '16 x 16 x 33 inch',
@@ -973,12 +973,12 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Black',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 148499,
+    priceINR: 281999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399779836/handcrafted-grey-gold-veined-marble',
   },
-  
+
   'cylindrical gear cut marble': {
-      product: 'Wash Basin',
+    product: 'Wash Basin',
     type: 'Pedestal',
     shape: 'Cylindrical',
     material: 'White Marble',
@@ -989,12 +989,12 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 116999,
+    priceINR: 215999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399893236/fluted-white-marble-pedestal-basin',
   },
-  
+
   'makrana white square carved': {
-      product: 'Wash Basin',
+    product: 'Wash Basin',
     type: 'Pedestal',
     shape: 'Cylindrical',
     material: 'Makrana White',
@@ -1009,7 +1009,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399789350/handcrafted-makrana-white-marble-mosaic',
   },
   'white marble fluted shaped': {
-      product: 'Wash Basin',
+    product: 'Wash Basin',
     type: 'Pedestal',
     shape: 'Cylindrical',
     material: 'Makrana white',
@@ -1023,11 +1023,11 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     priceINR: 22000,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399893236/fluted-white-marble-pedestal-basin',
   },
- 
+
 
   // Wash Basins - Countertop
   'absolute black': {
-      product: 'Wash Basin',
+    product: 'Wash Basin',
     type: 'Countertop',
     shape: 'Rectangular',
     material: 'Absolute Black',
@@ -1043,7 +1043,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
   },
 
   'forest green marble countertop': {
-      product: 'Wash Basin',
+    product: 'Wash Basin',
     type: 'Countertop',
     shape: 'Round',
     material: 'Forest Green Marble',
@@ -1059,7 +1059,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
   },
 
   'green marble vessel sink': {
-      product: 'Wash Basin',
+    product: 'Wash Basin',
     type: 'Countertop',
     shape: 'Round',
     material: 'Forest Green Marble',
@@ -1070,12 +1070,12 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Green',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 53999,
+    priceINR: 71999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4405280976/green-marble-vessel-sink-handcrafted',
   },
 
   'ivory natural marble countertop sink': {
-      product: 'Wash Basin',
+    product: 'Wash Basin',
     type: 'Countertop',
     shape: 'Irregular',
     material: 'Natural Stone Marble',
@@ -1086,12 +1086,12 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Ivory',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 47699,
+    priceINR: 107999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4405287010/ivory-natural-marble-countertop-sink',
   },
 
   'satvario white marble countertop sink': {
-      product: 'Wash Basin',
+    product: 'Wash Basin',
     type: 'Countertop',
     shape: 'Round',
     material: 'White Marble',
@@ -1102,12 +1102,12 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White/Black',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 50399,
+    priceINR: 89999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4405295856/satvario-white-marble-countertop-sink?sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_6&pro=1&frs=1&logging_key=f4c12d97e6e35d2f4b28f1bf655650db3fe9fe36%3A4405295856&variation0=6015360341',
   },
 
   'satvario rounded table top': {
-      product: 'Wash Basin',
+    product: 'Wash Basin',
     type: 'Countertop',
     shape: 'Round',
     material: 'White Marble',
@@ -1122,7 +1122,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     etsyUrl: 'https://www.etsy.com/in-en/listing/4405295856/satvario-white-marble-countertop-sink?sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_6&pro=1&frs=1&logging_key=f4c12d97e6e35d2f4b28f1bf655650db3fe9fe36%3A4405295856&variation0=6015360337',
   },
   'kumari grey natural stone sink': {
-      product: 'Wash Basin',
+    product: 'Wash Basin',
     type: 'Countertop',
     shape: 'Round',
     material: 'Kumari Grey Marble',
@@ -1133,12 +1133,12 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Grey',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 44999,
+    priceINR: 119999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4405313442/kumari-grey-natural-stone-sink-hand',
   },
 
   'albeta marble': {
-      product: 'Wash Basin',
+    product: 'Wash Basin',
     type: 'Countertop',
     shape: 'Randomly Cutted',
     material: 'Albetta marble',
@@ -1148,11 +1148,11 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 134999,
+    priceINR: 179999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399809163/handcrafted-layered-white-marble-basin',
   },
   'amazon green': {
-      product: 'Wash Basin',
+    product: 'Wash Basin',
     type: 'Countertop',
     shape: 'Rectangular',
     material: 'Fantasy Brown',
@@ -1168,7 +1168,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
   },
 
   'panda white marble countertop': {
-      product: 'Wash Basin',
+    product: 'Wash Basin',
     type: 'Countertop',
     shape: 'Rectangular',
     material: 'Panda White Marble',
@@ -1182,9 +1182,9 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     priceINR: 161999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399885343/panda-white-marble-countertop-basin',
   },
-  
+
   'handcrafted makrana white marble fluted countertop': {
-      product: 'Wash Basin',
+    product: 'Wash Basin',
     type: 'Countertop',
     shape: 'Round',
     material: 'Banswara White',
@@ -1195,11 +1195,11 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 53999,
+    priceINR: 77999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399838367/handcrafted-makrana-white-marble-fluted',
   },
   'bidasar beige': {
-      product: 'Wash Basin',
+    product: 'Wash Basin',
     type: 'Countertop',
     shape: 'Rectangular',
     material: 'Bidasar Beige',
@@ -1210,12 +1210,12 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Beige',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 98999,
+    priceINR: 167999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4406388229/bidasar-beige-marble-sink-rectangular',
   },
-  
+
   'lotus petal floral carved': {
-      product: 'Wash Basin',
+    product: 'Wash Basin',
     type: 'Countertop',
     shape: 'Flower design',
     material: 'Beige Sandstone',
@@ -1229,7 +1229,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399850627/lotus-flower-stone-sink-hand-carved?sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_16&pro=1&frs=1&logging_key=b47e27f5b2e3770f33592730195b6f5ffb2fbb1e%3A4399850627&variation0=6015564997',
   },
   'hand carved marble lotus flower': {
-      product: 'Wash Basin',
+    product: 'Wash Basin',
     type: 'Countertop',
     shape: 'Flower design',
     material: 'White Marble',
@@ -1243,7 +1243,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399850627/lotus-flower-stone-sink-hand-carved?sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_16&pro=1&frs=1&logging_key=b47e27f5b2e3770f33592730195b6f5ffb2fbb1e%3A4399850627&variation0=6015564999',
   },
   'decorative carved stone': {
-      product: 'Wash Basin',
+    product: 'Wash Basin',
     type: 'Countertop',
     shape: 'Round',
     material: 'Natural Marble',
@@ -1253,13 +1253,13 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 98999,
+    priceINR: 119999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4406393669/decorated-carved-marble-sink-sculpted',
   },
- 
+
 
   'white textured marble basin': {
-      product: 'Wash Basin',
+    product: 'Wash Basin',
     type: 'Countertop',
     shape: 'Oval',
     material: 'White Marble',
@@ -1270,12 +1270,12 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 89999,
+    priceINR: 143999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399845267/white-textured-marble-basin-handcrafted',
   },
 
   'white marble faceted countertop': {
-      product: 'Wash Basin',
+    product: 'Wash Basin',
     type: 'Countertop',
     shape: 'Round',
     material: 'White Marble',
@@ -1286,12 +1286,12 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 44999,
+    priceINR: 76799,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399871591/white-marble-faceted-countertop-basin',
   },
 
   'makrana pink marble fluted countertop': {
-      product: 'Wash Basin',
+    product: 'Wash Basin',
     type: 'Countertop',
     shape: 'Rectangular',
     material: 'Makrana Pink',
@@ -1307,7 +1307,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
   },
 
   'makrana white marble peacock carved basin': {
-      product: 'Wash Basin',
+    product: 'Wash Basin',
     type: 'Countertop',
     shape: 'Rectangular',
     material: 'Makrana White',
@@ -1322,7 +1322,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399874331/makrana-white-marble-peacock-carved',
   },
   'nautilus marble sink': {
-      product: 'Wash Basin',
+    product: 'Wash Basin',
     type: 'Countertop',
     shape: 'Custom',
     material: 'Natural Marble',
@@ -1332,12 +1332,12 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White/Black',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 71999,
+    priceINR: 95999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4405322125/nautilus-marble-sink-hand-carved-spiral',
   },
- 
+
   'makrana white lotus ribbed petals': {
-      product: 'Wash Basin',
+    product: 'Wash Basin',
     type: 'Countertop',
     shape: 'Flower',
     material: 'Makrana White',
@@ -1352,7 +1352,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399871268/white-makrana-marble-lotus-basin',
   },
   'multi color rectangular flutted': {
-      product: 'Wash Basin',
+    product: 'Wash Basin',
     type: 'Countertop',
     shape: 'Rectangular',
     material: 'Green Veined Marble',
@@ -1365,9 +1365,9 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     priceINR: 107999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399872934/green-veined-marble-fluted-countertop',
   },
- 
+
   'rosso levanto oval': {
-      product: 'Wash Basin',
+    product: 'Wash Basin',
     type: 'Countertop',
     shape: 'Oval',
     material: 'Rosso Levanto',
@@ -1377,243 +1377,243 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Wine red',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 134999,
+    priceINR: 179999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4406455243/rosso-levanto-marble-washbasin',
   },
- 
-  
+
+
 
 
   // Sculptures
   'luxury marine black stone balloon dog sculpture': {
     product: 'Sculpture',
-  type: 'Indoor',
-  shape: 'Antique',
-  material: 'Marine Black Stone',
-  size: '11 x 15 x 5 inch',
-  surfaceFinish: 'Customizable',
-  delivery: '15-20 days',
-  height: '5 inches',
-  colorName: 'White',
-  packagingDetails: 'As per requirement',
-  location: 'India',
-  priceINR: 34019,
-  etsyUrl: 'https://www.etsy.com/in-en/listing/4401124145/paw-lished-stone-luxury-marine-black',
-},
+    type: 'Indoor',
+    shape: 'Antique',
+    material: 'Marine Black Stone',
+    size: '11 x 15 x 5 inch',
+    surfaceFinish: 'Customizable',
+    delivery: '15-20 days',
+    height: '5 inches',
+    colorName: 'White',
+    packagingDetails: 'As per requirement',
+    location: 'India',
+    priceINR: 107999,
+    etsyUrl: 'https://www.etsy.com/in-en/listing/4401124145/paw-lished-stone-luxury-marine-black',
+  },
 
-'curly wurly': {
+  'curly wurly': {
     product: 'Sculpture',
-  type: 'Indoor',
-  shape: 'Antique',
-  material: 'Brown Marble',
-  size: '16 x 16 x 4 inch',
-  surfaceFinish: 'Customizable',
-  delivery: '15-20 days',
-  height: '4 inches',
-  colorName: 'Brown',
-  packagingDetails: 'As per requirement',
-  location: 'India',
-  priceINR: 34199,
-  etsyUrl: 'https://www.etsy.com/in-en/listing/4402752774/hand-carved-brown-marble-showpiece',
-},
+    type: 'Indoor',
+    shape: 'Antique',
+    material: 'Brown Marble',
+    size: '16 x 16 x 4 inch',
+    surfaceFinish: 'Customizable',
+    delivery: '15-20 days',
+    height: '4 inches',
+    colorName: 'Brown',
+    packagingDetails: 'As per requirement',
+    location: 'India',
+    priceINR: 34199,
+    etsyUrl: 'https://www.etsy.com/in-en/listing/4402752774/hand-carved-brown-marble-showpiece',
+  },
 
-'anibus': {
+  'anibus': {
     product: 'Sculpture',
-  type: 'Indoor',
-  shape: 'Antique',
-  material: 'Black Marble',
-  size: '19 x 6 x 10 inch',
-  surfaceFinish: 'Customizable',
-  delivery: '15-20 days',
-  height: '10 inches',
-  colorName: 'Black',
-  packagingDetails: 'As per requirement',
-  location: 'India',
-  priceINR: 40049,
-  etsyUrl: 'https://www.etsy.com/in-en/listing/4402758869/black-marble-anubis-sculpture-modern',
-},
+    type: 'Indoor',
+    shape: 'Antique',
+    material: 'Black Marble',
+    size: '19 x 6 x 10 inch',
+    surfaceFinish: 'Customizable',
+    delivery: '15-20 days',
+    height: '10 inches',
+    colorName: 'Black',
+    packagingDetails: 'As per requirement',
+    location: 'India',
+    priceINR: 40049,
+    etsyUrl: 'https://www.etsy.com/in-en/listing/4402758869/black-marble-anubis-sculpture-modern',
+  },
 
-'the touch': {
+  'the touch': {
     product: 'Sculpture',
-  type: 'Indoor',
-  shape: 'Antique',
-  material: 'White Marble',
-  size: '25 x 21 x 6 inch',
-  surfaceFinish: 'Customizable',
-  delivery: '15-20 days',
-  height: '5 inches',
-  colorName: 'White',
-  packagingDetails: 'As per requirement',
-  location: 'India',
-  priceINR: 61199,
-  etsyUrl: 'https://www.etsy.com/in-en/listing/4402844632/the-touch-white-marble-sculpture',
-},
+    type: 'Indoor',
+    shape: 'Antique',
+    material: 'White Marble',
+    size: '25 x 21 x 6 inch',
+    surfaceFinish: 'Customizable',
+    delivery: '15-20 days',
+    height: '5 inches',
+    colorName: 'White',
+    packagingDetails: 'As per requirement',
+    location: 'India',
+    priceINR: 101999,
+    etsyUrl: 'https://www.etsy.com/in-en/listing/4402844632/the-touch-white-marble-sculpture',
+  },
 
-'the highs and lows': {
+  'the highs and lows': {
     product: 'Sculpture',
-  type: 'Indoor',
-  shape: 'Antique',
-  material: 'White Marble',
-  size: '20 x 21 x 4 inch',
-  surfaceFinish: 'Customizable',
-  delivery: '15-20 days',
-  height: '4 inches',
-  colorName: 'White',
-  packagingDetails: 'As per requirement',
-  location: 'India',
-  priceINR: 48599,
-  etsyUrl: 'https://www.etsy.com/in-en/listing/4402842546/the-highs-and-lows-white-marble',
-},
+    type: 'Indoor',
+    shape: 'Antique',
+    material: 'White Marble',
+    size: '20 x 21 x 4 inch',
+    surfaceFinish: 'Customizable',
+    delivery: '15-20 days',
+    height: '4 inches',
+    colorName: 'White',
+    packagingDetails: 'As per requirement',
+    location: 'India',
+    priceINR: 48599,
+    etsyUrl: 'https://www.etsy.com/in-en/listing/4402842546/the-highs-and-lows-white-marble',
+  },
 
-'shaped by time': {
+  'shaped by time': {
     product: 'Sculpture',
-  type: 'Indoor',
-  shape: 'Antique',
-  material: 'Marine Black Stone',
-  size: '26 x 12 x 4 inch',
-  surfaceFinish: 'Customizable',
-  delivery: '15-20 days',
-  height: '4 inches',
-  colorName: 'Black',
-  packagingDetails: 'As per requirement',
-  location: 'India',
-  priceINR: 54899,
-  etsyUrl: 'https://www.etsy.com/in-en/listing/4402827940/black-stone-showpiece-shaped-by-time',
-},
+    type: 'Indoor',
+    shape: 'Antique',
+    material: 'Marine Black Stone',
+    size: '26 x 12 x 4 inch',
+    surfaceFinish: 'Customizable',
+    delivery: '15-20 days',
+    height: '4 inches',
+    colorName: 'Black',
+    packagingDetails: 'As per requirement',
+    location: 'India',
+    priceINR: 54899,
+    etsyUrl: 'https://www.etsy.com/in-en/listing/4402827940/black-stone-showpiece-shaped-by-time',
+  },
 
-'essence of duality': {
+  'essence of duality': {
     product: 'Sculpture',
-  type: 'Indoor',
-  shape: 'Antique',
-  material: 'Marine Black Stone',
-  size: '23 x 12 x 4 inch',
-  surfaceFinish: 'Customizable',
-  delivery: '15-20 days',
-  height: '4 inches',
-  colorName: 'Black',
-  packagingDetails: 'As per requirement',
-  location: 'India',
-  priceINR: 36899,
-  etsyUrl: 'https://www.etsy.com/in-en/listing/4402786449/black-marble-sculpture-abstract-modern',
-},
+    type: 'Indoor',
+    shape: 'Antique',
+    material: 'Marine Black Stone',
+    size: '23 x 12 x 4 inch',
+    surfaceFinish: 'Customizable',
+    delivery: '15-20 days',
+    height: '4 inches',
+    colorName: 'Black',
+    packagingDetails: 'As per requirement',
+    location: 'India',
+    priceINR: 36899,
+    etsyUrl: 'https://www.etsy.com/in-en/listing/4402786449/black-marble-sculpture-abstract-modern',
+  },
 
-'bloom and behold': {
+  'bloom and behold': {
     product: 'Sculpture',
-  type: 'Indoor',
-  shape: 'Antique',
-  material: 'African White Marble',
-  size: '27 x 17 x 5 inch',
-  surfaceFinish: 'Customizable',
-  delivery: '15-20 days',
-  height: '5 inches',
-  colorName: 'White',
-  packagingDetails: 'As per requirement',
-  location: 'India',
-  priceINR: 71099,
-  etsyUrl: 'https://www.etsy.com/in-en/listing/4402111916/bloom-and-behold-african-white-marble',
-},
+    type: 'Indoor',
+    shape: 'Antique',
+    material: 'African White Marble',
+    size: '27 x 17 x 5 inch',
+    surfaceFinish: 'Customizable',
+    delivery: '15-20 days',
+    height: '5 inches',
+    colorName: 'White',
+    packagingDetails: 'As per requirement',
+    location: 'India',
+    priceINR: 71099,
+    etsyUrl: 'https://www.etsy.com/in-en/listing/4402111916/bloom-and-behold-african-white-marble',
+  },
 
-'circle of life': {
+  'circle of life': {
     product: 'Sculpture',
-  type: 'Indoor',
-  shape: 'Antique',
-  material: 'White Marble',
-  size: '16 x 12 x 3 inch',
-  surfaceFinish: 'Customizable',
-  delivery: '15-20 days',
-  height: '5 inches',
-  colorName: 'White',
-  packagingDetails: 'As per requirement',
-  location: 'India',
-  priceINR: 34199,
-  etsyUrl: 'https://www.etsy.com/in-en/listing/4402141933/circle-of-life-white-marble-sculpture-o',
-},
+    type: 'Indoor',
+    shape: 'Antique',
+    material: 'White Marble',
+    size: '16 x 12 x 3 inch',
+    surfaceFinish: 'Customizable',
+    delivery: '15-20 days',
+    height: '5 inches',
+    colorName: 'White',
+    packagingDetails: 'As per requirement',
+    location: 'India',
+    priceINR: 34199,
+    etsyUrl: 'https://www.etsy.com/in-en/listing/4402141933/circle-of-life-white-marble-sculpture-o',
+  },
 
-'loop of karma': {
+  'loop of karma': {
     product: 'Sculpture',
-  type: 'Indoor',
-  shape: 'Antique',
-  material: 'Statuario White Marble',
-  size: '21 x 18 x 4 inch',
-  surfaceFinish: 'Customizable',
-  delivery: '15-20 days',
-  height: '4 inches',
-  colorName: 'White',
-  packagingDetails: 'As per requirement',
-  location: 'India',
-  priceINR: 54899,
-  etsyUrl: 'https://www.etsy.com/in-en/listing/4402114215/loop-of-karma-luxury-statuario-white',
-},
+    type: 'Indoor',
+    shape: 'Antique',
+    material: 'Statuario White Marble',
+    size: '21 x 18 x 4 inch',
+    surfaceFinish: 'Customizable',
+    delivery: '15-20 days',
+    height: '4 inches',
+    colorName: 'White',
+    packagingDetails: 'As per requirement',
+    location: 'India',
+    priceINR: 54899,
+    etsyUrl: 'https://www.etsy.com/in-en/listing/4402114215/loop-of-karma-luxury-statuario-white',
+  },
 
-'stone cold stare': {
+  'stone cold stare': {
     product: 'Sculpture',
-  type: 'Indoor',
-  shape: 'Antique',
-  material: 'Exotic White Marble',
-  size: '15 x 15 x 4 inch',
-  surfaceFinish: 'Customizable',
-  delivery: '15-20 days',
-  height: '4 inches',
-  colorName: 'White',
-  packagingDetails: 'As per requirement',
-  location: 'India',
-  priceINR: 44999,
-  etsyUrl: 'https://www.etsy.com/in-en/listing/4402114232/stone-cold-stare-exotic-white-marble',
-},
+    type: 'Indoor',
+    shape: 'Antique',
+    material: 'Exotic White Marble',
+    size: '15 x 15 x 4 inch',
+    surfaceFinish: 'Customizable',
+    delivery: '15-20 days',
+    height: '4 inches',
+    colorName: 'White',
+    packagingDetails: 'As per requirement',
+    location: 'India',
+    priceINR: 44999,
+    etsyUrl: 'https://www.etsy.com/in-en/listing/4402114232/stone-cold-stare-exotic-white-marble',
+  },
 
-'swan exotic white marble sculpture': {
+  'swan exotic white marble sculpture': {
     product: 'Sculpture',
-  type: 'Indoor',
-  shape: 'Antique',
-  material: 'Exotic White Marble',
-  size: '16 x 16 x 6 inch',
-  surfaceFinish: 'Customizable',
-  delivery: '15-20 days',
-  height: '6 inches',
-  colorName: 'White',
-  packagingDetails: 'As per requirement',
-  location: 'India',
-  priceINR: 36899,
-  etsyUrl: 'https://www.etsy.com/in-en/listing/4402135376/swan-exotic-white-marble-sculpture-o-hs',
-},
+    type: 'Indoor',
+    shape: 'Antique',
+    material: 'Exotic White Marble',
+    size: '16 x 16 x 6 inch',
+    surfaceFinish: 'Customizable',
+    delivery: '15-20 days',
+    height: '6 inches',
+    colorName: 'White',
+    packagingDetails: 'As per requirement',
+    location: 'India',
+    priceINR: 36899,
+    etsyUrl: 'https://www.etsy.com/in-en/listing/4402135376/swan-exotic-white-marble-sculpture-o-hs',
+  },
 
-'the fox handcrafted sculpture': {
+  'the fox handcrafted sculpture': {
     product: 'Sculpture',
-  type: 'Indoor',
-  shape: 'Antique',
-  material: 'Exotic White Marble',
-  size: '22 x 18 x 7 inch',
-  surfaceFinish: 'Customizable',
-  delivery: '15-20 days',
-  height: '7 inches',
-  colorName: 'White Textured',
-  packagingDetails: 'As per requirement',
-  location: 'India',
-  priceINR: 46799,
-  etsyUrl: 'https://www.etsy.com/in-en/listing/4401121984/the-fox-handcrafted-exotic-white-marble',
-},
+    type: 'Indoor',
+    shape: 'Antique',
+    material: 'Exotic White Marble',
+    size: '22 x 18 x 7 inch',
+    surfaceFinish: 'Customizable',
+    delivery: '15-20 days',
+    height: '7 inches',
+    colorName: 'White Textured',
+    packagingDetails: 'As per requirement',
+    location: 'India',
+    priceINR: 46799,
+    etsyUrl: 'https://www.etsy.com/in-en/listing/4401121984/the-fox-handcrafted-exotic-white-marble',
+  },
 
-// Others
-'aurora marble table lamp': {
+  // Others
+  'aurora marble table lamp': {
     product: 'Other',
-  type: 'Indoor',
-  shape: 'Conical',
-  material: 'Aurora Marble',
-  size: '5 x 5 x 13 inch',
-  surfaceFinish: 'Customizable',
-  delivery: '15-20 days',
-  height: '13 inches',
-  colorName: 'Calacatta',
-  packagingDetails: 'As per requirement',
-  location: 'India',
-  priceINR: 71099,
-  etsyUrl: 'https://www.etsy.com/in-en/listing/4401134600/aurora-marble-table-lamp-handcrafted',
-},
+    type: 'Indoor',
+    shape: 'Conical',
+    material: 'Aurora Marble',
+    size: '5 x 5 x 13 inch',
+    surfaceFinish: 'Customizable',
+    delivery: '15-20 days',
+    height: '13 inches',
+    colorName: 'Calacatta',
+    packagingDetails: 'As per requirement',
+    location: 'India',
+    priceINR: 168000,
+    etsyUrl: 'https://www.etsy.com/in-en/listing/4401134600/aurora-marble-table-lamp-handcrafted',
+  },
 
   // Flower Pots
   'makrana white fluted vase': {
-      product: 'Flower Pot',
-      type: 'Pot',
+    product: 'Flower Pot',
+    type: 'Pot',
     shape: 'Custom',
     material: 'Makrana white',
     size: '8 x 8 x 15 inch',
@@ -1626,7 +1626,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     priceINR: 10000,
   },
   'statuario cylindrical vase': {
-      product: 'Flower Pot',
+    product: 'Flower Pot',
     type: 'Pot',
     shape: 'Custom',
     material: 'Satvario',
@@ -1655,7 +1655,7 @@ export const getFurnitureSpecs = (productName: string): FurnitureSpec | null => 
 // Convert FurnitureSpec to display-ready format
 export const formatFurnitureSpecs = (specs: FurnitureSpec): Record<string, string> => {
   const formatted: Record<string, string> = {};
-  
+
   if (specs.type) formatted['Type'] = specs.type;
   if (specs.shape) formatted['Shape'] = specs.shape;
   if (specs.material) formatted['Material'] = specs.material;
@@ -1666,6 +1666,8 @@ export const formatFurnitureSpecs = (specs: FurnitureSpec): Record<string, strin
   if (specs.colorName) formatted['Color'] = specs.colorName;
   if (specs.location) formatted['Origin'] = specs.location;
   if (specs.packagingDetails) formatted['Packaging'] = specs.packagingDetails;
-  
+
   return formatted;
-};
+};// src/data/furnitureSpecs.ts
+// This file maps CSV data to furniture products
+
