@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+const API_URL = '/api/quotations';
 
 export interface Quotation {
     _id: string;
@@ -29,14 +29,14 @@ export interface QuotationStats {
 
 // Get all quotations (Admin only)
 export const getAllQuotations = async (page: number = 1, limit: number = 20, status?: string) => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('authToken');
     const params = new URLSearchParams({
         page: page.toString(),
         limit: limit.toString(),
         ...(status && { status })
     });
 
-    const response = await fetch(`${API_URL}/api/quotations?${params}`, {
+    const response = await fetch(`${API_URL}?${params}`, {
         headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -53,8 +53,8 @@ export const getAllQuotations = async (page: number = 1, limit: number = 20, sta
 
 // Get quotation by ID (Admin only)
 export const getQuotationById = async (id: string): Promise<Quotation> => {
-    const token = localStorage.getItem('token');
-    const response = await fetch(`${API_URL}/api/quotations/${id}`, {
+    const token = localStorage.getItem('authToken');
+    const response = await fetch(`${API_URL}/${id}`, {
         headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -71,8 +71,8 @@ export const getQuotationById = async (id: string): Promise<Quotation> => {
 
 // Update quotation status (Admin only)
 export const updateQuotationStatus = async (id: string, status: string, adminNotes?: string, quotedPrice?: number) => {
-    const token = localStorage.getItem('token');
-    const response = await fetch(`${API_URL}/api/quotations/${id}`, {
+    const token = localStorage.getItem('authToken');
+    const response = await fetch(`${API_URL}/${id}`, {
         method: 'PATCH',
         headers: {
             'Authorization': `Bearer ${token}`,
@@ -91,8 +91,8 @@ export const updateQuotationStatus = async (id: string, status: string, adminNot
 
 // Delete quotation (Admin only)
 export const deleteQuotation = async (id: string) => {
-    const token = localStorage.getItem('token');
-    const response = await fetch(`${API_URL}/api/quotations/${id}`, {
+    const token = localStorage.getItem('authToken');
+    const response = await fetch(`${API_URL}/${id}`, {
         method: 'DELETE',
         headers: {
             'Authorization': `Bearer ${token}`,
@@ -110,8 +110,8 @@ export const deleteQuotation = async (id: string) => {
 
 // Get quotation statistics (Admin only)
 export const getQuotationStats = async (): Promise<QuotationStats> => {
-    const token = localStorage.getItem('token');
-    const response = await fetch(`${API_URL}/api/quotations/stats`, {
+    const token = localStorage.getItem('authToken');
+    const response = await fetch(`${API_URL}/stats`, {
         headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'

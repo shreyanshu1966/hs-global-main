@@ -110,7 +110,7 @@ export const SlabCustomizationModal: React.FC = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/api/quotations/submit`, {
+      const response = await fetch('/api/quotations/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
