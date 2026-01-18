@@ -45,7 +45,7 @@ const DEFAULT_RATES: ExchangeRates = {
 
 const STORAGE_KEY = 'hs-global-currency';
 const AUTO_DETECT_KEY = 'hs-global-currency-auto-detect';
-const API_URL = 'http://localhost:3000/api/currency/rates';
+const API_URL = `${import.meta.env.VITE_API_URL || '/api'}/currency/rates`;
 
 // Country code to currency mapping
 const COUNTRY_TO_CURRENCY: Record<string, string> = {

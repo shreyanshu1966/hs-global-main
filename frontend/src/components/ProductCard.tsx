@@ -286,6 +286,8 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
                 key={src}
                 src={src}
                 alt={product.name}
+                width="400"
+                height="500"
                 loading={idx === 0 ? "eager" : "lazy"}
                 className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${visible ? "opacity-100" : "opacity-0"
                   }`}

@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { ArrowRight, MoveDown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -33,42 +33,53 @@ const Hero = () => {
   ];
 
   useGSAP(() => {
-    // Parallax Effect
-    gsap.to(bgRef.current, {
-      yPercent: 30,
-      ease: "none",
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top top",
-        end: "bottom top",
-        scrub: true,
-      }
-    });
+    // Parallax Effect - with null check
+    if (bgRef.current && containerRef.current) {
+      gsap.to(bgRef.current, {
+        yPercent: 30,
+        ease: "none",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        }
+      });
+    }
 
-    // Text Parallax (gentle fade out on scroll)
-    gsap.to(textRef.current, {
-      yPercent: -20,
-      opacity: 0,
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top top",
-        end: "50% top",
-        scrub: true,
-      }
-    });
+    // Text Parallax (gentle fade out on scroll) - with null check
+    if (textRef.current && containerRef.current) {
+      gsap.to(textRef.current, {
+        yPercent: -20,
+        opacity: 0,
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top top",
+          end: "50% top",
+          scrub: true,
+        }
+      });
+    }
 
   }, { scope: containerRef });
 
   return (
     <section ref={containerRef} className="relative h-screen min-h-[700px] md:min-h-[800px] w-full overflow-hidden bg-black">
       {/* Background Image with Parallax */}
+      {/* Background Image with Parallax - Optimized for LCP */}
       <div
         ref={bgRef}
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-110 will-change-transform"
-        style={{
-          backgroundImage: `url(${slides[0].imageUrl})`,
-        }}
+        className="absolute inset-0 scale-110 will-change-transform"
       >
+        <img
+          src={slides[0].imageUrl}
+          alt={slides[0].subtitle || "Luxury Stone Background"}
+          className="w-full h-full object-cover"
+          width="1920"
+          height="1080"
+          fetchPriority="high"
+          decoding="async"
+        />
         <div className="absolute inset-0 bg-black/40 md:bg-black/30" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
       </div>

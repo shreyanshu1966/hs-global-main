@@ -9,7 +9,7 @@ import React, {
 import i18n from "../i18n";
 
 // Use backend API instead of direct external call
-const EXCHANGE_API_URL = "http://localhost:3000/api/currency/rates";
+const EXCHANGE_API_URL = `${import.meta.env.VITE_API_URL || '/api'}/currency/rates`;
 
 // TYPES
 interface ExchangeRates {

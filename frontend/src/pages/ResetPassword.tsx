@@ -47,7 +47,8 @@ const ResetPassword: React.FC = () => {
         setIsLoading(true);
 
         try {
-            const response = await fetch(`/api/auth/reset-password/${token}`, {
+            const API_URL = import.meta.env.VITE_API_URL || '/api';
+            const response = await fetch(`${API_URL}/auth/reset-password/${token}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

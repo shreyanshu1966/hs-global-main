@@ -2,6 +2,9 @@ const nodemailer = require('nodemailer');
 
 // Global transporter instance
 let transporter = null;
+let isInitializing = false;
+let lastConnectionAttempt = 0;
+const CONNECTION_RETRY_DELAY = 5000; // 5 seconds between connection attempts
 
 // Configuration helper
 const createTransporterConfig = () => {
@@ -27,8 +30,10 @@ const createTransporterConfig = () => {
                     pass: emailPassword
                 },
                 pool: true, // Use pooled connections
-                maxConnections: 5, // Limit concurrent connections
-                maxMessages: 100
+                maxConnections: 2, // Reduced for Gmail
+                maxMessages: 100,
+                rateDelta: 1000,
+                rateLimit: 3
             };
         } else {
             // Generic SMTP Configuration (GoDaddy, etc.)
@@ -42,13 +47,17 @@ const createTransporterConfig = () => {
                     pass: emailPassword
                 },
                 tls: {
-                    rejectUnauthorized: false
+                    rejectUnauthorized: false,
+                    ciphers: 'SSLv3'
                 },
                 pool: true,
-                maxConnections: 3,
-                maxMessages: 100,
-                rateDelta: 1000,
-                rateLimit: 5
+                maxConnections: 1, // CRITICAL: Only 1 connection for GoDaddy to prevent "too many connections"
+                maxMessages: 10, // Reduced to prevent connection exhaustion
+                rateDelta: 2000, // 2 seconds between batches
+                rateLimit: 2, // Max 2 emails per rateDelta
+                connectionTimeout: 10000, // 10 seconds
+                greetingTimeout: 10000,
+                socketTimeout: 30000
             };
         }
     } else {
@@ -66,7 +75,23 @@ const createTransporterConfig = () => {
 };
 
 // Initialize email service (connect once at startup)
-const initEmailService = async () => {
+const initEmailService = async (retryCount = 0) => {
+    // Prevent concurrent initialization attempts
+    if (isInitializing) {
+        console.log('⏳ Email service initialization already in progress...');
+        // Wait for the current initialization to complete
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        return transporter !== null;
+    }
+
+    // Rate limit connection attempts
+    const now = Date.now();
+    if (now - lastConnectionAttempt < CONNECTION_RETRY_DELAY) {
+        const waitTime = CONNECTION_RETRY_DELAY - (now - lastConnectionAttempt);
+        console.log(`⏳ Waiting ${waitTime}ms before next connection attempt...`);
+        await new Promise(resolve => setTimeout(resolve, waitTime));
+    }
+
     if (transporter) {
         // Verify existing connection
         try {
@@ -75,22 +100,49 @@ const initEmailService = async () => {
             return true;
         } catch (error) {
             console.warn('⚠️ Existing connection broken, reconnecting...');
+            // Close the broken transporter
+            if (transporter && transporter.close) {
+                try {
+                    transporter.close();
+                } catch (e) {
+                    // Ignore close errors
+                }
+            }
             transporter = null;
         }
     }
+
+    isInitializing = true;
+    lastConnectionAttempt = Date.now();
 
     try {
         const config = createTransporterConfig();
         const newTransporter = nodemailer.createTransport(config);
 
-        // Verify connection
-        await newTransporter.verify();
+        // Verify connection with timeout
+        const verifyPromise = newTransporter.verify();
+        const timeoutPromise = new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('Connection verification timeout')), 15000)
+        );
+
+        await Promise.race([verifyPromise, timeoutPromise]);
         console.log('✅ Email service connected successfully');
 
         transporter = newTransporter;
+        isInitializing = false;
         return true;
     } catch (error) {
+        isInitializing = false;
         console.error('❌ Email service initialization failed:', error.message);
+
+        // Retry with exponential backoff (max 3 attempts)
+        if (retryCount < 2 && error.responseCode === 421) {
+            const backoffTime = Math.min(5000 * Math.pow(2, retryCount), 30000);
+            console.log(`🔄 Retrying connection in ${backoffTime}ms... (attempt ${retryCount + 1}/3)`);
+            await new Promise(resolve => setTimeout(resolve, backoffTime));
+            return initEmailService(retryCount + 1);
+        }
+
         return false;
     }
 };
@@ -98,15 +150,37 @@ const initEmailService = async () => {
 // Export init function for server startup
 exports.initEmailService = initEmailService;
 
+// Cleanup function for graceful shutdown
+const closeEmailService = async () => {
+    if (transporter && transporter.close) {
+        try {
+            console.log('🔌 Closing email service connections...');
+            transporter.close();
+            transporter = null;
+            console.log('✅ Email service closed successfully');
+        } catch (error) {
+            console.error('❌ Error closing email service:', error.message);
+        }
+    }
+};
+
+// Export cleanup function
+exports.closeEmailService = closeEmailService;
+
 // Get valid transporter, re-initializing if necessary
 const getTransporter = async () => {
-    if (!transporter) {
+    if (!transporter && !isInitializing) {
         console.log('⚠️ Transporter not found, initializing...');
         await initEmailService();
+    } else if (isInitializing) {
+        // Wait for initialization to complete
+        let attempts = 0;
+        while (isInitializing && attempts < 30) {
+            await new Promise(resolve => setTimeout(resolve, 500));
+            attempts++;
+        }
     }
 
-    // Optionally verify connection if it's been idle (or trust the pool)
-    // For robustness as requested: check simple validity
     if (!transporter) {
         throw new Error('Email service unavailable: Could not initialize transporter');
     }
@@ -115,34 +189,46 @@ const getTransporter = async () => {
 };
 
 // Helper function to send email with retry logic and connection management
-const sendMailWrapper = async (mailOptions, retries = 3) => {
+const sendMailWrapper = async (mailOptions, retries = 3, attempt = 1) => {
     try {
         // Ensure we have a transporter
-        let emailTransporter = await getTransporter();
+        const emailTransporter = await getTransporter();
 
         // Try sending
         const info = await emailTransporter.sendMail(mailOptions);
         return { success: true, messageId: info.messageId, info };
     } catch (error) {
-        console.error(`Attempt failed. Retries left: ${retries}. Error: ${error.message}`);
+        console.error(`❌ Send attempt ${attempt} failed. Retries left: ${retries}. Error: ${error.message}`);
 
-        // Handle connection errors
-        if (error.code === 'ESOCKET' || error.command === 'CONN' || error.responseCode === 421 || error.code === 'EAUTH') {
-            console.log('🔄 Detected connection/auth issue. Re-initializing email service...');
-            transporter = null; // Force null to trigger re-init
+        // Handle connection errors with exponential backoff
+        if (error.code === 'ESOCKET' || error.command === 'CONN' || error.responseCode === 421 || error.code === 'EAUTH' || error.code === 'EPROTOCOL') {
+            console.log('🔄 Detected connection/auth issue. Closing and re-initializing email service...');
 
-            // Wait a bit
-            await new Promise(resolve => setTimeout(resolve, 2000));
+            // Close the broken connection
+            if (transporter && transporter.close) {
+                try {
+                    transporter.close();
+                } catch (e) {
+                    // Ignore close errors
+                }
+            }
+            transporter = null;
 
-            // If we have retries, try again (which will call getTransporter and re-init)
+            // If we have retries, wait with exponential backoff and try again
             if (retries > 0) {
-                return sendMailWrapper(mailOptions, retries - 1);
+                const backoffTime = Math.min(2000 * Math.pow(2, attempt - 1), 10000);
+                console.log(`⏳ Waiting ${backoffTime}ms before retry...`);
+                await new Promise(resolve => setTimeout(resolve, backoffTime));
+                return sendMailWrapper(mailOptions, retries - 1, attempt + 1);
             }
         }
 
+        // For other errors, simple retry with delay
         if (retries > 0) {
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            return sendMailWrapper(mailOptions, retries - 1);
+            const retryDelay = 1000 * attempt;
+            console.log(`⏳ Retrying in ${retryDelay}ms...`);
+            await new Promise(resolve => setTimeout(resolve, retryDelay));
+            return sendMailWrapper(mailOptions, retries - 1, attempt + 1);
         }
 
         return { success: false, error: error.message };

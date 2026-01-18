@@ -34,7 +34,8 @@ const LoginOTP: React.FC = () => {
         setIsLoading(true);
 
         try {
-            const response = await fetch('/api/auth/request-otp', {
+            const API_URL = import.meta.env.VITE_API_URL || '/api';
+            const response = await fetch(`${API_URL}/auth/request-otp`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -62,7 +63,8 @@ const LoginOTP: React.FC = () => {
         setIsLoading(true);
 
         try {
-            const response = await fetch('/api/auth/login-otp', {
+            const API_URL = import.meta.env.VITE_API_URL || '/api';
+            const response = await fetch(`${API_URL}/auth/login-otp`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

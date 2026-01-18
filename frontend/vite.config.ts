@@ -27,51 +27,22 @@ export default defineConfig({
       'react-router-dom',
       'lucide-react',
     ],
-    exclude: ['gsap', 'locomotive-scroll'],
+    // Removed exclusions for gsap and locomotive-scroll to allow better optimization
   },
 
   build: {
-    // Use esbuild for faster builds (terser had compatibility issues)
+    // Use esbuild for faster builds
     minify: 'esbuild',
+    target: 'esnext',
 
     rollupOptions: {
       output: {
-        // Optimized manual chunks
-        // manualChunks: (id) => {
-        //   // React core - highest priority
-        //   if (id.includes('node_modules/react') ||
-        //     id.includes('node_modules/react-dom') ||
-        //     id.includes('node_modules/react-router-dom')) {
-        //     return 'react-core';
-        //   }
-        //
-        //   // Heavy animation libraries - lazy load
-        //   if (id.includes('node_modules/gsap')) {
-        //     return 'gsap';
-        //   }
-        //   if (id.includes('node_modules/locomotive-scroll')) {
-        //     return 'locomotive';
-        //   }
-        //
-        //   // UI libraries
-        //   if (id.includes('node_modules/lucide-react')) {
-        //     return 'icons';
-        //   }
-        //   if (id.includes('node_modules/swiper')) {
-        //     return 'swiper';
-        //   }
-        //
-        //   // i18n
-        //   if (id.includes('node_modules/i18next') ||
-        //     id.includes('node_modules/react-i18next')) {
-        //     return 'i18n';
-        //   }
-        //
-        //   // Other vendor code
-        //   if (id.includes('node_modules')) {
-        //     return 'vendor';
-        //   }
-        // },
+        // Simple manual chunking to avoid circular dependencies
+        manualChunks: (id) => {
+          if (id.includes('node_modules')) {
+            return 'vendor';
+          }
+        },
 
         // Optimize chunk file names
         chunkFileNames: 'assets/js/[name]-[hash].js',
@@ -81,11 +52,10 @@ export default defineConfig({
     },
 
     // Performance optimizations
-    chunkSizeWarningLimit: 600,
+    chunkSizeWarningLimit: 1000,
     cssCodeSplit: true,
     sourcemap: false,
     cssMinify: true,
-    target: 'es2015',
     reportCompressedSize: false,
 
     // Enable compression

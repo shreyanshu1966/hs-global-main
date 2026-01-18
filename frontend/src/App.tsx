@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import Layout from "./components/Layout";
@@ -9,27 +9,28 @@ import SmoothScroll from "./components/SmoothScroll";
 import { AuthProvider } from "./contexts/AuthContext";
 import { CurrencyProvider } from "./contexts/CurrencyContext";
 
-import Home from "./pages/Home";
-import About from "./pages/About";
-import Products from "./pages/Products";
-import ProductDetails from "./pages/ProductDetails";
-import Gallery from "./pages/Gallery";
-import GalleryDetails from "./pages/GalleryDetails";
-import Contact from "./pages/Contact";
-import Services from "./pages/Services";
-import Blogs from "./pages/Blogs";
-import BlogDetail from "./pages/BlogDetail";
-import Checkout from "./pages/Checkout";
-import CheckoutSuccess from "./pages/CheckoutSuccess";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import Profile from "./pages/Profile";
-import OrderDetails from "./pages/OrderDetails";
-import ForgotPassword from "./pages/ForgotPassword";
-import ResetPassword from "./pages/ResetPassword";
-import VerifyEmail from "./pages/VerifyEmail";
-import LoginOTP from "./pages/LoginOTP";
-import Admin from "./pages/Admin";
+// Lazy load pages for better performance
+const Home = lazy(() => import("./pages/Home"));
+const About = lazy(() => import("./pages/About"));
+const Products = lazy(() => import("./pages/Products"));
+const ProductDetails = lazy(() => import("./pages/ProductDetails"));
+const Gallery = lazy(() => import("./pages/Gallery"));
+const GalleryDetails = lazy(() => import("./pages/GalleryDetails"));
+const Contact = lazy(() => import("./pages/Contact"));
+const Services = lazy(() => import("./pages/Services"));
+const Blogs = lazy(() => import("./pages/Blogs"));
+const BlogDetail = lazy(() => import("./pages/BlogDetail"));
+const Checkout = lazy(() => import("./pages/Checkout"));
+const CheckoutSuccess = lazy(() => import("./pages/CheckoutSuccess"));
+const Login = lazy(() => import("./pages/Login"));
+const Signup = lazy(() => import("./pages/Signup"));
+const Profile = lazy(() => import("./pages/Profile"));
+const OrderDetails = lazy(() => import("./pages/OrderDetails"));
+const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
+const ResetPassword = lazy(() => import("./pages/ResetPassword"));
+const VerifyEmail = lazy(() => import("./pages/VerifyEmail"));
+const LoginOTP = lazy(() => import("./pages/LoginOTP"));
+const Admin = lazy(() => import("./pages/Admin"));
 import { ProtectedRoute } from "./components/ProtectedRoute";
 
 function App() {
@@ -85,30 +86,32 @@ function App() {
               <Layout>
                 {showInitialForm && <InitialUserForm onSubmit={handleFormSubmit} />}
 
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/about" element={<About />} />
-                  <Route path="/products" element={<Products />} />
-                  <Route path="/products/:id" element={<ProductDetails />} />
-                  <Route path="/gallery" element={<Gallery />} />
-                  <Route path="/gallery/:id" element={<GalleryDetails />} />
-                  <Route path="/contact" element={<Contact />} />
-                  <Route path="/services" element={<Services />} />
-                  <Route path="/blog" element={<Blogs />} />
-                  <Route path="/blog/:slug" element={<BlogDetail />} />
-                  <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
-                  <Route path="/checkout-success" element={<ProtectedRoute><CheckoutSuccess /></ProtectedRoute>} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/login-otp" element={<LoginOTP />} />
-                  <Route path="/signup" element={<Signup />} />
-                  <Route path="/forgot-password" element={<ForgotPassword />} />
-                  <Route path="/reset-password/:token" element={<ResetPassword />} />
-                  <Route path="/verify-email/:token" element={<VerifyEmail />} />
-                  <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-                  <Route path="/orders/:orderId" element={<ProtectedRoute><OrderDetails /></ProtectedRoute>} />
-                  <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
-                  <Route path="*" element={<div>404 Not Found</div>} />
-                </Routes>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/products" element={<Products />} />
+                    <Route path="/products/:id" element={<ProductDetails />} />
+                    <Route path="/gallery" element={<Gallery />} />
+                    <Route path="/gallery/:id" element={<GalleryDetails />} />
+                    <Route path="/contact" element={<Contact />} />
+                    <Route path="/services" element={<Services />} />
+                    <Route path="/blog" element={<Blogs />} />
+                    <Route path="/blog/:slug" element={<BlogDetail />} />
+                    <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
+                    <Route path="/checkout-success" element={<ProtectedRoute><CheckoutSuccess /></ProtectedRoute>} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/login-otp" element={<LoginOTP />} />
+                    <Route path="/signup" element={<Signup />} />
+                    <Route path="/forgot-password" element={<ForgotPassword />} />
+                    <Route path="/reset-password/:token" element={<ResetPassword />} />
+                    <Route path="/verify-email/:token" element={<VerifyEmail />} />
+                    <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+                    <Route path="/orders/:orderId" element={<ProtectedRoute><OrderDetails /></ProtectedRoute>} />
+                    <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
+                    <Route path="*" element={<div>404 Not Found</div>} />
+                  </Routes>
+                </Suspense>
 
               </Layout>
             </SmoothScroll>
