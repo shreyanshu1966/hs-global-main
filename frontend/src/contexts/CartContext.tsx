@@ -4,7 +4,7 @@ export interface CartItem {
   id: string;
   name: string;
   image: string;
-  price: string;
+  priceINR: number; // Always store in INR (base currency)
   quantity: number;
   category: string;
   subcategory: string;
@@ -30,7 +30,8 @@ type CartAction =
   | { type: 'CLEAR_CART' }
   | { type: 'SET_PHONE_VERIFIED'; payload: { phoneNumber: string } }
   | { type: 'TOGGLE_CART' }
-  | { type: 'CLOSE_CART' };
+  | { type: 'CLOSE_CART' }
+  | { type: 'RESTORE_CART'; payload: { items: CartItem[] } };
 
 const initialState: CartState = {
   items: [],
@@ -93,6 +94,11 @@ function cartReducer(state: CartState, action: CartAction): CartState {
         ...state,
         isCartOpen: false,
       };
+    case 'RESTORE_CART':
+      return {
+        ...state,
+        items: action.payload.items,
+      };
     default:
       return state;
   }
@@ -125,6 +131,10 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         const parsed = JSON.parse(saved);
         if (parsed.isPhoneVerified && parsed.phoneNumber) {
           dispatch({ type: 'SET_PHONE_VERIFIED', payload: { phoneNumber: parsed.phoneNumber } });
+        }
+        // Restore items if they exist
+        if (parsed.items && Array.isArray(parsed.items) && parsed.items.length > 0) {
+          dispatch({ type: 'RESTORE_CART', payload: { items: parsed.items } });
         }
       } catch (e) {
         console.warn('Failed to load cart from localStorage:', e);
@@ -173,18 +183,9 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     return state.items.reduce((total, item) => total + item.quantity, 0);
   };
 
-  // Helper to extract numeric price from price string (in INR)
-  const extractPriceInINR = (priceString: string): number => {
-    // Remove all currency symbols and non-numeric characters except dots and commas
-    const cleaned = priceString.replace(/[₹$€£¥₩د.إ﷼฿₺₱₫RM,]/g, '').trim();
-    const price = parseFloat(cleaned);
-    return isNaN(price) ? 0 : price;
-  };
-
   const getTotalPriceNumeric = (): number => {
     return state.items.reduce((sum, item) => {
-      const priceInINR = extractPriceInINR(item.price);
-      return sum + (priceInINR * item.quantity);
+      return sum + (item.priceINR * item.quantity);
     }, 0);
   };
 

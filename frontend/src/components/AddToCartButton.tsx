@@ -32,23 +32,23 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
 
   const { contextSafe } = useGSAP({ scope: buttonRef });
 
-  // Helper to get raw INR price
-  const getRawINRPrice = (): string => {
+  // Helper to get raw INR price as number
+  const getRawINRPrice = (): number => {
     // For furniture, get price from specs
     if (product.category === 'furniture') {
       const specs = getFurnitureSpecs(product.name);
       if (specs?.priceINR) {
-        return specs.priceINR.toString();
+        return specs.priceINR;
       }
     }
 
     // For products with priceINR property
     if ((product as any).priceINR) {
-      return (product as any).priceINR.toString();
+      return (product as any).priceINR;
     }
 
     // Fallback
-    return '2499';
+    return 2499;
   };
 
   // Listen for phone verification completion
@@ -62,7 +62,7 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
           id: product.id,
           name: product.name,
           image: product.image,
-          price: getRawINRPrice(), // Store raw INR price
+          priceINR: getRawINRPrice(),
           category: product.category,
           subcategory: product.subcategory,
         });
@@ -102,7 +102,7 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
       id: product.id,
       name: product.name,
       image: product.image,
-      price: getRawINRPrice(), // Store raw INR price
+      priceINR: getRawINRPrice(),
       category: product.category,
       subcategory: product.subcategory,
     });

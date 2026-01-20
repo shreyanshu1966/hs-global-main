@@ -1,28 +1,16 @@
-import React, { useEffect, useMemo, useState, useRef } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useCart } from '../contexts/CartContext';
 import { useCurrency } from '../contexts/CurrencyContext';
-import { Link, useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import gsap from 'gsap';
-import { useGSAP } from '@gsap/react';
-import { Minus, Plus, Trash2, ArrowLeft, Loader2, RefreshCw } from 'lucide-react';
-import paymentRetryService from '../services/paymentRetryService';
+import { Minus, Plus, Trash2, ArrowLeft, Loader2 } from 'lucide-react';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
-declare global {
-  interface Window {
-    paypal: any;
-  }
-}
-
 const Checkout: React.FC = () => {
-  const { state, removeItem, updateQuantity, clearCart } = useCart();
-  const { formatPrice, getCurrencySymbol, convertFromINR } = useCurrency();
+  const { state, removeItem, updateQuantity } = useCart();
+  const { formatPrice, getCurrencySymbol, convertFromINR, currency, exchangeRates } = useCurrency();
   const { user } = useAuth();
-  const navigate = useNavigate();
-  const { t } = useTranslation();
 
   // Form State
   const [name, setName] = useState('');
@@ -37,12 +25,6 @@ const Checkout: React.FC = () => {
 
   const [isCreatingOrder, setIsCreatingOrder] = useState(false);
   const [paymentError, setPaymentError] = useState<string | null>(null);
-  const [currentOrderId, setCurrentOrderId] = useState<string | null>(null);
-  const [retryInfo, setRetryInfo] = useState<any>(null);
-  const [paypalLoaded, setPaypalLoaded] = useState(false);
-
-  const containerRef = useRef<HTMLDivElement>(null);
-  const paypalRef = useRef<HTMLDivElement>(null);
 
   // Load user details from authenticated user or localStorage
   useEffect(() => {
@@ -77,245 +59,101 @@ const Checkout: React.FC = () => {
     }
   }, [state.phoneNumber, state.isPhoneVerified, phone]);
 
-  // Load PayPal SDK
-  useEffect(() => {
-    if (window.paypal) {
-      setPaypalLoaded(true);
-      return;
-    }
-
-    if (!user) {
-      // Wait for user to be loaded
-      return;
-    }
-
-    const loadPayPal = async () => {
-      try {
-        // Get PayPal client ID from backend
-        const response = await fetch(`${API_URL}/create-order`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-          },
-          body: JSON.stringify({
-            amount: 1, // Dummy amount just to get client ID
-            items: [{ id: 'dummy', name: 'dummy', quantity: 1, price: 1 }],
-            shippingAddress: {},
-            customer: {}
-          })
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          const clientId = data.clientId;
-          const environment = data.environment || 'sandbox';
-
-          // Check if script already exists
-          const existingScript = document.querySelector('script[src*="paypal.com/sdk"]');
-          if (existingScript) {
-            existingScript.remove();
-          }
-
-          const script = document.createElement('script');
-          script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=USD&intent=capture`;
-          script.onload = () => setPaypalLoaded(true);
-          script.onerror = () => {
-            console.error('Failed to load PayPal SDK script');
-            setPaymentError('Failed to load payment system. Please refresh the page.');
-          };
-          script.async = true;
-          document.body.appendChild(script);
-        } else {
-          throw new Error('Failed to get PayPal configuration');
-        }
-      } catch (error) {
-        console.error('Failed to load PayPal:', error);
-        setPaymentError('Failed to initialize payment system. Please refresh the page.');
-      }
-    };
-
-    loadPayPal();
-  }, [user]);
-
-  // Price Helpers (Simplified)
-  const extractPriceInINR = (priceString: string): number => {
-    const cleaned = priceString.replace(/[^0-9.]/g, '');
-    const price = parseFloat(cleaned);
-    return isNaN(price) ? 0 : price;
-  };
-
   // Calculate totals in INR (base currency)
   const subtotalINR = useMemo(() => {
     return state.items.reduce((sum, item) => {
-      const priceInINR = extractPriceInINR(item.price);
-      return sum + priceInINR * item.quantity;
+      return sum + item.priceINR * item.quantity;
     }, 0);
   }, [state.items]);
 
-  // Convert to user's currency for display
+  // Convert to user's selected currency for display
   const subtotal = useMemo(() => convertFromINR(subtotalINR), [subtotalINR, convertFromINR]);
   const totalAmount = subtotal;
+
+  // PayPal supported currencies
+  const PAYPAL_SUPPORTED = ['USD', 'EUR', 'GBP', 'AUD', 'CAD', 'JPY', 'SGD'];
+
+  // Determine payment currency (use user's currency if PayPal supports it, otherwise USD)
+  const paymentCurrency = PAYPAL_SUPPORTED.includes(currency) ? currency : 'USD';
+
+  // Convert to payment currency
+  const paymentAmount = useMemo(() => {
+    const rate = exchangeRates[paymentCurrency] || exchangeRates.USD || 0.012;
+    return (subtotalINR * rate).toFixed(2);
+  }, [subtotalINR, paymentCurrency, exchangeRates]);
 
   const isEmailValid = useMemo(() => /^(?=.*@).+\..+$/i.test(email.trim()), [email]);
   const isFormValid = name && isEmailValid && phone && address1 && city && region && postalCode && country;
 
-  // Render PayPal buttons when form is valid and PayPal is loaded
-  useEffect(() => {
-    if (!paypalLoaded || !isFormValid || !paypalRef.current || !window.paypal) return;
+  // Handle PayPal checkout with redirect
+  const handlePayPalCheckout = async () => {
+    try {
+      setIsCreatingOrder(true);
+      setPaymentError(null);
 
-    const renderPayPalButtons = async () => {
-      try {
-        // Clear any existing PayPal buttons
-        if (paypalRef.current) {
-          paypalRef.current.innerHTML = '';
-        }
-
-        window.paypal.Buttons({
-          style: {
-            color: 'black',
-            shape: 'rect',
-            layout: 'vertical',
-            height: 45,
-            label: 'pay'
+      const response = await fetch(`${API_URL}/create-order`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          amount: paymentAmount,
+          currency: paymentCurrency,
+          receipt: `rcpt_${Date.now()}`,
+          items: state.items.map(item => {
+            const rate = exchangeRates[paymentCurrency] || exchangeRates.USD || 0.012;
+            const priceInPaymentCurrency = (item.priceINR * rate).toFixed(2);
+            return {
+              id: item.id,
+              productId: item.id,
+              name: item.name,
+              quantity: item.quantity,
+              price: priceInPaymentCurrency,
+              priceINR: item.priceINR,
+              image: item.image,
+              category: item.category || 'Natural Stone'
+            };
+          }),
+          shippingAddress: {
+            street: address1,
+            city,
+            state: region,
+            postalCode,
+            country,
+            fullAddress: [address1, address2, city, region, postalCode, country]
+              .filter(Boolean)
+              .join(', ')
           },
-
-          createOrder: async () => {
-            try {
-              setIsCreatingOrder(true);
-              setPaymentError(null);
-
-              const response = await fetch(`${API_URL}/create-order`, {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-                },
-                credentials: 'include',
-                body: JSON.stringify({
-                  amount: subtotalINR,
-                  currency: 'INR',
-                  receipt: `rcpt_${Date.now()}`,
-                  items: state.items.map(item => ({
-                    id: item.id,
-                    productId: item.id,
-                    name: item.name,
-                    quantity: item.quantity,
-                    price: extractPriceInINR(item.price),
-                    image: item.image,
-                    category: item.category || 'Natural Stone'
-                  })),
-                  shippingAddress: {
-                    street: address1,
-                    city,
-                    state: region,
-                    postalCode,
-                    country,
-                    fullAddress: [address1, address2, city, region, postalCode, country]
-                      .filter(Boolean)
-                      .join(', ')
-                  },
-                  customer: {
-                    name,
-                    email,
-                    phone
-                  }
-                })
-              });
-
-              if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}));
-                throw new Error(errorData.error || 'Failed to create payment order');
-              }
-
-              const orderData = await response.json();
-
-              if (!orderData.ok || !orderData.order) {
-                throw new Error('Invalid order response from server');
-              }
-
-              setCurrentOrderId(orderData.order.id);
-              return orderData.order.id;
-
-            } catch (error: any) {
-              setPaymentError(error.message || 'Failed to create order');
-              setIsCreatingOrder(false);
-              throw error;
-            }
-          },
-
-          onApprove: async (data: any) => {
-            try {
-              const response = await fetch(`${API_URL}/capture-payment`, {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                  orderID: data.orderID
-                })
-              });
-
-              if (!response.ok) {
-                throw new Error('Payment capture failed');
-              }
-
-              const captureData = await response.json();
-
-              if (captureData.ok) {
-                // Clear retry attempts on success
-                if (currentOrderId) {
-                  paymentRetryService.clearAttempts(currentOrderId);
-                }
-                clearCart();
-                navigate('/checkout-success');
-              } else {
-                throw new Error(captureData.error || 'Payment capture failed');
-              }
-
-            } catch (error: any) {
-              console.error('Payment capture error:', error);
-              if (currentOrderId) {
-                paymentRetryService.recordAttempt(currentOrderId, error.message);
-                setRetryInfo(paymentRetryService.getRetryInfo(currentOrderId));
-              }
-              setPaymentError(error.message || 'Payment capture failed');
-            } finally {
-              setIsCreatingOrder(false);
-            }
-          },
-
-          onError: (err: any) => {
-            console.error('PayPal error:', err);
-            if (currentOrderId) {
-              paymentRetryService.recordAttempt(currentOrderId, 'PayPal payment error');
-              setRetryInfo(paymentRetryService.getRetryInfo(currentOrderId));
-            }
-            setPaymentError('Payment failed. Please try again.');
-            setIsCreatingOrder(false);
-          },
-
-          onCancel: () => {
-            if (currentOrderId) {
-              paymentRetryService.recordAttempt(currentOrderId, 'Payment cancelled by user');
-              setRetryInfo(paymentRetryService.getRetryInfo(currentOrderId));
-            }
-            setPaymentError('Payment was cancelled. Please try again.');
-            setIsCreatingOrder(false);
+          customer: {
+            name,
+            email,
+            phone
           }
+        })
+      });
 
-        }).render(paypalRef.current);
-
-      } catch (error) {
-        console.error('Failed to render PayPal buttons:', error);
-        setPaymentError('Failed to load payment system');
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || 'Failed to create order');
       }
-    };
 
-    renderPayPalButtons();
-  }, [paypalLoaded, isFormValid, subtotalINR, name, email, phone, address1, address2, city, region, postalCode, country]);
+      const orderData = await response.json();
 
-  const { contextSafe } = useGSAP({ scope: containerRef });
+      if (!orderData.ok || !orderData.approvalUrl) {
+        throw new Error('Invalid order response from server');
+      }
+
+      // Redirect to PayPal for payment
+      window.location.href = orderData.approvalUrl;
+
+    } catch (error: any) {
+      console.error('Failed to create order:', error);
+      setPaymentError(error.message || 'Failed to create order');
+      setIsCreatingOrder(false);
+    }
+  };
 
   if (state.items.length === 0) {
     return (
@@ -329,7 +167,7 @@ const Checkout: React.FC = () => {
   }
 
   return (
-    <div ref={containerRef} className="min-h-screen pt-24 pb-20 bg-gray-50">
+    <div className="min-h-screen pt-24 pb-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
         <div className="mb-8">
           <Link to="/products" className="inline-flex items-center text-sm text-gray-600 hover:text-black transition-colors">
@@ -337,6 +175,24 @@ const Checkout: React.FC = () => {
             Back to Shopping
           </Link>
           <h1 className="text-3xl font-bold text-black mt-4">Checkout</h1>
+
+          {/* Currency Notice */}
+          {currency !== paymentCurrency && (
+            <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <div className="flex items-start gap-3">
+                <svg className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <div className="flex-1">
+                  <h3 className="text-sm font-semibold text-blue-900 mb-1">Currency Conversion Notice</h3>
+                  <p className="text-sm text-blue-700">
+                    You're viewing prices in <strong>{currency}</strong>, but payment will be processed in <strong>{paymentCurrency}</strong> (PayPal supported currency).
+                    The conversion rate is applied automatically.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
@@ -499,7 +355,7 @@ const Checkout: React.FC = () => {
                     <div className="flex-1 min-w-0 flex flex-col justify-between">
                       <div>
                         <h4 className="text-sm font-semibold text-black truncate">{item.name}</h4>
-                        <p className="text-sm text-gray-500">{formatPrice(extractPriceInINR(item.price))}</p>
+                        <p className="text-sm text-gray-500">{formatPrice(item.priceINR)}</p>
                       </div>
                       <div className="flex items-center gap-3">
                         <div className="flex items-center border border-gray-300 rounded-md">
@@ -521,7 +377,7 @@ const Checkout: React.FC = () => {
                     </div>
                     <div className="text-right">
                       <p className="text-sm font-semibold text-black">
-                        {formatPrice(extractPriceInINR(item.price) * item.quantity)}
+                        {formatPrice(item.priceINR * item.quantity)}
                       </p>
                     </div>
                   </div>
@@ -547,49 +403,14 @@ const Checkout: React.FC = () => {
               </div>
 
               {paymentError && (
-                <div className="mt-4 space-y-3">
-                  <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600">
-                    {paymentError}
-                  </div>
-
-                  {retryInfo && retryInfo.canRetry && (
-                    <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm">
-                      <div className="flex items-start gap-2">
-                        <RefreshCw className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
-                        <div className="flex-1">
-                          <p className="font-medium text-blue-900">
-                            Retry Available ({retryInfo.remainingRetries} {retryInfo.remainingRetries === 1 ? 'attempt' : 'attempts'} remaining)
-                          </p>
-                          <p className="text-blue-700 mt-1">
-                            {retryInfo.canRetryNow
-                              ? 'You can retry your payment now.'
-                              : `Please wait ${Math.ceil(retryInfo.timeUntilNextRetry / 1000)} seconds before retrying.`
-                            }
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {retryInfo && !retryInfo.canRetry && (
-                    <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg text-sm text-yellow-800">
-                      <p className="font-medium">Maximum retry attempts reached</p>
-                      <p className="mt-1">Please contact support or try again later.</p>
-                    </div>
-                  )}
+                <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600">
+                  {paymentError}
                 </div>
               )}
 
               {!isFormValid && (
                 <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg text-sm text-yellow-800">
                   <p className="font-medium">Please fill in all required fields to proceed with payment.</p>
-                </div>
-              )}
-
-              {isFormValid && !paypalLoaded && (
-                <div className="mt-6 py-4 bg-gray-100 text-gray-600 font-bold text-lg rounded-xl flex items-center justify-center">
-                  <Loader2 className="w-5 h-5 animate-spin mr-2" />
-                  Loading PayPal...
                 </div>
               )}
 
@@ -600,9 +421,18 @@ const Checkout: React.FC = () => {
                 </div>
               )}
 
-              {isFormValid && paypalLoaded && (
+              {isFormValid && !isCreatingOrder && (
                 <div className="mt-6">
-                  <div ref={paypalRef} className="w-full"></div>
+                  <button
+                    onClick={handlePayPalCheckout}
+                    disabled={!isFormValid}
+                    className="w-full bg-[#0070ba] hover:bg-[#005ea6] text-white font-semibold py-4 px-6 rounded-lg transition-all duration-200 flex items-center justify-center gap-3 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M20.067 8.478c.492.88.556 2.014.3 3.327-.74 3.806-3.276 5.12-6.514 5.12h-.5a.805.805 0 00-.794.68l-.04.22-.63 3.993-.028.15a.806.806 0 01-.795.68H7.72a.483.483 0 01-.477-.558L8.926 12.7h.008c.072-.412.412-.712.832-.712h1.7c3.338 0 5.95-1.355 6.714-5.276.068-.348.122-.68.158-.992.18-1.564-.054-2.628-.83-3.242C16.73 1.858 15.372 1.5 13.5 1.5H6.236c-.57 0-1.055.414-1.145.976L2.48 18.473a.956.956 0 00.943 1.105h3.696l.927-5.88.03-.185c.09-.562.575-.976 1.146-.976h2.39c4.688 0 8.36-1.9 9.436-7.4.044-.23.08-.45.11-.66z" />
+                    </svg>
+                    <span>Pay with PayPal</span>
+                  </button>
                 </div>
               )}
 

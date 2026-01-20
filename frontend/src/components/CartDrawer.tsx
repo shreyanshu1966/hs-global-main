@@ -53,19 +53,10 @@ export const CartDrawer: React.FC = () => {
     }
   }, [state.isCartOpen]);
 
-  // Helper to extract numeric price from price string (always in INR)
-  const extractPriceInINR = (priceString: string): number => {
-    // Remove all non-numeric characters except decimal point
-    const cleaned = priceString.replace(/[^0-9.]/g, '');
-    const price = parseFloat(cleaned);
-    return isNaN(price) ? 0 : price;
-  };
-
-  // Calculate Subtotal (Simplified - Direct INR to User Currency)
+  // Calculate Subtotal (Direct INR to User Currency)
   const subtotal = useMemo(() => {
     return state.items.reduce((sum, item) => {
-      const priceInINR = extractPriceInINR(item.price);
-      const convertedPrice = convertFromINR(priceInINR);
+      const convertedPrice = convertFromINR(item.priceINR);
       return sum + convertedPrice * item.quantity;
     }, 0);
   }, [state.items, convertFromINR]);
@@ -265,7 +256,7 @@ export const CartDrawer: React.FC = () => {
                               >
                                 {item.name}
                               </h3>
-                              <p className="text-sm text-gray-700">{formatPrice(extractPriceInINR(item.price))}</p>
+                              <p className="text-sm text-gray-700">{formatPrice(item.priceINR)}</p>
 
                               <div className="flex items-center gap-2 mt-2">
                                 <button

@@ -3,62 +3,42 @@ const Order = require('../models/Order');
 const User = require('../models/User');
 const { sendOrderConfirmationEmail, sendPaymentFailedEmail } = require('../services/emailService');
 
-const RAZORPAY_WEBHOOK_SECRET = process.env.RAZORPAY_WEBHOOK_SECRET;
+const PAYPAL_WEBHOOK_ID = process.env.PAYPAL_WEBHOOK_ID; // Optional: for webhook verification
 
 /**
- * Razorpay Webhook Handler
- * Handles payment status updates from Razorpay
+ * PayPal Webhook Handler
+ * Handles payment status updates from PayPal
  * Provides redundancy in case frontend verification fails
  */
-exports.handleRazorpayWebhook = async (req, res) => {
+exports.handlePayPalWebhook = async (req, res) => {
     try {
-        // Verify webhook signature
-        const webhookSignature = req.headers['x-razorpay-signature'];
-
-        if (!webhookSignature) {
-            console.error('❌ Webhook signature missing');
-            return res.status(400).json({ ok: false, error: 'Signature missing' });
-        }
-
-        // Verify the webhook signature
-        const body = JSON.stringify(req.body);
-        const expectedSignature = crypto
-            .createHmac('sha256', RAZORPAY_WEBHOOK_SECRET)
-            .update(body)
-            .digest('hex');
-
-        const isAuthentic = expectedSignature === webhookSignature;
-
-        if (!isAuthentic) {
-            console.error('❌ Invalid webhook signature');
-            return res.status(400).json({ ok: false, error: 'Invalid signature' });
-        }
-
         // Process the webhook event
-        const event = req.body.event;
-        const payload = req.body.payload;
+        const event = req.body;
+        const eventType = event.event_type;
+        const resource = event.resource;
 
-        console.log(`📨 Webhook received: ${event}`);
+        console.log(`📨 PayPal Webhook received: ${eventType}`);
 
-        switch (event) {
-            case 'payment.authorized':
-                await handlePaymentAuthorized(payload);
+        switch (eventType) {
+            case 'CHECKOUT.ORDER.APPROVED':
+                await handleOrderApproved(resource);
                 break;
 
-            case 'payment.captured':
-                await handlePaymentCaptured(payload);
+            case 'PAYMENT.CAPTURE.COMPLETED':
+                await handlePaymentCaptured(resource);
                 break;
 
-            case 'payment.failed':
-                await handlePaymentFailed(payload);
+            case 'PAYMENT.CAPTURE.DENIED':
+            case 'PAYMENT.CAPTURE.DECLINED':
+                await handlePaymentFailed(resource);
                 break;
 
-            case 'order.paid':
-                await handleOrderPaid(payload);
+            case 'CHECKOUT.ORDER.VOIDED':
+                await handleOrderVoided(resource);
                 break;
 
             default:
-                console.log(`ℹ️ Unhandled webhook event: ${event}`);
+                console.log(`ℹ️ Unhandled webhook event: ${eventType}`);
         }
 
         // Always return 200 to acknowledge receipt
@@ -66,51 +46,53 @@ exports.handleRazorpayWebhook = async (req, res) => {
 
     } catch (error) {
         console.error('❌ Webhook processing error:', error);
-        // Still return 200 to prevent Razorpay from retrying
+        // Still return 200 to prevent PayPal from retrying
         res.status(200).json({ ok: true, message: 'Webhook received' });
     }
 };
 
 /**
- * Handle payment.authorized event
+ * Handle CHECKOUT.ORDER.APPROVED event
  */
-async function handlePaymentAuthorized(payload) {
+async function handleOrderApproved(resource) {
     try {
-        const payment = payload.payment.entity;
-        const orderId = payment.order_id;
+        const paypalOrderId = resource.id;
 
-        console.log(`✅ Payment authorized: ${payment.id} for order: ${orderId}`);
+        console.log(`✅ Order approved: ${paypalOrderId}`);
 
-        // Update order status
+        // Update order status to approved (waiting for capture)
         await Order.findOneAndUpdate(
-            { orderId },
+            { paypalOrderId },
             {
-                paymentId: payment.id,
-                status: 'authorized'
+                status: 'approved'
             }
         );
     } catch (error) {
-        console.error('Error handling payment.authorized:', error);
+        console.error('Error handling order.approved:', error);
     }
 }
 
 /**
- * Handle payment.captured event (payment successful)
+ * Handle PAYMENT.CAPTURE.COMPLETED event (payment successful)
  */
-async function handlePaymentCaptured(payload) {
+async function handlePaymentCaptured(resource) {
     try {
-        const payment = payload.payment.entity;
-        const orderId = payment.order_id;
-        const paymentId = payment.id;
+        const captureId = resource.id;
+        const paypalOrderId = resource.supplementary_data?.related_ids?.order_id;
 
-        console.log(`✅ Payment captured: ${paymentId} for order: ${orderId}`);
+        console.log(`✅ Payment captured: ${captureId} for order: ${paypalOrderId}`);
+
+        if (!paypalOrderId) {
+            console.error('No PayPal order ID found in capture event');
+            return;
+        }
 
         // Update order in database
         const order = await Order.findOneAndUpdate(
-            { orderId },
+            { paypalOrderId },
             {
                 status: 'paid',
-                paymentId: paymentId,
+                paymentId: captureId,
                 deliveryStatus: 'processing'
             },
             { new: true }
@@ -144,21 +126,26 @@ async function handlePaymentCaptured(payload) {
 }
 
 /**
- * Handle payment.failed event
+ * Handle PAYMENT.CAPTURE.DENIED/DECLINED event
  */
-async function handlePaymentFailed(payload) {
+async function handlePaymentFailed(resource) {
     try {
-        const payment = payload.payment.entity;
-        const orderId = payment.order_id;
+        const captureId = resource.id;
+        const paypalOrderId = resource.supplementary_data?.related_ids?.order_id;
 
-        console.log(`❌ Payment failed: ${payment.id} for order: ${orderId}`);
+        console.log(`❌ Payment failed: ${captureId} for order: ${paypalOrderId}`);
+
+        if (!paypalOrderId) {
+            console.error('No PayPal order ID found in failed payment event');
+            return;
+        }
 
         // Update order status
         const order = await Order.findOneAndUpdate(
-            { orderId },
+            { paypalOrderId },
             {
                 status: 'failed',
-                paymentId: payment.id
+                paymentId: captureId
             },
             { new: true }
         );
@@ -186,25 +173,23 @@ async function handlePaymentFailed(payload) {
 }
 
 /**
- * Handle order.paid event
+ * Handle CHECKOUT.ORDER.VOIDED event
  */
-async function handleOrderPaid(payload) {
+async function handleOrderVoided(resource) {
     try {
-        const order = payload.order.entity;
-        const orderId = order.id;
+        const paypalOrderId = resource.id;
 
-        console.log(`✅ Order paid: ${orderId}`);
+        console.log(`❌ Order voided: ${paypalOrderId}`);
 
-        // Update order status (redundant check)
+        // Update order status
         await Order.findOneAndUpdate(
-            { orderId },
+            { paypalOrderId },
             {
-                status: 'paid',
-                deliveryStatus: 'processing'
+                status: 'failed'
             }
         );
     } catch (error) {
-        console.error('Error handling order.paid:', error);
+        console.error('Error handling order.voided:', error);
     }
 }
 

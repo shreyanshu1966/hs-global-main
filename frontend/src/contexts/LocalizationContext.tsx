@@ -127,11 +127,24 @@ export const LocalizationProvider: React.FC<{ children: ReactNode }> = ({
         const response = await fetch(EXCHANGE_API_URL);
         const data = await response.json();
 
-        if (data.ok && data.data) {
-          setExchangeRates(data.data);
-          console.log("[Currency] Rates updated from backend:", data.data);
+        if (data.ok && data.rates) {
+          const inrRates = data.rates;
+          const usdRate = inrRates['USD'] || 0.012; // Value of 1 INR in USD
+
+          // Convert INR-based rates to USD-based rates (1 USD = X Currency)
+          const usdBasedRates: ExchangeRates = {};
+
+          Object.keys(inrRates).forEach(currency => {
+            // Rate: How much of 'currency' for 1 USD
+            // = (How much 'currency' for 1 INR) / (How much USD for 1 INR)
+            usdBasedRates[currency] = inrRates[currency] / usdRate;
+          });
+
+          setExchangeRates(usdBasedRates);
+          console.log("[Currency] Rates updated from backend (converted to USD base):", usdBasedRates);
         } else {
-          throw new Error('Invalid data format from backend');
+          console.warn('[Currency] Invalid data format from backend, using fallback');
+          throw new Error('Invalid data format');
         }
       } catch (error) {
         console.error("[Currency] Failed to fetch rates:", error);

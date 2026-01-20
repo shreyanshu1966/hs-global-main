@@ -70,8 +70,8 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
       return formatPrice((product as any).priceINR);
     }
 
-    // Case 3: slabs or fallback
-    return "₹2,499/m²";
+    // Case 3: slabs or fallback - use formatPrice for consistency
+    return formatPrice(2499); // 2499 INR base price
   }, [product, specs, formatPrice]);
 
   /* ------------------------------------------------------
@@ -81,7 +81,9 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
   const [isHovering, setIsHovering] = useState(false);
   const [slideIndex, setSlideIndex] = useState(0);
   const [showVideo, setShowVideo] = useState(false);
+  const [videoError, setVideoError] = useState(false);
   const [isInViewport, setIsInViewport] = useState(false);
+  const [isVideoInView, setIsVideoInView] = useState(false);
 
   const [loadedImages, setLoadedImages] = useState<string[]>([]);
   const [isLoadingImages, setIsLoadingImages] = useState(false);
@@ -89,8 +91,16 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
 
   const intervalRef = useRef<number | null>(null);
   const cardRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   const { contextSafe } = useGSAP({ scope: cardRef });
+
+  // Detect mobile device
+  const isMobile = useMemo(() => {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+      ('ontouchstart' in window) ||
+      (window.innerWidth <= 768);
+  }, []);
 
   const isSlab = product.category === 'slabs';
 
@@ -165,6 +175,37 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
     return () => observer.disconnect();
   }, [index]);
 
+  /* ---- video viewport detection for mobile auto-play ---- */
+  useEffect(() => {
+    if (!cardRef.current || !isMobile || !product.hasVideo || videoError) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const isVisible = entry.isIntersecting;
+        setIsVideoInView(isVisible);
+
+        if (isVisible) {
+          // Start playing video when card is 50% visible
+          setShowVideo(true);
+        } else {
+          // Pause video when card is not visible
+          setShowVideo(false);
+          if (videoRef.current) {
+            videoRef.current.pause();
+          }
+        }
+      },
+      {
+        threshold: 0.5, // Play when 50% of card is visible
+        rootMargin: '0px 0px -100px 0px' // Start slightly before fully visible
+      }
+    );
+
+    observer.observe(cardRef.current);
+
+    return () => observer.disconnect();
+  }, [isMobile, product.hasVideo, videoError]);
+
   /* ---- viewport detect ---- */
   useEffect(() => {
     if (!cardRef.current) return;
@@ -189,7 +230,16 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
 
   /* ---- slideshow ---- */
   useEffect(() => {
-    if ((product.category === 'furniture' && product.hasVideo) || !isHovering || slideshowImages.length <= 1) {
+    // On mobile, don't slideshow if video is playing
+    const shouldSkipSlideshow = isMobile
+      ? (product.category === 'furniture' && product.hasVideo && !videoError && isVideoInView)
+      : (product.category === 'furniture' && product.hasVideo && !videoError);
+
+    const shouldShowSlideshow = isMobile
+      ? !shouldSkipSlideshow && slideshowImages.length > 1
+      : !shouldSkipSlideshow && isHovering && slideshowImages.length > 1;
+
+    if (!shouldShowSlideshow) {
       if (intervalRef.current) clearInterval(intervalRef.current);
       setSlideIndex(0);
       return;
@@ -205,16 +255,22 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
       clearTimeout(t);
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, [isHovering, product.hasVideo, slideshowImages.length, product.category]);
+  }, [isHovering, product.hasVideo, slideshowImages.length, product.category, videoError, isMobile, isVideoInView]);
 
   /* ---- hover handlers ---- */
   const handleMouseEnter = contextSafe(() => {
+    if (isMobile) return; // Skip hover logic on mobile
+
     setIsHovering(true);
     gsap.to(cardRef.current, { y: -4, duration: 0.2, ease: "power1.out" });
-    if (product.category === 'furniture' && product.hasVideo) setShowVideo(true);
+    if (product.category === 'furniture' && product.hasVideo && !videoError) {
+      setShowVideo(true);
+    }
   });
 
   const handleMouseLeave = contextSafe(() => {
+    if (isMobile) return; // Skip hover logic on mobile
+
     setIsHovering(false);
     gsap.to(cardRef.current, { y: 0, duration: 0.2, ease: "power1.in" });
     setShowVideo(false);
@@ -237,7 +293,7 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
     <div
       ref={cardRef}
       data-variant={variant}
-      className="relative overflow-hidden group transition-transform duration-300 bg-white shadow-lg hover:shadow-xl rounded-lg flex flex-col"
+      className="relative overflow-hidden group transition-transform duration-300 bg-transparent shadow-lg hover:shadow-xl rounded-lg flex flex-col"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       // Initial style handled by GSAP from()
@@ -247,23 +303,37 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
       <Link
         to={`/products/${product.id}`}
         onClick={handleCardClick}
-        className="relative block overflow-hidden bg-gray-50"
+        className="relative block overflow-hidden bg-transparent"
         style={{ aspectRatio: '4/5' }}
       >
 
         {/* VIDEO */}
-        {showVideo && product.hasVideo && videoUrl && (
+        {showVideo && product.hasVideo && videoUrl && !videoError && (
           <video
+            ref={videoRef}
             key={videoUrl}
             src={videoUrl}
             autoPlay
             muted
             loop
             playsInline
-            className="absolute inset-0 w-full h-full object-contain z-20 bg-white"
+            preload="metadata"
+            className="absolute inset-0 w-full h-full object-contain z-20 bg-transparent"
             onError={(e) => {
-              // Gracefully handle video 404 by hiding it
-              e.currentTarget.style.display = 'none';
+              // Gracefully handle video 404 by setting error state
+              console.log(`Video failed to load: ${videoUrl}`);
+              setVideoError(true);
+              setShowVideo(false);
+            }}
+            onLoadStart={() => {
+              // Reset error state when video starts loading
+              setVideoError(false);
+            }}
+            onLoadedData={() => {
+              // Ensure video plays on mobile when loaded
+              if (isMobile && isVideoInView && videoRef.current) {
+                videoRef.current.play().catch(console.warn);
+              }
             }}
           />
         )}
@@ -278,7 +348,7 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
         )}
 
         {/* IMAGE SLIDESHOW */}
-        {showContent && (!product.hasVideo || !showVideo) &&
+        {showContent && (!product.hasVideo || !showVideo || videoError) &&
           slideshowImages.map((src, idx) => {
             const visible = idx === slideIndex;
             return (
@@ -309,7 +379,7 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
       </Link>
 
       {/* BOTTOM CONTENT */}
-      <div className="flex flex-col flex-grow p-4 md:p-5">
+      <div className="flex flex-col flex-grow p-4 md:p-5 bg-white rounded-b-lg">
         <Link to={`/products/${product.id}`} onClick={handleCardClick}>
           <h3 className="text-base md:text-lg font-bold text-gray-900 line-clamp-2 mb-3">
             {product.name}

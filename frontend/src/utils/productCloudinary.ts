@@ -22,10 +22,7 @@ type ProductUrlsData = {
     generated: string;
     cloudName: string;
     stats: {
-        totalFiles: number;
-        uploaded: number;
-        skipped: number;
-        errors: number;
+        [key: string]: number | string; // Flexible stats structure
     };
     urls: Record<string, CloudinaryMapping>;
 };
@@ -43,7 +40,13 @@ export function getProductCloudinaryUrl(localPath: string): string {
     const normalizedPath = localPath.replace(/^\/+/, '').replace(/\\/g, '/');
 
     // Check if we have a mapping for this path
-    const mapping = productUrls.urls[normalizedPath];
+    let mapping = productUrls.urls[normalizedPath];
+
+    // If not found, try with '&' replaced by 'and' (Cloudinary sanitization)
+    if (!mapping) {
+        const sanitizedPath = normalizedPath.replace(/\s*&\s*/g, ' and ');
+        mapping = productUrls.urls[sanitizedPath];
+    }
 
     if (mapping && mapping.cloudinary) {
         return mapping.cloudinary;
@@ -52,7 +55,9 @@ export function getProductCloudinaryUrl(localPath: string): string {
     // Fallback: construct URL based on pattern
     // This handles cases where the file might not be in the mapping
     const cloudName = productUrls.cloudName;
-    const pathWithoutExt = normalizedPath.replace(/\.(webp|jpg|jpeg|png)$/i, '');
+    const pathWithoutExt = normalizedPath
+        .replace(/\.(webp|jpg|jpeg|png)$/i, '')
+        .replace(/\s*&\s*/g, ' and '); // Sanitize for Cloudinary
 
     // Try to guess the format
     const ext = normalizedPath.match(/\.(webp|jpg|jpeg|png)$/i)?.[1] || 'jpg';

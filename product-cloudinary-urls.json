@@ -1,10 +1,10 @@
 {
-  "generated": "2025-12-28T13:23:20.385Z",
+  "generated": "2026-01-20T06:07:34.285Z",
   "cloudName": "dpztytsoz",
   "stats": {
     "found": 844,
     "optimized": 844,
-    "uploaded": 838,
+    "uploaded": 599,
     "errors": 6,
     "originalSize": "185.12 MB",
     "optimizedSize": "69.46 MB",
@@ -5347,6 +5347,60 @@
       "width": 1280,
       "height": 1280,
       "bytes": 323538
+    },
+    "furnitures/Wash Basins/Pedestal/Brown & Grey Marble Pedestal Sink/1.webp": {
+      "original": "furnitures/Wash Basins/Pedestal/Brown & Grey Marble Pedestal Sink/1.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1768888270/hs-global/products/furnitures/Wash%20Basins/Pedestal/Brown%20and%20Grey%20Marble%20Pedestal%20Sink/1.jpg",
+      "publicId": "hs-global/products/furnitures/Wash Basins/Pedestal/Brown and Grey Marble Pedestal Sink/1",
+      "format": "jpg",
+      "width": 709,
+      "height": 714,
+      "bytes": 24057
+    },
+    "furnitures/Wash Basins/Pedestal/Brown & Grey Marble Pedestal Sink/IMG-20250604-WA0004.webp": {
+      "original": "furnitures/Wash Basins/Pedestal/Brown & Grey Marble Pedestal Sink/IMG-20250604-WA0004.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1768888271/hs-global/products/furnitures/Wash%20Basins/Pedestal/Brown%20and%20Grey%20Marble%20Pedestal%20Sink/IMG-20250604-WA0004.jpg",
+      "publicId": "hs-global/products/furnitures/Wash Basins/Pedestal/Brown and Grey Marble Pedestal Sink/IMG-20250604-WA0004",
+      "format": "jpg",
+      "width": 1000,
+      "height": 1000,
+      "bytes": 161058
+    },
+    "furnitures/Wash Basins/Pedestal/Brown & Grey Marble Pedestal Sink/IMG-20250604-WA0024.webp": {
+      "original": "furnitures/Wash Basins/Pedestal/Brown & Grey Marble Pedestal Sink/IMG-20250604-WA0024.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1768888273/hs-global/products/furnitures/Wash%20Basins/Pedestal/Brown%20and%20Grey%20Marble%20Pedestal%20Sink/IMG-20250604-WA0024.jpg",
+      "publicId": "hs-global/products/furnitures/Wash Basins/Pedestal/Brown and Grey Marble Pedestal Sink/IMG-20250604-WA0024",
+      "format": "jpg",
+      "width": 1000,
+      "height": 1000,
+      "bytes": 133504
+    },
+    "furnitures/Tables/Coffee Table/Sandstone & Marine Black Coffee Table/1.webp": {
+      "original": "furnitures/Tables/Coffee Table/Sandstone & Marine Black Coffee Table/1.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1768889250/hs-global/products/furnitures/Tables/Coffee%20Table/Sandstone%20and%20Marine%20Black%20Coffee%20Table/1.jpg",
+      "publicId": "hs-global/products/furnitures/Tables/Coffee Table/Sandstone and Marine Black Coffee Table/1",
+      "format": "jpg",
+      "width": 897,
+      "height": 1147,
+      "bytes": 17793
+    },
+    "furnitures/Tables/Coffee Table/Sandstone & Marine Black Coffee Table/2.webp": {
+      "original": "furnitures/Tables/Coffee Table/Sandstone & Marine Black Coffee Table/2.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1768889252/hs-global/products/furnitures/Tables/Coffee%20Table/Sandstone%20and%20Marine%20Black%20Coffee%20Table/2.jpg",
+      "publicId": "hs-global/products/furnitures/Tables/Coffee Table/Sandstone and Marine Black Coffee Table/2",
+      "format": "jpg",
+      "width": 634,
+      "height": 583,
+      "bytes": 24503
+    },
+    "furnitures/Tables/Coffee Table/Sandstone & Marine Black Coffee Table/3.webp": {
+      "original": "furnitures/Tables/Coffee Table/Sandstone & Marine Black Coffee Table/3.webp",
+      "cloudinary": "https://res.cloudinary.com/dpztytsoz/image/upload/v1768889253/hs-global/products/furnitures/Tables/Coffee%20Table/Sandstone%20and%20Marine%20Black%20Coffee%20Table/3.jpg",
+      "publicId": "hs-global/products/furnitures/Tables/Coffee Table/Sandstone and Marine Black Coffee Table/3",
+      "format": "jpg",
+      "width": 654,
+      "height": 591,
+      "bytes": 28936
     }
   }
 }
