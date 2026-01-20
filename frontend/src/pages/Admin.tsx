@@ -364,11 +364,11 @@ const Admin = () => {
     };
 
     const formatCurrency = (amount: number, currency: string = 'INR') => {
-        return new Intl.NumberFormat('en-IN', {
+        return new Intl.NumberFormat('en-US', {
             style: 'currency',
             currency: currency,
-            minimumFractionDigits: 0
-        }).format(amount / 100);
+            minimumFractionDigits: 2
+        }).format(amount);
     };
 
     const formatDate = (date: string) => {
@@ -391,7 +391,7 @@ const Admin = () => {
         if (!analytics) return [];
         return analytics.revenue.monthly.map(month => ({
             name: `${getMonthName(month._id.month)} ${month._id.year}`,
-            revenue: month.revenue / 100,
+            revenue: month.revenue,
             orders: month.count
         }));
     };
@@ -1349,7 +1349,7 @@ const Admin = () => {
                     </div>
                 )}
 
-{/* Quotations Tab */}
+                {/* Quotations Tab */}
                 {activeTab === 'quotations' && (
                     <div className="space-y-6">
                         {/* Stats Cards */}
@@ -1428,12 +1428,11 @@ const Admin = () => {
                                                     </div>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
-                                                    <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                                                        quotation.status === 'new' ? 'bg-green-100 text-green-800' :
+                                                    <span className={`px-2 py-1 rounded-full text-xs font-semibold ${quotation.status === 'new' ? 'bg-green-100 text-green-800' :
                                                         quotation.status === 'quoted' ? 'bg-purple-100 text-purple-800' :
-                                                        quotation.status === 'contacted' ? 'bg-blue-100 text-blue-800' :
-                                                        'bg-gray-100 text-gray-800'
-                                                    }`}>
+                                                            quotation.status === 'contacted' ? 'bg-blue-100 text-blue-800' :
+                                                                'bg-gray-100 text-gray-800'
+                                                        }`}>
                                                         {quotation.status}
                                                     </span>
                                                 </td>

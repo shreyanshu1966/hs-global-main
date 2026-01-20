@@ -11,7 +11,6 @@ interface AddToCartButtonProps {
   product: Product;
   variant?: 'default' | 'compact';
   className?: string;
-  onPhoneVerificationRequired?: () => void;
   preselectedCustomization?: {
     finish?: string;
     thickness?: string;
@@ -22,7 +21,6 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
   product,
   variant = 'default',
   className = '',
-  onPhoneVerificationRequired,
   preselectedCustomization,
 }) => {
   const { state, addItem, toggleCart } = useCart();
@@ -34,7 +32,12 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
 
   // Helper to get raw INR price as number
   const getRawINRPrice = (): number => {
-    // For furniture, get price from specs
+    // 1. Check if priceINR is directly available (preferred)
+    if (product.priceINR) {
+      return product.priceINR;
+    }
+
+    // 2. Legacy fallback: Check furniture specs if not present on product
     if (product.category === 'furniture') {
       const specs = getFurnitureSpecs(product.name);
       if (specs?.priceINR) {
@@ -42,13 +45,8 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
       }
     }
 
-    // For products with priceINR property
-    if ((product as any).priceINR) {
-      return (product as any).priceINR;
-    }
-
-    // Fallback
-    return 2499;
+    console.warn('[AddToCart] No INR price found for product:', product.name);
+    return 0; // Return 0 instead of valid-looking fake price
   };
 
   // Listen for phone verification completion

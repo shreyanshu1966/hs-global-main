@@ -7,6 +7,7 @@ import {
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { useAuth } from '../contexts/AuthContext';
+import { CURRENCY_SYMBOLS } from '../contexts/CurrencyContext';
 
 interface OrderItem {
     productId: string;
@@ -164,9 +165,13 @@ const OrderDetails: React.FC = () => {
         });
     };
 
-    const formatAmount = (amount: number) => {
-        const amountInRupees = amount / 100;
-        return `₹${amountInRupees.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    const formatAmount = (amount: number, currencyCode: string = 'INR') => {
+        const symbol = CURRENCY_SYMBOLS[currencyCode] || currencyCode;
+
+        return `${symbol}${amount.toLocaleString('en-US', {
+            minimumFractionDigits: currencyCode === 'JPY' ? 0 : 2,
+            maximumFractionDigits: currencyCode === 'JPY' ? 0 : 2
+        })}`;
     };
 
     if (loading) {
@@ -274,10 +279,10 @@ const OrderDetails: React.FC = () => {
                                             </div>
                                             <div className="text-right">
                                                 <p className="font-semibold text-gray-900">
-                                                    {formatAmount(item.price * item.quantity)}
+                                                    {formatAmount(item.price * item.quantity, order.currency)}
                                                 </p>
                                                 <p className="text-sm text-gray-500">
-                                                    {formatAmount(item.price)} each
+                                                    {formatAmount(item.price, order.currency)} each
                                                 </p>
                                             </div>
                                         </div>
@@ -289,7 +294,7 @@ const OrderDetails: React.FC = () => {
                                     <div className="flex justify-between items-center">
                                         <span className="text-lg font-bold text-black">Total Amount</span>
                                         <span className="text-2xl font-bold text-black">
-                                            {formatAmount(order.amount)}
+                                            {formatAmount(order.amount, order.currency)}
                                         </span>
                                     </div>
                                 </div>

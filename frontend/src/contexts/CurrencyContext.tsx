@@ -1,5 +1,6 @@
 // CurrencyContext.tsx - Centralized Currency Management System
 import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
+import { useLocalization } from './LocalizationContext';
 
 // ==================== TYPES ====================
 interface ExchangeRates {
@@ -14,10 +15,11 @@ interface CurrencyContextType {
     convertFromINR: (amountINR: number) => number;
     formatPrice: (amountINR: number) => string;
     getCurrencySymbol: () => string;
+    getPaymentCurrency: () => { currency: string; rate: number };
 }
 
 // ==================== CONSTANTS ====================
-const CURRENCY_SYMBOLS: Record<string, string> = {
+export const CURRENCY_SYMBOLS: Record<string, string> = {
     USD: '$',
     INR: '₹',
     EUR: '€',
@@ -30,7 +32,10 @@ const CURRENCY_SYMBOLS: Record<string, string> = {
     JPY: '¥',
 };
 
-const DEFAULT_RATES: ExchangeRates = {
+// Supported Currencies for PayPal
+export const PAYPAL_SUPPORTED_CURRENCIES = ['USD', 'EUR', 'GBP', 'AUD', 'CAD', 'JPY', 'SGD'];
+
+export const DEFAULT_RATES: ExchangeRates = {
     USD: 0.012,    // 1 INR = 0.012 USD (1 USD = ~83 INR)
     INR: 1,        // Base currency
     EUR: 0.011,    // 1 INR = 0.011 EUR
@@ -47,7 +52,7 @@ const STORAGE_KEY = 'hs-global-currency';
 const AUTO_DETECT_KEY = 'hs-global-currency-auto-detect';
 const API_URL = `${import.meta.env.VITE_API_URL || '/api'}/currency/rates`;
 
-// Country code to currency mapping
+// Country code to currency mapping (Fallback if API doesn't provide it)
 const COUNTRY_TO_CURRENCY: Record<string, string> = {
     US: 'USD', CA: 'CAD', GB: 'GBP', AU: 'AUD', NZ: 'NZD',
     IN: 'INR', PK: 'PKR', BD: 'BDT', LK: 'LKR', NP: 'NPR',
@@ -66,50 +71,48 @@ const COUNTRY_TO_CURRENCY: Record<string, string> = {
 const CurrencyContext = createContext<CurrencyContextType | undefined>(undefined);
 
 export const CurrencyProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+    const { location, loading: locationLoading } = useLocalization();
     const [currency, setCurrencyState] = useState<string>('INR');
     const [exchangeRates, setExchangeRates] = useState<ExchangeRates>(DEFAULT_RATES);
     const [loading, setLoading] = useState(true);
     const [isAutoDetectEnabled, setIsAutoDetectEnabled] = useState(true);
 
-    // ==================== DETECT LOCATION & SET CURRENCY ====================
+    // ==================== 1. LOAD SAVED PREFERENCES ====================
     useEffect(() => {
-        const initializeCurrency = async () => {
-            // Check if user has manually set currency (auto-detect disabled)
-            const savedCurrency = localStorage.getItem(STORAGE_KEY);
-            const autoDetect = localStorage.getItem(AUTO_DETECT_KEY);
+        const savedCurrency = localStorage.getItem(STORAGE_KEY);
+        const autoDetect = localStorage.getItem(AUTO_DETECT_KEY);
 
-            if (autoDetect === 'false' && savedCurrency) {
-                // User has manually selected a currency
-                setCurrencyState(savedCurrency);
-                setIsAutoDetectEnabled(false);
-                console.log(`💱 [Currency] Using saved currency: ${savedCurrency}`);
-                return;
-            }
-
-            // Auto-detect based on location
-            try {
-                console.log('🌍 [Currency] Detecting location...');
-                const response = await fetch('https://ipapi.co/json/');
-                const data = await response.json();
-
-                if (data.country_code) {
-                    const detectedCurrency = COUNTRY_TO_CURRENCY[data.country_code] || 'INR';
-                    setCurrencyState(detectedCurrency);
-                    console.log(`✅ [Currency] Auto-detected: ${data.country_name} → ${detectedCurrency}`);
-                } else {
-                    setCurrencyState(savedCurrency || 'INR');
-                    console.log('⚠️ [Currency] Could not detect location, using default: INR');
-                }
-            } catch (error) {
-                console.error('❌ [Currency] Location detection failed:', error);
-                setCurrencyState(savedCurrency || 'INR');
-            }
-        };
-
-        initializeCurrency();
+        if (autoDetect === 'false' && savedCurrency) {
+            setCurrencyState(savedCurrency);
+            setIsAutoDetectEnabled(false);
+            console.log(`💱 [Currency] Using saved currency: ${savedCurrency}`);
+        }
     }, []);
 
-    // ==================== FETCH EXCHANGE RATES ====================
+    // ==================== 2. LISTEN TO LOCATION CHANGES ====================
+    useEffect(() => {
+        if (!isAutoDetectEnabled || locationLoading || !location) return;
+
+        console.log('🌍 [Currency] Adapting to location:', location.country);
+
+        // Use currency from location API if available, else map country code
+        let detectedCurrency = location.currency;
+
+        if (!detectedCurrency && location.country) {
+            detectedCurrency = COUNTRY_TO_CURRENCY[location.country];
+        }
+
+        if (detectedCurrency) {
+            // Only auto-switch if no valid saved preference overrides it (handled by check above)
+            setCurrencyState(detectedCurrency);
+            console.log(`✅ [Currency] Auto-detected: ${location.countryName} → ${detectedCurrency}`);
+        } else {
+            console.log('⚠️ [Currency] Could not map location to currency, keeping default.');
+        }
+
+    }, [location, locationLoading, isAutoDetectEnabled]);
+
+    // ==================== 3. FETCH EXCHANGE RATES ====================
     useEffect(() => {
         const fetchRates = async () => {
             try {
@@ -136,7 +139,6 @@ export const CurrencyProvider: React.FC<{ children: ReactNode }> = ({ children }
         fetchRates();
 
         // Check for updates every 30 minutes
-        // Backend will serve cached rates if within 24 hours
         const interval = setInterval(fetchRates, 30 * 60 * 1000);
         return () => clearInterval(interval);
     }, []);
@@ -154,7 +156,7 @@ export const CurrencyProvider: React.FC<{ children: ReactNode }> = ({ children }
     const convertFromINR = useCallback((amountINR: number): number => {
         if (!amountINR || amountINR <= 0) return 0;
 
-        const rate = exchangeRates[currency] || exchangeRates.INR;
+        const rate = exchangeRates[currency] || exchangeRates.INR || 1;
         const converted = amountINR * rate;
 
         // Round to 2 decimal places
@@ -180,6 +182,15 @@ export const CurrencyProvider: React.FC<{ children: ReactNode }> = ({ children }
         return CURRENCY_SYMBOLS[currency] || currency;
     }, [currency]);
 
+    // ==================== GET PAYMENT CURRENCY (For PayPal/Gateways) ====================
+    // Returns the calculated currency and rate to use for payments
+    const getPaymentCurrency = useCallback(() => {
+        const isSupported = PAYPAL_SUPPORTED_CURRENCIES.includes(currency);
+        const code = isSupported ? currency : 'USD';
+        const rate = exchangeRates[code] || DEFAULT_RATES[code] || DEFAULT_RATES.USD;
+        return { currency: code, rate };
+    }, [currency, exchangeRates]);
+
     // ==================== PROVIDER ====================
     return (
         <CurrencyContext.Provider
@@ -191,6 +202,7 @@ export const CurrencyProvider: React.FC<{ children: ReactNode }> = ({ children }
                 convertFromINR,
                 formatPrice,
                 getCurrencySymbol,
+                getPaymentCurrency
             }}
         >
             {children}

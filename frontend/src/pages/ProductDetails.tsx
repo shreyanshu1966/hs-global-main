@@ -59,7 +59,7 @@ const ProductDetails = () => {
   useEffect(() => {
     if (resolved?.category === 'slabs' && resolved?.images && !slabImagesLoaded) {
       setSlabImagesLoaded(true);
-      
+
       Promise.all(resolved.images.map(async (path) => {
         try {
           const url = await loadImageUrl(path);
@@ -74,7 +74,7 @@ const ProductDetails = () => {
         })
         .catch(err => {
           console.error('[ProductDetails] Error loading slab images:', err);
-          setSlabImageUrls(resolved.images); // Fallback to original paths
+          setSlabImageUrls(resolved.images || []); // Fallback to original paths
         });
     } else if (resolved?.category !== 'slabs') {
       setSlabImageUrls([]);
@@ -160,6 +160,7 @@ const ProductDetails = () => {
       image: baseImages[0],
       images: baseImages,
       price: displayPrice,
+      priceINR: resolved?.priceINR, // <-- Pass the raw INR price
       moq,
       specs,
       description:

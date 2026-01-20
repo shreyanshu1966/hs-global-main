@@ -13,7 +13,7 @@ interface SlabCustomizationContextType {
   phoneNumber: string;
   openModal: (product: any, phone: string) => void;
   closeModal: () => void;
-  setCustomization: (customization: SlabCustomization) => void;
+  setCustomization: React.Dispatch<React.SetStateAction<SlabCustomization>>;
 }
 
 const SlabCustomizationContext = createContext<SlabCustomizationContextType | undefined>(undefined);

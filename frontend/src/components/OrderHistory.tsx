@@ -129,13 +129,11 @@ const OrderHistory: React.FC = () => {
     };
 
     const formatAmount = (amount: number, currency: string = 'INR') => {
-        // Amount is in paise, convert to rupees (standard unit)
-        const amountInMajorUnit = amount / 100;
-        return new Intl.NumberFormat('en-IN', {
+        return new Intl.NumberFormat('en-US', {
             style: 'currency',
             currency: currency,
             minimumFractionDigits: 2
-        }).format(amountInMajorUnit);
+        }).format(amount);
     };
 
     if (loading) {

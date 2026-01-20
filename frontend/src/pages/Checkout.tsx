@@ -9,7 +9,7 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
 const Checkout: React.FC = () => {
   const { state, removeItem, updateQuantity } = useCart();
-  const { formatPrice, getCurrencySymbol, convertFromINR, currency, exchangeRates } = useCurrency();
+  const { formatPrice, getCurrencySymbol, convertFromINR, currency } = useCurrency();
   const { user } = useAuth();
 
   // Form State
@@ -70,17 +70,28 @@ const Checkout: React.FC = () => {
   const subtotal = useMemo(() => convertFromINR(subtotalINR), [subtotalINR, convertFromINR]);
   const totalAmount = subtotal;
 
-  // PayPal supported currencies
-  const PAYPAL_SUPPORTED = ['USD', 'EUR', 'GBP', 'AUD', 'CAD', 'JPY', 'SGD'];
-
-  // Determine payment currency (use user's currency if PayPal supports it, otherwise USD)
-  const paymentCurrency = PAYPAL_SUPPORTED.includes(currency) ? currency : 'USD';
+  // Get standardized payment currency details from Context
+  const { currency: paymentCurrency, rate: paymentExchangeRate } = useCurrency().getPaymentCurrency();
 
   // Convert to payment currency
+  // Calculate payment items with individual conversion
+  const paymentItems = useMemo(() => {
+    return state.items.map(item => {
+      const priceInPaymentCurrency = (item.priceINR * paymentExchangeRate).toFixed(2);
+      return {
+        ...item,
+        priceInPaymentCurrency
+      };
+    });
+  }, [state.items, paymentExchangeRate]);
+
+  // Calculate total from the summed rounded item prices to match PayPal validation
   const paymentAmount = useMemo(() => {
-    const rate = exchangeRates[paymentCurrency] || exchangeRates.USD || 0.012;
-    return (subtotalINR * rate).toFixed(2);
-  }, [subtotalINR, paymentCurrency, exchangeRates]);
+    const total = paymentItems.reduce((sum, item) => {
+      return sum + (parseFloat(item.priceInPaymentCurrency) * item.quantity);
+    }, 0);
+    return total.toFixed(2);
+  }, [paymentItems]);
 
   const isEmailValid = useMemo(() => /^(?=.*@).+\..+$/i.test(email.trim()), [email]);
   const isFormValid = name && isEmailValid && phone && address1 && city && region && postalCode && country;
@@ -102,15 +113,13 @@ const Checkout: React.FC = () => {
           amount: paymentAmount,
           currency: paymentCurrency,
           receipt: `rcpt_${Date.now()}`,
-          items: state.items.map(item => {
-            const rate = exchangeRates[paymentCurrency] || exchangeRates.USD || 0.012;
-            const priceInPaymentCurrency = (item.priceINR * rate).toFixed(2);
+          items: paymentItems.map(item => {
             return {
               id: item.id,
               productId: item.id,
               name: item.name,
               quantity: item.quantity,
-              price: priceInPaymentCurrency,
+              price: item.priceInPaymentCurrency,
               priceINR: item.priceINR,
               image: item.image,
               category: item.category || 'Natural Stone'

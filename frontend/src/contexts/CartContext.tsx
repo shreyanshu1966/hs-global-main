@@ -114,7 +114,6 @@ interface CartContextType {
   toggleCart: () => void;
   closeCart: () => void;
   getTotalItems: () => number;
-  getTotalPrice: () => string;
   getTotalPriceNumeric: () => number;
 }
 
@@ -189,10 +188,6 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }, 0);
   };
 
-  const getTotalPrice = (): string => {
-    const total = getTotalPriceNumeric();
-    return `₹${total.toLocaleString('en-IN')}`;
-  };
 
   const value: CartContextType = {
     state,
@@ -204,7 +199,6 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     toggleCart,
     closeCart,
     getTotalItems,
-    getTotalPrice,
     getTotalPriceNumeric,
   };
 
