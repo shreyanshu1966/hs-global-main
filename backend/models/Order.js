@@ -5,7 +5,7 @@ const orderSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true
-    }, // PayPal Order ID
+    }, // Internal order ID
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -13,21 +13,18 @@ const orderSchema = new mongoose.Schema({
     }, // Reference to User who placed the order
     paymentId: {
         type: String
-    }, // PayPal Payment/Capture ID
+    }, // PayPal Capture ID
+    paypalOrderId: {
+        type: String
+    }, // PayPal Order ID
     amount: {
         type: Number,
         required: true
     }, // Original amount in original currency
     currency: {
         type: String,
-        default: 'INR'
-    }, // Original currency
-    paypalAmount: {
-        type: Number
-    }, // Amount processed by PayPal (might be converted)
-    paypalCurrency: {
-        type: String
-    }, // Currency used by PayPal
+        default: 'USD'
+    }, // Currency used for payment
     status: {
         type: String,
         enum: ['created', 'paid', 'failed'],

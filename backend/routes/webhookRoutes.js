@@ -3,15 +3,15 @@ const router = express.Router();
 const webhookController = require('../controllers/webhookController');
 
 /**
- * Razorpay Webhook Endpoint
- * This endpoint receives payment status updates from Razorpay
+ * PayPal Webhook Endpoint
+ * This endpoint receives payment status updates from PayPal
  * No authentication required - verified via webhook signature
  * 
- * Configure this URL in Razorpay Dashboard:
- * https://dashboard.razorpay.com/app/webhooks
+ * Configure this URL in PayPal Dashboard:
+ * https://developer.paypal.com/dashboard/webhooks
  * 
- * Webhook URL: https://yourdomain.com/api/webhooks/razorpay
+ * Webhook URL: https://yourdomain.com/api/webhooks/paypal
  */
-router.post('/razorpay', webhookController.handleRazorpayWebhook);
+router.post('/paypal', webhookController.handlePayPalWebhook);
 
 module.exports = router;

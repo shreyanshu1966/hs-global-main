@@ -10,7 +10,7 @@
         "setup-auth": "node setup-auth.js"
     },
     "dependencies": {
-        "@paypal/paypal-server-sdk": "^2.1.0",
+        "axios": "^1.7.9",
         "bcryptjs": "^3.0.3",
         "body-parser": "^1.20.2",
         "cloudinary": "^2.8.0",

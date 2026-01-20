@@ -48,7 +48,7 @@ app.use('/api/currency', require('./routes/currencyRoutes'));
 app.use('/api', require('./routes/emailRoutes'));
 app.use('/api', require('./routes/paymentRoutes'));
 app.use('/api', require('./routes/orderRoutes'));
-app.use('/api/webhooks', require('./routes/webhookRoutes')); // Razorpay webhooks
+app.use('/api/webhooks', require('./routes/webhookRoutes')); // Payment webhooks (PayPal)
 app.use('/api/admin', require('./routes/adminRoutes')); // Admin routes
 app.use('/api/blogs', require('./routes/blog')); // Blog routes
 app.use('/api/shipping', require('./routes/shipping')); // Shipping routes (Freightos integration)
