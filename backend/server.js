@@ -54,6 +54,7 @@ app.use('/api/blogs', require('./routes/blog')); // Blog routes
 app.use('/api/shipping', require('./routes/shipping')); // Shipping routes (Freightos integration)
 app.use('/api/contact', require('./routes/contactRoutes')); // Contact form routes
 app.use('/api/quotations', require('./routes/quotationRoutes')); // Quotation requests
+app.use('/api/leads', require('./routes/leadCaptureRoutes')); // Lead capture from popup
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

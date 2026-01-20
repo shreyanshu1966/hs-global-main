@@ -998,3 +998,190 @@ exports.sendQuotationConfirmationEmail = async (quotationData) => {
         return { success: false, error: error.message };
     }
 };
+
+// Send lead capture notification to admin
+exports.sendLeadNotificationEmail = async (leadData) => {
+    try {
+        const adminEmail = process.env.EMAIL_TO || 'inquiry@hsglobalexport.com';
+        const fromEmail = process.env.EMAIL_FROM || 'inquiry@hsglobalexport.com';
+
+        const clientTypeLabel = leadData.clientType === 'personal' ? 'For Myself' : 'For Client';
+
+        const mailOptions = {
+            from: `"HS Global Export - Lead Capture" <${fromEmail}>`,
+            to: adminEmail,
+            replyTo: leadData.email,
+            subject: `New Lead from Website Popup: ${leadData.name}`,
+            html: `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <style>
+                        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+                        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+                        .header { background: #000; color: #fff; padding: 20px; text-align: center; }
+                        .content { background: #f9f9f9; padding: 30px; border-radius: 5px; margin-top: 20px; }
+                        .info-box { background: #fff; padding: 15px; border-left: 4px solid #000; margin: 15px 0; }
+                        .label { font-weight: bold; color: #666; display: inline-block; width: 150px; }
+                        .services-box { background: #fff; padding: 20px; border-radius: 5px; margin: 20px 0; border: 2px solid #28a745; }
+                        .footer { text-align: center; margin-top: 20px; font-size: 12px; color: #666; }
+                        .badge { background: #28a745; color: white; padding: 5px 10px; border-radius: 3px; font-size: 12px; }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <div class="header">
+                            <h1>HS Global Export</h1>
+                            <p style="margin: 0; font-size: 14px;">Lead Capture - Website Popup</p>
+                        </div>
+                        <div class="content">
+                            <div style="text-align: center; margin-bottom: 20px;">
+                                <span class="badge">NEW LEAD</span>
+                            </div>
+                            
+                            <h2 style="margin-top: 0;">Lead Details</h2>
+                            
+                            <div class="info-box">
+                                <p><span class="label">Name:</span> ${leadData.name}</p>
+                                <p><span class="label">Email:</span> <a href="mailto:${leadData.email}">${leadData.email}</a></p>
+                                <p><span class="label">Phone:</span> <a href="tel:${leadData.phone}">${leadData.phone}</a></p>
+                                <p><span class="label">Client Type:</span> ${clientTypeLabel}</p>
+                                <p><span class="label">Submitted:</span> ${new Date(leadData.submittedAt).toLocaleString('en-IN', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            })}</p>
+                                <p><span class="label">Lead ID:</span> ${leadData.leadId}</p>
+                            </div>
+
+                            <h3>Services Interested In</h3>
+                            <div class="services-box">
+                                <ul style="margin: 0; padding-left: 20px;">
+                                    ${leadData.services.map(service => `<li>${service}</li>`).join('')}
+                                </ul>
+                            </div>
+
+                            ${leadData.message ? `
+                            <h3>Additional Message</h3>
+                            <div class="info-box">
+                                ${leadData.message.replace(/\n/g, '<br>')}
+                            </div>
+                            ` : ''}
+
+                            <p style="font-size: 14px; color: #666; margin-top: 30px;">
+                                <strong>Quick Actions:</strong><br>
+                                • Reply directly to this email to respond to ${leadData.name}<br>
+                                • Call customer at ${leadData.phone}<br>
+                                • View in admin panel: <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/admin?tab=leads">View Details</a>
+                            </p>
+                        </div>
+                        <div class="footer">
+                            <p>&copy; ${new Date().getFullYear()} HS Global Export. All rights reserved.</p>
+                            <p>This is an automated notification from your lead capture system.</p>
+                        </div>
+                    </div>
+                </body>
+                </html>
+            `
+        };
+
+        const result = await sendMailWrapper(mailOptions);
+        if (result.success) {
+            console.log('✅ Lead notification email sent to admin:', result.messageId);
+        }
+        return result;
+    } catch (error) {
+        console.error('❌ Lead notification email failed:', error);
+        return { success: false, error: error.message };
+    }
+};
+
+// Send lead capture confirmation email to customer
+exports.sendLeadConfirmationEmail = async (leadData) => {
+    try {
+        const fromEmail = process.env.EMAIL_FROM || 'inquiry@hsglobalexport.com';
+
+        const mailOptions = {
+            from: `"HS Global Export" <${fromEmail}>`,
+            to: leadData.email,
+            subject: `Thank you for your interest - HS Global Export`,
+            html: `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <style>
+                        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+                        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+                        .header { background: #000; color: #fff; padding: 30px 20px; text-align: center; }
+                        .content { background: #f9f9f9; padding: 30px; border-radius: 5px; margin-top: 20px; }
+                        .services-box { background: #fff; padding: 20px; border-radius: 5px; margin: 20px 0; border-left: 4px solid #28a745; }
+                        .footer { text-align: center; margin-top: 20px; font-size: 12px; color: #666; }
+                        .contact-info { background: #fff; padding: 15px; border-radius: 5px; margin: 15px 0; }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <div class="header">
+                            <h1 style="margin: 0;">HS Global Export</h1>
+                            <p style="margin: 10px 0 0 0; font-size: 14px; opacity: 0.9;">Premium Natural Stones & Granite</p>
+                        </div>
+                        <div class="content">
+                            <h2 style="margin-top: 0; color: #000;">Thank You for Your Interest!</h2>
+                            
+                            <p>Dear ${leadData.name},</p>
+                            
+                            <p>We have successfully received your inquiry and appreciate you taking the time to contact us about our premium stone products and services.</p>
+                            
+                            <div class="services-box">
+                                <p style="margin: 0; color: #666; font-size: 14px;"><strong>Services You're Interested In:</strong></p>
+                                <ul style="margin: 10px 0 0 0; padding-left: 20px;">
+                                    ${leadData.services.map(service => `<li>${service}</li>`).join('')}
+                                </ul>
+                            </div>
+                            
+                            <p><strong>What happens next?</strong></p>
+                            <ul style="color: #666;">
+                                <li>Our team will review your requirements carefully</li>
+                                <li>We will contact you within 24 hours</li>
+                                <li>You will receive personalized assistance for your project</li>
+                            </ul>
+                            
+                            <div class="contact-info">
+                                <p style="margin: 0; font-size: 14px;"><strong>In the meantime, you can reach us at:</strong></p>
+                                <p style="margin: 10px 0 0 0; font-size: 14px;">
+                                    📧 Email: inquiry@hsglobalexport.com<br>
+                                    📞 Phone: +91 81071 15116<br>
+                                    🏢 Address: C-108, Titanium Business Park, Makarba, Ahmedabad - 380051
+                                </p>
+                            </div>
+                            
+                            <p style="margin-top: 30px;">Thank you for considering HS Global Export for your natural stone needs.</p>
+                            
+                            <p style="margin-top: 20px;">
+                                Best regards,<br>
+                                <strong>HS Global Export Team</strong>
+                            </p>
+                        </div>
+                        <div class="footer">
+                            <p>&copy; ${new Date().getFullYear()} HS Global Export. All rights reserved.</p>
+                            <p>This is an automated confirmation email.</p>
+                        </div>
+                    </div>
+                </body>
+                </html>
+            `
+        };
+
+        const result = await sendMailWrapper(mailOptions);
+        if (result.success) {
+            console.log('✅ Lead confirmation email sent to customer:', result.messageId);
+        }
+        return result;
+    } catch (error) {
+        console.error('❌ Lead confirmation email failed:', error);
+        return { success: false, error: error.message };
+    }
+};
+
