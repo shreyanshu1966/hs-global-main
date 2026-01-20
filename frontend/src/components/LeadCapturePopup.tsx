@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo, memo } from 'react';
 import { X, User, Mail, Phone, MessageSquare, Building, Home, CheckCircle } from 'lucide-react';
-import { initEmailJs, sendEmail } from '../lib/email';
 import { countries as allCountries, Country } from '../data/countries';
 import { useTranslation } from 'react-i18next';
 import gsap from 'gsap';
@@ -171,40 +170,33 @@ const LeadCapturePopup: React.FC<LeadCapturePopupProps> = ({ isOpen, onClose }) 
     setIsSubmitting(true);
 
     try {
-      await sendEmail(
-        (import.meta as any).env.VITE_EMAILJS_TEMPLATE_POPUP || 'template_83tzsh9',
-        {
-          to_email: 'hsglobalexport@gmail.com',
-          subject: 'New Lead (Website Popup)',
+      // Submit to backend API
+      const response = await fetch(`${API_URL}/leads/submit`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
           name: formData.name,
           email: formData.email,
-          phone: `${formData.countryCode} ${formData.phone}`,
-          client_type: formData.clientType,
-          services: formData.services.join(', '),
-          message: formData.message || '-'
-        }
-      );
+          countryCode: formData.countryCode,
+          phone: formData.phone,
+          clientType: formData.clientType,
+          services: formData.services,
+          message: formData.message
+        })
+      });
 
-      const waText = [
-        'New Lead (Website Popup)',
-        `Name: ${formData.name}`,
-        `Email: ${formData.email || '-'}`,
-        `Phone: ${formData.countryCode} ${formData.phone}`,
-        `Client Type: ${formData.clientType}`,
-        `Services: ${formData.services.join(', ')}`,
-        `Message: ${formData.message || '-'}`
-      ].join('\n');
+      const data = await response.json();
 
-      try {
-        await fetch(`${API_URL}/send-whatsapp`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ to: '918107115116', text: waText })
-        });
-      } catch { }
+      if (!response.ok || !data.ok) {
+        throw new Error(data.error || 'Failed to submit form');
+      }
 
+      // Show success message
       setShowSuccess(true);
 
+      // Reset form and close after 3 seconds
       setTimeout(() => {
         setShowSuccess(false);
         setFormData({
@@ -218,9 +210,10 @@ const LeadCapturePopup: React.FC<LeadCapturePopupProps> = ({ isOpen, onClose }) 
         });
         onClose();
       }, 3000);
+
     } catch (error) {
       console.error('Error submitting form:', error);
-      alert('There was an error submitting your information. Please try again.');
+      alert(error instanceof Error ? error.message : 'There was an error submitting your information. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -252,10 +245,6 @@ const LeadCapturePopup: React.FC<LeadCapturePopupProps> = ({ isOpen, onClose }) 
       document.body.style.overflow = 'unset';
     };
   }, [isOpen]);
-
-  useEffect(() => {
-    initEmailJs();
-  }, []);
 
   if (!isRendered) return null;
 
