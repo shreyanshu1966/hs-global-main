@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Globe, MapPin, RefreshCw, ChevronDown } from 'lucide-react';
+import { Globe, MapPin, RefreshCw, ChevronDown, X } from 'lucide-react';
 import { useCurrency } from '../contexts/CurrencyContext';
 
 const CURRENCIES = [
@@ -41,10 +41,13 @@ export const LocationSelector: React.FC = () => {
     };
   }, [isOpen]);
 
-  const handleCurrencyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const code = e.target.value;
+  // Update handler to accept code directly
+  const handleCurrencySelect = (code: string) => {
     setCurrency(code);
     setIsAutoDetect(false);
+    // Optionally close on selection if desired, or keep open. User didn't specify closing behavior but standard is often to stay or close. 
+    // Given the modal nature on mobile, closing feels natural.
+    setIsOpen(false);
   };
 
   const handleReEnableAutoDetect = () => {
@@ -79,6 +82,7 @@ export const LocationSelector: React.FC = () => {
               <button
                 onClick={handleReEnableAutoDetect}
                 className="mt-2 flex items-center gap-1 text-xs font-medium text-blue-600 hover:text-blue-800 transition-colors"
+                type="button"
               >
                 <RefreshCw className="w-3 h-3" />
                 Re-enable Auto-Detect
@@ -100,44 +104,51 @@ export const LocationSelector: React.FC = () => {
         </div>
       )}
 
-      {/* Currency Dropdown */}
+      {/* Currency Selection List */}
       <div>
-        <label className="block text-xs font-medium text-gray-700 mb-1.5">
+        <label className="block text-xs font-medium text-gray-700 mb-2">
           Select Currency
         </label>
-        <div className="relative">
-          <select
-            value={currency}
-            onChange={handleCurrencyChange}
-            className="w-full px-3 py-2.5 pr-10 border border-gray-300 rounded-lg text-sm font-medium text-gray-900 bg-white cursor-pointer focus:ring-2 focus:ring-black focus:border-black transition-all appearance-none"
-          >
-            {CURRENCIES.map((curr) => (
-              <option key={curr.code} value={curr.code}>
-                {curr.flag} {curr.code} - {curr.name}
-              </option>
-            ))}
-          </select>
-          <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
-        </div>
-      </div>
-
-      {/* Current Selection Display */}
-      <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
-        <p className="text-xs text-gray-600 mb-1">Current Currency</p>
-        <div className="flex items-center gap-2">
-          <span className="text-2xl">{getCurrentCurrency()?.flag}</span>
-          <div>
-            <p className="text-sm font-semibold text-gray-900">
-              {getCurrentCurrency()?.symbol} {getCurrentCurrency()?.code}
-            </p>
-            <p className="text-xs text-gray-600">{getCurrentCurrency()?.name}</p>
-          </div>
+        <div className="grid grid-cols-1 gap-1 max-h-60 overflow-y-auto pr-1">
+          {CURRENCIES.map((curr) => {
+            const isSelected = curr.code === currency;
+            return (
+              <button
+                key={curr.code}
+                onClick={() => handleCurrencySelect(curr.code)}
+                className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-all text-left group ${isSelected
+                  ? 'bg-black text-white hover:bg-gray-800'
+                  : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200 hover:border-gray-300'
+                  }`}
+                type="button"
+              >
+                <span className="text-xl leading-none">{curr.flag}</span>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between">
+                    <span className={`text-sm font-semibold ${isSelected ? 'text-white' : 'text-gray-900'}`}>
+                      {curr.code}
+                    </span>
+                    <span className={`text-xs opacity-75 ${isSelected ? 'text-white' : 'text-gray-500'}`}>
+                      {curr.symbol}
+                    </span>
+                  </div>
+                  <p className={`text-xs truncate ${isSelected ? 'text-gray-300' : 'text-gray-500'}`}>
+                    {curr.name}
+                  </p>
+                </div>
+                {isSelected && (
+                  <div className="w-1.5 h-1.5 rounded-full bg-white shadow-sm flex-shrink-0" />
+                )}
+              </button>
+            );
+          })}
         </div>
       </div>
 
       {/* Info */}
-      <div className="text-xs text-gray-500 bg-amber-50 border border-amber-200 rounded-lg p-2.5">
-        💱 Prices displayed in selected currency. Payments in INR.
+      <div className="text-xs text-gray-500 bg-amber-50 border border-amber-200 rounded-lg p-2.5 flex items-start gap-2">
+        <span className="text-lg leading-none">💱</span>
+        <span className="pt-0.5">Prices displayed in selected currency. Payments in INR.</span>
       </div>
     </>
   );
@@ -160,13 +171,28 @@ export const LocationSelector: React.FC = () => {
       {/* Popup */}
       {isOpen && (
         <>
-          {/* Mobile: Fixed position, full width with padding */}
-          <div className="md:hidden fixed inset-x-4 top-20 bg-white rounded-xl shadow-xl border border-gray-200 z-50 max-h-[calc(100vh-6rem)] overflow-y-auto">
-            <div className="bg-gray-50 px-4 py-3 border-b border-gray-200">
-              <h3 className="text-sm font-semibold text-gray-900">Currency Settings</h3>
-            </div>
-            <div className="p-4 space-y-3">
-              {renderContent()}
+          {/* Mobile: Centered Modal with Overlay */}
+          <div className="md:hidden fixed inset-0 z-[100] flex items-center justify-center px-4">
+            {/* Backdrop */}
+            <div
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
+              onClick={() => setIsOpen(false)}
+            />
+
+            {/* Modal Content */}
+            <div className="relative w-full max-w-sm bg-white rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+              <div className="bg-gray-50 px-4 py-3 border-b border-gray-200 flex justify-between items-center">
+                <h3 className="text-sm font-semibold text-gray-900">Currency Settings</h3>
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="p-1.5 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+              <div className="p-4 space-y-4 max-h-[70vh] overflow-y-auto">
+                {renderContent()}
+              </div>
             </div>
           </div>
 

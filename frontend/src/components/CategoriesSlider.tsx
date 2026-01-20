@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useEffect } from "react";
+import React, { useMemo, useRef, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
@@ -78,6 +78,8 @@ const CategorySlide: React.FC<{
   onClick: () => void;
 }> = ({ cat, onClick }) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [videoLoaded, setVideoLoaded] = useState(false);
+  const [videoCanPlay, setVideoCanPlay] = useState(false);
 
   useEffect(() => {
     if (videoRef.current && cat.videoUrl) {
@@ -91,24 +93,35 @@ const CategorySlide: React.FC<{
       className="group relative cursor-pointer block w-full aspect-[3/4] overflow-hidden bg-stone-100"
     >
       <div className="absolute inset-0 overflow-hidden">
-        {cat.videoUrl ? (
+        {/* Always show image first as fallback */}
+        <img
+          src={cat.image}
+          alt={cat.title}
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-110"
+          loading="lazy"
+        />
+        
+        {/* Show video overlay when loaded and ready */}
+        {cat.videoUrl && (
           <video
             ref={videoRef}
             src={cat.videoUrl}
-            className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-110"
+            className={`absolute inset-0 w-full h-full object-cover transition-all duration-1000 ease-out group-hover:scale-110 ${
+              videoLoaded && videoCanPlay ? 'opacity-100' : 'opacity-0'
+            }`}
             loop
             muted
             playsInline
             autoPlay
-          />
-        ) : (
-          <img
-            src={cat.image}
-            alt={cat.title}
-            className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-110"
-            loading="lazy"
+            onLoadedData={() => setVideoLoaded(true)}
+            onCanPlay={() => setVideoCanPlay(true)}
+            onError={() => {
+              setVideoLoaded(false);
+              setVideoCanPlay(false);
+            }}
           />
         )}
+        
         {/* Cinematic Noir Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-500" />
       </div>

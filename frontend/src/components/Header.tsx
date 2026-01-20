@@ -203,7 +203,7 @@ const Header = () => {
 
             {/* Mobile Menu Toggle & Location */}
             <div className="flex items-center gap-2 lg:hidden">
-              <div className="relative z-50 scale-90">
+              <div className="relative z-50">
                 <LocationSelector />
               </div>
               <CartIcon />

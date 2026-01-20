@@ -28,7 +28,7 @@ export const LazyProductCard: React.FC<LazyProductCardProps> = (props) => {
  */
 const ProductCardSkeleton: React.FC = () => {
     return (
-        <div className="relative overflow-hidden bg-transparent shadow-lg rounded-lg flex flex-col animate-pulse">
+        <div className="relative overflow-hidden bg-white shadow-lg rounded-lg flex flex-col animate-pulse">
             {/* Image skeleton */}
             <div
                 className="relative bg-gradient-to-br from-gray-100 to-gray-200"

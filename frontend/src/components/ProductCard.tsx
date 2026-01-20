@@ -84,6 +84,8 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
   const [videoError, setVideoError] = useState(false);
   const [isInViewport, setIsInViewport] = useState(false);
   const [isVideoInView, setIsVideoInView] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
+  const [videoCanPlay, setVideoCanPlay] = useState(false);
 
   const [loadedImages, setLoadedImages] = useState<string[]>([]);
   const [isLoadingImages, setIsLoadingImages] = useState(false);
@@ -187,12 +189,18 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
         if (isVisible) {
           // Start playing video when card is 50% visible
           setShowVideo(true);
+          // Reset video loading states for new video load
+          setVideoLoaded(false);
+          setVideoCanPlay(false);
         } else {
           // Pause video when card is not visible
           setShowVideo(false);
           if (videoRef.current) {
             videoRef.current.pause();
           }
+          // Reset video loading states
+          setVideoLoaded(false);
+          setVideoCanPlay(false);
         }
       },
       {
@@ -265,6 +273,9 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
     gsap.to(cardRef.current, { y: -4, duration: 0.2, ease: "power1.out" });
     if (product.category === 'furniture' && product.hasVideo && !videoError) {
       setShowVideo(true);
+      // Reset video loading states for new video load
+      setVideoLoaded(false);
+      setVideoCanPlay(false);
     }
   });
 
@@ -275,6 +286,9 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
     gsap.to(cardRef.current, { y: 0, duration: 0.2, ease: "power1.in" });
     setShowVideo(false);
     setSlideIndex(0);
+    // Reset video loading states
+    setVideoLoaded(false);
+    setVideoCanPlay(false);
   });
 
   /* ---- click memory ---- */
@@ -293,7 +307,7 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
     <div
       ref={cardRef}
       data-variant={variant}
-      className="relative overflow-hidden group transition-transform duration-300 bg-transparent shadow-lg hover:shadow-xl rounded-lg flex flex-col"
+      className="relative overflow-hidden group transition-transform duration-300 bg-white shadow-lg hover:shadow-xl rounded-lg flex flex-col"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       // Initial style handled by GSAP from()
@@ -303,7 +317,7 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
       <Link
         to={`/products/${product.id}`}
         onClick={handleCardClick}
-        className="relative block overflow-hidden bg-transparent"
+        className="relative block overflow-hidden bg-gray-100"
         style={{ aspectRatio: '4/5' }}
       >
 
@@ -318,18 +332,30 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
             loop
             playsInline
             preload="metadata"
-            className="absolute inset-0 w-full h-full object-contain z-20 bg-transparent"
+            className={`absolute inset-0 w-full h-full object-contain z-20 bg-transparent transition-opacity duration-500 ${
+              videoLoaded && videoCanPlay ? 'opacity-100' : 'opacity-0'
+            }`}
             onError={(e) => {
               // Gracefully handle video 404 by setting error state
               console.log(`Video failed to load: ${videoUrl}`);
               setVideoError(true);
               setShowVideo(false);
+              setVideoLoaded(false);
+              setVideoCanPlay(false);
             }}
             onLoadStart={() => {
               // Reset error state when video starts loading
               setVideoError(false);
+              setVideoLoaded(false);
+              setVideoCanPlay(false);
             }}
             onLoadedData={() => {
+              // Video metadata loaded, but might not be ready to play
+              setVideoLoaded(true);
+            }}
+            onCanPlay={() => {
+              // Video is ready to play without interruption
+              setVideoCanPlay(true);
               // Ensure video plays on mobile when loaded
               if (isMobile && isVideoInView && videoRef.current) {
                 videoRef.current.play().catch(console.warn);
@@ -348,8 +374,13 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
         )}
 
         {/* IMAGE SLIDESHOW */}
-        {showContent && (!product.hasVideo || !showVideo || videoError) &&
-          slideshowImages.map((src, idx) => {
+        {showContent && (
+          !product.hasVideo || 
+          !showVideo || 
+          videoError || 
+          !videoLoaded || 
+          !videoCanPlay
+        ) && slideshowImages.map((src, idx) => {
             const visible = idx === slideIndex;
             return (
               <img
@@ -359,8 +390,9 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
                 width="400"
                 height="500"
                 loading={idx === 0 ? "eager" : "lazy"}
-                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${visible ? "opacity-100" : "opacity-0"
-                  }`}
+                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
+                  visible ? "opacity-100" : "opacity-0"
+                }`}
               />
             );
           })
