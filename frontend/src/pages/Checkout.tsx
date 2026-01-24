@@ -25,8 +25,10 @@ const Checkout: React.FC = () => {
 
   const [isCreatingOrder, setIsCreatingOrder] = useState(false);
   const [paymentError, setPaymentError] = useState<string | null>(null);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   // Load user details from authenticated user or localStorage
+
   useEffect(() => {
     if (user) {
       // If user is logged in, use their data
@@ -47,10 +49,36 @@ const Checkout: React.FC = () => {
           setName(parsed.name || '');
           setEmail(parsed.email || '');
           setPhone(parsed.phone || phone);
+          setAddress1(parsed.address1 || '');
+          setAddress2(parsed.address2 || '');
+          setCity(parsed.city || '');
+          setRegion(parsed.region || '');
+          setPostalCode(parsed.postalCode || '');
+          setCountry(parsed.country || 'India');
         }
       } catch { }
     }
+    setIsInitialized(true);
   }, [user, state.phoneNumber, phone]);
+
+  // Save form details to localStorage automatically
+  useEffect(() => {
+    if (!isInitialized) return;
+
+    const userDetails = {
+      name,
+      email,
+      phone,
+      address1,
+      address2,
+      city,
+      region,
+      postalCode,
+      country
+    };
+
+    localStorage.setItem('userDetails', JSON.stringify(userDetails));
+  }, [name, email, phone, address1, address2, city, region, postalCode, country, isInitialized]);
 
   // Sync phone from cart verification
   useEffect(() => {
