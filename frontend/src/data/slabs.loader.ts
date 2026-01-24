@@ -70,6 +70,7 @@ const imageUrlCache = new Map<string, string>();
  * Path format: /src/assets/Collection/... -> Collection/...
  */
 function pathToCloudinaryUrl(absPath: string): string {
+  if (absPath.includes('cloudinary.com')) return absPath;
   const idx = absPath.indexOf('/Collection/');
   if (idx === -1) return absPath;
 
@@ -175,13 +176,14 @@ export const generateSlabCategories = (): Category[] => {
         Object.entries(productsMap).forEach(([prodKey, data]) => {
           const allPaths = [...data.standPaths, ...data.imagePaths];
           const baseName = sanitizeStoneName(prodKey);
+          const name = disambiguate(baseName, categoryKey, groupKey);
           const p: Product = {
-            id: `${cat.id}-${sub.id}-${prodKey.toLowerCase().replace(/\s+/g, '-')}`,
-            name: disambiguate(baseName, categoryKey, groupKey),
+            id: name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''),
+            name,
             category: 'slabs',
             subcategory: sub.id,
-            image: '', // Will be loaded lazily
-            images: allPaths, // Store paths instead of URLs
+            image: allPaths.length > 0 ? pathToCloudinaryUrl(allPaths[0]) : '',
+            images: allPaths.map(pathToCloudinaryUrl),
             description: `${disambiguate(baseName, categoryKey, groupKey)} granite slab — durable, low‑porosity, and ideal for countertops, flooring, and exterior cladding. Sourced from trusted quarries with strict QA.`
           };
           (sub.products as Product[]).push(p);
@@ -197,13 +199,14 @@ export const generateSlabCategories = (): Category[] => {
       Object.entries(subMap as Record<string, { __imagePaths: string[]; __standPaths: string[] }>).forEach(([prodKey, data]) => {
         const allPaths = [...(data.__standPaths || []), ...(data.__imagePaths || [])];
         const baseName = sanitizeStoneName(prodKey);
+        const name = disambiguate(baseName, categoryKey);
         const p: Product = {
-          id: `${cat.id}-${prodKey.toLowerCase().replace(/\s+/g, '-')}`,
-          name: disambiguate(baseName, categoryKey),
+          id: name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''),
+          name,
           category: 'slabs',
           subcategory: 'marble',
-          image: '',
-          images: allPaths,
+          image: allPaths.length > 0 ? pathToCloudinaryUrl(allPaths[0]) : '',
+          images: allPaths.map(pathToCloudinaryUrl),
           description: `${disambiguate(baseName, categoryKey)} marble slab — classic veining and premium finish for luxury interiors, countertops, vanities and wall cladding.`
         };
         (sub.products as Product[]).push(p);
@@ -220,13 +223,14 @@ export const generateSlabCategories = (): Category[] => {
       Object.entries(subMap as Record<string, { __imagePaths: string[]; __standPaths: string[] }>).forEach(([prodKey, data]) => {
         const allPaths = [...(data.__standPaths || []), ...(data.__imagePaths || [])];
         const baseName = sanitizeStoneName(prodKey);
+        const name = disambiguate(baseName, categoryKey);
         const p: Product = {
-          id: `${cat.id}-${subId}-${prodKey.toLowerCase().replace(/\s+/g, '-')}`,
-          name: disambiguate(baseName, categoryKey),
+          id: name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''),
+          name,
           category: 'slabs',
           subcategory: subId,
-          image: '',
-          images: allPaths,
+          image: allPaths.length > 0 ? pathToCloudinaryUrl(allPaths[0]) : '',
+          images: allPaths.map(pathToCloudinaryUrl),
           description: `${disambiguate(baseName, categoryKey)} ${toTitle(categoryKey)} — premium natural stone suitable for interiors, counters and wall features.`
         };
         (sub.products as Product[]).push(p);
@@ -240,12 +244,12 @@ export const generateSlabCategories = (): Category[] => {
           name: toTitle(prodKey),
           products: [
             {
-              id: `${cat.id}-${prodKey.toLowerCase().replace(/\s+/g, '-')}`,
+              id: sanitizeStoneName(prodKey).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''),
               name: sanitizeStoneName(prodKey),
               category: 'slabs',
               subcategory: cat.id,
-              image: '',
-              images: data.__imagePaths,
+              image: data.__imagePaths.length > 0 ? pathToCloudinaryUrl(data.__imagePaths[0]) : '',
+              images: data.__imagePaths.map(pathToCloudinaryUrl),
               description: `${sanitizeStoneName(prodKey)} ${toTitle(cat.name)} slab — premium natural stone with refined aesthetics, suitable for luxury interiors and architectural applications.`
             }
           ]

@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import { Mail, Phone, MapPin, ArrowRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Helmet } from "react-helmet-async";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { getRootImageUrl } from '../utils/rootCloudinary';
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
@@ -19,28 +21,10 @@ const Contact = () => {
   const ctaRef = useRef<HTMLDivElement>(null);
   const submitBtnRef = useRef<HTMLButtonElement>(null);
 
-  // Preload hero image and add CSS for smooth fixed backgrounds
-  useEffect(() => {
-    // Preload hero image
-    const heroImg = new Image();
-    heroImg.src = 'https://images.pexels.com/photos/3184398/pexels-photo-3184398.jpeg';
-
-    // Add CSS to ensure fixed backgrounds work immediately
-    const style = document.createElement('style');
-    style.textContent = `
-      .fixed-bg {
-        background-attachment: fixed !important;
-        background-size: cover !important;
-        background-position: center !important;
-        background-repeat: no-repeat !important;
-      }
-    `;
-    document.head.appendChild(style);
-
-    return () => {
-      document.head.removeChild(style);
-    };
-  }, []);
+  // Parallax for Hero
+  const { scrollY } = useScroll();
+  const y1 = useTransform(scrollY, [0, 500], [0, 200]);
+  const opacityHero = useTransform(scrollY, [0, 400], [1, 0]);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -138,9 +122,7 @@ const Contact = () => {
   };
 
   useGSAP(() => {
-    if (heroTextRef.current) {
-      gsap.fromTo(heroTextRef.current, { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.8 });
-    }
+    // Hero animation is now handled by Framer Motion
     if (headerRef.current) {
       gsap.fromTo(headerRef.current, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8, scrollTrigger: { trigger: headerRef.current, start: "top bottom-=50" } });
     }
@@ -243,27 +225,44 @@ const Contact = () => {
       </Helmet>
 
       {/* Hero Banner */}
-      <section className="relative h-[80vh] overflow-hidden">
-        <div
-          className="fixed-bg absolute inset-0"
-          style={{
-            backgroundImage: "url('https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')"
-          }}
-        />
-        <div className="absolute inset-0 bg-black/40" />
-        <div className="absolute inset-0 flex items-center">
-          <div className="container mx-auto px-4 md:px-6">
-            <div ref={heroTextRef} className="max-w-2xl" style={{ opacity: 0 }}>
-              <h1 className="text-3xl md:text-5xl lg:text-6xl font-light text-white mb-3 md:mb-4">
-                {t('contact.hero_title')}<br />
-                <span className="font-bold">{t('contact.hero_subtitle')}</span>
-              </h1>
-              <p className="text-white/90 text-lg md:text-xl">
-                {t('contact.hero_subtitle_2')}
-              </p>
-            </div>
-          </div>
+      <section className="relative min-h-[100svh] flex flex-col justify-center px-[clamp(1.5rem,4vw,6rem)] overflow-hidden">
+        <motion.div
+          style={{ y: y1, opacity: opacityHero }}
+          className="absolute top-0 right-0 w-[80vw] h-full opacity-10 pointer-events-none"
+        >
+          <img
+            src={getRootImageUrl('export.webp') || '/export.webp'}
+            className="w-full h-full object-cover filter grayscale contrast-125"
+            alt="Contact HS Global"
+          />
+        </motion.div>
+
+        <div className="relative z-10 max-w-[90vw]">
+          <motion.div
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <span className="block text-[clamp(0.625rem,1.2vw,0.875rem)] tracking-[0.3em] uppercase mb-[clamp(1rem,2vw,1.5rem)] text-gray-400">
+              {t('contact.hero_subtitle') || "Get in Touch"}
+            </span>
+            <h1 className="text-[clamp(3.5rem,13vw,14vw)] leading-[0.85] font-serif tracking-tighter text-black">
+              Let's <br />
+              <span className="ml-[8vw] italic font-light text-gray-400">Build</span> <br />
+              <span className="text-amber-900/80">Together</span>.
+            </h1>
+          </motion.div>
         </div>
+
+        <motion.div
+          className="absolute bottom-[clamp(2rem,4vw,3rem)] left-[clamp(1.5rem,4vw,6rem)] flex items-center gap-[clamp(0.75rem,2vw,1rem)]"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1, duration: 1 }}
+        >
+          <div className="h-[1px] w-[clamp(3rem,8vw,6rem)] bg-gray-300"></div>
+          <p className="text-[clamp(0.625rem,1vw,0.75rem)] uppercase tracking-widest text-gray-400">Scroll to Connect</p>
+        </motion.div>
       </section>
 
       {/* Minimalist Contact Section */}

@@ -80,10 +80,10 @@ const About = () => {
 
 
       {/* 1. HERO SECTION: Typography Centric - Scaled Version */}
-      <section className="relative min-h-[100svh] flex flex-col justify-end pb-[clamp(4rem,8vw,8rem)] px-[clamp(1.5rem,4vw,6rem)] pt-[clamp(4rem,8vw,8rem)] overflow-hidden">
+      <section className="relative min-h-[100svh] flex flex-col justify-center px-[clamp(1.5rem,4vw,6rem)] overflow-hidden">
         <motion.div
           style={{ y: y1, opacity: opacityHero }}
-          className="absolute top-0 right-0 w-[60vw] h-[80vh] opacity-10 pointer-events-none"
+          className="absolute top-0 right-0 w-[60vw] h-[80vh] opacity-5 pointer-events-none"
         >
           <img
             src={getRootImageUrl("about-hero.webp") || "/about-hero.webp"}
@@ -101,9 +101,9 @@ const About = () => {
             <span className="block text-[clamp(0.625rem,1.2vw,0.875rem)] tracking-[0.3em] uppercase mb-[clamp(1rem,2vw,1.5rem)] text-gray-400">
               {t("about.hero_subtitle") || "Est. 1995 • Rajasthan, India"}
             </span>
-            <h1 className="text-[clamp(3rem,12vw,12vw)] leading-[0.8] font-serif tracking-tighter text-black mix-blend-multiply">
+            <h1 className="text-[clamp(3.5rem,13vw,14vw)] leading-[0.85] font-serif tracking-tighter text-black">
               Heritage <br />
-              <span className="ml-[10vw] italic font-light text-gray-400">Etched</span> <br />
+              <span className="ml-[8vw] italic font-light text-gray-400">Etched</span> <br />
               In <span className="text-secondary-foreground">Stone</span>.
             </h1>
           </motion.div>

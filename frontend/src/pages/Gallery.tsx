@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState, useCallback, memo, useRef } from "react";
 import { Search, SlidersHorizontal, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Helmet } from "react-helmet-async";
+import { motion, useScroll, useTransform } from "framer-motion";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -62,18 +63,17 @@ type GalleryItem = { id: string; title: string; category: string; image: string;
 
 const Gallery = memo(() => {
   // Preload hero image and ensure fixed background CSS exists (align with other pages)
+  // Parallax for Hero
+  const { scrollY } = useScroll();
+  const y1 = useTransform(scrollY, [0, 500], [0, 200]);
+  const opacityHero = useTransform(scrollY, [0, 400], [1, 0]);
+
   useEffect(() => {
     const heroUrl = getRootImageUrl('gallery-hero.webp');
     if (heroUrl) {
       const img = new Image();
       img.src = heroUrl;
     }
-    const style = document.createElement('style');
-    style.textContent = `.fixed-bg{background-attachment:fixed !important;background-size:cover !important;background-position:center !important;background-repeat:no-repeat !important}`;
-    document.head.appendChild(style);
-    return () => {
-      document.head.removeChild(style);
-    };
   }, []);
   const { items: allItems, cats } = useMemo(() => buildGallery(), []);
   const [activeCategory, setActiveCategory] = useState("All");
@@ -102,11 +102,7 @@ const Gallery = memo(() => {
 
   // GSAP Animations
   useGSAP(() => {
-    // Hero Animation
-    if (heroTitleRef.current && heroSubtitleRef.current) {
-      gsap.fromTo(heroTitleRef.current, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.45 });
-      gsap.fromTo(heroSubtitleRef.current, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4, delay: 0.05 });
-    }
+    // Hero Animation handled by Framer Motion now
   }, { scope: containerRef });
 
   // Filter Animation
@@ -336,32 +332,45 @@ const Gallery = memo(() => {
       </Helmet>
 
       {/* Hero matching Products/About/Services style */}
-      <section className="relative h-[80vh] overflow-hidden">
-        <div
-          className="fixed-bg absolute inset-0"
-          style={{
-            backgroundImage: `url(${getRootImageUrl('gallery-hero.webp') || '/gallery-hero.webp'})`
-          }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/20 to-transparent" />
-        <div className="absolute inset-0 flex items-center">
-          <div className="container mx-auto px-4 md:px-6">
-            <h1
-              ref={heroTitleRef}
-              className="text-4xl md:text-6xl font-light text-white"
-              style={{ opacity: 0 }}
-            >
-              {t('gallery.hero_title')}
+      {/* Hero matching Products/About/Services style */}
+      <section className="relative min-h-[100svh] flex flex-col justify-center px-[clamp(1.5rem,4vw,6rem)] overflow-hidden">
+        <motion.div
+          style={{ y: y1, opacity: opacityHero }}
+          className="absolute top-0 right-0 w-[80vw] h-full opacity-10 pointer-events-none"
+        >
+          <img
+            src={getRootImageUrl('gallery-hero.webp') || '/gallery-hero.webp'}
+            className="w-full h-full object-cover filter grayscale contrast-125"
+            alt="HS Global Gallery"
+          />
+        </motion.div>
+
+        <div className="relative z-10 max-w-[90vw]">
+          <motion.div
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <span className="block text-[clamp(0.625rem,1.2vw,0.875rem)] tracking-[0.3em] uppercase mb-[clamp(1rem,2vw,1.5rem)] text-gray-400">
+              {t('gallery.hero_subtitle') || "Visual Journey"}
+            </span>
+            <h1 className="text-[clamp(3.5rem,13vw,14vw)] leading-[0.85] font-serif tracking-tighter text-black">
+              Artistry <br />
+              <span className="ml-[8vw] italic font-light text-gray-400">In</span> <br />
+              <span className="text-secondary-foreground">Detail</span>.
             </h1>
-            <p
-              ref={heroSubtitleRef}
-              className="mt-3 text-white/90 text-lg md:text-xl max-w-2xl"
-              style={{ opacity: 0 }}
-            >
-              {t('gallery.hero_subtitle')}
-            </p>
-          </div>
+          </motion.div>
         </div>
+
+        <motion.div
+          className="absolute bottom-[clamp(2rem,4vw,3rem)] left-[clamp(1.5rem,4vw,6rem)] flex items-center gap-[clamp(0.75rem,2vw,1rem)]"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1, duration: 1 }}
+        >
+          <div className="h-[1px] w-[clamp(3rem,8vw,6rem)] bg-gray-300"></div>
+          <p className="text-[clamp(0.625rem,1vw,0.75rem)] uppercase tracking-widest text-gray-400">Scroll to Explore</p>
+        </motion.div>
       </section>
 
       <section className="py-12">

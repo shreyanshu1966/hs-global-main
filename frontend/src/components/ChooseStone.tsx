@@ -19,12 +19,10 @@ interface StoneGroup {
 
 
 
-import { getAllProducts } from '../data/products';
-import { getProductCloudinaryUrl } from '../utils/productCloudinary';
+import { categories } from '../data/products';
+import type { Subcategory } from '../data/products';
 
 function buildGroupsFromProducts(): StoneGroup[] {
-  const allProducts = getAllProducts();
-
   const mainCategories: { key: MainCategory; title: string }[] = [
     { key: "marble", title: "Marble" },
     { key: "granite", title: "Granite" },
@@ -33,14 +31,30 @@ function buildGroupsFromProducts(): StoneGroup[] {
     { key: "travertine", title: "Travertine" },
   ];
 
+  const slabsCategory = categories.find(c => c.id === 'slabs');
+  if (!slabsCategory) return [];
+
+  const extractProducts = (sub: Subcategory): any[] => { // Using any[] temporarily for Product type
+    let prods: any[] = [];
+    if (sub.products) prods.push(...sub.products);
+    if (sub.subcategories) {
+      sub.subcategories.forEach(s => {
+        prods.push(...extractProducts(s));
+      });
+    }
+    return prods;
+  };
+
   const result: StoneGroup[] = [];
 
   for (const cat of mainCategories) {
-    // Filter products for this category
-    const categoryProducts = allProducts.filter(p =>
-      p.category === 'slabs' &&
-      p.id.startsWith(cat.key)
-    );
+    // Find the specific category (e.g. "granite") inside "slabs"
+    const targetSub = slabsCategory.subcategories.find(s => s.id === cat.key);
+
+    if (!targetSub) continue;
+
+    // Collect all products under this category (e.g. Granite -> Alaska -> Product)
+    const categoryProducts = extractProducts(targetSub);
 
     // Convert to StoneItem format
     const items: StoneItem[] = categoryProducts
@@ -66,7 +80,7 @@ function buildGroupsFromProducts(): StoneGroup[] {
         };
       });
 
-    // Take up to 8 items (Selection is stable because allProducts is sorted)
+    // Take up to 8 items
     result.push({ title: cat.title, stones: items.slice(0, 8) });
   }
 

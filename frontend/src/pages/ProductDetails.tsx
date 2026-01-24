@@ -355,36 +355,7 @@ const ProductDetails = () => {
         </div>
       </div>
 
-      {/* DEBUG INFO - Remove in production */}
-      {process.env.NODE_ENV === 'development' && product.category === 'slabs' && (
-        <div className="container mx-auto px-4 py-4 bg-yellow-100 border border-yellow-400 rounded">
-          <h3 className="font-bold text-yellow-800">Debug Info (Slab Images)</h3>
-          <p className="text-sm text-yellow-700 mb-2">
-            Slab images loaded: {slabImagesLoaded ? 'Yes' : 'No'}
-          </p>
-          <p className="text-sm text-yellow-700 mb-2">
-            Cloudinary URLs count: {slabImageUrls.length}
-          </p>
-          <div className="max-h-32 overflow-y-auto">
-            <p className="text-xs text-yellow-600 font-mono break-all">
-              Current image URL: {product.images[selectedImage]}
-            </p>
-            {slabImageUrls.length > 0 && (
-              <div className="mt-2">
-                <strong className="text-xs text-yellow-700">Converted URLs:</strong>
-                {slabImageUrls.slice(0, 3).map((url, idx) => (
-                  <p key={idx} className="text-xs text-yellow-600 font-mono break-all">
-                    {idx + 1}. {url}
-                  </p>
-                ))}
-                <p className="text-xs text-yellow-700 mt-1">
-                  Are they Cloudinary URLs? {slabImageUrls[0]?.includes('cloudinary.com') ? 'Yes ✅' : 'No ❌'}
-                </p>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+
 
       {/* Main image*/}
       <div className="container mx-auto px-4 py-3">

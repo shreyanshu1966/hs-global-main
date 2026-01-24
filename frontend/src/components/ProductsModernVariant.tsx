@@ -5,6 +5,7 @@ import { ProductCard } from "./ProductCard";
 import { categories, Subcategory, Product } from "../data/products";
 import { useTranslation } from "react-i18next";
 import { loadImageUrls } from "../data/slabs.loader";
+import { motion, useScroll, useTransform } from "framer-motion";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -16,6 +17,11 @@ gsap.registerPlugin(ScrollTrigger);
 export const ProductsModernVariant: React.FC = () => {
   const { t } = useTranslation();
   const location = useLocation();
+
+  // Parallax for Hero
+  const { scrollY } = useScroll();
+  const y1 = useTransform(scrollY, [0, 500], [0, 200]);
+  const opacityHero = useTransform(scrollY, [0, 400], [1, 0]);
 
   const hasRestoredScrollRef = useRef(false);
 
@@ -579,33 +585,44 @@ export const ProductsModernVariant: React.FC = () => {
 
   return (
     <div ref={containerRef} className="min-h-screen bg-white">
-      <section ref={heroRef} className="relative h-[80vh] overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-fixed"
-          style={{
-            backgroundImage: `url('${getRootImageUrl("products-hero.webp") || "/products-hero.webp"}')`,
-          }}
-          aria-hidden
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
-        <div className="absolute inset-0 flex items-center">
-          <div className="container mx-auto px-4 md:px-6">
-            <h1
-              ref={heroTitleRef}
-              className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-3 md:mb-4"
-              style={{ opacity: 0 }}
-            >
-              {t("product.hero_title")}
+      <section className="relative min-h-[100svh] flex flex-col justify-center px-[clamp(1.5rem,4vw,6rem)] overflow-hidden">
+        <motion.div
+          style={{ y: y1, opacity: opacityHero }}
+          className="absolute top-0 right-0 w-[80vw] h-full opacity-10 pointer-events-none"
+        >
+          <img
+            src={getRootImageUrl("products-hero.webp") || "/products-hero.webp"}
+            className="w-full h-full object-cover filter grayscale contrast-125"
+            alt="HS Global Products"
+          />
+        </motion.div>
+
+        <div className="relative z-10 max-w-[90vw]">
+          <motion.div
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <span className="block text-[clamp(0.625rem,1.2vw,0.875rem)] tracking-[0.3em] uppercase mb-[clamp(1rem,2vw,1.5rem)] text-gray-400">
+              {t("product.hero_subtitle") || "Curated Collection"}
+            </span>
+            <h1 className="text-[clamp(3.5rem,13vw,14vw)] leading-[0.85] font-serif tracking-tighter text-black">
+              Timeless <br />
+              <span className="ml-[8vw] italic font-light text-gray-400">Material</span> <br />
+              <span className="text-amber-900/80">Elegance</span>.
             </h1>
-            <p
-              ref={heroSubtitleRef}
-              className="text-white/90 text-lg md:text-xl lg:text-2xl max-w-3xl"
-              style={{ opacity: 0 }}
-            >
-              {t("product.hero_subtitle")}
-            </p>
-          </div>
+          </motion.div>
         </div>
+
+        <motion.div
+          className="absolute bottom-[clamp(2rem,4vw,3rem)] left-[clamp(1.5rem,4vw,6rem)] flex items-center gap-[clamp(0.75rem,2vw,1rem)]"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1, duration: 1 }}
+        >
+          <div className="h-[1px] w-[clamp(3rem,8vw,6rem)] bg-gray-300"></div>
+          <p className="text-[clamp(0.625rem,1vw,0.75rem)] uppercase tracking-widest text-gray-400">Scroll to Explore</p>
+        </motion.div>
       </section>
 
       <section className="bg-amber-50 border-y border-amber-200">

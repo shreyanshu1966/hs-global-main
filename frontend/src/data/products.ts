@@ -181,8 +181,7 @@ const buildFurnitureCategories = (): Subcategory[] => {
     const prodMap = subMap.get(sub)!;
 
     if (!prodMap.has(product!)) {
-      const id =
-        ["furniture", main, sub || "root", product!].map(toSlug).join("-");
+      const id = toSlug(product!);
       prodMap.set(product!, { id, name: product!, images: [], image: "" });
     }
 
