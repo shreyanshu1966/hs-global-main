@@ -87,8 +87,8 @@ const AboutCompany: React.FC = () => {
               {/* Video Overlay / Placeholder */}
               <div className={`absolute inset-0 transition-opacity duration-700 ${isPlaying ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
                 <img
-                  src="/video-poster.jpg"
-                  onError={(e) => (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=2000&auto=format&fit=crop'}
+                  src="https://res.cloudinary.com/dpztytsoz/image/upload/c_fill,g_center,h_800,q_auto,f_auto,w_600/v1766928672/hs-global/public/about-hero.jpg"
+                  onError={(e) => (e.target as HTMLImageElement).src = 'https://res.cloudinary.com/dpztytsoz/image/upload/v1766928672/hs-global/public/about-hero.jpg'}
                   alt="About HS Global"
                   className="w-full h-full object-cover filter grayscale-[30%] hover:grayscale-0 transition-all duration-700"
                 />
