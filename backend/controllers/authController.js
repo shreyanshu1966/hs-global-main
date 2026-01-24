@@ -26,6 +26,40 @@ exports.register = async (req, res) => {
             });
         }
 
+        // Email validation
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({
+                ok: false,
+                error: 'Please provide a valid email address'
+            });
+        }
+
+        // Password complexity validation
+        const hasUpperCase = /[A-Z]/.test(password);
+        const hasLowerCase = /[a-z]/.test(password);
+        const hasNumbers = /[0-9]/.test(password);
+        const hasSpecialChar = /[^A-Za-z0-9]/.test(password);
+        const minLength = 8;
+
+        if (password.length < minLength || !hasUpperCase || !hasLowerCase || !hasNumbers || !hasSpecialChar) {
+            return res.status(400).json({
+                ok: false,
+                error: 'Password must be at least 8 characters and include uppercase, lowercase, number, and special character'
+            });
+        }
+
+        // Phone validation (optional)
+        if (phone) {
+            const phoneRegex = /^\+?[\d\s-]{10,15}$/;
+            if (!phoneRegex.test(phone)) {
+                return res.status(400).json({
+                    ok: false,
+                    error: 'Please provide a valid phone number'
+                });
+            }
+        }
+
         // Check if user already exists
         const existingUser = await User.findOne({ email: email.toLowerCase() });
         if (existingUser) {
@@ -224,10 +258,17 @@ exports.changePassword = async (req, res) => {
             });
         }
 
-        if (newPassword.length < 6) {
+        // Password complexity validation
+        const hasUpperCase = /[A-Z]/.test(newPassword);
+        const hasLowerCase = /[a-z]/.test(newPassword);
+        const hasNumbers = /[0-9]/.test(newPassword);
+        const hasSpecialChar = /[^A-Za-z0-9]/.test(newPassword);
+        const minLength = 8;
+
+        if (newPassword.length < minLength || !hasUpperCase || !hasLowerCase || !hasNumbers || !hasSpecialChar) {
             return res.status(400).json({
                 ok: false,
-                error: 'New password must be at least 6 characters'
+                error: 'New password must be at least 8 characters and include uppercase, lowercase, number, and special character'
             });
         }
 
