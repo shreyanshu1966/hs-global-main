@@ -26,8 +26,18 @@ const Checkout: React.FC = () => {
   const [isCreatingOrder, setIsCreatingOrder] = useState(false);
   const [paymentError, setPaymentError] = useState<string | null>(null);
   const [isInitialized, setIsInitialized] = useState(false);
+  const [retryOrderId, setRetryOrderId] = useState<string | null>(null);
 
   // Load user details from authenticated user or localStorage
+  useEffect(() => {
+    // Check for retry order ID in URL params
+    const urlParams = new URLSearchParams(window.location.search);
+    const retryId = urlParams.get('retry');
+    if (retryId) {
+      setRetryOrderId(retryId);
+      setPaymentError('Previous payment failed. You can retry using the form below or start a new order.');
+    }
+  }, []);
 
   useEffect(() => {
     if (user) {
@@ -212,6 +222,23 @@ const Checkout: React.FC = () => {
             Back to Shopping
           </Link>
           <h1 className="text-3xl font-bold text-black mt-4">Checkout</h1>
+
+          {/* Retry Notice */}
+          {retryOrderId && (
+            <div className="mt-4 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+              <div className="flex items-start gap-3">
+                <svg className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <div className="flex-1">
+                  <h3 className="text-sm font-semibold text-amber-900 mb-1">Payment Retry</h3>
+                  <p className="text-sm text-amber-700">
+                    Retrying payment for order <strong>{retryOrderId}</strong>. You can use the same details or update them below.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Currency Notice */}
           {currency !== paymentCurrency && (

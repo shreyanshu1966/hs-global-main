@@ -21,6 +21,8 @@ const CheckoutSuccess = () => {
   const [isCapturing, setIsCapturing] = useState(false);
   const [captureError, setCaptureError] = useState<string | null>(null);
   const [captureSuccess, setCaptureSuccess] = useState(false);
+  const [orderDetails, setOrderDetails] = useState<any>(null);
+  const [canRetry, setCanRetry] = useState(false);
 
   // Capture payment when returning from PayPal
   useEffect(() => {
@@ -48,22 +50,77 @@ const CheckoutSuccess = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Payment verification failed');
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || 'Payment verification failed');
       }
 
       const captureData = await response.json();
 
       if (captureData.ok) {
         setCaptureSuccess(true);
+        setOrderDetails(captureData.order);
         clearCart(); // Clear cart after successful payment
       } else {
+        // Handle payment failure with retry option
+        setCanRetry(captureData.canRetry || false);
+        setOrderDetails(captureData.order || null);
         throw new Error(captureData.error || 'Payment verification failed');
       }
 
     } catch (error: any) {
       console.error('Payment capture error:', error);
       setCaptureError(error.message || 'Payment failed. Please contact support.');
+      
+      // Extract retry information from error response
+      if (error.response) {
+        try {
+          const errorData = await error.response.json();
+          setCanRetry(errorData.canRetry || false);
+          setOrderDetails(errorData.order || null);
+        } catch (e) {
+          // Ignore JSON parsing errors
+        }
+      }
     } finally {
+      setIsCapturing(false);
+    }
+  };
+
+  const handleRetryPayment = async () => {
+    if (!orderDetails?.orderId) return;
+    
+    try {
+      setIsCapturing(true);
+      setCaptureError(null);
+
+      const response = await fetch(`${API_URL}/retry-payment`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          orderId: orderDetails.orderId
+        })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || 'Retry failed');
+      }
+
+      const data = await response.json();
+      
+      if (data.ok && data.approvalUrl) {
+        // Redirect to new PayPal payment
+        window.location.href = data.approvalUrl;
+      } else {
+        throw new Error(data.error || 'Failed to create retry payment');
+      }
+    } catch (error: any) {
+      console.error('Payment retry error:', error);
+      setCaptureError(error.message || 'Retry failed. Please contact support.');
       setIsCapturing(false);
     }
   };
@@ -121,11 +178,27 @@ const CheckoutSuccess = () => {
               {captureError}
             </p>
             <div className="space-y-3">
+              {canRetry && (
+                <button
+                  onClick={handleRetryPayment}
+                  disabled={isCapturing}
+                  className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isCapturing ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Retrying...
+                    </>
+                  ) : (
+                    'Retry Payment'
+                  )}
+                </button>
+              )}
               <Link
                 to="/checkout"
                 className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-amber-500 to-amber-600 text-white font-semibold rounded-lg hover:from-amber-600 hover:to-amber-700 transition-all duration-200"
               >
-                Try Again
+                New Order
               </Link>
               <Link
                 to="/"
@@ -135,6 +208,20 @@ const CheckoutSuccess = () => {
                 Back to Home
               </Link>
             </div>
+            
+            {orderDetails && (
+              <div className="mt-6 p-3 bg-gray-50 border border-gray-200 rounded-lg text-left">
+                <p className="text-sm text-gray-600 mb-1">
+                  <strong>Order ID:</strong> {orderDetails.orderId}
+                </p>
+                {orderDetails.failureCount && (
+                  <p className="text-sm text-gray-600">
+                    <strong>Attempts:</strong> {orderDetails.failureCount}/3
+                  </p>
+                )}
+              </div>
+            )}
+            
             <div className="mt-8 p-4 bg-amber-50 border border-amber-200 rounded-lg">
               <p className="text-sm text-amber-800">
                 <strong>Need help?</strong> Contact us at{' '}

@@ -50,6 +50,7 @@ app.use('/api', require('./routes/paymentRoutes'));
 app.use('/api', require('./routes/orderRoutes'));
 app.use('/api/webhooks', require('./routes/webhookRoutes')); // Payment webhooks (PayPal)
 app.use('/api/admin', require('./routes/adminRoutes')); // Admin routes
+app.use('/api/admin', require('./routes/paymentMonitoringRoutes')); // Payment monitoring routes
 app.use('/api/blogs', require('./routes/blog')); // Blog routes
 app.use('/api/shipping', require('./routes/shipping')); // Shipping routes (Freightos integration)
 app.use('/api/contact', require('./routes/contactRoutes')); // Contact form routes
@@ -64,6 +65,7 @@ app.get('/api/health', (req, res) => {
 const PORT = process.env.PORT || 3000;
 
 const { initEmailService, closeEmailService } = require('./services/emailService');
+const orderCleanupService = require('./services/orderCleanupService');
 
 // Start server
 const server = app.listen(PORT, async () => {
@@ -72,6 +74,13 @@ const server = app.listen(PORT, async () => {
 
   // Initialize email service
   await initEmailService();
+  
+  // Start order cleanup service
+  try {
+    orderCleanupService.start();
+  } catch (error) {
+    console.error('❌ Failed to start order cleanup service:', error);
+  }
 });
 
 // Graceful shutdown handlers
@@ -81,6 +90,13 @@ const gracefulShutdown = async (signal) => {
   // Close server to stop accepting new connections
   server.close(async () => {
     console.log('✅ HTTP server closed');
+
+    // Stop order cleanup service
+    try {
+      orderCleanupService.stop();
+    } catch (error) {
+      console.error('⚠️ Error stopping cleanup service:', error);
+    }
 
     // Close email service
     await closeEmailService();

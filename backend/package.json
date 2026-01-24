@@ -21,6 +21,7 @@
         "jsonwebtoken": "^9.0.3",
         "lokijs": "^1.5.12",
         "mongoose": "^9.0.2",
+        "node-cron": "^4.2.1",
         "nodemailer": "^6.10.1",
         "twilio": "^5.9.0"
     }
