@@ -19,6 +19,21 @@
 
 import urlMappings from '../../../cloudinary-responsive-urls.json';
 
+
+/**
+ * Optimize Cloudinary URL by adding auto format and quality
+ * @param {string} url - The Cloudinary URL
+ * @returns {string} Optimized URL
+ */
+function optimizeUrl(url) {
+    if (!url || typeof url !== 'string') return url;
+    // Check if it's a Cloudinary upload URL and doesn't already have optimization params
+    if (url.includes('/image/upload/') && !url.includes('f_auto') && !url.includes('q_auto')) {
+        return url.replace('/image/upload/', '/image/upload/f_auto,q_auto/');
+    }
+    return url;
+}
+
 /**
  * Get responsive image URL for a specific breakpoint
  * @param {string} imagePath - Original image path (e.g., 'gallery/image.webp')
@@ -41,13 +56,13 @@ export function getResponsiveImage(imagePath, breakpoint = 'desktop') {
             const fallbackOrder = ['desktop', 'tablet', 'large', 'mobile'];
             for (const fallback of fallbackOrder) {
                 if (imageData.variants[fallback]) {
-                    return imageData.variants[fallback].url;
+                    return optimizeUrl(imageData.variants[fallback].url);
                 }
             }
             return null;
         }
 
-        return variant.url;
+        return optimizeUrl(variant.url);
     } catch (error) {
         console.error('Error getting responsive image:', error);
         return null;
@@ -85,16 +100,16 @@ export function getSrcSet(imagePath) {
         const srcSetParts = [];
 
         if (variants.mobile) {
-            srcSetParts.push(`${variants.mobile.url} ${variants.mobile.width}w`);
+            srcSetParts.push(`${optimizeUrl(variants.mobile.url)} ${variants.mobile.width}w`);
         }
         if (variants.tablet) {
-            srcSetParts.push(`${variants.tablet.url} ${variants.tablet.width}w`);
+            srcSetParts.push(`${optimizeUrl(variants.tablet.url)} ${variants.tablet.width}w`);
         }
         if (variants.desktop) {
-            srcSetParts.push(`${variants.desktop.url} ${variants.desktop.width}w`);
+            srcSetParts.push(`${optimizeUrl(variants.desktop.url)} ${variants.desktop.width}w`);
         }
         if (variants.large) {
-            srcSetParts.push(`${variants.large.url} ${variants.large.width}w`);
+            srcSetParts.push(`${optimizeUrl(variants.large.url)} ${variants.large.width}w`);
         }
 
         return srcSetParts.join(', ');
@@ -198,3 +213,4 @@ export default {
     getImagesByCategory,
     preloadImages
 };
+
