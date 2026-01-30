@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Helmet } from "react-helmet-async";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Globe, Award, Target, Users } from "lucide-react";
-import { getRootImageUrl } from "../utils/rootCloudinary";
+import { getResponsiveImage, getSrcSet } from "../utils/responsive-image-helper";
 import VelocityScroll from "../components/VelocityScroll";
 import Magnet from "../components/Magnet";
 import ShinyText from "../components/ShinyText";
@@ -86,9 +86,12 @@ const About = () => {
           className="absolute top-0 right-0 w-[60vw] h-[80vh] opacity-5 pointer-events-none"
         >
           <img
-            src={getRootImageUrl("about-hero.webp") || "/about-hero.webp"}
+            src={getResponsiveImage("about-hero.webp", "large") || "/about-hero.webp"}
+            srcSet={getSrcSet("about-hero.webp")}
+            sizes="60vw"
             className="w-full h-full object-cover filter grayscale contrast-125"
             alt="HS Global Texture"
+            loading="lazy"
           />
         </motion.div>
 
@@ -168,9 +171,12 @@ const About = () => {
       <section className="w-full h-[clamp(50vh,80vh,80vh)] relative overflow-hidden group">
         <div className="absolute inset-0 bg-black/20 z-10 group-hover:bg-black/10 transition-colors duration-700" />
         <img
-          src={getRootImageUrl("granite-solutions.webp") || "/granite-solutions.webp"}
+          src={getResponsiveImage("granite-solutions.webp", "large") || "/granite-solutions.webp"}
+          srcSet={getSrcSet("granite-solutions.webp")}
+          sizes="100vw"
           alt="Quarry"
           className="w-full h-full object-cover transform scale-100 group-hover:scale-105 transition-transform duration-[2s] ease-out"
+          loading="lazy"
         />
         <div className="absolute inset-0 z-20 flex items-center justify-center">
           <Magnet padding={100} magnetStrength={5}>
@@ -266,9 +272,12 @@ const StoryPanel = ({ data, index }: { data: any, index: number }) => {
         </div>
         <div className="relative h-[clamp(300px,60vh,600px)] w-full overflow-hidden rounded-lg grayscale hover:grayscale-0 transition-all duration-700 order-1 md:order-2 touch-manipulation">
           <img
-            src={getRootImageUrl(data.img) || `/${data.img}`}
+            src={getResponsiveImage(data.img, "desktop") || `/${data.img}`}
+            srcSet={getSrcSet(data.img)}
+            sizes="(max-width: 768px) 100vw, 50vw"
             className="absolute inset-0 w-full h-full object-cover"
             alt={data.title}
+            loading="lazy"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
         </div>
@@ -323,9 +332,12 @@ const PhilosophyGrid = () => {
           {/* Background Image */}
           <div className="absolute inset-0 z-0">
             <img
-              src={getRootImageUrl(item.img) || `/${item.img}`}
+              src={getResponsiveImage(item.img, "desktop") || `/${item.img}`}
+              srcSet={getSrcSet(item.img)}
+              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
               alt={item.title}
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              loading="lazy"
             />
             <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors duration-500" />
           </div>

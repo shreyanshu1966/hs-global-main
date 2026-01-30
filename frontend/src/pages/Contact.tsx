@@ -3,7 +3,7 @@ import { Mail, Phone, MapPin, ArrowRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Helmet } from "react-helmet-async";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { getRootImageUrl } from '../utils/rootCloudinary';
+import { getResponsiveImage, getSrcSet } from '../utils/responsive-image-helper';
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
@@ -231,9 +231,12 @@ const Contact = () => {
           className="absolute top-0 right-0 w-[80vw] h-full opacity-10 pointer-events-none"
         >
           <img
-            src={getRootImageUrl('export.webp') || '/export.webp'}
+            src={getResponsiveImage('export.webp', 'large') || '/export.webp'}
+            srcSet={getSrcSet('export.webp')}
+            sizes="80vw"
             className="w-full h-full object-cover filter grayscale contrast-125"
             alt="Contact HS Global"
+            loading="lazy"
           />
         </motion.div>
 

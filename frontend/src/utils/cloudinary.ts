@@ -57,10 +57,11 @@ export function getCloudinaryUrl(
 ): string {
     // Fallback to original path if Cloudinary not configured
     if (!CLOUD_NAME) {
-        return `/${publicId}`;
+        // Keep the original path with extension for fallback
+        return publicId.startsWith('/') ? publicId : `/${publicId}`;
     }
 
-    // Remove leading slash and file extension from publicId
+    // Remove leading slash and file extension from publicId for Cloudinary
     const cleanPublicId = publicId
         .replace(/^\//, '')
         .replace(/\.(webp|jpg|jpeg|png|gif)$/i, '');

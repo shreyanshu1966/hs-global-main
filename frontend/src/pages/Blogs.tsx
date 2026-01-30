@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Calendar, Clock, ArrowRight, Search, Tag, Filter } from 'lucide-react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { getRootImageUrl } from '../utils/rootCloudinary';
+import { getResponsiveImage, getSrcSet } from '../utils/responsive-image-helper';
 import blogService, { Blog } from '../services/blogService';
 
 const Blogs = () => {
@@ -87,9 +87,12 @@ const Blogs = () => {
                         className="absolute top-0 right-0 w-[80vw] h-full opacity-10 pointer-events-none"
                     >
                         <img
-                            src={getRootImageUrl('granite-solutions.webp') || '/granite-solutions.webp'}
+                            src={getResponsiveImage('granite-solutions.webp', 'large') || '/granite-solutions.webp'}
+                            srcSet={getSrcSet('granite-solutions.webp')}
+                            sizes="80vw"
                             className="w-full h-full object-cover filter grayscale contrast-125"
                             alt="HS Global Blog"
+                            loading="lazy"
                         />
                     </motion.div>
 

@@ -48,12 +48,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             {!isAdminPage && <FloatingCartButton />}
             {!isAdminPage && <CartDrawer />}
             {!isAdminPage && <PhoneVerifyModal />}
-            {!isAdminPage && (
+            {/* Temporarily disabled - Get Your Quote popup */}
+            {/* {!isAdminPage && (
                 <LeadCapturePopup
                     isOpen={isLeadPopupOpen}
                     onClose={closeLeadPopup}
                 />
-            )}
+            )} */}
             {!isAdminPage && !isProductsPage && <FloatingWhatsApp />}
             <NoiseOverlay />
         </div>

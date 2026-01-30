@@ -15,7 +15,7 @@ import {
   Target,
   Gem
 } from 'lucide-react';
-import { getRootImageUrl } from '../utils/rootCloudinary';
+import { getResponsiveImage, getSrcSet } from '../utils/responsive-image-helper';
 import VelocityScroll from '../components/VelocityScroll';
 import Magnet from '../components/Magnet';
 import ShinyText from '../components/ShinyText';
@@ -129,9 +129,12 @@ const Services: React.FC = () => {
           className="absolute top-0 right-0 w-[70vw] h-full opacity-5 pointer-events-none"
         >
           <img
-            src={getRootImageUrl('services-hero.webp') || '/services-hero.webp'}
+            src={getResponsiveImage('services-hero.webp', 'large') || '/services-hero.webp'}
+            srcSet={getSrcSet('services-hero.webp')}
+            sizes="70vw"
             className="w-full h-full object-cover filter grayscale"
             alt="Services Background"
+            loading="lazy"
           />
         </motion.div>
 
@@ -255,9 +258,12 @@ const Services: React.FC = () => {
               className="relative h-[clamp(400px,60vh,600px)] rounded-2xl overflow-hidden group"
             >
               <img
-                src={getRootImageUrl('granite-solutions.webp') || '/granite-solutions.webp'}
+                src={getResponsiveImage('granite-solutions.webp', 'desktop') || '/granite-solutions.webp'}
+                srcSet={getSrcSet('granite-solutions.webp')}
+                sizes="(max-width: 1024px) 100vw, 50vw"
                 alt="Manufacturing"
                 className="w-full h-full object-cover transform scale-100 group-hover:scale-105 transition-transform duration-700"
+                loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             </motion.div>
@@ -277,9 +283,12 @@ const Services: React.FC = () => {
               className="relative h-[clamp(400px,60vh,600px)] rounded-2xl overflow-hidden group order-2 lg:order-1"
             >
               <img
-                src={getRootImageUrl('export.webp') || '/export.webp'}
+                src={getResponsiveImage('export.webp', 'desktop') || '/export.webp'}
+                srcSet={getSrcSet('export.webp')}
+                sizes="(max-width: 1024px) 100vw, 50vw"
                 alt="Export"
                 className="w-full h-full object-cover transform scale-100 group-hover:scale-105 transition-transform duration-700"
+                loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             </motion.div>
@@ -356,9 +365,12 @@ const Services: React.FC = () => {
       <section className="w-full h-[clamp(60vh,80vh,80vh)] relative overflow-hidden group">
         <div className="absolute inset-0 bg-black/30 z-10 group-hover:bg-black/20 transition-colors duration-700" />
         <img
-          src={getRootImageUrl('marble-solutions.webp') || '/marble-solutions.webp'}
+          src={getResponsiveImage('marble-solutions.webp', 'large') || '/marble-solutions.webp'}
+          srcSet={getSrcSet('marble-solutions.webp')}
+          sizes="100vw"
           alt="Stone Collection"
           className="w-full h-full object-cover transform scale-100 group-hover:scale-105 transition-transform duration-[2s] ease-out"
+          loading="lazy"
         />
         <div className="absolute inset-0 z-20 flex items-center justify-center">
           <Magnet padding={100} magnetStrength={5}>
@@ -458,9 +470,12 @@ const ServicesBentoGrid = () => {
           {/* Background Image */}
           <div className="absolute inset-0 z-0">
             <img
-              src={getRootImageUrl(service.img) || `/${service.img}`}
+              src={getResponsiveImage(service.img, 'desktop') || `/${service.img}`}
+              srcSet={getSrcSet(service.img)}
+              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
               alt={service.title}
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              loading="lazy"
             />
             <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors duration-500" />
           </div>

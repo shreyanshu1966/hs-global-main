@@ -6,8 +6,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { getCloudinaryUrl } from '@/utils/cloudinary';
-import { getRootImageUrl } from '../utils/rootCloudinary';
+import { getResponsiveImage, getSrcSet } from '../utils/responsive-image-helper';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -34,10 +33,10 @@ const buildGallery = () => {
     const base = toTitle(file.replace(/\.(webp|jpg|jpeg|png)$/i, ''));
     const id = toSlug(rel);
 
-    // Convert local path to Cloudinary URL
-    const cloudinaryUrl = getCloudinaryUrl(rel);
+    // Use responsive image helper to get Cloudinary URL, fallback to local path
+    const responsiveUrl = getResponsiveImage(rel, 'mobile') || url as string;
 
-    interim.push({ path: rel, title: base, category, image: cloudinaryUrl });
+    interim.push({ path: rel, title: base, category, image: responsiveUrl });
   });
   // Assign stable codes per category: HS + first two letters of category + 3-digit index
   const byCat = new Map<string, { idx: number; list: Item[] }>();
@@ -69,7 +68,7 @@ const Gallery = memo(() => {
   const opacityHero = useTransform(scrollY, [0, 400], [1, 0]);
 
   useEffect(() => {
-    const heroUrl = getRootImageUrl('gallery-hero.webp');
+    const heroUrl = getResponsiveImage('gallery-hero.webp', 'large');
     if (heroUrl) {
       const img = new Image();
       img.src = heroUrl;
@@ -339,9 +338,12 @@ const Gallery = memo(() => {
           className="absolute top-0 right-0 w-[80vw] h-full opacity-10 pointer-events-none"
         >
           <img
-            src={getRootImageUrl('gallery-hero.webp') || '/gallery-hero.webp'}
+            src={getResponsiveImage('gallery-hero.webp', 'large') || '/gallery-hero.webp'}
+            srcSet={getSrcSet('gallery-hero.webp')}
+            sizes="80vw"
             className="w-full h-full object-cover filter grayscale contrast-125"
             alt="HS Global Gallery"
+            loading="lazy"
           />
         </motion.div>
 

@@ -5,6 +5,7 @@ import { ArrowUpRight, Play } from "lucide-react";
 import TextReveal from "./TextReveal";
 import Magnet from "./Magnet";
 import ShinyText from "./ShinyText";
+import { getResponsiveImage, getSrcSet } from '../utils/responsive-image-helper';
 
 const AboutCompany: React.FC = () => {
   const navigate = useNavigate();
@@ -87,10 +88,12 @@ const AboutCompany: React.FC = () => {
               {/* Video Overlay / Placeholder */}
               <div className={`absolute inset-0 transition-opacity duration-700 ${isPlaying ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
                 <img
-                  src="https://res.cloudinary.com/dpztytsoz/image/upload/c_fill,g_center,h_800,q_auto,f_auto,w_600/v1766928672/hs-global/public/about-hero.jpg"
-                  onError={(e) => (e.target as HTMLImageElement).src = 'https://res.cloudinary.com/dpztytsoz/image/upload/v1766928672/hs-global/public/about-hero.jpg'}
+                  src={getResponsiveImage('about-hero.webp', 'desktop') || 'https://res.cloudinary.com/dpztytsoz/image/upload/v1766928672/hs-global/public/about-hero.jpg'}
+                  srcSet={getSrcSet('about-hero.webp')}
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   alt="About HS Global"
                   className="w-full h-full object-cover filter grayscale-[30%] hover:grayscale-0 transition-all duration-700"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/10 transition-colors cursor-pointer group"
                   onClick={() => setIsPlaying(true)}>

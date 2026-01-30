@@ -10,7 +10,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { getCloudinaryUrl } from '@/utils/cloudinary';
-import { getRootImageUrl } from '../utils/rootCloudinary';
+import { getResponsiveImage, getSrcSet } from '../utils/responsive-image-helper';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -478,7 +478,7 @@ export const ProductsModernVariant: React.FC = () => {
 
   // Preload hero image only
   useEffect(() => {
-    const heroUrl = getRootImageUrl("products-hero.webp");
+    const heroUrl = getResponsiveImage("products-hero.webp", "large");
     if (heroUrl) {
       const link = document.createElement("link");
       link.rel = "preload";
@@ -591,9 +591,12 @@ export const ProductsModernVariant: React.FC = () => {
           className="absolute top-0 right-0 w-[80vw] h-full opacity-10 pointer-events-none"
         >
           <img
-            src={getRootImageUrl("products-hero.webp") || "/products-hero.webp"}
+            src={getResponsiveImage("products-hero.webp", "large") || "/products-hero.webp"}
+            srcSet={getSrcSet("products-hero.webp")}
+            sizes="80vw"
             className="w-full h-full object-cover filter grayscale contrast-125"
             alt="HS Global Products"
+            loading="lazy"
           />
         </motion.div>
 

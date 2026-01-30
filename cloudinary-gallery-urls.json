@@ -1,0 +1,4598 @@
+{
+  "generated": "2026-01-30T10:14:34.674Z",
+  "cloudName": "dynd1aan0",
+  "resolutions": {
+    "mobile": {
+      "width": 480,
+      "suffix": "mobile"
+    },
+    "tablet": {
+      "width": 768,
+      "suffix": "tablet"
+    },
+    "desktop": {
+      "width": 1200,
+      "suffix": "desktop"
+    },
+    "large": {
+      "width": 1920,
+      "suffix": "large"
+    }
+  },
+  "stats": {
+    "found": 861,
+    "processed": 861,
+    "uploaded": 1537,
+    "variantsCreated": 1544,
+    "errors": 7,
+    "originalSize": "192.71 MB",
+    "optimizedSize": "171.17 MB",
+    "savings": "11.2%"
+  },
+  "categories": {
+    "default": {
+      "count": 17,
+      "size": 8254509
+    },
+    "banners": {
+      "count": 9,
+      "size": 19696248
+    },
+    "logos": {
+      "count": 4,
+      "size": 316636
+    },
+    "gallery": {
+      "count": 194,
+      "size": 37714076
+    },
+    "products": {
+      "count": 637,
+      "size": 136091586
+    }
+  },
+  "urls": {
+    "gallery/Antiques/IMG-20250116-WA0304.webp": {
+      "original": "gallery/Antiques/IMG-20250116-WA0304.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767066/hs-global/gallery/Antiques/IMG-20250116-WA0304_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 25898
+        }
+      },
+      "metadata": {
+        "originalWidth": 704,
+        "originalHeight": 704,
+        "originalSize": 34576,
+        "totalVariantSize": 25898
+      }
+    },
+    "gallery/Antiques/IMG-20250116-WA0315.webp": {
+      "original": "gallery/Antiques/IMG-20250116-WA0315.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767066/hs-global/gallery/Antiques/IMG-20250116-WA0315_mobile.webp",
+          "width": 480,
+          "height": 359,
+          "bytes": 47242
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767067/hs-global/gallery/Antiques/IMG-20250116-WA0315_tablet.webp",
+          "width": 768,
+          "height": 575,
+          "bytes": 90440
+        }
+      },
+      "metadata": {
+        "originalWidth": 794,
+        "originalHeight": 594,
+        "originalSize": 95710,
+        "totalVariantSize": 137682
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.17 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.17 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767072/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.14.17%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 32368
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 50244,
+        "totalVariantSize": 32368
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.08 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.08 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767072/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.14.08%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 31210
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 49854,
+        "totalVariantSize": 31210
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.20 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.20 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767072/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.14.20%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 55648
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 89144,
+        "totalVariantSize": 55648
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.14 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.14 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767072/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.14.14%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 30346
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 47940,
+        "totalVariantSize": 30346
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.10 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.10 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767072/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.14.10%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 38010
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 60094,
+        "totalVariantSize": 38010
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.22 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.22 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767073/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.14.22%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 40284
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 64848,
+        "totalVariantSize": 40284
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.23 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.23 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767073/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.14.23%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 30086
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 48558,
+        "totalVariantSize": 30086
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.24 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.24 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767073/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.14.24%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 29460
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 46468,
+        "totalVariantSize": 29460
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.26 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.26 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767073/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.14.26%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 35570
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 55288,
+        "totalVariantSize": 35570
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.21 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.21 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767073/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.14.21%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 34932
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 57398,
+        "totalVariantSize": 34932
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.28 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.28 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767075/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.14.28%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 45462
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 73180,
+        "totalVariantSize": 45462
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.32 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.32 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767075/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.14.32%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 42852
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 62770,
+        "totalVariantSize": 42852
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.37 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.37 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767075/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.14.37%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 32516
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 48436,
+        "totalVariantSize": 32516
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.39 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.39 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767075/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.14.39%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 28144
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 44412,
+        "totalVariantSize": 28144
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.41 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.41 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767075/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.14.41%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 42106
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 68278,
+        "totalVariantSize": 42106
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.15.17 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.15.17 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767076/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.15.17%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 33038
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 56184,
+        "totalVariantSize": 33038
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.42 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.42 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767076/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.14.42%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 49110
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 77374,
+        "totalVariantSize": 49110
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.15.16 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.15.16 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767076/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.15.16%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 64442
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 102172,
+        "totalVariantSize": 64442
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.43 PM (1).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.43 PM (1).webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767076/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.14.43%20PM%20%281%29_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 43930
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 74602,
+        "totalVariantSize": 43930
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.43 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.14.43 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767076/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.14.43%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 49866
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 81922,
+        "totalVariantSize": 49866
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.15.19 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.15.19 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767077/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.15.19%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 28282
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 52386,
+        "totalVariantSize": 28282
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.05 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.05 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767077/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.05%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 53364
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 90930,
+        "totalVariantSize": 53364
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.15.18 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.15.18 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767077/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.15.18%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 56422
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 93402,
+        "totalVariantSize": 56422
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.15.23 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.15.23 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767078/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.15.23%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 50852
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 79584,
+        "totalVariantSize": 50852
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.15.21 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.15.21 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767079/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.15.21%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 36486
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 58644,
+        "totalVariantSize": 36486
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.06 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.06 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767084/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.06%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 50076
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 82770,
+        "totalVariantSize": 50076
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.09 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.09 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767084/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.09%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 78368
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 144812,
+        "totalVariantSize": 78368
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.16 PM (1).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.16 PM (1).webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767086/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.16%20PM%20%281%29_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 56358
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 93254,
+        "totalVariantSize": 56358
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.11 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.11 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767086/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.11%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 62842
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 113642,
+        "totalVariantSize": 62842
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.16 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.16 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767087/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.16%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 27958
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 49020,
+        "totalVariantSize": 27958
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.19 PM (2).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.19 PM (2).webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767088/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.19%20PM%20%282%29_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 37192
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 61928,
+        "totalVariantSize": 37192
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.18 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.18 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767088/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.18%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 25386
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 38738,
+        "totalVariantSize": 25386
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.17 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.17 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767088/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.17%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 33898
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 52516,
+        "totalVariantSize": 33898
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.19 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.19 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767088/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.19%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 73272
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 126588,
+        "totalVariantSize": 73272
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.19 PM (1).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.19 PM (1).webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767088/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.19%20PM%20%281%29_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 60094
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 118850,
+        "totalVariantSize": 60094
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.20 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.20 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767090/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.20%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 27168
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 43878,
+        "totalVariantSize": 27168
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.21 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.21 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767090/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.21%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 44216
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 75394,
+        "totalVariantSize": 44216
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.20 PM (1).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.20 PM (1).webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767090/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.20%20PM%20%281%29_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 90688
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 160316,
+        "totalVariantSize": 90688
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.22 PM (1).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.22 PM (1).webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767090/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.22%20PM%20%281%29_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 60382
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 114032,
+        "totalVariantSize": 60382
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.21 PM (1).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.21 PM (1).webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767090/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.21%20PM%20%281%29_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 30718
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 51424,
+        "totalVariantSize": 30718
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.23 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.23 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767091/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.23%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 46734
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 89284,
+        "totalVariantSize": 46734
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.22 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.22 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767092/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.22%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 57904
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 109282,
+        "totalVariantSize": 57904
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.23 PM (1).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.23 PM (1).webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767092/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.23%20PM%20%281%29_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 49890
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 79086,
+        "totalVariantSize": 49890
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.22 PM (2).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.22 PM (2).webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767093/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.22%20PM%20%282%29_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 46326
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 72656,
+        "totalVariantSize": 46326
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.24 PM (1).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.24 PM (1).webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767092/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.24%20PM%20%281%29_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 36682
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 66658,
+        "totalVariantSize": 36682
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.26 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.26 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767094/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.26%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 37604
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 64558,
+        "totalVariantSize": 37604
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.24 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.24 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767094/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.24%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 49292
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 79788,
+        "totalVariantSize": 49292
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.25 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.25 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767094/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.25%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 41394
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 73998,
+        "totalVariantSize": 41394
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.26 PM (1).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.26 PM (1).webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767094/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.26%20PM%20%281%29_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 38364
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 63708,
+        "totalVariantSize": 38364
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.25 PM (1).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.25 PM (1).webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767096/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.25%20PM%20%281%29_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 46364
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 81856,
+        "totalVariantSize": 46364
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.27 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.27 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767097/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.27%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 44318
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 71008,
+        "totalVariantSize": 44318
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.28 PM (2).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.28 PM (2).webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767097/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.28%20PM%20%282%29_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 36464
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 59040,
+        "totalVariantSize": 36464
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.28 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.28 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767097/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.28%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 46712
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 81160,
+        "totalVariantSize": 46712
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.29 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.29 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767097/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.29%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 41756
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 70624,
+        "totalVariantSize": 41756
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.28 PM (1).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.28 PM (1).webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767097/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.28%20PM%20%281%29_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 35382
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 59536,
+        "totalVariantSize": 35382
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.31 PM (1).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.31 PM (1).webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767098/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.31%20PM%20%281%29_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 89226
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 159878,
+        "totalVariantSize": 89226
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.31 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.31 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767098/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.31%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 74556
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 131520,
+        "totalVariantSize": 74556
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.32 PM (1).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.32 PM (1).webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767098/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.32%20PM%20%281%29_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 81278
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 139656,
+        "totalVariantSize": 81278
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.30 PM (1).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.30 PM (1).webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767099/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.30%20PM%20%281%29_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 75146
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 132012,
+        "totalVariantSize": 75146
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.30 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.30 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767098/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.30%20PM_mobile.webp",
+          "width": 480,
+          "height": 270,
+          "bytes": 26010
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767100/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.30%20PM_tablet.webp",
+          "width": 768,
+          "height": 432,
+          "bytes": 59568
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767101/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.30%20PM_desktop.webp",
+          "width": 1200,
+          "height": 675,
+          "bytes": 115352
+        }
+      },
+      "metadata": {
+        "originalWidth": 1280,
+        "originalHeight": 720,
+        "originalSize": 123950,
+        "totalVariantSize": 200930
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.32 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.32 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767104/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.32%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 78904
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 135880,
+        "totalVariantSize": 78904
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.34 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.34 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767104/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.34%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 72934
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 126326,
+        "totalVariantSize": 72934
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.33 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.33 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767104/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.33%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 86808
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 157080,
+        "totalVariantSize": 86808
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.35 PM (1).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.35 PM (1).webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767105/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.35%20PM%20%281%29_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 93488
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 172554,
+        "totalVariantSize": 93488
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.34 PM (1).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.34 PM (1).webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767105/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.34%20PM%20%281%29_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 87160
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 149556,
+        "totalVariantSize": 87160
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.38 PM (1).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.38 PM (1).webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767106/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.38%20PM%20%281%29_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 79980
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 148082,
+        "totalVariantSize": 79980
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.35 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.35 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767107/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.35%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 85900
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 150176,
+        "totalVariantSize": 85900
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.37 PM (1).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.37 PM (1).webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767106/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.37%20PM%20%281%29_mobile.webp",
+          "width": 480,
+          "height": 270,
+          "bytes": 28968
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767107/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.37%20PM%20%281%29_tablet.webp",
+          "width": 768,
+          "height": 432,
+          "bytes": 68686
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767109/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.37%20PM%20%281%29_desktop.webp",
+          "width": 1200,
+          "height": 675,
+          "bytes": 142208
+        }
+      },
+      "metadata": {
+        "originalWidth": 1280,
+        "originalHeight": 720,
+        "originalSize": 156898,
+        "totalVariantSize": 239862
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.36 PM (1).webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.36 PM (1).webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767106/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.36%20PM%20%281%29_mobile.webp",
+          "width": 480,
+          "height": 270,
+          "bytes": 33860
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767108/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.36%20PM%20%281%29_tablet.webp",
+          "width": 768,
+          "height": 432,
+          "bytes": 79230
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767110/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.36%20PM%20%281%29_desktop.webp",
+          "width": 1200,
+          "height": 675,
+          "bytes": 158226
+        }
+      },
+      "metadata": {
+        "originalWidth": 1280,
+        "originalHeight": 720,
+        "originalSize": 176076,
+        "totalVariantSize": 271316
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.37 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.37 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767107/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.37%20PM_mobile.webp",
+          "width": 480,
+          "height": 270,
+          "bytes": 26928
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767109/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.37%20PM_tablet.webp",
+          "width": 768,
+          "height": 432,
+          "bytes": 55896
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767110/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.37%20PM_desktop.webp",
+          "width": 1200,
+          "height": 675,
+          "bytes": 97036
+        }
+      },
+      "metadata": {
+        "originalWidth": 1280,
+        "originalHeight": 720,
+        "originalSize": 107462,
+        "totalVariantSize": 179860
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.38 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.38 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767112/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.38%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 55294
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 90184,
+        "totalVariantSize": 55294
+      }
+    },
+    "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.39 PM.webp": {
+      "original": "gallery/Antiques/WhatsApp Image 2025-09-26 at 4.16.39 PM.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767112/hs-global/gallery/Antiques/WhatsApp%20Image%202025-09-26%20at%204.16.39%20PM_mobile.webp",
+          "width": 480,
+          "height": 853,
+          "bytes": 84182
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 1280,
+        "originalSize": 148132,
+        "totalVariantSize": 84182
+      }
+    },
+    "gallery/Bowls/IMG-20250116-WA0321.webp": {
+      "original": "gallery/Bowls/IMG-20250116-WA0321.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767112/hs-global/gallery/Bowls/IMG-20250116-WA0321_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 19788
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767114/hs-global/gallery/Bowls/IMG-20250116-WA0321_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 35756
+        },
+        "large": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767115/hs-global/gallery/Bowls/IMG-20250116-WA0321_large.webp",
+          "width": 1920,
+          "height": 1920,
+          "bytes": 119858
+        }
+      },
+      "metadata": {
+        "originalWidth": 2960,
+        "originalHeight": 2960,
+        "originalSize": 164304,
+        "totalVariantSize": 175402
+      }
+    },
+    "gallery/Bowls/IMG-20250116-WA0312.webp": {
+      "original": "gallery/Bowls/IMG-20250116-WA0312.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767112/hs-global/gallery/Bowls/IMG-20250116-WA0312_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 19490
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767113/hs-global/gallery/Bowls/IMG-20250116-WA0312_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 34712
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767114/hs-global/gallery/Bowls/IMG-20250116-WA0312_desktop.webp",
+          "width": 1200,
+          "height": 1200,
+          "bytes": 60350
+        },
+        "large": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767116/hs-global/gallery/Bowls/IMG-20250116-WA0312_large.webp",
+          "width": 1920,
+          "height": 1920,
+          "bytes": 107496
+        }
+      },
+      "metadata": {
+        "originalWidth": 3060,
+        "originalHeight": 3060,
+        "originalSize": 160836,
+        "totalVariantSize": 222048
+      }
+    },
+    "gallery/Bowls/IMG-20250116-WA0323.webp": {
+      "original": "gallery/Bowls/IMG-20250116-WA0323.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767112/hs-global/gallery/Bowls/IMG-20250116-WA0323_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 33464
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767113/hs-global/gallery/Bowls/IMG-20250116-WA0323_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 62660
+        },
+        "large": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767117/hs-global/gallery/Bowls/IMG-20250116-WA0323_large.webp",
+          "width": 1920,
+          "height": 1920,
+          "bytes": 207918
+        }
+      },
+      "metadata": {
+        "originalWidth": 2992,
+        "originalHeight": 2992,
+        "originalSize": 309990,
+        "totalVariantSize": 304042
+      }
+    },
+    "gallery/Coffee Table/IMG-20250116-WA0126.webp": {
+      "original": "gallery/Coffee Table/IMG-20250116-WA0126.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767131/hs-global/gallery/Coffee%20Table/IMG-20250116-WA0126_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 19828
+        }
+      },
+      "metadata": {
+        "originalWidth": 704,
+        "originalHeight": 704,
+        "originalSize": 29580,
+        "totalVariantSize": 19828
+      }
+    },
+    "gallery/Coffee Table/IMG-20250116-WA0066.webp": {
+      "original": "gallery/Coffee Table/IMG-20250116-WA0066.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767131/hs-global/gallery/Coffee%20Table/IMG-20250116-WA0066_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 34458
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767133/hs-global/gallery/Coffee%20Table/IMG-20250116-WA0066_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 62680
+        }
+      },
+      "metadata": {
+        "originalWidth": 936,
+        "originalHeight": 936,
+        "originalSize": 77072,
+        "totalVariantSize": 97138
+      }
+    },
+    "gallery/Coffee Table/IMG-20250116-WA0134.webp": {
+      "original": "gallery/Coffee Table/IMG-20250116-WA0134.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767131/hs-global/gallery/Coffee%20Table/IMG-20250116-WA0134_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 19242
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767132/hs-global/gallery/Coffee%20Table/IMG-20250116-WA0134_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 38066
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767134/hs-global/gallery/Coffee%20Table/IMG-20250116-WA0134_desktop.webp",
+          "width": 1200,
+          "height": 1200,
+          "bytes": 69848
+        },
+        "large": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767135/hs-global/gallery/Coffee%20Table/IMG-20250116-WA0134_large.webp",
+          "width": 1920,
+          "height": 1921,
+          "bytes": 135124
+        }
+      },
+      "metadata": {
+        "originalWidth": 3059,
+        "originalHeight": 3060,
+        "originalSize": 237706,
+        "totalVariantSize": 262280
+      }
+    },
+    "gallery/Bowls/IMG-20250525-WA0071.webp": {
+      "original": "gallery/Bowls/IMG-20250525-WA0071.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767130/hs-global/gallery/Bowls/IMG-20250525-WA0071_mobile.webp",
+          "width": 480,
+          "height": 640,
+          "bytes": 69050
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767132/hs-global/gallery/Bowls/IMG-20250525-WA0071_tablet.webp",
+          "width": 768,
+          "height": 1024,
+          "bytes": 139464
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767133/hs-global/gallery/Bowls/IMG-20250525-WA0071_desktop.webp",
+          "width": 1200,
+          "height": 1600,
+          "bytes": 267088
+        },
+        "large": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767136/hs-global/gallery/Bowls/IMG-20250525-WA0071_large.webp",
+          "width": 1920,
+          "height": 2560,
+          "bytes": 489772
+        }
+      },
+      "metadata": {
+        "originalWidth": 3060,
+        "originalHeight": 4080,
+        "originalSize": 777506,
+        "totalVariantSize": 965374
+      }
+    },
+    "gallery/Bowls/IMG-20250525-WA0074.webp": {
+      "original": "gallery/Bowls/IMG-20250525-WA0074.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767131/hs-global/gallery/Bowls/IMG-20250525-WA0074_mobile.webp",
+          "width": 480,
+          "height": 640,
+          "bytes": 38604
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767133/hs-global/gallery/Bowls/IMG-20250525-WA0074_tablet.webp",
+          "width": 768,
+          "height": 1024,
+          "bytes": 76002
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767135/hs-global/gallery/Bowls/IMG-20250525-WA0074_desktop.webp",
+          "width": 1200,
+          "height": 1600,
+          "bytes": 144170
+        },
+        "large": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767136/hs-global/gallery/Bowls/IMG-20250525-WA0074_large.webp",
+          "width": 1920,
+          "height": 2560,
+          "bytes": 277622
+        }
+      },
+      "metadata": {
+        "originalWidth": 3060,
+        "originalHeight": 4080,
+        "originalSize": 434786,
+        "totalVariantSize": 536398
+      }
+    },
+    "gallery/Coffee Table/IMG-20250116-WA0139.webp": {
+      "original": "gallery/Coffee Table/IMG-20250116-WA0139.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767138/hs-global/gallery/Coffee%20Table/IMG-20250116-WA0139_mobile.webp",
+          "width": 480,
+          "height": 320,
+          "bytes": 17128
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767139/hs-global/gallery/Coffee%20Table/IMG-20250116-WA0139_tablet.webp",
+          "width": 768,
+          "height": 512,
+          "bytes": 27530
+        }
+      },
+      "metadata": {
+        "originalWidth": 794,
+        "originalHeight": 529,
+        "originalSize": 28740,
+        "totalVariantSize": 44658
+      }
+    },
+    "gallery/Coffee Table/IMG-20250116-WA0136.webp": {
+      "original": "gallery/Coffee Table/IMG-20250116-WA0136.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767138/hs-global/gallery/Coffee%20Table/IMG-20250116-WA0136_mobile.webp",
+          "width": 480,
+          "height": 473,
+          "bytes": 36814
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767139/hs-global/gallery/Coffee%20Table/IMG-20250116-WA0136_tablet.webp",
+          "width": 768,
+          "height": 756,
+          "bytes": 84410
+        }
+      },
+      "metadata": {
+        "originalWidth": 1056,
+        "originalHeight": 1040,
+        "originalSize": 132978,
+        "totalVariantSize": 121224
+      }
+    },
+    "gallery/Coffee Table/IMG-20250116-WA0135.webp": {
+      "original": "gallery/Coffee Table/IMG-20250116-WA0135.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767138/hs-global/gallery/Coffee%20Table/IMG-20250116-WA0135_mobile.webp",
+          "width": 480,
+          "height": 360,
+          "bytes": 22148
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767139/hs-global/gallery/Coffee%20Table/IMG-20250116-WA0135_tablet.webp",
+          "width": 768,
+          "height": 576,
+          "bytes": 44460
+        },
+        "large": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767140/hs-global/gallery/Coffee%20Table/IMG-20250116-WA0135_large.webp",
+          "width": 1920,
+          "height": 1440,
+          "bytes": 184208
+        }
+      },
+      "metadata": {
+        "originalWidth": 4080,
+        "originalHeight": 3060,
+        "originalSize": 478088,
+        "totalVariantSize": 250816
+      }
+    },
+    "gallery/Coffee Table/IMG-20250525-WA0046.webp": {
+      "original": "gallery/Coffee Table/IMG-20250525-WA0046.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767138/hs-global/gallery/Coffee%20Table/IMG-20250525-WA0046_mobile.webp",
+          "width": 480,
+          "height": 640,
+          "bytes": 30490
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767139/hs-global/gallery/Coffee%20Table/IMG-20250525-WA0046_tablet.webp",
+          "width": 768,
+          "height": 1024,
+          "bytes": 60944
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767141/hs-global/gallery/Coffee%20Table/IMG-20250525-WA0046_desktop.webp",
+          "width": 1200,
+          "height": 1600,
+          "bytes": 113840
+        },
+        "large": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767143/hs-global/gallery/Coffee%20Table/IMG-20250525-WA0046_large.webp",
+          "width": 1920,
+          "height": 2560,
+          "bytes": 227586
+        }
+      },
+      "metadata": {
+        "originalWidth": 3060,
+        "originalHeight": 4080,
+        "originalSize": 399742,
+        "totalVariantSize": 432860
+      }
+    },
+    "gallery/Coffee Table/IMG-20250525-WA0050.webp": {
+      "original": "gallery/Coffee Table/IMG-20250525-WA0050.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767140/hs-global/gallery/Coffee%20Table/IMG-20250525-WA0050_mobile.webp",
+          "width": 480,
+          "height": 640,
+          "bytes": 44576
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767142/hs-global/gallery/Coffee%20Table/IMG-20250525-WA0050_tablet.webp",
+          "width": 768,
+          "height": 1024,
+          "bytes": 89854
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767143/hs-global/gallery/Coffee%20Table/IMG-20250525-WA0050_desktop.webp",
+          "width": 1200,
+          "height": 1600,
+          "bytes": 176928
+        },
+        "large": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767145/hs-global/gallery/Coffee%20Table/IMG-20250525-WA0050_large.webp",
+          "width": 1920,
+          "height": 2560,
+          "bytes": 336604
+        }
+      },
+      "metadata": {
+        "originalWidth": 3060,
+        "originalHeight": 4080,
+        "originalSize": 576228,
+        "totalVariantSize": 647962
+      }
+    },
+    "gallery/Dining Table/IMG-20250116-WA0181.webp": {
+      "original": "gallery/Dining Table/IMG-20250116-WA0181.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767148/hs-global/gallery/Dining%20Table/IMG-20250116-WA0181_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 35226
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767150/hs-global/gallery/Dining%20Table/IMG-20250116-WA0181_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 62004
+        }
+      },
+      "metadata": {
+        "originalWidth": 896,
+        "originalHeight": 896,
+        "originalSize": 75256,
+        "totalVariantSize": 97230
+      }
+    },
+    "gallery/Coffee Table/IMG-20250525-WA0096.webp": {
+      "original": "gallery/Coffee Table/IMG-20250525-WA0096.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767146/hs-global/gallery/Coffee%20Table/IMG-20250525-WA0096_mobile.webp",
+          "width": 480,
+          "height": 270,
+          "bytes": 25892
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767147/hs-global/gallery/Coffee%20Table/IMG-20250525-WA0096_tablet.webp",
+          "width": 768,
+          "height": 432,
+          "bytes": 49526
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767149/hs-global/gallery/Coffee%20Table/IMG-20250525-WA0096_desktop.webp",
+          "width": 1200,
+          "height": 675,
+          "bytes": 90044
+        },
+        "large": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767150/hs-global/gallery/Coffee%20Table/IMG-20250525-WA0096_large.webp",
+          "width": 1920,
+          "height": 1080,
+          "bytes": 164774
+        }
+      },
+      "metadata": {
+        "originalWidth": 4160,
+        "originalHeight": 2340,
+        "originalSize": 421484,
+        "totalVariantSize": 330236
+      }
+    },
+    "gallery/Coffee Table/IMG-20250525-WA0062.webp": {
+      "original": "gallery/Coffee Table/IMG-20250525-WA0062.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767146/hs-global/gallery/Coffee%20Table/IMG-20250525-WA0062_mobile.webp",
+          "width": 480,
+          "height": 640,
+          "bytes": 42658
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767147/hs-global/gallery/Coffee%20Table/IMG-20250525-WA0062_tablet.webp",
+          "width": 768,
+          "height": 1024,
+          "bytes": 87446
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767148/hs-global/gallery/Coffee%20Table/IMG-20250525-WA0062_desktop.webp",
+          "width": 1200,
+          "height": 1600,
+          "bytes": 169124
+        },
+        "large": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767150/hs-global/gallery/Coffee%20Table/IMG-20250525-WA0062_large.webp",
+          "width": 1920,
+          "height": 2560,
+          "bytes": 353572
+        }
+      },
+      "metadata": {
+        "originalWidth": 3060,
+        "originalHeight": 4080,
+        "originalSize": 657432,
+        "totalVariantSize": 652800
+      }
+    },
+    "gallery/Coffee Table/IMG-20250525-WA0101.webp": {
+      "original": "gallery/Coffee Table/IMG-20250525-WA0101.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767148/hs-global/gallery/Coffee%20Table/IMG-20250525-WA0101_mobile.webp",
+          "width": 480,
+          "height": 640,
+          "bytes": 47692
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767150/hs-global/gallery/Coffee%20Table/IMG-20250525-WA0101_tablet.webp",
+          "width": 768,
+          "height": 1024,
+          "bytes": 96638
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767151/hs-global/gallery/Coffee%20Table/IMG-20250525-WA0101_desktop.webp",
+          "width": 1200,
+          "height": 1600,
+          "bytes": 192822
+        },
+        "large": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767152/hs-global/gallery/Coffee%20Table/IMG-20250525-WA0101_large.webp",
+          "width": 1920,
+          "height": 2560,
+          "bytes": 373368
+        }
+      },
+      "metadata": {
+        "originalWidth": 3060,
+        "originalHeight": 4080,
+        "originalSize": 622750,
+        "totalVariantSize": 710520
+      }
+    },
+    "gallery/Coffee Table/IMG-20250525-WA0088.webp": {
+      "original": "gallery/Coffee Table/IMG-20250525-WA0088.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767146/hs-global/gallery/Coffee%20Table/IMG-20250525-WA0088_mobile.webp",
+          "width": 480,
+          "height": 640,
+          "bytes": 61794
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767147/hs-global/gallery/Coffee%20Table/IMG-20250525-WA0088_tablet.webp",
+          "width": 768,
+          "height": 1024,
+          "bytes": 132860
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767149/hs-global/gallery/Coffee%20Table/IMG-20250525-WA0088_desktop.webp",
+          "width": 1200,
+          "height": 1600,
+          "bytes": 264380
+        },
+        "large": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767153/hs-global/gallery/Coffee%20Table/IMG-20250525-WA0088_large.webp",
+          "width": 1920,
+          "height": 2560,
+          "bytes": 527870
+        }
+      },
+      "metadata": {
+        "originalWidth": 3060,
+        "originalHeight": 4080,
+        "originalSize": 910708,
+        "totalVariantSize": 986904
+      }
+    },
+    "gallery/Vase/IMG-20250116-WA0331.webp": {
+      "original": "gallery/Vase/IMG-20250116-WA0331.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767208/hs-global/gallery/Vase/IMG-20250116-WA0331_mobile.webp",
+          "width": 480,
+          "height": 549,
+          "bytes": 41400
+        }
+      },
+      "metadata": {
+        "originalWidth": 700,
+        "originalHeight": 800,
+        "originalSize": 65304,
+        "totalVariantSize": 41400
+      }
+    },
+    "gallery/Vase/IMG-20250116-WA0333.webp": {
+      "original": "gallery/Vase/IMG-20250116-WA0333.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767207/hs-global/gallery/Vase/IMG-20250116-WA0333_mobile.webp",
+          "width": 480,
+          "height": 360,
+          "bytes": 30498
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767209/hs-global/gallery/Vase/IMG-20250116-WA0333_tablet.webp",
+          "width": 768,
+          "height": 576,
+          "bytes": 60982
+        }
+      },
+      "metadata": {
+        "originalWidth": 1080,
+        "originalHeight": 810,
+        "originalSize": 91334,
+        "totalVariantSize": 91480
+      }
+    },
+    "gallery/Vase/IMG-20250116-WA0335.webp": {
+      "original": "gallery/Vase/IMG-20250116-WA0335.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767226/hs-global/gallery/Vase/IMG-20250116-WA0335_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 23286
+        }
+      },
+      "metadata": {
+        "originalWidth": 500,
+        "originalHeight": 500,
+        "originalSize": 24860,
+        "totalVariantSize": 23286
+      }
+    },
+    "gallery/Vase/IMG-20250116-WA0342.webp": {
+      "original": "gallery/Vase/IMG-20250116-WA0342.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767228/hs-global/gallery/Vase/IMG-20250116-WA0342_mobile.webp",
+          "width": 480,
+          "height": 479,
+          "bytes": 81896
+        }
+      },
+      "metadata": {
+        "originalWidth": 736,
+        "originalHeight": 735,
+        "originalSize": 160020,
+        "totalVariantSize": 81896
+      }
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0021.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0021.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767228/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0021_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 47782
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767229/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0021_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 97658
+        }
+      },
+      "metadata": {
+        "originalWidth": 1080,
+        "originalHeight": 1080,
+        "originalSize": 165796,
+        "totalVariantSize": 145440
+      }
+    },
+    "gallery/Vase/IMG-20250116-WA0341.webp": {
+      "original": "gallery/Vase/IMG-20250116-WA0341.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767228/hs-global/gallery/Vase/IMG-20250116-WA0341_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 25460
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767229/hs-global/gallery/Vase/IMG-20250116-WA0341_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 47884
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767230/hs-global/gallery/Vase/IMG-20250116-WA0341_desktop.webp",
+          "width": 1200,
+          "height": 1200,
+          "bytes": 77966
+        }
+      },
+      "metadata": {
+        "originalWidth": 1600,
+        "originalHeight": 1600,
+        "originalSize": 108788,
+        "totalVariantSize": 151310
+      }
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0022.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0022.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767228/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0022_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 45628
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767229/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0022_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 106612
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767236/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0022_desktop.webp",
+          "width": 1200,
+          "height": 1200,
+          "bytes": 257502
+        }
+      },
+      "metadata": {
+        "originalWidth": 1280,
+        "originalHeight": 1280,
+        "originalSize": 373766,
+        "totalVariantSize": 409742
+      }
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0024.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0024.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767266/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0024_mobile.webp",
+          "width": 480,
+          "height": 641,
+          "bytes": 34182
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767268/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0024_tablet.webp",
+          "width": 768,
+          "height": 1026,
+          "bytes": 59530
+        }
+      },
+      "metadata": {
+        "originalWidth": 958,
+        "originalHeight": 1280,
+        "originalSize": 80922,
+        "totalVariantSize": 93712
+      }
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0025.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0025.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767269/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0025_mobile.webp",
+          "width": 480,
+          "height": 641,
+          "bytes": 27796
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767270/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0025_tablet.webp",
+          "width": 768,
+          "height": 1026,
+          "bytes": 43920
+        }
+      },
+      "metadata": {
+        "originalWidth": 958,
+        "originalHeight": 1280,
+        "originalSize": 52894,
+        "totalVariantSize": 71716
+      }
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0027.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0027.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767269/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0027_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 45466
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767270/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0027_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 84656
+        }
+      },
+      "metadata": {
+        "originalWidth": 794,
+        "originalHeight": 794,
+        "originalSize": 91736,
+        "totalVariantSize": 130122
+      }
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0026.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0026.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767269/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0026_mobile.webp",
+          "width": 480,
+          "height": 602,
+          "bytes": 36590
+        }
+      },
+      "metadata": {
+        "originalWidth": 574,
+        "originalHeight": 720,
+        "originalSize": 44846,
+        "totalVariantSize": 36590
+      }
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0029.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0029.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767276/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0029_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 27348
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767293/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0029_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 46682
+        }
+      },
+      "metadata": {
+        "originalWidth": 794,
+        "originalHeight": 794,
+        "originalSize": 53384,
+        "totalVariantSize": 74030
+      }
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0030.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0030.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767294/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0030_mobile.webp",
+          "width": 480,
+          "height": 640,
+          "bytes": 53620
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767296/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0030_tablet.webp",
+          "width": 768,
+          "height": 1024,
+          "bytes": 87614
+        }
+      },
+      "metadata": {
+        "originalWidth": 960,
+        "originalHeight": 1280,
+        "originalSize": 121168,
+        "totalVariantSize": 141234
+      }
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0032.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0032.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767296/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0032_mobile.webp",
+          "width": 480,
+          "height": 820,
+          "bytes": 30240
+        }
+      },
+      "metadata": {
+        "originalWidth": 597,
+        "originalHeight": 1020,
+        "originalSize": 40198,
+        "totalVariantSize": 30240
+      }
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0031.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0031.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767296/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0031_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 29742
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767298/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0031_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 55376
+        }
+      },
+      "metadata": {
+        "originalWidth": 794,
+        "originalHeight": 794,
+        "originalSize": 57860,
+        "totalVariantSize": 85118
+      }
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0036.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0036.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767297/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0036_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 40886
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767298/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0036_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 77114
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767300/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0036_desktop.webp",
+          "width": 1200,
+          "height": 1200,
+          "bytes": 128222
+        }
+      },
+      "metadata": {
+        "originalWidth": 1231,
+        "originalHeight": 1231,
+        "originalSize": 133224,
+        "totalVariantSize": 246222
+      }
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0033.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0033.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767297/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0033_mobile.webp",
+          "width": 480,
+          "height": 640,
+          "bytes": 40298
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767298/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0033_tablet.webp",
+          "width": 768,
+          "height": 1024,
+          "bytes": 73154
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767299/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0033_desktop.webp",
+          "width": 1200,
+          "height": 1600,
+          "bytes": 130548
+        },
+        "large": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767300/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0033_large.webp",
+          "width": 1920,
+          "height": 2560,
+          "bytes": 250500
+        }
+      },
+      "metadata": {
+        "originalWidth": 3060,
+        "originalHeight": 4080,
+        "originalSize": 385564,
+        "totalVariantSize": 494500
+      }
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0039.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0039.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767303/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0039_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 22494
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767304/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0039_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 44962
+        }
+      },
+      "metadata": {
+        "originalWidth": 1104,
+        "originalHeight": 1104,
+        "originalSize": 75392,
+        "totalVariantSize": 67456
+      }
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0038.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0038.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767303/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0038_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 27642
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767306/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0038_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 47120
+        }
+      },
+      "metadata": {
+        "originalWidth": 876,
+        "originalHeight": 876,
+        "originalSize": 55240,
+        "totalVariantSize": 74762
+      }
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0037.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0037.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767303/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0037_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 27048
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767304/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0037_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 52184
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767306/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0037_desktop.webp",
+          "width": 1200,
+          "height": 1200,
+          "bytes": 72756
+        }
+      },
+      "metadata": {
+        "originalWidth": 1200,
+        "originalHeight": 1200,
+        "originalSize": 80544,
+        "totalVariantSize": 151988
+      }
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0040.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0040.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767306/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0040_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 46592
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767307/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0040_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 96118
+        }
+      },
+      "metadata": {
+        "originalWidth": 1080,
+        "originalHeight": 1080,
+        "originalSize": 162682,
+        "totalVariantSize": 142710
+      }
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0041.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0041.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767305/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0041_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 23968
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767306/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0041_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 48442
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767308/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0041_desktop.webp",
+          "width": 1200,
+          "height": 1200,
+          "bytes": 79930
+        }
+      },
+      "metadata": {
+        "originalWidth": 1600,
+        "originalHeight": 1600,
+        "originalSize": 116736,
+        "totalVariantSize": 152340
+      }
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0045.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0045.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767309/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0045_mobile.webp",
+          "width": 480,
+          "height": 470,
+          "bytes": 25006
+        }
+      },
+      "metadata": {
+        "originalWidth": 706,
+        "originalHeight": 692,
+        "originalSize": 46512,
+        "totalVariantSize": 25006
+      }
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0044.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0044.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767309/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0044_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 28526
+        }
+      },
+      "metadata": {
+        "originalWidth": 500,
+        "originalHeight": 500,
+        "originalSize": 30606,
+        "totalVariantSize": 28526
+      }
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0046.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0046.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767309/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0046_mobile.webp",
+          "width": 480,
+          "height": 352,
+          "bytes": 20194
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767310/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0046_tablet.webp",
+          "width": 767,
+          "height": 562,
+          "bytes": 34648
+        }
+      },
+      "metadata": {
+        "originalWidth": 990,
+        "originalHeight": 725,
+        "originalSize": 53236,
+        "totalVariantSize": 54842
+      }
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0043.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0043.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767309/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0043_mobile.webp",
+          "width": 480,
+          "height": 640,
+          "bytes": 40292
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767310/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0043_tablet.webp",
+          "width": 768,
+          "height": 1024,
+          "bytes": 64064
+        }
+      },
+      "metadata": {
+        "originalWidth": 960,
+        "originalHeight": 1280,
+        "originalSize": 89400,
+        "totalVariantSize": 104356
+      }
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0042.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0042.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767309/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0042_mobile.webp",
+          "width": 480,
+          "height": 447,
+          "bytes": 24408
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767310/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0042_tablet.webp",
+          "width": 768,
+          "height": 716,
+          "bytes": 47696
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767311/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0042_desktop.webp",
+          "width": 1200,
+          "height": 1118,
+          "bytes": 78974
+        }
+      },
+      "metadata": {
+        "originalWidth": 1280,
+        "originalHeight": 1193,
+        "originalSize": 86556,
+        "totalVariantSize": 151078
+      }
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0050.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0050.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767313/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0050_mobile.webp",
+          "width": 480,
+          "height": 401,
+          "bytes": 18508
+        }
+      },
+      "metadata": {
+        "originalWidth": 706,
+        "originalHeight": 590,
+        "originalSize": 27424,
+        "totalVariantSize": 18508
+      }
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0049.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0049.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767313/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0049_mobile.webp",
+          "width": 480,
+          "height": 325,
+          "bytes": 11828
+        }
+      },
+      "metadata": {
+        "originalWidth": 706,
+        "originalHeight": 478,
+        "originalSize": 21056,
+        "totalVariantSize": 11828
+      }
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0047.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0047.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767313/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0047_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 13670
+        }
+      },
+      "metadata": {
+        "originalWidth": 764,
+        "originalHeight": 764,
+        "originalSize": 22610,
+        "totalVariantSize": 13670
+      }
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0054.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0054.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767313/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0054_mobile.webp",
+          "width": 480,
+          "height": 640,
+          "bytes": 29662
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767314/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0054_tablet.webp",
+          "width": 768,
+          "height": 1024,
+          "bytes": 43954
+        }
+      },
+      "metadata": {
+        "originalWidth": 960,
+        "originalHeight": 1280,
+        "originalSize": 65148,
+        "totalVariantSize": 73616
+      }
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0055.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0055.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767313/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0055_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 75616
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767315/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0055_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 157892
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767317/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0055_desktop.webp",
+          "width": 1200,
+          "height": 1200,
+          "bytes": 291996
+        }
+      },
+      "metadata": {
+        "originalWidth": 1280,
+        "originalHeight": 1280,
+        "originalSize": 315822,
+        "totalVariantSize": 525504
+      }
+    },
+    "gallery/Wash Basins/IMG-20250518-WA0025.webp": {
+      "original": "gallery/Wash Basins/IMG-20250518-WA0025.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767319/hs-global/gallery/Wash%20Basins/IMG-20250518-WA0025_mobile.webp",
+          "width": 480,
+          "height": 640,
+          "bytes": 70810
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767321/hs-global/gallery/Wash%20Basins/IMG-20250518-WA0025_tablet.webp",
+          "width": 768,
+          "height": 1024,
+          "bytes": 134392
+        }
+      },
+      "metadata": {
+        "originalWidth": 780,
+        "originalHeight": 1040,
+        "originalSize": 137650,
+        "totalVariantSize": 205202
+      }
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0057.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0057.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767318/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0057_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 77964
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767320/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0057_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 164734
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767321/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0057_desktop.webp",
+          "width": 1200,
+          "height": 1200,
+          "bytes": 287772
+        }
+      },
+      "metadata": {
+        "originalWidth": 1280,
+        "originalHeight": 1280,
+        "originalSize": 290358,
+        "totalVariantSize": 530470
+      }
+    },
+    "gallery/Wash Basins/IMG-20250518-WA0026.webp": {
+      "original": "gallery/Wash Basins/IMG-20250518-WA0026.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767318/hs-global/gallery/Wash%20Basins/IMG-20250518-WA0026_mobile.webp",
+          "width": 480,
+          "height": 486,
+          "bytes": 36448
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767321/hs-global/gallery/Wash%20Basins/IMG-20250518-WA0026_tablet.webp",
+          "width": 768,
+          "height": 777,
+          "bytes": 63718
+        }
+      },
+      "metadata": {
+        "originalWidth": 904,
+        "originalHeight": 915,
+        "originalSize": 70040,
+        "totalVariantSize": 100166
+      }
+    },
+    "gallery/Wash Basins/IMG-20250116-WA0056.webp": {
+      "original": "gallery/Wash Basins/IMG-20250116-WA0056.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767318/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0056_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 48324
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767320/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0056_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 97672
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767324/hs-global/gallery/Wash%20Basins/IMG-20250116-WA0056_desktop.webp",
+          "width": 1200,
+          "height": 1200,
+          "bytes": 177424
+        }
+      },
+      "metadata": {
+        "originalWidth": 1600,
+        "originalHeight": 1600,
+        "originalSize": 233716,
+        "totalVariantSize": 323420
+      }
+    },
+    "gallery/Wash Basins/IMG-20250518-WA0034.webp": {
+      "original": "gallery/Wash Basins/IMG-20250518-WA0034.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767318/hs-global/gallery/Wash%20Basins/IMG-20250518-WA0034_mobile.webp",
+          "width": 480,
+          "height": 360,
+          "bytes": 24456
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767321/hs-global/gallery/Wash%20Basins/IMG-20250518-WA0034_tablet.webp",
+          "width": 768,
+          "height": 576,
+          "bytes": 48870
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767323/hs-global/gallery/Wash%20Basins/IMG-20250518-WA0034_desktop.webp",
+          "width": 1200,
+          "height": 900,
+          "bytes": 100368
+        },
+        "large": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767326/hs-global/gallery/Wash%20Basins/IMG-20250518-WA0034_large.webp",
+          "width": 1920,
+          "height": 1440,
+          "bytes": 196276
+        }
+      },
+      "metadata": {
+        "originalWidth": 4080,
+        "originalHeight": 3060,
+        "originalSize": 544560,
+        "totalVariantSize": 369970
+      }
+    },
+    "gallery/Wash Basins/IMG-20250525-WA0002.webp": {
+      "original": "gallery/Wash Basins/IMG-20250525-WA0002.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767327/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0002_mobile.webp",
+          "width": 480,
+          "height": 571,
+          "bytes": 33572
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 857,
+        "originalSize": 50638,
+        "totalVariantSize": 33572
+      }
+    },
+    "gallery/Wash Basins/IMG-20250525-WA0007.webp": {
+      "original": "gallery/Wash Basins/IMG-20250525-WA0007.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767329/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0007_mobile.webp",
+          "width": 480,
+          "height": 545,
+          "bytes": 37088
+        }
+      },
+      "metadata": {
+        "originalWidth": 720,
+        "originalHeight": 817,
+        "originalSize": 55160,
+        "totalVariantSize": 37088
+      }
+    },
+    "gallery/Wash Basins/IMG-20250522-WA0028.webp": {
+      "original": "gallery/Wash Basins/IMG-20250522-WA0028.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767327/hs-global/gallery/Wash%20Basins/IMG-20250522-WA0028_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 41884
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767331/hs-global/gallery/Wash%20Basins/IMG-20250522-WA0028_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 93972
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767334/hs-global/gallery/Wash%20Basins/IMG-20250522-WA0028_desktop.webp",
+          "width": 1200,
+          "height": 1200,
+          "bytes": 199488
+        }
+      },
+      "metadata": {
+        "originalWidth": 1280,
+        "originalHeight": 1280,
+        "originalSize": 288130,
+        "totalVariantSize": 335344
+      }
+    },
+    "gallery/Wash Basins/IMG-20250522-WA0029.webp": {
+      "original": "gallery/Wash Basins/IMG-20250522-WA0029.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767327/hs-global/gallery/Wash%20Basins/IMG-20250522-WA0029_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 50796
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767330/hs-global/gallery/Wash%20Basins/IMG-20250522-WA0029_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 119856
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767336/hs-global/gallery/Wash%20Basins/IMG-20250522-WA0029_desktop.webp",
+          "width": 1200,
+          "height": 1200,
+          "bytes": 255820
+        }
+      },
+      "metadata": {
+        "originalWidth": 1280,
+        "originalHeight": 1280,
+        "originalSize": 335702,
+        "totalVariantSize": 426472
+      }
+    },
+    "gallery/Wash Basins/IMG-20250521-WA0008.webp": {
+      "original": "gallery/Wash Basins/IMG-20250521-WA0008.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767327/hs-global/gallery/Wash%20Basins/IMG-20250521-WA0008_mobile.webp",
+          "width": 480,
+          "height": 360,
+          "bytes": 35376
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767329/hs-global/gallery/Wash%20Basins/IMG-20250521-WA0008_tablet.webp",
+          "width": 768,
+          "height": 576,
+          "bytes": 86970
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767333/hs-global/gallery/Wash%20Basins/IMG-20250521-WA0008_desktop.webp",
+          "width": 1200,
+          "height": 900,
+          "bytes": 197008
+        },
+        "large": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767340/hs-global/gallery/Wash%20Basins/IMG-20250521-WA0008_large.webp",
+          "width": 1920,
+          "height": 1440,
+          "bytes": 423208
+        }
+      },
+      "metadata": {
+        "originalWidth": 4080,
+        "originalHeight": 3060,
+        "originalSize": 1055966,
+        "totalVariantSize": 742562
+      }
+    },
+    "gallery/Wash Basins/IMG-20250525-WA0041.webp": {
+      "original": "gallery/Wash Basins/IMG-20250525-WA0041.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767343/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0041_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 52114
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767345/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0041_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 110924
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767348/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0041_desktop.webp",
+          "width": 1200,
+          "height": 1200,
+          "bytes": 229342
+        }
+      },
+      "metadata": {
+        "originalWidth": 1280,
+        "originalHeight": 1280,
+        "originalSize": 311606,
+        "totalVariantSize": 392380
+      }
+    },
+    "gallery/Wash Basins/IMG-20250525-WA0122.webp": {
+      "original": "gallery/Wash Basins/IMG-20250525-WA0122.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767344/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0122_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 29356
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767347/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0122_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 60968
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767348/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0122_desktop.webp",
+          "width": 1200,
+          "height": 1200,
+          "bytes": 108110
+        }
+      },
+      "metadata": {
+        "originalWidth": 1280,
+        "originalHeight": 1280,
+        "originalSize": 135682,
+        "totalVariantSize": 198434
+      }
+    },
+    "gallery/Wash Basins/IMG-20250525-WA0109.webp": {
+      "original": "gallery/Wash Basins/IMG-20250525-WA0109.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767345/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0109_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 48386
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767347/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0109_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 106802
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767350/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0109_desktop.webp",
+          "width": 1200,
+          "height": 1200,
+          "bytes": 216080
+        }
+      },
+      "metadata": {
+        "originalWidth": 1280,
+        "originalHeight": 1280,
+        "originalSize": 289884,
+        "totalVariantSize": 371268
+      }
+    },
+    "gallery/Wash Basins/IMG-20250525-WA0042.webp": {
+      "original": "gallery/Wash Basins/IMG-20250525-WA0042.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767346/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0042_mobile.webp",
+          "width": 480,
+          "height": 640,
+          "bytes": 74532
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767349/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0042_tablet.webp",
+          "width": 768,
+          "height": 1024,
+          "bytes": 167034
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767351/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0042_desktop.webp",
+          "width": 1200,
+          "height": 1600,
+          "bytes": 317238
+        }
+      },
+      "metadata": {
+        "originalWidth": 1200,
+        "originalHeight": 1600,
+        "originalSize": 325900,
+        "totalVariantSize": 558804
+      }
+    },
+    "gallery/Wash Basins/IMG-20250525-WA0044.webp": {
+      "original": "gallery/Wash Basins/IMG-20250525-WA0044.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767344/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0044_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 23218
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767348/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0044_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 43026
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767351/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0044_desktop.webp",
+          "width": 1200,
+          "height": 1200,
+          "bytes": 81148
+        },
+        "large": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767359/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0044_large.webp",
+          "width": 1920,
+          "height": 1920,
+          "bytes": 193536
+        }
+      },
+      "metadata": {
+        "originalWidth": 3060,
+        "originalHeight": 3060,
+        "originalSize": 461480,
+        "totalVariantSize": 340928
+      }
+    },
+    "gallery/Wash Basins/IMG-20250525-WA0149.webp": {
+      "original": "gallery/Wash Basins/IMG-20250525-WA0149.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767362/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0149_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 34830
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767363/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0149_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 66134
+        }
+      },
+      "metadata": {
+        "originalWidth": 1080,
+        "originalHeight": 1080,
+        "originalSize": 93016,
+        "totalVariantSize": 100964
+      }
+    },
+    "gallery/Wash Basins/IMG-20250525-WA0152.webp": {
+      "original": "gallery/Wash Basins/IMG-20250525-WA0152.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767362/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0152_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 56682
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767364/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0152_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 116220
+        }
+      },
+      "metadata": {
+        "originalWidth": 1080,
+        "originalHeight": 1080,
+        "originalSize": 177386,
+        "totalVariantSize": 172902
+      }
+    },
+    "gallery/Wash Basins/IMG-20250525-WA0151.webp": {
+      "original": "gallery/Wash Basins/IMG-20250525-WA0151.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767362/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0151_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 53624
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767365/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0151_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 102210
+        }
+      },
+      "metadata": {
+        "originalWidth": 1080,
+        "originalHeight": 1080,
+        "originalSize": 147714,
+        "totalVariantSize": 155834
+      }
+    },
+    "gallery/Wash Basins/IMG-20250525-WA0142.webp": {
+      "original": "gallery/Wash Basins/IMG-20250525-WA0142.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767360/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0142_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 52080
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767364/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0142_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 119916
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767368/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0142_desktop.webp",
+          "width": 1200,
+          "height": 1200,
+          "bytes": 257004
+        }
+      },
+      "metadata": {
+        "originalWidth": 1280,
+        "originalHeight": 1280,
+        "originalSize": 341244,
+        "totalVariantSize": 429000
+      }
+    },
+    "gallery/Wash Basins/IMG-20250525-WA0147.webp": {
+      "original": "gallery/Wash Basins/IMG-20250525-WA0147.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767362/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0147_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 66608
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767365/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0147_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 168370
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767372/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0147_desktop.webp",
+          "width": 1200,
+          "height": 1200,
+          "bytes": 403672
+        }
+      },
+      "metadata": {
+        "originalWidth": 1280,
+        "originalHeight": 1280,
+        "originalSize": 517620,
+        "totalVariantSize": 638650
+      }
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0007.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0007.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767376/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0007_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 46088
+        }
+      },
+      "metadata": {
+        "originalWidth": 500,
+        "originalHeight": 500,
+        "originalSize": 50178,
+        "totalVariantSize": 46088
+      }
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0006.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0006.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767376/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0006_mobile.webp",
+          "width": 480,
+          "height": 225,
+          "bytes": 21290
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767377/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0006_tablet.webp",
+          "width": 768,
+          "height": 360,
+          "bytes": 39816
+        }
+      },
+      "metadata": {
+        "originalWidth": 794,
+        "originalHeight": 372,
+        "originalSize": 41796,
+        "totalVariantSize": 61106
+      }
+    },
+    "gallery/Wash Basins/IMG-20250601-WA0000.webp": {
+      "original": "gallery/Wash Basins/IMG-20250601-WA0000.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767373/hs-global/gallery/Wash%20Basins/IMG-20250601-WA0000_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 34618
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767375/hs-global/gallery/Wash%20Basins/IMG-20250601-WA0000_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 75870
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767378/hs-global/gallery/Wash%20Basins/IMG-20250601-WA0000_desktop.webp",
+          "width": 1200,
+          "height": 1200,
+          "bytes": 145732
+        }
+      },
+      "metadata": {
+        "originalWidth": 1280,
+        "originalHeight": 1280,
+        "originalSize": 162830,
+        "totalVariantSize": 256220
+      }
+    },
+    "gallery/Wash Basins/IMG-20250601-WA0004.webp": {
+      "original": "gallery/Wash Basins/IMG-20250601-WA0004.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767376/hs-global/gallery/Wash%20Basins/IMG-20250601-WA0004_mobile.webp",
+          "width": 480,
+          "height": 360,
+          "bytes": 37738
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767377/hs-global/gallery/Wash%20Basins/IMG-20250601-WA0004_tablet.webp",
+          "width": 768,
+          "height": 576,
+          "bytes": 84306
+        },
+        "large": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767379/hs-global/gallery/Wash%20Basins/IMG-20250601-WA0004_large.webp",
+          "width": 1920,
+          "height": 1440,
+          "bytes": 337542
+        }
+      },
+      "metadata": {
+        "originalWidth": 4080,
+        "originalHeight": 3060,
+        "originalSize": 780376,
+        "totalVariantSize": 459586
+      }
+    },
+    "gallery/Wash Basins/IMG-20250525-WA0163.webp": {
+      "original": "gallery/Wash Basins/IMG-20250525-WA0163.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767374/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0163_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 41570
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767376/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0163_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 81366
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767379/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0163_desktop.webp",
+          "width": 1200,
+          "height": 1200,
+          "bytes": 171036
+        },
+        "large": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767385/hs-global/gallery/Wash%20Basins/IMG-20250525-WA0163_large.webp",
+          "width": 1920,
+          "height": 1920,
+          "bytes": 603742
+        }
+      },
+      "metadata": {
+        "originalWidth": 4000,
+        "originalHeight": 4000,
+        "originalSize": 2778738,
+        "totalVariantSize": 897714
+      }
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0019.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0019.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767390/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0019_mobile.webp",
+          "width": 479,
+          "height": 332,
+          "bytes": 39274
+        }
+      },
+      "metadata": {
+        "originalWidth": 706,
+        "originalHeight": 489,
+        "originalSize": 68924,
+        "totalVariantSize": 39274
+      }
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0008.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0008.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767387/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0008_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 24378
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767388/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0008_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 43222
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767389/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0008_desktop.webp",
+          "width": 1200,
+          "height": 1200,
+          "bytes": 68430
+        }
+      },
+      "metadata": {
+        "originalWidth": 1280,
+        "originalHeight": 1280,
+        "originalSize": 70256,
+        "totalVariantSize": 136030
+      }
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0011.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0011.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767390/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0011_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 64340
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767392/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0011_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 143886
+        }
+      },
+      "metadata": {
+        "originalWidth": 990,
+        "originalHeight": 990,
+        "originalSize": 204942,
+        "totalVariantSize": 208226
+      }
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0012.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0012.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767389/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0012_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 19986
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767391/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0012_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 37584
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767393/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0012_desktop.webp",
+          "width": 1200,
+          "height": 1200,
+          "bytes": 57098
+        }
+      },
+      "metadata": {
+        "originalWidth": 1280,
+        "originalHeight": 1280,
+        "originalSize": 58702,
+        "totalVariantSize": 114668
+      }
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0014.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0014.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767389/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0014_mobile.webp",
+          "width": 480,
+          "height": 360,
+          "bytes": 34140
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767391/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0014_tablet.webp",
+          "width": 768,
+          "height": 576,
+          "bytes": 76666
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767393/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0014_desktop.webp",
+          "width": 1200,
+          "height": 900,
+          "bytes": 141694
+        }
+      },
+      "metadata": {
+        "originalWidth": 1280,
+        "originalHeight": 960,
+        "originalSize": 161102,
+        "totalVariantSize": 252500
+      }
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0021.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0021.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767395/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0021_mobile.webp",
+          "width": 480,
+          "height": 359,
+          "bytes": 11716
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767396/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0021_tablet.webp",
+          "width": 768,
+          "height": 574,
+          "bytes": 19706
+        }
+      },
+      "metadata": {
+        "originalWidth": 1024,
+        "originalHeight": 766,
+        "originalSize": 29102,
+        "totalVariantSize": 31422
+      }
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0020.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0020.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767395/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0020_mobile.webp",
+          "width": 480,
+          "height": 360,
+          "bytes": 15412
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767396/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0020_tablet.webp",
+          "width": 768,
+          "height": 576,
+          "bytes": 30800
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767397/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0020_desktop.webp",
+          "width": 1200,
+          "height": 900,
+          "bytes": 48908
+        }
+      },
+      "metadata": {
+        "originalWidth": 1280,
+        "originalHeight": 960,
+        "originalSize": 55484,
+        "totalVariantSize": 95120
+      }
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0025.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0025.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767395/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0025_mobile.webp",
+          "width": 480,
+          "height": 451,
+          "bytes": 21156
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767396/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0025_tablet.webp",
+          "width": 768,
+          "height": 721,
+          "bytes": 39080
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767397/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0025_desktop.webp",
+          "width": 1200,
+          "height": 1127,
+          "bytes": 61862
+        }
+      },
+      "metadata": {
+        "originalWidth": 1280,
+        "originalHeight": 1202,
+        "originalSize": 67014,
+        "totalVariantSize": 122098
+      }
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0024.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0024.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767395/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0024_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 24612
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767396/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0024_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 48238
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767398/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0024_desktop.webp",
+          "width": 1200,
+          "height": 1200,
+          "bytes": 85390
+        }
+      },
+      "metadata": {
+        "originalWidth": 1280,
+        "originalHeight": 1280,
+        "originalSize": 100832,
+        "totalVariantSize": 158240
+      }
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0022.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0022.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767395/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0022_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 72836
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767396/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0022_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 162152
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767398/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0022_desktop.webp",
+          "width": 1200,
+          "height": 1200,
+          "bytes": 334094
+        }
+      },
+      "metadata": {
+        "originalWidth": 1280,
+        "originalHeight": 1280,
+        "originalSize": 395540,
+        "totalVariantSize": 569082
+      }
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0028.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0028.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767400/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0028_mobile.webp",
+          "width": 480,
+          "height": 437,
+          "bytes": 16444
+        }
+      },
+      "metadata": {
+        "originalWidth": 706,
+        "originalHeight": 643,
+        "originalSize": 23362,
+        "totalVariantSize": 16444
+      }
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0026.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0026.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767400/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0026_mobile.webp",
+          "width": 479,
+          "height": 349,
+          "bytes": 40486
+        }
+      },
+      "metadata": {
+        "originalWidth": 706,
+        "originalHeight": 514,
+        "originalSize": 65984,
+        "totalVariantSize": 40486
+      }
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0036.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0036.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767400/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0036_mobile.webp",
+          "width": 480,
+          "height": 640,
+          "bytes": 38056
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767401/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0036_tablet.webp",
+          "width": 768,
+          "height": 1024,
+          "bytes": 58562
+        }
+      },
+      "metadata": {
+        "originalWidth": 960,
+        "originalHeight": 1280,
+        "originalSize": 79496,
+        "totalVariantSize": 96618
+      }
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0035.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0035.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767400/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0035_mobile.webp",
+          "width": 480,
+          "height": 640,
+          "bytes": 25934
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767401/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0035_tablet.webp",
+          "width": 768,
+          "height": 1024,
+          "bytes": 37152
+        }
+      },
+      "metadata": {
+        "originalWidth": 960,
+        "originalHeight": 1280,
+        "originalSize": 47840,
+        "totalVariantSize": 63086
+      }
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0037.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0037.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767400/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0037_mobile.webp",
+          "width": 480,
+          "height": 640,
+          "bytes": 49296
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767402/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0037_tablet.webp",
+          "width": 768,
+          "height": 1024,
+          "bytes": 80496
+        }
+      },
+      "metadata": {
+        "originalWidth": 960,
+        "originalHeight": 1280,
+        "originalSize": 111582,
+        "totalVariantSize": 129792
+      }
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0048.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0048.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767404/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0048_mobile.webp",
+          "width": 480,
+          "height": 401,
+          "bytes": 18668
+        }
+      },
+      "metadata": {
+        "originalWidth": 706,
+        "originalHeight": 590,
+        "originalSize": 26788,
+        "totalVariantSize": 18668
+      }
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0046.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0046.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767404/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0046_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 15476
+        }
+      },
+      "metadata": {
+        "originalWidth": 736,
+        "originalHeight": 736,
+        "originalSize": 26492,
+        "totalVariantSize": 15476
+      }
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0038.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0038.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767403/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0038_mobile.webp",
+          "width": 480,
+          "height": 360,
+          "bytes": 35430
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767405/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0038_tablet.webp",
+          "width": 768,
+          "height": 576,
+          "bytes": 75810
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767406/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0038_desktop.webp",
+          "width": 1200,
+          "height": 900,
+          "bytes": 137342
+        }
+      },
+      "metadata": {
+        "originalWidth": 1280,
+        "originalHeight": 960,
+        "originalSize": 156104,
+        "totalVariantSize": 248582
+      }
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0042.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0042.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767404/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0042_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 13808
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767405/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0042_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 24612
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767406/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0042_desktop.webp",
+          "width": 1200,
+          "height": 1200,
+          "bytes": 38420
+        }
+      },
+      "metadata": {
+        "originalWidth": 1280,
+        "originalHeight": 1280,
+        "originalSize": 38584,
+        "totalVariantSize": 76840
+      }
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0045.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0045.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767405/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0045_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 23402
+        }
+      },
+      "metadata": {
+        "originalWidth": 736,
+        "originalHeight": 736,
+        "originalSize": 42096,
+        "totalVariantSize": 23402
+      }
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0049.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0049.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767412/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0049_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 24334
+        }
+      },
+      "metadata": {
+        "originalWidth": 736,
+        "originalHeight": 736,
+        "originalSize": 40296,
+        "totalVariantSize": 24334
+      }
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0071.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0071.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767412/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0071_mobile.webp",
+          "width": 480,
+          "height": 438,
+          "bytes": 25650
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767413/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0071_tablet.webp",
+          "width": 768,
+          "height": 700,
+          "bytes": 48624
+        }
+      },
+      "metadata": {
+        "originalWidth": 1080,
+        "originalHeight": 985,
+        "originalSize": 68028,
+        "totalVariantSize": 74274
+      }
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0051.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0051.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767412/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0051_mobile.webp",
+          "width": 480,
+          "height": 221,
+          "bytes": 21292
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767414/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0051_tablet.webp",
+          "width": 768,
+          "height": 353,
+          "bytes": 40382
+        }
+      },
+      "metadata": {
+        "originalWidth": 794,
+        "originalHeight": 365,
+        "originalSize": 42246,
+        "totalVariantSize": 61674
+      }
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0076.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0076.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767415/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0076_mobile.webp",
+          "width": 480,
+          "height": 518,
+          "bytes": 46920
+        }
+      },
+      "metadata": {
+        "originalWidth": 706,
+        "originalHeight": 762,
+        "originalSize": 78802,
+        "totalVariantSize": 46920
+      }
+    },
+    "gallery/Wash Basins/IMG-20250603-WA0074.webp": {
+      "original": "gallery/Wash Basins/IMG-20250603-WA0074.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767414/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0074_mobile.webp",
+          "width": 480,
+          "height": 320,
+          "bytes": 25858
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767416/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0074_tablet.webp",
+          "width": 768,
+          "height": 512,
+          "bytes": 59294
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767419/hs-global/gallery/Wash%20Basins/IMG-20250603-WA0074_desktop.webp",
+          "width": 1200,
+          "height": 800,
+          "bytes": 99852
+        }
+      },
+      "metadata": {
+        "originalWidth": 1200,
+        "originalHeight": 800,
+        "originalSize": 106396,
+        "totalVariantSize": 185004
+      }
+    },
+    "gallery/Wash Basins/IMG-20250604-WA0006.webp": {
+      "original": "gallery/Wash Basins/IMG-20250604-WA0006.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767422/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0006_mobile.webp",
+          "width": 480,
+          "height": 755,
+          "bytes": 56256
+        }
+      },
+      "metadata": {
+        "originalWidth": 706,
+        "originalHeight": 1110,
+        "originalSize": 82818,
+        "totalVariantSize": 56256
+      }
+    },
+    "gallery/Wash Basins/IMG-20250604-WA0004.webp": {
+      "original": "gallery/Wash Basins/IMG-20250604-WA0004.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767420/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0004_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 50982
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767421/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0004_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 100722
+        }
+      },
+      "metadata": {
+        "originalWidth": 1000,
+        "originalHeight": 1000,
+        "originalSize": 153054,
+        "totalVariantSize": 151704
+      }
+    },
+    "gallery/Wash Basins/IMG-20250604-WA0005.webp": {
+      "original": "gallery/Wash Basins/IMG-20250604-WA0005.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767422/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0005_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 51350
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767424/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0005_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 117468
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767426/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0005_desktop.webp",
+          "width": 1200,
+          "height": 1200,
+          "bytes": 236806
+        }
+      },
+      "metadata": {
+        "originalWidth": 1280,
+        "originalHeight": 1280,
+        "originalSize": 316292,
+        "totalVariantSize": 405624
+      }
+    },
+    "gallery/Wash Basins/IMG-20250604-WA0002.webp": {
+      "original": "gallery/Wash Basins/IMG-20250604-WA0002.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767420/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0002_mobile.webp",
+          "width": 480,
+          "height": 640,
+          "bytes": 45128
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767421/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0002_tablet.webp",
+          "width": 768,
+          "height": 1024,
+          "bytes": 89264
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767425/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0002_desktop.webp",
+          "width": 1200,
+          "height": 1600,
+          "bytes": 161010
+        },
+        "large": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767429/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0002_large.webp",
+          "width": 1920,
+          "height": 2560,
+          "bytes": 301686
+        }
+      },
+      "metadata": {
+        "originalWidth": 3060,
+        "originalHeight": 4080,
+        "originalSize": 488000,
+        "totalVariantSize": 597088
+      }
+    },
+    "gallery/Wash Basins/IMG-20250604-WA0001.webp": {
+      "original": "gallery/Wash Basins/IMG-20250604-WA0001.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767420/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0001_mobile.webp",
+          "width": 480,
+          "height": 640,
+          "bytes": 32848
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767423/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0001_tablet.webp",
+          "width": 768,
+          "height": 1024,
+          "bytes": 61534
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767425/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0001_desktop.webp",
+          "width": 1200,
+          "height": 1600,
+          "bytes": 110668
+        },
+        "large": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767434/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0001_large.webp",
+          "width": 1920,
+          "height": 2560,
+          "bytes": 204536
+        }
+      },
+      "metadata": {
+        "originalWidth": 3060,
+        "originalHeight": 4080,
+        "originalSize": 318562,
+        "totalVariantSize": 409586
+      }
+    },
+    "gallery/Wash Basins/IMG-20250604-WA0008.webp": {
+      "original": "gallery/Wash Basins/IMG-20250604-WA0008.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767438/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0008_mobile.webp",
+          "width": 480,
+          "height": 606,
+          "bytes": 28034
+        }
+      },
+      "metadata": {
+        "originalWidth": 706,
+        "originalHeight": 891,
+        "originalSize": 44108,
+        "totalVariantSize": 28034
+      }
+    },
+    "gallery/Wash Basins/IMG-20250604-WA0007.webp": {
+      "original": "gallery/Wash Basins/IMG-20250604-WA0007.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767436/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0007_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 51286
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767437/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0007_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 107592
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767439/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0007_desktop.webp",
+          "width": 1200,
+          "height": 1200,
+          "bytes": 203646
+        }
+      },
+      "metadata": {
+        "originalWidth": 1280,
+        "originalHeight": 1280,
+        "originalSize": 270484,
+        "totalVariantSize": 362524
+      }
+    },
+    "gallery/Wash Basins/IMG-20250604-WA0009.webp": {
+      "original": "gallery/Wash Basins/IMG-20250604-WA0009.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767439/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0009_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 43132
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767440/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0009_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 80356
+        }
+      },
+      "metadata": {
+        "originalWidth": 867,
+        "originalHeight": 867,
+        "originalSize": 95446,
+        "totalVariantSize": 123488
+      }
+    },
+    "gallery/Wash Basins/IMG-20250604-WA0013.webp": {
+      "original": "gallery/Wash Basins/IMG-20250604-WA0013.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767438/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0013_mobile.webp",
+          "width": 480,
+          "height": 270,
+          "bytes": 27014
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767440/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0013_tablet.webp",
+          "width": 768,
+          "height": 432,
+          "bytes": 62680
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767441/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0013_desktop.webp",
+          "width": 1200,
+          "height": 675,
+          "bytes": 135142
+        },
+        "large": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767442/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0013_large.webp",
+          "width": 1920,
+          "height": 1080,
+          "bytes": 275206
+        }
+      },
+      "metadata": {
+        "originalWidth": 4160,
+        "originalHeight": 2340,
+        "originalSize": 798396,
+        "totalVariantSize": 500042
+      }
+    },
+    "gallery/Wash Basins/IMG-20250604-WA0011.webp": {
+      "original": "gallery/Wash Basins/IMG-20250604-WA0011.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767438/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0011_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 37964
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767440/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0011_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 78580
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767441/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0011_desktop.webp",
+          "width": 1200,
+          "height": 1200,
+          "bytes": 162328
+        },
+        "large": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767442/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0011_large.webp",
+          "width": 1920,
+          "height": 1920,
+          "bytes": 394628
+        }
+      },
+      "metadata": {
+        "originalWidth": 4000,
+        "originalHeight": 4000,
+        "originalSize": 1539114,
+        "totalVariantSize": 673500
+      }
+    },
+    "gallery/Wash Basins/IMG-20250604-WA0020.webp": {
+      "original": "gallery/Wash Basins/IMG-20250604-WA0020.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767443/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0020_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 36062
+        }
+      },
+      "metadata": {
+        "originalWidth": 550,
+        "originalHeight": 550,
+        "originalSize": 45004,
+        "totalVariantSize": 36062
+      }
+    },
+    "gallery/Wash Basins/IMG-20250604-WA0014.webp": {
+      "original": "gallery/Wash Basins/IMG-20250604-WA0014.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767443/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0014_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 23312
+        }
+      },
+      "metadata": {
+        "originalWidth": 550,
+        "originalHeight": 550,
+        "originalSize": 30716,
+        "totalVariantSize": 23312
+      }
+    },
+    "gallery/Wash Basins/IMG-20250604-WA0016.webp": {
+      "original": "gallery/Wash Basins/IMG-20250604-WA0016.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767443/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0016_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 19372
+        }
+      },
+      "metadata": {
+        "originalWidth": 550,
+        "originalHeight": 550,
+        "originalSize": 22686,
+        "totalVariantSize": 19372
+      }
+    },
+    "gallery/Wash Basins/IMG-20250604-WA0015.webp": {
+      "original": "gallery/Wash Basins/IMG-20250604-WA0015.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767443/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0015_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 28550
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767445/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0015_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 52194
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767446/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0015_desktop.webp",
+          "width": 1200,
+          "height": 1200,
+          "bytes": 114814
+        },
+        "large": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767447/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0015_large.webp",
+          "width": 1920,
+          "height": 1920,
+          "bytes": 461988
+        }
+      },
+      "metadata": {
+        "originalWidth": 4000,
+        "originalHeight": 4000,
+        "originalSize": 2396820,
+        "totalVariantSize": 657546
+      }
+    },
+    "gallery/Wash Basins/IMG-20250604-WA0023.webp": {
+      "original": "gallery/Wash Basins/IMG-20250604-WA0023.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767443/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0023_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 54794
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767444/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0023_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 124028
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767446/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0023_desktop.webp",
+          "width": 1200,
+          "height": 1200,
+          "bytes": 266614
+        },
+        "large": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767448/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0023_large.webp",
+          "width": 1920,
+          "height": 1920,
+          "bytes": 607962
+        }
+      },
+      "metadata": {
+        "originalWidth": 4000,
+        "originalHeight": 4000,
+        "originalSize": 2111526,
+        "totalVariantSize": 1053398
+      }
+    },
+    "gallery/Wash Basins/IMG-20250606-WA0000.webp": {
+      "original": "gallery/Wash Basins/IMG-20250606-WA0000.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767449/hs-global/gallery/Wash%20Basins/IMG-20250606-WA0000_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 29272
+        }
+      },
+      "metadata": {
+        "originalWidth": 500,
+        "originalHeight": 500,
+        "originalSize": 32358,
+        "totalVariantSize": 29272
+      }
+    },
+    "gallery/Wash Basins/IMG-20250604-WA0026.webp": {
+      "original": "gallery/Wash Basins/IMG-20250604-WA0026.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767449/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0026_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 45318
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767451/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0026_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 96496
+        }
+      },
+      "metadata": {
+        "originalWidth": 1076,
+        "originalHeight": 1076,
+        "originalSize": 142102,
+        "totalVariantSize": 141814
+      }
+    },
+    "gallery/Wash Basins/IMG-20250604-WA0024.webp": {
+      "original": "gallery/Wash Basins/IMG-20250604-WA0024.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767449/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0024_mobile.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 48494
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767451/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0024_tablet.webp",
+          "width": 768,
+          "height": 768,
+          "bytes": 95286
+        }
+      },
+      "metadata": {
+        "originalWidth": 1000,
+        "originalHeight": 1000,
+        "originalSize": 143514,
+        "totalVariantSize": 143780
+      }
+    },
+    "gallery/Wash Basins/IMG-20250604-WA0028.webp": {
+      "original": "gallery/Wash Basins/IMG-20250604-WA0028.webp",
+      "category": "gallery",
+      "variants": {
+        "mobile": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767449/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0028_mobile.webp",
+          "width": 480,
+          "height": 640,
+          "bytes": 34714
+        },
+        "tablet": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767452/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0028_tablet.webp",
+          "width": 768,
+          "height": 1024,
+          "bytes": 72072
+        },
+        "desktop": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767456/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0028_desktop.webp",
+          "width": 1200,
+          "height": 1600,
+          "bytes": 131614
+        },
+        "large": {
+          "url": "https://res.cloudinary.com/dynd1aan0/image/upload/v1769767458/hs-global/gallery/Wash%20Basins/IMG-20250604-WA0028_large.webp",
+          "width": 1920,
+          "height": 2560,
+          "bytes": 244446
+        }
+      },
+      "metadata": {
+        "originalWidth": 3060,
+        "originalHeight": 4080,
+        "originalSize": 402922,
+        "totalVariantSize": 482846
+      }
+    }
+  }
+}

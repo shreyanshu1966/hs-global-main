@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { getRootImageUrl, optimizeCloudinaryUrl } from "../utils/rootCloudinary";
+import { getResponsiveImage, getSrcSet } from "../utils/responsive-image-helper";
 import TextReveal from "./TextReveal";
 import MagneticButton from "./MagneticButton";
 
@@ -18,15 +18,13 @@ const Hero = () => {
   const bgRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
 
-  // Get banner from Cloudinary with fallback
-  const bannerUrl = getRootImageUrl("banner.webp");
-  const optimizedBannerUrl = bannerUrl
-    ? optimizeCloudinaryUrl(bannerUrl, { width: 1920, quality: 90, format: 'auto' })
-    : "/banner.webp";
+  // Get responsive banner data directly - let the browser choose the best size via srcSet/sizes
+  const bannerUrl = getResponsiveImage("banner.webp", "desktop") || "/banner.webp";
+  const bannerSrcSet = getSrcSet("banner.webp");
 
   const slides = [
     {
-      imageUrl: optimizedBannerUrl,
+      imageUrl: bannerUrl,
       title: t("home.hero_title") || "Timeless Elegance",
       subtitle: t("home.hero_subtitle") || "Natural Stone Collection",
     },
@@ -72,7 +70,9 @@ const Hero = () => {
         className="absolute inset-0 scale-110 will-change-transform"
       >
         <img
-          src={slides[0].imageUrl}
+          src={bannerUrl || "/banner.webp"}
+          srcSet={bannerSrcSet}
+          sizes="100vw"
           alt={slides[0].subtitle || "Luxury Stone Background"}
           className="w-full h-full object-cover"
           width="1920"

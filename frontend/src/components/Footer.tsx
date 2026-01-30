@@ -10,8 +10,7 @@ import {
   Facebook,
   ArrowUpRight
 } from "lucide-react";
-
-import { getRootImageUrl } from "../utils/rootCloudinary";
+import { getResponsiveImage, getSrcSet } from "../utils/responsive-image-helper";
 
 const Footer: React.FC = () => {
   const { t } = useTranslation();
@@ -47,9 +46,14 @@ const Footer: React.FC = () => {
           {/* Brand Column */}
           <div className="md:col-span-4 lg:col-span-5 space-y-8">
             <img
-              src="/Logo_black.png.png"
+              src={getResponsiveImage("Logo_black.png.png", "mobile") || "/Logo_black.png.png"}
+              srcSet={getSrcSet("Logo_black.png.png")}
+              sizes="(max-width: 768px) 192px, 192px"
               alt="HS Global Export"
-              className="w-48 h-auto "
+              className="w-48 h-auto"
+              loading="lazy"
+              width="192"
+              height="192"
             />
             <p className="text-gray-400 text-lg font-light leading-relaxed max-w-sm">
               Defining the future of luxury stone. We source, fabricate, and deliver the world's most exquisite materials to your doorstep.

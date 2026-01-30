@@ -4,9 +4,9 @@ import { Menu, X, User, Search } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { useTranslation } from "react-i18next";
-import LocationSelector from "./LocationSelector";
+import { LocationSelector } from "./LocationSelector";
 import { CartIcon } from "./CartIcon";
-import { getRootImageUrl } from "../utils/rootCloudinary";
+import { getResponsiveImage, getSrcSet } from "../utils/responsive-image-helper";
 import { useAuth } from "../contexts/AuthContext";
 import { SearchModal } from "./SearchModal";
 
@@ -125,10 +125,15 @@ const Header = () => {
             {/* Logo */}
             <Link to="/" className="flex-shrink-0 group relative z-50">
               <img
-                src={getRootImageUrl("logo.webp") || "https://res.cloudinary.com/dpztytsoz/image/upload/v1766858534/hs-global/root/logo.png"}
+                src={getResponsiveImage("logo.webp", "mobile") || "/logo.png"}
+                srcSet={getSrcSet("logo.webp")}
+                sizes="(max-width: 640px) 48px, 64px"
                 alt="HS Global Export"
                 className={`transition-all duration-300 object-contain ${isScrolled ? "h-10 sm:h-12 w-auto" : "h-12 sm:h-16 w-auto"
                   }`}
+                loading="eager"
+                width="64"
+                height="64"
               />
             </Link>
 
