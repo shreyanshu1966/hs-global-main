@@ -14,7 +14,8 @@
         "images:upload": "node scripts/upload-to-cloudinary.js",
         "images:all": "node scripts/optimize-and-upload-all.js",
         "images:public-root": "node scripts/upload-public-root-images.js",
-        "images:cleanup": "node scripts/cleanup-cloudinary.js"
+        "images:cleanup": "node scripts/cleanup-cloudinary.js",
+        "images:smart": "node scripts/cloudinary-smart-responsive-upload.js"
     },
     "dependencies": {
         "cloudinary": "^2.8.0",
