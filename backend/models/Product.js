@@ -173,4 +173,28 @@ productSchema.statics.search = function(query, filters = {}) {
         .sort({ score: { $meta: 'textScore' } });
 };
 
+// Static method to get all subcategories for a category
+productSchema.statics.getSubcategoriesByCategory = function(category) {
+    return this.distinct('subcategory', { 
+        category,
+        status: { $in: ['active', 'inactive', 'draft'] }
+    });
+};
+
+// Static method to get predefined subcategories
+productSchema.statics.getPredefinedSubcategories = function(category) {
+    const furniture = [
+        'tables', 'coffee-table', 'console-table', 'dining-table', 'side-table',
+        'wash-basins', 'pedestal', 'countertop', 'sculptures', 'benches',
+        'planters', 'fountains', 'fireplace', 'columns', 'urns', 'other'
+    ];
+    
+    const slabs = [
+        'granite', 'marble', 'quartzite', 'onyx', 'limestone',
+        'travertine', 'sandstone', 'slate', 'other'
+    ];
+    
+    return category === 'furniture' ? furniture : slabs;
+};
+
 module.exports = mongoose.model('Product', productSchema);

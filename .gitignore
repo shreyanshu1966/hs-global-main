@@ -58,3 +58,4 @@ coverage/
 .nyc_output/
 frontend/.env.production
 frontend/dist.zip
+paytm.md
