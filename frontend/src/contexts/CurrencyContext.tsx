@@ -184,12 +184,12 @@ export const CurrencyProvider: React.FC<{ children: ReactNode }> = ({ children }
 
     // ==================== GET PAYMENT CURRENCY (For PayPal/Gateways) ====================
     // Returns the calculated currency and rate to use for payments
+    // Always returns USD to avoid PayPal currency acceptance issues
     const getPaymentCurrency = useCallback(() => {
-        const isSupported = PAYPAL_SUPPORTED_CURRENCIES.includes(currency);
-        const code = isSupported ? currency : 'USD';
-        const rate = exchangeRates[code] || DEFAULT_RATES[code] || DEFAULT_RATES.USD;
+        const code = 'USD'; // Always use USD for PayPal payments
+        const rate = exchangeRates.USD || DEFAULT_RATES.USD;
         return { currency: code, rate };
-    }, [currency, exchangeRates]);
+    }, [exchangeRates]);
 
     // ==================== PROVIDER ====================
     return (

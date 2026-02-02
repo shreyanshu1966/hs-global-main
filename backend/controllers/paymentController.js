@@ -87,17 +87,13 @@ exports.createOrder = async (req, res) => {
             });
         }
 
-        // Enhanced currency validation with auto-conversion to USD
-        const PAYPAL_SUPPORTED_CURRENCIES = ['USD', 'EUR', 'GBP', 'AUD', 'CAD', 'JPY', 'SGD'];
+        // Force ALL payments to USD to avoid PayPal currency acceptance issues
+        // The display currency remains unchanged for user interface
+        const paymentCurrency = 'USD';
+        const conversionApplied = currency !== 'USD';
         
-        // Force convert unsupported currencies to USD
-        let paymentCurrency = currency;
-        let conversionApplied = false;
-        
-        if (!PAYPAL_SUPPORTED_CURRENCIES.includes(currency)) {
-            console.log(`⚠️ Currency ${currency} not supported by PayPal, converting to USD`);
-            paymentCurrency = 'USD';
-            conversionApplied = true;
+        if (conversionApplied) {
+            console.log(`💱 Converting ${currency} to USD for PayPal payment`);
         }
 
         // Use secure order ID from validation
@@ -169,8 +165,8 @@ exports.createOrder = async (req, res) => {
                 brand_name: 'HS Global Export',
                 landing_page: 'NO_PREFERENCE',
                 user_action: 'PAY_NOW',
-                return_url: `${process.env.FRONTEND_URL}/checkout-success`,
-                cancel_url: `${process.env.FRONTEND_URL}/checkout`
+                return_url: `${process.env.FRONTEND_URL.replace(/\/$/, '')}/checkout-success`,
+                cancel_url: `${process.env.FRONTEND_URL.replace(/\/$/, '')}/checkout`
             }
         };
 
