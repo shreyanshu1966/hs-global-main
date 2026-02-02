@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ShoppingCart, Check, FileText } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { useSlabCustomization } from '../contexts/SlabCustomizationContext';
-import { Product } from '../data/products';
-import { getFurnitureSpecs } from '../data/furnitureSpecs';
+import { Product } from '../services/productService'; // Updated to use Service type
+import { useTrackAddToCart } from '../hooks/useProducts';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 
@@ -25,6 +25,7 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
 }) => {
   const { state, addItem, toggleCart } = useCart();
   const { openModal: openSlabModal, setCustomization } = useSlabCustomization();
+  const trackAddToCart = useTrackAddToCart();
   const [isAdded, setIsAdded] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -36,17 +37,7 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
     if (product.priceINR) {
       return product.priceINR;
     }
-
-    // 2. Legacy fallback: Check furniture specs if not present on product
-    if (product.category === 'furniture') {
-      const specs = getFurnitureSpecs(product.name);
-      if (specs?.priceINR) {
-        return specs.priceINR;
-      }
-    }
-
-    console.warn('[AddToCart] No INR price found for product:', product.name);
-    return 0; // Return 0 instead of valid-looking fake price
+    return 0; // Default fallback if no price
   };
 
   // Listen for phone verification completion
@@ -55,9 +46,9 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
       const customEvent = e as CustomEvent;
       const verifiedProductId = customEvent.detail?.productId;
 
-      if (product.category === 'furniture' && verifiedProductId === product.id) {
+      if (product.category === 'furniture' && verifiedProductId === product.productId) {
         addItem({
-          id: product.id,
+          id: product.productId,
           name: product.name,
           image: product.image,
           priceINR: getRawINRPrice(),
@@ -96,14 +87,19 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
     }
 
     // For furniture: Add to cart directly with raw INR price
-    addItem({
-      id: product.id,
+    const cartItem = {
+      id: product.productId, // Use productId as the unique identifier
       name: product.name,
       image: product.image,
       priceINR: getRawINRPrice(),
       category: product.category,
       subcategory: product.subcategory,
-    });
+    };
+
+    addItem(cartItem);
+    
+    // Track add to cart analytics
+    trackAddToCart(product.productId);
 
     setIsAdded(true);
     setTimeout(() => setIsAdded(false), 2000);

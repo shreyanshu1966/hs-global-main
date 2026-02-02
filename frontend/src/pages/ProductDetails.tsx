@@ -8,236 +8,122 @@ import { useGSAP } from "@gsap/react";
 import { AddToCartButton } from "../components/AddToCartButton";
 import { QuantityHandler } from "../components/QuantityHandler";
 import { useCart } from "../contexts/CartContext";
-
-import {
-  getAllProducts,
-  Product as ProductType,
-  categories as catalogCategories,
-  Subcategory,
-} from "../data/products";
-
-import { getFurnitureSpecs, formatFurnitureSpecs } from "../data/furnitureSpecs";
-import { loadImageUrl } from "../data/slabs.loader";
+import { useProduct, useTrackAddToCart } from "../hooks/useProducts";
 import { useCurrency } from "../contexts/CurrencyContext";
 
 const ProductDetails = () => {
   const { id }: { id?: string } = useParams<{ id?: string }>();
   const { formatPrice } = useCurrency();
-  const [slabImageUrls, setSlabImageUrls] = useState<string[]>([]);
-  const [slabImagesLoaded, setSlabImagesLoaded] = useState(false);
-
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedFinish, setSelectedFinish] = useState("Polish");
   const [selectedThickness, setSelectedThickness] = useState("20mm");
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
   const { state: cartState } = useCart();
-
   const mainImageRef = useRef<HTMLDivElement>(null);
+  const relatedRef = useRef<HTMLDivElement | null>(null);
 
-  // Load all catalog products
-  const allProducts = useMemo(() => getAllProducts(), []);
-  const resolved: ProductType | undefined = useMemo(
-    () => allProducts.find((p) => p.id === id),
-    [allProducts, id]
-  );
+  // Fetch product from database
+  const { product: dbProduct, relatedProducts: dbRelatedProducts, loading, error } = useProduct(id);
 
-  useGSAP(() => {
-    if (mainImageRef.current) {
-      gsap.fromTo(mainImageRef.current, { opacity: 0 }, { opacity: 1, duration: 0.5 });
-    }
-  }, [selectedImage]); // Animate when image changes
-
-  // Get furnitureSpecs ONLY if furniture
-  const furnitureSpecs = useMemo(() => {
-    if (resolved?.category === "furniture" && resolved?.name) {
-      return getFurnitureSpecs(resolved.name);
-    }
-    return null;
-  }, [resolved]);
-
-  // Load Cloudinary URLs for slab images
-  useEffect(() => {
-    if (resolved?.category === 'slabs' && resolved?.images && !slabImagesLoaded) {
-      setSlabImagesLoaded(true);
-
-      Promise.all(resolved.images.map(async (path) => {
-        try {
-          const url = await loadImageUrl(path);
-          return url;
-        } catch (err) {
-          console.error(`[ProductDetails] Failed to convert image path: ${path}`, err);
-          return path; // fallback to original
-        }
-      }))
-        .then(urls => {
-          setSlabImageUrls(urls.filter(Boolean));
-        })
-        .catch(err => {
-          console.error('[ProductDetails] Error loading slab images:', err);
-          setSlabImageUrls(resolved.images || []); // Fallback to original paths
-        });
-    } else if (resolved?.category !== 'slabs') {
-      setSlabImageUrls([]);
-      setSlabImagesLoaded(false);
-    }
-  }, [resolved?.category, resolved?.images, slabImagesLoaded]);
-
-  const etsyUrl = furnitureSpecs?.etsyUrl;
-
-  // Build rich product object
+  // Build product object from database data - MUST be before early returns
   const product = useMemo(() => {
-    const baseImages = (() => {
-      if (resolved?.category === 'slabs') {
-        // For slabs, use loaded Cloudinary URLs
-        const result = slabImageUrls.length > 0 ? slabImageUrls : ["/demo2.webp"];
-        return result;
-      }
-      // For other categories, use original logic
-      const result = resolved?.images && resolved.images.length > 0
-        ? resolved.images
-        : resolved?.image
-          ? [resolved.image]
-          : ["/demo2.webp"];
-      return result;
-    })();
+    if (!dbProduct) {
+      return null;
+    }
+    const baseImages = dbProduct.images && dbProduct.images.length > 0
+      ? dbProduct.images
+      : dbProduct.image
+        ? [dbProduct.image]
+        : ["/demo2.webp"];
 
-    const category = resolved?.category || "slabs";
-    const subcategory = resolved?.subcategory || "marble";
+    const category = dbProduct.category || "slabs";
+    const subcategory = dbProduct.subcategory || "marble";
 
-    // Related products
-    const relatedPool = allProducts.filter((p) => {
-      const notSelf = p.id !== (resolved?.id || id);
-      const sameCategory = resolved?.category ? p.category === resolved.category : true;
-      const sameSubForFurniture =
-        resolved?.category === "furniture" && resolved?.subcategory
-          ? p.subcategory === resolved.subcategory
-          : true;
-      return notSelf && sameCategory && sameSubForFurniture;
-    });
-
-    const relatedPick = relatedPool.slice(0, 10).map((p) => ({
-      id: p.id,
+    // Related products from API
+    const relatedPick = dbRelatedProducts.slice(0, 10).map((p) => ({
+      id: p._id,
       name: p.name,
-      image: p.image,
+      image: p.image || p.images?.[0] || "/demo2.webp",
     }));
 
     // Build specs section
     let specs: Record<string, string> = {};
 
-    if (category === "furniture" && furnitureSpecs) {
-      specs = formatFurnitureSpecs(furnitureSpecs);
+    if (category === "furniture" && dbProduct.specifications) {
+      // Use specifications from database
+      specs = dbProduct.specifications;
     } else {
       specs = {
         finish: selectedFinish,
         thickness: selectedThickness,
-        origin: "India",
+        origin: dbProduct.specifications?.origin || "India",
         material: subcategory.replace(/-/g, " "),
         application: "Indoor / Outdoor",
       };
     }
 
-    // -------------------------------------------
-    // ⭐ SIMPLIFIED PRICING LOGIC
-    // -------------------------------------------
+    // Pricing logic
     let displayPrice = "Price on Request";
-    const isAvailable = resolved?.available !== false;
+    const isAvailable = dbProduct.available !== false;
 
     if (!isAvailable) {
       displayPrice = "Currently Unavailable";
-    }
-    else if (resolved?.priceINR) {
-      // Direct INR → User Currency conversion
-      displayPrice = formatPrice(resolved.priceINR);
+    } else if (dbProduct.priceINR) {
+      displayPrice = formatPrice(dbProduct.priceINR);
     }
 
     const moq = category === "slabs" ? "MOQ: 20 m²" : "";
 
     return {
-      id: resolved?.id || id || "demo-product",
-      name: resolved?.name || "Premium Stone",
+      id: dbProduct._id,
+      name: dbProduct.name,
       category,
       subcategory,
       image: baseImages[0],
       images: baseImages,
       price: displayPrice,
-      priceINR: resolved?.priceINR, // <-- Pass the raw INR price
+      priceINR: dbProduct.priceINR,
       moq,
       specs,
-      description:
-        resolved?.description ||
-        "Premium natural stone slab ideal for countertops, vanities, flooring and wall cladding with strict quality selection.",
+      description: dbProduct.description || "Premium natural stone slab ideal for countertops, vanities, flooring and wall cladding with strict quality selection.",
       relatedProducts: relatedPick,
       available: isAvailable,
     };
-  }, [
-    resolved,
-    id,
-    allProducts,
-    selectedFinish,
-    selectedThickness,
-    furnitureSpecs,
-    formatPrice,
-    slabImageUrls,
-  ]);
-  // ------------------------------
-  // 🔗 Breadcrumb Builder
-  // ------------------------------
-  type CrumbNode = { id: string; name: string };
+  }, [dbProduct, dbRelatedProducts, selectedFinish, selectedThickness, formatPrice]);
 
-  const breadcrumbPath: { top: CrumbNode | null; chain: CrumbNode[] } = useMemo(() => {
-    if (!product?.id) return { top: null, chain: [] };
-
-    const path: CrumbNode[] = [];
-    let topNode: CrumbNode | null = null;
-
-    const visitSubs = (subs: Subcategory[], acc: CrumbNode[]): boolean => {
-      for (const sub of subs) {
-        const nextAcc = [...acc, { id: sub.id, name: sub.name }];
-
-        if (sub.products && sub.products.some((p) => p.id === product.id)) {
-          path.push(...nextAcc);
-          return true;
-        }
-
-        if (sub.subcategories?.length && visitSubs(sub.subcategories, nextAcc)) {
-          return true;
-        }
-      }
-      return false;
+  // Breadcrumb - simplified without catalog dependencies
+  const breadcrumbPath = useMemo(() => {
+    if (!product) return { top: null, chain: [] as { id: string; name: string }[] };
+    return {
+      top: product.category ? { id: product.category, name: product.category } : null,
+      chain: [] as { id: string; name: string }[]
     };
+  }, [product]);
 
-    for (const cat of catalogCategories) {
-      topNode = { id: cat.id, name: cat.name };
-      if (visitSubs(cat.subcategories, [])) {
-        return { top: topNode, chain: path };
-      }
+  // Check if product is in cart
+  const isInCart = product ? cartState.items.some((item) => item.id === product.id) : false;
+
+  // Get Etsy URL if available from specifications
+  const etsyUrl = dbProduct?.specifications?.etsyUrl;
+
+  // GSAP animation for image changes
+  useGSAP(() => {
+    if (mainImageRef.current && product) {
+      gsap.fromTo(mainImageRef.current, { opacity: 0 }, { opacity: 1, duration: 0.5 });
     }
+  }, [selectedImage, product]);
 
-    return { top: topNode, chain: path };
-  }, [product?.id]);
-
-  // ------------------------------
-  // 🛒 Cart check
-  // ------------------------------
-  const isInCart = cartState.items.some((item) => item.id === product.id);
-
-  // ------------------------------
-  // 🎞 Auto image rotation
-  // ------------------------------
+  // Auto image rotation
   useEffect(() => {
+    if (!product) return;
     const t = setInterval(() => {
       setSelectedImage((prev) => (prev + 1) % product.images.length);
     }, 3500);
 
     return () => clearInterval(t);
-  }, [product.images.length]);
-
-  // ------------------------------
-  // Related slider refs
-  // ------------------------------
-  const relatedRef = useRef<HTMLDivElement | null>(null);
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  }, [product]);
 
   const slideWidth = 250;
   const gap = 20;
@@ -250,6 +136,7 @@ const ProductDetails = () => {
   };
 
   const scrollRelated = (dir: "left" | "right") => {
+    if (!product) return;
     const maxSlides = product.relatedProducts.length;
     if (!maxSlides) return;
 
@@ -265,10 +152,9 @@ const ProductDetails = () => {
     setTimeout(() => setIsAutoPlaying(true), 3000);
   };
 
-  // ------------------------------
   // Browser Share API
-  // ------------------------------
   const handleShare = async () => {
+    if (!product) return;
     const shareData = {
       title: product.name,
       text: `Check out this ${product.name} from HS Global Export`,
@@ -286,7 +172,7 @@ const ProductDetails = () => {
   };
 
   useEffect(() => {
-    if (!isAutoPlaying || !product.relatedProducts.length) return;
+    if (!isAutoPlaying || !product || !product.relatedProducts.length) return;
 
     const t = setInterval(() => {
       const maxSlides = product.relatedProducts.length;
@@ -294,13 +180,38 @@ const ProductDetails = () => {
     }, 2000);
 
     return () => clearInterval(t);
-  }, [currentSlide, isAutoPlaying, product.relatedProducts.length]);
+  }, [currentSlide, isAutoPlaying, product]);
 
-  // ------------------------------
-  // UI STARTS HERE
-  // ------------------------------
+  // Show loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading product...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error state
+  if (error || !product) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Product Not Found</h2>
+          <p className="text-gray-600 mb-4">{error || 'The product you are looking for does not exist.'}</p>
+          <Link to="/products" className="text-blue-600 hover:text-blue-700 font-medium">
+            ← Back to Products
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  // Render UI
   return (
-    <div className="pt-20 min-h-screen">
+    <div className="min-h-screen bg-gray-50">
       <Helmet>
         <title>{product.name} | HS Global Export</title>
         <meta name="title" content={product.name} />
@@ -309,385 +220,377 @@ const ProductDetails = () => {
         <meta property="og:description" content={product.description} />
         <meta property="og:image" content={product.image} />
       </Helmet>
+      
       {/* Breadcrumb */}
-      <div className="container mx-auto px-4 pt-0">
-        <div className="flex items-center text-gray-600 text-sm bg-white/60 backdrop-blur rounded-lg px-3 py-2 inline-flex">
-          <Link to="/" className="hover:text-accent">Home</Link>
-          <ChevronRight className="w-4 h-4 mx-2" />
+      <div className="bg-white border-b border-gray-200">
+        <div className="container mx-auto px-4 py-4">
+          <nav className="flex items-center text-sm text-gray-600">
+            <Link to="/" className="hover:text-blue-600 transition-colors">Home</Link>
+            <ChevronRight className="w-4 h-4 mx-2" />
 
-          <Link
-            to={
-              breadcrumbPath.top
-                ? `/products?cat=${breadcrumbPath.top.id}`
-                : "/products"
-            }
-            className="hover:text-accent"
-          >
-            Products
-          </Link>
+            <Link
+              to={
+                breadcrumbPath.top
+                  ? `/products?cat=${breadcrumbPath.top.id}`
+                  : "/products"
+              }
+              className="hover:text-blue-600 transition-colors"
+            >
+              Products
+            </Link>
 
-          {breadcrumbPath.top && (
-            <>
-              <ChevronRight className="w-4 h-4 mx-2" />
-              <Link
-                to={`/products?cat=${breadcrumbPath.top.id}`}
-                className="hover:text-accent"
-              >
-                {breadcrumbPath.top.name}
-              </Link>
-            </>
-          )}
+            {breadcrumbPath.top && (
+              <>
+                <ChevronRight className="w-4 h-4 mx-2" />
+                <Link
+                  to={`/products?cat=${breadcrumbPath.top.id}`}
+                  className="hover:text-blue-600 transition-colors capitalize"
+                >
+                  {breadcrumbPath.top.name}
+                </Link>
+              </>
+            )}
 
-          {breadcrumbPath.chain.map((node) => (
-            <span key={node.id} className="flex items-center">
-              <ChevronRight className="w-4 h-4 mx-2" />
-              <Link
-                to={`/products?cat=${breadcrumbPath.top?.id || ""}#${node.id}`}
-                className="hover:text-accent"
-              >
-                {node.name}
-              </Link>
-            </span>
-          ))}
+            {breadcrumbPath.chain.map((node) => (
+              <span key={node.id} className="flex items-center">
+                <ChevronRight className="w-4 h-4 mx-2" />
+                <Link
+                  to={`/products?cat=${breadcrumbPath.top?.id || ""}#${node.id}`}
+                  className="hover:text-blue-600 transition-colors"
+                >
+                  {node.name}
+                </Link>
+              </span>
+            ))}
 
-          <ChevronRight className="w-4 h-4 mx-2" />
-          <span className="text-gray-900 font-medium">{product.name}</span>
+            <ChevronRight className="w-4 h-4 mx-2" />
+            <span className="text-gray-900 font-medium">{product.name}</span>
+          </nav>
         </div>
       </div>
 
-
-
-      {/* Main image*/}
-      <div className="container mx-auto px-4 py-3">
-        <div
-          ref={mainImageRef}
-          key={selectedImage}
-          className="mx-auto max-w-4xl rounded-xl overflow-hidden"
-          style={{ opacity: 0 }}
-        >
-          <div className="w-full" style={{ height: "62vh" }}>
-            <img
-              src={product.images[selectedImage]}
-              alt={product.name}
-              className="w-full h-full object-contain"
-            />
-          </div>
-        </div>
-
-        {/* Thumbnails */}
-        <div className="mt-6 flex items-center justify-center gap-3 flex-wrap">
-          {product.images.slice(0, 5).map((img, idx) => (
-            <button
-              key={img}
-              onClick={() => setSelectedImage(idx)}
-              className={`relative w-24 h-16 rounded-lg overflow-hidden border transition transform hover:scale-[1.02] ${selectedImage === idx
-                ? "border-amber-500 ring-2 ring-amber-300"
-                : "border-gray-300 hover:border-gray-400"
-                }`}
+      {/* Main Content */}
+      <div className="container mx-auto px-4 py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {/* Image Gallery */}
+          <div>
+            <div
+              ref={mainImageRef}
+              key={selectedImage}
+              className="aspect-square bg-white rounded-2xl shadow-xl overflow-hidden mb-6"
+              style={{ opacity: 0 }}
             >
               <img
-                src={img}
-                alt={`${product.name} ${idx + 1}`}
-                className="w-full h-full object-contain bg-white"
+                src={product.images[selectedImage]}
+                alt={product.name}
+                className="w-full h-full object-cover"
               />
-            </button>
-          ))}
-        </div>
-      </div>
+            </div>
 
-      {/* Pricing CTA */}
-      <div className="container mx-auto px-4">
-        <div
-          className={`mx-auto max-w-3xl rounded-xl border ${product.available
-            ? "border-amber-200/40 bg-gradient-to-r from-amber-50/20 to-transparent"
-            : "border-gray-200/40 bg-gradient-to-r from-gray-50/20 to-transparent"
-            } p-5`}
-        >
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            {/* Price */}
-            <div className="flex items-baseline gap-4">
-              <div
-                className={`text-2xl font-bold ${product.available ? "text-gray-900" : "text-gray-600"
-                  }`}
-              >
-                {product.category === "slabs"
-                  ? "Get Custom Quote"
-                  : product.price}
+            {/* Thumbnail Gallery */}
+            {product.images.length > 1 && (
+              <div className="grid grid-cols-5 gap-3">
+                {product.images.slice(0, 5).map((img, idx) => (
+                  <button
+                    key={img}
+                    onClick={() => setSelectedImage(idx)}
+                    className={`aspect-square bg-white rounded-lg overflow-hidden border-2 transition-all ${
+                      selectedImage === idx
+                        ? "border-blue-600 ring-2 ring-blue-600/20 scale-95"
+                        : "border-gray-200 hover:border-gray-300"
+                    }`}
+                  >
+                    <img
+                      src={img}
+                      alt={`${product.name} ${idx + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </button>
+                ))}
               </div>
+            )}
+          </div>
 
-              {product.moq && product.available && product.category !== "slabs" && (
-                <div className="text-sm font-medium text-gray-600">
-                  {product.moq}
-                </div>
+          {/* Product Info */}
+          <div>
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 tracking-tight">
+              {product.name}
+            </h1>
+            
+            <div className="flex items-center gap-4 mb-6">
+              <span className="text-3xl font-bold text-blue-600">
+                {product.category === "slabs" ? "Custom Quote" : product.price}
+              </span>
+              
+              {!product.available && (
+                <span className="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm font-medium">
+                  Out of Stock
+                </span>
+              )}
+              
+              {product.moq && product.available && (
+                <span className="text-sm text-gray-600">{product.moq}</span>
               )}
             </div>
 
-            {/* CTA Buttons */}
-            <div className="flex items-center gap-3 flex-wrap">
-              {product.available ? (
-                <>
-                  {product.category === "slabs" ? (
+            <p className="text-gray-700 text-lg leading-relaxed mb-8">
+              {product.description}
+            </p>
+
+            {/* Specifications */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">Specifications</h3>
+              <div className="space-y-3">
+                {product.category === "slabs" ? (
+                  <>
+                    {/* Finish selector */}
+                    <div className="flex items-center justify-between py-3 border-b border-gray-100">
+                      <span className="font-medium text-gray-700">Finish:</span>
+                      <select
+                        value={selectedFinish}
+                        onChange={(e) => setSelectedFinish(e.target.value)}
+                        className="px-3 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                      >
+                        {[
+                          "Polish",
+                          "Flaming",
+                          "Sand Blast",
+                          "Shot Blast",
+                          "Bush Hammer",
+                          "River Wash",
+                          "Honed",
+                          "Leather",
+                          "Lepatora",
+                        ].map((f) => (
+                          <option key={f} value={f}>
+                            {f}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Thickness selector */}
+                    <div className="flex items-center justify-between py-3 border-b border-gray-100">
+                      <span className="font-medium text-gray-700">Thickness:</span>
+                      <select
+                        value={selectedThickness}
+                        onChange={(e) => setSelectedThickness(e.target.value)}
+                        className="px-3 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                      >
+                        {["12mm", "15mm", "18mm", "20mm", "25mm", "30mm"].map((t) => (
+                          <option key={t} value={t}>
+                            {t}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Other specs */}
+                    {Object.entries(product.specs)
+                      .filter(([key]) => key !== "finish" && key !== "thickness")
+                      .map(([key, value]) => (
+                        <div key={key} className="flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0">
+                          <span className="font-medium text-gray-700 capitalize">{key}:</span>
+                          <span className="text-gray-900">{value}</span>
+                        </div>
+                      ))}
+                  </>
+                ) : (
+                  // Furniture specs
+                  Object.entries(product.specs).map(([key, value]) => (
+                    <div key={key} className="flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0">
+                      <span className="font-medium text-gray-700 capitalize">{key}:</span>
+                      <span className="text-gray-900">{value}</span>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                {product.available ? (
+                  product.category === "slabs" ? (
                     <AddToCartButton
                       product={product}
                       preselectedCustomization={{
                         finish: selectedFinish,
                         thickness: selectedThickness,
                       }}
-                      className="h-11 inline-flex items-center gap-2 px-6 rounded-full bg-black text-white border-2 border-black hover:bg-white hover:text-black shadow-lg hover:shadow-xl transition-all duration-300"
+                      className="flex-1 h-12 inline-flex items-center justify-center gap-2 px-6 rounded-lg bg-blue-600 text-white hover:bg-blue-700 shadow-lg hover:shadow-xl transition-all duration-300 font-semibold"
                     />
                   ) : isInCart ? (
                     <QuantityHandler product={product} />
                   ) : (
                     <AddToCartButton
                       product={product}
-                      className="h-11 inline-flex items-center gap-2 px-6 rounded-full bg-black text-white border-2 border-black hover:bg-white hover:text-black shadow-lg hover:shadow-xl transition-all duration-300"
+                      className="flex-1 h-12 inline-flex items-center justify-center gap-2 px-6 rounded-lg bg-blue-600 text-white hover:bg-blue-700 shadow-lg hover:shadow-xl transition-all duration-300 font-semibold"
                     />
-                  )}
-
-                  {/* Etsy */}
-                  {etsyUrl && (
-                    <a
-                      href={etsyUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="h-11 inline-flex items-center gap-2 px-6 rounded-full bg-orange-500 text-white border-2 border-orange-500 hover:bg-white hover:text-orange-500 shadow-lg hover:shadow-xl transition-all duration-300 font-semibold"
-                    >
-                      Etsy
-                    </a>
-                  )}
-
-                  {/* WhatsApp */}
+                  )
+                ) : (
                   <a
                     href={`https://wa.me/918107115116?text=${encodeURIComponent(
-                      "Inquiry about " + product.name
+                      "Inquiry about " + product.name + " availability"
                     )}`}
                     target="_blank"
                     rel="noreferrer"
-                    className="h-11 w-11 inline-flex items-center justify-center rounded-full border-2 border-black bg-white text-black hover:bg-black hover:text-white shadow-lg hover:shadow-xl transition-all duration-300"
+                    className="flex-1 h-12 inline-flex items-center justify-center gap-2 px-6 rounded-lg bg-red-600 text-white hover:bg-red-700 shadow-lg hover:shadow-xl transition-all duration-300 font-semibold"
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      className="h-5 w-5 fill-green-600"
-                    >
-                      <path d="M20.52 3.48A11.94 11.94 0 0 0 12.06 0C5.46.03.1 5.38.12 11.98c0 2.1.55 4.1 1.52 5.86L0 24l6.3-1.6a12.02 12.02 0 0 0 5.76 1.46h.03c6.6 0 11.97-5.36 12-11.96a11.94 11.94 0 0 0-3.57-8.42zM12.09 21.3h-.02a9.9 9.9 0 0 1-5.04-1.38l-.36-.2-3.74.95.99-3.64-.24-.38a9.36 9.36 0 0 1-1.45-4.96c-.02-5.16 4.18-9.38 9.34-9.4 2.5 0 4.86.98 6.64 2.77a9.32 9.32 0 0 1 2.75 6.65c-.02 5.16-4.22 9.39-9.37 9.39zm5.35-7.26c-.29-.15-1.72-.84-1.99-.94-.27-.1-.46-.15-.66.15-.2.29-.76.94-.92 1.12-.17.19-.34.22-.62.08-.29-.15-1.2-.44-2.28-1.41-1.68-1.5-1.92-2.33-2.14-2.62-.23-.29-.02-.45.13-.6.13-.13.3-.33.45-.5.15-.17.2-.29.3-.49.1-.2.05-.37-.02-.52-.07-.15-.66-1.55-.9-2.12-.24-.57-.48-.49-.66-.49-.17 0-.37-.02-.57-.02-.2 0-.52.08-.8.37-.27.29-1.03 1.01-1.03 2.47 0 1.45 1.06 2.86 1.21 3.06.15.2 2.08 3.16 5.04 4.43.71.31 1.26.48 1.69.62.71.22 1.34.2 1.85.12.57-.09 1.73-.7 1.98-1.39.25-.69.25-1.27.17-1.39-.07-.12-.27-.19-.55-.33z" />
-                    </svg>
+                    Contact for Availability
                   </a>
+                )}
+              </div>
 
-                  {/* Share */}
-                  <button
-                    onClick={handleShare}
-                    className="h-11 w-11 inline-flex items-center justify-center rounded-full border-2 border-black bg-white text-black hover:bg-black hover:text-white shadow-lg hover:shadow-xl transition-all duration-300"
-                  >
-                    <Share2 className="w-5 h-5" />
-                  </button>
-                </>
-              ) : (
+              {product.available && etsyUrl && (
+                <a
+                  href={etsyUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full h-12 flex items-center justify-center gap-2 px-6 rounded-lg bg-orange-500 text-white hover:bg-orange-600 transition-colors font-semibold"
+                >
+                  View on Etsy
+                </a>
+              )}
+
+              <div className="flex gap-3">
+                <button
+                  onClick={handleShare}
+                  className="flex-1 h-12 inline-flex items-center justify-center gap-2 px-4 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors"
+                >
+                  <Share2 className="w-5 h-5" />
+                  Share
+                </button>
+                
                 <a
                   href={`https://wa.me/918107115116?text=${encodeURIComponent(
-                    "Inquiry about " + product.name + " availability"
+                    "Inquiry about " + product.name
                   )}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="h-11 inline-flex items-center gap-2 px-6 rounded-full bg-red-600 text-white border-2 border-red-600 hover:bg-white hover:text-red-600 shadow-lg hover:shadow-xl transition-all duration-300 font-semibold"
+                  className="flex-1 h-12 inline-flex items-center justify-center gap-2 px-4 rounded-lg bg-green-600 text-white hover:bg-green-700 transition-colors font-semibold"
                 >
-                  Contact for Availability
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    className="h-5 w-5 fill-white"
+                  >
+                    <path d="M20.52 3.48A11.94 11.94 0 0 0 12.06 0C5.46.03.1 5.38.12 11.98c0 2.1.55 4.1 1.52 5.86L0 24l6.3-1.6a12.02 12.02 0 0 0 5.76 1.46h.03c6.6 0 11.97-5.36 12-11.96a11.94 11.94 0 0 0-3.57-8.42zM12.09 21.3h-.02a9.9 9.9 0 0 1-5.04-1.38l-.36-.2-3.74.95.99-3.64-.24-.38a9.36 9.36 0 0 1-1.45-4.96c-.02-5.16 4.18-9.38 9.34-9.4 2.5 0 4.86.98 6.64 2.77a9.32 9.32 0 0 1 2.75 6.65c-.02 5.16-4.22 9.39-9.37 9.39zm5.35-7.26c-.29-.15-1.72-.84-1.99-.94-.27-.1-.46-.15-.66.15-.2.29-.76.94-.92 1.12-.17.19-.34.22-.62.08-.29-.15-1.2-.44-2.28-1.41-1.68-1.5-1.92-2.33-2.14-2.62-.23-.29-.02-.45.13-.6.13-.13.3-.33.45-.5.15-.17.2-.29.3-.49.1-.2.05-.37-.02-.52-.07-.15-.66-1.55-.9-2.12-.24-.57-.48-.49-.66-.49-.17 0-.37-.02-.57-.02-.2 0-.52.08-.8.37-.27.29-1.03 1.01-1.03 2.47 0 1.45 1.06 2.86 1.21 3.06.15.2 2.08 3.16 5.04 4.43.71.31 1.26.48 1.69.62.71.22 1.34.2 1.85.12.57-.09 1.73-.7 1.98-1.39.25-.69.25-1.27.17-1.39-.07-.12-.27-.19-.55-.33z" />
+                  </svg>
+                  WhatsApp
                 </a>
-              )}
+              </div>
+
+              <Link
+                to="/quotation"
+                className="w-full h-12 flex items-center justify-center gap-2 px-6 rounded-lg bg-amber-600 text-white hover:bg-amber-700 transition-colors font-semibold"
+              >
+                <Quote className="w-5 h-5" />
+                Request Quote
+              </Link>
             </div>
           </div>
         </div>
       </div>
-      {/* ------------------------------- */}
-      {/* Specs + About Section */}
-      {/* ------------------------------- */}
-      <div className="container mx-auto px-4 py-12">
-        <div className="mx-auto max-w-5xl">
-          <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-gray-900">
-            About {product.name}
-          </h2>
+      {/* Description & Details Section */}
+      <div className="bg-white py-16">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl font-bold text-gray-900 mb-6">
+              About {product.name}
+            </h2>
 
-          <p className="mt-3 text-lg leading-relaxed text-gray-700">
-            {product.description}
-          </p>
-
-          {/* SPECS GRID */}
-          <div className="mt-6 grid md:grid-cols-3 gap-4">
-            {product.category === "slabs" ? (
-              <>
-                {/* Finish selector */}
-                <div className="rounded-lg border border-gray-200 p-4 bg-white/30 backdrop-blur-sm">
-                  <div className="text-xs uppercase tracking-wider text-gray-500 mb-2">
-                    Finish
-                  </div>
-                  <select
-                    value={selectedFinish}
-                    onChange={(e) => setSelectedFinish(e.target.value)}
-                    className="w-full font-semibold text-gray-900 bg-transparent border-none focus:ring-0"
-                  >
-                    {[
-                      "Polish",
-                      "Flaming",
-                      "Sand Blast",
-                      "Shot Blast",
-                      "Bush Hammer",
-                      "River Wash",
-                      "Honed",
-                      "Leather",
-                      "Lepatora",
-                    ].map((f) => (
-                      <option key={f} value={f}>
-                        {f}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Thickness selector */}
-                <div className="rounded-lg border border-gray-200 p-4 bg-white/30 backdrop-blur-sm">
-                  <div className="text-xs uppercase tracking-wider text-gray-500 mb-2">
-                    Thickness
-                  </div>
-                  <select
-                    value={selectedThickness}
-                    onChange={(e) => setSelectedThickness(e.target.value)}
-                    className="w-full font-semibold text-gray-900 bg-transparent border-none focus:ring-0"
-                  >
-                    {["12mm", "15mm", "18mm", "20mm", "25mm", "30mm"].map((t) => (
-                      <option key={t} value={t}>
-                        {t}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Other specs */}
-                {Object.entries(product.specs)
-                  .filter(([key]) => key !== "finish" && key !== "thickness")
-                  .map(([key, value]) => (
-                    <div
-                      key={key}
-                      className="rounded-lg border border-gray-200 p-4 bg-white/30 backdrop-blur-sm"
-                    >
-                      <div className="text-xs uppercase tracking-wider text-gray-500">
-                        {key}
-                      </div>
-                      <div className="mt-1 font-semibold text-gray-900">
-                        {value}
-                      </div>
-                    </div>
-                  ))}
-              </>
-            ) : (
-              // Furniture specs (static)
-              Object.entries(product.specs).map(([key, value]) => (
-                <div
-                  key={key}
-                  className="rounded-lg border border-gray-200 p-4 bg-white/30 backdrop-blur-sm"
-                >
-                  <div className="text-xs uppercase tracking-wider text-gray-500">
-                    {key}
-                  </div>
-                  <div className="mt-1 font-semibold text-gray-900">
-                    {value}
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
-
-          {/* ------------------------------- */}
-          {/* Description Paragraphs */}
-          {/* ------------------------------- */}
-          <div className="mt-10 space-y-6 text-gray-800">
-            <p className="leading-relaxed">
-              {product.category === "furniture"
-                ? "This handcrafted furniture piece combines natural stone elegance with functional design. Each piece is meticulously crafted to order, ensuring unique character and premium quality."
-                : "This stone offers a smooth, polished surface with subtle veining that elevates both contemporary and classic interiors. Its durability and low maintenance make it suitable for kitchens, bathrooms, living areas and commercial lobbies."}
-            </p>
-
-            <p className="leading-relaxed">
-              {product.category === "furniture"
-                ? "Custom dimensions and finishes available. We work closely with designers and homeowners to create bespoke pieces that perfectly complement your space."
-                : "For best results, seal annually and clean with pH-neutral stone cleaners. Avoid harsh acids. We provide guidance on slab selection, edge profiles, and installation practices tailored to your project."}
-            </p>
-          </div>
-
-          {/* QUOTE BOX */}
-          <div className="mt-10 rounded-xl border border-amber-200/50 p-6 bg-gradient-to-br from-amber-50/40 to-transparent">
-            <div className="flex items-start">
-              <Quote className="w-6 h-6 text-amber-600 mr-3" />
-              <p className="text-gray-800 leading-relaxed">
+            <div className="space-y-6 text-gray-700 text-lg leading-relaxed">
+              <p>
                 {product.category === "furniture"
-                  ? "Each furniture piece is a unique work of art, combining traditional craftsmanship with modern design sensibilities. Request custom specifications to match your vision."
-                  : "Crafted by nature over millennia, this marble delivers timeless elegance to modern spaces. Request a live video of current slabs to choose your exact piece."}
+                  ? "This handcrafted furniture piece combines natural stone elegance with functional design. Each piece is meticulously crafted to order, ensuring unique character and premium quality."
+                  : "This stone offers a smooth, polished surface with subtle veining that elevates both contemporary and classic interiors. Its durability and low maintenance make it suitable for kitchens, bathrooms, living areas and commercial lobbies."}
+              </p>
+
+              <p>
+                {product.category === "furniture"
+                  ? "Custom dimensions and finishes available. We work closely with designers and homeowners to create bespoke pieces that perfectly complement your space."
+                  : "For best results, seal annually and clean with pH-neutral stone cleaners. Avoid harsh acids. We provide guidance on slab selection, edge profiles, and installation practices tailored to your project."}
               </p>
             </div>
+
+            {/* QUOTE BOX */}
+            <div className="mt-10 rounded-xl bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 p-8">
+              <div className="flex items-start gap-4">
+                <Quote className="w-8 h-8 text-amber-600 flex-shrink-0" />
+                <p className="text-gray-800 text-lg leading-relaxed italic">
+                  {product.category === "furniture"
+                    ? "Each furniture piece is a unique work of art, combining traditional craftsmanship with modern design sensibilities. Request custom specifications to match your vision."
+                    : "Crafted by nature over millennia, this stone delivers timeless elegance to modern spaces. Request a live video of current slabs to choose your exact piece."}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* ------------------------------- */}
-      {/* Related Photos Slider */}
-      {/* ------------------------------- */}
-      <div className="container mx-auto px-4 pb-16">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-xl font-semibold text-primary">Related Photos</h3>
+      {/* Related Products */}
+      {product.relatedProducts.length > 0 && (
+        <div className="bg-gray-50 py-16">
+          <div className="container mx-auto px-4">
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="text-3xl font-bold text-gray-900">Related Products</h2>
 
-          <div className="flex gap-2">
-            <button
-              onClick={() => scrollRelated("left")}
-              className="h-9 w-9 rounded-full bg-white/90 ring-1 ring-black/20 shadow flex items-center justify-center hover:bg-white"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-            <button
-              onClick={() => scrollRelated("right")}
-              className="h-9 w-9 rounded-full bg-white/90 ring-1 ring-black/20 shadow flex items-center justify-center hover:bg-white"
-            >
-              <ChevronRightIcon className="w-5 h-5" />
-            </button>
-          </div>
-        </div>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => scrollRelated("left")}
+                  className="h-10 w-10 rounded-full bg-white shadow-md hover:shadow-lg flex items-center justify-center transition-all border border-gray-200"
+                >
+                  <ChevronLeft className="w-5 h-5 text-gray-700" />
+                </button>
+                <button
+                  onClick={() => scrollRelated("right")}
+                  className="h-10 w-10 rounded-full bg-white shadow-md hover:shadow-lg flex items-center justify-center transition-all border border-gray-200"
+                >
+                  <ChevronRightIcon className="w-5 h-5 text-gray-700" />
+                </button>
+              </div>
+            </div>
 
-        <div className="relative">
-          <div
-            ref={relatedRef}
-            className="flex gap-5 overflow-x-auto pb-2 no-scrollbar scroll-smooth"
-            style={{ scrollSnapType: "x mandatory" }}
-          >
-            {product.relatedProducts.map((p) => (
-              <Link
-                key={p.id}
-                to={`/products/${p.id}`}
-                className="relative overflow-hidden group transition-transform duration-300 bg-white shadow-md hover:shadow-lg shrink-0"
-                style={{
-                  width: `${slideWidth}px`,
-                  aspectRatio: "3/4",
-                  scrollSnapAlign: "start",
-                }}
+            <div className="relative">
+              <div
+                ref={relatedRef}
+                className="flex gap-6 overflow-x-auto pb-4 no-scrollbar scroll-smooth"
+                style={{ scrollSnapType: "x mandatory" }}
               >
-                <img
-                  src={p.image}
-                  alt={p.name}
-                  className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-500 -translate-y-10 scale-[0.88] group-hover:scale-[0.99]"
-                />
-
-                <div className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-white/85 via-white/60 to-transparent">
-                  <h4 className="text-sm font-semibold text-gray-900 -translate-y-2 text-center leading-snug">
-                    {p.name}
-                  </h4>
-                  <div className="mt-2 flex justify-center">
-                    <span className="inline-flex px-6 py-2 text-xs font-semibold border border-gray-900 bg-gray-900 text-white hover:bg-white hover:text-gray-900 transition-colors duration-200 rounded-none">
-                      Details
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            ))}
+                {product.relatedProducts.map((p) => (
+                  <Link
+                    key={p.id}
+                    to={`/products/${p.id}`}
+                    className="group bg-white rounded-xl shadow-md hover:shadow-xl overflow-hidden transition-all duration-300 shrink-0"
+                    style={{
+                      width: `${slideWidth}px`,
+                      scrollSnapAlign: "start",
+                    }}
+                  >
+                    <div className="aspect-square overflow-hidden">
+                      <img
+                        src={p.image}
+                        alt={p.name}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                    </div>
+                    <div className="p-4">
+                      <h4 className="text-sm font-semibold text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2">
+                        {p.name}
+                      </h4>
+                      <div className="mt-3 inline-flex items-center text-blue-600 text-sm font-medium group-hover:gap-2 transition-all">
+                        View Details
+                        <ChevronRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

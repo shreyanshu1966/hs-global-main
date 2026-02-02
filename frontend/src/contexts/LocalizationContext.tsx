@@ -59,7 +59,8 @@ export const LocalizationProvider: React.FC<{ children: ReactNode }> = ({
         console.log("[Location] Detected:", data.country_name, data.country_code);
         setLoading(false);
       } catch (error) {
-        console.error("[Location] Detection failed:", error);
+        // Silent fail for rate limits or CORS
+        console.warn("[Location] Detection skipped (CORS/RateLimit)");
         setLoading(false);
       }
     };

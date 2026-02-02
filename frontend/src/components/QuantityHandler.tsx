@@ -1,24 +1,37 @@
 import React from 'react';
 import { Plus, Minus } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
-import { Product } from '../data/products';
 
+// Accept either a full product (legacy) or just an ID
 interface QuantityHandlerProps {
-  product: Product;
+  product?: { id: string };
+  productId?: string;
   className?: string;
+  disabled?: boolean;
 }
 
-export const QuantityHandler: React.FC<QuantityHandlerProps> = ({ product, className = '' }) => {
+export const QuantityHandler: React.FC<QuantityHandlerProps> = ({ 
+  product, 
+  productId,
+  className = '',
+  disabled = false
+}) => {
   const { state, updateQuantity, removeItem } = useCart();
 
-  const cartItem = state.items.find(item => item.id === product.id);
+  const id = productId || product?.id;
+
+  if (!id) {
+     return null;
+  }
+
+  const cartItem = state.items.find(item => item.id === id);
   const quantity = cartItem?.quantity || 0;
 
   const handleQuantityChange = (newQuantity: number) => {
     if (newQuantity <= 0) {
-      removeItem(product.id);
+      removeItem(id);
     } else {
-      updateQuantity(product.id, newQuantity);
+      updateQuantity(id, newQuantity);
     }
   };
 
@@ -27,9 +40,10 @@ export const QuantityHandler: React.FC<QuantityHandlerProps> = ({ product, class
   }
 
   return (
-    <div className={`flex items-center justify-between border-2 border-black bg-white text-black ${className}`}>
+    <div className={`flex items-center justify-between border-2 border-black bg-white text-black ${className} ${disabled ? 'opacity-50 pointer-events-none' : ''}`}>
       <button
         onClick={() => handleQuantityChange(quantity - 1)}
+        disabled={disabled}
         className="p-2 hover:bg-black hover:text-white transition-all duration-200 flex items-center justify-center group"
         aria-label="Decrease quantity"
       >
@@ -42,6 +56,7 @@ export const QuantityHandler: React.FC<QuantityHandlerProps> = ({ product, class
 
       <button
         onClick={() => handleQuantityChange(quantity + 1)}
+        disabled={disabled}
         className="p-2 hover:bg-black hover:text-white transition-all duration-200 flex items-center justify-center group"
         aria-label="Increase quantity"
       >

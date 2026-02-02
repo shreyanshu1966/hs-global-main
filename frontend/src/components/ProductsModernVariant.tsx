@@ -2,9 +2,9 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useLocation } from "react-router-dom";
 import { TopTabsNav } from "./Navigation/TopTabsNav";
 import { ProductCard } from "./ProductCard";
-import { categories, Subcategory, Product } from "../data/products";
+import { Product } from "../services/productService";
+import { useProducts, useCategories } from "../hooks/useProducts";
 import { useTranslation } from "react-i18next";
-import { loadImageUrls } from "../data/slabs.loader";
 import { motion, useScroll, useTransform } from "framer-motion";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -67,7 +67,7 @@ export const ProductsModernVariant: React.FC = () => {
   const userInteractedRef = useRef(false);
 
   // OPTIMIZED: Track if slabs images have been preloaded
-  const [slabsPreloaded, setSlabsPreloaded] = useState(false);
+  const [slabsPreloaded, setSlabsPreloaded] = useState(true); // Set to true to disable preloading
   const preloadingRef = useRef(false);
   const anticipatoryPreloadRef = useRef(false);
 
@@ -129,44 +129,42 @@ export const ProductsModernVariant: React.FC = () => {
     setGalleryPreview(cloudinaryUrls);
   }, []);
 
-  const allSubcategories = useMemo(() => {
-    const out: { id: string; name: string; products: Product[] }[] = [];
-    const extract = (subs: Subcategory[]) => {
-      subs.forEach((s) => {
-        if (s.products) out.push({ id: s.id, name: s.name, products: s.products });
-        if (s.subcategories) extract(s.subcategories);
-      });
-    };
-    categories.forEach((c) => extract(c.subcategories));
-    return out;
-  }, []);
+  // Fetch products from API
+  const { categories: dbCategories, loading: categoriesLoading } = useCategories();
+  const {
+    products: allProducts,
+    loading: productsLoading,
+    error: productsError,
+    pagination
+  } = useProducts({
+    category: activeCategory,
+    limit: 1000 // Get all products for the category
+  });
 
-  const getOrderedSubcategoryIds = useCallback((categoryId: string) => {
-    const category = categories.find((c) => c.id === categoryId);
-    if (!category) return [];
-    const ids: string[] = [];
-    const recurse = (subs: Subcategory[]) => {
-      subs.forEach((s) => {
-        if (s.products) ids.push(s.id);
-        if (s.subcategories) recurse(s.subcategories);
-      });
-    };
-    recurse(category.subcategories);
-    return ids;
-  }, []);
+  // Group products by subcategory
+  const subcategorizedProducts = useMemo(() => {
+    const grouped: { [subcategory: string]: Product[] } = {};
+    
+    allProducts.forEach(product => {
+      const sub = product.subcategory || 'Uncategorized';
+      if (!grouped[sub]) {
+        grouped[sub] = [];
+      }
+      grouped[sub].push(product);
+    });
+    
+    return Object.entries(grouped).map(([subcategory, products]) => ({
+      id: subcategory.toLowerCase().replace(/\s+/g, '-'),
+      name: subcategory,
+      products: products
+    }));
+  }, [allProducts]);
 
-  const orderedIds = useMemo(
-    () => getOrderedSubcategoryIds(activeCategory),
-    [activeCategory, getOrderedSubcategoryIds]
-  );
-
-  const categoryFilteredSubcategories = useMemo(
-    () =>
-      allSubcategories
-        .filter((s) => orderedIds.includes(s.id))
-        .sort((a, b) => orderedIds.indexOf(a.id) - orderedIds.indexOf(b.id)),
-    [allSubcategories, orderedIds]
-  );
+  const categoryFilteredSubcategories = subcategorizedProducts;
+  const orderedIds = subcategorizedProducts.map(sub => sub.id);
+  
+  // Create a map of all subcategories for product lookup
+  const allSubcategories = subcategorizedProducts;
 
   // Reset activeSection to first section when category changes
   useEffect(() => {
@@ -176,113 +174,10 @@ export const ProductsModernVariant: React.FC = () => {
     }
   }, [activeCategory, orderedIds, activeSection]);
 
-  // OPTIMIZED: Anticipatory preloading - start loading ONLY first images of slabs after 3 seconds on furniture
-  useEffect(() => {
-    if (activeCategory === 'furniture' && !slabsPreloaded && !anticipatoryPreloadRef.current) {
-      anticipatoryPreloadRef.current = true;
+  // OPTIMIZED: Preloading disabled - images load on demand with lazy loading
+  // This improves initial page load performance
 
-      // Wait 3 seconds, then preload slabs in background
-      const anticipatoryTimeout = setTimeout(() => {
-        if (!preloadingRef.current && !slabsPreloaded) {
-          preloadingRef.current = true;
-
-          const slabsCategory = categories.find(c => c.id === 'slabs');
-          if (slabsCategory) {
-            const firstProducts: Product[] = [];
-            const extractProducts = (subs: Subcategory[], limit: number) => {
-              for (const sub of subs) {
-                if (firstProducts.length >= limit) break;
-                if (sub.products) {
-                  firstProducts.push(...sub.products.slice(0, limit - firstProducts.length));
-                }
-                if (sub.subcategories) {
-                  extractProducts(sub.subcategories, limit);
-                }
-              }
-            };
-
-            extractProducts(slabsCategory.subcategories, 16); // Increased to 16 since we're only loading 1 image per product
-
-            // Preload ONLY first (stand) image of each product
-            const imagePaths = firstProducts
-              .map(p => (p.images && p.images[0]) || null)
-              .filter(Boolean) as string[];
-
-            if (imagePaths.length > 0) {
-              loadImageUrls(imagePaths)
-                .then(() => {
-                  setSlabsPreloaded(true);
-                })
-                .catch(() => {
-                  // Silent fail for anticipatory loading
-                })
-                .finally(() => {
-                  preloadingRef.current = false;
-                });
-            } else {
-              preloadingRef.current = false;
-            }
-          } else {
-            preloadingRef.current = false;
-          }
-        }
-      }, 3000); // Start preloading after 3 seconds
-
-      return () => clearTimeout(anticipatoryTimeout);
-    }
-  }, [activeCategory, slabsPreloaded]);
-
-  // OPTIMIZED: Preload first 12 slab images when category switches to slabs OR on initial mount if slabs is active
-  useEffect(() => {
-    if (activeCategory === 'slabs' && !slabsPreloaded && !preloadingRef.current) {
-      preloadingRef.current = true;
-
-      // Small delay to prevent blocking UI
-      const preloadTimeout = setTimeout(() => {
-        const slabsCategory = categories.find(c => c.id === 'slabs');
-        if (slabsCategory) {
-          const firstProducts: Product[] = [];
-          const extractProducts = (subs: Subcategory[], limit: number) => {
-            for (const sub of subs) {
-              if (firstProducts.length >= limit) break;
-              if (sub.products) {
-                firstProducts.push(...sub.products.slice(0, limit - firstProducts.length));
-              }
-              if (sub.subcategories) {
-                extractProducts(sub.subcategories, limit);
-              }
-            }
-          };
-
-          extractProducts(slabsCategory.subcategories, 12);
-
-          // Preload first image of each product
-          const imagePaths = firstProducts
-            .map(p => (p.images && p.images[0]) || null)
-            .filter(Boolean) as string[];
-
-          if (imagePaths.length > 0) {
-            loadImageUrls(imagePaths)
-              .then(() => {
-                setSlabsPreloaded(true);
-              })
-              .catch(err => {
-                console.error('[Preload] Error loading slab images:', err);
-              })
-              .finally(() => {
-                preloadingRef.current = false;
-              });
-          } else {
-            preloadingRef.current = false;
-          }
-        } else {
-          preloadingRef.current = false;
-        }
-      }, 100); // Small delay to let UI render first
-
-      return () => clearTimeout(preloadTimeout);
-    }
-  }, [activeCategory, slabsPreloaded]);
+  // Image preloading removed - using lazy loading for better performance
 
   const handleMeasure = useCallback((d: { height: number; top: number; offsetTop: number }) => {
     setNavDims((prev) => {
@@ -311,6 +206,16 @@ export const ProductsModernVariant: React.FC = () => {
     },
     [navDims.height]
   );
+  
+  // Helper function to get ordered subcategory IDs for a category
+  const getOrderedSubcategoryIds = useCallback((categoryId: string) => {
+    // Since we're already filtering by activeCategory in the useProducts hook,
+    // we just return the orderedIds when the category matches
+    if (categoryId === activeCategory) {
+      return orderedIds;
+    }
+    return [];
+  }, [activeCategory, orderedIds]);
 
   // Memoize category ID sets for faster O(1) lookups
   const furnitureIds = useMemo(() => new Set(getOrderedSubcategoryIds("furniture")), [getOrderedSubcategoryIds]);
@@ -661,16 +566,26 @@ export const ProductsModernVariant: React.FC = () => {
         onCategoryChange={handleCategoryChange}
       />
 
-      {/* OPTIMIZED: Show minimal loading indicator for slabs */}
-      {activeCategory === 'slabs' && !slabsPreloaded && preloadingRef.current && (
+      {/* Loading indicator for products */}
+      {productsLoading && (
         <div className="fixed bottom-4 right-4 z-50 bg-white rounded-lg shadow-lg p-3 flex items-center gap-2 border border-gray-200">
           <div className="animate-spin rounded-full h-4 w-4 border-2 border-gray-300 border-t-black"></div>
-          <span className="text-sm text-gray-600">Loading images...</span>
+          <span className="text-sm text-gray-600">Loading products...</span>
         </div>
       )}
 
       <div className="pt-6 md:pt-8" id="products">
         <div className="container mx-auto px-4 md:px-6">
+          {productsError && (
+            <div className="text-center py-12">
+              <p className="text-red-600 text-lg">{productsError}</p>
+            </div>
+          )}
+          {!productsLoading && !productsError && categoryFilteredSubcategories.length === 0 && (
+            <div className="text-center py-12">
+              <p className="text-gray-600 text-lg">No products found in this category.</p>
+            </div>
+          )}
           <div className="space-y-16 md:space-y-24 py-6 md:py-8">
             {categoryFilteredSubcategories.map((subcategory) => (
               <section

@@ -6,14 +6,13 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-import { Product } from '../data/products';
+import { Product } from '../services/productService'; // Updated import to API type
 import { AddToCartButton } from './AddToCartButton';
 import { QuantityHandler } from './QuantityHandler';
 import { useCart } from '../contexts/CartContext';
 import { useCurrency } from '../contexts/CurrencyContext';
 
-import { getFurnitureSpecs } from '../data/furnitureSpecs';
-import { loadImageUrl } from '../data/slabs.loader';
+import { loadImageUrl } from '../data/slabs.loader'; // Keep for slabs lazy load if needed
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -22,6 +21,7 @@ interface ProductCardProps {
   variant: 'modern' | 'luxury' | 'industrial' | 'elegant';
   index: number;
 }
+
 
 /* ---------- helper normalizer ----------- */
 const normalizeName = (name: string) =>
@@ -51,28 +51,18 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
   const { formatPrice } = useCurrency();
 
   /* ------------------------------------------------------
-     ⭐ PRICING LOGIC (SIMPLIFIED)
+     ⭐ PRICING LOGIC (API DRIVEN)
      ------------------------------------------------------ */
-
-  const specs = useMemo(() => {
-    if (product.category === 'furniture') return getFurnitureSpecs(product.name);
-    return null;
-  }, [product.name, product.category]);
-
   const displayPrice = useMemo(() => {
-    // Case 1: Furniture with price from specs
-    if (product.category === 'furniture' && specs?.priceINR) {
-      return formatPrice(specs.priceINR);
+    if (!product.available) return "Unavailable";
+    
+    if (product.priceINR) {
+      return formatPrice(product.priceINR);
     }
 
-    // Case 2: products.ts priceINR
-    if ((product as any).priceINR) {
-      return formatPrice((product as any).priceINR);
-    }
-
-    // Case 3: slabs or fallback - use formatPrice for consistency
-    return formatPrice(2499); // 2499 INR base price
-  }, [product, specs, formatPrice]);
+    // Fallback for slabs or items without price
+    return "Price on Request"; 
+  }, [product, formatPrice]);
 
   /* ------------------------------------------------------
      Rest of your existing card logic unchanged
@@ -228,12 +218,9 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
     return () => observer.disconnect();
   }, []);
 
-
-
-
-  const etsyUrl = specs?.etsyUrl || null;
+  const etsyUrl = product.furnitureSpecs?.etsyUrl || null;
   const videoUrl = product.category === 'furniture'
-    ? getProductVideoUrl(product.name, product.category, (product as any).subcategory || '')
+    ? getProductVideoUrl(product.name, product.category, product.subcategory || '')
     : null;
 
   /* ---- slideshow ---- */
@@ -315,7 +302,7 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
     >
       {/* IMAGE + VIDEO */}
       <Link
-        to={`/products/${product.id}`}
+        to={`/products/${product.productId}`}
         onClick={handleCardClick}
         className="relative block overflow-hidden bg-gray-100"
         style={{ aspectRatio: '4/5' }}
@@ -412,7 +399,7 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
 
       {/* BOTTOM CONTENT */}
       <div className="flex flex-col flex-grow p-4 md:p-5 bg-white rounded-b-lg">
-        <Link to={`/products/${product.id}`} onClick={handleCardClick}>
+        <Link to={`/products/${product.productId}`} onClick={handleCardClick}>
           <h3 className="text-base md:text-lg font-bold text-gray-900 line-clamp-2 mb-3">
             {product.name}
           </h3>
@@ -422,8 +409,8 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
 
           {/* Add to Cart */}
           <div className="flex-grow">
-            {state.items.find(i => i.id === product.id) ? (
-              <QuantityHandler product={product} className="w-full h-11 md:h-12" />
+            {state.items.find(i => i.id === product.productId) ? (
+              <QuantityHandler productId={product.productId} className="w-full h-11 md:h-12" />
             ) : (
               <AddToCartButton
                 product={product}

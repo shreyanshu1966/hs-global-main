@@ -122,16 +122,40 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
     return map;
   }, [activeCategoryObj]);
 
+  // Store childToParent in a ref to avoid dependency issues
+  const childToParentRef = useRef(childToParent);
+  useEffect(() => {
+    childToParentRef.current = childToParent;
+  }, [childToParent]);
+
   // Sync selected children with active section
   useEffect(() => {
-    const parentInfo = childToParent[activeSection];
-    if (parentInfo) {
-      setSelectedChildren(prev => ({
+    const parentInfo = childToParentRef.current[activeSection];
+    
+    // Skip if no parent info exists (this is a top-level section)
+    if (!parentInfo) {
+      return;
+    }
+
+    // Only update if the value actually needs to change
+    setSelectedChildren(prev => {
+      // Check if the current value is already correct
+      if (prev[parentInfo.parentId] === activeSection) {
+        return prev; // Return same reference, no re-render
+      }
+      
+      // Return new object only when value changes
+      return {
         ...prev,
         [parentInfo.parentId]: activeSection
-      }));
-    }
-  }, [activeSection, childToParent]);
+      };
+    });
+  }, [activeSection]); // Dependency is fine because setState is properly guarded
+
+  // Store onMeasure in a ref to avoid dependency issues
+  const onMeasureRef = useRef(onMeasure);
+  // Update ref without causing re-render
+  onMeasureRef.current = onMeasure;
 
   // Report dimensions to parent
   useEffect(() => {
@@ -143,7 +167,7 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
       const topStr = getComputedStyle(el).top;
       const top = parseFloat(topStr) || 0;
       const offsetTop = rect.top + window.scrollY;
-      onMeasure?.({ height: rect.height, top, offsetTop });
+      onMeasureRef.current?.({ height: rect.height, top, offsetTop });
     };
 
     const ro = new ResizeObserver(() => report());
@@ -155,7 +179,7 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
       ro.disconnect();
       window.removeEventListener('resize', report);
     };
-  }, [onMeasure]);
+  }, []); // Remove onMeasure from dependencies
 
   // Handle subcategory click
   const handleSubcategoryClick = (subcategory: typeof firstLevelSubs[0]) => {
