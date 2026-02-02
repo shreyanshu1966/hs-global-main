@@ -6,10 +6,10 @@ const testimonials = [
     {
         quote: "HS Global Export made the entire process seamless. Great granite quality, perfect color match, and timely delivery. Truly professional service.",
         name: "Ramesh P.",
-        title: "Contractor, Prestige Constructions"
+        title: "Prestige Constructions"
     },
     {
-        quote: "We sourced marble for a hotel lobby project and the finish was simply stunning. HS Global's polish and quality control were top-notch.",
+        quote: "We sourced marble for a hotel lobby project and the finish was stunning. HS Global's polish and quality control were top-notch.",
         name: "Aisha Khan",
         title: "Interior Designer, Dubai"
     },
@@ -21,7 +21,7 @@ const testimonials = [
     {
         quote: "The marble console table I ordered was absolutely beautiful. You can feel the craftsmanship and attention to detail in every inch.",
         name: "Neha Sharma",
-        title: "Homeowner, Mumbai"
+        title: "Mumbai, IN"
     },
     {
         quote: "I've worked with several suppliers, but HS Global stands out for reliability and transparency. Shipments are always consistent.",
@@ -34,20 +34,26 @@ const Testimonials = () => {
     const { t } = useTranslation();
 
     return (
-        <section className="py-24 bg-white relative overflow-hidden flex flex-col items-center justify-center antialiased">
-            <div className="container mx-auto px-4 mb-12 text-center">
-                <TextReveal>
-                    <span className="text-accent text-xs font-bold tracking-[0.2em] uppercase mb-4 block">Testimonials</span>
-                    <h2 className="text-4xl md:text-5xl font-serif text-primary mb-6">{t('home.testimonials_title') || "Trusted by the World's Best"}</h2>
-                </TextReveal>
-                <TextReveal delay={0.2}>
-                    <p className="text-gray-500 max-w-2xl mx-auto text-lg font-light">
-                        {t('home.testimonials_subtitle') || "Hear directly from architects, designers, and homeowners who have transformed their spaces with us."}
-                    </p>
-                </TextReveal>
+        <section className="py-24 md:py-32 bg-white relative overflow-hidden">
+            <div className="container mx-auto px-6 md:px-12 mb-16 md:mb-24">
+                <div className="flex flex-col md:flex-row justify-between items-end gap-8">
+                    <TextReveal>
+                        <span className="text-xs font-bold tracking-[0.2em] uppercase text-stone-500 mb-6 block">Voices</span>
+                        <h2 className="font-serif text-5xl md:text-6xl text-primary leading-tight">
+                            Trusted by <br />
+                            <span className="italic text-stone-400">Visionaries.</span>
+                        </h2>
+                    </TextReveal>
+
+                    <TextReveal delay={0.2}>
+                        <div className="max-w-xs text-stone-500 text-sm leading-relaxed text-right md:text-left">
+                            {t('home.testimonials_subtitle') || "From private residences to commercial landmarks, our stone defines spaces across the globe."}
+                        </div>
+                    </TextReveal>
+                </div>
             </div>
 
-            <div className="h-[20rem] rounded-md flex flex-col antialiased bg-white items-center justify-center relative overflow-hidden w-full">
+            <div className="w-full relative overflow-hidden pb-12">
                 <InfiniteMovingCards
                     items={testimonials}
                     direction="right"

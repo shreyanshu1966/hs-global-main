@@ -18,15 +18,17 @@ const Hero = () => {
   const bgRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
 
+
   // Get responsive banner data directly - let the browser choose the best size via srcSet/sizes
-  const bannerUrl = getResponsiveImage("banner.webp", "desktop") || "/banner.webp";
-  const bannerSrcSet = getSrcSet("banner.webp");
+  // TODO: Replace with new generated "luxury_marble_dining_hero" image
+  const bannerUrl = "/furniture/hero-dining.jpg";
+  const bannerSrcSet = ""; // Temporarily empty until we have real assets
 
   const slides = [
     {
       imageUrl: bannerUrl,
-      title: t("home.hero_title") || "Timeless Elegance",
-      subtitle: t("home.hero_subtitle") || "Natural Stone Collection",
+      title: t("home.hero_title") || "Living in Stone",
+      subtitle: t("home.hero_subtitle") || "The Art of Marble Furniture",
     },
   ];
 
@@ -70,18 +72,16 @@ const Hero = () => {
         className="absolute inset-0 scale-110 will-change-transform"
       >
         <img
-          src={bannerUrl || "/banner.webp"}
-          srcSet={bannerSrcSet}
-          sizes="100vw"
-          alt={slides[0].subtitle || "Luxury Stone Background"}
+          src={bannerUrl}
+          alt={slides[0].subtitle || "Luxury Stone Furniture"}
           className="w-full h-full object-cover"
           width="1920"
           height="1080"
           fetchPriority="high"
           decoding="async"
         />
-        <div className="absolute inset-0 bg-black/40 md:bg-black/30" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+        <div className="absolute inset-0 bg-black/30 md:bg-black/20" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30" />
       </div>
 
       {/* Noise Texture Overlay for Premium Feel */}
@@ -90,70 +90,71 @@ const Hero = () => {
       />
 
       {/* Content */}
-      <div ref={textRef} className="absolute inset-0 flex flex-col items-start justify-center md:justify-end pb-24 md:pb-32 lg:pb-40 px-6 md:px-12 lg:px-20 text-white z-10 w-full">
-        <div className="max-w-7xl w-full">
+      <div ref={textRef} className="absolute inset-x-0 bottom-0 flex flex-col items-center justify-end pb-24 md:pb-32 lg:pb-40 px-6 md:px-12 lg:px-20 text-white z-10 w-full text-center">
+        <div className="max-w-5xl w-full">
           {/* Subtitle / Label */}
-          <div className="overflow-hidden mb-8 md:mb-10">
+          <div className="overflow-hidden mb-6 md:mb-8 flex justify-center">
             <TextReveal delay={0.2}>
               <div className="flex items-center gap-4">
-                <span className="h-[1px] w-16 md:w-20 bg-white/40"></span>
-                <span className="text-xs md:text-sm tracking-[0.4em] uppercase text-white/80 font-light">
+                <span className="h-[1px] w-12 bg-white/60"></span>
+                <span className="text-xs md:text-sm tracking-[0.4em] uppercase text-white/90 font-light">
                   {slides[0].subtitle}
                 </span>
+                <span className="h-[1px] w-12 bg-white/60"></span>
               </div>
             </TextReveal>
           </div>
 
           {/* Main Title - Enhanced Typography */}
-          <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[9rem] leading-[0.95] font-light tracking-tighter mb-6 md:mb-10">
+          <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-9xl leading-[0.9] font-medium tracking-tighter mb-8 md:mb-12">
             <TextReveal delay={0.4}>
-              <div className="overflow-hidden">
+              <div className="overflow-hidden text-center">
                 {slides[0].title}
               </div>
             </TextReveal>
           </h1>
 
           {/* Tagline */}
-          <div className="overflow-hidden mb-12 md:mb-16 max-w-2xl">
+          <div className="overflow-hidden mb-12 md:mb-16 max-w-2xl mx-auto">
             <TextReveal delay={0.6}>
-              <p className="text-base md:text-lg lg:text-xl text-white/70 font-light leading-relaxed">
-                {t("home.hero_tagline") || "Discover the world's finest natural stones, meticulously sourced and expertly crafted for timeless elegance."}
+              <p className="text-base md:text-xl text-white/80 font-light leading-relaxed">
+                {t("home.hero_tagline") || "Elevate your interiors with our bespoke collection of marble furniture. Where timeless nature meets modern architecture."}
               </p>
             </TextReveal>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center">
+          <div className="flex flex-col sm:flex-row gap-6 items-center justify-center">
             <div className="overflow-hidden">
               <TextReveal delay={0.8}>
                 <MagneticButton strength={0.3}>
                   <button
-                    onClick={() => navigate("/products")}
+                    onClick={() => navigate("/products?cat=furniture")}
                     className="group relative px-10 py-5 bg-white text-black font-medium tracking-wide uppercase overflow-hidden hover:bg-white/90 transition-all duration-500 shadow-2xl hover:shadow-white/20"
                   >
                     <span className="relative flex items-center gap-3 text-sm md:text-base">
-                      {t("home.explore_button") || "Explore Collection"}
+                      Explore Furniture
                       <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform duration-300" />
                     </span>
                   </button>
                 </MagneticButton>
               </TextReveal>
             </div>
-
-            <div className="hidden md:flex items-center">
-              <TextReveal delay={1.0}>
-                <button
-                  onClick={() => document.getElementById('feature-marquee')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="group flex items-center gap-4 text-white/70 hover:text-white transition-all duration-300"
-                >
-                  <span className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center group-hover:border-white/40 transition-colors backdrop-blur-sm">
-                    <MoveDown className="w-5 h-5 animate-bounce" />
-                  </span>
-                  <span className="text-sm uppercase tracking-[0.2em] font-light">Discover More</span>
-                </button>
-              </TextReveal>
-            </div>
           </div>
         </div>
+      </div>
+
+      <div className="hidden md:flex absolute bottom-10 left-10 z-20">
+        <TextReveal delay={1.0}>
+          <button
+            onClick={() => document.getElementById('feature-marquee')?.scrollIntoView({ behavior: 'smooth' })}
+            className="group flex items-center gap-4 text-white/70 hover:text-white transition-all duration-300"
+          >
+            <span className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center group-hover:border-white/40 transition-colors backdrop-blur-sm">
+              <MoveDown className="w-5 h-5 animate-bounce" />
+            </span>
+            <span className="text-sm uppercase tracking-[0.2em] font-light">Discover More</span>
+          </button>
+        </TextReveal>
       </div>
 
       {/* Scroll Progress Indicator */}

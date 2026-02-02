@@ -1,12 +1,12 @@
 import { Helmet } from "react-helmet-async";
-import Hero from "../components/Hero";
-import Testimonials from "../components/Testimonials";
-import CategoriesSlider from "../components/CategoriesSlider";
-import AboutCompany from "../components/AboutCompany";
-import ChooseStone from "../components/ChooseStone";
-import TrustBadges from "../components/TrustBadges";
-import VelocityScroll from "../components/VelocityScroll";
-import StatsSection from "../components/StatsSection";
+import HeroMonolith from "../components/HeroMonolith";
+import CollectionLookbook from "../components/CollectionLookbook";
+import MasterpieceSpotlight from "../components/MasterpieceSpotlight";
+import MaterialShowcase from "../components/MaterialShowcase";
+import AtelierStory from "../components/AtelierStory";
+import Testimonials from "../components/Testimonials"; // Keeping existing
+import TrustBadges from "../components/TrustBadges"; // Keeping existing
+import VelocityScroll from "../components/VelocityScroll"; // Keeping existing
 
 const Home = () => {
   return (
@@ -80,45 +80,45 @@ const Home = () => {
       </Helmet>
 
       {/* Main content */}
-      <main className="bg-background selection:bg-accent selection:text-white">
+      <main className="bg-stone-50 selection:bg-stone-900 selection:text-white">
 
-        {/* Hero Section */}
-        <section style={{ contentVisibility: 'auto', containIntrinsicSize: '1000px' }}>
-          <Hero />
+        {/* 1. Hero: The Monolith */}
+        <section>
+          <HeroMonolith />
         </section>
 
-        {/* Velocity Scroll Separator */}
+        {/* 2. Marquee Separator */}
         <div id="feature-marquee">
           <VelocityScroll />
         </div>
 
-        {/* About Section */}
-        <section style={{ contentVisibility: 'auto', containIntrinsicSize: '1200px' }}>
-          <AboutCompany />
+        {/* 3. The Collections: Lookbook */}
+        <section>
+          <CollectionLookbook />
         </section>
 
-        {/* Stats Section - New */}
-        <section style={{ contentVisibility: 'auto', containIntrinsicSize: '600px' }}>
-          <StatsSection />
+        {/* 4. Spotlight: The Masterpiece */}
+        <section>
+          <MasterpieceSpotlight />
         </section>
 
-        {/* Stone Collection */}
-        <section style={{ contentVisibility: 'auto', containIntrinsicSize: '1400px' }}>
-          <ChooseStone />
+        {/* 5. Material Library: Interaction */}
+        <section>
+          {/* Slightly reworked context for MaterialShowcase */}
+          <MaterialShowcase />
         </section>
 
-        {/* Furniture Categories */}
-        <section style={{ contentVisibility: 'auto', containIntrinsicSize: '800px' }}>
-          <CategoriesSlider />
+        {/* 6. Story: The Atelier */}
+        <section>
+          <AtelierStory />
         </section>
 
-        {/* Trust Badges */}
-        <section style={{ contentVisibility: 'auto', containIntrinsicSize: '400px' }}>
+        {/* Legacy / Trust Sections */}
+        <section>
           <TrustBadges />
         </section>
 
-        {/* Testimonials */}
-        <section style={{ contentVisibility: 'auto', containIntrinsicSize: '800px' }}>
+        <section>
           <Testimonials />
         </section>
 
@@ -128,4 +128,3 @@ const Home = () => {
 };
 
 export default Home;
-

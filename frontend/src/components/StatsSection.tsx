@@ -15,22 +15,22 @@ const StatsSection: React.FC = () => {
         {
             value: 500,
             suffix: '+',
-            label: 'Projects Completed',
+            label: 'Projects',
         },
         {
             value: 50,
             suffix: '+',
-            label: 'Countries Served',
+            label: 'Countries',
         },
         {
             value: 15,
             suffix: '+',
-            label: 'Years of Excellence',
+            label: 'Years',
         },
         {
             value: 1000,
             suffix: '+',
-            label: 'Happy Clients',
+            label: 'Clients',
         },
     ];
 
@@ -84,40 +84,25 @@ const StatsSection: React.FC = () => {
         }, [isVisible, value]);
 
         return (
-            <span className="text-5xl md:text-6xl lg:text-7xl font-serif font-light text-primary">
+            <span className="text-6xl md:text-8xl font-serif text-primary leading-none block mb-2">
                 {count}
-                {suffix}
+                <span className="text-4xl md:text-6xl text-stone-300 ml-1 font-light">{suffix}</span>
             </span>
         );
     };
 
     return (
-        <section ref={sectionRef} className="py-20 md:py-32 bg-white border-y border-stone-200">
-            <div className="container mx-auto px-4 max-w-7xl">
-                <div className="text-center mb-16 md:mb-20">
-                    <div className="inline-flex items-center gap-3 mb-6">
-                        <span className="h-[1px] w-12 bg-stone-300"></span>
-                        <span className="text-xs tracking-[0.3em] uppercase text-stone-500 font-medium">
-                            Our Impact
-                        </span>
-                        <span className="h-[1px] w-12 bg-stone-300"></span>
-                    </div>
-                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-light text-primary tracking-tight">
-                        Numbers That Speak
-                    </h2>
-                </div>
+        <section ref={sectionRef} className="py-24 md:py-32 bg-white">
+            <div className="container mx-auto px-6 md:px-12 max-w-7xl">
 
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-y-16 gap-x-8">
                     {stats.map((stat, index) => (
-                        <div key={index} className="flex flex-col items-center text-center group">
+                        <div key={index} className="flex flex-col items-start border-l border-stone-200 pl-8 group hover:border-accent transition-colors duration-500">
                             <TextReveal delay={index * 0.1}>
-                                <div className="mb-4">
-                                    <AnimatedNumber value={stat.value} suffix={stat.suffix} isVisible={isVisible} />
-                                </div>
-                                <p className="text-sm md:text-base text-gray-600 uppercase tracking-wider font-medium">
+                                <AnimatedNumber value={stat.value} suffix={stat.suffix} isVisible={isVisible} />
+                                <span className="text-xs font-bold tracking-[0.2em] uppercase text-stone-400 group-hover:text-primary transition-colors">
                                     {stat.label}
-                                </p>
-                                <div className="mt-4 h-[2px] w-16 bg-accent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                                </span>
                             </TextReveal>
                         </div>
                     ))}

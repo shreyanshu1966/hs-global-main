@@ -16,20 +16,48 @@
 # Browser caching
 <IfModule mod_expires.c>
   ExpiresActive On
+  
+  # Images - Long cache (1 year)
   ExpiresByType image/jpg "access plus 1 year"
   ExpiresByType image/jpeg "access plus 1 year"
   ExpiresByType image/gif "access plus 1 year"
   ExpiresByType image/png "access plus 1 year"
   ExpiresByType image/webp "access plus 1 year"
-  ExpiresByType text/css "access plus 1 month"
-  ExpiresByType application/javascript "access plus 1 month"
-  ExpiresByType application/pdf "access plus 1 month"
+  ExpiresByType image/svg+xml "access plus 1 year"
   ExpiresByType image/x-icon "access plus 1 year"
+  
+  # CSS - Long cache (1 year)
+  ExpiresByType text/css "access plus 1 year"
+
+  # JavaScript - Long cache (1 year)
+  # Covers all common JS mime types
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType application/x-javascript "access plus 1 year"
+  ExpiresByType text/javascript "access plus 1 year"
+  
+  # Fonts - Long cache (1 year)
+  ExpiresByType font/woff2 "access plus 1 year"
+  
+  # Others
+  ExpiresByType application/pdf "access plus 1 month"
 </IfModule>
 
-# Security headers
+# Cache-Control Headers
 <IfModule mod_headers.c>
+  # 1 Year for static assets (JS, CSS, Images, Fonts)
+  <FilesMatch "\.(js|css|png|jpg|jpeg|gif|webp|svg|ico|woff2)$">
+    Header set Cache-Control "max-age=31536000, public"
+  </FilesMatch>
+  
+  # No caching for HTML to ensure updates are seen immediately
+  <FilesMatch "\.(html|htm)$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+  </FilesMatch>
+  
+  # Security Headers
   Header set X-Content-Type-Options "nosniff"
   Header set X-Frame-Options "SAMEORIGIN"
   Header set X-XSS-Protection "1; mode=block"
 </IfModule>
+
+

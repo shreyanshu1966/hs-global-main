@@ -8,77 +8,51 @@ const TrustBadges: React.FC = () => {
 
   const badges = [
     {
-      title: t("trust_badges.customizable") || "Custom Design",
-      icon: <Gem className="w-5 h-5" />,
+      title: t("trust_badges.customizable") || "Bespoke",
+      icon: <Gem className="w-6 h-6" />,
       desc: "Tailored to your vision"
     },
     {
-      title: t("trust_badges.sustainable_sourcing") || "Ethical Sourcing",
-      icon: <Globe className="w-5 h-5" />,
-      desc: "Responsibly mined stones"
+      title: t("trust_badges.sustainable_sourcing") || "Ethical",
+      icon: <Globe className="w-6 h-6" />,
+      desc: "Responsibly mined"
     },
     {
-      title: t("trust_badges.worldwide_shipping") || "Global Shipping",
-      icon: <Truck className="w-5 h-5" />,
-      desc: "Delivery to 50+ countries"
+      title: t("trust_badges.worldwide_shipping") || "Global",
+      icon: <Truck className="w-6 h-6" />,
+      desc: "Worldwide delivery"
     },
     {
-      title: t("trust_badges.superior_quality") || "Premium Quality",
-      icon: <Star className="w-5 h-5" />,
-      desc: "Hand-inspected slabs"
+      title: t("trust_badges.superior_quality") || "Quality",
+      icon: <Star className="w-6 h-6" />,
+      desc: "Hand-inspected"
     },
     {
-      title: t("trust_badges.exquisite_detailing") || "Expert Craft",
-      icon: <ShieldCheck className="w-5 h-5" />,
+      title: t("trust_badges.exquisite_detailing") || "Craft",
+      icon: <ShieldCheck className="w-6 h-6" />,
       desc: "Precision fabrication"
     },
   ];
 
   return (
-    <section className="bg-stone-50 text-primary py-16 md:py-20 border-y border-stone-200">
-      <div className="container mx-auto px-4 max-w-7xl">
-        {/* Desktop Layout: Clean Grid */}
-        <div className="hidden lg:grid lg:grid-cols-5 gap-8 xl:gap-12">
+    <section className="bg-stone-50 py-24 border-t border-stone-200">
+      <div className="container mx-auto px-6 md:px-12">
+        <div className="flex flex-wrap justify-between items-start gap-12 lg:gap-8">
           {badges.map((badge, index) => (
-            <div key={index} className="group flex flex-col items-center text-center cursor-default">
+            <div key={index} className="flex-1 min-w-[140px] flex flex-col gap-4 group cursor-default">
               <TextReveal delay={index * 0.1}>
-                <div className="flex flex-col items-center">
-                  {/* Icon */}
-                  <div className="mb-5 p-4 bg-white rounded-full border border-stone-200 group-hover:border-accent/30 group-hover:shadow-lg transition-all duration-500 text-accent">
-                    {badge.icon}
-                  </div>
-
-                  {/* Title */}
-                  <h3 className="font-serif font-light text-lg text-primary mb-2 group-hover:text-accent transition-colors duration-300">
+                <div className="text-stone-400 group-hover:text-primary transition-colors duration-500">
+                  {badge.icon}
+                </div>
+                <div>
+                  <h3 className="font-serif text-2xl text-primary mb-1 group-hover:translate-x-1 transition-transform duration-300">
                     {badge.title}
                   </h3>
-
-                  {/* Description */}
-                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">
+                  <p className="text-[10px] uppercase tracking-widest text-stone-400">
                     {badge.desc}
                   </p>
                 </div>
               </TextReveal>
-            </div>
-          ))}
-        </div>
-
-        {/* Mobile/Tablet Layout: 2 Column Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:hidden gap-6 md:gap-8">
-          {badges.map((badge, index) => (
-            <div
-              key={index}
-              className="flex flex-col items-center text-center bg-white p-6 rounded-lg border border-stone-100 hover:border-accent/20 hover:shadow-lg transition-all duration-300"
-            >
-              <div className="p-3 bg-stone-50 rounded-full text-accent mb-4">
-                {badge.icon}
-              </div>
-              <h3 className="font-serif font-light text-base md:text-lg text-primary mb-2">
-                {badge.title}
-              </h3>
-              <p className="text-xs text-gray-500 uppercase tracking-wider">
-                {badge.desc}
-              </p>
             </div>
           ))}
         </div>
