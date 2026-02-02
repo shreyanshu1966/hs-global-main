@@ -56,6 +56,7 @@ app.use('/api/shipping', require('./routes/shipping')); // Shipping routes (Frei
 app.use('/api/contact', require('./routes/contactRoutes')); // Contact form routes
 app.use('/api/quotations', require('./routes/quotationRoutes')); // Quotation requests
 app.use('/api/leads', require('./routes/leadCaptureRoutes')); // Lead capture from popup
+app.use('/api', require('./routes/productRoutes')); // Product routes
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
