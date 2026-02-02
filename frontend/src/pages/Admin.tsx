@@ -29,7 +29,9 @@ import {
     Plus,
     Layout,
     Mail,
-    Layers
+    Layers,
+    Image,
+    Upload
 } from 'lucide-react';
 import {
     BarChart,
@@ -49,6 +51,7 @@ import {
 import blogService, { Blog } from '../services/blogService';
 import contactService, { Contact, ContactStats } from '../services/contactService';
 import quotationService, { Quotation, QuotationStats } from '../services/quotationService';
+import adminProductService, { Product, ProductFormData } from '../services/adminProductService';
 
 interface Analytics {
     users: {
@@ -110,7 +113,7 @@ const COLORS = ['#10b981', '#f59e0b', '#ef4444', '#3b82f6', '#8b5cf6'];
 const Admin = () => {
     const { user, token, logout } = useAuth();
     const navigate = useNavigate();
-    const [activeTab, setActiveTab] = useState<'analytics' | 'orders' | 'users' | 'blogs' | 'contacts' | 'quotations'>('analytics');
+    const [activeTab, setActiveTab] = useState<'analytics' | 'orders' | 'users' | 'blogs' | 'contacts' | 'quotations' | 'products'>('analytics');
     const [loading, setLoading] = useState(true);
 
     // Analytics state
@@ -160,13 +163,28 @@ const Admin = () => {
     const [selectedQuotation, setSelectedQuotation] = useState<Quotation | null>(null);
     const [showQuotationModal, setShowQuotationModal] = useState(false);
 
+    // Products state
+    const [products, setProducts] = useState<Product[]>([]);
+    const [productsPage, setProductsPage] = useState(1);
+    const [productsPagination, setProductsPagination] = useState<any>(null);
+    const [productsSearch, setProductsSearch] = useState('');
+    const [productsCategoryFilter, setProductsCategoryFilter] = useState('');
+    const [productsStatusFilter, setProductsStatusFilter] = useState('');
+    const [showProductModal, setShowProductModal] = useState(false);
+    const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+    const [productFormData, setProductFormData] = useState<Partial<ProductFormData>>({});
+    const [productImages, setProductImages] = useState<File[]>([]);
+    const [productImagePreviews, setProductImagePreviews] = useState<string[]>([]);
+    const [showCustomSubcategory, setShowCustomSubcategory] = useState(false);
+    const [customSubcategory, setCustomSubcategory] = useState('');
+
     useEffect(() => {
         if (!user || user.role !== 'admin') {
             navigate('/');
             return;
         }
         loadData();
-    }, [user, navigate, activeTab, usersPage, ordersPage, usersSearch, usersRoleFilter, ordersSearch, ordersStatusFilter, ordersDeliveryFilter, blogsPage, contactsPage, contactsStatusFilter, quotationsPage, quotationsStatusFilter]);
+    }, [user, navigate, activeTab, usersPage, ordersPage, usersSearch, usersRoleFilter, ordersSearch, ordersStatusFilter, ordersDeliveryFilter, blogsPage, contactsPage, contactsStatusFilter, quotationsPage, quotationsStatusFilter, productsPage, productsSearch, productsCategoryFilter, productsStatusFilter]);
 
     const loadData = async () => {
         setLoading(true);
@@ -210,6 +228,16 @@ const Admin = () => {
                 setQuotations(quotationsData.quotations);
                 setQuotationsPagination(quotationsData.pagination);
                 setQuotationStats(statsData);
+            } else if (activeTab === 'products') {
+                const productsData = await adminProductService.getAdminProducts({
+                    page: productsPage,
+                    limit: 10,
+                    search: productsSearch,
+                    category: productsCategoryFilter,
+                    status: productsStatusFilter
+                });
+                setProducts(productsData.data);
+                setProductsPagination(productsData.pagination);
             }
         } catch (error: any) {
             console.error('Failed to load data:', error);
@@ -358,6 +386,162 @@ const Admin = () => {
         }
     };
 
+    // Product handlers
+    const handleOpenProductModal = (product?: Product) => {
+        if (product) {
+            setEditingProduct(product);
+            setProductFormData({
+                productId: product.productId,
+                name: product.name,
+                category: product.category,
+                subcategory: product.subcategory,
+                description: product.description,
+                priceINR: product.priceINR,
+                available: product.available,
+                hasVideo: product.hasVideo,
+                status: product.status,
+                furnitureSpecs: product.furnitureSpecs,
+                slabSpecs: product.slabSpecs,
+                seoTitle: product.seoTitle,
+                seoDescription: product.seoDescription,
+                seoKeywords: product.seoKeywords
+            });
+            setProductImagePreviews(product.images || []);
+            
+            // Check if subcategory is custom
+            const predefinedSubcategories = getPredefinedSubcategories(product.category);
+            if (!predefinedSubcategories.includes(product.subcategory)) {
+                setShowCustomSubcategory(true);
+                setCustomSubcategory(product.subcategory);
+            } else {
+                setShowCustomSubcategory(false);
+                setCustomSubcategory('');
+            }
+        } else {
+            setEditingProduct(null);
+            setProductFormData({
+                category: 'furniture',
+                status: 'active',
+                available: true,
+                hasVideo: false
+            });
+            setProductImagePreviews([]);
+            setShowCustomSubcategory(false);
+            setCustomSubcategory('');
+        }
+        setProductImages([]);
+        setShowProductModal(true);
+    };
+
+    const getPredefinedSubcategories = (category: string): string[] => {
+        if (category === 'furniture') {
+            return ['tables', 'coffee-table', 'console-table', 'dining-table', 'side-table', 
+                    'wash-basins', 'pedestal', 'countertop', 'sculptures', 'benches', 
+                    'planters', 'fountains', 'fireplace', 'columns', 'urns', 'other'];
+        } else {
+            return ['granite', 'marble', 'quartzite', 'onyx', 'limestone', 
+                    'travertine', 'sandstone', 'slate', 'other'];
+        }
+    };
+
+    const handleCloseProductModal = () => {
+        setShowProductModal(false);
+        setEditingProduct(null);
+        setProductFormData({});
+        setProductImages([]);
+        setProductImagePreviews([]);
+        setShowCustomSubcategory(false);
+        setCustomSubcategory('');
+    };
+
+    const handleProductImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = Array.from(e.target.files || []);
+        setProductImages(files);
+
+        // Create previews
+        const previews = files.map(file => URL.createObjectURL(file));
+        setProductImagePreviews(previews);
+    };
+
+    const handleSaveProduct = async () => {
+        try {
+            // Use custom subcategory if provided, otherwise use form data
+            const finalSubcategory = showCustomSubcategory ? customSubcategory : productFormData.subcategory;
+            
+            if (!productFormData.productId || !productFormData.name || !productFormData.category || !finalSubcategory || !productFormData.description) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            const finalFormData = {
+                ...productFormData,
+                subcategory: finalSubcategory
+            };
+
+            if (editingProduct) {
+                // Update existing product
+                await adminProductService.updateProduct(
+                    editingProduct.productId,
+                    { ...finalFormData, preserveExistingImages: productImages.length === 0 },
+                    productImages.length > 0 ? productImages : undefined
+                );
+                alert('Product updated successfully');
+            } else {
+                // Create new product
+                if (productImages.length === 0) {
+                    alert('Please select at least one image');
+                    return;
+                }
+                await adminProductService.createProduct(finalfile));
+        setProductImagePreviews(previews);
+    };
+
+    const handleSaveProduct = async () => {
+        try {
+            if (!productFormData.productId || !productFormData.name || !productFormData.category || !productFormData.subcategory || !productFormData.description) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            if (editingProduct) {
+                // Update existing product
+                await adminProductService.updateProduct(
+                    editingProduct.productId,
+                    { ...productFormData, preserveExistingImages: productImages.length === 0 },
+                    productImages.length > 0 ? productImages : undefined
+                );
+                alert('Product updated successfully');
+            } else {
+                // Create new product
+                if (productImages.length === 0) {
+                    alert('Please select at least one image');
+                    return;
+                }
+                await adminProductService.createProduct(productFormData as ProductFormData, productImages);
+                alert('Product created successfully');
+            }
+
+            handleCloseProductModal();
+            loadData();
+        } catch (error: any) {
+            alert(error.message || 'Failed to save product');
+        }
+    };
+
+    const handleDeleteProduct = async (productId: string) => {
+        if (!confirm('Are you sure you want to delete this product? This will also delete all its images from Cloudinary.')) {
+            return;
+        }
+
+        try {
+            await adminProductService.deleteProduct(productId);
+            loadData();
+            alert('Product deleted successfully');
+        } catch (error: any) {
+            alert(error.message || 'Failed to delete product');
+        }
+    };
+
     const handleLogout = () => {
         logout();
         navigate('/');
@@ -453,7 +637,7 @@ const Admin = () => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 {/* Tabs */}
                 <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-1 mb-6">
-                    <div className="grid grid-cols-6 gap-1">
+                    <div className="grid grid-cols-7 gap-1">
                         <button
                             onClick={() => setActiveTab('analytics')}
                             className={`flex items-center justify-center gap-2 px-4 py-3 rounded-md font-medium text-sm transition-all ${activeTab === 'analytics'
@@ -483,6 +667,16 @@ const Admin = () => {
                         >
                             <UserCog className="w-4 h-4" />
                             <span>Users</span>
+                        </button>
+                        <button
+                            onClick={() => setActiveTab('products')}
+                            className={`flex items-center justify-center gap-2 px-4 py-3 rounded-md font-medium text-sm transition-all ${activeTab === 'products'
+                                ? 'bg-blue-600 text-white shadow-sm'
+                                : 'text-gray-600 hover:bg-gray-50'
+                                }`}
+                        >
+                            <Package className="w-4 h-4" />
+                            <span>Products</span>
                         </button>
                         <button
                             onClick={() => setActiveTab('blogs')}
@@ -1603,6 +1797,422 @@ const Admin = () => {
                                             setShowQuotationModal(false);
                                             setSelectedQuotation(null);
                                         }}
+                                        className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg font-medium transition-colors"
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+
+                {/* Products Tab */}
+                {activeTab === 'products' && (
+                    <div className="space-y-6">
+                        {/* Header with Add Button */}
+                        <div className="flex justify-between items-center">
+                            <h2 className="text-2xl font-bold text-gray-900">Product Management</h2>
+                            <button
+                                onClick={() => handleOpenProductModal()}
+                                className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
+                            >
+                                <Plus className="w-5 h-5" />
+                                Add Product
+                            </button>
+                        </div>
+
+                        {/* Filters */}
+                        <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
+                            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                <div className="relative">
+                                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                                    <input
+                                        type="text"
+                                        placeholder="Search products..."
+                                        value={productsSearch}
+                                        onChange={(e) => {
+                                            setProductsSearch(e.target.value);
+                                            setProductsPage(1);
+                                        }}
+                                        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                    />
+                                </div>
+                                <select
+                                    value={productsCategoryFilter}
+                                    onChange={(e) => {
+                                        setProductsCategoryFilter(e.target.value);
+                                        setProductsPage(1);
+                                    }}
+                                    className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                >
+                                    <option value="">All Categories</option>
+                                    <option value="furniture">Furniture</option>
+                                    <option value="slabs">Slabs</option>
+                                </select>
+                                <select
+                                    value={productsStatusFilter}
+                                    onChange={(e) => {
+                                        setProductsStatusFilter(e.target.value);
+                                        setProductsPage(1);
+                                    }}
+                                    className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                >
+                                    <option value="">All Statuses</option>
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                    <option value="draft">Draft</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        {/* Products Table */}
+                        <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                            <div className="overflow-x-auto">
+                                <table className="w-full">
+                                    <thead className="bg-gray-50 border-b border-gray-200">
+                                        <tr>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Image</th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="bg-white divide-y divide-gray-200">
+                                        {products.map((product) => (
+                                            <tr key={product._id} className="hover:bg-gray-50">
+                                                <td className="px-6 py-4">
+                                                    <img
+                                                        src={product.image}
+                                                        alt={product.name}
+                                                        className="w-16 h-16 object-cover rounded-lg"
+                                                    />
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    <div>
+                                                        <p className="font-medium text-gray-900">{product.name}</p>
+                                                        <p className="text-sm text-gray-500">{product.productId}</p>
+                                                        <p className="text-sm text-gray-500">{product.subcategory}</p>
+                                                    </div>
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    <span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full capitalize">
+                                                        {product.category}
+                                                    </span>
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    {product.priceINR ? formatCurrency(product.priceINR) : 'N/A'}
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    <span className={`px-2 py-1 text-xs font-medium rounded-full capitalize ${
+                                                        product.status === 'active' ? 'bg-green-100 text-green-800' :
+                                                        product.status === 'inactive' ? 'bg-gray-100 text-gray-800' :
+                                                        'bg-yellow-100 text-yellow-800'
+                                                    }`}>
+                                                        {product.status}
+                                                    </span>
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    <div className="flex items-center gap-2">
+                                                        <button
+                                                            onClick={() => handleOpenProductModal(product)}
+                                                            className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                                                        >
+                                                            <Edit2 className="w-4 h-4" />
+                                                        </button>
+                                                        <button
+                                                            onClick={() => handleDeleteProduct(product.productId)}
+                                                            className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                                                        >
+                                                            <Trash2 className="w-4 h-4" />
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            {/* Pagination */}
+                            {productsPagination && productsPagination.total > 1 && (
+                                <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
+                                    <div className="text-sm text-gray-700">
+                                        Showing {products.length} of {productsPagination.totalItems} products
+                                    </div>
+                                    <div className="flex gap-2">
+                                        <button
+                                            onClick={() => setProductsPage(Math.max(1, productsPage - 1))}
+                                            disabled={productsPage === 1}
+                                            className="p-2 border border-gray-300 rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                                        >
+                                            <ChevronLeft className="w-5 h-5" />
+                                        </button>
+                                        <span className="px-4 py-2 text-sm font-medium text-gray-700">
+                                            Page {productsPage} of {productsPagination.total}
+                                        </span>
+                                        <button
+                                            onClick={() => setProductsPage(Math.min(productsPagination.total, productsPage + 1))}
+                                            disabled={productsPage === productsPagination.total}
+                                            className="p-2 border border-gray-300 rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                                        >
+                                            <ChevronRight className="w-5 h-5" />
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                )}
+
+                {/* Product Modal */}
+                {showProductModal && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+                        <div className="bg-white rounded-xl shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+                            <div className="p-6 border-b border-gray-200 flex justify-between items-center sticky top-0 bg-white z-10">
+                                <h2 className="text-xl font-bold text-gray-900">
+                                    {editingProduct ? 'Edit Product' : 'Create New Product'}
+                                </h2>
+                                <button
+                                    onClick={handleCloseProductModal}
+                                    className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                                >
+                                    <X className="w-5 h-5 text-gray-500" />
+                                </button>
+                            </div>
+
+                            <div className="p-6 space-y-6">
+                                {/* Basic Information */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Product ID *</label>
+                                        <input
+                                            type="text"
+                                            required
+                                            disabled={!!editingProduct}
+                                            value={productFormData.productId || ''}
+                                            onChange={(e) => setProductFormData({ ...productFormData, productId: e.target.value })}
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Product Name *</label>
+                                        <input
+                                            type="text"
+                                            required
+                                            value={productFormData.name || ''}
+                                            onChange={(e) => setProductFormData({ ...productFormData, name: e.target.value })}
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Category *</label>
+                                        <select
+                                            required
+                                            value={productFormData.category || 'furniture'}
+                                            onChange={(e) => setProductFormData({ ...productFormData, category: e.target.value, subcategory: '' })}
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                        >={!showCustomSubcategory}
+                                            value={showCustomSubcategory ? 'custom' : (productFormData.subcategory || '')}
+                                            onChange={(e) => {
+                                                if (e.target.value === 'custom') {
+                                                    setShowCustomSubcategory(true);
+                                                    setCustomSubcategory('');
+                                                } else {
+                                                    setShowCustomSubcategory(false);
+                                                    setProductFormData({ ...productFormData, subcategory: e.target.value });
+                                                }
+                                            }}
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                        >
+                                            <option value="">Select Subcategory</option>
+                                            {productFormData.category === 'furniture' ? (
+                                                <>
+                                                    <option value="tables">Tables</option>
+                                                    <option value="coffee-table">Coffee Table</option>
+                                                    <option value="console-table">Console Table</option>
+                                                    <option value="dining-table">Dining Table</option>
+                                                    <option value="side-table">Side Table</option>
+                                                    <option value="wash-basins">Wash Basins</option>
+                                                    <option value="pedestal">Pedestal</option>
+                                                    <option value="countertop">Countertop</option>
+                                                    <option value="sculptures">Sculptures</option>
+                                                    <option value="benches">Benches</option>
+                                                    <option value="planters">Planters</option>
+                                                    <option value="fountains">Fountains</option>
+                                                    <option value="fireplace">Fireplace</option>
+                                                    <option value="columns">Columns</option>
+                                                    <option value="urns">Urns</option>
+                                                    <option value="other">Other</option>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <option value="granite">Granite</option>
+                                                    <option value="marble">Marble</option>
+                                                    <option value="quartzite">Quartzite</option>
+                                                    <option value="onyx">Onyx</option>
+                                                    <option value="limestone">Limestone</option>
+                                                    <option value="travertine">Travertine</option>
+                                                    <option value="sandstone">Sandstone</option>
+                                                    <option value="slate">Slate</option>
+                                                    <option value="other">Other</option>
+                                                </>
+                                            )}
+                                            <option value="custom">➕ Add Custom Subcategory</option>
+                                        </select>
+                                        
+                                        {/* Custom Subcategory Input */}
+                                        {showCustomSubcategory && (
+                                            <div className="mt-2">
+                                                <input
+                                                    type="text"
+                                                    required
+                                                    value={customSubcategory}
+                                                    onChange={(e) => setCustomSubcategory(e.target.value)}
+                                                    placeholder="Enter custom subcategory (e.g., outdoor-tables)"
+                                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                                />
+                                                <button
+                                                    type="button"
+                                                    onClick={() => {
+                                                        setShowCustomSubcategory(false);
+                                                        setCustomSubcategory('');
+                                                    }}
+                                                    className="mt-1 text-sm text-blue-600 hover:text-blue-700"
+                                                >
+                                                    ← Back to predefined options
+                                                </button>
+                                            </div>
+                                        )}   <option value="onyx">Onyx</option>
+                                                    <option value="limestone">Limestone</option>
+                                                    <option value="travertine">Travertine</option>
+                                                    <option value="sandstone">Sandstone</option>
+                                                    <option value="slate">Slate</option>
+                                                    <option value="other">Other</option>
+                                                </>
+                                            )}
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Price (INR)</label>
+                                        <input
+                                            type="number"
+                                            value={productFormData.priceINR || ''}
+                                            onChange={(e) => setProductFormData({ ...productFormData, priceINR: parseFloat(e.target.value) })}
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                                        <select
+                                            value={productFormData.status || 'active'}
+                                            onChange={(e) => setProductFormData({ ...productFormData, status: e.target.value as any })}
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                        >
+                                            <option value="active">Active</option>
+                                            <option value="inactive">Inactive</option>
+                                            <option value="draft">Draft</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                {/* Description */}
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">Description *</label>
+                                    <textarea
+                                        required
+                                        rows={4}
+                                        value={productFormData.description || ''}
+                                        onChange={(e) => setProductFormData({ ...productFormData, description: e.target.value })}
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                    />
+                                </div>
+
+                                {/* Images Upload */}
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        Product Images {!editingProduct && '*'}
+                                    </label>
+                                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                                        <Upload className="w-12 h-12 mx-auto text-gray-400 mb-3" />
+                                        <p className="text-sm text-gray-600 mb-2">
+                                            Click to upload or drag and drop
+                                        </p>
+                                        <p className="text-xs text-gray-500 mb-4">
+                                            Images will be converted to WebP and compressed automatically
+                                        </p>
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            multiple
+                                            onChange={handleProductImageChange}
+                                            className="hidden"
+                                            id="product-images"
+                                        />
+                                        <label
+                                            htmlFor="product-images"
+                                            className="inline-block px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg cursor-pointer transition-colors"
+                                        >
+                                            Select Images
+                                        </label>
+                                    </div>
+
+                                    {/* Image Previews */}
+                                    {productImagePreviews.length > 0 && (
+                                        <div className="mt-4 grid grid-cols-4 gap-3">
+                                            {productImagePreviews.map((preview, index) => (
+                                                <div key={index} className="relative">
+                                                    <img
+                                                        src={preview}
+                                                        alt={`Preview ${index + 1}`}
+                                                        className="w-full h-24 object-cover rounded-lg border border-gray-200"
+                                                    />
+                                                    {index === 0 && (
+                                                        <span className="absolute top-1 left-1 px-2 py-1 bg-blue-600 text-white text-xs rounded">
+                                                            Main
+                                                        </span>
+                                                    )}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Checkboxes */}
+                                <div className="flex gap-6">
+                                    <label className="flex items-center gap-2 cursor-pointer">
+                                        <input
+                                            type="checkbox"
+                                            checked={productFormData.available !== false}
+                                            onChange={(e) => setProductFormData({ ...productFormData, available: e.target.checked })}
+                                            className="w-4 h-4 text-blue-600"
+                                        />
+                                        <span className="text-sm text-gray-700">Available</span>
+                                    </label>
+                                    <label className="flex items-center gap-2 cursor-pointer">
+                                        <input
+                                            type="checkbox"
+                                            checked={productFormData.hasVideo || false}
+                                            onChange={(e) => setProductFormData({ ...productFormData, hasVideo: e.target.checked })}
+                                            className="w-4 h-4 text-blue-600"
+                                        />
+                                        <span className="text-sm text-gray-700">Has Video</span>
+                                    </label>
+                                </div>
+
+                                {/* Action Buttons */}
+                                <div className="flex gap-3 pt-6 border-t border-gray-200">
+                                    <button
+                                        onClick={handleSaveProduct}
+                                        className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
+                                    >
+                                        {editingProduct ? 'Update Product' : 'Create Product'}
+                                    </button>
+                                    <button
+                                        onClick={handleCloseProductModal}
                                         className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg font-medium transition-colors"
                                     >
                                         Cancel

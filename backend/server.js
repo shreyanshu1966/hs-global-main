@@ -51,6 +51,7 @@ app.use('/api', require('./routes/orderRoutes'));
 app.use('/api/webhooks', require('./routes/webhookRoutes')); // Payment webhooks (PayPal)
 app.use('/api/admin', require('./routes/adminRoutes')); // Admin routes
 app.use('/api/admin', require('./routes/paymentMonitoringRoutes')); // Payment monitoring routes
+app.use('/api/admin/products', require('./routes/adminProductRoutes')); // Admin product management
 app.use('/api/blogs', require('./routes/blog')); // Blog routes
 app.use('/api/shipping', require('./routes/shipping')); // Shipping routes (Freightos integration)
 app.use('/api/contact', require('./routes/contactRoutes')); // Contact form routes
