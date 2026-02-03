@@ -66,6 +66,33 @@ const productSchema = new mongoose.Schema({
         type: Number,
         min: 0
     },
+    
+    // Discount fields
+    discount: {
+        enabled: {
+            type: Boolean,
+            default: false
+        },
+        percentage: {
+            type: Number,
+            min: 0,
+            max: 100,
+            default: 0
+        },
+        startDate: {
+            type: Date,
+            default: null
+        },
+        endDate: {
+            type: Date,
+            default: null
+        },
+        description: {
+            type: String,
+            default: ''
+        }
+    },
+    
     available: {
         type: Boolean,
         default: true
@@ -73,6 +100,22 @@ const productSchema = new mongoose.Schema({
     hasVideo: {
         type: Boolean,
         default: false
+    },
+    videoUrl: {
+        type: String,
+        default: null
+    },
+    videoFilename: {
+        type: String,
+        default: null
+    },
+    videoSize: {
+        type: Number,
+        default: null
+    },
+    videoUploadedAt: {
+        type: Date,
+        default: null
     },
     // Furniture specific fields
     furnitureSpecs: furnitureSpecsSchema,
@@ -89,6 +132,18 @@ const productSchema = new mongoose.Schema({
         default: 0
     },
     addToCartCount: {
+        type: Number,
+        default: 0
+    },
+    
+    // Review Statistics
+    averageRating: {
+        type: Number,
+        default: 0,
+        min: 0,
+        max: 5
+    },
+    totalReviews: {
         type: Number,
         default: 0
     },
@@ -147,7 +202,55 @@ productSchema.methods.incrementAddToCart = function() {
     return this.save();
 };
 
-// Static method to get products by category
+// Instance method to check if discount is currently active
+productSchema.methods.isDiscountActive = function() {
+    if (!this.discount || !this.discount.enabled || !this.discount.percentage) {
+        return false;
+    }
+    
+    const now = new Date();
+    
+    // Check start date if exists
+    if (this.discount.startDate && now < this.discount.startDate) {
+        return false;
+    }
+    
+    // Check end date if exists
+    if (this.discount.endDate && now > this.discount.endDate) {
+        return false;
+    }
+    
+    return true;
+};
+
+// Instance method to get the final price (with discount if active)
+productSchema.methods.getFinalPrice = function() {
+    if (!this.priceINR) {
+        return null;
+    }
+    
+    if (this.isDiscountActive()) {
+        const discountAmount = (this.priceINR * this.discount.percentage) / 100;
+        return Math.round(this.priceINR - discountAmount);
+    }
+    
+    return this.priceINR;
+};
+
+// Virtual for discounted price
+productSchema.virtual('discountedPrice').get(function() {
+    return this.getFinalPrice();
+});
+
+// Virtual for discount amount
+productSchema.virtual('discountAmount').get(function() {
+    if (!this.priceINR || !this.isDiscountActive()) {
+        return 0;
+    }
+    return Math.round((this.priceINR * this.discount.percentage) / 100);
+});
+
+// Static method to get active discounted products
 productSchema.statics.getByCategory = function(category) {
     return this.find({ category, status: 'active', available: true })
         .sort({ featured: -1, createdAt: -1 });
