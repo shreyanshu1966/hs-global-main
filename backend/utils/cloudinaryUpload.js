@@ -13,7 +13,7 @@ cloudinary.config({
 const storage = multer.memoryStorage();
 
 // File filter for images only
-const fileFilter = (req, file, cb) => {
+const imageFileFilter = (req, file, cb) => {
     // Accept images only
     if (!file.mimetype.startsWith('image/')) {
         return cb(new Error('Only image files are allowed!'), false);
@@ -21,10 +21,49 @@ const fileFilter = (req, file, cb) => {
     cb(null, true);
 };
 
-// Multer configuration
+// File filter for videos only
+const videoFileFilter = (req, file, cb) => {
+    const allowedTypes = ['video/mp4', 'video/webm', 'video/quicktime', 'video/x-msvideo'];
+    if (!allowedTypes.includes(file.mimetype)) {
+        return cb(new Error('Only video files (MP4, WebM, MOV, AVI) are allowed!'), false);
+    }
+    cb(null, true);
+};
+
+// File filter for both images and videos
+const mediaFileFilter = (req, file, cb) => {
+    const allowedImageTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
+    const allowedVideoTypes = ['video/mp4', 'video/webm', 'video/quicktime', 'video/x-msvideo'];
+    
+    if (allowedImageTypes.includes(file.mimetype) || allowedVideoTypes.includes(file.mimetype)) {
+        cb(null, true);
+    } else {
+        cb(new Error('Only image and video files are allowed!'), false);
+    }
+};
+
+// Multer configuration for images
 const upload = multer({
     storage: storage,
-    fileFilter: fileFilter,
+    fileFilter: imageFileFilter,
+    limits: {
+        fileSize: 10 * 1024 * 1024 // 10MB max file size
+    }
+});
+
+// Multer configuration for videos
+const uploadVideo = multer({
+    storage: storage,
+    fileFilter: videoFileFilter,
+    limits: {
+        fileSize: 10 * 1024 * 1024 // 10MB max file size for videos
+    }
+});
+
+// Multer configuration for mixed media (images + videos)
+const uploadMedia = multer({
+    storage: storage,
+    fileFilter: mediaFileFilter,
     limits: {
         fileSize: 10 * 1024 * 1024 // 10MB max file size
     }
@@ -147,6 +186,8 @@ const deleteMultipleFromCloudinary = async (urls) => {
 
 module.exports = {
     upload,
+    uploadVideo,
+    uploadMedia,
     uploadToCloudinary,
     uploadMultipleToCloudinary,
     deleteFromCloudinary,

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { Share2, ChevronRight, Quote, ChevronLeft, ChevronRight as ChevronRightIcon } from "lucide-react";
+import { Share2, ChevronRight, Quote, ChevronLeft, ChevronRight as ChevronRightIcon, Star, Shield, Truck, RotateCcw, Award, Heart, ZoomIn, X, Package, Ruler, Palette, MessageCircle, CheckCircle, Info } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
@@ -10,6 +10,10 @@ import { QuantityHandler } from "../components/QuantityHandler";
 import { useCart } from "../contexts/CartContext";
 import { useProduct, useTrackAddToCart } from "../hooks/useProducts";
 import { useCurrency } from "../contexts/CurrencyContext";
+import { ReviewForm } from "../components/ReviewForm";
+import { ReviewList } from "../components/ReviewList";
+import { ReviewStats } from "../components/ReviewStats";
+import { useAuth } from "../contexts/AuthContext";
 
 const ProductDetails = () => {
   const { id }: { id?: string } = useParams<{ id?: string }>();
@@ -19,10 +23,19 @@ const ProductDetails = () => {
   const [selectedThickness, setSelectedThickness] = useState("20mm");
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [reviews, setReviews] = useState([]);
+  const [reviewStats, setReviewStats] = useState({ averageRating: 0, totalReviews: 0, ratingBreakdown: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 } });
+  const [reviewsLoading, setReviewsLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState('description');
+  const [isImageZoomed, setIsImageZoomed] = useState(false);
+  const [showStickyBar, setShowStickyBar] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
 
   const { state: cartState } = useCart();
+  const { user } = useAuth();
   const mainImageRef = useRef<HTMLDivElement>(null);
   const relatedRef = useRef<HTMLDivElement | null>(null);
+  const reviewsRef = useRef<HTMLDivElement>(null);
 
   // Fetch product from database
   const { product: dbProduct, relatedProducts: dbRelatedProducts, loading, error } = useProduct(id);
@@ -76,6 +89,18 @@ const ProductDetails = () => {
 
     const moq = category === "slabs" ? "MOQ: 20 m²" : "";
 
+    // Discount calculation
+    const hasDiscount = dbProduct.discount?.enabled && 
+      dbProduct.discount?.percentage > 0 &&
+      (!dbProduct.discount?.startDate || new Date(dbProduct.discount.startDate) <= new Date()) &&
+      (!dbProduct.discount?.endDate || new Date(dbProduct.discount.endDate) >= new Date());
+    
+    const discountPercentage = hasDiscount ? dbProduct.discount!.percentage : 0;
+    const originalPrice = dbProduct.priceINR || 0;
+    const discountedPrice = hasDiscount && originalPrice > 0
+      ? originalPrice * (1 - discountPercentage / 100)
+      : originalPrice;
+
     return {
       id: dbProduct._id,
       name: dbProduct.name,
@@ -90,6 +115,13 @@ const ProductDetails = () => {
       description: dbProduct.description || "Premium natural stone slab ideal for countertops, vanities, flooring and wall cladding with strict quality selection.",
       relatedProducts: relatedPick,
       available: isAvailable,
+      averageRating: dbProduct.averageRating,
+      totalReviews: dbProduct.totalReviews,
+      discount: dbProduct.discount,
+      hasDiscount,
+      discountPercentage,
+      originalPrice,
+      discountedPrice,
     };
   }, [dbProduct, dbRelatedProducts, selectedFinish, selectedThickness, formatPrice]);
 
@@ -124,6 +156,52 @@ const ProductDetails = () => {
 
     return () => clearInterval(t);
   }, [product]);
+
+  // Fetch reviews and stats
+  useEffect(() => {
+    const fetchReviews = async () => {
+      if (!id) return;
+
+      setReviewsLoading(true);
+      try {
+        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+        const [reviewsRes, statsRes] = await Promise.all([
+          fetch(`${API_URL}/reviews/product/${id}`),
+          fetch(`${API_URL}/reviews/product/${id}/stats`)
+        ]);
+
+        if (reviewsRes.ok) {
+          const reviewsData = await reviewsRes.json();
+          setReviews(reviewsData.reviews);
+        }
+
+        if (statsRes.ok) {
+          const statsData = await statsRes.json();
+          setReviewStats(statsData.stats);
+        }
+      } catch (error) {
+        console.error('Error fetching reviews:', error);
+      } finally {
+        setReviewsLoading(false);
+      }
+    };
+
+    fetchReviews();
+  }, [id]);
+
+  const handleReviewSubmitted = () => {
+    // Refetch reviews after submission
+    if (id) {
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+      Promise.all([
+        fetch(`${API_URL}/reviews/product/${id}`).then(r => r.json()),
+        fetch(`${API_URL}/reviews/product/${id}/stats`).then(r => r.json())
+      ]).then(([reviewsData, statsData]) => {
+        setReviews(reviewsData.reviews);
+        setReviewStats(statsData.stats);
+      }).catch(console.error);
+    }
+  };
 
   const slideWidth = 250;
   const gap = 20;
@@ -182,6 +260,17 @@ const ProductDetails = () => {
     return () => clearInterval(t);
   }, [currentSlide, isAutoPlaying, product]);
 
+  // Sticky CTA bar on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrolled = window.scrollY > 600;
+      setShowStickyBar(scrolled);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   // Show loading state
   if (loading) {
     return (
@@ -221,12 +310,17 @@ const ProductDetails = () => {
         <meta property="og:image" content={product.image} />
       </Helmet>
       
-      {/* Breadcrumb */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="container mx-auto px-4 py-4">
-          <nav className="flex items-center text-sm text-gray-600">
-            <Link to="/" className="hover:text-blue-600 transition-colors">Home</Link>
-            <ChevronRight className="w-4 h-4 mx-2" />
+      {/* Breadcrumb - Enhanced */}
+      <div className="bg-gradient-to-r from-gray-50 to-white border-b border-gray-200 shadow-sm">
+        <div className="container mx-auto px-4 py-3">
+          <nav className="flex items-center text-sm font-medium">
+            <Link to="/" className="text-gray-600 hover:text-blue-600 transition-colors flex items-center gap-1">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+              </svg>
+              Home
+            </Link>
+            <ChevronRight className="w-4 h-4 mx-2 text-gray-400" />
 
             <Link
               to={
@@ -270,86 +364,232 @@ const ProductDetails = () => {
       </div>
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Image Gallery */}
-          <div>
-            <div
-              ref={mainImageRef}
-              key={selectedImage}
-              className="aspect-square bg-white rounded-2xl shadow-xl overflow-hidden mb-6"
-              style={{ opacity: 0 }}
-            >
-              <img
-                src={product.images[selectedImage]}
-                alt={product.name}
-                className="w-full h-full object-cover"
-              />
-            </div>
-
-            {/* Thumbnail Gallery */}
-            {product.images.length > 1 && (
-              <div className="grid grid-cols-5 gap-3">
-                {product.images.slice(0, 5).map((img, idx) => (
+      <div className="container mx-auto px-4 py-8 md:py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+          {/* Enhanced Image Gallery */}
+          <div className="lg:sticky lg:top-4 h-fit">
+            <div className="relative group">
+              <div
+                ref={mainImageRef}
+                key={selectedImage}
+                className="aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl shadow-2xl overflow-hidden mb-4 relative"
+                style={{ opacity: 0 }}
+              >
+                <img
+                  src={product.images[selectedImage]}
+                  alt={product.name}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                
+                {/* Image Overlay Actions */}
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300">
                   <button
-                    key={img}
-                    onClick={() => setSelectedImage(idx)}
-                    className={`aspect-square bg-white rounded-lg overflow-hidden border-2 transition-all ${
-                      selectedImage === idx
-                        ? "border-blue-600 ring-2 ring-blue-600/20 scale-95"
-                        : "border-gray-200 hover:border-gray-300"
-                    }`}
+                    onClick={() => setIsImageZoomed(true)}
+                    className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm p-2.5 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-white hover:scale-110"
+                    aria-label="Zoom image"
                   >
-                    <img
-                      src={img}
-                      alt={`${product.name} ${idx + 1}`}
-                      className="w-full h-full object-cover"
-                    />
+                    <ZoomIn className="w-5 h-5 text-gray-700" />
                   </button>
-                ))}
+                  
+                  <button
+                    onClick={() => setIsFavorite(!isFavorite)}
+                    className={`absolute top-4 left-4 backdrop-blur-sm p-2.5 rounded-full shadow-lg transition-all duration-300 hover:scale-110 ${ 
+                      isFavorite ? 'bg-red-500 text-white' : 'bg-white/90 text-gray-700 hover:bg-white'
+                    }`}
+                    aria-label="Add to favorites"
+                  >
+                    <Heart className={`w-5 h-5 ${isFavorite ? 'fill-current' : ''}`} />
+                  </button>
+                </div>
+
+                {/* Discount Badge */}
+                {product.hasDiscount && (
+                  <div className="absolute bottom-4 right-4">
+                    <div className="bg-gradient-to-r from-red-500 to-pink-500 text-white px-4 py-2 rounded-full shadow-lg font-bold text-sm flex items-center gap-1.5">
+                      <Award className="w-4 h-4" />
+                      SAVE {product.discountPercentage}%
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
+
+              {/* Enhanced Thumbnail Gallery */}
+              {product.images.length > 1 && (
+                <div className="grid grid-cols-5 md:grid-cols-6 gap-2 md:gap-3">
+                  {product.images.slice(0, 6).map((img, idx) => (
+                    <button
+                      key={img}
+                      onClick={() => setSelectedImage(idx)}
+                      className={`aspect-square bg-white rounded-lg md:rounded-xl overflow-hidden border-2 transition-all duration-300 hover:shadow-lg ${ 
+                        selectedImage === idx
+                          ? "border-blue-600 ring-2 ring-blue-600/30 shadow-md scale-95"
+                          : "border-gray-200 hover:border-blue-300"
+                      }`}
+                    >
+                      <img
+                        src={img}
+                        alt={`${product.name} ${idx + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
-          {/* Product Info */}
-          <div>
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 tracking-tight">
+          {/* Product Info - Redesigned */}
+          <div className="flex flex-col">
+            {/* Availability Badge */}
+            {product.available ? (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-green-50 text-green-700 rounded-full text-sm font-medium mb-3 w-fit">
+                <CheckCircle className="w-4 h-4" />
+                In Stock
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-red-50 text-red-700 rounded-full text-sm font-medium mb-3 w-fit">
+                <Info className="w-4 h-4" />
+                Out of Stock
+              </span>
+            )}
+
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 leading-tight">
               {product.name}
             </h1>
-            
-            <div className="flex items-center gap-4 mb-6">
-              <span className="text-3xl font-bold text-blue-600">
-                {product.category === "slabs" ? "Custom Quote" : product.price}
-              </span>
-              
-              {!product.available && (
-                <span className="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm font-medium">
-                  Out of Stock
+
+            {/* Rating & Reviews */}
+            {reviewStats.totalReviews > 0 ? (
+              <div className="flex items-center gap-3 mb-6">
+                <div className="flex items-center gap-1">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <Star
+                      key={star}
+                      className={`w-5 h-5 ${
+                        star <= Math.round(reviewStats.averageRating)
+                          ? 'fill-yellow-400 text-yellow-400'
+                          : 'text-gray-300'
+                      }`}
+                    />
+                  ))}
+                </div>
+                <span className="text-lg font-semibold text-gray-900">
+                  {reviewStats.averageRating.toFixed(1)}
                 </span>
-              )}
-              
-              {product.moq && product.available && (
-                <span className="text-sm text-gray-600">{product.moq}</span>
+                <button
+                  onClick={() => reviewsRef.current?.scrollIntoView({ behavior: 'smooth' })}
+                  className="text-sm text-blue-600 hover:text-blue-700 hover:underline font-medium"
+                >
+                  ({reviewStats.totalReviews} {reviewStats.totalReviews === 1 ? 'review' : 'reviews'})
+                </button>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2 mb-6">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <Star key={star} className="w-4 h-4 text-gray-300" />
+                ))}
+                <span className="text-sm text-gray-500 ml-1">Be the first to review</span>
+              </div>
+            )}
+            
+            {/* Price Section - Enhanced */}
+            <div className="bg-gradient-to-br from-blue-50 via-white to-purple-50 border-2 border-gray-200 rounded-2xl p-6 mb-6 shadow-sm">
+              {product.category === "slabs" && product.priceINR ? (
+                <div>
+                  {product.hasDiscount ? (
+                    <div className="space-y-3">
+                      <div className="flex items-end gap-3 flex-wrap">
+                        <div>
+                          <p className="text-xs text-gray-500 uppercase tracking-wide font-semibold mb-1">Special Price</p>
+                          <span className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-600">
+                            {formatPrice(product.discountedPrice)}
+                          </span>
+                        </div>
+                        <span className="text-2xl text-gray-400 line-through mb-2">
+                          {formatPrice(product.originalPrice)}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="px-3 py-1 bg-red-500 text-white rounded-lg text-sm font-bold">
+                          {product.discountPercentage}% OFF
+                        </div>
+                        <p className="text-lg text-green-600 font-bold">
+                          Save {formatPrice(product.originalPrice - product.discountedPrice)}
+                        </p>
+                      </div>
+                      {product.discount?.description && (
+                        <p className="text-sm text-gray-600 italic bg-amber-50 px-3 py-2 rounded-lg border border-amber-200">
+                          🎁 {product.discount.description}
+                        </p>
+                      )}
+                    </div>
+                  ) : (
+                    <div>
+                      <p className="text-xs text-gray-500 uppercase tracking-wide font-semibold mb-1">Price</p>
+                      <span className="text-4xl md:text-5xl font-black text-blue-600">
+                        {formatPrice(product.priceINR)}
+                      </span>
+                    </div>
+                  )}
+                  {product.moq && product.available && (
+                    <div className="mt-4 flex items-center gap-2 text-sm text-gray-600 bg-gray-100 px-3 py-2 rounded-lg w-fit">
+                      <Package className="w-4 h-4" />
+                      {product.moq}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="text-center py-4">
+                  <span className="text-3xl font-bold text-gray-900">
+                    {product.category === "slabs" ? "Custom Quote Required" : product.price}
+                  </span>
+                  {!product.available && (
+                    <span className="block mt-2 px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm font-medium w-fit mx-auto">
+                      Currently Unavailable
+                    </span>
+                  )}
+                </div>
               )}
             </div>
 
-            <p className="text-gray-700 text-lg leading-relaxed mb-8">
+            {/* Quick Info */}
+            <div className="grid grid-cols-3 gap-3 mb-6">
+              <div className="text-center p-3 bg-gray-50 rounded-lg border border-gray-200">
+                <Palette className="w-5 h-5 text-blue-600 mx-auto mb-1" />
+                <p className="text-xs font-medium text-gray-700">Custom Finish</p>
+              </div>
+              <div className="text-center p-3 bg-gray-50 rounded-lg border border-gray-200">
+                <Ruler className="w-5 h-5 text-blue-600 mx-auto mb-1" />
+                <p className="text-xs font-medium text-gray-700">Any Size</p>
+              </div>
+              <div className="text-center p-3 bg-gray-50 rounded-lg border border-gray-200">
+                <Award className="w-5 h-5 text-blue-600 mx-auto mb-1" />
+                <p className="text-xs font-medium text-gray-700">Premium</p>
+              </div>
+            </div>
+
+            <p className="text-gray-600 text-base leading-relaxed mb-6 bg-gray-50 p-4 rounded-xl border border-gray-200">
               {product.description}
             </p>
 
             {/* Specifications */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Specifications</h3>
+            <div className="bg-white rounded-xl shadow-sm border-2 border-gray-200 p-5 md:p-6 mb-6">
+              <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <Info className="w-5 h-5 text-blue-600" />
+                Specifications
+              </h3>
               <div className="space-y-3">
                 {product.category === "slabs" ? (
                   <>
                     {/* Finish selector */}
                     <div className="flex items-center justify-between py-3 border-b border-gray-100">
-                      <span className="font-medium text-gray-700">Finish:</span>
+                      <span className="font-semibold text-gray-700 flex items-center gap-2">
+                        <Palette className="w-4 h-4 text-blue-600" />
+                        Finish:
+                      </span>
                       <select
                         value={selectedFinish}
                         onChange={(e) => setSelectedFinish(e.target.value)}
-                        className="px-3 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                        className="px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white font-medium text-gray-900 transition-all hover:border-blue-400"
                       >
                         {[
                           "Polish",
@@ -371,11 +611,14 @@ const ProductDetails = () => {
 
                     {/* Thickness selector */}
                     <div className="flex items-center justify-between py-3 border-b border-gray-100">
-                      <span className="font-medium text-gray-700">Thickness:</span>
+                      <span className="font-semibold text-gray-700 flex items-center gap-2">
+                        <Ruler className="w-4 h-4 text-blue-600" />
+                        Thickness:
+                      </span>
                       <select
                         value={selectedThickness}
                         onChange={(e) => setSelectedThickness(e.target.value)}
-                        className="px-3 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                        className="px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white font-medium text-gray-900 transition-all hover:border-blue-400"
                       >
                         {["12mm", "15mm", "18mm", "20mm", "25mm", "30mm"].map((t) => (
                           <option key={t} value={t}>
@@ -390,8 +633,8 @@ const ProductDetails = () => {
                       .filter(([key]) => key !== "finish" && key !== "thickness")
                       .map(([key, value]) => (
                         <div key={key} className="flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0">
-                          <span className="font-medium text-gray-700 capitalize">{key}:</span>
-                          <span className="text-gray-900">{value}</span>
+                          <span className="font-semibold text-gray-700 capitalize">{key}:</span>
+                          <span className="text-gray-900 font-medium">{value}</span>
                         </div>
                       ))}
                   </>
@@ -399,64 +642,52 @@ const ProductDetails = () => {
                   // Furniture specs
                   Object.entries(product.specs).map(([key, value]) => (
                     <div key={key} className="flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0">
-                      <span className="font-medium text-gray-700 capitalize">{key}:</span>
-                      <span className="text-gray-900">{value}</span>
+                      <span className="font-semibold text-gray-700 capitalize">{key}:</span>
+                      <span className="text-gray-900 font-medium">{value}</span>
                     </div>
                   ))
                 )}
               </div>
             </div>
 
-            {/* Actions */}
-            <div className="space-y-4">
-              <div className="flex items-center gap-3">
-                {product.available ? (
-                  product.category === "slabs" ? (
-                    <AddToCartButton
-                      product={product}
-                      preselectedCustomization={{
-                        finish: selectedFinish,
-                        thickness: selectedThickness,
-                      }}
-                      className="flex-1 h-12 inline-flex items-center justify-center gap-2 px-6 rounded-lg bg-blue-600 text-white hover:bg-blue-700 shadow-lg hover:shadow-xl transition-all duration-300 font-semibold"
-                    />
-                  ) : isInCart ? (
-                    <QuantityHandler product={product} />
-                  ) : (
-                    <AddToCartButton
-                      product={product}
-                      className="flex-1 h-12 inline-flex items-center justify-center gap-2 px-6 rounded-lg bg-blue-600 text-white hover:bg-blue-700 shadow-lg hover:shadow-xl transition-all duration-300 font-semibold"
-                    />
-                  )
+            {/* CTA Buttons - Enhanced */}
+            <div className="space-y-3 sticky bottom-0 lg:static bg-white lg:bg-transparent py-4 lg:py-0 -mx-4 px-4 lg:mx-0 lg:px-0 border-t lg:border-t-0 border-gray-200">
+              {product.available ? (
+                product.category === "slabs" ? (
+                  <AddToCartButton
+                    product={product}
+                    preselectedCustomization={{
+                      finish: selectedFinish,
+                      thickness: selectedThickness,
+                    }}
+                    className="w-full h-14 inline-flex items-center justify-center gap-2 px-6 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800 shadow-lg hover:shadow-xl transition-all duration-300 font-bold text-lg group"
+                  />
+                ) : isInCart ? (
+                  <QuantityHandler product={product} />
                 ) : (
-                  <a
-                    href={`https://wa.me/918107115116?text=${encodeURIComponent(
-                      "Inquiry about " + product.name + " availability"
-                    )}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex-1 h-12 inline-flex items-center justify-center gap-2 px-6 rounded-lg bg-red-600 text-white hover:bg-red-700 shadow-lg hover:shadow-xl transition-all duration-300 font-semibold"
-                  >
-                    Contact for Availability
-                  </a>
-                )}
-              </div>
-
-              {product.available && etsyUrl && (
+                  <AddToCartButton
+                    product={product}
+                    className="w-full h-14 inline-flex items-center justify-center gap-2 px-6 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800 shadow-lg hover:shadow-xl transition-all duration-300 font-bold text-lg group"
+                  />
+                )
+              ) : (
                 <a
-                  href={etsyUrl}
+                  href={`https://wa.me/918107115116?text=${encodeURIComponent(
+                    "Inquiry about " + product.name + " availability"
+                  )}`}
                   target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full h-12 flex items-center justify-center gap-2 px-6 rounded-lg bg-orange-500 text-white hover:bg-orange-600 transition-colors font-semibold"
+                  rel="noreferrer"
+                  className="w-full h-14 inline-flex items-center justify-center gap-2 px-6 rounded-xl bg-gradient-to-r from-red-600 to-red-700 text-white hover:from-red-700 hover:to-red-800 shadow-lg hover:shadow-xl transition-all duration-300 font-bold text-lg"
                 >
-                  View on Etsy
+                  <MessageCircle className="w-5 h-5" />
+                  Contact for Availability
                 </a>
               )}
 
-              <div className="flex gap-3">
+              <div className="grid grid-cols-2 gap-3">
                 <button
                   onClick={handleShare}
-                  className="flex-1 h-12 inline-flex items-center justify-center gap-2 px-4 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors"
+                  className="h-12 inline-flex items-center justify-center gap-2 px-4 rounded-xl bg-gray-100 text-gray-700 hover:bg-gray-200 transition-all duration-300 font-semibold border-2 border-gray-200 hover:border-gray-300"
                 >
                   <Share2 className="w-5 h-5" />
                   Share
@@ -468,7 +699,7 @@ const ProductDetails = () => {
                   )}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex-1 h-12 inline-flex items-center justify-center gap-2 px-4 rounded-lg bg-green-600 text-white hover:bg-green-700 transition-colors font-semibold"
+                  className="h-12 inline-flex items-center justify-center gap-2 px-4 rounded-xl bg-green-600 text-white hover:bg-green-700 transition-all duration-300 font-semibold shadow-md hover:shadow-lg"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -483,71 +714,264 @@ const ProductDetails = () => {
 
               <Link
                 to="/quotation"
-                className="w-full h-12 flex items-center justify-center gap-2 px-6 rounded-lg bg-amber-600 text-white hover:bg-amber-700 transition-colors font-semibold"
+                className="w-full h-12 flex items-center justify-center gap-2 px-6 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-white hover:from-amber-600 hover:to-orange-600 transition-all duration-300 font-bold shadow-md hover:shadow-lg"
               >
                 <Quote className="w-5 h-5" />
-                Request Quote
+                Request Custom Quote
               </Link>
+
+              {product.available && etsyUrl && (
+                <a
+                  href={etsyUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full h-12 flex items-center justify-center gap-2 px-6 rounded-xl bg-orange-500 text-white hover:bg-orange-600 transition-all duration-300 font-semibold shadow-md hover:shadow-lg"
+                >
+                  View on Etsy
+                </a>
+              )}
             </div>
           </div>
         </div>
       </div>
-      {/* Description & Details Section */}
-      <div className="bg-white py-16">
+      {/* Description & Details Section - Tabbed Interface */}
+      <div className="bg-gradient-to-b from-gray-50 to-white py-12 md:py-16">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">
-              About {product.name}
-            </h2>
-
-            <div className="space-y-6 text-gray-700 text-lg leading-relaxed">
-              <p>
-                {product.category === "furniture"
-                  ? "This handcrafted furniture piece combines natural stone elegance with functional design. Each piece is meticulously crafted to order, ensuring unique character and premium quality."
-                  : "This stone offers a smooth, polished surface with subtle veining that elevates both contemporary and classic interiors. Its durability and low maintenance make it suitable for kitchens, bathrooms, living areas and commercial lobbies."}
-              </p>
-
-              <p>
-                {product.category === "furniture"
-                  ? "Custom dimensions and finishes available. We work closely with designers and homeowners to create bespoke pieces that perfectly complement your space."
-                  : "For best results, seal annually and clean with pH-neutral stone cleaners. Avoid harsh acids. We provide guidance on slab selection, edge profiles, and installation practices tailored to your project."}
-              </p>
+          <div className="max-w-6xl mx-auto">
+            {/* Tab Navigation */}
+            <div className="flex items-center gap-2 border-b-2 border-gray-200 mb-8 overflow-x-auto">
+              <button
+                onClick={() => setActiveTab('description')}
+                className={`px-6 py-3 font-semibold transition-all whitespace-nowrap ${
+                  activeTab === 'description'
+                    ? 'text-blue-600 border-b-4 border-blue-600 -mb-0.5'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                Description
+              </button>
+              <button
+                onClick={() => setActiveTab('features')}
+                className={`px-6 py-3 font-semibold transition-all whitespace-nowrap ${
+                  activeTab === 'features'
+                    ? 'text-blue-600 border-b-4 border-blue-600 -mb-0.5'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                Features
+              </button>
+              <button
+                onClick={() => setActiveTab('care')}
+                className={`px-6 py-3 font-semibold transition-all whitespace-nowrap ${
+                  activeTab === 'care'
+                    ? 'text-blue-600 border-b-4 border-blue-600 -mb-0.5'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                Care & Maintenance
+              </button>
             </div>
 
-            {/* QUOTE BOX */}
-            <div className="mt-10 rounded-xl bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 p-8">
-              <div className="flex items-start gap-4">
-                <Quote className="w-8 h-8 text-amber-600 flex-shrink-0" />
-                <p className="text-gray-800 text-lg leading-relaxed italic">
-                  {product.category === "furniture"
-                    ? "Each furniture piece is a unique work of art, combining traditional craftsmanship with modern design sensibilities. Request custom specifications to match your vision."
-                    : "Crafted by nature over millennia, this stone delivers timeless elegance to modern spaces. Request a live video of current slabs to choose your exact piece."}
-                </p>
+            {/* Tab Content */}
+            <div className="bg-white rounded-2xl shadow-lg p-6 md:p-10 border border-gray-200">
+              {activeTab === 'description' && (
+                <div className="space-y-6 animate-fadeIn">
+                  <h2 className="text-2xl md:text-3xl font-bold text-gray-900 flex items-center gap-3">
+                    <Info className="w-7 h-7 text-blue-600" />
+                    About {product.name}
+                  </h2>
+                  <div className="space-y-4 text-gray-700 text-base md:text-lg leading-relaxed">
+                    <p className="bg-blue-50 border-l-4 border-blue-600 pl-6 py-4 rounded-r-lg">
+                      {product.category === "furniture"
+                        ? "This handcrafted furniture piece combines natural stone elegance with functional design. Each piece is meticulously crafted to order, ensuring unique character and premium quality."
+                        : "This stone offers a smooth, polished surface with subtle veining that elevates both contemporary and classic interiors. Its durability and low maintenance make it suitable for kitchens, bathrooms, living areas and commercial lobbies."}
+                    </p>
+                    <p>
+                      {product.category === "furniture"
+                        ? "Custom dimensions and finishes available. We work closely with designers and homeowners to create bespoke pieces that perfectly complement your space."
+                        : "For best results, seal annually and clean with pH-neutral stone cleaners. Avoid harsh acids. We provide guidance on slab selection, edge profiles, and installation practices tailored to your project."}
+                    </p>
+                  </div>
+                  <div className="mt-8 rounded-xl bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-amber-200 p-6 md:p-8">
+                    <div className="flex items-start gap-4">
+                      <Quote className="w-8 h-8 text-amber-600 flex-shrink-0 mt-1" />
+                      <p className="text-gray-800 text-base md:text-lg leading-relaxed italic font-medium">
+                        {product.category === "furniture"
+                          ? "Each furniture piece is a unique work of art, combining traditional craftsmanship with modern design sensibilities. Request custom specifications to match your vision."
+                          : "Crafted by nature over millennia, this stone delivers timeless elegance to modern spaces. Request a live video of current slabs to choose your exact piece."}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'features' && (
+                <div className="space-y-6 animate-fadeIn">
+                  <h2 className="text-2xl md:text-3xl font-bold text-gray-900 flex items-center gap-3">
+                    <CheckCircle className="w-7 h-7 text-green-600" />
+                    Key Features
+                  </h2>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="flex items-start gap-3 p-4 bg-green-50 rounded-xl border border-green-200">
+                      <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <h3 className="font-semibold text-gray-900 mb-1">Premium Quality</h3>
+                        <p className="text-sm text-gray-600">Handpicked materials ensuring exceptional quality</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3 p-4 bg-blue-50 rounded-xl border border-blue-200">
+                      <CheckCircle className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <h3 className="font-semibold text-gray-900 mb-1">Customizable</h3>
+                        <p className="text-sm text-gray-600">Available in multiple finishes and sizes</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3 p-4 bg-purple-50 rounded-xl border border-purple-200">
+                      <CheckCircle className="w-5 h-5 text-purple-600 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <h3 className="font-semibold text-gray-900 mb-1">Durable</h3>
+                        <p className="text-sm text-gray-600">Long-lasting and resistant to wear</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3 p-4 bg-amber-50 rounded-xl border border-amber-200">
+                      <CheckCircle className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <h3 className="font-semibold text-gray-900 mb-1">Expert Craftsmanship</h3>
+                        <p className="text-sm text-gray-600">Carefully crafted by skilled artisans</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'care' && (
+                <div className="space-y-6 animate-fadeIn">
+                  <h2 className="text-2xl md:text-3xl font-bold text-gray-900 flex items-center gap-3">
+                    <Shield className="w-7 h-7 text-blue-600" />
+                    Care & Maintenance
+                  </h2>
+                  <div className="space-y-4">
+                    <div className="bg-blue-50 border-l-4 border-blue-600 p-5 rounded-r-lg">
+                      <h3 className="font-bold text-gray-900 mb-2 flex items-center gap-2">
+                        <Info className="w-5 h-5 text-blue-600" />
+                        Daily Cleaning
+                      </h3>
+                      <p className="text-gray-700">Clean with a soft, damp cloth and mild soap. Avoid abrasive cleaners that can damage the surface.</p>
+                    </div>
+                    <div className="bg-amber-50 border-l-4 border-amber-600 p-5 rounded-r-lg">
+                      <h3 className="font-bold text-gray-900 mb-2 flex items-center gap-2">
+                        <Award className="w-5 h-5 text-amber-600" />
+                        Protection
+                      </h3>
+                      <p className="text-gray-700">Use coasters and placemats to prevent stains. Seal stone surfaces annually for best results.</p>
+                    </div>
+                    <div className="bg-purple-50 border-l-4 border-purple-600 p-5 rounded-r-lg">
+                      <h3 className="font-bold text-gray-900 mb-2 flex items-center gap-2">
+                        <Shield className="w-5 h-5 text-purple-600" />
+                        Long-term Care
+                      </h3>
+                      <p className="text-gray-700">Avoid prolonged exposure to direct sunlight. Professional maintenance recommended every 2-3 years.</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Reviews Section - Enhanced */}
+      <div ref={reviewsRef} className="bg-gradient-to-b from-white to-gray-50 py-12 md:py-16 border-t-2 border-gray-200">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            {/* Section Header */}
+            <div className="text-center mb-10">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3 flex items-center justify-center gap-3">
+                <MessageCircle className="w-8 h-8 text-blue-600" />
+                Customer Reviews
+              </h2>
+              {reviewStats.totalReviews > 0 && (
+                <div className="inline-flex items-center gap-3 bg-white px-6 py-3 rounded-full shadow-md border border-gray-200">
+                  <div className="flex items-center gap-1">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <Star
+                        key={star}
+                        className={`w-5 h-5 ${
+                          star <= Math.round(reviewStats.averageRating)
+                            ? 'fill-yellow-400 text-yellow-400'
+                            : 'text-gray-300'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                  <span className="text-xl font-bold text-gray-900">
+                    {reviewStats.averageRating.toFixed(1)}
+                  </span>
+                  <span className="text-gray-400">|</span>
+                  <span className="text-gray-600 font-medium">{reviewStats.totalReviews} {reviewStats.totalReviews === 1 ? 'review' : 'reviews'}</span>
+                </div>
+              )}
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* Review Stats */}
+              <div className="lg:col-span-1">
+                <ReviewStats stats={reviewStats} loading={reviewsLoading} />
+              </div>
+
+              {/* Review List and Form */}
+              <div className="lg:col-span-2 space-y-8">
+                <ReviewList reviews={reviews} loading={reviewsLoading} />
+                
+                {user ? (
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-900 mb-4">Write a Review</h3>
+                    <ReviewForm productId={product.id} onReviewSubmitted={handleReviewSubmitted} />
+                  </div>
+                ) : (
+                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 text-center">
+                    <p className="text-gray-600 mb-4">Please sign in to write a review</p>
+                    <Link
+                      to="/login"
+                      className="inline-block px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                    >
+                      Sign In
+                    </Link>
+                  </div>
+                )}
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Related Products */}
+      {/* Related Products - Enhanced */}
       {product.relatedProducts.length > 0 && (
-        <div className="bg-gray-50 py-16">
+        <div className="bg-gradient-to-b from-gray-50 to-white py-12 md:py-16 border-t border-gray-200">
           <div className="container mx-auto px-4">
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-3xl font-bold text-gray-900">Related Products</h2>
+            <div className="flex items-center justify-between mb-10">
+              <div>
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 flex items-center gap-3">
+                  <Package className="w-8 h-8 text-blue-600" />
+                  You May Also Like
+                </h2>
+                <p className="text-gray-600 mt-2">Explore our handpicked collection</p>
+              </div>
 
-              <div className="flex gap-2">
+              <div className="hidden md:flex gap-2">
                 <button
                   onClick={() => scrollRelated("left")}
-                  className="h-10 w-10 rounded-full bg-white shadow-md hover:shadow-lg flex items-center justify-center transition-all border border-gray-200"
+                  className="h-12 w-12 rounded-xl bg-white shadow-md hover:shadow-xl flex items-center justify-center transition-all border-2 border-gray-200 hover:border-blue-400 hover:bg-blue-50 group"
+                  aria-label="Previous products"
                 >
-                  <ChevronLeft className="w-5 h-5 text-gray-700" />
+                  <ChevronLeft className="w-6 h-6 text-gray-700 group-hover:text-blue-600" />
                 </button>
                 <button
                   onClick={() => scrollRelated("right")}
-                  className="h-10 w-10 rounded-full bg-white shadow-md hover:shadow-lg flex items-center justify-center transition-all border border-gray-200"
+                  className="h-12 w-12 rounded-xl bg-white shadow-md hover:shadow-xl flex items-center justify-center transition-all border-2 border-gray-200 hover:border-blue-400 hover:bg-blue-50 group"
+                  aria-label="Next products"
                 >
-                  <ChevronRightIcon className="w-5 h-5 text-gray-700" />
+                  <ChevronRightIcon className="w-6 h-6 text-gray-700 group-hover:text-blue-600" />
                 </button>
               </div>
             </div>
@@ -562,32 +986,99 @@ const ProductDetails = () => {
                   <Link
                     key={p.id}
                     to={`/products/${p.id}`}
-                    className="group bg-white rounded-xl shadow-md hover:shadow-xl overflow-hidden transition-all duration-300 shrink-0"
+                    className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl overflow-hidden transition-all duration-500 shrink-0 border-2 border-gray-100 hover:border-blue-300 transform hover:-translate-y-1"
                     style={{
                       width: `${slideWidth}px`,
                       scrollSnapAlign: "start",
                     }}
                   >
-                    <div className="aspect-square overflow-hidden">
+                    <div className="aspect-square overflow-hidden relative">
                       <img
                         src={p.image}
                         alt={p.name}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                       />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      <div className="absolute bottom-3 right-3 bg-white/90 backdrop-blur-sm p-2 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                        <ChevronRight className="w-5 h-5 text-blue-600" />
+                      </div>
                     </div>
-                    <div className="p-4">
-                      <h4 className="text-sm font-semibold text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2">
+                    <div className="p-5">
+                      <h4 className="text-base font-bold text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2 mb-3">
                         {p.name}
                       </h4>
-                      <div className="mt-3 inline-flex items-center text-blue-600 text-sm font-medium group-hover:gap-2 transition-all">
-                        View Details
-                        <ChevronRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                      <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 group-hover:bg-blue-600 text-blue-600 group-hover:text-white rounded-lg text-sm font-semibold transition-all duration-300">
+                        <span>View Details</span>
+                        <ChevronRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
                       </div>
                     </div>
                   </Link>
                 ))}
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Image Zoom Modal */}
+      {isImageZoomed && (
+        <div 
+          className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4 backdrop-blur-sm"
+          onClick={() => setIsImageZoomed(false)}
+        >
+          <button
+            onClick={() => setIsImageZoomed(false)}
+            className="absolute top-4 right-4 bg-white/10 hover:bg-white/20 p-3 rounded-full transition-all duration-300"
+            aria-label="Close zoom"
+          >
+            <X className="w-6 h-6 text-white" />
+          </button>
+          <img
+            src={product.images[selectedImage]}
+            alt={product.name}
+            className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          />
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white text-sm bg-black/50 px-4 py-2 rounded-full backdrop-blur-sm">
+            Image {selectedImage + 1} of {product.images.length}
+          </div>
+        </div>
+      )}
+
+      {/* Sticky Bottom CTA Bar - Mobile */}
+      {showStickyBar && (
+        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t-2 border-gray-200 shadow-2xl p-4 animate-slideUp">
+          <div className="flex items-center gap-3">
+            <div className="flex-shrink-0">
+              <img 
+                src={product.images[0]} 
+                alt={product.name} 
+                className="w-14 h-14 object-cover rounded-lg border-2 border-gray-200"
+              />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="font-bold text-gray-900 truncate text-sm">{product.name}</p>
+              {product.hasDiscount ? (
+                <div className="flex items-center gap-2">
+                  <span className="text-lg font-bold text-green-600">
+                    {formatPrice(product.discountedPrice)}
+                  </span>
+                  <span className="text-xs text-gray-500 line-through">
+                    {formatPrice(product.originalPrice)}
+                  </span>
+                </div>
+              ) : (
+                <span className="text-lg font-bold text-blue-600">
+                  {product.priceINR ? formatPrice(product.priceINR) : 'Custom Quote'}
+                </span>
+              )}
+            </div>
+            {product.available && (
+              <AddToCartButton
+                product={product}
+                className="flex-shrink-0 px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800 shadow-lg font-bold text-sm whitespace-nowrap"
+              />
+            )}
           </div>
         </div>
       )}

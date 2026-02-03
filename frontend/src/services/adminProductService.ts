@@ -14,7 +14,18 @@ export interface Product {
     sortedImages: string[];
     priceINR?: number;
     available: boolean;
+    discount?: {
+        enabled: boolean;
+        percentage: number;
+        startDate?: string | null;
+        endDate?: string | null;
+        description?: string;
+    };
     hasVideo: boolean;
+    videoUrl?: string;
+    videoFilename?: string;
+    videoSize?: number;
+    videoUploadedAt?: string;
     furnitureSpecs?: {
         product?: string;
         type?: string;
@@ -54,6 +65,13 @@ export interface ProductFormData {
     description: string;
     priceINR?: number;
     available?: boolean;
+    discount?: {
+        enabled?: boolean;
+        percentage?: number;
+        startDate?: string | null;
+        endDate?: string | null;
+        description?: string;
+    };
     hasVideo?: boolean;
     status?: 'active' | 'inactive' | 'draft';
     furnitureSpecs?: any;
@@ -104,11 +122,12 @@ export const getAdminProducts = async (params: {
 };
 
 /**
- * Create a new product with images
+ * Create a new product with images and optional video
  */
 export const createProduct = async (
     productData: ProductFormData,
-    images: File[]
+    images: File[],
+    video?: File | null
 ): Promise<{ success: boolean; data: Product; message: string }> => {
     const formData = new FormData();
     
@@ -119,6 +138,11 @@ export const createProduct = async (
     images.forEach((image) => {
         formData.append('images', image);
     });
+
+    // Add video if provided
+    if (video) {
+        formData.append('video', video);
+    }
 
     const response = await axios.post(
         `${API_URL}/admin/products`,
@@ -136,23 +160,36 @@ export const createProduct = async (
 };
 
 /**
- * Update a product with optional new images
+ * Update a product with optional new images and video
  */
 export const updateProduct = async (
     productId: string,
-    productData: Partial<ProductFormData> & { preserveExistingImages?: boolean },
-    images?: File[]
+    productData: Partial<ProductFormData> & { preserveExistingImages?: boolean; removeVideo?: boolean },
+    images?: File[],
+    video?: File | null,
+    removeVideo?: boolean
 ): Promise<{ success: boolean; data: Product; message: string }> => {
     const formData = new FormData();
     
+    // Add removeVideo flag to productData if needed
+    const dataToSend = { ...productData };
+    if (removeVideo) {
+        dataToSend.removeVideo = true as any;
+    }
+    
     // Add product data as JSON string
-    formData.append('productData', JSON.stringify(productData));
+    formData.append('productData', JSON.stringify(dataToSend));
     
     // Add new images if provided
     if (images && images.length > 0) {
         images.forEach((image) => {
             formData.append('images', image);
         });
+    }
+
+    // Add video if provided
+    if (video) {
+        formData.append('video', video);
     }
 
     const response = await axios.put(

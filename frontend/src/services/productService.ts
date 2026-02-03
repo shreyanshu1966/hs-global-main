@@ -12,6 +12,13 @@ export interface Product {
   sortedImages?: string[];
   priceINR?: number;
   available: boolean;
+  discount?: {
+    enabled: boolean;
+    percentage: number;
+    startDate?: string | null;
+    endDate?: string | null;
+    description?: string;
+  };
   hasVideo: boolean;
   furnitureSpecs?: {
     product?: string;
@@ -39,6 +46,8 @@ export interface Product {
   tags: string[];
   viewCount: number;
   addToCartCount: number;
+  averageRating?: number;
+  totalReviews?: number;
   seoTitle?: string;
   seoDescription?: string;
   seoKeywords?: string[];

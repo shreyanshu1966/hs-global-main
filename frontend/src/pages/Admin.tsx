@@ -31,7 +31,8 @@ import {
     Mail,
     Layers,
     Image,
-    Upload
+    Upload,
+    Star
 } from 'lucide-react';
 import {
     BarChart,
@@ -52,6 +53,7 @@ import blogService, { Blog } from '../services/blogService';
 import contactService, { Contact, ContactStats } from '../services/contactService';
 import quotationService, { Quotation, QuotationStats } from '../services/quotationService';
 import adminProductService, { Product, ProductFormData } from '../services/adminProductService';
+import reviewService, { Review } from '../services/reviewService';
 
 interface Analytics {
     users: {
@@ -113,7 +115,7 @@ const COLORS = ['#10b981', '#f59e0b', '#ef4444', '#3b82f6', '#8b5cf6'];
 const Admin = () => {
     const { user, token, logout } = useAuth();
     const navigate = useNavigate();
-    const [activeTab, setActiveTab] = useState<'analytics' | 'orders' | 'users' | 'blogs' | 'contacts' | 'quotations' | 'products'>('analytics');
+    const [activeTab, setActiveTab] = useState<'analytics' | 'orders' | 'users' | 'blogs' | 'contacts' | 'quotations' | 'products' | 'reviews'>('analytics');
     const [loading, setLoading] = useState(true);
 
     // Analytics state
@@ -175,8 +177,20 @@ const Admin = () => {
     const [productFormData, setProductFormData] = useState<Partial<ProductFormData>>({});
     const [productImages, setProductImages] = useState<File[]>([]);
     const [productImagePreviews, setProductImagePreviews] = useState<string[]>([]);
+    const [productVideo, setProductVideo] = useState<File | null>(null);
+    const [productVideoPreview, setProductVideoPreview] = useState<string | null>(null);
+    const [removeVideo, setRemoveVideo] = useState(false);
+    const [productLoading, setProductLoading] = useState(false);
+    const [deletingProductId, setDeletingProductId] = useState<string | null>(null);
     const [showCustomSubcategory, setShowCustomSubcategory] = useState(false);
     const [customSubcategory, setCustomSubcategory] = useState('');
+
+    // Reviews state
+    const [reviews, setReviews] = useState<Review[]>([]);
+    const [reviewsPage, setReviewsPage] = useState(1);
+    const [reviewsStatusFilter, setReviewsStatusFilter] = useState('');
+    const [reviewsTotal, setReviewsTotal] = useState(0);
+    const [reviewsHasMore, setReviewsHasMore] = useState(false);
 
     useEffect(() => {
         if (!user || user.role !== 'admin') {
@@ -184,7 +198,7 @@ const Admin = () => {
             return;
         }
         loadData();
-    }, [user, navigate, activeTab, usersPage, ordersPage, usersSearch, usersRoleFilter, ordersSearch, ordersStatusFilter, ordersDeliveryFilter, blogsPage, contactsPage, contactsStatusFilter, quotationsPage, quotationsStatusFilter, productsPage, productsSearch, productsCategoryFilter, productsStatusFilter]);
+    }, [user, navigate, activeTab, usersPage, ordersPage, usersSearch, usersRoleFilter, ordersSearch, ordersStatusFilter, ordersDeliveryFilter, blogsPage, contactsPage, contactsStatusFilter, quotationsPage, quotationsStatusFilter, productsPage, productsSearch, productsCategoryFilter, productsStatusFilter, reviewsPage, reviewsStatusFilter]);
 
     const loadData = async () => {
         setLoading(true);
@@ -238,6 +252,16 @@ const Admin = () => {
                 });
                 setProducts(productsData.data);
                 setProductsPagination(productsData.pagination);
+            } else if (activeTab === 'reviews' && token) {
+                const reviewsData = await reviewService.getAllReviews(
+                    token,
+                    reviewsStatusFilter || undefined,
+                    10,
+                    (reviewsPage - 1) * 10
+                );
+                setReviews(reviewsData.reviews);
+                setReviewsTotal(reviewsData.total);
+                setReviewsHasMore(reviewsData.hasMore);
             }
         } catch (error: any) {
             console.error('Failed to load data:', error);
@@ -450,6 +474,9 @@ const Admin = () => {
         setProductFormData({});
         setProductImages([]);
         setProductImagePreviews([]);
+        setProductVideo(null);
+        setProductVideoPreview(null);
+        setRemoveVideo(false);
         setShowCustomSubcategory(false);
         setCustomSubcategory('');
     };
@@ -463,7 +490,29 @@ const Admin = () => {
         setProductImagePreviews(previews);
     };
 
+    const handleProductVideoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            // Validate file size (10MB)
+            if (file.size > 10 * 1024 * 1024) {
+                alert('Video file size must be less than 10MB');
+                return;
+            }
+            // Validate file type
+            const allowedTypes = ['video/mp4', 'video/webm', 'video/quicktime', 'video/x-msvideo'];
+            if (!allowedTypes.includes(file.type)) {
+                alert('Only MP4, WebM, MOV, and AVI video formats are allowed');
+                return;
+            }
+            setProductVideo(file);
+            setProductVideoPreview(URL.createObjectURL(file));
+            setRemoveVideo(false);
+        }
+    };
+
     const handleSaveProduct = async () => {
+        if (productLoading) return; // Prevent double submission
+        
         try {
             // Use custom subcategory if provided, otherwise use form data
             const finalSubcategory = showCustomSubcategory ? customSubcategory : productFormData.subcategory;
@@ -478,67 +527,60 @@ const Admin = () => {
                 subcategory: finalSubcategory
             };
 
+            setProductLoading(true);
+
             if (editingProduct) {
                 // Update existing product
                 await adminProductService.updateProduct(
                     editingProduct.productId,
                     { ...finalFormData, preserveExistingImages: productImages.length === 0 },
-                    productImages.length > 0 ? productImages : undefined
+                    productImages.length > 0 ? productImages : undefined,
+                    productVideo,
+                    removeVideo
                 );
-                alert('Product updated successfully');
+                alert('✅ Product updated successfully!');
             } else {
                 // Create new product
                 if (productImages.length === 0) {
+                    setProductLoading(false);
                     alert('Please select at least one image');
                     return;
                 }
-                await adminProductService.createProduct(finalfile));
-        setProductImagePreviews(previews);
-    };
-
-    const handleSaveProduct = async () => {
-        try {
-            if (!productFormData.productId || !productFormData.name || !productFormData.category || !productFormData.subcategory || !productFormData.description) {
-                alert('Please fill in all required fields');
-                return;
-            }
-
-            if (editingProduct) {
-                // Update existing product
-                await adminProductService.updateProduct(
-                    editingProduct.productId,
-                    { ...productFormData, preserveExistingImages: productImages.length === 0 },
-                    productImages.length > 0 ? productImages : undefined
+                await adminProductService.createProduct(
+                    finalFormData as ProductFormData, 
+                    productImages,
+                    productVideo
                 );
-                alert('Product updated successfully');
-            } else {
-                // Create new product
-                if (productImages.length === 0) {
-                    alert('Please select at least one image');
-                    return;
-                }
-                await adminProductService.createProduct(productFormData as ProductFormData, productImages);
                 alert('Product created successfully');
             }
 
             handleCloseProductModal();
-            loadData();
+            await loadData();
         } catch (error: any) {
+            console.error('Save product error:', error);
             alert(error.message || 'Failed to save product');
+        } finally {
+            setProductLoading(false);
         }
     };
 
     const handleDeleteProduct = async (productId: string) => {
-        if (!confirm('Are you sure you want to delete this product? This will also delete all its images from Cloudinary.')) {
+        if (deletingProductId) return; // Prevent multiple deletes
+        
+        if (!confirm('Are you sure you want to delete this product? This will also delete all its images and video.')) {
             return;
         }
 
         try {
+            setDeletingProductId(productId);
             await adminProductService.deleteProduct(productId);
-            loadData();
-            alert('Product deleted successfully');
+            await loadData();
+            alert('✅ Product deleted successfully!');
         } catch (error: any) {
+            console.error('Delete product error:', error);
             alert(error.message || 'Failed to delete product');
+        } finally {
+            setDeletingProductId(null);
         }
     };
 
@@ -637,7 +679,7 @@ const Admin = () => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 {/* Tabs */}
                 <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-1 mb-6">
-                    <div className="grid grid-cols-7 gap-1">
+                    <div className="grid grid-cols-8 gap-1">
                         <button
                             onClick={() => setActiveTab('analytics')}
                             className={`flex items-center justify-center gap-2 px-4 py-3 rounded-md font-medium text-sm transition-all ${activeTab === 'analytics'
@@ -707,6 +749,16 @@ const Admin = () => {
                         >
                             <Layers className="w-4 h-4" />
                             <span>Quotations</span>
+                        </button>
+                        <button
+                            onClick={() => setActiveTab('reviews')}
+                            className={`flex items-center justify-center gap-2 px-4 py-3 rounded-md font-medium text-sm transition-all ${activeTab === 'reviews'
+                                ? 'bg-blue-600 text-white shadow-sm'
+                                : 'text-gray-600 hover:bg-gray-50'
+                                }`}
+                        >
+                            <Star className="w-4 h-4" />
+                            <span>Reviews</span>
                         </button>
                     </div>
                 </div>
@@ -1808,6 +1860,192 @@ const Admin = () => {
                 )}
 
 
+                {/* Reviews Tab */}
+                {activeTab === 'reviews' && (
+                    <div className="space-y-6">
+                        {/* Stats Cards */}
+                        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                            <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+                                <h3 className="text-sm font-medium text-gray-600 mb-1">Total Reviews</h3>
+                                <p className="text-2xl font-bold text-gray-900">{reviewsTotal}</p>
+                            </div>
+                            <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+                                <h3 className="text-sm font-medium text-gray-600 mb-1">Pending</h3>
+                                <p className="text-2xl font-bold text-yellow-600">
+                                    {reviews.filter(r => r.status === 'pending').length}
+                                </p>
+                            </div>
+                            <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+                                <h3 className="text-sm font-medium text-gray-600 mb-1">Approved</h3>
+                                <p className="text-2xl font-bold text-green-600">
+                                    {reviews.filter(r => r.status === 'approved').length}
+                                </p>
+                            </div>
+                            <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+                                <h3 className="text-sm font-medium text-gray-600 mb-1">Rejected</h3>
+                                <p className="text-2xl font-bold text-red-600">
+                                    {reviews.filter(r => r.status === 'rejected').length}
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Filter */}
+                        <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
+                            <select
+                                value={reviewsStatusFilter}
+                                onChange={(e) => {
+                                    setReviewsStatusFilter(e.target.value);
+                                    setReviewsPage(1);
+                                }}
+                                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            >
+                                <option value="">All Status</option>
+                                <option value="pending">Pending</option>
+                                <option value="approved">Approved</option>
+                                <option value="rejected">Rejected</option>
+                            </select>
+                        </div>
+
+                        {/* Reviews Table */}
+                        <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                            <div className="overflow-x-auto">
+                                <table className="w-full">
+                                    <thead className="bg-gray-50 border-b border-gray-200">
+                                        <tr>
+                                            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Product</th>
+                                            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Customer</th>
+                                            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Rating</th>
+                                            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Review</th>
+                                            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Status</th>
+                                            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Date</th>
+                                            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-gray-200">
+                                        {reviews.map((review) => (
+                                            <tr key={review._id} className="hover:bg-gray-50 transition-colors">
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="text-sm font-medium text-gray-900">{review.productId}</div>
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    <div className="text-sm text-gray-900">{review.userName}</div>
+                                                    <div className="text-xs text-gray-500">{review.userEmail}</div>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="flex items-center">
+                                                        {[1, 2, 3, 4, 5].map((star) => (
+                                                            <Star
+                                                                key={star}
+                                                                className={`w-4 h-4 ${
+                                                                    star <= review.rating
+                                                                        ? 'fill-yellow-400 text-yellow-400'
+                                                                        : 'text-gray-300'
+                                                                }`}
+                                                            />
+                                                        ))}
+                                                        <span className="ml-2 text-sm text-gray-600">{review.rating}</span>
+                                                    </div>
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    <div className="text-sm font-medium text-gray-900 mb-1">{review.title}</div>
+                                                    <div className="text-sm text-gray-600 max-w-xs truncate">{review.comment}</div>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                                                        review.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                                                        review.status === 'approved' ? 'bg-green-100 text-green-800' :
+                                                        'bg-red-100 text-red-800'
+                                                    }`}>
+                                                        {review.status}
+                                                    </span>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                                                    {formatDate(review.createdAt)}
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="flex gap-2">
+                                                        {review.status === 'pending' && (
+                                                            <>
+                                                                <button
+                                                                    onClick={async () => {
+                                                                        try {
+                                                                            await reviewService.approveReview(review._id, token!);
+                                                                            loadData();
+                                                                        } catch (error: any) {
+                                                                            alert(error.message);
+                                                                        }
+                                                                    }}
+                                                                    className="p-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors"
+                                                                    title="Approve"
+                                                                >
+                                                                    <Save className="w-4 h-4" />
+                                                                </button>
+                                                                <button
+                                                                    onClick={async () => {
+                                                                        try {
+                                                                            await reviewService.rejectReview(review._id, token!);
+                                                                            loadData();
+                                                                        } catch (error: any) {
+                                                                            alert(error.message);
+                                                                        }
+                                                                    }}
+                                                                    className="p-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors"
+                                                                    title="Reject"
+                                                                >
+                                                                    <X className="w-4 h-4" />
+                                                                </button>
+                                                            </>
+                                                        )}
+                                                        <button
+                                                            onClick={async () => {
+                                                                if (!confirm('Are you sure you want to delete this review?')) return;
+                                                                try {
+                                                                    await reviewService.deleteReview(review._id, token!);
+                                                                    loadData();
+                                                                } catch (error: any) {
+                                                                    alert(error.message);
+                                                                }
+                                                            }}
+                                                            className="p-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors"
+                                                            title="Delete"
+                                                        >
+                                                            <Trash2 className="w-4 h-4" />
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            {/* Pagination */}
+                            <div className="bg-gray-50 px-6 py-4 flex items-center justify-between border-t border-gray-200">
+                                <button
+                                    onClick={() => setReviewsPage(reviewsPage - 1)}
+                                    disabled={reviewsPage === 1}
+                                    className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                                >
+                                    <ChevronLeft className="w-4 h-4" />
+                                    Previous
+                                </button>
+                                <span className="text-sm font-medium text-gray-700">
+                                    Page {reviewsPage}
+                                </span>
+                                <button
+                                    onClick={() => setReviewsPage(reviewsPage + 1)}
+                                    disabled={!reviewsHasMore}
+                                    className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                                >
+                                    Next
+                                    <ChevronRight className="w-4 h-4" />
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+
                 {/* Products Tab */}
                 {activeTab === 'products' && (
                     <div className="space-y-6">
@@ -1920,14 +2158,24 @@ const Admin = () => {
                                                         <button
                                                             onClick={() => handleOpenProductModal(product)}
                                                             className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                                                            title="Edit product"
                                                         >
                                                             <Edit2 className="w-4 h-4" />
                                                         </button>
                                                         <button
                                                             onClick={() => handleDeleteProduct(product.productId)}
-                                                            className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                                                            disabled={deletingProductId === product.productId}
+                                                            className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed relative"
+                                                            title="Delete product"
                                                         >
-                                                            <Trash2 className="w-4 h-4" />
+                                                            {deletingProductId === product.productId ? (
+                                                                <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                                </svg>
+                                                            ) : (
+                                                                <Trash2 className="w-4 h-4" />
+                                                            )}
                                                         </button>
                                                     </div>
                                                 </td>
@@ -2015,7 +2263,15 @@ const Admin = () => {
                                             value={productFormData.category || 'furniture'}
                                             onChange={(e) => setProductFormData({ ...productFormData, category: e.target.value, subcategory: '' })}
                                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                                        >={!showCustomSubcategory}
+                                        >
+                                            <option value="furniture">Furniture</option>
+                                            <option value="slabs">Slabs</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Subcategory *</label>
+                                        <select
+                                            required={!showCustomSubcategory}
                                             value={showCustomSubcategory ? 'custom' : (productFormData.subcategory || '')}
                                             onChange={(e) => {
                                                 if (e.target.value === 'custom') {
@@ -2086,15 +2342,7 @@ const Admin = () => {
                                                     ← Back to predefined options
                                                 </button>
                                             </div>
-                                        )}   <option value="onyx">Onyx</option>
-                                                    <option value="limestone">Limestone</option>
-                                                    <option value="travertine">Travertine</option>
-                                                    <option value="sandstone">Sandstone</option>
-                                                    <option value="slate">Slate</option>
-                                                    <option value="other">Other</option>
-                                                </>
-                                            )}
-                                        </select>
+                                        )}
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-1">Price (INR)</label>
@@ -2117,6 +2365,118 @@ const Admin = () => {
                                             <option value="draft">Draft</option>
                                         </select>
                                     </div>
+                                </div>
+
+                                {/* Discount Section */}
+                                <div className="border-t border-gray-200 pt-4">
+                                    <div className="flex items-center justify-between mb-4">
+                                        <h4 className="text-lg font-semibold text-gray-900">Discount Settings</h4>
+                                        <label className="flex items-center cursor-pointer">
+                                            <input
+                                                type="checkbox"
+                                                checked={productFormData.discount?.enabled || false}
+                                                onChange={(e) => setProductFormData({
+                                                    ...productFormData,
+                                                    discount: {
+                                                        ...productFormData.discount,
+                                                        enabled: e.target.checked,
+                                                        percentage: productFormData.discount?.percentage || 0
+                                                    }
+                                                })}
+                                                className="w-5 h-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
+                                            />
+                                            <span className="ml-2 text-sm font-medium text-gray-700">Enable Discount</span>
+                                        </label>
+                                    </div>
+
+                                    {productFormData.discount?.enabled && (
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg">
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1">Discount Percentage *</label>
+                                                <div className="relative">
+                                                    <input
+                                                        type="number"
+                                                        min="0"
+                                                        max="100"
+                                                        required={productFormData.discount?.enabled}
+                                                        value={productFormData.discount?.percentage || 0}
+                                                        onChange={(e) => setProductFormData({
+                                                            ...productFormData,
+                                                            discount: {
+                                                                ...productFormData.discount,
+                                                                enabled: true,
+                                                                percentage: parseFloat(e.target.value) || 0
+                                                            }
+                                                        })}
+                                                        className="w-full px-4 py-2 pr-8 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                                    />
+                                                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">%</span>
+                                                </div>
+                                                {productFormData.priceINR && productFormData.discount?.percentage > 0 && (
+                                                    <p className="mt-1 text-sm text-green-600">
+                                                        Final Price: ₹{Math.round(productFormData.priceINR * (1 - productFormData.discount.percentage / 100)).toLocaleString('en-IN')}
+                                                        <span className="text-gray-500 ml-2">
+                                                            (Save ₹{Math.round(productFormData.priceINR * productFormData.discount.percentage / 100).toLocaleString('en-IN')})
+                                                        </span>
+                                                    </p>
+                                                )}
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+                                                <input
+                                                    type="datetime-local"
+                                                    value={productFormData.discount?.startDate ? new Date(productFormData.discount.startDate).toISOString().slice(0, 16) : ''}
+                                                    onChange={(e) => setProductFormData({
+                                                        ...productFormData,
+                                                        discount: {
+                                                            ...productFormData.discount,
+                                                            enabled: true,
+                                                            percentage: productFormData.discount?.percentage || 0,
+                                                            startDate: e.target.value || null
+                                                        }
+                                                    })}
+                                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                                />
+                                                <p className="mt-1 text-xs text-gray-500">Leave empty to start immediately</p>
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1">End Date</label>
+                                                <input
+                                                    type="datetime-local"
+                                                    value={productFormData.discount?.endDate ? new Date(productFormData.discount.endDate).toISOString().slice(0, 16) : ''}
+                                                    onChange={(e) => setProductFormData({
+                                                        ...productFormData,
+                                                        discount: {
+                                                            ...productFormData.discount,
+                                                            enabled: true,
+                                                            percentage: productFormData.discount?.percentage || 0,
+                                                            endDate: e.target.value || null
+                                                        }
+                                                    })}
+                                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                                />
+                                                <p className="mt-1 text-xs text-gray-500">Leave empty for no expiration</p>
+                                            </div>
+                                            <div className="md:col-span-2">
+                                                <label className="block text-sm font-medium text-gray-700 mb-1">Discount Description</label>
+                                                <input
+                                                    type="text"
+                                                    placeholder="e.g., Summer Sale, Clearance, Limited Time Offer"
+                                                    value={productFormData.discount?.description || ''}
+                                                    onChange={(e) => setProductFormData({
+                                                        ...productFormData,
+                                                        discount: {
+                                                            ...productFormData.discount,
+                                                            enabled: true,
+                                                            percentage: productFormData.discount?.percentage || 0,
+                                                            description: e.target.value
+                                                        }
+                                                    })}
+                                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                                />
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
 
                                 {/* Description */}
@@ -2181,6 +2541,74 @@ const Admin = () => {
                                     )}
                                 </div>
 
+                                {/* Video Upload */}
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        Product Video (Optional)
+                                    </label>
+                                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                                        <Upload className="w-12 h-12 mx-auto text-gray-400 mb-3" />
+                                        <p className="text-sm text-gray-600 mb-2">
+                                            Upload product demonstration video
+                                        </p>
+                                        <p className="text-xs text-gray-500 mb-4">
+                                            Max size: 10MB | Formats: MP4, WebM, MOV, AVI
+                                        </p>
+                                        <input
+                                            type="file"
+                                            accept="video/mp4,video/webm,video/quicktime,video/x-msvideo"
+                                            onChange={handleProductVideoChange}
+                                            className="hidden"
+                                            id="product-video"
+                                        />
+                                        <label
+                                            htmlFor="product-video"
+                                            className="inline-block px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg cursor-pointer transition-colors"
+                                        >
+                                            Select Video
+                                        </label>
+                                    </div>
+
+                                    {/* Video Preview */}
+                                    {productVideoPreview && (
+                                        <div className="mt-4">
+                                            <video
+                                                src={productVideoPreview}
+                                                controls
+                                                className="w-full max-w-md mx-auto rounded-lg border border-gray-200"
+                                                style={{ maxHeight: '300px' }}
+                                            />
+                                            <p className="text-xs text-gray-500 mt-2 text-center">
+                                                New video selected: {productVideo?.name}
+                                            </p>
+                                        </div>
+                                    )}
+
+                                    {/* Existing Video Display */}
+                                    {editingProduct && editingProduct.videoUrl && !productVideoPreview && !removeVideo && (
+                                        <div className="mt-4">
+                                            <p className="text-sm font-medium text-gray-700 mb-2">Current Video:</p>
+                                            <video
+                                                src={editingProduct.videoUrl}
+                                                controls
+                                                className="w-full max-w-md mx-auto rounded-lg border border-gray-200"
+                                                style={{ maxHeight: '300px' }}
+                                            />
+                                            <div className="mt-2 flex items-center justify-center gap-2">
+                                                <label className="flex items-center gap-2 cursor-pointer">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={removeVideo}
+                                                        onChange={(e) => setRemoveVideo(e.target.checked)}
+                                                        className="w-4 h-4 text-red-600"
+                                                    />
+                                                    <span className="text-sm text-red-600">Remove video</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+
                                 {/* Checkboxes */}
                                 <div className="flex gap-6">
                                     <label className="flex items-center gap-2 cursor-pointer">
@@ -2192,28 +2620,30 @@ const Admin = () => {
                                         />
                                         <span className="text-sm text-gray-700">Available</span>
                                     </label>
-                                    <label className="flex items-center gap-2 cursor-pointer">
-                                        <input
-                                            type="checkbox"
-                                            checked={productFormData.hasVideo || false}
-                                            onChange={(e) => setProductFormData({ ...productFormData, hasVideo: e.target.checked })}
-                                            className="w-4 h-4 text-blue-600"
-                                        />
-                                        <span className="text-sm text-gray-700">Has Video</span>
-                                    </label>
                                 </div>
 
                                 {/* Action Buttons */}
                                 <div className="flex gap-3 pt-6 border-t border-gray-200">
                                     <button
                                         onClick={handleSaveProduct}
-                                        className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
+                                        disabled={productLoading}
+                                        className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
                                     >
-                                        {editingProduct ? 'Update Product' : 'Create Product'}
+                                        {productLoading && (
+                                            <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                            </svg>
+                                        )}
+                                        {productLoading
+                                            ? (editingProduct ? 'Updating...' : 'Creating...')
+                                            : (editingProduct ? 'Update Product' : 'Create Product')
+                                        }
                                     </button>
                                     <button
                                         onClick={handleCloseProductModal}
-                                        className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg font-medium transition-colors"
+                                        disabled={productLoading}
+                                        className="px-4 py-2 bg-gray-200 hover:bg-gray-300 disabled:bg-gray-100 disabled:cursor-not-allowed text-gray-700 rounded-lg font-medium transition-colors"
                                     >
                                         Cancel
                                     </button>

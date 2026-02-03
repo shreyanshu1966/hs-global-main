@@ -1,12 +1,15 @@
 import { useEffect, useRef, useState, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { Share2, ChevronRight, Quote, ChevronLeft, ChevronRight as ChevronRightIcon } from "lucide-react";
+import { Share2, ChevronRight, Quote, ChevronLeft, ChevronRight as ChevronRightIcon, Star } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
 import { AddToCartButton } from "../components/AddToCartButton";
 import { QuantityHandler } from "../components/QuantityHandler";
+import { ReviewStats } from "../components/ReviewStats";
+import { ReviewList } from "../components/ReviewList";
+import { ReviewForm } from "../components/ReviewForm";
 import { useCart } from "../contexts/CartContext";
 import { useProduct, useTrackAddToCart } from "../hooks/useProducts";
 import { useCurrency } from "../contexts/CurrencyContext";
@@ -17,6 +20,10 @@ const ProductDetailsNew = () => {
   const trackAddToCart = useTrackAddToCart();
 
   const [selectedImage, setSelectedImage] = useState(0);
+  const [reviews, setReviews] = useState([]);
+  const [reviewStats, setReviewStats] = useState({ averageRating: 0, totalReviews: 0, ratingBreakdown: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 } });
+  const [reviewsLoading, setReviewsLoading] = useState(true);
+  const [showReviewForm, setShowReviewForm] = useState(false);
 
   const { state: cartState } = useCart();
   const { product, relatedProducts, loading, error } = useProduct(id);
@@ -35,6 +42,42 @@ const ProductDetailsNew = () => {
       trackAddToCart(product.productId);
     }
   }, [cartState.items, product, trackAddToCart]);
+
+  // Fetch reviews and stats
+  useEffect(() => {
+    const fetchReviews = async () => {
+      if (!id) return;
+
+      setReviewsLoading(true);
+      try {
+        const [reviewsRes, statsRes] = await Promise.all([
+          fetch(`${import.meta.env.VITE_API_URL}/reviews/product/${id}`),
+          fetch(`${import.meta.env.VITE_API_URL}/reviews/product/${id}/stats`)
+        ]);
+
+        if (reviewsRes.ok) {
+          const reviewsData = await reviewsRes.json();
+          setReviews(reviewsData.reviews);
+        }
+
+        if (statsRes.ok) {
+          const statsData = await statsRes.json();
+          setReviewStats(statsData.stats);
+        }
+      } catch (error) {
+        console.error('Error fetching reviews:', error);
+      } finally {
+        setReviewsLoading(false);
+      }
+    };
+
+    fetchReviews();
+  }, [id]);
+
+  const handleReviewSubmitted = () => {
+    setShowReviewForm(false);
+    // Optionally refetch reviews
+  };
 
   // Build rich product object
   const productData = useMemo(() => {
@@ -82,14 +125,34 @@ const ProductDetailsNew = () => {
         if (!specs[key]) delete specs[key];
     });
 
-    // Pricing logic
+    // Pricing logic with discount
     let displayPrice = "Price on Request";
+    let originalPrice = null;
+    let discountPercentage = 0;
+    let hasActiveDiscount = false;
     const isAvailable = product.available !== false;
 
     if (!isAvailable) {
       displayPrice = "Currently Unavailable";
     } else if (product.priceINR) {
-      displayPrice = formatPrice(product.priceINR);
+      // Check if discount is active
+      const now = new Date();
+      const discount = product.discount;
+      const isDiscountActive = discount?.enabled && 
+        discount.percentage > 0 &&
+        (!discount.startDate || new Date(discount.startDate) <= now) &&
+        (!discount.endDate || new Date(discount.endDate) >= now);
+      
+      if (isDiscountActive) {
+        hasActiveDiscount = true;
+        discountPercentage = discount.percentage;
+        originalPrice = product.priceINR;
+        const discountAmount = Math.round((product.priceINR * discount.percentage) / 100);
+        const finalPrice = product.priceINR - discountAmount;
+        displayPrice = formatPrice(finalPrice);
+      } else {
+        displayPrice = formatPrice(product.priceINR);
+      }
     }
 
     return {
@@ -101,10 +164,16 @@ const ProductDetailsNew = () => {
       images: baseImages,
       specs,
       price: displayPrice,
+      originalPrice,
+      discountPercentage,
+      hasActiveDiscount,
+      discountDescription: product.discount?.description,
       priceINR: product.priceINR,
       available: isAvailable,
       hasVideo: product.hasVideo || false,
       etsyUrl: product.furnitureSpecs?.etsyUrl,
+      averageRating: product.averageRating || 0,
+      totalReviews: product.totalReviews || 0,
       seoTitle: product.seoTitle || `${product.name} - ${subcategory} | HS Global Export`,
       seoDescription: product.seoDescription || `Premium ${product.name} in ${subcategory}. High-quality ${category} products from HS Global Export.`
     };
@@ -245,14 +314,72 @@ const ProductDetailsNew = () => {
 
             {/* Product Info */}
             <div>
-              <h1 className="text-4xl font-bold text-gray-900 mb-4">{productData.name}</h1>
+              <h1 className="text-4xl font-bold text-gray-900 mb-3">{productData.name}</h1>
               
-              <div className="flex items-center space-x-4 mb-6">
-                <span className="text-3xl font-bold text-blue-600">{productData.price}</span>
-                {!productData.available && (
-                  <span className="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm font-medium">
-                    Out of Stock
+              {/* Rating Display */}
+              {productData.totalReviews > 0 && (
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="flex items-center">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <Star
+                        key={star}
+                        className={`w-5 h-5 ${
+                          star <= Math.round(productData.averageRating)
+                            ? 'fill-yellow-400 text-yellow-400'
+                            : 'text-gray-300'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                  <span className="text-lg font-medium text-gray-900">
+                    {productData.averageRating.toFixed(1)}
                   </span>
+                  <span className="text-gray-500">
+                    ({productData.totalReviews} {productData.totalReviews === 1 ? 'review' : 'reviews'})
+                  </span>
+                </div>
+              )}
+              
+              <div className="mb-6">
+                {productData.hasActiveDiscount ? (
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3 flex-wrap">
+                      <div className="flex flex-col">
+                        <span className="text-4xl font-bold text-green-600">{productData.price}</span>
+                        <div className="flex items-center gap-2">
+                          <span className="text-xl text-gray-500 line-through">{formatPrice(productData.originalPrice)}</span>
+                          <span className="px-2.5 py-1 bg-red-500 text-white rounded-full text-sm font-semibold">
+                            {productData.discountPercentage}% OFF
+                          </span>
+                        </div>
+                      </div>
+                      {!productData.available && (
+                        <span className="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm font-medium">
+                          Out of Stock
+                        </span>
+                      )}
+                    </div>
+                    {productData.discountDescription && (
+                      <div className="p-3 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-lg">
+                        <p className="text-amber-900 text-sm font-medium flex items-center gap-2">
+                          <span className="text-lg">🎉</span>
+                          {productData.discountDescription}
+                        </p>
+                      </div>
+                    )}
+                    <p className="text-sm text-green-700 font-medium">
+                      You save {formatPrice(productData.originalPrice - (productData.originalPrice * (100 - productData.discountPercentage) / 100))}
+                    </p>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-3 flex-wrap">
+                    <span className="text-4xl font-bold text-blue-600">{productData.price}</span>
+                    {!productData.available && (
+                      <span className="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm font-medium">
+                        Out of Stock
+                      </span>
+                    )}
+                  </div>
                 )}
               </div>
 
@@ -317,6 +444,61 @@ const ProductDetailsNew = () => {
                   <Quote className="w-5 h-5 mr-2" />
                   Request Quote
                 </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Reviews Section */}
+          <div className="mt-16">
+            <div className="flex items-center justify-between mb-8">
+              <div>
+                <h2 className="text-3xl font-bold text-gray-900">Customer Reviews</h2>
+                {reviewStats.totalReviews > 0 && (
+                  <div className="flex items-center gap-2 mt-2">
+                    <div className="flex">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <Star
+                          key={star}
+                          className={`w-5 h-5 ${
+                            star <= Math.round(reviewStats.averageRating)
+                              ? 'fill-yellow-400 text-yellow-400'
+                              : 'text-gray-300'
+                          }`}
+                        />
+                      ))}
+                    </div>
+                    <span className="text-lg font-semibold text-gray-900">{reviewStats.averageRating.toFixed(1)}</span>
+                    <span className="text-gray-600">({reviewStats.totalReviews} reviews)</span>
+                  </div>
+                )}
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <div className="lg:col-span-2 space-y-8">
+                <ReviewStats stats={reviewStats} loading={reviewsLoading} />
+                
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xl font-semibold text-gray-900">
+                    {reviewStats.totalReviews} Review{reviewStats.totalReviews !== 1 ? 's' : ''}
+                  </h3>
+                  <button
+                    onClick={() => setShowReviewForm(!showReviewForm)}
+                    className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                  >
+                    {showReviewForm ? 'Cancel' : 'Write a Review'}
+                  </button>
+                </div>
+
+                <ReviewList reviews={reviews} loading={reviewsLoading} />
+              </div>
+
+              <div className="lg:col-span-1">
+                {showReviewForm && (
+                  <div className="sticky top-24">
+                    <ReviewForm productId={productData.id} onReviewSubmitted={handleReviewSubmitted} />
+                  </div>
+                )}
               </div>
             </div>
           </div>

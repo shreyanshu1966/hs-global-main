@@ -1,5 +1,6 @@
 const Product = require('../models/Product');
 const { uploadToCloudinary, uploadMultipleToCloudinary, deleteMultipleFromCloudinary } = require('../utils/cloudinaryUpload');
+const { uploadVideoToGoDaddy, deleteVideoFromGoDaddy, validateVideo } = require('../utils/godaddyVideoUpload');
 
 /**
  * Get all products for admin (includes inactive and draft products)
@@ -89,10 +90,13 @@ const createProductWithImages = async (req, res) => {
         // Upload images to Cloudinary
         const uploadedImages = [];
         
-        if (req.files && req.files.length > 0) {
-            console.log(`Uploading ${req.files.length} images to Cloudinary...`);
+        // Handle images array when using fields configuration
+        const imageFiles = req.files?.images || [];
+        
+        if (imageFiles && imageFiles.length > 0) {
+            console.log(`Uploading ${imageFiles.length} images to Cloudinary...`);
             
-            for (const file of req.files) {
+            for (const file of imageFiles) {
                 try {
                     const result = await uploadToCloudinary(
                         file.buffer,
@@ -112,6 +116,50 @@ const createProductWithImages = async (req, res) => {
             productData.image = uploadedImages[0]; // First image as main
             productData.images = uploadedImages; // All images
             productData.sortedImages = uploadedImages; // Same as images initially
+        }
+
+        // Handle video upload if present
+        const videoFiles = req.files?.video || [];
+        if (videoFiles && videoFiles.length > 0 && videoFiles[0]) {
+            const videoFile = videoFiles[0];
+            
+            // Validate video
+            const validation = validateVideo(videoFile);
+            if (!validation.valid) {
+                return res.status(400).json({
+                    success: false,
+                    message: validation.error
+                });
+            }
+
+            try {
+                // Upload video to GoDaddy
+                const videoUploadResult = await uploadVideoToGoDaddy(
+                    videoFile.buffer,
+                    videoFile.originalname,
+                    productData.productId
+                );
+
+                // Update product data with video info
+                productData.hasVideo = true;
+                productData.videoUrl = videoUploadResult.url;
+                productData.videoFilename = videoUploadResult.filename;
+                productData.videoSize = videoUploadResult.size;
+                productData.videoUploadedAt = new Date();
+
+                console.log('✅ Video uploaded successfully:', videoUploadResult.filename);
+            } catch (videoError) {
+                console.error('❌ Video upload failed:', videoError);
+                // Continue without video - don't fail entire product creation
+                // But log detailed error for debugging
+                if (videoError.message.includes('ENOTFOUND')) {
+                    console.error('⚠️  FTP hostname not found. Please verify FTP_HOST in .env file');
+                } else if (videoError.message.includes('ECONNREFUSED')) {
+                    console.error('⚠️  FTP connection refused. Check FTP_HOST and FTP_PORT');
+                } else if (videoError.message.includes('authentication')) {
+                    console.error('⚠️  FTP authentication failed. Check FTP_USER and FTP_PASSWORD');
+                }
+            }
         }
 
         const product = new Product(productData);
@@ -152,10 +200,13 @@ const updateProductWithImages = async (req, res) => {
         // Handle new image uploads
         const newImages = [];
         
-        if (req.files && req.files.length > 0) {
-            console.log(`Uploading ${req.files.length} new images to Cloudinary...`);
+        // Handle images array when using fields configuration
+        const imageFiles = req.files?.images || [];
+        
+        if (imageFiles && imageFiles.length > 0) {
+            console.log(`Uploading ${imageFiles.length} new images to Cloudinary...`);
             
-            for (const file of req.files) {
+            for (const file of imageFiles) {
                 try {
                     const result = await uploadToCloudinary(
                         file.buffer,
@@ -188,6 +239,65 @@ const updateProductWithImages = async (req, res) => {
                     console.error('Error deleting old images:', deleteError);
                     // Continue even if deletion fails
                 }
+            }
+        }
+
+        // Handle video updates
+        const videoFiles = req.files?.video || [];
+        if (videoFiles && videoFiles.length > 0 && videoFiles[0]) {
+            const videoFile = videoFiles[0];
+            
+            // Validate video
+            const validation = validateVideo(videoFile);
+            if (!validation.valid) {
+                return res.status(400).json({
+                    success: false,
+                    message: validation.error
+                });
+            }
+
+            try {
+                // Delete old video if exists
+                if (existingProduct.videoUrl) {
+                    await deleteVideoFromGoDaddy(existingProduct.videoUrl);
+                    console.log('✅ Old video deleted');
+                }
+
+                // Upload new video to GoDaddy
+                const videoUploadResult = await uploadVideoToGoDaddy(
+                    videoFile.buffer,
+                    videoFile.originalname,
+                    existingProduct.productId
+                );
+
+                // Update product with new video info
+                productData.hasVideo = true;
+                productData.videoUrl = videoUploadResult.url;
+                productData.videoFilename = videoUploadResult.filename;
+                productData.videoSize = videoUploadResult.size;
+                productData.videoUploadedAt = new Date();
+
+                console.log('✅ Video updated successfully:', videoUploadResult.filename);
+            } catch (videoError) {
+                console.error('❌ Video update failed:', videoError);
+                if (videoError.message.includes('ENOTFOUND')) {
+                    console.error('⚠️  FTP hostname not found. Please verify FTP_HOST in .env file');
+                }
+            }
+        }
+
+        // Handle video removal (if user wants to remove video)
+        if (productData.removeVideo === 'true' && existingProduct.videoUrl) {
+            try {
+                await deleteVideoFromGoDaddy(existingProduct.videoUrl);
+                productData.hasVideo = false;
+                productData.videoUrl = null;
+                productData.videoFilename = null;
+                productData.videoSize = null;
+                productData.videoUploadedAt = null;
+                console.log('✅ Video removed successfully');
+            } catch (videoError) {
+                console.error('❌ Video deletion failed:', videoError);
             }
         }
 
@@ -226,6 +336,17 @@ const deleteProductWithImages = async (req, res) => {
                 success: false,
                 message: 'Product not found'
             });
+        }
+
+        // Delete video from GoDaddy if exists
+        if (product.videoUrl) {
+            try {
+                await deleteVideoFromGoDaddy(product.videoUrl);
+                console.log('✅ Video deleted from GoDaddy');
+            } catch (videoError) {
+                console.error('❌ Video deletion failed:', videoError);
+                // Continue with product deletion even if video deletion fails
+            }
         }
 
         // Delete images from Cloudinary

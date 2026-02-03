@@ -2,6 +2,7 @@
 
 import React, { useEffect, useMemo, useRef, useState, memo } from 'react';
 import { Link } from 'react-router-dom';
+import { Star } from 'lucide-react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -51,18 +52,46 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
   const { formatPrice } = useCurrency();
 
   /* ------------------------------------------------------
-     ⭐ PRICING LOGIC (API DRIVEN)
+     ⭐ PRICING LOGIC (API DRIVEN) WITH DISCOUNT
      ------------------------------------------------------ */
+  const { hasDiscount, discountPercentage, finalPrice, originalPrice } = useMemo(() => {
+    const now = new Date();
+    const discount = product.discount;
+    
+    // Check if discount is active
+    const isDiscountActive = discount?.enabled && 
+      discount.percentage > 0 &&
+      (!discount.startDate || new Date(discount.startDate) <= now) &&
+      (!discount.endDate || new Date(discount.endDate) >= now);
+    
+    if (isDiscountActive && product.priceINR) {
+      const discountAmount = Math.round((product.priceINR * discount.percentage) / 100);
+      return {
+        hasDiscount: true,
+        discountPercentage: discount.percentage,
+        finalPrice: product.priceINR - discountAmount,
+        originalPrice: product.priceINR
+      };
+    }
+    
+    return {
+      hasDiscount: false,
+      discountPercentage: 0,
+      finalPrice: product.priceINR || 0,
+      originalPrice: product.priceINR || 0
+    };
+  }, [product]);
+
   const displayPrice = useMemo(() => {
     if (!product.available) return "Unavailable";
     
     if (product.priceINR) {
-      return formatPrice(product.priceINR);
+      return formatPrice(finalPrice);
     }
 
     // Fallback for slabs or items without price
     return "Price on Request"; 
-  }, [product, formatPrice]);
+  }, [product, formatPrice, finalPrice]);
 
   /* ------------------------------------------------------
      Rest of your existing card logic unchanged
@@ -385,12 +414,23 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
           })
         }
 
-        {/* PRICE BADGE */}
+        {/* PRICE BADGE WITH DISCOUNT */}
         {product.category === 'furniture' && (
           <div className="absolute top-3 left-3 z-30">
-            <span className="inline-block px-3 py-1.5 text-xs md:text-sm font-semibold rounded-full bg-amber-100/95 text-amber-900 border border-amber-300 shadow-sm">
-              {displayPrice}
-            </span>
+            {hasDiscount ? (
+              <div className="flex flex-col gap-1">
+                <span className="inline-block px-3 py-1.5 text-xs md:text-sm font-semibold rounded-full bg-red-500/95 text-white border border-red-600 shadow-sm">
+                  {discountPercentage}% OFF
+                </span>
+                <span className="inline-block px-3 py-1.5 text-xs md:text-sm font-semibold rounded-full bg-amber-100/95 text-amber-900 border border-amber-300 shadow-sm">
+                  {displayPrice}
+                </span>
+              </div>
+            ) : (
+              <span className="inline-block px-3 py-1.5 text-xs md:text-sm font-semibold rounded-full bg-amber-100/95 text-amber-900 border border-amber-300 shadow-sm">
+                {displayPrice}
+              </span>
+            )}
           </div>
         )}
 
@@ -400,10 +440,58 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
       {/* BOTTOM CONTENT */}
       <div className="flex flex-col flex-grow p-4 md:p-5 bg-white rounded-b-lg">
         <Link to={`/products/${product.productId}`} onClick={handleCardClick}>
-          <h3 className="text-base md:text-lg font-bold text-gray-900 line-clamp-2 mb-3">
+          <h3 className="text-base md:text-lg font-bold text-gray-900 line-clamp-2 mb-2">
             {product.name}
           </h3>
         </Link>
+
+        {/* Rating Display */}
+        {product.totalReviews && product.totalReviews > 0 ? (
+          <div className="flex items-center gap-2 mb-3">
+            <div className="flex items-center">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <Star
+                  key={star}
+                  className={`w-4 h-4 ${
+                    star <= Math.round(product.averageRating || 0)
+                      ? 'fill-yellow-400 text-yellow-400'
+                      : 'text-gray-300'
+                  }`}
+                />
+              ))}
+            </div>
+            <span className="text-sm font-medium text-gray-700">
+              {(product.averageRating || 0).toFixed(1)}
+            </span>
+            <span className="text-xs text-gray-500">
+              ({product.totalReviews})
+            </span>
+          </div>
+        ) : (
+          <div className="flex items-center gap-1 mb-3 text-gray-400">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <Star key={star} className="w-3.5 h-3.5" />
+            ))}
+            <span className="text-xs text-gray-500 ml-1">No reviews</span>
+          </div>
+        )}
+
+        {/* Price for Slabs */}
+        {product.category === 'slabs' && product.priceINR && (
+          <div className="mb-3">
+            {hasDiscount ? (
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="text-lg font-bold text-green-600">{displayPrice}</span>
+                <span className="text-sm text-gray-500 line-through">{formatPrice(originalPrice)}</span>
+                <span className="px-2 py-0.5 bg-red-500 text-white rounded-full text-xs font-semibold">
+                  {discountPercentage}% OFF
+                </span>
+              </div>
+            ) : (
+              <span className="text-lg font-bold text-gray-900">{displayPrice}</span>
+            )}
+          </div>
+        )}
 
         <div className="mt-auto pt-2 flex gap-2">
 
