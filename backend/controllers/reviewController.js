@@ -73,8 +73,13 @@ exports.createReview = async (req, res) => {
             });
         }
 
-        // Check if product exists
-        const product = await Product.findOne({ productId });
+        // Check if product exists (productId can be either the custom productId or MongoDB _id)
+        const product = await Product.findOne({
+            $or: [
+                { productId: productId },
+                { _id: productId }
+            ]
+        });
         if (!product) {
             return res.status(404).json({
                 success: false,
@@ -82,8 +87,11 @@ exports.createReview = async (req, res) => {
             });
         }
 
+        // Use the product's actual productId for consistency
+        const actualProductId = product.productId;
+
         // Check if user has already reviewed this product
-        const canReview = await Review.canUserReview(productId, userEmail);
+        const canReview = await Review.canUserReview(actualProductId, userEmail);
         if (!canReview) {
             return res.status(400).json({
                 success: false,
@@ -93,7 +101,7 @@ exports.createReview = async (req, res) => {
 
         // Create review
         const review = new Review({
-            productId,
+            productId: actualProductId,
             userName,
             userEmail,
             rating,
