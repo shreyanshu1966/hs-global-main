@@ -1,5 +1,6 @@
 const Review = require('../models/Review');
 const Product = require('../models/Product');
+const mongoose = require('mongoose');
 
 // Get reviews for a product
 exports.getProductReviews = async (req, res) => {
@@ -74,12 +75,20 @@ exports.createReview = async (req, res) => {
         }
 
         // Check if product exists (productId can be either the custom productId or MongoDB _id)
-        const product = await Product.findOne({
-            $or: [
-                { productId: productId },
-                { _id: productId }
-            ]
-        });
+        let product;
+        if (mongoose.Types.ObjectId.isValid(productId) && /^[0-9a-fA-F]{24}$/.test(productId)) {
+            // If it's a valid ObjectId format, search by both
+            product = await Product.findOne({
+                $or: [
+                    { productId: productId },
+                    { _id: productId }
+                ]
+            });
+        } else {
+            // Otherwise, only search by productId field
+            product = await Product.findOne({ productId: productId });
+        }
+        
         if (!product) {
             return res.status(404).json({
                 success: false,
