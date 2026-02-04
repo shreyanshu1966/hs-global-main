@@ -275,15 +275,29 @@ exports.getAllReviews = async (req, res) => {
             .sort({ createdAt: -1 })
             .limit(parseInt(limit))
             .skip(parseInt(skip))
-            .populate('productId', 'name image');
+            .lean();
+
+        // Manually fetch product details for each review
+        const reviewsWithProducts = await Promise.all(
+            reviews.map(async (review) => {
+                const product = await Product.findOne({ productId: review.productId })
+                    .select('name image productId')
+                    .lean();
+                
+                return {
+                    ...review,
+                    product: product || null
+                };
+            })
+        );
 
         const total = await Review.countDocuments(filter);
 
         res.json({
             success: true,
-            reviews,
+            reviews: reviewsWithProducts,
             total,
-            hasMore: total > parseInt(skip) + reviews.length
+            hasMore: total > parseInt(skip) + reviewsWithProducts.length
         });
     } catch (error) {
         console.error('Error fetching all reviews:', error);
