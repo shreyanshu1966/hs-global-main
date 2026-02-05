@@ -24,11 +24,9 @@ const Header = () => {
 
   const links = [
     { path: "/", label: t("nav.home") || "Home" },
-    { path: "/about", label: t("nav.about") || "About Us" },
-    { path: "/products", label: t("nav.products") || "Products" },
-    { path: "/gallery", label: t("nav.gallery") || "Gallery" },
-    { path: "/services", label: t("nav.services") || "Services" },
-    { path: "/blog", label: "Blog" },
+    { path: "/about", label: t("nav.about") || "Atelier" }, // Renamed for luxury feel
+    { path: "/products", label: t("nav.products") || "Collection" },
+    { path: "/gallery", label: t("nav.gallery") || "Projects" },
     { path: "/contact", label: t("nav.contact") || "Contact" },
   ];
 
@@ -43,7 +41,7 @@ const Header = () => {
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          setIsScrolled(window.scrollY > 20);
+          setIsScrolled(window.scrollY > 50);
           ticking = false;
         });
         ticking = true;
@@ -71,19 +69,13 @@ const Header = () => {
       const tl = gsap.timeline();
       tl.fromTo(menuRef.current,
         { height: 0, opacity: 0 },
-        { height: "100vh", opacity: 1, duration: 0.3, ease: "power2.out" }
+        { height: "100vh", opacity: 1, duration: 0.6, ease: "power3.out" }
       );
 
       tl.fromTo(".mobile-nav-link",
-        { x: -20, opacity: 0 },
-        { x: 0, opacity: 1, stagger: 0.05, duration: 0.3 },
-        "-=0.1"
-      );
-
-      tl.fromTo(".mobile-contact",
-        { x: -20, opacity: 0 },
-        { x: 0, opacity: 1, duration: 0.3 },
-        "-=0.1"
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.1, duration: 0.5, ease: "power2.out" },
+        "-=0.3"
       );
 
     } else if (!isOpen && isMenuRendered && menuRef.current) {
@@ -92,12 +84,10 @@ const Header = () => {
         onComplete: () => setIsMenuRendered(false)
       });
 
-      // Animate content out first
-      tl.to(".mobile-contact, .mobile-nav-link", { opacity: 0, duration: 0.1 });
+      tl.to(".mobile-nav-link", { opacity: 0, y: -20, duration: 0.2 });
 
-      // Then collapse menu
       tl.to(menuRef.current,
-        { height: 0, opacity: 0, duration: 0.3, ease: "power2.in" }
+        { height: 0, opacity: 0, duration: 0.4, ease: "power3.in" }
       );
     }
   }, [isOpen, isMenuRendered]);
@@ -111,181 +101,133 @@ const Header = () => {
     return location.pathname === path;
   };
 
+  const isHome = location.pathname === "/";
+  // Transparent only on home when not scrolled
+  const isTransparent = isHome && !isScrolled;
+
   return (
     <>
       <header
         ref={containerRef}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
-          ? "bg-white/80 backdrop-blur-md shadow-sm border-b border-gray-100 py-3"
-          : "bg-transparent py-4 sm:py-6"
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${isScrolled
+          ? "bg-white/80 backdrop-blur-xl border-b border-stone-100 py-3"
+          : "bg-transparent border-transparent py-6"
           }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="container mx-auto px-6 md:px-12">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Link to="/" className="flex-shrink-0 group relative z-50">
               <img
                 src={getResponsiveImage("logo.webp", "mobile") || "/logo.png"}
                 srcSet={getSrcSet("logo.webp")}
-                sizes="(max-width: 640px) 48px, 64px"
                 alt="HS Global Export"
-                className={`transition-all duration-300 object-contain ${isScrolled ? "h-10 sm:h-12 w-auto" : "h-12 sm:h-16 w-auto"
-                  }`}
+                className={`transition-all duration-300 object-contain ${isScrolled ? "h-10 w-auto opacity-100" : "h-12 w-auto opacity-90 hover:opacity-100"
+                  } ${isTransparent ? "brightness-0 invert" : ""}`}
                 loading="eager"
-                width="64"
-                height="64"
               />
             </Link>
 
-            {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center space-x-1 bg-white/50 backdrop-blur-sm px-2 py-1.5 rounded-full border border-white/20 shadow-sm ml-8">
+            {/* Desktop Navigation - Minimalist */}
+            <nav
+              className={`hidden lg:flex items-center gap-8 xl:gap-12 transition-all duration-500`}
+            >
               {links.map((link) => (
                 <Link
                   key={link.path}
                   to={link.path}
-                  className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 rounded-full ${isActive(link.path)
-                    ? "bg-black text-white shadow-md"
-                    : "text-gray-600 hover:text-black hover:bg-white/60"
+                  className={`text-sm tracking-widest uppercase font-medium relative group ${isActive(link.path)
+                    ? isTransparent
+                      ? "text-white"
+                      : "text-black"
+                    : isTransparent
+                      ? "text-white/70 hover:text-white"
+                      : "text-stone-500 hover:text-black"
                     }`}
                 >
                   {link.label}
+                  <span className={`absolute -bottom-2 left-0 w-0 h-[1px] transition-all duration-300 group-hover:w-full ${isTransparent ? "bg-white" : "bg-black"}`} />
                 </Link>
               ))}
             </nav>
 
-            {/* Right Actions */}
-            <div className="hidden lg:flex items-center space-x-4">
-              {/* Search Button */}
+            {/* Right Actions - Icons */}
+            <div className={`hidden lg:flex items-center gap-6 transition-colors duration-300 ${isTransparent ? "text-white" : "text-black"}`}>
               <button
                 onClick={() => setIsSearchOpen(true)}
-                className="p-2 rounded-full hover:bg-gray-100 transition-colors"
-                aria-label="Search products"
+                className="hover:opacity-70 transition-opacity"
+                aria-label="Search"
               >
-                <Search className="w-5 h-5 text-gray-600" />
+                <Search className="w-5 h-5" />
               </button>
 
-              {/* Location Selector (Integrated) */}
-              <div className="relative z-50">
-                <LocationSelector />
+              <div className="w-[1px] h-4 bg-current opacity-20" />
+
+              {/* Auth/User */}
+              {isAuthenticated && user ? (
+                <Link to="/profile" className="hover:opacity-70 transition-opacity">
+                  <User className="w-5 h-5" />
+                </Link>
+              ) : (
+                <Link to="/login" className="text-xs uppercase tracking-widest font-bold hover:opacity-70 transition-opacity">
+                  Login
+                </Link>
+              )}
+
+              <div className="relative">
+                <CartIcon />
               </div>
 
-              <div className="border-l border-gray-200 pl-4 flex items-center gap-3">
-                <CartIcon />
-
-                {/* User Profile/Login */}
-                {isAuthenticated && user ? (
-                  <>
-                    {user.role === 'admin' && (
-                      <Link
-                        to="/admin"
-                        className="flex items-center gap-2 px-4 py-2 rounded-full font-medium transition-all shadow-sm text-sm bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:from-purple-700 hover:to-indigo-700"
-                      >
-                        <span className="hidden xl:inline">Admin</span>
-                        <span className="xl:hidden">⚙️</span>
-                      </Link>
-                    )}
-                    <Link
-                      to="/profile"
-                      className="flex items-center gap-2 px-4 py-2 rounded-full font-medium transition-all shadow-sm text-sm bg-black text-white hover:bg-gray-800"
-                    >
-                      <User className="w-4 h-4" />
-                      <span className="hidden xl:inline">{user.name.split(' ')[0]}</span>
-                    </Link>
-                  </>
-                ) : (
-                  <Link
-                    to="/login"
-                    className="flex items-center gap-2 px-4 py-2 rounded-full font-medium transition-all shadow-sm text-sm bg-black text-white hover:bg-gray-800"
-                  >
-                    <User className="w-4 h-4" />
-                    <span className="hidden xl:inline">Login</span>
-                  </Link>
-                )}
-
-
+              <div className="hidden xl:block">
+                <LocationSelector />
               </div>
             </div>
 
-            {/* Mobile Menu Toggle & Location */}
-            <div className="flex items-center gap-2 lg:hidden">
-              <div className="relative z-50">
-                <LocationSelector />
-              </div>
+            {/* Mobile Menu Toggle */}
+            <div className="flex items-center gap-4 lg:hidden">
               <CartIcon />
               <button
-                onClick={() => setIsSearchOpen(true)}
-                className="p-2 rounded-full hover:bg-gray-100 transition-colors z-50"
-                aria-label="Search products"
-              >
-                <Search className="w-5 h-5 text-black" />
-              </button>
-              <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="p-2 rounded-full hover:bg-gray-100 transition-colors z-50"
+                className={`p-1 z-50 transition-colors ${isTransparent ? "text-white" : "text-black"}`}
                 aria-label="Toggle menu"
               >
                 {isOpen ? (
-                  <X className="w-6 h-6 text-black" />
+                  <span className="text-xs font-bold uppercase tracking-widest">Close</span>
                 ) : (
-                  <Menu className="w-6 h-6 text-black" />
+                  <Menu className="w-6 h-6" />
                 )}
               </button>
             </div>
           </div>
         </div>
 
-        {/* Mobile Dropdown Menu */}
+        {/* Full Screen Mobile Menu - Editorial Style */}
         {isMenuRendered && (
           <div
             ref={menuRef}
-            className="lg:hidden fixed inset-0 top-0 bg-white/95 backdrop-blur-xl z-40 flex flex-col pt-24 px-6 overflow-y-auto"
-            style={{ height: 0, opacity: 0 }} // Initial state for GSAP to animate from/to
+            className="lg:hidden fixed inset-0 top-0 bg-[#0A0A0A] text-white z-40 flex flex-col justify-center px-8"
+            style={{ height: 0, opacity: 0 }}
           >
-            <div className="flex flex-col space-y-4">
+            {/* Background branding or texture could go here */}
+            <div className="flex flex-col space-y-6">
               {links.map((link) => (
                 <div key={link.path} className="mobile-nav-link" style={{ opacity: 0 }}>
                   <Link
                     to={link.path}
                     onClick={() => setIsOpen(false)}
-                    className={`block text-2xl font-medium transition-colors ${location.pathname === link.path ? "text-amber-600" : "text-black hover:text-gray-600"}`}
+                    className={`block font-serif text-4xl md:text-5xl font-light hover:italic transition-all ${location.pathname === link.path ? "text-white italic" : "text-stone-400"}`}
                   >
                     {link.label}
                   </Link>
                 </div>
               ))}
 
-              {/* Mobile User Links */}
-              <div className="mobile-contact pt-6 border-t border-gray-200 space-y-3" style={{ opacity: 0 }}>
-                {isAuthenticated && user ? (
-                  <>
-                    {user.role === 'admin' && (
-                      <Link
-                        to="/admin"
-                        onClick={() => setIsOpen(false)}
-                        className="block text-xl font-medium text-purple-600 hover:text-purple-700"
-                      >
-                        ⚙️ Admin Dashboard
-                      </Link>
-                    )}
-                    <Link
-                      to="/profile"
-                      onClick={() => setIsOpen(false)}
-                      className="block text-xl font-medium text-black hover:text-gray-600"
-                    >
-                      👤 Profile
-                    </Link>
-                  </>
-                ) : (
-                  <Link
-                    to="/login"
-                    onClick={() => setIsOpen(false)}
-                    className="block text-xl font-medium text-black hover:text-gray-600"
-                  >
-                    👤 Login
-                  </Link>
-                )}
-              </div>
+              <div className="w-12 h-[1px] bg-white/20 my-8 mobile-nav-link" />
 
+              <div className="mobile-nav-link space-y-4" style={{ opacity: 0 }}>
+                <Link to="/login" onClick={() => setIsOpen(false)} className="block text-sm uppercase tracking-widest text-stone-400 hover:text-white">Account</Link>
+                <Link to="/contact" onClick={() => setIsOpen(false)} className="block text-sm uppercase tracking-widest text-stone-400 hover:text-white">Contact</Link>
+              </div>
             </div>
           </div>
         )}

@@ -29,7 +29,7 @@ const Footer: React.FC = () => {
                 <span className="block text-accent text-sm font-bold tracking-[0.2em] uppercase mb-6">Have an Idea?</span>
                 <h2 className="text-6xl md:text-8xl lg:text-9xl font-serif leading-[0.9] tracking-tight">
                   Let's Build <br />
-                  <span className="text-white/40">Excellence.</span>
+                  <span className="italic text-stone-600">Excellence.</span>
                 </h2>
               </div>
 

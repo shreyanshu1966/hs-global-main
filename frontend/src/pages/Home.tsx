@@ -1,12 +1,12 @@
 import { Helmet } from "react-helmet-async";
-import Hero from "../components/Hero";
+import HeroModern from "../components/HeroModern";
+import ProductCategoriesGrid from "../components/ProductCategoriesGrid";
+import FeaturedProducts from "../components/FeaturedProducts";
+import MaterialShowcase from "../components/MaterialShowcase";
+import AtelierStory from "../components/AtelierStory";
 import Testimonials from "../components/Testimonials";
-import CategoriesSlider from "../components/CategoriesSlider";
-import AboutCompany from "../components/AboutCompany";
-import ChooseStone from "../components/ChooseStone";
 import TrustBadges from "../components/TrustBadges";
 import VelocityScroll from "../components/VelocityScroll";
-import StatsSection from "../components/StatsSection";
 
 const Home = () => {
   return (
@@ -41,37 +41,37 @@ const Home = () => {
         />
 
         <title>
-          Granite & Marble Collection - Luxury Stone Designs | HS Global Export
+          Premium Marble Furniture & Natural Stone Slabs | HS Global Export
         </title>
 
         <meta
           name="description"
-          content="Explore HS Global Export's exquisite granite and marble collection. Discover custom luxury stone designs to elevate your interiors with timeless elegance and quality."
+          content="Discover handcrafted marble furniture including dining tables, coffee tables, wash basins, and sculptures. Premium natural stone slabs in marble, granite, and more. Custom luxury stone solutions."
         />
         <meta
           name="keywords"
-          content="granite collection, marble collection, luxury stone, custom stone designs, interior stone solutions, HS-Globals, premium granite, premium marble"
+          content="marble furniture, marble dining table, marble coffee table, marble wash basin, marble sculptures, granite slabs, marble slabs, natural stone, luxury furniture, handcrafted furniture, HS Global Export"
         />
 
         {/* ✅ OpenGraph / Canonical URLs all with www */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.hsglobalexport.com/" />
         <meta property="og:site_name" content="HS Global Export" />
-        <meta property="og:title" content="Granite & Marble Collection - Luxury Stone Designs | HS Global Export" />
-        <meta property="og:description" content="Transform your interiors with HS Global Export's granite and marble collection. Unique designs and premium materials for luxurious living spaces." />
+        <meta property="og:title" content="Premium Marble Furniture & Natural Stone Slabs | HS Global Export" />
+        <meta property="og:description" content="Handcrafted marble furniture and premium natural stone slabs. Transform your space with timeless elegance." />
         <meta property="og:image" content="https://hsglobalexport.com/og-image.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
-        <meta property="og:image:alt" content="HS Global Export - Premium Granite & Marble Collection" />
+        <meta property="og:image:alt" content="HS Global Export - Premium Marble Furniture" />
         <meta property="og:locale" content="en_US" />
 
         {/* ✅ Twitter Card Tags */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:url" content="https://www.hsglobalexport.com/" />
-        <meta name="twitter:title" content="Granite & Marble Collection - Luxury Stone Designs | HS Global Export" />
-        <meta name="twitter:description" content="Transform your interiors with HS Global Export's granite and marble collection. Unique designs and premium materials for luxurious living spaces." />
+        <meta name="twitter:title" content="Premium Marble Furniture & Natural Stone Slabs | HS Global Export" />
+        <meta name="twitter:description" content="Handcrafted marble furniture and premium natural stone slabs. Transform your space with timeless elegance." />
         <meta name="twitter:image" content="https://hsglobalexport.com/og-image.jpg" />
-        <meta name="twitter:image:alt" content="HS Global Export - Premium Granite & Marble Collection" />
+        <meta name="twitter:image:alt" content="HS Global Export - Premium Marble Furniture" />
 
         <link rel="canonical" href="https://www.hsglobalexport.com/" />
 
@@ -80,45 +80,44 @@ const Home = () => {
       </Helmet>
 
       {/* Main content */}
-      <main className="bg-background selection:bg-accent selection:text-white">
+      <main className="bg-white selection:bg-stone-900 selection:text-white">
 
-        {/* Hero Section */}
-        <section style={{ contentVisibility: 'auto', containIntrinsicSize: '1000px' }}>
-          <Hero />
+        {/* 1. Hero: Modern B2C Hero with Clear CTAs */}
+        <section>
+          <HeroModern />
         </section>
 
-        {/* Velocity Scroll Separator */}
+        {/* 2. Marquee Separator */}
         <div id="feature-marquee">
           <VelocityScroll />
         </div>
 
-        {/* About Section */}
-        <section style={{ contentVisibility: 'auto', containIntrinsicSize: '1200px' }}>
-          <AboutCompany />
+        {/* 3. Product Categories: Clear Navigation to Products */}
+        <section>
+          <ProductCategoriesGrid />
         </section>
 
-        {/* Stats Section - New */}
-        <section style={{ contentVisibility: 'auto', containIntrinsicSize: '600px' }}>
-          <StatsSection />
+        {/* 4. Featured Products: Bestsellers & New Arrivals */}
+        <section>
+          <FeaturedProducts />
         </section>
 
-        {/* Stone Collection */}
-        <section style={{ contentVisibility: 'auto', containIntrinsicSize: '1400px' }}>
-          <ChooseStone />
+        {/* 5. Material Library: Interactive Stone Showcase */}
+        <section>
+          <MaterialShowcase />
         </section>
 
-        {/* Furniture Categories */}
-        <section style={{ contentVisibility: 'auto', containIntrinsicSize: '800px' }}>
-          <CategoriesSlider />
+        {/* 6. Story: The Atelier - Craftsmanship */}
+        <section>
+          <AtelierStory />
         </section>
 
-        {/* Trust Badges */}
-        <section style={{ contentVisibility: 'auto', containIntrinsicSize: '400px' }}>
+        {/* 7. Trust & Social Proof */}
+        <section>
           <TrustBadges />
         </section>
 
-        {/* Testimonials */}
-        <section style={{ contentVisibility: 'auto', containIntrinsicSize: '800px' }}>
+        <section>
           <Testimonials />
         </section>
 

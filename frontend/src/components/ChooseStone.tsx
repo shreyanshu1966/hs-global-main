@@ -1,7 +1,9 @@
 import React, { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
-import { optimizeCloudinaryUrl } from '../utils/collectionCloudinary';
+import { optimizeCloudinaryUrl, getCollectionCloudinaryUrl } from '../utils/collectionCloudinary';
+import { categories } from '../data/products';
+import type { Subcategory } from '../data/products';
 
 type MainCategory = "marble" | "granite" | "sandstone" | "onyx" | "travertine";
 
@@ -16,11 +18,6 @@ interface StoneGroup {
   title: string;
   stones: StoneItem[];
 }
-
-
-
-import { categories } from '../data/products';
-import type { Subcategory } from '../data/products';
 
 function buildGroupsFromProducts(): StoneGroup[] {
   const mainCategories: { key: MainCategory; title: string }[] = [
@@ -63,14 +60,14 @@ function buildGroupsFromProducts(): StoneGroup[] {
         let imageUrl = product.image;
         if (!imageUrl && product.images && product.images.length > 0) {
           // Convert /src/assets/Collection/... to Collection/...
-          const relativePath = product.images[0].replace('/src/assets/', '');
-          imageUrl = getProductCloudinaryUrl(relativePath);
+          const relativePath = product.images[0].replace('/src/assets/Collection/', '');
+          imageUrl = getCollectionCloudinaryUrl(relativePath);
         }
 
         return {
           id: product.id,
           name: product.name,
-          image: optimizeCloudinaryUrl(imageUrl, {
+          image: optimizeCloudinaryUrl(imageUrl || "", {
             width: 200,
             height: 200,
             quality: 85,
@@ -101,7 +98,7 @@ const ChooseStone: React.FC = () => {
     <section className="py-12 md:py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-10">
-          <h2 className="text-3xl md:text-4xl font-extrabold text-primary">{t('home.choose_stone')}</h2>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-primary">The Material Library</h2>
           <p className="text-gray-600 max-w-3xl mx-auto">
             {t('home.choose_stone_subtitle')}
           </p>
@@ -194,4 +191,3 @@ const ChooseStone: React.FC = () => {
 };
 
 export default ChooseStone;
-
