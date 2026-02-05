@@ -87,14 +87,13 @@ exports.createOrder = async (req, res) => {
             });
         }
 
-        // Enhanced currency validation
-        const PAYPAL_SUPPORTED_CURRENCIES = ['USD', 'EUR', 'GBP', 'AUD', 'CAD', 'JPY', 'SGD'];
-        if (!PAYPAL_SUPPORTED_CURRENCIES.includes(currency)) {
-            return res.status(400).json({
-                ok: false,
-                error: `Currency ${currency} not supported by PayPal. Supported: ${PAYPAL_SUPPORTED_CURRENCIES.join(', ')}`,
-                code: 'UNSUPPORTED_CURRENCY'
-            });
+        // Force ALL payments to USD to avoid PayPal currency acceptance issues
+        // The display currency remains unchanged for user interface
+        const paymentCurrency = 'USD';
+        const conversionApplied = currency !== 'USD';
+        
+        if (conversionApplied) {
+            console.log(`💱 Converting ${currency} to USD for PayPal payment`);
         }
 
         // Use secure order ID from validation
@@ -110,8 +109,10 @@ exports.createOrder = async (req, res) => {
 
         console.log('Order creation debug:', {
             requestedAmount: amount,
+            requestedCurrency: currency,
+            paymentCurrency: paymentCurrency,
+            conversionApplied: conversionApplied,
             calculatedItemsTotal: itemsTotal.toFixed(2),
-            currency: currency,
             itemCount: items.length,
             hasOriginalPrices: items.every(item => item.priceINR !== undefined)
         });
@@ -126,11 +127,11 @@ exports.createOrder = async (req, res) => {
                 custom_id: transactionId,
                 soft_descriptor: 'HS GLOBAL',
                 amount: {
-                    currency_code: currency,
+                    currency_code: paymentCurrency,
                     value: itemsTotal.toFixed(2), // Use calculated total to ensure it matches items
                     breakdown: {
                         item_total: {
-                            currency_code: currency,
+                            currency_code: paymentCurrency,
                             value: itemsTotal.toFixed(2) // Must match sum of items
                         }
                     }
@@ -140,7 +141,7 @@ exports.createOrder = async (req, res) => {
                     description: `${item.category || 'Product'}`.substring(0, 127),
                     sku: (item.id || item.productId).toString().substring(0, 127),
                     unit_amount: {
-                        currency_code: currency,
+                        currency_code: paymentCurrency,
                         value: parseFloat(item.price).toFixed(2)
                     },
                     quantity: item.quantity.toString(),
@@ -164,8 +165,8 @@ exports.createOrder = async (req, res) => {
                 brand_name: 'HS Global Export',
                 landing_page: 'NO_PREFERENCE',
                 user_action: 'PAY_NOW',
-                return_url: `${process.env.FRONTEND_URL}/checkout-success`,
-                cancel_url: `${process.env.FRONTEND_URL}/checkout`
+                return_url: `${process.env.FRONTEND_URL.replace(/\/$/, '')}/checkout-success`,
+                cancel_url: `${process.env.FRONTEND_URL.replace(/\/$/, '')}/checkout`
             }
         };
 

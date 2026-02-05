@@ -422,11 +422,16 @@ exports.sendOTPEmail = async (email, name, otp) => {
 // Send order confirmation email
 exports.sendOrderConfirmationEmail = async (email, name, orderDetails) => {
     try {
-        // Format amount (convert from paise to rupees)
+        // Get currency code - default to USD
+        const currency = orderDetails.currency || 'USD';
+        
+        // Format amount based on actual currency (prices are already in standard units, not cents/paise)
         const formatAmount = (amount) => {
-            return (amount / 100).toLocaleString('en-IN', {
+            return parseFloat(amount).toLocaleString('en-US', {
                 style: 'currency',
-                currency: 'INR'
+                currency: currency,
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
             });
         };
 
