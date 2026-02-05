@@ -9,32 +9,39 @@ gsap.registerPlugin(ScrollTrigger, Draggable);
 
 const collections = [
     {
-        id: "living",
-        title: "Living",
-        subtitle: "Grounded by Earth",
-        image: "/furniture/coffee-table.jpg",
-        link: "/products?category=living"
-    },
-    {
-        id: "dining",
-        title: "Dining",
+        id: "dining-tables",
+        title: "Dining Tables",
         subtitle: "Gathering Stones",
         image: "/furniture/dining-table.jpg",
-        link: "/products?category=dining"
+        link: "/products?cat=furniture#dining-table"
     },
     {
-        id: "decor",
-        title: "Objets",
-        subtitle: "Sculpted Nuance",
-        image: "/furniture/decor.jpg",
-        link: "/products?category=decor"
+        id: "coffee-tables",
+        title: "Coffee Tables",
+        subtitle: "Living Centerpieces",
+        image: "/furniture/coffee-table.jpg",
+        link: "/products?cat=furniture#coffee-table"
     },
     {
-        id: "bathroom",
-        title: "Bath",
-        subtitle: "Liquid Stone",
+        id: "wash-basins",
+        title: "Wash Basins",
+        subtitle: "Liquid Luxury",
         image: "/furniture/console.jpg",
-        link: "/products?category=bathroom"
+        link: "/products?cat=furniture#pedestal"
+    },
+    {
+        id: "sculptures",
+        title: "Sculptures",
+        subtitle: "Sculpted Artistry",
+        image: "/furniture/sculpture-stand.jpg",
+        link: "/products?cat=furniture#sculptures"
+    },
+    {
+        id: "slabs",
+        title: "Premium Slabs",
+        subtitle: "Raw Materials",
+        image: "/furniture/hero-dining.jpg",
+        link: "/products?cat=slabs"
     }
 ];
 
@@ -98,42 +105,48 @@ const CollectionLookbook = () => {
                 </div>
 
                 {/* Collection Items */}
-                {collections.map((item, index) => (
-                    <div
-                        key={item.id}
-                        className="group relative h-[80vh] md:h-screen w-full md:w-[60vw] lg:w-[45vw] flex-shrink-0 border-r border-stone-200 bg-white overflow-hidden"
-                    >
-                        {/* Image Container */}
-                        <div className="absolute inset-0 overflow-hidden">
-                            <img
-                                src={item.image}
-                                alt={item.title}
-                                className="h-full w-full object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-105"
-                            />
-                            <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-500" />
-                        </div>
+                {collections.map((item, index) => {
+                    const [, hash] = item.link.split('#');
+                    const targetId = hash ? hash : undefined;
 
-                        {/* Content Overlay */}
-                        <div className="absolute bottom-0 left-0 w-full p-8 md:p-12">
-                            <div className="flex items-end justify-between text-white">
-                                <div>
-                                    <span className="block text-xs font-bold tracking-[0.3em] uppercase mb-4 opacity-80">
-                                        0{index + 1} — {item.subtitle}
-                                    </span>
-                                    <h3 className="font-serif text-5xl md:text-6xl lg:text-7xl leading-none mb-6">
-                                        {item.title}
-                                    </h3>
-                                    <Link
-                                        to={item.link}
-                                        className="inline-flex items-center gap-3 text-sm uppercase tracking-widest border-b border-white/40 pb-1 hover:border-white transition-all transform hover:translate-x-2"
-                                    >
-                                        View Category <ArrowRight className="w-4 h-4" />
-                                    </Link>
+                    return (
+                        <div
+                            key={item.id}
+                            className="group relative h-[80vh] md:h-screen w-full md:w-[60vw] lg:w-[45vw] flex-shrink-0 border-r border-stone-200 bg-white overflow-hidden"
+                        >
+                            {/* Image Container */}
+                            <div className="absolute inset-0 overflow-hidden">
+                                <img
+                                    src={item.image}
+                                    alt={item.title}
+                                    className="h-full w-full object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-105"
+                                />
+                                <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-500" />
+                            </div>
+
+                            {/* Content Overlay */}
+                            <div className="absolute bottom-0 left-0 w-full p-8 md:p-12">
+                                <div className="flex items-end justify-between text-white">
+                                    <div>
+                                        <span className="block text-xs font-bold tracking-[0.3em] uppercase mb-4 opacity-80">
+                                            0{index + 1} — {item.subtitle}
+                                        </span>
+                                        <h3 className="font-serif text-5xl md:text-6xl lg:text-7xl leading-none mb-6">
+                                            {item.title}
+                                        </h3>
+                                        <Link
+                                            to={item.link}
+                                            state={targetId ? { target: targetId } : undefined}
+                                            className="inline-flex items-center gap-3 text-sm uppercase tracking-widest border-b border-white/40 pb-1 hover:border-white transition-all transform hover:translate-x-2"
+                                        >
+                                            View Category <ArrowRight className="w-4 h-4" />
+                                        </Link>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                ))}
+                    );
+                })}
             </div>
 
             {/* Mobile Footer text since Pinning doesn't happen */}

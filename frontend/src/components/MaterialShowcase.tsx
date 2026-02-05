@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -11,40 +11,48 @@ interface Material {
     polishedImage: string; // The "revealed" texture
 }
 
-// Sample Data - In a real app, these would be your specific stone textures
+// Sample Data - Featuring actual stone types from your catalog
 const materials: Material[] = [
     {
-        id: "viola",
-        name: "Calacatta Viola",
-        origin: "Italy",
-        description: "Known as the Queen of Marbles. Dramatic burgundy veining against a creamy white background.",
-        rawImage: "/materials/viola_raw.jpg", // Needs placeholder if not exists, falling back to a color/texture
-        polishedImage: "/furniture/sculpture-stand.jpg",
-    },
-    {
-        id: "nero",
-        name: "Nero Marquina",
-        origin: "Spain",
-        description: "Deep, velvety black stone with contrasting white lightning veins. A study in monochrome.",
-        rawImage: "/materials/nero_raw.jpg",
+        id: "marble",
+        name: "Premium Marble",
+        origin: "Italy & India",
+        description: "Luxurious marble slabs with dramatic veining. From classic Calacatta to exotic varieties, each slab is unique.",
+        rawImage: "/materials/marble_raw.jpg",
         polishedImage: "/furniture/dining-table.jpg",
     },
     {
-        id: "travertine",
-        name: "Roman Travertine",
-        origin: "Italy",
-        description: "Earthy, beige tones with natural pitting. The stone of the Colosseum.",
-        rawImage: "/materials/trav_raw.jpg",
+        id: "granite",
+        name: "Natural Granite",
+        origin: "India & Brazil",
+        description: "Durable and elegant granite in a spectrum of colors. Perfect for countertops, flooring, and architectural elements.",
+        rawImage: "/materials/granite_raw.jpg",
+        polishedImage: "/furniture/coffee-table.jpg",
+    },
+    {
+        id: "sandstone",
+        name: "Sandstone",
+        origin: "Rajasthan, India",
+        description: "Warm, earthy sandstone with natural texture. Ideal for both interior and exterior applications.",
+        rawImage: "/materials/sandstone_raw.jpg",
         polishedImage: "/furniture/console.jpg",
     },
     {
-        id: "verde",
-        name: "Verde Guatemala",
-        origin: "India",
-        description: "An intense emerald green that captures the essence of a rainforest.",
-        rawImage: "/materials/verde_raw.jpg",
-        polishedImage: "/furniture/coffee-table.jpg",
+        id: "onyx",
+        name: "Translucent Onyx",
+        origin: "Pakistan & Iran",
+        description: "Rare and luminous onyx stone that glows when backlit. A statement material for luxury interiors.",
+        rawImage: "/materials/onyx_raw.jpg",
+        polishedImage: "/furniture/sculpture-stand.jpg",
     },
+    {
+        id: "travertine",
+        name: "Classic Travertine",
+        origin: "Italy & Turkey",
+        description: "Timeless travertine with natural pitting and warm beige tones. The stone of ancient Rome.",
+        rawImage: "/materials/travertine_raw.jpg",
+        polishedImage: "/furniture/hero-dining.jpg",
+    }
 ];
 
 const MaterialShowcase = () => {
@@ -115,7 +123,7 @@ const MaterialShowcase = () => {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            transport={{ duration: 0.5 }}
+                            transition={{ duration: 0.5 }}
                             className="absolute inset-0 w-full h-full"
                         >
                             {/* 1. Base Layer (Grayscale / Darkened) */}

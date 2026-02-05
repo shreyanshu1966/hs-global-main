@@ -1,12 +1,12 @@
 import { Helmet } from "react-helmet-async";
-import HeroMonolith from "../components/HeroMonolith";
-import CollectionLookbook from "../components/CollectionLookbook";
-import MasterpieceSpotlight from "../components/MasterpieceSpotlight";
+import HeroModern from "../components/HeroModern";
+import ProductCategoriesGrid from "../components/ProductCategoriesGrid";
+import FeaturedProducts from "../components/FeaturedProducts";
 import MaterialShowcase from "../components/MaterialShowcase";
 import AtelierStory from "../components/AtelierStory";
-import Testimonials from "../components/Testimonials"; // Keeping existing
-import TrustBadges from "../components/TrustBadges"; // Keeping existing
-import VelocityScroll from "../components/VelocityScroll"; // Keeping existing
+import Testimonials from "../components/Testimonials";
+import TrustBadges from "../components/TrustBadges";
+import VelocityScroll from "../components/VelocityScroll";
 
 const Home = () => {
   return (
@@ -41,37 +41,37 @@ const Home = () => {
         />
 
         <title>
-          Granite & Marble Collection - Luxury Stone Designs | HS Global Export
+          Premium Marble Furniture & Natural Stone Slabs | HS Global Export
         </title>
 
         <meta
           name="description"
-          content="Explore HS Global Export's exquisite granite and marble collection. Discover custom luxury stone designs to elevate your interiors with timeless elegance and quality."
+          content="Discover handcrafted marble furniture including dining tables, coffee tables, wash basins, and sculptures. Premium natural stone slabs in marble, granite, and more. Custom luxury stone solutions."
         />
         <meta
           name="keywords"
-          content="granite collection, marble collection, luxury stone, custom stone designs, interior stone solutions, HS-Globals, premium granite, premium marble"
+          content="marble furniture, marble dining table, marble coffee table, marble wash basin, marble sculptures, granite slabs, marble slabs, natural stone, luxury furniture, handcrafted furniture, HS Global Export"
         />
 
         {/* ✅ OpenGraph / Canonical URLs all with www */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.hsglobalexport.com/" />
         <meta property="og:site_name" content="HS Global Export" />
-        <meta property="og:title" content="Granite & Marble Collection - Luxury Stone Designs | HS Global Export" />
-        <meta property="og:description" content="Transform your interiors with HS Global Export's granite and marble collection. Unique designs and premium materials for luxurious living spaces." />
+        <meta property="og:title" content="Premium Marble Furniture & Natural Stone Slabs | HS Global Export" />
+        <meta property="og:description" content="Handcrafted marble furniture and premium natural stone slabs. Transform your space with timeless elegance." />
         <meta property="og:image" content="https://hsglobalexport.com/og-image.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
-        <meta property="og:image:alt" content="HS Global Export - Premium Granite & Marble Collection" />
+        <meta property="og:image:alt" content="HS Global Export - Premium Marble Furniture" />
         <meta property="og:locale" content="en_US" />
 
         {/* ✅ Twitter Card Tags */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:url" content="https://www.hsglobalexport.com/" />
-        <meta name="twitter:title" content="Granite & Marble Collection - Luxury Stone Designs | HS Global Export" />
-        <meta name="twitter:description" content="Transform your interiors with HS Global Export's granite and marble collection. Unique designs and premium materials for luxurious living spaces." />
+        <meta name="twitter:title" content="Premium Marble Furniture & Natural Stone Slabs | HS Global Export" />
+        <meta name="twitter:description" content="Handcrafted marble furniture and premium natural stone slabs. Transform your space with timeless elegance." />
         <meta name="twitter:image" content="https://hsglobalexport.com/og-image.jpg" />
-        <meta name="twitter:image:alt" content="HS Global Export - Premium Granite & Marble Collection" />
+        <meta name="twitter:image:alt" content="HS Global Export - Premium Marble Furniture" />
 
         <link rel="canonical" href="https://www.hsglobalexport.com/" />
 
@@ -80,11 +80,11 @@ const Home = () => {
       </Helmet>
 
       {/* Main content */}
-      <main className="bg-stone-50 selection:bg-stone-900 selection:text-white">
+      <main className="bg-white selection:bg-stone-900 selection:text-white">
 
-        {/* 1. Hero: The Monolith */}
+        {/* 1. Hero: Modern B2C Hero with Clear CTAs */}
         <section>
-          <HeroMonolith />
+          <HeroModern />
         </section>
 
         {/* 2. Marquee Separator */}
@@ -92,28 +92,27 @@ const Home = () => {
           <VelocityScroll />
         </div>
 
-        {/* 3. The Collections: Lookbook */}
+        {/* 3. Product Categories: Clear Navigation to Products */}
         <section>
-          <CollectionLookbook />
+          <ProductCategoriesGrid />
         </section>
 
-        {/* 4. Spotlight: The Masterpiece */}
+        {/* 4. Featured Products: Bestsellers & New Arrivals */}
         <section>
-          <MasterpieceSpotlight />
+          <FeaturedProducts />
         </section>
 
-        {/* 5. Material Library: Interaction */}
+        {/* 5. Material Library: Interactive Stone Showcase */}
         <section>
-          {/* Slightly reworked context for MaterialShowcase */}
           <MaterialShowcase />
         </section>
 
-        {/* 6. Story: The Atelier */}
+        {/* 6. Story: The Atelier - Craftsmanship */}
         <section>
           <AtelierStory />
         </section>
 
-        {/* Legacy / Trust Sections */}
+        {/* 7. Trust & Social Proof */}
         <section>
           <TrustBadges />
         </section>
@@ -128,3 +127,4 @@ const Home = () => {
 };
 
 export default Home;
+
