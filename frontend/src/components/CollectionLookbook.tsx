@@ -9,11 +9,11 @@ gsap.registerPlugin(ScrollTrigger, Draggable);
 
 const collections = [
     {
-        id: "dining-tables",
-        title: "Dining Tables",
-        subtitle: "Gathering Stones",
-        image: "/furniture/dining-table.jpg",
-        link: "/products?cat=furniture#dining-table"
+        id: "side-tables",
+        title: "Side Tables",
+        subtitle: "Elegant Accents",
+        image: "/furniture/console.jpg",
+        link: "/products?cat=furniture#side-table"
     },
     {
         id: "coffee-tables",

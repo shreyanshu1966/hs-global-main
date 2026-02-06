@@ -54,6 +54,7 @@ import contactService, { Contact, ContactStats } from '../services/contactServic
 import quotationService, { Quotation, QuotationStats } from '../services/quotationService';
 import adminProductService, { Product, ProductFormData } from '../services/adminProductService';
 import reviewService, { Review } from '../services/reviewService';
+import { getAllDiscounts, createDiscount, updateDiscount, deleteDiscount, toggleDiscountStatus, getDiscountAnalytics, Discount, DiscountFormData, DiscountAnalytics } from '../services/adminDiscountService';
 
 interface Analytics {
     users: {
@@ -115,7 +116,7 @@ const COLORS = ['#10b981', '#f59e0b', '#ef4444', '#3b82f6', '#8b5cf6'];
 const Admin = () => {
     const { user, token, logout } = useAuth();
     const navigate = useNavigate();
-    const [activeTab, setActiveTab] = useState<'analytics' | 'orders' | 'users' | 'blogs' | 'contacts' | 'quotations' | 'products' | 'reviews'>('analytics');
+    const [activeTab, setActiveTab] = useState<'analytics' | 'orders' | 'users' | 'blogs' | 'contacts' | 'quotations' | 'products' | 'reviews' | 'discounts'>('analytics');
     const [loading, setLoading] = useState(true);
 
     // Analytics state
@@ -184,6 +185,23 @@ const Admin = () => {
     const [deletingProductId, setDeletingProductId] = useState<string | null>(null);
     const [showCustomSubcategory, setShowCustomSubcategory] = useState(false);
     const [customSubcategory, setCustomSubcategory] = useState('');
+
+    // Bulk Actions state
+    const [selectedProductIds, setSelectedProductIds] = useState<string[]>([]);
+    const [showBulkDiscountModal, setShowBulkDiscountModal] = useState(false);
+    const [bulkDiscountData, setBulkDiscountData] = useState<{
+        enabled: boolean;
+        percentage: number;
+        startDate?: string;
+        endDate?: string;
+        description?: string;
+    }>({
+        enabled: true,
+        percentage: 0,
+        startDate: '',
+        endDate: '',
+        description: ''
+    });
 
     // Reviews state
     const [reviews, setReviews] = useState<Review[]>([]);
@@ -422,6 +440,7 @@ const Admin = () => {
                 description: product.description,
                 priceINR: product.priceINR,
                 available: product.available,
+                featured: product.featured || false,
                 hasVideo: product.hasVideo,
                 status: product.status,
                 furnitureSpecs: product.furnitureSpecs,
@@ -431,7 +450,7 @@ const Admin = () => {
                 seoKeywords: product.seoKeywords
             });
             setProductImagePreviews(product.images || []);
-            
+
             // Check if subcategory is custom
             const predefinedSubcategories = getPredefinedSubcategories(product.category);
             if (!predefinedSubcategories.includes(product.subcategory)) {
@@ -447,6 +466,7 @@ const Admin = () => {
                 category: 'furniture',
                 status: 'active',
                 available: true,
+                featured: false,
                 hasVideo: false
             });
             setProductImagePreviews([]);
@@ -459,12 +479,12 @@ const Admin = () => {
 
     const getPredefinedSubcategories = (category: string): string[] => {
         if (category === 'furniture') {
-            return ['tables', 'coffee-table', 'console-table', 'dining-table', 'side-table', 
-                    'wash-basins', 'pedestal', 'countertop', 'sculptures', 'benches', 
-                    'planters', 'fountains', 'fireplace', 'columns', 'urns', 'other'];
+            return ['tables', 'coffee-table', 'console-table', 'dining-table', 'side-table',
+                'wash-basins', 'pedestal', 'countertop', 'sculptures', 'benches',
+                'planters', 'fountains', 'fireplace', 'columns', 'urns', 'other'];
         } else {
-            return ['granite', 'marble', 'quartzite', 'onyx', 'limestone', 
-                    'travertine', 'sandstone', 'slate', 'other'];
+            return ['granite', 'marble', 'quartzite', 'onyx', 'limestone',
+                'travertine', 'sandstone', 'slate', 'other'];
         }
     };
 
@@ -512,11 +532,11 @@ const Admin = () => {
 
     const handleSaveProduct = async () => {
         if (productLoading) return; // Prevent double submission
-        
+
         try {
             // Use custom subcategory if provided, otherwise use form data
             const finalSubcategory = showCustomSubcategory ? customSubcategory : productFormData.subcategory;
-            
+
             if (!productFormData.productId || !productFormData.name || !productFormData.category || !finalSubcategory || !productFormData.description) {
                 alert('Please fill in all required fields');
                 return;
@@ -547,7 +567,7 @@ const Admin = () => {
                     return;
                 }
                 await adminProductService.createProduct(
-                    finalFormData as ProductFormData, 
+                    finalFormData as ProductFormData,
                     productImages,
                     productVideo
                 );
@@ -566,7 +586,7 @@ const Admin = () => {
 
     const handleDeleteProduct = async (productId: string) => {
         if (deletingProductId) return; // Prevent multiple deletes
-        
+
         if (!confirm('Are you sure you want to delete this product? This will also delete all its images and video.')) {
             return;
         }
@@ -581,6 +601,88 @@ const Admin = () => {
             alert(error.message || 'Failed to delete product');
         } finally {
             setDeletingProductId(null);
+        }
+    };
+
+    const handleSelectAllProducts = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.checked) {
+            const allIds = products.map(p => p.productId);
+            setSelectedProductIds(allIds);
+        } else {
+            setSelectedProductIds([]);
+        }
+    };
+
+    const handleSelectProduct = (productId: string) => {
+        if (selectedProductIds.includes(productId)) {
+            setSelectedProductIds(selectedProductIds.filter(id => id !== productId));
+        } else {
+            setSelectedProductIds([...selectedProductIds, productId]);
+        }
+    };
+
+    const handleBulkApplyDiscount = async () => {
+        if (selectedProductIds.length === 0) return;
+
+        if (!confirm(`Apply discount to ${selectedProductIds.length} products?`)) return;
+
+        setProductLoading(true);
+        try {
+            const promises = selectedProductIds.map(productId => {
+                const product = products.find(p => p.productId === productId);
+                if (!product) return Promise.resolve();
+
+                const updatedData: Partial<ProductFormData> = {
+                    productId: product.productId,
+                    name: product.name,
+                    category: product.category,
+                    subcategory: product.subcategory,
+                    description: product.description,
+                    priceINR: product.priceINR,
+                    available: product.available,
+                    status: product.status,
+                    featured: product.featured,
+                    hasVideo: product.hasVideo,
+                    furnitureSpecs: product.furnitureSpecs,
+                    slabSpecs: product.slabSpecs,
+                    seoTitle: product.seoTitle,
+                    seoDescription: product.seoDescription,
+                    seoKeywords: product.seoKeywords,
+                    discount: {
+                        enabled: bulkDiscountData.enabled,
+                        percentage: bulkDiscountData.percentage,
+                        startDate: bulkDiscountData.startDate || null,
+                        endDate: bulkDiscountData.endDate || null,
+                        description: bulkDiscountData.description
+                    }
+                };
+
+                return adminProductService.updateProduct(
+                    productId,
+                    { ...updatedData, preserveExistingImages: true },
+                    undefined,
+                    undefined,
+                    false
+                );
+            });
+
+            await Promise.all(promises);
+            await loadData();
+            setShowBulkDiscountModal(false);
+            setSelectedProductIds([]);
+            setBulkDiscountData({
+                enabled: true,
+                percentage: 0,
+                startDate: '',
+                endDate: '',
+                description: ''
+            });
+            alert('✅ Bulk discount applied successfully!');
+        } catch (error: any) {
+            console.error('Bulk discount error:', error);
+            alert(error.message || 'Failed to apply bulk discount');
+        } finally {
+            setProductLoading(false);
         }
     };
 
@@ -1936,11 +2038,10 @@ const Admin = () => {
                                                         {[1, 2, 3, 4, 5].map((star) => (
                                                             <Star
                                                                 key={star}
-                                                                className={`w-4 h-4 ${
-                                                                    star <= review.rating
-                                                                        ? 'fill-yellow-400 text-yellow-400'
-                                                                        : 'text-gray-300'
-                                                                }`}
+                                                                className={`w-4 h-4 ${star <= review.rating
+                                                                    ? 'fill-yellow-400 text-yellow-400'
+                                                                    : 'text-gray-300'
+                                                                    }`}
                                                             />
                                                         ))}
                                                         <span className="ml-2 text-sm text-gray-600">{review.rating}</span>
@@ -1951,11 +2052,10 @@ const Admin = () => {
                                                     <div className="text-sm text-gray-600 max-w-xs truncate">{review.comment}</div>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
-                                                    <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                                                        review.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                                                    <span className={`px-2 py-1 rounded-full text-xs font-semibold ${review.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
                                                         review.status === 'approved' ? 'bg-green-100 text-green-800' :
-                                                        'bg-red-100 text-red-800'
-                                                    }`}>
+                                                            'bg-red-100 text-red-800'
+                                                        }`}>
                                                         {review.status}
                                                     </span>
                                                 </td>
@@ -2052,13 +2152,24 @@ const Admin = () => {
                         {/* Header with Add Button */}
                         <div className="flex justify-between items-center">
                             <h2 className="text-2xl font-bold text-gray-900">Product Management</h2>
-                            <button
-                                onClick={() => handleOpenProductModal()}
-                                className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
-                            >
-                                <Plus className="w-5 h-5" />
-                                Add Product
-                            </button>
+                            <div className="flex gap-2">
+                                {selectedProductIds.length > 0 && (
+                                    <button
+                                        onClick={() => setShowBulkDiscountModal(true)}
+                                        className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-colors"
+                                    >
+                                        <DollarSign className="w-5 h-5" />
+                                        Apply Discount ({selectedProductIds.length})
+                                    </button>
+                                )}
+                                <button
+                                    onClick={() => handleOpenProductModal()}
+                                    className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
+                                >
+                                    <Plus className="w-5 h-5" />
+                                    Add Product
+                                </button>
+                            </div>
                         </div>
 
                         {/* Filters */}
@@ -2111,6 +2222,14 @@ const Admin = () => {
                                 <table className="w-full">
                                     <thead className="bg-gray-50 border-b border-gray-200">
                                         <tr>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                <input
+                                                    type="checkbox"
+                                                    onChange={handleSelectAllProducts}
+                                                    checked={products.length > 0 && selectedProductIds.length === products.length}
+                                                    className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
+                                                />
+                                            </th>
                                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Image</th>
                                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
                                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
@@ -2122,6 +2241,14 @@ const Admin = () => {
                                     <tbody className="bg-white divide-y divide-gray-200">
                                         {products.map((product) => (
                                             <tr key={product._id} className="hover:bg-gray-50">
+                                                <td className="px-6 py-4">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={selectedProductIds.includes(product.productId)}
+                                                        onChange={() => handleSelectProduct(product.productId)}
+                                                        className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
+                                                    />
+                                                </td>
                                                 <td className="px-6 py-4">
                                                     <img
                                                         src={product.image}
@@ -2145,11 +2272,10 @@ const Admin = () => {
                                                     {product.priceINR ? formatCurrency(product.priceINR) : 'N/A'}
                                                 </td>
                                                 <td className="px-6 py-4">
-                                                    <span className={`px-2 py-1 text-xs font-medium rounded-full capitalize ${
-                                                        product.status === 'active' ? 'bg-green-100 text-green-800' :
+                                                    <span className={`px-2 py-1 text-xs font-medium rounded-full capitalize ${product.status === 'active' ? 'bg-green-100 text-green-800' :
                                                         product.status === 'inactive' ? 'bg-gray-100 text-gray-800' :
-                                                        'bg-yellow-100 text-yellow-800'
-                                                    }`}>
+                                                            'bg-yellow-100 text-yellow-800'
+                                                        }`}>
                                                         {product.status}
                                                     </span>
                                                 </td>
@@ -2319,7 +2445,7 @@ const Admin = () => {
                                             )}
                                             <option value="custom">➕ Add Custom Subcategory</option>
                                         </select>
-                                        
+
                                         {/* Custom Subcategory Input */}
                                         {showCustomSubcategory && (
                                             <div className="mt-2">
@@ -2620,6 +2746,15 @@ const Admin = () => {
                                         />
                                         <span className="text-sm text-gray-700">Available</span>
                                     </label>
+                                    <label className="flex items-center gap-2 cursor-pointer">
+                                        <input
+                                            type="checkbox"
+                                            checked={productFormData.featured === true}
+                                            onChange={(e) => setProductFormData({ ...productFormData, featured: e.target.checked })}
+                                            className="w-4 h-4 text-amber-600"
+                                        />
+                                        <span className="text-sm text-gray-700">Featured (Show on Homepage)</span>
+                                    </label>
                                 </div>
 
                                 {/* Action Buttons */}
@@ -2644,6 +2779,106 @@ const Admin = () => {
                                         onClick={handleCloseProductModal}
                                         disabled={productLoading}
                                         className="px-4 py-2 bg-gray-200 hover:bg-gray-300 disabled:bg-gray-100 disabled:cursor-not-allowed text-gray-700 rounded-lg font-medium transition-colors"
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* Bulk Discount Modal */}
+                {showBulkDiscountModal && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+                        <div className="bg-white rounded-xl shadow-xl w-full max-w-2xl">
+                            <div className="p-6 border-b border-gray-200 flex justify-between items-center bg-white rounded-t-xl">
+                                <h2 className="text-xl font-bold text-gray-900">
+                                    Apply Bulk Discount
+                                </h2>
+                                <button
+                                    onClick={() => setShowBulkDiscountModal(false)}
+                                    className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                                >
+                                    <X className="w-5 h-5 text-gray-500" />
+                                </button>
+                            </div>
+
+                            <div className="p-6 space-y-6">
+                                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                                    <p className="text-sm text-blue-800">
+                                        Applying discount to <strong>{selectedProductIds.length}</strong> selected products.
+                                    </p>
+                                </div>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div className="md:col-span-2">
+                                        <label className="flex items-center gap-2 cursor-pointer mb-4">
+                                            <input
+                                                type="checkbox"
+                                                checked={bulkDiscountData.enabled}
+                                                onChange={(e) => setBulkDiscountData({ ...bulkDiscountData, enabled: e.target.checked })}
+                                                className="w-5 h-5 text-blue-600 rounded focus:ring-blue-500"
+                                            />
+                                            <span className="font-medium text-gray-900">Enable Discount</span>
+                                        </label>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Percentage (%)</label>
+                                        <input
+                                            type="number"
+                                            min="0"
+                                            max="100"
+                                            value={bulkDiscountData.percentage}
+                                            onChange={(e) => setBulkDiscountData({ ...bulkDiscountData, percentage: parseFloat(e.target.value) })}
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                        />
+                                    </div>
+
+                                    <div className="md:col-span-2">
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                                        <input
+                                            type="text"
+                                            placeholder="e.g. Summer Sale"
+                                            value={bulkDiscountData.description || ''}
+                                            onChange={(e) => setBulkDiscountData({ ...bulkDiscountData, description: e.target.value })}
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+                                        <input
+                                            type="datetime-local"
+                                            value={bulkDiscountData.startDate || ''}
+                                            onChange={(e) => setBulkDiscountData({ ...bulkDiscountData, startDate: e.target.value })}
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">End Date</label>
+                                        <input
+                                            type="datetime-local"
+                                            value={bulkDiscountData.endDate || ''}
+                                            onChange={(e) => setBulkDiscountData({ ...bulkDiscountData, endDate: e.target.value })}
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="flex gap-3 pt-6 border-t border-gray-200">
+                                    <button
+                                        onClick={handleBulkApplyDiscount}
+                                        disabled={productLoading}
+                                        className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
+                                    >
+                                        {productLoading ? 'Applying...' : 'Apply Discount'}
+                                    </button>
+                                    <button
+                                        onClick={() => setShowBulkDiscountModal(false)}
+                                        className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg font-medium transition-colors"
                                     >
                                         Cancel
                                     </button>

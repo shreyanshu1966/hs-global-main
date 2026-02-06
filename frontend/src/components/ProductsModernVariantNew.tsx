@@ -443,7 +443,7 @@ export const ProductsModernVariant: React.FC = () => {
 
       {/* Section Navigation & Search */}
       {navOptions.length > 0 && (
-        <div className="sticky bg-white border-b border-gray-200 z-40 transition-all duration-300" 
+        <div className="sticky bg-white border-b border-gray-200 z-30 transition-all duration-300" 
              style={{ top: `${navDims.height || 0}px` }}>
           <div className="container mx-auto px-4 flex flex-col md:flex-row md:items-center justify-between">
               <div className="flex space-x-6 overflow-x-auto py-4 scrollbar-hide flex-1">

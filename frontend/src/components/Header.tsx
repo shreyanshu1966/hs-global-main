@@ -1,6 +1,6 @@
 import { useState, useEffect, memo, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, User, Search } from "lucide-react";
+import { Menu, User, Search } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { useTranslation } from "react-i18next";
@@ -17,6 +17,8 @@ const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuRendered, setIsMenuRendered] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
   const location = useLocation();
   const menuRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -27,6 +29,7 @@ const Header = () => {
     { path: "/about", label: t("nav.about") || "Atelier" }, // Renamed for luxury feel
     { path: "/products", label: t("nav.products") || "Collection" },
     { path: "/gallery", label: t("nav.gallery") || "Projects" },
+    { path: "/blog", label: t("nav.blog") || "Blog" },
     { path: "/contact", label: t("nav.contact") || "Contact" },
   ];
 
@@ -41,7 +44,24 @@ const Header = () => {
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          setIsScrolled(window.scrollY > 50);
+          const currentScrollY = window.scrollY;
+          
+          // Update scroll state for styling
+          setIsScrolled(currentScrollY > 50);
+          
+          // Hide/show navbar based on scroll direction
+          if (currentScrollY < 10) {
+            // Always show at top
+            setIsVisible(true);
+          } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
+            // Scrolling down - hide navbar
+            setIsVisible(false);
+          } else if (currentScrollY < lastScrollY) {
+            // Scrolling up - show navbar
+            setIsVisible(true);
+          }
+          
+          setLastScrollY(currentScrollY);
           ticking = false;
         });
         ticking = true;
@@ -50,7 +70,7 @@ const Header = () => {
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [lastScrollY]);
 
   useEffect(() => {
     setIsOpen(false);
@@ -109,10 +129,13 @@ const Header = () => {
     <>
       <header
         ref={containerRef}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${isScrolled
-          ? "bg-white/80 backdrop-blur-xl border-b border-stone-100 py-3"
-          : "bg-transparent border-transparent py-6"
-          }`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${
+          isScrolled
+            ? "bg-white/80 backdrop-blur-xl border-b border-stone-100 py-3"
+            : "bg-transparent border-transparent py-6"
+        } ${
+          isVisible ? "translate-y-0" : "-translate-y-full"
+        }`}
       >
         <div className="container mx-auto px-6 md:px-12">
           <div className="flex items-center justify-between">
@@ -153,6 +176,13 @@ const Header = () => {
 
             {/* Right Actions - Icons */}
             <div className={`hidden lg:flex items-center gap-6 transition-colors duration-300 ${isTransparent ? "text-white" : "text-black"}`}>
+              <Link
+                to="/admin"
+                className="text-xs uppercase tracking-widest font-bold hover:opacity-70 transition-opacity"
+              >
+                Admin
+              </Link>
+
               <button
                 onClick={() => setIsSearchOpen(true)}
                 className="hover:opacity-70 transition-opacity"
@@ -187,7 +217,13 @@ const Header = () => {
             <div className="flex items-center gap-4 lg:hidden">
               <CartIcon />
               <button
-                onClick={() => setIsOpen(!isOpen)}
+                onClick={() => {
+                  setIsOpen(!isOpen);
+                  // Ensure navbar is visible when opening mobile menu
+                  if (!isOpen) {
+                    setIsVisible(true);
+                  }
+                }}
                 className={`p-1 z-50 transition-colors ${isTransparent ? "text-white" : "text-black"}`}
                 aria-label="Toggle menu"
               >

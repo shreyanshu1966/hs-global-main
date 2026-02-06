@@ -1,10 +1,5 @@
-import { useRef, useLayoutEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 interface CategoryCard {
     id: string;
@@ -18,13 +13,13 @@ interface CategoryCard {
 
 const categories: CategoryCard[] = [
     {
-        id: "dining-tables",
-        title: "Dining Tables",
-        subtitle: "The Heart of Home",
-        description: "Monolithic marble dining tables that transform meals into experiences",
-        image: "/furniture/dining-table.jpg",
-        link: "/products?cat=furniture#dining-table",
-        productCount: "12+ Designs"
+        id: "side-tables",
+        title: "Side Tables",
+        subtitle: "Elegant Accents",
+        description: "Compact marble side tables perfect for beside your sofa or bed",
+        image: "/furniture/console.jpg",
+        link: "/products?cat=furniture#side-table",
+        productCount: "10+ Designs"
     },
     {
         id: "coffee-tables",
@@ -74,45 +69,11 @@ const categories: CategoryCard[] = [
 ];
 
 const ProductCategoriesGrid = () => {
-    const sectionRef = useRef<HTMLElement>(null);
-    const cardsRef = useRef<(HTMLAnchorElement | null)[]>([]);
 
-    useLayoutEffect(() => {
-        const ctx = gsap.context(() => {
-            // Animate section title
-            gsap.from(".section-title", {
-                opacity: 0,
-                duration: 0.8,
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: "top 80%",
-                }
-            });
-
-            // Stagger animate cards
-            cardsRef.current.forEach((card, index) => {
-                if (!card) return;
-
-                gsap.from(card, {
-                    opacity: 0,
-                    duration: 0.7,
-                    delay: index * 0.1,
-                    scrollTrigger: {
-                        trigger: card,
-                        start: "top 85%",
-                    }
-                });
-            });
-        }, sectionRef);
-
-        return () => ctx.revert();
-    }, []);
+    // Fade-in animations removed per user request
 
     return (
-        <section
-            ref={sectionRef}
-            className="py-16 md:py-24 bg-white"
-        >
+        <section className="py-16 md:py-24 bg-white">
             <div className="container mx-auto px-4 md:px-6">
                 {/* Section Header */}
                 <div className="section-title max-w-3xl mb-12 md:mb-16">
@@ -139,7 +100,6 @@ const ProductCategoriesGrid = () => {
                                 key={category.id}
                                 to={category.link}
                                 state={targetId ? { target: targetId } : undefined}
-                                ref={(el) => cardsRef.current[index] = el}
                                 className="group relative overflow-hidden bg-stone-50 hover:bg-stone-100 transition-all duration-500 rounded-sm"
                             >
                                 {/* Image Container */}

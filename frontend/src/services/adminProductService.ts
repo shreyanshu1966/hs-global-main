@@ -53,6 +53,7 @@ export interface Product {
     viewCount: number;
     addToCartCount: number;
     status: 'active' | 'inactive' | 'draft';
+    featured: boolean;
     createdAt: string;
     updatedAt: string;
 }
@@ -74,6 +75,7 @@ export interface ProductFormData {
     };
     hasVideo?: boolean;
     status?: 'active' | 'inactive' | 'draft';
+    featured?: boolean;
     furnitureSpecs?: any;
     slabSpecs?: any;
     seoTitle?: string;

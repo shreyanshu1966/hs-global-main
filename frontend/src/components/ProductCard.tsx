@@ -13,6 +13,7 @@ import { QuantityHandler } from './QuantityHandler';
 import { useCart } from '../contexts/CartContext';
 import { useCurrency } from '../contexts/CurrencyContext';
 
+import { getProductCloudinaryUrl } from '../utils/productCloudinary';
 import { loadImageUrl } from '../data/slabs.loader'; // Keep for slabs lazy load if needed
 
 gsap.registerPlugin(ScrollTrigger);
@@ -57,13 +58,13 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
   const { hasDiscount, discountPercentage, finalPrice, originalPrice } = useMemo(() => {
     const now = new Date();
     const discount = product.discount;
-    
+
     // Check if discount is active
-    const isDiscountActive = discount?.enabled && 
+    const isDiscountActive = discount?.enabled &&
       discount.percentage > 0 &&
       (!discount.startDate || new Date(discount.startDate) <= now) &&
       (!discount.endDate || new Date(discount.endDate) >= now);
-    
+
     if (isDiscountActive && product.priceINR) {
       const discountAmount = Math.round((product.priceINR * discount.percentage) / 100);
       return {
@@ -73,7 +74,7 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
         originalPrice: product.priceINR
       };
     }
-    
+
     return {
       hasDiscount: false,
       discountPercentage: 0,
@@ -84,13 +85,13 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
 
   const displayPrice = useMemo(() => {
     if (!product.available) return "Unavailable";
-    
+
     if (product.priceINR) {
       return formatPrice(finalPrice);
     }
 
     // Fallback for slabs or items without price
-    return "Price on Request"; 
+    return "Price on Request";
   }, [product, formatPrice, finalPrice]);
 
   /* ------------------------------------------------------
@@ -128,15 +129,29 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
   // Use pre-sorted images from product data (no runtime sorting!)
   const imagePaths = useMemo(() => {
     if (product.sortedImages && product.sortedImages.length > 0) {
-      return product.sortedImages;
+      // If we have sorted images, treat them same as regular images
+      // Check if they look like Cloudinary paths or raw paths
+      const paths = product.sortedImages;
+      if (isSlab) return paths;
+
+      return paths.map(path => {
+        if (path.startsWith('http') || path.startsWith('data:') || path.startsWith('/')) return path;
+        return getProductCloudinaryUrl(path);
+      });
     }
+
     // Fallback for slabs or products without sortedImages
     if (isSlab) {
       const all = [...(product.images || [])].filter(Boolean);
       return Array.from(new Set(all));
     } else {
       const all = [product.image, ...(product.images || [])].filter(Boolean);
-      return Array.from(new Set(all));
+      const transformed = all.map(path => {
+        if (!path) return '';
+        if (path.startsWith('http') || path.startsWith('data:') || path.startsWith('/')) return path;
+        return getProductCloudinaryUrl(path);
+      }).filter(Boolean);
+      return Array.from(new Set(transformed));
     }
   }, [product, isSlab]);
 
@@ -331,7 +346,7 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
     >
       {/* IMAGE + VIDEO */}
       <Link
-        to={`/products/${product.productId}`}
+        to={`/products/${product.productId || product._id}`}
         onClick={handleCardClick}
         className="relative block overflow-hidden bg-gray-100"
         style={{ aspectRatio: '4/5' }}
@@ -348,9 +363,8 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
             loop
             playsInline
             preload="metadata"
-            className={`absolute inset-0 w-full h-full object-contain z-20 bg-transparent transition-opacity duration-500 ${
-              videoLoaded && videoCanPlay ? 'opacity-100' : 'opacity-0'
-            }`}
+            className={`absolute inset-0 w-full h-full object-contain z-20 bg-transparent transition-opacity duration-500 ${videoLoaded && videoCanPlay ? 'opacity-100' : 'opacity-0'
+              }`}
             onError={(e) => {
               // Gracefully handle video 404 by setting error state
               console.log(`Video failed to load: ${videoUrl}`);
@@ -391,27 +405,26 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
 
         {/* IMAGE SLIDESHOW */}
         {showContent && (
-          !product.hasVideo || 
-          !showVideo || 
-          videoError || 
-          !videoLoaded || 
+          !product.hasVideo ||
+          !showVideo ||
+          videoError ||
+          !videoLoaded ||
           !videoCanPlay
         ) && slideshowImages.map((src, idx) => {
-            const visible = idx === slideIndex;
-            return (
-              <img
-                key={src}
-                src={src}
-                alt={product.name}
-                width="400"
-                height="500"
-                loading={idx === 0 ? "eager" : "lazy"}
-                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
-                  visible ? "opacity-100" : "opacity-0"
+          const visible = idx === slideIndex;
+          return (
+            <img
+              key={src}
+              src={src}
+              alt={product.name}
+              width="400"
+              height="500"
+              loading={idx === 0 ? "eager" : "lazy"}
+              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${visible ? "opacity-100" : "opacity-0"
                 }`}
-              />
-            );
-          })
+            />
+          );
+        })
         }
 
         {/* PRICE BADGE WITH DISCOUNT */}
@@ -439,7 +452,7 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
 
       {/* BOTTOM CONTENT */}
       <div className="flex flex-col flex-grow p-4 md:p-5 bg-white rounded-b-lg">
-        <Link to={`/products/${product.productId}`} onClick={handleCardClick}>
+        <Link to={`/products/${product.productId || product._id}`} onClick={handleCardClick}>
           <h3 className="text-base md:text-lg font-bold text-gray-900 line-clamp-2 mb-2">
             {product.name}
           </h3>
@@ -452,11 +465,10 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
               {[1, 2, 3, 4, 5].map((star) => (
                 <Star
                   key={star}
-                  className={`w-4 h-4 ${
-                    star <= Math.round(product.averageRating || 0)
-                      ? 'fill-yellow-400 text-yellow-400'
-                      : 'text-gray-300'
-                  }`}
+                  className={`w-4 h-4 ${star <= Math.round(product.averageRating || 0)
+                    ? 'fill-yellow-400 text-yellow-400'
+                    : 'text-gray-300'
+                    }`}
                 />
               ))}
             </div>

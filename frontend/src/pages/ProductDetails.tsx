@@ -308,6 +308,34 @@ const ProductDetails = () => {
         <meta property="og:title" content={`${product.name} | HS Global Export`} />
         <meta property="og:description" content={product.description} />
         <meta property="og:image" content={product.image} />
+        
+        {/* Product Schema */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Product",
+            "name": product.name,
+            "description": product.description,
+            "image": product.images,
+            "brand": {
+              "@type": "Brand",
+              "name": "HS Global Export"
+            },
+            "offers": {
+              "@type": "Offer",
+              "price": product.priceINR || 0,
+              "priceCurrency": "INR",
+              "availability": product.available ? "InStock" : "OutOfStock"
+            },
+            ...(reviewStats.totalReviews > 0 && {
+              "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": reviewStats.averageRating,
+                "reviewCount": reviewStats.totalReviews
+              }
+            })
+          })}
+        </script>
       </Helmet>
       
       {/* Breadcrumb - Enhanced */}
