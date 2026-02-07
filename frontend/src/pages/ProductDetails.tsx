@@ -81,25 +81,26 @@ const ProductDetails = () => {
     let displayPrice = "Price on Request";
     const isAvailable = dbProduct.available !== false;
 
-    if (!isAvailable) {
-      displayPrice = "Currently Unavailable";
-    } else if (dbProduct.priceINR) {
-      displayPrice = formatPrice(dbProduct.priceINR);
-    }
-
-    const moq = category === "slabs" ? "MOQ: 20 m²" : "";
-
-    // Discount calculation
-    const hasDiscount = dbProduct.discount?.enabled && 
+    // Discount calculation (do this first)
+    const hasDiscount = dbProduct.discount?.enabled &&
       dbProduct.discount?.percentage > 0 &&
       (!dbProduct.discount?.startDate || new Date(dbProduct.discount.startDate) <= new Date()) &&
       (!dbProduct.discount?.endDate || new Date(dbProduct.discount.endDate) >= new Date());
-    
+
     const discountPercentage = hasDiscount ? dbProduct.discount!.percentage : 0;
     const originalPrice = dbProduct.priceINR || 0;
     const discountedPrice = hasDiscount && originalPrice > 0
       ? originalPrice * (1 - discountPercentage / 100)
       : originalPrice;
+
+    if (!isAvailable) {
+      displayPrice = "Currently Unavailable";
+    } else if (dbProduct.priceINR) {
+      // Use discounted price if discount is active
+      displayPrice = formatPrice(hasDiscount ? discountedPrice : dbProduct.priceINR);
+    }
+
+    const moq = category === "slabs" ? "MOQ: 20 m²" : "";
 
     return {
       id: dbProduct._id,
@@ -308,7 +309,7 @@ const ProductDetails = () => {
         <meta property="og:title" content={`${product.name} | HS Global Export`} />
         <meta property="og:description" content={product.description} />
         <meta property="og:image" content={product.image} />
-        
+
         {/* Product Schema */}
         <script type="application/ld+json">
           {JSON.stringify({
@@ -337,62 +338,10 @@ const ProductDetails = () => {
           })}
         </script>
       </Helmet>
-      
-      {/* Breadcrumb - Enhanced */}
-      <div className="bg-gradient-to-r from-gray-50 to-white border-b border-gray-200 shadow-sm">
-        <div className="container mx-auto px-4 py-3">
-          <nav className="flex items-center text-sm font-medium">
-            <Link to="/" className="text-gray-600 hover:text-blue-600 transition-colors flex items-center gap-1">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-              </svg>
-              Home
-            </Link>
-            <ChevronRight className="w-4 h-4 mx-2 text-gray-400" />
 
-            <Link
-              to={
-                breadcrumbPath.top
-                  ? `/products?cat=${breadcrumbPath.top.id}`
-                  : "/products"
-              }
-              className="hover:text-blue-600 transition-colors"
-            >
-              Products
-            </Link>
-
-            {breadcrumbPath.top && (
-              <>
-                <ChevronRight className="w-4 h-4 mx-2" />
-                <Link
-                  to={`/products?cat=${breadcrumbPath.top.id}`}
-                  className="hover:text-blue-600 transition-colors capitalize"
-                >
-                  {breadcrumbPath.top.name}
-                </Link>
-              </>
-            )}
-
-            {breadcrumbPath.chain.map((node) => (
-              <span key={node.id} className="flex items-center">
-                <ChevronRight className="w-4 h-4 mx-2" />
-                <Link
-                  to={`/products?cat=${breadcrumbPath.top?.id || ""}#${node.id}`}
-                  className="hover:text-blue-600 transition-colors"
-                >
-                  {node.name}
-                </Link>
-              </span>
-            ))}
-
-            <ChevronRight className="w-4 h-4 mx-2" />
-            <span className="text-gray-900 font-medium">{product.name}</span>
-          </nav>
-        </div>
-      </div>
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-8 md:py-12">
+      <div className="container mx-auto px-4 pt-24 md:pt-32 pb-8 md:pb-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
           {/* Enhanced Image Gallery */}
           <div className="lg:sticky lg:top-4 h-fit">
@@ -408,7 +357,7 @@ const ProductDetails = () => {
                   alt={product.name}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
-                
+
                 {/* Image Overlay Actions */}
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300">
                   <button
@@ -418,12 +367,11 @@ const ProductDetails = () => {
                   >
                     <ZoomIn className="w-5 h-5 text-gray-700" />
                   </button>
-                  
+
                   <button
                     onClick={() => setIsFavorite(!isFavorite)}
-                    className={`absolute top-4 left-4 backdrop-blur-sm p-2.5 rounded-full shadow-lg transition-all duration-300 hover:scale-110 ${ 
-                      isFavorite ? 'bg-red-500 text-white' : 'bg-white/90 text-gray-700 hover:bg-white'
-                    }`}
+                    className={`absolute top-4 left-4 backdrop-blur-sm p-2.5 rounded-full shadow-lg transition-all duration-300 hover:scale-110 ${isFavorite ? 'bg-red-500 text-white' : 'bg-white/90 text-gray-700 hover:bg-white'
+                      }`}
                     aria-label="Add to favorites"
                   >
                     <Heart className={`w-5 h-5 ${isFavorite ? 'fill-current' : ''}`} />
@@ -448,11 +396,10 @@ const ProductDetails = () => {
                     <button
                       key={img}
                       onClick={() => setSelectedImage(idx)}
-                      className={`aspect-square bg-white rounded-lg md:rounded-xl overflow-hidden border-2 transition-all duration-300 hover:shadow-lg ${ 
-                        selectedImage === idx
-                          ? "border-blue-600 ring-2 ring-blue-600/30 shadow-md scale-95"
-                          : "border-gray-200 hover:border-blue-300"
-                      }`}
+                      className={`aspect-square bg-white rounded-lg md:rounded-xl overflow-hidden border-2 transition-all duration-300 hover:shadow-lg ${selectedImage === idx
+                        ? "border-blue-600 ring-2 ring-blue-600/30 shadow-md scale-95"
+                        : "border-gray-200 hover:border-blue-300"
+                        }`}
                     >
                       <img
                         src={img}
@@ -492,11 +439,10 @@ const ProductDetails = () => {
                   {[1, 2, 3, 4, 5].map((star) => (
                     <Star
                       key={star}
-                      className={`w-5 h-5 ${
-                        star <= Math.round(reviewStats.averageRating)
-                          ? 'fill-yellow-400 text-yellow-400'
-                          : 'text-gray-300'
-                      }`}
+                      className={`w-5 h-5 ${star <= Math.round(reviewStats.averageRating)
+                        ? 'fill-yellow-400 text-yellow-400'
+                        : 'text-gray-300'
+                        }`}
                     />
                   ))}
                 </div>
@@ -518,10 +464,10 @@ const ProductDetails = () => {
                 <span className="text-sm text-gray-500 ml-1">Be the first to review</span>
               </div>
             )}
-            
+
             {/* Price Section - Enhanced */}
             <div className="bg-gradient-to-br from-blue-50 via-white to-purple-50 border-2 border-gray-200 rounded-2xl p-6 mb-6 shadow-sm">
-              {product.category === "slabs" && product.priceINR ? (
+              {product.priceINR ? (
                 <div>
                   {product.hasDiscount ? (
                     <div className="space-y-3">
@@ -720,7 +666,7 @@ const ProductDetails = () => {
                   <Share2 className="w-5 h-5" />
                   Share
                 </button>
-                
+
                 <a
                   href={`https://wa.me/918107115116?text=${encodeURIComponent(
                     "Inquiry about " + product.name
@@ -770,31 +716,28 @@ const ProductDetails = () => {
             <div className="flex items-center gap-2 border-b-2 border-gray-200 mb-8 overflow-x-auto">
               <button
                 onClick={() => setActiveTab('description')}
-                className={`px-6 py-3 font-semibold transition-all whitespace-nowrap ${
-                  activeTab === 'description'
-                    ? 'text-blue-600 border-b-4 border-blue-600 -mb-0.5'
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
+                className={`px-6 py-3 font-semibold transition-all whitespace-nowrap ${activeTab === 'description'
+                  ? 'text-blue-600 border-b-4 border-blue-600 -mb-0.5'
+                  : 'text-gray-600 hover:text-gray-900'
+                  }`}
               >
                 Description
               </button>
               <button
                 onClick={() => setActiveTab('features')}
-                className={`px-6 py-3 font-semibold transition-all whitespace-nowrap ${
-                  activeTab === 'features'
-                    ? 'text-blue-600 border-b-4 border-blue-600 -mb-0.5'
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
+                className={`px-6 py-3 font-semibold transition-all whitespace-nowrap ${activeTab === 'features'
+                  ? 'text-blue-600 border-b-4 border-blue-600 -mb-0.5'
+                  : 'text-gray-600 hover:text-gray-900'
+                  }`}
               >
                 Features
               </button>
               <button
                 onClick={() => setActiveTab('care')}
-                className={`px-6 py-3 font-semibold transition-all whitespace-nowrap ${
-                  activeTab === 'care'
-                    ? 'text-blue-600 border-b-4 border-blue-600 -mb-0.5'
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
+                className={`px-6 py-3 font-semibold transition-all whitespace-nowrap ${activeTab === 'care'
+                  ? 'text-blue-600 border-b-4 border-blue-600 -mb-0.5'
+                  : 'text-gray-600 hover:text-gray-900'
+                  }`}
               >
                 Care & Maintenance
               </button>
@@ -924,11 +867,10 @@ const ProductDetails = () => {
                     {[1, 2, 3, 4, 5].map((star) => (
                       <Star
                         key={star}
-                        className={`w-5 h-5 ${
-                          star <= Math.round(reviewStats.averageRating)
-                            ? 'fill-yellow-400 text-yellow-400'
-                            : 'text-gray-300'
-                        }`}
+                        className={`w-5 h-5 ${star <= Math.round(reviewStats.averageRating)
+                          ? 'fill-yellow-400 text-yellow-400'
+                          : 'text-gray-300'
+                          }`}
                       />
                     ))}
                   </div>
@@ -950,7 +892,7 @@ const ProductDetails = () => {
               {/* Review List and Form */}
               <div className="lg:col-span-2 space-y-8">
                 <ReviewList reviews={reviews} loading={reviewsLoading} />
-                
+
                 {user ? (
                   <div>
                     <h3 className="text-xl font-semibold text-gray-900 mb-4">Write a Review</h3>
@@ -1050,7 +992,7 @@ const ProductDetails = () => {
 
       {/* Image Zoom Modal */}
       {isImageZoomed && (
-        <div 
+        <div
           className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4 backdrop-blur-sm"
           onClick={() => setIsImageZoomed(false)}
         >
@@ -1078,9 +1020,9 @@ const ProductDetails = () => {
         <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t-2 border-gray-200 shadow-2xl p-4 animate-slideUp">
           <div className="flex items-center gap-3">
             <div className="flex-shrink-0">
-              <img 
-                src={product.images[0]} 
-                alt={product.name} 
+              <img
+                src={product.images[0]}
+                alt={product.name}
                 className="w-14 h-14 object-cover rounded-lg border-2 border-gray-200"
               />
             </div>

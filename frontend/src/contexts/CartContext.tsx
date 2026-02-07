@@ -14,7 +14,15 @@ export interface CartItem {
     requirement: number;
     pricePerSqFt: number;
   };
+  discount?: {
+    enabled: boolean;
+    percentage: number;
+    startDate?: string | null;
+    endDate?: string | null;
+    description?: string;
+  };
 }
+
 
 interface CartState {
   items: CartItem[];

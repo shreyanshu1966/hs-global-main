@@ -88,7 +88,7 @@ export const OTPInput: React.FC<OTPInputProps> = ({
           onPaste={handlePaste}
           disabled={disabled}
           data-otp-input={index}
-          className="w-12 h-12 text-center text-lg font-semibold border-2 border-gray-600 rounded-lg focus:border-white focus:outline-none focus:ring-2 focus:ring-white disabled:bg-gray-800 disabled:cursor-not-allowed transition-all duration-200 bg-black text-white"
+          className="w-12 h-12 text-center text-lg font-semibold border-2 border-gray-300 rounded-lg focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10 disabled:bg-gray-100 disabled:cursor-not-allowed transition-all duration-200 bg-white text-black"
         />
       ))}
     </div>

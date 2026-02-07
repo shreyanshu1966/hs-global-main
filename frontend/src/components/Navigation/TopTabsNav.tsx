@@ -30,8 +30,6 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
   const [showMegaMenu, setShowMegaMenu] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [isNavVisible, setIsNavVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
 
   const { contextSafe } = useGSAP({ scope: rootRef });
 
@@ -43,37 +41,7 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Handle scroll visibility - same logic as Header
-  useEffect(() => {
-    let ticking = false;
-
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const currentScrollY = window.scrollY;
-          
-          // Hide/show navbar based on scroll direction
-          if (currentScrollY < 10) {
-            // Always show at top
-            setIsNavVisible(true);
-          } else if (currentScrollY > lastScrollY && currentScrollY > 150) {
-            // Scrolling down - hide navbar (different threshold than header)
-            setIsNavVisible(false);
-          } else if (currentScrollY < lastScrollY) {
-            // Scrolling up - show navbar
-            setIsNavVisible(true);
-          }
-          
-          setLastScrollY(currentScrollY);
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
+  // Removed scroll-based hide/show behavior - navbar now stays sticky at all times
 
   // Cleanup on unmount
   useEffect(() => {
@@ -165,7 +133,7 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
   // Sync selected children with active section
   useEffect(() => {
     const parentInfo = childToParentRef.current[activeSection];
-    
+
     // Skip if no parent info exists (this is a top-level section)
     if (!parentInfo) {
       return;
@@ -177,7 +145,7 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
       if (prev[parentInfo.parentId] === activeSection) {
         return prev; // Return same reference, no re-render
       }
-      
+
       // Return new object only when value changes
       return {
         ...prev,
@@ -336,9 +304,7 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
   return (
     <div
       ref={rootRef}
-      className={`sticky top-0 z-40 bg-white/95 backdrop-blur-lg border-b border-gray-200 shadow-sm touch-manipulation transition-all duration-500 ease-in-out ${
-        isNavVisible ? "translate-y-0" : "-translate-y-full"
-      }`}
+      className="sticky top-0 z-40 bg-white/95 backdrop-blur-lg border-b border-gray-200 shadow-sm touch-manipulation"
     >
       <div className="container mx-auto px-3 sm:px-4">
         {/* Top Bar: Categories + Mega Menu Toggle */}
@@ -372,15 +338,8 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
               <Search className="h-5 w-5 text-gray-700" />
             </button>
 
-            {/* Mega Menu Toggle */}
             <button
-              onClick={() => {
-                setShowMegaMenu(!showMegaMenu);
-                // Ensure navbar is visible when opening mega menu
-                if (!showMegaMenu) {
-                  setIsNavVisible(true);
-                }
-              }}
+              onClick={() => setShowMegaMenu(!showMegaMenu)}
               className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-black text-white hover:bg-gray-800 active:scale-95 transition-all duration-300 shadow-md text-xs sm:text-sm"
               aria-label="Toggle navigation menu"
             >

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { Eye, EyeOff, Mail, Lock, User, Phone, Loader2, UserPlus } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, User, Phone, Loader2, UserPlus, CheckCircle } from 'lucide-react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 
@@ -18,6 +18,7 @@ const Signup: React.FC = () => {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [registrationSuccess, setRegistrationSuccess] = useState(false);
 
     // Validation State
     const [touched, setTouched] = useState({
@@ -111,7 +112,7 @@ const Signup: React.FC = () => {
 
         try {
             await register(name, email, password, phone);
-            navigate('/profile');
+            setRegistrationSuccess(true);
         } catch (err: any) {
             setError(err.message || 'Registration failed. Please try again.');
         } finally {
@@ -133,7 +134,7 @@ const Signup: React.FC = () => {
                     </div>
 
                     {/* Error Message */}
-                    {error && (
+                    {error && !registrationSuccess && (
                         <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
                             <div className="flex-shrink-0 mt-0.5 text-red-500">
                                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -144,7 +145,40 @@ const Signup: React.FC = () => {
                         </div>
                     )}
 
+                    {/* Success Message */}
+                    {registrationSuccess && (
+                        <div className="text-center space-y-6">
+                            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
+                                <CheckCircle className="w-8 h-8 text-green-600" />
+                            </div>
+                            <div>
+                                <h2 className="text-2xl font-bold text-black mb-2">Registration Successful!</h2>
+                                <p className="text-gray-600 mb-4">
+                                    Welcome, {name}! We've sent a verification email to <strong>{email}</strong>
+                                </p>
+                                <p className="text-sm text-gray-500 mb-6">
+                                    Please check your email inbox (and spam folder) and click the verification link to activate your account.
+                                </p>
+                            </div>
+                            <div className="space-y-3">
+                                <Link
+                                    to="/profile"
+                                    className="block w-full py-3 bg-black text-white font-semibold rounded-lg hover:bg-gray-800 transition-all"
+                                >
+                                    Go to Profile
+                                </Link>
+                                <Link
+                                    to="/login"
+                                    className="block w-full py-3 border-2 border-black text-black font-semibold rounded-lg hover:bg-black hover:text-white transition-all"
+                                >
+                                    Sign In Instead
+                                </Link>
+                            </div>
+                        </div>
+                    )}
+
                     {/* Form */}
+                    {!registrationSuccess && (
                     <form onSubmit={handleSubmit} className="space-y-5">
                         {/* Name */}
                         <div>
@@ -313,6 +347,7 @@ const Signup: React.FC = () => {
                             </Link>
                         </p>
                     </div>
+                    )}
                 </div>
             </div>
         </div>

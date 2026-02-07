@@ -54,6 +54,7 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
           priceINR: getRawINRPrice(),
           category: product.category,
           subcategory: product.subcategory,
+          discount: product.discount,
         });
 
         setIsAdded(true);
@@ -94,10 +95,11 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
       priceINR: getRawINRPrice(),
       category: product.category,
       subcategory: product.subcategory,
+      discount: product.discount,
     };
 
     addItem(cartItem);
-    
+
     // Track add to cart analytics
     trackAddToCart(product.productId);
 

@@ -427,22 +427,32 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
         })
         }
 
-        {/* PRICE BADGE WITH DISCOUNT */}
+        {/* DISCOUNT RIBBON - Top Right Corner */}
+        {product.category === 'furniture' && hasDiscount && (
+          <div className="absolute top-0 right-0 z-30 overflow-hidden w-24 h-24 pointer-events-none">
+            <div className="absolute top-3 right-[-32px] w-32 bg-gradient-to-r from-red-600 to-red-500 text-white text-center py-1.5 rotate-45 shadow-lg">
+              <span className="text-xs font-bold tracking-wide">-{discountPercentage}%</span>
+            </div>
+          </div>
+        )}
+
+        {/* PRICE BADGE - Bottom Left Corner */}
         {product.category === 'furniture' && (
-          <div className="absolute top-3 left-3 z-30">
+          <div className="absolute bottom-3 left-3 z-30">
             {hasDiscount ? (
-              <div className="flex flex-col gap-1">
-                <span className="inline-block px-3 py-1.5 text-xs md:text-sm font-semibold rounded-full bg-red-500/95 text-white border border-red-600 shadow-sm">
-                  {discountPercentage}% OFF
-                </span>
-                <span className="inline-block px-3 py-1.5 text-xs md:text-sm font-semibold rounded-full bg-amber-100/95 text-amber-900 border border-amber-300 shadow-sm">
-                  {displayPrice}
-                </span>
+              <div className="bg-white/95 backdrop-blur-md rounded-lg shadow-lg border border-gray-200 px-3 py-2">
+                <div className="flex items-baseline gap-2">
+                  <span className="text-lg md:text-xl font-bold text-green-600">{displayPrice}</span>
+                  <span className="text-xs text-gray-500 line-through">{formatPrice(originalPrice)}</span>
+                </div>
+                <div className="text-xs text-green-600 font-semibold mt-0.5">
+                  Save {formatPrice(originalPrice - finalPrice)}
+                </div>
               </div>
             ) : (
-              <span className="inline-block px-3 py-1.5 text-xs md:text-sm font-semibold rounded-full bg-amber-100/95 text-amber-900 border border-amber-300 shadow-sm">
-                {displayPrice}
-              </span>
+              <div className="bg-white/95 backdrop-blur-md rounded-lg shadow-lg border border-gray-200 px-3 py-2">
+                <span className="text-base md:text-lg font-bold text-gray-900">{displayPrice}</span>
+              </div>
             )}
           </div>
         )}
@@ -492,12 +502,17 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
         {product.category === 'slabs' && product.priceINR && (
           <div className="mb-3">
             {hasDiscount ? (
-              <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-lg font-bold text-green-600">{displayPrice}</span>
-                <span className="text-sm text-gray-500 line-through">{formatPrice(originalPrice)}</span>
-                <span className="px-2 py-0.5 bg-red-500 text-white rounded-full text-xs font-semibold">
-                  {discountPercentage}% OFF
-                </span>
+              <div className="space-y-1">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-xl font-bold text-green-600">{displayPrice}</span>
+                  <span className="px-2 py-0.5 bg-red-500 text-white rounded-full text-xs font-bold">
+                    {discountPercentage}% OFF
+                  </span>
+                </div>
+                <div className="text-sm text-gray-500">
+                  <span className="line-through">{formatPrice(originalPrice)}</span>
+                  <span className="ml-2 text-green-600 font-semibold">Save {formatPrice(originalPrice - finalPrice)}</span>
+                </div>
               </div>
             ) : (
               <span className="text-lg font-bold text-gray-900">{displayPrice}</span>

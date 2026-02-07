@@ -97,10 +97,15 @@ const Checkout: React.FC = () => {
     }
   }, [state.phoneNumber, state.isPhoneVerified, phone]);
 
-  // Calculate totals in INR (base currency)
+  // Calculate totals in INR (base currency) with discounts applied
   const subtotalINR = useMemo(() => {
     return state.items.reduce((sum, item) => {
-      return sum + item.priceINR * item.quantity;
+      // Apply discount if present
+      const hasDiscount = item.discount?.enabled && item.discount?.percentage > 0;
+      const finalPrice = hasDiscount
+        ? item.priceINR * (1 - item.discount!.percentage / 100)
+        : item.priceINR;
+      return sum + finalPrice * item.quantity;
     }, 0);
   }, [state.items]);
 
@@ -160,7 +165,8 @@ const Checkout: React.FC = () => {
               price: item.priceInPaymentCurrency,
               priceINR: item.priceINR,
               image: item.image,
-              category: item.category || 'Natural Stone'
+              category: item.category || 'Natural Stone',
+              discount: item.discount
             };
           }),
           shippingAddress: {
@@ -419,7 +425,19 @@ const Checkout: React.FC = () => {
                     <div className="flex-1 min-w-0 flex flex-col justify-between">
                       <div>
                         <h4 className="text-sm font-semibold text-black truncate">{item.name}</h4>
-                        <p className="text-sm text-gray-500">{formatPrice(item.priceINR)}</p>
+                        {item.discount?.enabled && item.discount.percentage > 0 ? (
+                          <div className="space-y-0.5">
+                            <div className="flex items-center gap-2">
+                              <p className="text-sm font-bold text-green-600">{formatPrice(item.priceINR * (1 - item.discount.percentage / 100))}</p>
+                              <span className="px-1.5 py-0.5 bg-red-500 text-white rounded text-xs font-bold">
+                                {item.discount.percentage}% OFF
+                              </span>
+                            </div>
+                            <p className="text-xs text-gray-500 line-through">{formatPrice(item.priceINR)}</p>
+                          </div>
+                        ) : (
+                          <p className="text-sm text-gray-500">{formatPrice(item.priceINR)}</p>
+                        )}
                       </div>
                       <div className="flex items-center gap-3">
                         <div className="flex items-center border border-gray-300 rounded-md">
@@ -441,7 +459,10 @@ const Checkout: React.FC = () => {
                     </div>
                     <div className="text-right">
                       <p className="text-sm font-semibold text-black">
-                        {formatPrice(item.priceINR * item.quantity)}
+                        {item.discount?.enabled && item.discount.percentage > 0
+                          ? formatPrice(item.priceINR * (1 - item.discount.percentage / 100) * item.quantity)
+                          : formatPrice(item.priceINR * item.quantity)
+                        }
                       </p>
                     </div>
                   </div>

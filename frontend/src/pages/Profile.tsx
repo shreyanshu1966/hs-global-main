@@ -16,6 +16,7 @@ const Profile: React.FC = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [isChangingPassword, setIsChangingPassword] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
+    const [isResendingVerification, setIsResendingVerification] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
 
@@ -108,6 +109,40 @@ const Profile: React.FC = () => {
         }
     };
 
+    const handleResendVerification = async () => {
+        if (!user || user.emailVerified) return;
+        
+        setIsResendingVerification(true);
+        setError('');
+        setSuccess('');
+        
+        try {
+            const API_URL = import.meta.env.VITE_API_URL || '/api';
+            const token = localStorage.getItem('authToken');
+            
+            const response = await fetch(`${API_URL}/auth/resend-verification`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const data = await response.json();
+
+            if (response.ok && data.ok) {
+                setSuccess('Verification email sent! Please check your inbox.');
+                setTimeout(() => setSuccess(''), 5000);
+            } else {
+                setError(data.error || 'Failed to send verification email');
+            }
+        } catch (err: any) {
+            setError('An error occurred. Please try again.');
+        } finally {
+            setIsResendingVerification(false);
+        }
+    };
+
     const handleLogout = () => {
         logout();
         navigate('/');
@@ -136,12 +171,31 @@ const Profile: React.FC = () => {
                                         <span className="px-3 py-1 bg-black text-white text-xs font-medium rounded-full">
                                             {user.role}
                                         </span>
+                                        {user.emailVerified && (
+                                            <span className="px-3 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-full">
+                                                Email Verified
+                                            </span>
+                                        )}
+                                        {!user.emailVerified && (
+                                            <span className="px-3 py-1 bg-yellow-100 text-yellow-700 text-xs font-medium rounded-full">
+                                                Email Not Verified
+                                            </span>
+                                        )}
                                         {user.phoneVerified && (
                                             <span className="px-3 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-full">
                                                 Phone Verified
                                             </span>
                                         )}
                                     </div>
+                                    {!user.emailVerified && (
+                                        <button
+                                            onClick={handleResendVerification}
+                                            disabled={isResendingVerification}
+                                            className="mt-2 px-3 py-1.5 text-xs bg-blue-100 text-blue-700 hover:bg-blue-200 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                        >
+                                            {isResendingVerification ? 'Sending...' : 'Resend Verification Email'}
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                             <button

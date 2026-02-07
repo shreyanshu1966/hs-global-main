@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { productService, Product } from "../services/productService";
-import { ProductCard } from "./ProductCard";
+import { PremiumProductCard } from "./PremiumProductCard";
 
 const FeaturedProducts = () => {
     const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
@@ -93,10 +93,9 @@ const FeaturedProducts = () => {
                     /* Products Grid */
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 justify-items-center">
                         {featuredProducts.map((product, index) => (
-                            <ProductCard
+                            <PremiumProductCard
                                 key={product._id}
                                 product={product}
-                                variant="modern"
                                 index={index}
                             />
                         ))}

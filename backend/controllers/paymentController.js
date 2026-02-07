@@ -78,12 +78,12 @@ exports.createOrder = async (req, res) => {
 
         // Comprehensive payment validation
         const validationResult = await validatePaymentFlow(req, orderData);
-        
+
         if (!validationResult.isValid) {
-            return res.status(400).json({ 
-                ok: false, 
-                error: 'Payment validation failed', 
-                code: 'VALIDATION_FAILED' 
+            return res.status(400).json({
+                ok: false,
+                error: 'Payment validation failed',
+                code: 'VALIDATION_FAILED'
             });
         }
 
@@ -91,191 +91,295 @@ exports.createOrder = async (req, res) => {
         // The display currency remains unchanged for user interface
         const paymentCurrency = 'USD';
         const conversionApplied = currency !== 'USD';
-        
+
         if (conversionApplied) {
-            console.log(`💱 Converting ${currency} to USD for PayPal payment`);
-        }
+            // Use secure order ID from validation
+            const transactionId = validationResult.secureOrderId;
 
-        // Use secure order ID from validation
-        const transactionId = validationResult.secureOrderId;
+            // ===== CRITICAL SECURITY: VALIDATE PRICES FROM DATABASE =====
+            // NEVER trust prices from frontend - always fetch from database
+            console.log('🔒 Validating prices from database...');
 
-        // Get PayPal access token
-        const accessToken = await getPayPalAccessToken();
+            const Product = require('../models/Product');
+            const validatedItems = [];
+            let serverCalculatedTotal = 0;
 
-        // Calculate item total to ensure it matches
-        const itemsTotal = items.reduce((sum, item) => {
-            return sum + (parseFloat(item.price) * item.quantity);
-        }, 0);
+            for (const item of items) {
+                // Fetch product from database
+                const product = await Product.findOne({
+                    productId: item.id || item.productId,
+                    status: 'active',
+                    available: true
+                });
 
-        console.log('Order creation debug:', {
-            requestedAmount: amount,
-            requestedCurrency: currency,
-            paymentCurrency: paymentCurrency,
-            conversionApplied: conversionApplied,
-            calculatedItemsTotal: itemsTotal.toFixed(2),
-            itemCount: items.length,
-            hasOriginalPrices: items.every(item => item.priceINR !== undefined)
-        });
+                if (!product) {
+                    console.error(`❌ Product not found or unavailable: ${item.id || item.productId}`);
+                    return res.status(400).json({
+                        ok: false,
+                        error: `Product ${item.name} is no longer available`,
+                        code: 'PRODUCT_UNAVAILABLE'
+                    });
+                }
 
-        // Prepare PayPal order request
-        // Note: When items are present, PayPal validates that item_total matches sum of items
-        const paypalOrderRequest = {
-            intent: 'CAPTURE',
-            purchase_units: [{
-                reference_id: transactionId,
-                description: `Order from HS Global Export`,
-                custom_id: transactionId,
-                soft_descriptor: 'HS GLOBAL',
-                amount: {
-                    currency_code: paymentCurrency,
-                    value: itemsTotal.toFixed(2), // Use calculated total to ensure it matches items
-                    breakdown: {
-                        item_total: {
+                // Get actual price from database (in INR)
+                const actualPriceINR = product.priceINR;
+
+                if (!actualPriceINR) {
+                    return res.status(400).json({
+                        ok: false,
+                        error: `Product ${item.name} does not have a price`,
+                        code: 'PRODUCT_NO_PRICE'
+                    });
+                }
+
+                // Check if discount is actually active (server-side validation)
+                const isDiscountActive = product.isDiscountActive();
+                const discountPercentage = isDiscountActive ? product.discount.percentage : 0;
+                const discountAmount = isDiscountActive ? Math.round((actualPriceINR * discountPercentage) / 100) : 0;
+                const finalPriceINR = actualPriceINR - discountAmount;
+
+                // Convert to payment currency (USD)
+                // Get exchange rate from environment or use default
+                const INR_TO_USD_RATE = parseFloat(process.env.INR_TO_USD_RATE || '0.012');
+                const finalPriceUSD = (finalPriceINR * INR_TO_USD_RATE);
+
+                // Validate quantity
+                if (!item.quantity || item.quantity < 1) {
+                    return res.status(400).json({
+                        ok: false,
+                        error: `Invalid quantity for ${item.name}`,
+                        code: 'INVALID_QUANTITY'
+                    });
+                }
+
+                const itemTotal = finalPriceUSD * item.quantity;
+                serverCalculatedTotal += itemTotal;
+
+                validatedItems.push({
+                    productId: product.productId,
+                    name: product.name,
+                    quantity: item.quantity,
+                    priceINR: actualPriceINR,
+                    originalPrice: actualPriceINR,
+                    discountPercentage: discountPercentage,
+                    discountAmount: discountAmount,
+                    finalPriceINR: finalPriceINR,
+                    finalPriceUSD: parseFloat(finalPriceUSD.toFixed(2)),
+                    image: product.image,
+                    category: product.category,
+                    discount: isDiscountActive ? {
+                        enabled: true,
+                        percentage: product.discount.percentage,
+                        startDate: product.discount.startDate,
+                        endDate: product.discount.endDate,
+                        description: product.discount.description
+                    } : undefined
+                });
+
+                console.log(`✅ Validated: ${product.name} - Original: ₹${actualPriceINR}, Discount: ${discountPercentage}%, Final: ₹${finalPriceINR} ($${finalPriceUSD.toFixed(2)})`);
+            }
+
+            // Round to 2 decimal places
+            serverCalculatedTotal = parseFloat(serverCalculatedTotal.toFixed(2));
+
+            // Compare with frontend amount (allow 1 cent difference for rounding)
+            const amountDifference = Math.abs(serverCalculatedTotal - parseFloat(amount));
+            if (amountDifference > 0.02) {
+                console.error(`❌ Price mismatch! Frontend: ${amount}, Server: ${serverCalculatedTotal}, Difference: ${amountDifference}`);
+                return res.status(400).json({
+                    ok: false,
+                    error: 'Price validation failed. Please refresh and try again.',
+                    code: 'PRICE_MISMATCH',
+                    details: {
+                        frontendAmount: amount,
+                        serverAmount: serverCalculatedTotal,
+                        difference: amountDifference
+                    }
+                });
+            }
+
+            console.log(`✅ Price validation passed: $${serverCalculatedTotal}`);
+
+            // Use server-calculated total for PayPal
+            const paymentCurrency = 'USD';
+            const itemsTotal = serverCalculatedTotal;
+
+            // Get PayPal access token
+            const accessToken = await getPayPalAccessToken();
+
+            console.log('Order creation debug:', {
+                requestedAmount: amount,
+                serverCalculatedAmount: serverCalculatedTotal,
+                requestedCurrency: currency,
+                paymentCurrency: paymentCurrency,
+                calculatedItemsTotal: itemsTotal.toFixed(2),
+                itemCount: validatedItems.length
+            });
+
+            // Prepare PayPal order request
+            // Note: When items are present, PayPal validates that item_total matches sum of items
+            const paypalOrderRequest = {
+                intent: 'CAPTURE',
+                purchase_units: [{
+                    reference_id: transactionId,
+                    description: `Order from HS Global Export`,
+                    custom_id: transactionId,
+                    soft_descriptor: 'HS GLOBAL',
+                    amount: {
+                        currency_code: paymentCurrency,
+                        value: itemsTotal.toFixed(2), // Use calculated total to ensure it matches items
+                        breakdown: {
+                            item_total: {
+                                currency_code: paymentCurrency,
+                                value: itemsTotal.toFixed(2) // Must match sum of items
+                            }
+                        }
+                    },
+                    items: validatedItems.map(item => ({
+                        name: item.name.substring(0, 127), // PayPal has 127 char limit
+                        description: `${item.category || 'Product'}`.substring(0, 127),
+                        sku: item.productId.toString().substring(0, 127),
+                        unit_amount: {
                             currency_code: paymentCurrency,
-                            value: itemsTotal.toFixed(2) // Must match sum of items
+                            value: item.finalPriceUSD.toFixed(2) // Use server-validated price
+                        },
+                        quantity: item.quantity.toString(),
+                        category: 'PHYSICAL_GOODS'
+                    })),
+                    shipping: {
+                        name: {
+                            full_name: customer?.name || req.user.name
+                        },
+                        address: {
+                            address_line_1: shippingAddress?.street || '',
+                            address_line_2: shippingAddress?.fullAddress || '',
+                            admin_area_2: shippingAddress?.city || '',
+                            admin_area_1: shippingAddress?.state || '',
+                            postal_code: shippingAddress?.postalCode || '',
+                            country_code: getCountryCode(shippingAddress?.country || 'India')
                         }
                     }
-                },
-                items: items.map(item => ({
-                    name: item.name.substring(0, 127), // PayPal has 127 char limit
-                    description: `${item.category || 'Product'}`.substring(0, 127),
-                    sku: (item.id || item.productId).toString().substring(0, 127),
-                    unit_amount: {
-                        currency_code: paymentCurrency,
-                        value: parseFloat(item.price).toFixed(2)
-                    },
-                    quantity: item.quantity.toString(),
-                    category: 'PHYSICAL_GOODS'
-                })),
-                shipping: {
-                    name: {
-                        full_name: customer?.name || req.user.name
-                    },
-                    address: {
-                        address_line_1: shippingAddress?.street || '',
-                        address_line_2: shippingAddress?.fullAddress || '',
-                        admin_area_2: shippingAddress?.city || '',
-                        admin_area_1: shippingAddress?.state || '',
-                        postal_code: shippingAddress?.postalCode || '',
-                        country_code: getCountryCode(shippingAddress?.country || 'India')
+                }],
+                application_context: {
+                    brand_name: 'HS Global Export',
+                    landing_page: 'NO_PREFERENCE',
+                    user_action: 'PAY_NOW',
+                    return_url: `${process.env.FRONTEND_URL.replace(/\/$/, '')}/checkout-success`,
+                    cancel_url: `${process.env.FRONTEND_URL.replace(/\/$/, '')}/checkout`
+                }
+            };
+
+            // Create PayPal order
+            const response = await axios.post(
+                `${PAYPAL_API_BASE}/v2/checkout/orders`,
+                paypalOrderRequest,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json'
                     }
                 }
-            }],
-            application_context: {
-                brand_name: 'HS Global Export',
-                landing_page: 'NO_PREFERENCE',
-                user_action: 'PAY_NOW',
-                return_url: `${process.env.FRONTEND_URL.replace(/\/$/, '')}/checkout-success`,
-                cancel_url: `${process.env.FRONTEND_URL.replace(/\/$/, '')}/checkout`
-            }
-        };
+            );
 
-        // Create PayPal order
-        const response = await axios.post(
-            `${PAYPAL_API_BASE}/v2/checkout/orders`,
-            paypalOrderRequest,
-            {
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`,
-                    'Content-Type': 'application/json'
+            const paypalOrder = response.data;
+
+            // Check if order already exists to prevent duplicates
+            let existingOrder = await Order.findOne({
+                $or: [
+                    { paypalOrderId: paypalOrder.id },
+                    { orderId: transactionId }
+                ]
+            });
+
+            let newOrder;
+
+            if (existingOrder) {
+                console.log(`📋 Order already exists: ${existingOrder.orderId}, status: ${existingOrder.status}`);
+
+                // If order is in failed/cancelled state, we can reuse it
+                if (['failed', 'cancelled', 'expired'].includes(existingOrder.status)) {
+                    console.log(`🔄 Reusing failed order: ${existingOrder.orderId}`);
+                    existingOrder.status = 'payment_pending';
+                    existingOrder.paypalOrderId = paypalOrder.id;
+                    existingOrder.updatedAt = new Date();
+                    existingOrder.attemptCount = (existingOrder.attemptCount || 0) + 1;
+                    await existingOrder.save();
+                    newOrder = existingOrder;
+                } else {
+                    // Order is active, return existing
+                    newOrder = existingOrder;
                 }
-            }
-        );
-
-        const paypalOrder = response.data;
-
-        // Check if order already exists to prevent duplicates
-        let existingOrder = await Order.findOne({ 
-            $or: [
-                { paypalOrderId: paypalOrder.id },
-                { orderId: transactionId }
-            ]
-        });
-
-        let newOrder;
-        
-        if (existingOrder) {
-            console.log(`📋 Order already exists: ${existingOrder.orderId}, status: ${existingOrder.status}`);
-            
-            // If order is in failed/cancelled state, we can reuse it
-            if (['failed', 'cancelled', 'expired'].includes(existingOrder.status)) {
-                console.log(`🔄 Reusing failed order: ${existingOrder.orderId}`);
-                existingOrder.status = 'payment_pending';
-                existingOrder.paypalOrderId = paypalOrder.id;
-                existingOrder.updatedAt = new Date();
-                existingOrder.attemptCount = (existingOrder.attemptCount || 0) + 1;
-                await existingOrder.save();
-                newOrder = existingOrder;
             } else {
-                // Order is active, return existing
-                newOrder = existingOrder;
+                // Create new order with payment_pending status
+                newOrder = await Order.create({
+                    orderId: transactionId,
+                    userId: req.user._id,
+                    amount: serverCalculatedTotal, // Use server-validated amount
+                    currency: paymentCurrency, // Always USD for PayPal
+                    paypalOrderId: paypalOrder.id,
+                    status: 'payment_pending', // Changed from 'created' to 'payment_pending'
+                    receipt: receipt || `rcpt_${Date.now()}`,
+                    riskLevel: validationResult.riskLevel,
+                    validationDetails: validationResult.validationDetails,
+                    attemptCount: 1,
+                    expiresAt: new Date(Date.now() + 30 * 60 * 1000), // 30 minutes expiry
+                    items: validatedItems.map(item => ({
+                        productId: item.productId,
+                        name: item.name,
+                        quantity: item.quantity,
+                        price: item.finalPriceUSD, // Server-validated final price in USD
+                        priceINR: item.priceINR,
+                        originalPrice: item.originalPrice,
+                        discountPercentage: item.discountPercentage,
+                        discountAmount: item.discountAmount,
+                        image: item.image,
+                        category: item.category,
+                        discount: item.discount
+                    })),
+                    shippingAddress: {
+                        street: shippingAddress?.street || '',
+                        city: shippingAddress?.city || '',
+                        state: shippingAddress?.state || '',
+                        postalCode: shippingAddress?.postalCode || '',
+                        country: shippingAddress?.country || '',
+                        fullAddress: shippingAddress?.fullAddress || ''
+                    },
+                    customer: {
+                        name: customer?.name || req.user.name,
+                        email: customer?.email || req.user.email,
+                        phone: customer?.phone || req.user.phone
+                    }
+                });
             }
-        } else {
-            // Create new order with payment_pending status
-            newOrder = await Order.create({
+
+            // Log order creation for security auditing
+            console.log(`📝 Order created: ${transactionId} | Risk: ${validationResult.riskLevel} | User: ${req.user.email} | Amount: ${amount} ${currency}`);
+
+            // Add order to user's orders array
+            await User.findByIdAndUpdate(req.user._id, {
+                $push: { orders: newOrder._id }
+            });
+
+            // Find approval URL
+            const approvalUrl = paypalOrder.links.find(link => link.rel === 'approve')?.href;
+
+            // Return payment session data with security details
+            res.json({
+                ok: true,
                 orderId: transactionId,
-                userId: req.user._id,
-                amount: amount,
-                currency: currency,
                 paypalOrderId: paypalOrder.id,
-                status: 'payment_pending', // Changed from 'created' to 'payment_pending'
-                receipt: receipt || `rcpt_${Date.now()}`,
+                approvalUrl: approvalUrl,
+                environment: PAYPAL_MODE,
                 riskLevel: validationResult.riskLevel,
-                validationDetails: validationResult.validationDetails,
-                attemptCount: 1,
-                expiresAt: new Date(Date.now() + 30 * 60 * 1000), // 30 minutes expiry
-                items: items.map(item => ({
-                    productId: item.id || item.productId,
-                    name: item.name,
-                    quantity: item.quantity,
-                    price: item.price,
-                    priceINR: item.priceINR || null,
-                    image: item.image,
-                    category: item.category
-                })),
-                shippingAddress: {
-                    street: shippingAddress?.street || '',
-                    city: shippingAddress?.city || '',
-                    state: shippingAddress?.state || '',
-                    postalCode: shippingAddress?.postalCode || '',
-                    country: shippingAddress?.country || '',
-                    fullAddress: shippingAddress?.fullAddress || ''
-                },
-                customer: {
-                    name: customer?.name || req.user.name,
-                    email: customer?.email || req.user.email,
-                    phone: customer?.phone || req.user.phone
+                orderSummary: {
+                    amount: amount,
+                    currency: currency,
+                    itemCount: items.length,
+                    timestamp: new Date().toISOString()
                 }
             });
+
         }
-
-        // Log order creation for security auditing
-        console.log(`📝 Order created: ${transactionId} | Risk: ${validationResult.riskLevel} | User: ${req.user.email} | Amount: ${amount} ${currency}`);
-
-        // Add order to user's orders array
-        await User.findByIdAndUpdate(req.user._id, {
-            $push: { orders: newOrder._id }
-        });
-
-        // Find approval URL
-        const approvalUrl = paypalOrder.links.find(link => link.rel === 'approve')?.href;
-
-        // Return payment session data with security details
-        res.json({
-            ok: true,
-            orderId: transactionId,
-            paypalOrderId: paypalOrder.id,
-            approvalUrl: approvalUrl,
-            environment: PAYPAL_MODE,
-            riskLevel: validationResult.riskLevel,
-            orderSummary: {
-                amount: amount,
-                currency: currency,
-                itemCount: items.length,
-                timestamp: new Date().toISOString()
-            }
-        });
-
     } catch (error) {
         console.error('❌ Order creation failed:', {
             error: error.response?.data || error.message,
@@ -283,11 +387,11 @@ exports.createOrder = async (req, res) => {
             amount: req.body.amount,
             currency: req.body.currency
         });
-        
+
         // Enhanced error response with specific error codes
         let errorCode = 'ORDER_CREATION_FAILED';
         let statusCode = 500;
-        
+
         if (error.message.includes('validation failed')) {
             errorCode = 'VALIDATION_FAILED';
             statusCode = 400;
@@ -301,7 +405,7 @@ exports.createOrder = async (req, res) => {
             errorCode = 'PAYPAL_AUTH_FAILED';
             statusCode = 502;
         }
-        
+
         res.status(statusCode).json({
             ok: false,
             error: error.response?.data?.message || error.message,
@@ -317,13 +421,13 @@ exports.createOrder = async (req, res) => {
 exports.capturePayment = async (req, res) => {
     const startTime = Date.now();
     const timeoutMs = 30000; // 30 second timeout
-    
+
     try {
         const { paypalOrderId, orderId, payerId } = req.body;
 
         if (!paypalOrderId && !orderId) {
-            return res.status(400).json({ 
-                ok: false, 
+            return res.status(400).json({
+                ok: false,
                 error: 'PayPal Order ID or Order ID is required',
                 code: 'MISSING_ORDER_ID'
             });
@@ -341,8 +445,8 @@ exports.capturePayment = async (req, res) => {
 
         if (!order) {
             console.error(`❌ Order not found: PayPal ID ${paypalOrderId}, Internal ID: ${orderId}`);
-            return res.status(404).json({ 
-                ok: false, 
+            return res.status(404).json({
+                ok: false,
                 error: 'Order not found',
                 code: 'ORDER_NOT_FOUND'
             });
@@ -367,7 +471,7 @@ exports.capturePayment = async (req, res) => {
 
         // First, verify the order status with PayPal before capturing
         const accessToken = await getPayPalAccessToken();
-        
+
         // Get current order status from PayPal
         const orderStatusResponse = await axios.get(
             `${PAYPAL_API_BASE}/v2/checkout/orders/${order.paypalOrderId}`,
@@ -397,7 +501,7 @@ exports.capturePayment = async (req, res) => {
         // Verify amounts match (security check)
         const paypalAmount = parseFloat(currentOrderData.purchase_units[0]?.amount?.value || 0);
         const orderAmount = parseFloat(order.amount);
-        
+
         if (Math.abs(paypalAmount - orderAmount) > 0.01) {
             console.error(`❌ Amount mismatch: PayPal ${paypalAmount}, Order ${orderAmount}`);
             return res.status(400).json({
@@ -408,7 +512,7 @@ exports.capturePayment = async (req, res) => {
         }
 
         console.log(`💳 Capturing payment for order: ${order.paypalOrderId}`);
-        
+
         // Capture the payment with enhanced error handling
         const captureResponse = await axios.post(
             `${PAYPAL_API_BASE}/v2/checkout/orders/${order.paypalOrderId}/capture`,
@@ -464,7 +568,7 @@ exports.capturePayment = async (req, res) => {
                 paypalFeeAmount: captureDetails.seller_receivable_breakdown?.paypal_fee?.value || null,
                 netAmount: captureDetails.seller_receivable_breakdown?.net_amount?.value || null
             };
-            
+
             await order.save();
             console.log(`✅ Order ${order.orderId} successfully marked as paid`);
 
@@ -505,7 +609,7 @@ exports.capturePayment = async (req, res) => {
                 },
                 captureId: captureId
             });
-            
+
         } else if (captureStatus === 'PENDING') {
             // Handle pending payments
             order.status = 'pending_payment';
@@ -517,7 +621,7 @@ exports.capturePayment = async (req, res) => {
                 reasonCode: captureDetails.status_details?.reason || 'PENDING_REVIEW'
             };
             await order.save();
-            
+
             console.log(`⏳ Payment pending for order: ${order.orderId} - Reason: ${captureDetails.status_details?.reason}`);
 
             res.json({
@@ -527,11 +631,11 @@ exports.capturePayment = async (req, res) => {
                 order: order,
                 pendingReason: captureDetails.status_details?.reason
             });
-            
+
         } else {
             // Payment failed, declined, or other non-success status
             const failureReason = captureDetails.status_details?.reason || captureStatus || 'CAPTURE_FAILED';
-            
+
             order.status = 'payment_failed';
             order.failureReason = failureReason;
             order.failureCount = (order.failureCount || 0) + 1;
@@ -587,7 +691,7 @@ exports.capturePayment = async (req, res) => {
     } catch (error) {
         const processingTime = Date.now() - startTime;
         console.error(`❌ Payment capture failed after ${processingTime}ms:`, error.response?.data || error.message);
-        
+
         // Enhanced error handling with specific error codes
         let errorCode = 'CAPTURE_ERROR';
         let errorMessage = 'Payment capture failed';
@@ -639,13 +743,13 @@ exports.capturePayment = async (req, res) => {
                     processingTime,
                     failureCount: order.failureCount
                 };
-                
+
                 // Mark as permanently failed if too many errors
                 if (order.failureCount >= 5) {
                     order.status = 'permanently_failed';
                     order.permanentlyFailedAt = new Date();
                 }
-                
+
                 await order.save();
             } catch (saveError) {
                 console.error('Failed to update order after capture error:', saveError);
@@ -882,8 +986,8 @@ exports.retryPayment = async (req, res) => {
 
         // Check if retry is allowed
         if (order.status === 'permanently_failed') {
-            return res.status(400).json({ 
-                ok: false, 
+            return res.status(400).json({
+                ok: false,
                 error: 'Order has permanently failed, retry not allowed',
                 code: 'PERMANENTLY_FAILED'
             });
@@ -911,7 +1015,7 @@ exports.retryPayment = async (req, res) => {
         order.retryCount = (order.retryCount || 0) + 1;
         order.lastRetryAt = new Date();
         order.failureReason = null;
-        
+
         // Create new PayPal order for retry
         const accessToken = await getPayPalAccessToken();
 
@@ -996,7 +1100,7 @@ exports.retryPayment = async (req, res) => {
 exports.getOrderDetails = async (req, res) => {
     try {
         const { orderId } = req.params;
-        
+
         const order = await Order.findOne({ orderId: orderId })
             .populate('userId', 'name email')
             .lean();

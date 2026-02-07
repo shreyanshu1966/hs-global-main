@@ -31,6 +31,20 @@ const Login: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
+        
+        // Validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            setError('Please enter a valid email address');
+            return;
+        }
+        
+        // Validate password
+        if (password.length < 6) {
+            setError('Password must be at least 6 characters');
+            return;
+        }
+        
         setIsLoading(true);
 
         try {
@@ -39,7 +53,14 @@ const Login: React.FC = () => {
             const from = (location.state as any)?.from || '/profile';
             navigate(from);
         } catch (err: any) {
-            setError(err.message || 'Login failed. Please try again.');
+            console.error('Login error:', err);
+            if (err.message.includes('Invalid credentials')) {
+                setError('Invalid email or password. Please check your credentials and try again.');
+            } else if (err.message.includes('not found')) {
+                setError('No account found with this email address.');
+            } else {
+                setError(err.message || 'Login failed. Please try again.');
+            }
         } finally {
             setIsLoading(false);
         }

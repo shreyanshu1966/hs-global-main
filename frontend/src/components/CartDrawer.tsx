@@ -53,10 +53,19 @@ export const CartDrawer: React.FC = () => {
     }
   }, [state.isCartOpen]);
 
-  // Calculate Subtotal (Direct INR to User Currency)
+  // Calculate Subtotal (Direct INR to User Currency) with discount applied
   const subtotal = useMemo(() => {
     return state.items.reduce((sum, item) => {
-      const convertedPrice = convertFromINR(item.priceINR);
+      // Calculate discounted price in INR first
+      let finalPriceINR = item.priceINR;
+
+      if (item.discount?.enabled && item.discount.percentage > 0) {
+        const discountAmount = (item.priceINR * item.discount.percentage) / 100;
+        finalPriceINR = item.priceINR - discountAmount;
+      }
+
+      // Convert discounted INR price to user currency
+      const convertedPrice = convertFromINR(finalPriceINR);
       return sum + convertedPrice * item.quantity;
     }, 0);
   }, [state.items, convertFromINR]);
@@ -256,7 +265,19 @@ export const CartDrawer: React.FC = () => {
                               >
                                 {item.name}
                               </h3>
-                              <p className="text-sm text-gray-700">{formatPrice(item.priceINR)}</p>
+                              {item.discount?.enabled && item.discount.percentage > 0 ? (
+                                <div className="space-y-0.5">
+                                  <div className="flex items-center gap-2">
+                                    <p className="text-sm font-bold text-green-600">{formatPrice(item.priceINR * (1 - item.discount.percentage / 100))}</p>
+                                    <span className="px-1.5 py-0.5 bg-red-500 text-white rounded text-xs font-bold">
+                                      {item.discount.percentage}% OFF
+                                    </span>
+                                  </div>
+                                  <p className="text-xs text-gray-500 line-through">{formatPrice(item.priceINR)}</p>
+                                </div>
+                              ) : (
+                                <p className="text-sm text-gray-700">{formatPrice(item.priceINR)}</p>
+                              )}
 
                               <div className="flex items-center gap-2 mt-2">
                                 <button

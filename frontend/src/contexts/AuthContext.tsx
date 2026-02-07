@@ -95,6 +95,26 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         };
 
         loadUser();
+        
+        // Listen for auth changes from other parts of the app
+        const handleAuthChange = () => {
+            const storedToken = localStorage.getItem('authToken');
+            const storedUser = localStorage.getItem('authUser');
+            
+            if (storedToken && storedUser) {
+                setToken(storedToken);
+                setUser(JSON.parse(storedUser));
+            } else {
+                setToken(null);
+                setUser(null);
+            }
+        };
+        
+        window.addEventListener('auth-change', handleAuthChange);
+        
+        return () => {
+            window.removeEventListener('auth-change', handleAuthChange);
+        };
     }, []);
 
     const login = async (email: string, password: string) => {

@@ -29,7 +29,7 @@ const Header = () => {
     { path: "/about", label: t("nav.about") || "Atelier" }, // Renamed for luxury feel
     { path: "/products", label: t("nav.products") || "Collection" },
     { path: "/gallery", label: t("nav.gallery") || "Projects" },
-    { path: "/blog", label: t("nav.blog") || "Blog" },
+    { path: "/blog", label: "Blog" },
     { path: "/contact", label: t("nav.contact") || "Contact" },
   ];
 

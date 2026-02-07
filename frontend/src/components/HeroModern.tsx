@@ -47,7 +47,7 @@ const HeroModern = () => {
     return (
         <section
             ref={heroRef}
-            className="relative min-h-[90vh] md:min-h-screen flex items-center overflow-hidden bg-stone-50"
+            className="relative min-h-[90vh] md:min-h-screen flex items-center overflow-hidden bg-stone-50 pt-20 md:pt-24"
         >
             {/* Background Image */}
             <div

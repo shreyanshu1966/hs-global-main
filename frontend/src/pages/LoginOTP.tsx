@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Mail, Lock, ArrowLeft } from 'lucide-react';
+import { OTPInput } from '../components/OTPInput';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 
@@ -30,6 +31,14 @@ const LoginOTP: React.FC = () => {
 
     const handleRequestOTP = async (e: React.FormEvent) => {
         e.preventDefault();
+        
+        // Validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            setError('Please enter a valid email address');
+            return;
+        }
+        
         setError('');
         setIsLoading(true);
 
@@ -47,11 +56,13 @@ const LoginOTP: React.FC = () => {
 
             if (response.ok && data.ok) {
                 setStep('otp');
+                setError('');
             } else {
-                setError(data.error || 'Failed to send OTP');
+                setError(data.error || 'Failed to send OTP. Please try again.');
             }
         } catch (err: any) {
-            setError('An error occurred. Please try again.');
+            console.error('OTP request error:', err);
+            setError('Network error. Please check your connection and try again.');
         } finally {
             setIsLoading(false);
         }
@@ -59,6 +70,13 @@ const LoginOTP: React.FC = () => {
 
     const handleVerifyOTP = async (e: React.FormEvent) => {
         e.preventDefault();
+        
+        // Validate OTP length
+        if (otp.length !== 6) {
+            setError('Please enter the complete 6-digit OTP');
+            return;
+        }
+        
         setError('');
         setIsLoading(true);
 
@@ -79,14 +97,22 @@ const LoginOTP: React.FC = () => {
                 localStorage.setItem('authToken', data.token);
                 localStorage.setItem('authUser', JSON.stringify(data.user));
 
+                // Dispatch custom event to update AuthContext
+                window.dispatchEvent(new Event('auth-change'));
+
                 // Redirect to intended page or profile
                 const from = (location.state as any)?.from || '/profile';
                 navigate(from);
             } else {
-                setError(data.error || 'Invalid OTP');
+                if (response.status === 401) {
+                    setError('Invalid or expired OTP. Please try again.');
+                } else {
+                    setError(data.error || 'Verification failed. Please try again.');
+                }
             }
         } catch (err: any) {
-            setError('An error occurred. Please try again.');
+            console.error('OTP verification error:', err);
+            setError('Network error. Please check your connection and try again.');
         } finally {
             setIsLoading(false);
         }
@@ -147,6 +173,12 @@ const LoginOTP: React.FC = () => {
                                 >
                                     Login with password instead
                                 </Link>
+                                <Link
+                                    to="/forgot-password"
+                                    className="block text-sm text-gray-600 hover:text-black transition-colors"
+                                >
+                                    Forgot your password?
+                                </Link>
                                 <div className="text-sm text-gray-600">
                                     Don't have an account?{' '}
                                     <Link to="/signup" className="text-black font-medium hover:underline">
@@ -164,21 +196,15 @@ const LoginOTP: React.FC = () => {
                             )}
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                <label className="block text-sm font-medium text-gray-700 mb-4 text-center">
                                     One-Time Password
                                 </label>
-                                <div className="relative">
-                                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                                    <input
-                                        type="text"
-                                        value={otp}
-                                        onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all text-center text-2xl tracking-widest font-mono"
-                                        placeholder="000000"
-                                        required
-                                        maxLength={6}
-                                    />
-                                </div>
+                                <OTPInput
+                                    value={otp}
+                                    onChange={setOtp}
+                                    length={6}
+                                    disabled={isLoading}
+                                />
                                 <p className="mt-2 text-xs text-gray-500 text-center">
                                     OTP expires in 10 minutes
                                 </p>
