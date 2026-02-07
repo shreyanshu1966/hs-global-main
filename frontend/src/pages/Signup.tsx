@@ -179,174 +179,176 @@ const Signup: React.FC = () => {
 
                     {/* Form */}
                     {!registrationSuccess && (
-                    <form onSubmit={handleSubmit} className="space-y-5">
-                        {/* Name */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Full Name
-                            </label>
-                            <div className="relative">
-                                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                                <input
-                                    type="text"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                    onBlur={() => handleBlur('name')}
-                                    className={`w-full pl-11 pr-4 py-3 border ${touched.name && name.length < 2 ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:ring-black'} rounded-lg focus:ring-2 focus:border-transparent outline-none transition-all`}
-                                    placeholder="John Doe"
-                                    required
-                                />
-                            </div>
-                            {touched.name && name.length < 2 && (
-                                <p className="mt-1 text-xs text-red-500">Name must be at least 2 characters long.</p>
-                            )}
-                        </div>
+                        <>
+                            <form onSubmit={handleSubmit} className="space-y-5">
+                                {/* Name */}
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        Full Name
+                                    </label>
+                                    <div className="relative">
+                                        <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                                        <input
+                                            type="text"
+                                            value={name}
+                                            onChange={(e) => setName(e.target.value)}
+                                            onBlur={() => handleBlur('name')}
+                                            className={`w-full pl-11 pr-4 py-3 border ${touched.name && name.length < 2 ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:ring-black'} rounded-lg focus:ring-2 focus:border-transparent outline-none transition-all`}
+                                            placeholder="John Doe"
+                                            required
+                                        />
+                                    </div>
+                                    {touched.name && name.length < 2 && (
+                                        <p className="mt-1 text-xs text-red-500">Name must be at least 2 characters long.</p>
+                                    )}
+                                </div>
 
-                        {/* Email */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Email Address
-                            </label>
-                            <div className="relative">
-                                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                                <input
-                                    type="email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    onBlur={() => handleBlur('email')}
-                                    className={`w-full pl-11 pr-4 py-3 border ${touched.email && !validateEmail(email) ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:ring-black'} rounded-lg focus:ring-2 focus:border-transparent outline-none transition-all`}
-                                    placeholder="you@example.com"
-                                    required
-                                />
-                            </div>
-                            {touched.email && !validateEmail(email) && (
-                                <p className="mt-1 text-xs text-red-500">Please enter a valid email address.</p>
-                            )}
-                        </div>
+                                {/* Email */}
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        Email Address
+                                    </label>
+                                    <div className="relative">
+                                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                                        <input
+                                            type="email"
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            onBlur={() => handleBlur('email')}
+                                            className={`w-full pl-11 pr-4 py-3 border ${touched.email && !validateEmail(email) ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:ring-black'} rounded-lg focus:ring-2 focus:border-transparent outline-none transition-all`}
+                                            placeholder="you@example.com"
+                                            required
+                                        />
+                                    </div>
+                                    {touched.email && !validateEmail(email) && (
+                                        <p className="mt-1 text-xs text-red-500">Please enter a valid email address.</p>
+                                    )}
+                                </div>
 
-                        {/* Phone */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Phone Number (Optional)
-                            </label>
-                            <div className="relative">
-                                <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                                <input
-                                    type="tel"
-                                    value={phone}
-                                    onChange={(e) => setPhone(e.target.value)}
-                                    onBlur={() => handleBlur('phone')}
-                                    className={`w-full pl-11 pr-4 py-3 border ${touched.phone && !validatePhone(phone) ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:ring-black'} rounded-lg focus:ring-2 focus:border-transparent outline-none transition-all`}
-                                    placeholder="+1 (555) 000-0000"
-                                />
-                            </div>
-                            {touched.phone && !validatePhone(phone) && (
-                                <p className="mt-1 text-xs text-red-500">Please enter a valid phone number (digits only).</p>
-                            )}
-                        </div>
+                                {/* Phone */}
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        Phone Number (Optional)
+                                    </label>
+                                    <div className="relative">
+                                        <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                                        <input
+                                            type="tel"
+                                            value={phone}
+                                            onChange={(e) => setPhone(e.target.value)}
+                                            onBlur={() => handleBlur('phone')}
+                                            className={`w-full pl-11 pr-4 py-3 border ${touched.phone && !validatePhone(phone) ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:ring-black'} rounded-lg focus:ring-2 focus:border-transparent outline-none transition-all`}
+                                            placeholder="+1 (555) 000-0000"
+                                        />
+                                    </div>
+                                    {touched.phone && !validatePhone(phone) && (
+                                        <p className="mt-1 text-xs text-red-500">Please enter a valid phone number (digits only).</p>
+                                    )}
+                                </div>
 
-                        {/* Password */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Password
-                            </label>
-                            <div className="relative">
-                                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                                <input
-                                    type={showPassword ? 'text' : 'password'}
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    onBlur={() => handleBlur('password')}
-                                    className={`w-full pl-11 pr-12 py-3 border ${touched.password && passwordStrength < 3 ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:ring-black'} rounded-lg focus:ring-2 focus:border-transparent outline-none transition-all`}
-                                    placeholder="Create a strong password"
-                                    required
-                                />
+                                {/* Password */}
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        Password
+                                    </label>
+                                    <div className="relative">
+                                        <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                                        <input
+                                            type={showPassword ? 'text' : 'password'}
+                                            value={password}
+                                            onChange={(e) => setPassword(e.target.value)}
+                                            onBlur={() => handleBlur('password')}
+                                            className={`w-full pl-11 pr-12 py-3 border ${touched.password && passwordStrength < 3 ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:ring-black'} rounded-lg focus:ring-2 focus:border-transparent outline-none transition-all`}
+                                            placeholder="Create a strong password"
+                                            required
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowPassword(!showPassword)}
+                                            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                                        >
+                                            {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                                        </button>
+                                    </div>
+
+                                    {/* Password Strength Meter */}
+                                    <div className="mt-2">
+                                        <div className="flex justify-between items-center mb-1">
+                                            <span className="text-xs text-gray-500">Strength</span>
+                                            <span className={`text-xs font-medium ${passwordStrength < 3 ? 'text-red-500' :
+                                                passwordStrength < 4 ? 'text-yellow-500' : 'text-green-500'
+                                                }`}>
+                                                {getStrengthText(passwordStrength)}
+                                            </span>
+                                        </div>
+                                        <div className="h-1 w-full bg-gray-100 rounded-full overflow-hidden">
+                                            <div
+                                                className={`h-full transition-all duration-300 ${getStrengthColor(passwordStrength)}`}
+                                                style={{ width: `${(passwordStrength / 5) * 100}%` }}
+                                            ></div>
+                                        </div>
+                                        <p className="mt-1.5 text-xs text-gray-500">
+                                            Must contain at least 8 characters, including uppercase, lowercase, numbers, and symbols.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* Confirm Password */}
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        Confirm Password
+                                    </label>
+                                    <div className="relative">
+                                        <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                                        <input
+                                            type={showConfirmPassword ? 'text' : 'password'}
+                                            value={confirmPassword}
+                                            onChange={(e) => setConfirmPassword(e.target.value)}
+                                            onBlur={() => handleBlur('confirmPassword')}
+                                            className={`w-full pl-11 pr-12 py-3 border ${touched.confirmPassword && password !== confirmPassword ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:ring-black'} rounded-lg focus:ring-2 focus:border-transparent outline-none transition-all`}
+                                            placeholder="Confirm your password"
+                                            required
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                                        >
+                                            {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                                        </button>
+                                    </div>
+                                    {touched.confirmPassword && password !== confirmPassword && (
+                                        <p className="mt-1 text-xs text-red-500">Passwords do not match.</p>
+                                    )}
+                                </div>
+
+                                {/* Submit Button */}
                                 <button
-                                    type="button"
-                                    onClick={() => setShowPassword(!showPassword)}
-                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                                    type="submit"
+                                    disabled={isLoading}
+                                    className={`w-full py-3 bg-black text-white font-semibold rounded-lg transition-all duration-200 flex items-center justify-center gap-2 ${isLoading || !isFormValid ? 'opacity-70 cursor-not-allowed' : 'hover:bg-gray-800 shadow-lg hover:shadow-xl'}`}
                                 >
-                                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                                    {isLoading ? (
+                                        <>
+                                            <Loader2 className="w-5 h-5 animate-spin" />
+                                            Creating account...
+                                        </>
+                                    ) : (
+                                        'Create Account'
+                                    )}
                                 </button>
-                            </div>
+                            </form>
 
-                            {/* Password Strength Meter */}
-                            <div className="mt-2">
-                                <div className="flex justify-between items-center mb-1">
-                                    <span className="text-xs text-gray-500">Strength</span>
-                                    <span className={`text-xs font-medium ${passwordStrength < 3 ? 'text-red-500' :
-                                        passwordStrength < 4 ? 'text-yellow-500' : 'text-green-500'
-                                        }`}>
-                                        {getStrengthText(passwordStrength)}
-                                    </span>
-                                </div>
-                                <div className="h-1 w-full bg-gray-100 rounded-full overflow-hidden">
-                                    <div
-                                        className={`h-full transition-all duration-300 ${getStrengthColor(passwordStrength)}`}
-                                        style={{ width: `${(passwordStrength / 5) * 100}%` }}
-                                    ></div>
-                                </div>
-                                <p className="mt-1.5 text-xs text-gray-500">
-                                    Must contain at least 8 characters, including uppercase, lowercase, numbers, and symbols.
+                            {/* Footer */}
+                            <div className="mt-6 text-center">
+                                <p className="text-gray-600">
+                                    Already have an account?{' '}
+                                    <Link to="/login" className="text-black font-semibold hover:underline">
+                                        Sign in
+                                    </Link>
                                 </p>
                             </div>
-                        </div>
-
-                        {/* Confirm Password */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Confirm Password
-                            </label>
-                            <div className="relative">
-                                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                                <input
-                                    type={showConfirmPassword ? 'text' : 'password'}
-                                    value={confirmPassword}
-                                    onChange={(e) => setConfirmPassword(e.target.value)}
-                                    onBlur={() => handleBlur('confirmPassword')}
-                                    className={`w-full pl-11 pr-12 py-3 border ${touched.confirmPassword && password !== confirmPassword ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:ring-black'} rounded-lg focus:ring-2 focus:border-transparent outline-none transition-all`}
-                                    placeholder="Confirm your password"
-                                    required
-                                />
-                                <button
-                                    type="button"
-                                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
-                                >
-                                    {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                                </button>
-                            </div>
-                            {touched.confirmPassword && password !== confirmPassword && (
-                                <p className="mt-1 text-xs text-red-500">Passwords do not match.</p>
-                            )}
-                        </div>
-
-                        {/* Submit Button */}
-                        <button
-                            type="submit"
-                            disabled={isLoading}
-                            className={`w-full py-3 bg-black text-white font-semibold rounded-lg transition-all duration-200 flex items-center justify-center gap-2 ${isLoading || !isFormValid ? 'opacity-70 cursor-not-allowed' : 'hover:bg-gray-800 shadow-lg hover:shadow-xl'}`}
-                        >
-                            {isLoading ? (
-                                <>
-                                    <Loader2 className="w-5 h-5 animate-spin" />
-                                    Creating account...
-                                </>
-                            ) : (
-                                'Create Account'
-                            )}
-                        </button>
-                    </form>
-
-                    {/* Footer */}
-                    <div className="mt-6 text-center">
-                        <p className="text-gray-600">
-                            Already have an account?{' '}
-                            <Link to="/login" className="text-black font-semibold hover:underline">
-                                Sign in
-                            </Link>
-                        </p>
-                    </div>
+                        </>
                     )}
                 </div>
             </div>
