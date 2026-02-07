@@ -567,7 +567,7 @@ exports.requestOTP = async (req, res) => {
         const Otp = require('../models/Otp');
         await Otp.create({
             email: user.email,
-            otp,
+            code: otp,
             expiresAt: new Date(Date.now() + 10 * 60 * 1000) // 10 minutes
         });
 
@@ -626,7 +626,7 @@ exports.loginWithOTP = async (req, res) => {
         const Otp = require('../models/Otp');
         const otpRecord = await Otp.findOne({
             email: user.email,
-            otp,
+            code: otp,
             expiresAt: { $gt: new Date() }
         });
 

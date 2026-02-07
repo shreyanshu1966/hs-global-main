@@ -114,10 +114,20 @@ const orderSchema = new mongoose.Schema({
         price: {
             type: Number,
             required: true
-        },
+        }, // Final price (after discount if applicable)
         priceINR: Number, // Original price in INR for audit trail
+        originalPrice: Number, // Original price before discount
+        discountPercentage: Number, // Discount percentage applied
+        discountAmount: Number, // Actual discount amount
         image: String,
-        category: String
+        category: String,
+        discount: {
+            enabled: Boolean,
+            percentage: Number,
+            startDate: Date,
+            endDate: Date,
+            description: String
+        }
     }],
     shippingAddress: {
         street: String,
@@ -156,12 +166,12 @@ orderSchema.index({ 'validationDetails.clientIP': 1, createdAt: -1 });
 orderSchema.index({ failureCount: 1, status: 1 }); // For retry logic
 
 // Virtual for order age
-orderSchema.virtual('orderAge').get(function() {
+orderSchema.virtual('orderAge').get(function () {
     return Date.now() - this.createdAt.getTime();
 });
 
 // Method to check if order is expired
-orderSchema.methods.isExpired = function() {
+orderSchema.methods.isExpired = function () {
     if (this.status === 'paid') return false;
     if (this.expiresAt) return Date.now() > this.expiresAt.getTime();
     const expiryTime = 30 * 60 * 1000; // 30 minutes default
@@ -169,19 +179,19 @@ orderSchema.methods.isExpired = function() {
 };
 
 // Method to check if order can be retried
-orderSchema.methods.canRetry = function() {
+orderSchema.methods.canRetry = function () {
     const retryableStatuses = ['payment_failed', 'capture_error', 'expired'];
     return retryableStatuses.includes(this.status) && (this.failureCount || 0) < 3;
 };
 
 // Method to check if order is in final state
-orderSchema.methods.isFinalState = function() {
+orderSchema.methods.isFinalState = function () {
     const finalStates = ['paid', 'permanently_failed', 'cancelled', 'refunded', 'reversed', 'abandoned'];
     return finalStates.includes(this.status);
 };
 
 // Method to get payment status summary
-orderSchema.methods.getPaymentSummary = function() {
+orderSchema.methods.getPaymentSummary = function () {
     return {
         orderId: this.orderId,
         status: this.status,
