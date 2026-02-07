@@ -2,6 +2,26 @@ const Review = require('../models/Review');
 const Product = require('../models/Product');
 const mongoose = require('mongoose');
 
+// Helper function to update product rating statistics
+const updateProductRatingStats = async (productId) => {
+    try {
+        const stats = await Review.getProductStats(productId);
+
+        // Update the product with the new stats
+        await Product.findOneAndUpdate(
+            { productId: productId },
+            {
+                averageRating: stats.averageRating,
+                totalReviews: stats.totalReviews
+            }
+        );
+
+        console.log(`Updated product ${productId} rating stats:`, stats);
+    } catch (error) {
+        console.error(`Error updating product ${productId} rating stats:`, error);
+    }
+};
+
 // Get reviews for a product
 exports.getProductReviews = async (req, res) => {
     try {
@@ -88,7 +108,7 @@ exports.createReview = async (req, res) => {
             // Otherwise, only search by productId field
             product = await Product.findOne({ productId: productId });
         }
-        
+
         if (!product) {
             return res.status(404).json({
                 success: false,
@@ -184,6 +204,9 @@ exports.deleteReview = async (req, res) => {
             });
         }
 
+        // Update product rating statistics after deletion
+        await updateProductRatingStats(review.productId);
+
         res.json({
             success: true,
             message: 'Review deleted successfully'
@@ -215,6 +238,9 @@ exports.approveReview = async (req, res) => {
                 message: 'Review not found'
             });
         }
+
+        // Update product rating statistics
+        await updateProductRatingStats(review.productId);
 
         res.json({
             success: true,
@@ -248,6 +274,9 @@ exports.rejectReview = async (req, res) => {
                 message: 'Review not found'
             });
         }
+
+        // Update product rating statistics
+        await updateProductRatingStats(review.productId);
 
         res.json({
             success: true,
@@ -283,7 +312,7 @@ exports.getAllReviews = async (req, res) => {
                 const product = await Product.findOne({ productId: review.productId })
                     .select('name image productId')
                     .lean();
-                
+
                 return {
                     ...review,
                     product: product || null
