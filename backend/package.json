@@ -9,7 +9,11 @@
         "dev": "node --watch server.js",
         "setup-auth": "node setup-auth.js",
         "migrate-products": "node migrate-products.js",
-        "test-auth": "node test-auth-flow.js"
+        "test-auth": "node test-auth-flow.js",
+        "seed-reviews": "node seed-reviews.js",
+        "test-reviews": "node test-reviews.js",
+        "update-ratings": "node update-product-ratings.js",
+        "seed-blogs": "node seed-blogs.js"
     },
     "dependencies": {
         "axios": "^1.13.4",

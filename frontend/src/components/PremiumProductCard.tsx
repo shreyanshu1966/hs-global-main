@@ -191,6 +191,9 @@ export const PremiumProductCard: React.FC<PremiumProductCardProps> = ({ product,
                                 </svg>
                             ))}
                         </div>
+                        <span className="text-sm font-medium text-stone-700">
+                            {(product.averageRating || 0).toFixed(1)}
+                        </span>
                         <span className="text-sm text-stone-600">
                             ({product.totalReviews})
                         </span>
