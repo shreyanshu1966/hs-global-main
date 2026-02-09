@@ -77,7 +77,7 @@ const getAdminProducts = async (req, res) => {
 const createProductWithImages = async (req, res) => {
     try {
         const productData = JSON.parse(req.body.productData || '{}');
-        
+
         // Check if product with same productId already exists
         const existingProduct = await Product.findOne({ productId: productData.productId });
         if (existingProduct) {
@@ -89,13 +89,13 @@ const createProductWithImages = async (req, res) => {
 
         // Upload images to Cloudinary
         const uploadedImages = [];
-        
+
         // Handle images array when using fields configuration
         const imageFiles = req.files?.images || [];
-        
+
         if (imageFiles && imageFiles.length > 0) {
             console.log(`Uploading ${imageFiles.length} images to Cloudinary...`);
-            
+
             for (const file of imageFiles) {
                 try {
                     const result = await uploadToCloudinary(
@@ -122,7 +122,7 @@ const createProductWithImages = async (req, res) => {
         const videoFiles = req.files?.video || [];
         if (videoFiles && videoFiles.length > 0 && videoFiles[0]) {
             const videoFile = videoFiles[0];
-            
+
             // Validate video
             const validation = validateVideo(videoFile);
             if (!validation.valid) {
@@ -199,13 +199,13 @@ const updateProductWithImages = async (req, res) => {
 
         // Handle new image uploads
         const newImages = [];
-        
+
         // Handle images array when using fields configuration
         const imageFiles = req.files?.images || [];
-        
+
         if (imageFiles && imageFiles.length > 0) {
             console.log(`Uploading ${imageFiles.length} new images to Cloudinary...`);
-            
+
             for (const file of imageFiles) {
                 try {
                     const result = await uploadToCloudinary(
@@ -220,24 +220,49 @@ const updateProductWithImages = async (req, res) => {
             }
         }
 
-        // Merge existing and new images if preserveExistingImages flag is set
-        if (productData.preserveExistingImages && existingProduct.images) {
-            productData.images = [...existingProduct.images, ...newImages];
-            productData.sortedImages = productData.images;
+        // Determine base images (existing ones that should be kept)
+        let baseImages = [];
+        if (productData.existingImages && Array.isArray(productData.existingImages)) {
+            // Use explicitly provided existing images (allows for deletion/reordering)
+            baseImages = productData.existingImages;
+        } else if (productData.preserveExistingImages !== false && existingProduct.images) {
+            // Fallback to keeping all existing images if not explicitly told otherwise
+            baseImages = existingProduct.images;
+        }
+
+        // Combine base images with new images
+        let finalImages;
+        if (productData.newImagesFirst) {
+            finalImages = [...newImages, ...baseImages];
+        } else {
+            finalImages = [...baseImages, ...newImages];
+        }
+
+        // Update product images if there are changes
+        if (finalImages.length > 0 || (productData.existingImages && newImages.length === 0)) {
+            productData.images = finalImages;
+            productData.sortedImages = finalImages;
+            productData.image = finalImages[0]; // Update main image
         } else if (newImages.length > 0) {
-            // Replace all images with new ones
+            // If somehow we have new images but no base images logic matched (should be covered above)
             productData.images = newImages;
             productData.sortedImages = newImages;
-            productData.image = newImages[0]; // Update main image
-            
-            // Optionally delete old images from Cloudinary
-            if (existingProduct.images && existingProduct.images.length > 0) {
+            productData.image = newImages[0];
+        }
+
+        // Clean up deleted images from Cloudinary ONLY if we have an explicit list of new existing images
+        // This calculates which images were present before but are NOT in the new list
+        if (productData.existingImages && existingProduct.images) {
+            const imagesToDelete = existingProduct.images.filter(
+                img => !productData.existingImages.includes(img)
+            );
+
+            if (imagesToDelete.length > 0) {
                 try {
-                    await deleteMultipleFromCloudinary(existingProduct.images);
-                    console.log('Deleted old images from Cloudinary');
+                    await deleteMultipleFromCloudinary(imagesToDelete);
+                    console.log(`Deleted ${imagesToDelete.length} removed images from Cloudinary`);
                 } catch (deleteError) {
-                    console.error('Error deleting old images:', deleteError);
-                    // Continue even if deletion fails
+                    console.error('Error deleting removed images:', deleteError);
                 }
             }
         }
@@ -246,7 +271,7 @@ const updateProductWithImages = async (req, res) => {
         const videoFiles = req.files?.video || [];
         if (videoFiles && videoFiles.length > 0 && videoFiles[0]) {
             const videoFile = videoFiles[0];
-            
+
             // Validate video
             const validation = validateVideo(videoFile);
             if (!validation.valid) {
@@ -394,10 +419,10 @@ const reorderProductImages = async (req, res) => {
 
         const product = await Product.findOneAndUpdate(
             { productId: id },
-            { 
+            {
                 sortedImages: imageUrls,
                 image: imageUrls[0] || product.image, // Update main image to first in order
-                updatedAt: new Date() 
+                updatedAt: new Date()
             },
             { new: true }
         );
@@ -430,7 +455,7 @@ const reorderProductImages = async (req, res) => {
 const getSubcategories = async (req, res) => {
     try {
         const { category } = req.params;
-        
+
         if (!category || !['furniture', 'slabs'].includes(category)) {
             return res.status(400).json({
                 success: false,
@@ -440,13 +465,13 @@ const getSubcategories = async (req, res) => {
 
         // Get predefined subcategories
         const predefined = Product.getPredefinedSubcategories(category);
-        
+
         // Get all subcategories actually used in database
         const used = await Product.getSubcategoriesByCategory(category);
-        
+
         // Combine and deduplicate
         const allSubcategories = Array.from(new Set([...predefined, ...used]));
-        
+
         res.json({
             success: true,
             data: {
