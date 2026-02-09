@@ -58,10 +58,7 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
         });
 
         setIsAdded(true);
-        setTimeout(() => {
-          setIsAdded(false);
-          toggleCart();
-        }, 500);
+        setTimeout(() => setIsAdded(false), 2000);
       }
     };
 
@@ -103,7 +100,18 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
     // Track add to cart analytics
     trackAddToCart(product.productId);
 
+    // Button feedback animation
     setIsAdded(true);
+    if (buttonRef.current) {
+      gsap.to(buttonRef.current, {
+        scale: 0.95,
+        duration: 0.1,
+        yoyo: true,
+        repeat: 1,
+        ease: "power2.inOut"
+      });
+    }
+    
     setTimeout(() => setIsAdded(false), 2000);
   };
 

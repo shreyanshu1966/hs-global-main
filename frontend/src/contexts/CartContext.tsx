@@ -29,6 +29,8 @@ interface CartState {
   isPhoneVerified: boolean;
   phoneNumber: string;
   isCartOpen: boolean;
+  showAddedToCart: boolean;
+  lastAddedItem: CartItem | null;
 }
 
 type CartAction =
@@ -39,6 +41,7 @@ type CartAction =
   | { type: 'SET_PHONE_VERIFIED'; payload: { phoneNumber: string } }
   | { type: 'TOGGLE_CART' }
   | { type: 'CLOSE_CART' }
+  | { type: 'HIDE_ADDED_TO_CART' }
   | { type: 'RESTORE_CART'; payload: { items: CartItem[] } };
 
 const initialState: CartState = {
@@ -46,12 +49,16 @@ const initialState: CartState = {
   isPhoneVerified: false,
   phoneNumber: '',
   isCartOpen: false,
+  showAddedToCart: false,
+  lastAddedItem: null,
 };
 
 function cartReducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
     case 'ADD_ITEM': {
       const existingItem = state.items.find(item => item.id === action.payload.id);
+      const newItem = { ...action.payload, quantity: 1 };
+      
       if (existingItem) {
         return {
           ...state,
@@ -60,11 +67,15 @@ function cartReducer(state: CartState, action: CartAction): CartState {
               ? { ...item, quantity: item.quantity + 1 }
               : item
           ),
+          showAddedToCart: true,
+          lastAddedItem: { ...existingItem, quantity: existingItem.quantity + 1 },
         };
       }
       return {
         ...state,
-        items: [...state.items, { ...action.payload, quantity: 1 }],
+        items: [...state.items, newItem],
+        showAddedToCart: true,
+        lastAddedItem: newItem,
       };
     }
     case 'UPDATE_QUANTITY':
@@ -102,6 +113,12 @@ function cartReducer(state: CartState, action: CartAction): CartState {
         ...state,
         isCartOpen: false,
       };
+    case 'HIDE_ADDED_TO_CART':
+      return {
+        ...state,
+        showAddedToCart: false,
+        lastAddedItem: null,
+      };
     case 'RESTORE_CART':
       return {
         ...state,
@@ -121,6 +138,7 @@ interface CartContextType {
   setPhoneVerified: (phoneNumber: string) => void;
   toggleCart: () => void;
   closeCart: () => void;
+  hideAddedToCart: () => void;
   getTotalItems: () => number;
   getTotalPriceNumeric: () => number;
 }
@@ -186,6 +204,10 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     dispatch({ type: 'CLOSE_CART' });
   };
 
+  const hideAddedToCart = () => {
+    dispatch({ type: 'HIDE_ADDED_TO_CART' });
+  };
+
   const getTotalItems = () => {
     return state.items.reduce((total, item) => total + item.quantity, 0);
   };
@@ -206,6 +228,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setPhoneVerified,
     toggleCart,
     closeCart,
+    hideAddedToCart,
     getTotalItems,
     getTotalPriceNumeric,
   };

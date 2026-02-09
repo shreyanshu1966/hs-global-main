@@ -81,6 +81,8 @@ export interface ProductFormData {
     seoTitle?: string;
     seoDescription?: string;
     seoKeywords?: string[];
+    existingImages?: string[]; // List of existing image URLs to keep
+    newImagesFirst?: boolean; // Whether new images should be prepended
 }
 
 interface PaginationResponse<T> {
@@ -132,10 +134,10 @@ export const createProduct = async (
     video?: File | null
 ): Promise<{ success: boolean; data: Product; message: string }> => {
     const formData = new FormData();
-    
+
     // Add product data as JSON string
     formData.append('productData', JSON.stringify(productData));
-    
+
     // Add images
     images.forEach((image) => {
         formData.append('images', image);
@@ -157,7 +159,7 @@ export const createProduct = async (
             }
         }
     );
-    
+
     return response.data;
 };
 
@@ -172,16 +174,16 @@ export const updateProduct = async (
     removeVideo?: boolean
 ): Promise<{ success: boolean; data: Product; message: string }> => {
     const formData = new FormData();
-    
+
     // Add removeVideo flag to productData if needed
     const dataToSend = { ...productData };
     if (removeVideo) {
         dataToSend.removeVideo = true as any;
     }
-    
+
     // Add product data as JSON string
     formData.append('productData', JSON.stringify(dataToSend));
-    
+
     // Add new images if provided
     if (images && images.length > 0) {
         images.forEach((image) => {
@@ -205,7 +207,7 @@ export const updateProduct = async (
             }
         }
     );
-    
+
     return response.data;
 };
 

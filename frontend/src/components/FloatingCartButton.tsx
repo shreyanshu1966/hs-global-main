@@ -14,7 +14,8 @@ export const FloatingCartButton: React.FC = () => {
   const { contextSafe } = useGSAP({ scope: containerRef });
 
   useEffect(() => {
-    if (totalItems > 0 && !shouldRender) {
+    // Show cart button when there's 1 or more items (>=1)
+    if (totalItems >= 1 && !shouldRender) {
       setShouldRender(true);
     }
   }, [totalItems, shouldRender]);
@@ -22,7 +23,7 @@ export const FloatingCartButton: React.FC = () => {
   useGSAP(() => {
     if (!buttonRef.current) return;
 
-    if (totalItems > 0) {
+    if (totalItems >= 1) {
       // Animate In if hidden, or stay visible
       gsap.to(buttonRef.current, {
         scale: 1,

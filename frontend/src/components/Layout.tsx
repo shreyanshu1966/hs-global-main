@@ -7,6 +7,7 @@ import { useGSAP } from '@gsap/react';
 import { FloatingCartButton } from './FloatingCartButton';
 import { CartDrawer } from './CartDrawer';
 import { PhoneVerifyModal } from './PhoneVerifyModal';
+import { AddedToCartNotification } from './AddedToCartNotification';
 import LeadCapturePopup from './LeadCapturePopup';
 import { useLeadCapturePopup } from '../hooks/useLeadCapturePopup';
 import NoiseOverlay from './NoiseOverlay';
@@ -48,6 +49,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             {!isAdminPage && <FloatingCartButton />}
             {!isAdminPage && <CartDrawer />}
             {!isAdminPage && <PhoneVerifyModal />}
+            {!isAdminPage && <AddedToCartNotification />}
             {/* Temporarily disabled - Get Your Quote popup */}
             {/* {!isAdminPage && (
                 <LeadCapturePopup
