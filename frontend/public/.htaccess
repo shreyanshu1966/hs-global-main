@@ -44,20 +44,52 @@
 
 # Cache-Control Headers
 <IfModule mod_headers.c>
-  # 1 Year for static assets (JS, CSS, Images, Fonts)
+  # Long cache for assets with hash in filename (these are cache-busted automatically)
   <FilesMatch "\.(js|css|png|jpg|jpeg|gif|webp|svg|ico|woff2)$">
-    Header set Cache-Control "max-age=31536000, public"
+    Header set Cache-Control "max-age=31536000, public, immutable"
+    Header set ETag ""
   </FilesMatch>
   
-  # No caching for HTML to ensure updates are seen immediately
+  # No caching for HTML files to ensure updates are seen immediately
   <FilesMatch "\.(html|htm)$">
     Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+    Header unset ETag
   </FilesMatch>
+  
+  # Prevent caching of the main index.html specifically
+  <Files "index.html">
+    Header set Cache-Control "no-cache, no-store, must-revalidate, max-age=0"
+    Header set Pragma "no-cache"
+    Header set Expires "Thu, 01 Jan 1970 00:00:00 GMT"
+    Header unset ETag
+    Header unset Last-Modified
+  </Files>
   
   # Security Headers
   Header set X-Content-Type-Options "nosniff"
   Header set X-Frame-Options "SAMEORIGIN"
   Header set X-XSS-Protection "1; mode=block"
+  
+  # Cloudflare cache bypass for HTML files
+  Header set CF-Cache-Status "MISS"
+  Header set Cf-Cache-Status "MISS"
+  
+  # Force revalidation
+  Header set Vary "Accept-Encoding, User-Agent, CF-Connecting-IP"
 </IfModule>
+
+# Additional cache control for potential missed files
+<IfModule mod_env.c>
+  SetEnv no-gzip
+</IfModule>
+
+# Prevent caching of any potential service worker files
+<FilesMatch "(sw|service-worker|workbox).*\.js$">
+  Header set Cache-Control "no-cache, no-store, must-revalidate"
+  Header set Pragma "no-cache"
+  Header set Expires "0"
+</FilesMatch>
 
 
