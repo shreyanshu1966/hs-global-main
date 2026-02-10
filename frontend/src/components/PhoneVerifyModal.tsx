@@ -80,6 +80,27 @@ export const PhoneVerifyModal: React.FC = () => {
     }
   }, [isModalOpen]);
 
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (isModalOpen) {
+      // Store original styles
+      const originalStyle = window.getComputedStyle(document.body).overflow;
+      const originalPaddingRight = window.getComputedStyle(document.body).paddingRight;
+
+      // Get scrollbar width
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+
+      // Apply styles to prevent body scroll
+      document.body.style.overflow = 'hidden';
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+
+      return () => {
+        document.body.style.overflow = originalStyle;
+        document.body.style.paddingRight = originalPaddingRight;
+      };
+    }
+  }, [isModalOpen]);
+
   const validateEmail = (email: string) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
@@ -220,13 +241,24 @@ export const PhoneVerifyModal: React.FC = () => {
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
         onClick={handleClose}
         style={{ opacity: 0 }}
+        onWheel={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+        }}
+        onTouchMove={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+        }}
       />
 
       {/* Modal */}
       <div
         ref={modalRef}
         className="relative w-full max-w-md bg-white/70 backdrop-blur-xl text-black rounded-2xl shadow-2xl border border-black/10"
-        style={{ opacity: 0, transform: 'scale(0.95) translateY(20px)' }}
+        style={{ opacity: 0, transform: 'scale(0.95) translateY(20px)', overscrollBehavior: 'contain' }}
+        onClick={(e) => e.stopPropagation()}
+        onWheel={(e) => e.stopPropagation()}
+        onTouchMove={(e) => e.stopPropagation()}
       >
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-black/10">

@@ -190,6 +190,7 @@ export const CartDrawer: React.FC = () => {
             {/* Body */}
             <div
               className="flex-1 p-6 overflow-y-auto custom-scrollbar"
+              style={{ overscrollBehavior: 'contain' }}
               onWheel={(e) => {
                 // Stop propagation to prevent background scrolling
                 e.stopPropagation();

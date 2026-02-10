@@ -77,6 +77,27 @@ export const SlabCustomizationModal: React.FC = () => {
     }
   }, [isModalOpen, customization]);
 
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (isModalOpen) {
+      // Store original styles
+      const originalStyle = window.getComputedStyle(document.body).overflow;
+      const originalPaddingRight = window.getComputedStyle(document.body).paddingRight;
+
+      // Get scrollbar width
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+
+      // Apply styles to prevent body scroll
+      document.body.style.overflow = 'hidden';
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+
+      return () => {
+        document.body.style.overflow = originalStyle;
+        document.body.style.paddingRight = originalPaddingRight;
+      };
+    }
+  }, [isModalOpen]);
+
   const handleSubmit = async () => {
     if (!pendingProduct) return;
 
@@ -162,11 +183,31 @@ export const SlabCustomizationModal: React.FC = () => {
             className="absolute inset-0 bg-black/50 backdrop-blur-sm"
             onClick={closeModal}
             style={{ opacity: 0 }}
+            onWheel={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }}
+            onTouchMove={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }}
           />
           <div
             ref={modalRef}
             className="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl max-h-[90vh] overflow-y-auto"
-            style={{ opacity: 0, transform: 'scale(0.95) translateY(20px)' }}
+            style={{ opacity: 0, transform: 'scale(0.95) translateY(20px)', overscrollBehavior: 'contain' }}
+            onClick={(e) => e.stopPropagation()}
+            onWheel={(e) => {
+              e.stopPropagation();
+              const element = e.currentTarget;
+              const { scrollTop, scrollHeight, clientHeight } = element;
+              const isAtTop = scrollTop === 0;
+              const isAtBottom = scrollTop + clientHeight >= scrollHeight;
+              if ((isAtTop && e.deltaY < 0) || (isAtBottom && e.deltaY > 0)) {
+                e.preventDefault();
+              }
+            }}
+            onTouchMove={(e) => e.stopPropagation()}
           >
             {isSuccess ? (
               <div className="p-8 text-center">

@@ -236,14 +236,22 @@ const LeadCapturePopup: React.FC<LeadCapturePopupProps> = ({ isOpen, onClose }) 
 
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
+      // Store original styles
+      const originalStyle = window.getComputedStyle(document.body).overflow;
+      const originalPaddingRight = window.getComputedStyle(document.body).paddingRight;
 
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
+      // Get scrollbar width
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+
+      // Apply styles to prevent body scroll
+      document.body.style.overflow = 'hidden';
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+
+      return () => {
+        document.body.style.overflow = originalStyle;
+        document.body.style.paddingRight = originalPaddingRight;
+      };
+    }
   }, [isOpen]);
 
   if (!isRendered) return null;
@@ -256,6 +264,14 @@ const LeadCapturePopup: React.FC<LeadCapturePopupProps> = ({ isOpen, onClose }) 
         className="absolute inset-0 bg-black/60 backdrop-blur-sm"
         onClick={handleClose}
         style={{ opacity: 0 }}
+        onWheel={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+        }}
+        onTouchMove={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+        }}
       />
 
       {/* Modal */}
@@ -263,7 +279,9 @@ const LeadCapturePopup: React.FC<LeadCapturePopupProps> = ({ isOpen, onClose }) 
         ref={modalRef}
         className="bg-white rounded-3xl shadow-2xl w-full max-w-md sm:max-w-lg max-h-[90vh] overflow-hidden border-2 border-gray-100 relative z-10"
         onClick={(e) => e.stopPropagation()}
-        style={{ opacity: 0, transform: 'scale(0.95)' }}
+        style={{ opacity: 0, transform: 'scale(0.95)', overscrollBehavior: 'contain' }}
+        onWheel={(e) => e.stopPropagation()}
+        onTouchMove={(e) => e.stopPropagation()}
       >
         {/* Header */}
         <div className="sticky top-0 bg-gradient-to-r from-white to-gray-50 border-b-2 border-gray-200 px-4 py-3 rounded-t-3xl z-10">
@@ -296,7 +314,21 @@ const LeadCapturePopup: React.FC<LeadCapturePopupProps> = ({ isOpen, onClose }) 
 
         {/* Form */}
         {!showSuccess && (
-          <div className="overflow-y-auto max-h-[calc(90vh-100px)] overscroll-contain">
+          <div 
+            className="overflow-y-auto max-h-[calc(90vh-100px)]"
+            style={{ overscrollBehavior: 'contain' }}
+            onWheel={(e) => {
+              e.stopPropagation();
+              const element = e.currentTarget;
+              const { scrollTop, scrollHeight, clientHeight } = element;
+              const isAtTop = scrollTop === 0;
+              const isAtBottom = scrollTop + clientHeight >= scrollHeight;
+              if ((isAtTop && e.deltaY < 0) || (isAtBottom && e.deltaY > 0)) {
+                e.preventDefault();
+              }
+            }}
+            onTouchMove={(e) => e.stopPropagation()}
+          >
             <form onSubmit={handleSubmit} className="p-4 space-y-3">
               {/* Name Field */}
               <div>

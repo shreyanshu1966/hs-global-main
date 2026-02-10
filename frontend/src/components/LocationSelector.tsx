@@ -23,11 +23,16 @@ export const LocationSelector: React.FC = () => {
     return localStorage.getItem('hs-global-currency-auto-detect') !== 'false';
   });
   const popupRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   // Close popup when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (popupRef.current && !popupRef.current.contains(event.target as Node)) {
+      const target = event.target as Node;
+      const isClickOutsideContainer = containerRef.current && !containerRef.current.contains(target);
+      const isClickOutsidePopup = popupRef.current && !popupRef.current.contains(target);
+      
+      if (isClickOutsideContainer && isClickOutsidePopup) {
         setIsOpen(false);
       }
     };
@@ -39,6 +44,27 @@ export const LocationSelector: React.FC = () => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
+  }, [isOpen]);
+
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      // Store original styles
+      const originalStyle = window.getComputedStyle(document.body).overflow;
+      const originalPaddingRight = window.getComputedStyle(document.body).paddingRight;
+
+      // Get scrollbar width
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+
+      // Apply styles to prevent body scroll
+      document.body.style.overflow = 'hidden';
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+
+      return () => {
+        document.body.style.overflow = originalStyle;
+        document.body.style.paddingRight = originalPaddingRight;
+      };
+    }
   }, [isOpen]);
 
   // Update handler to accept code directly
@@ -154,7 +180,7 @@ export const LocationSelector: React.FC = () => {
   );
 
   return (
-    <div className="relative" ref={popupRef}>
+    <div className="relative" ref={containerRef}>
       {/* Trigger Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
@@ -177,10 +203,21 @@ export const LocationSelector: React.FC = () => {
             <div
               className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
               onClick={() => setIsOpen(false)}
+              onWheel={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+              }}
+              onTouchMove={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+              }}
             />
 
             {/* Modal Content */}
-            <div className="relative w-full max-w-sm bg-white rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+            <div 
+              ref={popupRef}
+              className="relative w-full max-w-sm bg-white rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200"
+              onClick={(e) => e.stopPropagation()}>
               <div className="bg-gray-50 px-4 py-3 border-b border-gray-200 flex justify-between items-center">
                 <h3 className="text-sm font-semibold text-gray-900">Currency Settings</h3>
                 <button
@@ -190,7 +227,20 @@ export const LocationSelector: React.FC = () => {
                   <X className="w-4 h-4" />
                 </button>
               </div>
-              <div className="p-4 space-y-4 max-h-[70vh] overflow-y-auto">
+              <div 
+                className="p-4 space-y-4 max-h-[70vh] overflow-y-auto"
+                style={{ overscrollBehavior: 'contain' }}
+                onWheel={(e) => {
+                  e.stopPropagation();
+                  const element = e.currentTarget;
+                  const { scrollTop, scrollHeight, clientHeight } = element;
+                  const isAtTop = scrollTop === 0;
+                  const isAtBottom = scrollTop + clientHeight >= scrollHeight;
+                  if ((isAtTop && e.deltaY < 0) || (isAtBottom && e.deltaY > 0)) {
+                    e.preventDefault();
+                  }
+                }}
+                onTouchMove={(e) => e.stopPropagation()}>
                 {renderContent()}
               </div>
             </div>
@@ -201,7 +251,12 @@ export const LocationSelector: React.FC = () => {
             <div className="bg-gray-50 px-4 py-3 border-b border-gray-200">
               <h3 className="text-sm font-semibold text-gray-900">Currency Settings</h3>
             </div>
-            <div className="p-4 space-y-3">
+            <div 
+              className="p-4 space-y-3 max-h-96 overflow-y-auto"
+              style={{ overscrollBehavior: 'contain' }}
+              onWheel={(e) => e.stopPropagation()}
+              onTouchMove={(e) => e.stopPropagation()}
+            >
               {renderContent()}
             </div>
           </div>

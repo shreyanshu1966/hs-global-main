@@ -55,6 +55,27 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose }) => {
     });
   };
 
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      // Store original styles
+      const originalStyle = window.getComputedStyle(document.body).overflow;
+      const originalPaddingRight = window.getComputedStyle(document.body).paddingRight;
+
+      // Get scrollbar width
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+
+      // Apply styles to prevent body scroll
+      document.body.style.overflow = 'hidden';
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+
+      return () => {
+        document.body.style.overflow = originalStyle;
+        document.body.style.paddingRight = originalPaddingRight;
+      };
+    }
+  }, [isOpen]);
+
   if (!isRendered) return null;
 
   return (
@@ -65,13 +86,24 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose }) => {
         className="absolute inset-0 bg-black/50"
         onClick={onClose}
         style={{ opacity: 0 }}
+        onWheel={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+        }}
+        onTouchMove={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+        }}
       />
 
       {/* Modal */}
       <div
         ref={modalRef}
         className="bg-white rounded-lg shadow-xl w-full max-w-md relative z-10"
-        style={{ opacity: 0, transform: 'scale(0.95)' }}
+        style={{ opacity: 0, transform: 'scale(0.95)', overscrollBehavior: 'contain' }}
+        onClick={(e) => e.stopPropagation()}
+        onWheel={(e) => e.stopPropagation()}
+        onTouchMove={(e) => e.stopPropagation()}
       >
         <div className="flex justify-between items-center p-6 border-b">
           <h2 className="text-2xl font-bold text-primary">Request Quote</h2>

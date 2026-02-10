@@ -199,6 +199,27 @@ const Gallery = memo(() => {
     return () => window.removeEventListener("keydown", onKey);
   }, [isModalOpen, closeModal]);
 
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (isModalOpen) {
+      // Store original styles
+      const originalStyle = window.getComputedStyle(document.body).overflow;
+      const originalPaddingRight = window.getComputedStyle(document.body).paddingRight;
+
+      // Get scrollbar width
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+
+      // Apply styles to prevent body scroll
+      document.body.style.overflow = 'hidden';
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+
+      return () => {
+        document.body.style.overflow = originalStyle;
+        document.body.style.paddingRight = originalPaddingRight;
+      };
+    }
+  }, [isModalOpen]);
+
   // Lazy-load Swiper only when modal opens
   useEffect(() => {
     if (!isModalOpen || SwiperComponents) return;
@@ -494,12 +515,23 @@ const Gallery = memo(() => {
             className="absolute inset-0 bg-black/60 backdrop-blur-sm"
             onClick={closeModal}
             style={{ opacity: 0 }}
+            onWheel={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }}
+            onTouchMove={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }}
           />
           <div className="absolute inset-0 flex items-center justify-center p-3 md:p-4">
             <div
               ref={modalContentRef}
               className="relative w-[96vw] max-w-5xl max-h-[90vh] mx-auto bg-white/70 backdrop-blur-xl rounded-2xl border-2 border-black shadow-[0_20px_50px_rgba(0,0,0,0.4)] overflow-hidden flex flex-col"
-              style={{ opacity: 0, transform: 'scale(0.98) translateY(10px)' }}
+              style={{ opacity: 0, transform: 'scale(0.98) translateY(10px)', overscrollBehavior: 'contain' }}
+              onClick={(e) => e.stopPropagation()}
+              onWheel={(e) => e.stopPropagation()}
+              onTouchMove={(e) => e.stopPropagation()}
             >
               {/* Close */}
               <button
