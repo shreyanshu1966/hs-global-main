@@ -696,15 +696,21 @@ const Admin = () => {
                     const { addCustomSubcategory } = await import('../services/categoryService');
                     const categoryName = productFormData.category === 'furniture' ? 'Furniture' : 'Slabs';
                     await addCustomSubcategory(productFormData.category, categoryName, customSubcategory.trim());
+                    
                     // Reload custom subcategories to update dropdowns
                     await loadCustomSubcategories();
+                    
                     // Refresh navigation categories if available
                     if (typeof (window as any).refreshNavCategories === 'function') {
                         (window as any).refreshNavCategories();
                     }
+                    
+                    console.log('✅ Custom subcategory saved successfully');
                 } catch (error) {
-                    console.warn('Failed to save custom subcategory:', error);
-                    // Continue with product creation even if custom subcategory saving fails
+                    console.error('❌ Failed to save custom subcategory:', error);
+                    setProductLoading(false);
+                    alert(`Failed to save custom subcategory "${customSubcategory}". Error: ${error.message || error}. Please try again or use a predefined subcategory.`);
+                    return; // Stop the product creation/update process
                 }
             }
 

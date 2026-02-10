@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300">
+  <g fill="none" stroke="#ffffff" stroke-width="14" stroke-linecap="round" stroke-linejoin="round">
+
+    <!-- H -->
+    <!-- Left vertical -->
+    <line x1="120" y1="60" x2="120" y2="240" />
+
+    <!-- Right vertical -->
+    <line x1="200" y1="60" x2="200" y2="240" />
+
+    <!-- Middle horizontal -->
+    <line x1="120" y1="150" x2="200" y2="150" />
+
+    <!-- Bottom short horizontal -->
+    <line x1="160" y1="190" x2="200" y2="190" />
+
+    <!-- G -->
+    <!-- Outer circle -->
+    <circle cx="380" cy="150" r="90" />
+
+    <!-- Inner horizontal -->
+    <line x1="380" y1="150" x2="455" y2="150" />
+
+    <!-- Inner vertical -->
+    <line x1="380" y1="150" x2="380" y2="215" />
+
+  </g>
+</svg>
