@@ -239,10 +239,53 @@ export const reorderProductImages = async (
     return response.data;
 };
 
+/**
+ * Preview a product before saving (creates temporary version)
+ */
+export const previewProduct = async (
+    productData: ProductFormData,
+    images?: FileList | File[],
+    video?: File,
+    existingImages?: string[]
+): Promise<{ success: boolean; data: Product; message: string }> => {
+    const formData = new FormData();
+    formData.append('productData', JSON.stringify({
+        ...productData,
+        existingImages: existingImages || []
+    }));
+
+    // Add new images if provided
+    if (images) {
+        Array.from(images).forEach(image => {
+            formData.append('images', image);
+        });
+    }
+
+    // Add video if provided
+    if (video) {
+        formData.append('video', video);
+    }
+
+    const response = await axios.post(
+        `${API_URL}/admin/products/preview`,
+        formData,
+        {
+            ...getAuthHeader(),
+            headers: {
+                ...getAuthHeader().headers,
+                'Content-Type': 'multipart/form-data'
+            }
+        }
+    );
+
+    return response.data;
+};
+
 export default {
     getAdminProducts,
     createProduct,
     updateProduct,
     deleteProduct,
-    reorderProductImages
+    reorderProductImages,
+    previewProduct
 };

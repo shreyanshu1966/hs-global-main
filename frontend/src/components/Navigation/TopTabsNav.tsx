@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ChevronDown, Grid3x3, X, Search } from 'lucide-react';
 import { SearchModal } from '../SearchModal';
-import { categories, Subcategory } from '../../data/products';
+import { Subcategory } from '../../data/products';
+import { getFilteredCategoriesWithCustom } from '../../utils/dynamicCategories';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 
@@ -30,6 +31,8 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
   const [showMegaMenu, setShowMegaMenu] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [filteredCategories, setFilteredCategories] = useState<any[]>([]);
+  const [categoriesLoading, setCategoriesLoading] = useState(true);
 
   const { contextSafe } = useGSAP({ scope: rootRef });
 
@@ -39,6 +42,39 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Load categories with custom subcategories
+  const loadCategories = async () => {
+    setCategoriesLoading(true);
+    try {
+      const categories = await getFilteredCategoriesWithCustom();
+      setFilteredCategories(categories);
+    } catch (error) {
+      console.error('Failed to load categories:', error);
+      // Fallback to static categories
+      const { getFilteredCategories } = await import('../../utils/dynamicCategories');
+      setFilteredCategories(getFilteredCategories());
+    } finally {
+      setCategoriesLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadCategories();
+  }, []);
+
+  // Refresh categories function (can be called externally)
+  const refreshCategories = () => {
+    loadCategories();
+  };
+
+  // Expose refresh function via window for external access
+  useEffect(() => {
+    (window as any).refreshNavCategories = refreshCategories;
+    return () => {
+      delete (window as any).refreshNavCategories;
+    };
   }, []);
 
   // Removed scroll-based hide/show behavior - navbar now stays sticky at all times
@@ -60,10 +96,13 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
     );
   }, []);
 
-  // Get active category object
+  // Get filtered categories dynamically
+  // const filteredCategories = useMemo(() => getFilteredCategories(), []); // Removed - now loaded asynchronously
+
+  // Get active category object from filtered categories
   const activeCategoryObj = useMemo(
-    () => categories.find(c => c.id === activeCategory),
-    [activeCategory]
+    () => filteredCategories.find(c => c.id === activeCategory),
+    [activeCategory, filteredCategories]
   );
 
   // Reset expanded state on category change
@@ -105,7 +144,7 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
     });
   }, [activeCategoryObj, activeCategory]);
 
-  // Build child to parent mapping
+  // Build child to parent mapping from filtered categories
   const childToParent = useMemo(() => {
     const map: Record<string, { parentId: string; parentName: string }> = {};
     const walk = (subs: Subcategory[], parentId?: string, parentName?: string) => {
@@ -251,25 +290,23 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
     url.hash = '';
     window.history.replaceState(null, '', url.toString());
 
-    // Safety timeout to ensure the flag is always reset
-    const safetyTimeout = setTimeout(() => {
+    // Reset the category change flag after a short delay
+    setTimeout(() => {
       categoryChangeInProgressRef.current = false;
-      programmaticScrollRef.current = false;
-    }, 3000);
+    }, 100);
 
     setTimeout(() => {
-      const targetCategory = categories.find(c => c.id === categoryId);
+      const targetCategory = filteredCategories.find(c => c.id === categoryId);
       if (targetCategory?.subcategories?.[0]) {
         const firstSectionId = targetCategory.subcategories[0].id;
         onSectionClick(firstSectionId);
         scrollToSection(firstSectionId);
 
         setTimeout(() => {
-          clearTimeout(safetyTimeout);
           categoryChangeInProgressRef.current = false;
+          programmaticScrollRef.current = false;
         }, 1000);
       } else {
-        clearTimeout(safetyTimeout);
         programmaticScrollRef.current = false;
         categoryChangeInProgressRef.current = false;
       }
@@ -312,19 +349,23 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
           {/* Category Switcher */}
           <div className="flex items-center gap-1 sm:gap-2">
             <div className="inline-flex items-center gap-0.5 sm:gap-1 bg-gray-100 rounded-full p-0.5 sm:p-1 shadow-sm">
-              {categories.map((category) => (
-                <button
-                  key={category.id}
-                  onClick={() => handleCategoryChange(category.id)}
-                  disabled={categoryChangeInProgressRef.current}
-                  className={`px-3 sm:px-4 md:px-6 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm md:text-base font-semibold tracking-wide transition-all duration-300 disabled:opacity-50 active:scale-95 ${activeCategory === category.id
-                    ? 'bg-black text-white shadow-md'
-                    : 'text-gray-700 hover:text-black hover:bg-white'
-                    }`}
-                >
-                  {category.name}
-                </button>
-              ))}
+              {categoriesLoading ? (
+                <div className="px-4 py-2 text-sm text-gray-500">Loading...</div>
+              ) : (
+                filteredCategories.map((category) => (
+                  <button
+                    key={category.id}
+                    onClick={() => handleCategoryChange(category.id)}
+                    disabled={categoryChangeInProgressRef.current}
+                    className={`px-3 sm:px-4 md:px-6 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm md:text-base font-semibold tracking-wide transition-all duration-300 disabled:opacity-50 active:scale-95 ${activeCategory === category.id
+                      ? 'bg-black text-white shadow-md'
+                      : 'text-gray-700 hover:text-black hover:bg-white'
+                      }`}
+                  >
+                    {category.name}
+                  </button>
+                ))
+              )}
             </div>
           </div>
 

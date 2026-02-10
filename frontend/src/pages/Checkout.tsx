@@ -319,10 +319,12 @@ const Checkout: React.FC = () => {
                 <div className="md:col-span-1">
                   <label className="block text-sm font-medium text-gray-700 mb-1.5">Phone Number</label>
                   <input
+                    type="tel"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-500 cursor-not-allowed"
-                    readOnly
+                    className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all"
+                    placeholder="Enter your phone number"
+                    required
                   />
                 </div>
 

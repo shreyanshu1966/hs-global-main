@@ -101,10 +101,10 @@ export const ProductsModernVariant: React.FC = () => {
   useEffect(() => {
     const params = new URLSearchParams(location.search || "");
     const catParam = (params.get("cat") || "").toLowerCase();
-    if ((catParam === "furniture" || catParam === "slabs") && catParam !== activeCategory) {
+    if (catParam === "furniture" || catParam === "slabs") {
       setActiveCategory(catParam);
     }
-  }, [location.search, activeCategory]);
+  }, [location.search]);
 
 
   // Gallery preview using Cloudinary URLs
@@ -168,11 +168,11 @@ export const ProductsModernVariant: React.FC = () => {
 
   // Reset activeSection to first section when category changes
   useEffect(() => {
-    const firstSectionId = orderedIds[0];
-    if (firstSectionId && activeSection !== firstSectionId) {
+    if (orderedIds.length > 0) {
+      const firstSectionId = orderedIds[0];
       setActiveSection(firstSectionId);
     }
-  }, [activeCategory, orderedIds, activeSection]);
+  }, [activeCategory, orderedIds]);
 
   // OPTIMIZED: Preloading disabled - images load on demand with lazy loading
   // This improves initial page load performance

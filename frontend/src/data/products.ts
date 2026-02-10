@@ -283,7 +283,6 @@ const buildFurnitureCategories = (): Subcategory[] => {
   pushMain("Bowls");
   pushMain("Urli");
   pushMain("Sculptures");
-  pushMain("Others");
 
   return result;
 };

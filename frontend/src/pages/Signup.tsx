@@ -47,7 +47,7 @@ const Signup: React.FC = () => {
     };
 
     const validatePhone = (phone: string) => {
-        if (!phone) return true; // Optional
+        if (!phone) return false; // Required
         return /^\+?[\d\s-]{10,15}$/.test(phone);
     };
 
@@ -228,7 +228,7 @@ const Signup: React.FC = () => {
                                 {/* Phone */}
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        Phone Number (Optional)
+                                        Phone Number
                                     </label>
                                     <div className="relative">
                                         <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -239,10 +239,11 @@ const Signup: React.FC = () => {
                                             onBlur={() => handleBlur('phone')}
                                             className={`w-full pl-11 pr-4 py-3 border ${touched.phone && !validatePhone(phone) ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:ring-black'} rounded-lg focus:ring-2 focus:border-transparent outline-none transition-all`}
                                             placeholder="+1 (555) 000-0000"
+                                            required
                                         />
                                     </div>
                                     {touched.phone && !validatePhone(phone) && (
-                                        <p className="mt-1 text-xs text-red-500">Please enter a valid phone number (digits only).</p>
+                                        <p className="mt-1 text-xs text-red-500">{!phone ? 'Phone number is required.' : 'Please enter a valid phone number (digits only).'}</p>
                                     )}
                                 </div>
 

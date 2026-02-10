@@ -1593,9 +1593,9 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     etsyUrl: 'https://www.etsy.com/in-en/listing/4401121984/the-fox-handcrafted-exotic-white-marble',
   },
 
-  // Others
+  // Table Lamps
   'aurora marble table lamp': {
-    product: 'Other',
+    product: 'Table Lamp',
     type: 'Indoor',
     shape: 'Conical',
     material: 'Aurora Marble',

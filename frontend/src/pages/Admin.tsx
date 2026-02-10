@@ -198,6 +198,12 @@ const Admin = () => {
     const [deletingProductId, setDeletingProductId] = useState<string | null>(null);
     const [showCustomSubcategory, setShowCustomSubcategory] = useState(false);
     const [customSubcategory, setCustomSubcategory] = useState('');
+    const [customSubcategories, setCustomSubcategories] = useState<{[categoryId: string]: Array<{id: string, name: string}>}>({});
+
+    // Product Preview state
+    const [showProductPreview, setShowProductPreview] = useState(false);
+    const [previewProduct, setPreviewProduct] = useState<Product | null>(null);
+    const [previewLoading, setPreviewLoading] = useState(false);
 
     // Bulk Actions state
     const [selectedProductIds, setSelectedProductIds] = useState<string[]>([]);
@@ -249,7 +255,7 @@ const Admin = () => {
     useEffect(() => {
         if (typeof document === 'undefined') return;
         
-        const isModalOpen = showProductModal || showBlogModal || showDiscountModal || showQuotationModal || showContactModal || showBulkDiscountModal;
+        const isModalOpen = showProductModal || showBlogModal || showDiscountModal || showQuotationModal || showContactModal || showBulkDiscountModal || showProductPreview;
         
         const preventScroll = (e: Event) => {
             e.preventDefault();
@@ -281,7 +287,7 @@ const Admin = () => {
             document.removeEventListener('touchmove', preventScroll);
             document.removeEventListener('scroll', preventScroll);
         };
-    }, [showProductModal, showBlogModal, showDiscountModal, showQuotationModal, showContactModal, showBulkDiscountModal]);
+    }, [showProductModal, showBlogModal, showDiscountModal, showQuotationModal, showContactModal, showBulkDiscountModal, showProductPreview]);
 
     const loadData = async () => {
         setLoading(true);
@@ -562,12 +568,28 @@ const Admin = () => {
         if (category === 'furniture') {
             return ['tables', 'coffee-table', 'console-table', 'dining-table', 'side-table',
                 'wash-basins', 'pedestal', 'countertop', 'sculptures', 'benches',
-                'planters', 'fountains', 'fireplace', 'columns', 'urns', 'other'];
+                'planters', 'fountains', 'fireplace', 'columns', 'urns'];
         } else {
             return ['granite', 'marble', 'quartzite', 'onyx', 'limestone',
-                'travertine', 'sandstone', 'slate', 'other'];
+                'travertine', 'sandstone', 'slate'];
         }
     };
+
+    // Load custom subcategories
+    const loadCustomSubcategories = async () => {
+        try {
+            const { fetchCustomCategories } = await import('../services/categoryService');
+            const customData = await fetchCustomCategories();
+            setCustomSubcategories(customData);
+        } catch (error) {
+            console.error('Failed to load custom subcategories:', error);
+        }
+    };
+
+    // Load custom subcategories on mount
+    useEffect(() => {
+        loadCustomSubcategories();
+    }, []);
 
     const handleCloseProductModal = () => {
         setShowProductModal(false);
@@ -668,6 +690,24 @@ const Admin = () => {
 
             setProductLoading(true);
 
+            // Save custom subcategory if it's a new one
+            if (showCustomSubcategory && customSubcategory.trim()) {
+                try {
+                    const { addCustomSubcategory } = await import('../services/categoryService');
+                    const categoryName = productFormData.category === 'furniture' ? 'Furniture' : 'Slabs';
+                    await addCustomSubcategory(productFormData.category, categoryName, customSubcategory.trim());
+                    // Reload custom subcategories to update dropdowns
+                    await loadCustomSubcategories();
+                    // Refresh navigation categories if available
+                    if (typeof (window as any).refreshNavCategories === 'function') {
+                        (window as any).refreshNavCategories();
+                    }
+                } catch (error) {
+                    console.warn('Failed to save custom subcategory:', error);
+                    // Continue with product creation even if custom subcategory saving fails
+                }
+            }
+
             if (editingProduct) {
                 // Update existing product
                 await adminProductService.updateProduct(
@@ -701,6 +741,53 @@ const Admin = () => {
         } finally {
             setProductLoading(false);
         }
+    };
+
+    const handlePreviewProduct = async () => {
+        if (previewLoading) return; // Prevent double submission
+
+        try {
+            // Use custom subcategory if provided, otherwise use form data
+            const finalSubcategory = showCustomSubcategory ? customSubcategory : productFormData.subcategory;
+
+            if (!productFormData.productId || !productFormData.name || !productFormData.category || !finalSubcategory || !productFormData.description) {
+                alert('Please fill in all required fields before previewing');
+                return;
+            }
+
+            // Prepare preview data
+            const previewFormData = {
+                ...productFormData,
+                subcategory: finalSubcategory
+            };
+
+            setPreviewLoading(true);
+
+            // Create preview using existing images and new images
+            const finalExistingImages = existingImages.filter(img => !removedImages.includes(img));
+            
+            const response = await adminProductService.previewProduct(
+                previewFormData as ProductFormData,
+                productImages,
+                productVideo || undefined,
+                finalExistingImages
+            );
+
+            if (response.success) {
+                setPreviewProduct(response.data);
+                setShowProductPreview(true);
+            }
+        } catch (error: any) {
+            console.error('Preview product error:', error);
+            alert(error.message || 'Failed to generate preview');
+        } finally {
+            setPreviewLoading(false);
+        }
+    };
+
+    const handleClosePreview = () => {
+        setShowProductPreview(false);
+        setPreviewProduct(null);
     };
 
     const handleDeleteProduct = async (productId: string) => {
@@ -3001,7 +3088,12 @@ const Admin = () => {
                                                         <option value="fireplace">Fireplace</option>
                                                         <option value="columns">Columns</option>
                                                         <option value="urns">Urns</option>
-                                                        <option value="other">Other</option>
+                                                        {/* Custom furniture subcategories */}
+                                                        {customSubcategories.furniture?.map(custom => (
+                                                            <option key={custom.id} value={custom.id}>
+                                                                {custom.name} (Custom)
+                                                            </option>
+                                                        ))}
                                                     </>
                                                 ) : (
                                                     <>
@@ -3013,7 +3105,12 @@ const Admin = () => {
                                                         <option value="travertine">Travertine</option>
                                                         <option value="sandstone">Sandstone</option>
                                                         <option value="slate">Slate</option>
-                                                        <option value="other">Other</option>
+                                                        {/* Custom slabs subcategories */}
+                                                        {customSubcategories.slabs?.map(custom => (
+                                                            <option key={custom.id} value={custom.id}>
+                                                                {custom.name} (Custom)
+                                                            </option>
+                                                        ))}
                                                     </>
                                                 )}
                                                 <option value="custom">➕ Add Custom Subcategory</option>
@@ -3427,6 +3524,14 @@ const Admin = () => {
 
                                     {/* Action Buttons */}
                                     <div className="flex gap-3 pt-6 border-t border-gray-200">
+                                        <button
+                                            onClick={handlePreviewProduct}
+                                            disabled={productLoading || previewLoading}
+                                            className="px-4 py-2 bg-gray-600 hover:bg-gray-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
+                                        >
+                                            <Layout className="w-4 h-4" />
+                                            {previewLoading ? 'Generating...' : 'Preview'}
+                                        </button>
                                         <button
                                             onClick={handleSaveProduct}
                                             disabled={productLoading}
@@ -3879,6 +3984,233 @@ const Admin = () => {
                                             className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                                         >
                                             {editingDiscount ? 'Update Discount' : 'Create Discount'}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        , document.body)}
+
+                    {/* Product Preview Modal */}
+                    {showProductPreview && previewProduct && isMounted && typeof document !== 'undefined' && document.body && createPortal(
+                        <div 
+                            className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" 
+                            aria-modal="true" 
+                            role="dialog"
+                            onClick={handleClosePreview}
+                        >
+                            <div
+                                className="bg-white rounded-xl shadow-2xl w-full max-w-4xl flex flex-col relative animate-in fade-in zoom-in-95 duration-200"
+                                style={{ height: '85vh', maxHeight: '900px' }}
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                <div className="flex-none p-6 border-b border-gray-200 flex justify-between items-center bg-white z-10 rounded-t-xl">
+                                    <div className="flex items-center gap-3">
+                                        <Layout className="w-6 h-6 text-blue-600" />
+                                        <h2 className="text-xl font-bold text-gray-900">Product Preview</h2>
+                                        <span className="px-3 py-1 bg-blue-100 text-blue-700 text-sm rounded-full font-medium">
+                                            Preview Mode
+                                        </span>
+                                    </div>
+                                    <button
+                                        onClick={handleClosePreview}
+                                        className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                                    >
+                                        <X className="w-5 h-5 text-gray-500" />
+                                    </button>
+                                </div>
+
+                                <div className="flex-1 min-h-0 p-6 space-y-6 overflow-y-auto overscroll-contain custom-scrollbar">
+                                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                        {/* Product Images and Video */}
+                                        <div className="space-y-4">
+                                            <h3 className="text-lg font-semibold text-gray-900">Images & Media</h3>
+                                            
+                                            {/* Main Image */}
+                                            {previewProduct.image && (
+                                                <div className="relative">
+                                                    <img
+                                                        src={previewProduct.image}
+                                                        alt={previewProduct.name}
+                                                        className="w-full h-80 object-cover rounded-lg border border-gray-200"
+                                                    />
+                                                    <div className="absolute top-2 left-2 px-2 py-1 bg-blue-600 text-white text-xs rounded font-semibold">
+                                                        Main Image
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            {/* Image Gallery */}
+                                            {previewProduct.images && previewProduct.images.length > 1 && (
+                                                <div>
+                                                    <h4 className="text-sm font-medium text-gray-700 mb-2">All Images</h4>
+                                                    <div className="grid grid-cols-3 gap-2">
+                                                        {previewProduct.images.slice(1).map((image, index) => (
+                                                            <img
+                                                                key={index}
+                                                                src={image}
+                                                                alt={`${previewProduct.name} ${index + 2}`}
+                                                                className="w-full h-20 object-cover rounded border border-gray-200"
+                                                            />
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            {/* Video */}
+                                            {previewProduct.hasVideo && previewProduct.videoUrl && (
+                                                <div>
+                                                    <h4 className="text-sm font-medium text-gray-700 mb-2">Product Video</h4>
+                                                    <video
+                                                        src={previewProduct.videoUrl}
+                                                        controls
+                                                        className="w-full max-h-60 rounded-lg border border-gray-200"
+                                                    />
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        {/* Product Details */}
+                                        <div className="space-y-6">
+                                            <div>
+                                                <h3 className="text-lg font-semibold text-gray-900 mb-4">Product Details</h3>
+                                                
+                                                <div className="space-y-3">
+                                                    <div className="flex items-center justify-between">
+                                                        <span className="text-sm font-medium text-gray-500">Product ID:</span>
+                                                        <span className="text-sm text-gray-900">{previewProduct.productId}</span>
+                                                    </div>
+                                                    
+                                                    <div className="flex items-center justify-between">
+                                                        <span className="text-sm font-medium text-gray-500">Name:</span>
+                                                        <span className="text-sm text-gray-900 font-medium">{previewProduct.name}</span>
+                                                    </div>
+                                                    
+                                                    <div className="flex items-center justify-between">
+                                                        <span className="text-sm font-medium text-gray-500">Category:</span>
+                                                        <span className="text-sm text-gray-900 capitalize">{previewProduct.category}</span>
+                                                    </div>
+                                                    
+                                                    <div className="flex items-center justify-between">
+                                                        <span className="text-sm font-medium text-gray-500">Subcategory:</span>
+                                                        <span className="text-sm text-gray-900 capitalize">{previewProduct.subcategory}</span>
+                                                    </div>
+
+                                                    {previewProduct.priceINR && (
+                                                        <div className="flex items-center justify-between">
+                                                            <span className="text-sm font-medium text-gray-500">Price:</span>
+                                                            <div className="text-right">
+                                                                {previewProduct.discount?.enabled && previewProduct.discountedPrice ? (
+                                                                    <>
+                                                                        <span className="text-lg font-bold text-gray-900">
+                                                                            ₹{previewProduct.discountedPrice.toLocaleString('en-IN')}
+                                                                        </span>
+                                                                        <br />
+                                                                        <span className="text-sm text-gray-500 line-through">
+                                                                            ₹{previewProduct.priceINR.toLocaleString('en-IN')}
+                                                                        </span>
+                                                                        <span className="ml-2 px-2 py-1 bg-red-100 text-red-700 text-xs rounded-full">
+                                                                            {previewProduct.discount.percentage}% OFF
+                                                                        </span>
+                                                                    </>
+                                                                ) : (
+                                                                    <span className="text-lg font-bold text-gray-900">
+                                                                        ₹{previewProduct.priceINR.toLocaleString('en-IN')}
+                                                                    </span>
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                    )}
+
+                                                    <div className="flex items-center justify-between">
+                                                        <span className="text-sm font-medium text-gray-500">Status:</span>
+                                                        <span className={`text-sm px-2 py-1 rounded-full font-medium ${
+                                                            previewProduct.status === 'active' 
+                                                                ? 'bg-green-100 text-green-700'
+                                                                : previewProduct.status === 'inactive' 
+                                                                ? 'bg-red-100 text-red-700'
+                                                                : 'bg-yellow-100 text-yellow-700'
+                                                        }`}>
+                                                            {previewProduct.status?.charAt(0).toUpperCase() + previewProduct.status?.slice(1)}
+                                                        </span>
+                                                    </div>
+
+                                                    <div className="flex items-center justify-between">
+                                                        <span className="text-sm font-medium text-gray-500">Available:</span>
+                                                        <span className={`text-sm px-2 py-1 rounded-full font-medium ${
+                                                            previewProduct.available 
+                                                                ? 'bg-green-100 text-green-700'
+                                                                : 'bg-red-100 text-red-700'
+                                                        }`}>
+                                                            {previewProduct.available ? 'Yes' : 'No'}
+                                                        </span>
+                                                    </div>
+
+                                                    <div className="flex items-center justify-between">
+                                                        <span className="text-sm font-medium text-gray-500">Featured:</span>
+                                                        <span className={`text-sm px-2 py-1 rounded-full font-medium ${
+                                                            previewProduct.featured 
+                                                                ? 'bg-amber-100 text-amber-700'
+                                                                : 'bg-gray-100 text-gray-700'
+                                                        }`}>
+                                                            {previewProduct.featured ? 'Yes' : 'No'}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {/* Description */}
+                                            <div>
+                                                <h4 className="text-sm font-medium text-gray-900 mb-2">Description</h4>
+                                                <p className="text-sm text-gray-700 leading-relaxed bg-gray-50 p-3 rounded-lg">
+                                                    {previewProduct.description}
+                                                </p>
+                                            </div>
+
+                                            {/* Discount Info */}
+                                            {previewProduct.discount?.enabled && (
+                                                <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                                                    <h4 className="text-sm font-medium text-red-900 mb-2 flex items-center gap-2">
+                                                        <Tag className="w-4 h-4" />
+                                                        Active Discount
+                                                    </h4>
+                                                    <div className="space-y-1 text-sm text-red-800">
+                                                        <p>Percentage: {previewProduct.discount.percentage}%</p>
+                                                        {previewProduct.discount.description && (
+                                                            <p>Description: {previewProduct.discount.description}</p>
+                                                        )}
+                                                        {previewProduct.discount.startDate && (
+                                                            <p>Starts: {new Date(previewProduct.discount.startDate).toLocaleDateString()}</p>
+                                                        )}
+                                                        {previewProduct.discount.endDate && (
+                                                            <p>Ends: {new Date(previewProduct.discount.endDate).toLocaleDateString()}</p>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    {/* Preview Actions */}
+                                    <div className="flex gap-3 pt-6 border-t border-gray-200">
+                                        <button
+                                            onClick={handleClosePreview}
+                                            className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
+                                        >
+                                            <X className="w-4 h-4" />
+                                            Close Preview
+                                        </button>
+                                        <button
+                                            onClick={() => {
+                                                if (confirm('This will close the preview and save the product. Continue?')) {
+                                                    handleClosePreview();
+                                                    handleSaveProduct();
+                                                }
+                                            }}
+                                            className="flex-1 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
+                                        >
+                                            <Save className="w-4 h-4" />
+                                            Save Product
                                         </button>
                                     </div>
                                 </div>

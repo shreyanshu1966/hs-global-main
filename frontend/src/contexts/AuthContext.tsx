@@ -26,7 +26,7 @@ interface AuthContextType {
     isAuthenticated: boolean;
     isLoading: boolean;
     login: (email: string, password: string) => Promise<void>;
-    register: (name: string, email: string, password: string, phone?: string) => Promise<void>;
+    register: (name: string, email: string, password: string, phone: string) => Promise<void>;
     logout: () => void;
     updateProfile: (data: Partial<User>) => Promise<void>;
     changePassword: (currentPassword: string, newPassword: string) => Promise<void>;
@@ -142,7 +142,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
     };
 
-    const register = async (name: string, email: string, password: string, phone?: string) => {
+    const register = async (name: string, email: string, password: string, phone: string) => {
         try {
             const response = await fetch(`${API_URL}/auth/register`, {
                 method: 'POST',
