@@ -19,10 +19,10 @@ exports.register = async (req, res) => {
         const { name, email, password, phone } = req.body;
 
         // Validation
-        if (!name || !email || !password) {
+        if (!name || !email || !password || !phone) {
             return res.status(400).json({
                 ok: false,
-                error: 'Please provide name, email, and password'
+                error: 'Please provide name, email, password, and phone number'
             });
         }
 
@@ -49,15 +49,13 @@ exports.register = async (req, res) => {
             });
         }
 
-        // Phone validation (optional)
-        if (phone) {
-            const phoneRegex = /^\+?[\d\s-]{10,15}$/;
-            if (!phoneRegex.test(phone)) {
-                return res.status(400).json({
-                    ok: false,
-                    error: 'Please provide a valid phone number'
-                });
-            }
+        // Phone validation (required)
+        const phoneRegex = /^\+?[\d\s-]{10,15}$/;
+        if (!phoneRegex.test(phone)) {
+            return res.status(400).json({
+                ok: false,
+                error: 'Please provide a valid phone number'
+            });
         }
 
         // Check if user already exists
@@ -74,7 +72,7 @@ exports.register = async (req, res) => {
             name,
             email: email.toLowerCase(),
             password,
-            phone: phone || ''
+            phone
         });
 
         // Generate email verification token

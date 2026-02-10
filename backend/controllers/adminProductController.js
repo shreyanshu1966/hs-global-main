@@ -490,11 +490,101 @@ const getSubcategories = async (req, res) => {
     }
 };
 
+/**
+ * Generate a product preview without saving to database
+ * This allows admins to see how the product will look before creating/updating
+ */
+const previewProduct = async (req, res) => {
+    try {
+        const productData = JSON.parse(req.body.productData || '{}');
+
+        // Upload temporary images to Cloudinary for preview
+        const uploadedImages = [];
+        const imageFiles = req.files?.images || [];
+
+        if (imageFiles && imageFiles.length > 0) {
+            console.log(`Uploading ${imageFiles.length} images to Cloudinary for preview...`);
+
+            for (const file of imageFiles) {
+                try {
+                    const result = await uploadToCloudinary(
+                        file.buffer,
+                        `hs-global/preview/${productData.category}/${productData.subcategory}`
+                    );
+                    uploadedImages.push(result.secure_url);
+                    console.log('Preview image uploaded:', result.secure_url);
+                } catch (uploadError) {
+                    console.error('Error uploading preview image:', uploadError);
+                    // Continue with other images even if one fails
+                }
+            }
+        }
+
+        // Handle video upload for preview
+        let videoInfo = null;
+        const videoFiles = req.files?.video || [];
+        if (videoFiles && videoFiles.length > 0 && videoFiles[0]) {
+            const videoFile = videoFiles[0];
+
+            // Validate video
+            const validation = validateVideo(videoFile);
+            if (!validation.valid) {
+                return res.status(400).json({
+                    success: false,
+                    message: validation.error
+                });
+            }
+
+            try {
+                // For preview, we'll just return video metadata instead of uploading
+                videoInfo = {
+                    hasVideo: true,
+                    videoSize: videoFile.size,
+                    videoName: videoFile.originalname,
+                    videoType: videoFile.mimetype
+                };
+            } catch (videoError) {
+                console.error('Video processing error:', videoError);
+            }
+        }
+
+        // Create preview product object
+        const previewProduct = {
+            ...productData,
+            image: uploadedImages.length > 0 ? uploadedImages[0] : productData.image,
+            images: uploadedImages.length > 0 ? uploadedImages : productData.images || [],
+            sortedImages: uploadedImages.length > 0 ? uploadedImages : productData.sortedImages || [],
+            ...videoInfo,
+            // Add preview-specific fields
+            isPreview: true,
+            previewTimestamp: new Date().toISOString(),
+            // Calculate discount price if applicable
+            discountedPrice: productData.discount?.enabled && productData.priceINR 
+                ? Math.round(productData.priceINR * (1 - productData.discount.percentage / 100))
+                : null
+        };
+
+        res.json({
+            success: true,
+            data: previewProduct,
+            message: 'Product preview generated successfully'
+        });
+    } catch (error) {
+        console.error('Preview product error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to generate product preview',
+            error: error.message
+        });
+    }
+};
+
 module.exports = {
     getAdminProducts,
     createProductWithImages,
     updateProductWithImages,
     deleteProductWithImages,
     reorderProductImages,
-    getSubcategories
+    getSubcategories,
+    previewProduct
 };

@@ -59,6 +59,7 @@ app.use('/api/contact', require('./routes/contactRoutes')); // Contact form rout
 app.use('/api/quotations', require('./routes/quotationRoutes')); // Quotation requests
 app.use('/api/leads', require('./routes/leadCaptureRoutes')); // Lead capture from popup
 app.use('/api/reviews', require('./routes/reviewRoutes')); // Product reviews
+app.use('/api/categories', require('./routes/categoryRoutes')); // Category management
 app.use('/api', require('./routes/productRoutes')); // Product routes
 
 // Health check endpoint
