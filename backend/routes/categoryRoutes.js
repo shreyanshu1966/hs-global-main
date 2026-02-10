@@ -8,11 +8,15 @@ const {
     updateCustomSubcategory
 } = require('../controllers/categoryController');
 
-// Get all custom categories with their subcategories
-router.get('/custom', getAllCustomCategories);
+const { authMiddleware, adminMiddleware } = require('../middleware/authMiddleware');
 
-// Get custom subcategories for a specific category
+// Public routes - no authentication required for viewing categories
+router.get('/custom', getAllCustomCategories);
 router.get('/custom/:categoryId', getCustomSubcategories);
+
+// Admin routes - require authentication and admin privileges
+router.use(authMiddleware);
+router.use(adminMiddleware);
 
 // Add a custom subcategory
 router.post('/custom/subcategory', addCustomSubcategory);

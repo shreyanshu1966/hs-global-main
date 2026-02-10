@@ -44,14 +44,44 @@ const addCustomSubcategory = async (req, res) => {
     try {
         const { categoryId, categoryName, subcategoryName } = req.body;
         
+        // Validate required fields
         if (!categoryId || !categoryName || !subcategoryName) {
             return res.status(400).json({
                 success: false,
                 message: 'categoryId, categoryName, and subcategoryName are required'
             });
         }
+
+        // Validate categoryId
+        if (!['furniture', 'slabs'].includes(categoryId)) {
+            return res.status(400).json({
+                success: false,
+                message: 'categoryId must be either "furniture" or "slabs"'
+            });
+        }
+
+        // Validate subcategoryName format
+        const trimmedSubcategoryName = subcategoryName.trim();
+        if (trimmedSubcategoryName.length < 2 || trimmedSubcategoryName.length > 50) {
+            return res.status(400).json({
+                success: false,
+                message: 'Subcategory name must be between 2 and 50 characters'
+            });
+        }
+
+        // Check for invalid characters (basic validation)
+        if (!/^[a-zA-Z0-9\s\-_]+$/.test(trimmedSubcategoryName)) {
+            return res.status(400).json({
+                success: false,
+                message: 'Subcategory name can only contain letters, numbers, spaces, hyphens, and underscores'
+            });
+        }
         
-        const category = await Category.addCustomSubcategory(categoryId, categoryName, subcategoryName);
+        console.log(`⚡ Adding custom subcategory: "${trimmedSubcategoryName}" to category "${categoryId}"`);
+        
+        const category = await Category.addCustomSubcategory(categoryId, categoryName, trimmedSubcategoryName);
+        
+        console.log(`✅ Custom subcategory added successfully: "${trimmedSubcategoryName}"`);
         
         res.json({
             success: true,
@@ -59,7 +89,7 @@ const addCustomSubcategory = async (req, res) => {
             data: category
         });
     } catch (error) {
-        console.error('Error adding custom subcategory:', error);
+        console.error('❌ Error adding custom subcategory:', error);
         res.status(500).json({
             success: false,
             message: 'Failed to add custom subcategory',

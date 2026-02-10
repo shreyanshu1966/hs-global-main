@@ -56,14 +56,19 @@ categorySchema.statics.getCustomSubcategories = async function(categoryId) {
 categorySchema.statics.addCustomSubcategory = async function(categoryId, categoryName, subcategoryName) {
     const subcategoryId = subcategoryName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
     
+    console.log(`📂 Looking for category: ${categoryId}`);
+    
     let category = await this.findOne({ categoryId });
     
     if (!category) {
+        console.log(`📝 Creating new category: ${categoryId}`);
         category = new this({
             categoryId,
             categoryName,
             customSubcategories: []
         });
+    } else {
+        console.log(`📂 Found existing category: ${categoryId} with ${category.customSubcategories.length} subcategories`);
     }
     
     // Check if subcategory already exists
@@ -71,16 +76,24 @@ categorySchema.statics.addCustomSubcategory = async function(categoryId, categor
         sub => sub.name.toLowerCase() === subcategoryName.toLowerCase()
     );
     
-    if (!existingSubcategory) {
-        category.customSubcategories.push({
-            id: subcategoryId,
-            name: subcategoryName,
-            isCustom: true
-        });
-        category.updatedAt = Date.now(); // Manually update timestamp
-        await category.save();
+    if (existingSubcategory) {
+        console.log(`⚠️ Subcategory "${subcategoryName}" already exists, skipping...`);
+        return category;
     }
     
+    // Add new subcategory
+    category.customSubcategories.push({
+        id: subcategoryId,
+        name: subcategoryName,
+        isCustom: true
+    });
+    
+    category.updatedAt = Date.now(); // Manually update timestamp
+    
+    console.log(`💾 Saving category with new subcategory: "${subcategoryName}"`);
+    await category.save();
+    
+    console.log(`✅ Successfully saved custom subcategory: "${subcategoryName}"`);
     return category;
 };
 
