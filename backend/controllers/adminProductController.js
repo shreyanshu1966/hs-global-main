@@ -1015,7 +1015,8 @@ const applyDiscountToAll = async (req, res) => {
             { $set: { discount: discountData } }
         );
 
-        const updatedCount = result?.modifiedCount || result?.nModified || 0;
+        console.log('Apply to all - Update result:', JSON.stringify(result));
+        const updatedCount = result?.matchedCount || result?.n || 0;
 
         res.json({
             success: true,
@@ -1055,7 +1056,8 @@ const removeDiscountFromAll = async (req, res) => {
             { $set: { discount: discountData } }
         );
 
-        const updatedCount = result?.modifiedCount || result?.nModified || 0;
+        console.log('Remove from all - Update result:', JSON.stringify(result));
+        const updatedCount = result?.matchedCount || result?.n || 0;
 
         res.json({
             success: true,
@@ -1110,7 +1112,8 @@ const applyBulkDiscount = async (req, res) => {
             { $set: { discount: discountData } }
         );
 
-        const updatedCount = result?.modifiedCount || result?.nModified || 0;
+        console.log('Apply bulk - Product IDs:', productIds, 'Update result:', JSON.stringify(result));
+        const updatedCount = result?.matchedCount || result?.n || 0;
 
         res.json({
             success: true,
@@ -1159,7 +1162,8 @@ const removeBulkDiscount = async (req, res) => {
             { $set: { discount: discountData } }
         );
 
-        const updatedCount = result?.modifiedCount || result?.nModified || 0;
+        console.log('Remove bulk - Product IDs:', productIds, 'Update result:', JSON.stringify(result));
+        const updatedCount = result?.matchedCount || result?.n || 0;
 
         res.json({
             success: true,
