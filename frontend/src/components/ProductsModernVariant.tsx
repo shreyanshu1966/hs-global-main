@@ -144,7 +144,7 @@ export const ProductsModernVariant: React.FC = () => {
   // Group products by subcategory
   const subcategorizedProducts = useMemo(() => {
     const grouped: { [subcategory: string]: Product[] } = {};
-    
+
     allProducts.forEach(product => {
       const sub = product.subcategory || 'Uncategorized';
       if (!grouped[sub]) {
@@ -152,7 +152,7 @@ export const ProductsModernVariant: React.FC = () => {
       }
       grouped[sub].push(product);
     });
-    
+
     return Object.entries(grouped).map(([subcategory, products]) => ({
       id: subcategory.toLowerCase().replace(/\s+/g, '-'),
       name: subcategory,
@@ -162,7 +162,7 @@ export const ProductsModernVariant: React.FC = () => {
 
   const categoryFilteredSubcategories = subcategorizedProducts;
   const orderedIds = subcategorizedProducts.map(sub => sub.id);
-  
+
   // Create a map of all subcategories for product lookup
   const allSubcategories = subcategorizedProducts;
 
@@ -206,7 +206,7 @@ export const ProductsModernVariant: React.FC = () => {
     },
     [navDims.height]
   );
-  
+
   // Helper function to get ordered subcategory IDs for a category
   const getOrderedSubcategoryIds = useCallback((categoryId: string) => {
     // Since we're already filtering by activeCategory in the useProducts hook,
@@ -268,6 +268,17 @@ export const ProductsModernVariant: React.FC = () => {
 
     return () => observer.disconnect();
   }, [activeCategory, furnitureIds, slabsIds]);
+
+  // Refresh ScrollTrigger when products load or change to ensure sticky nav works correctly
+  useEffect(() => {
+    if (!productsLoading && allProducts.length > 0) {
+      // Small delay to ensure DOM is rendered
+      const timer = setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [productsLoading, allProducts, activeCategory]);
 
 
 
@@ -596,7 +607,6 @@ export const ProductsModernVariant: React.FC = () => {
                   if (el) animateSection(el); // Animate on ref assignment / update
                 }}
                 className="scroll-mt-32"
-                style={{ opacity: 0 }} // Initial state for GSAP
               >
                 <div className="mb-8 md:mb-12 text-center">
                   <h2

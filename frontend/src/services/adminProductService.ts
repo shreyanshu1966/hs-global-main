@@ -27,18 +27,15 @@ export interface Product {
     videoSize?: number;
     videoUploadedAt?: string;
     furnitureSpecs?: {
-        product?: string;
         type?: string;
         shape?: string;
         material?: string;
         size?: string;
         surfaceFinish?: string;
-        delivery?: string;
-        height?: string;
         colorName?: string;
-        packagingDetails?: string;
+        height?: string;
         location?: string;
-        etsyUrl?: string;
+        packagingDetails?: string;
     };
     slabSpecs?: {
         finish?: string;

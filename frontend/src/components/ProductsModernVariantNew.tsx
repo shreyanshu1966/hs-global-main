@@ -205,16 +205,27 @@ export const ProductsModernVariant: React.FC = () => {
     limit: 1000 // Get all products for the category
   });
 
+  // Refresh ScrollTrigger when products load to ensure sticky positioning is correct
+  useEffect(() => {
+    if (!productsLoading && allProducts.length > 0) {
+      // Small delay to ensure DOM is rendered
+      const timer = setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [productsLoading, allProducts, activeCategory]);
+
   // Group products by subcategory with filtering
   const subcategorizedProducts = useMemo(() => {
     const grouped: { [subcategory: string]: Product[] } = {};
-    
+
     const filtered = allProducts.filter(p => {
-        if (!searchTerm) return true;
-        const term = searchTerm.toLowerCase();
-        return p.name.toLowerCase().includes(term) || 
-               (p.description && p.description.toLowerCase().includes(term)) || 
-               p.subcategory.toLowerCase().includes(term);
+      if (!searchTerm) return true;
+      const term = searchTerm.toLowerCase();
+      return p.name.toLowerCase().includes(term) ||
+        (p.description && p.description.toLowerCase().includes(term)) ||
+        p.subcategory.toLowerCase().includes(term);
     });
 
     filtered.forEach(product => {
@@ -224,7 +235,7 @@ export const ProductsModernVariant: React.FC = () => {
       }
       grouped[sub].push(product);
     });
-    
+
     const result = Object.entries(grouped).map(([subcategory, products]) => ({
       id: subcategory.toLowerCase().replace(/\s+/g, '-'),
       name: subcategory,
@@ -443,65 +454,64 @@ export const ProductsModernVariant: React.FC = () => {
 
       {/* Section Navigation & Search */}
       {navOptions.length > 0 && (
-        <div className="sticky bg-white border-b border-gray-200 z-30 transition-all duration-300" 
-             style={{ top: `${navDims.height || 0}px` }}>
+        <div className="sticky bg-white border-b border-gray-200 z-30 transition-all duration-300"
+          style={{ top: `${navDims.height || 0}px` }}>
           <div className="container mx-auto px-4 flex flex-col md:flex-row md:items-center justify-between">
-              <div className="flex space-x-6 overflow-x-auto py-4 scrollbar-hide flex-1">
-                {navOptions.map((option) => (
-                  <button
-                    key={option.id}
-                    onClick={() => handleSectionClick(option.id)}
-                    className={`whitespace-nowrap px-3 py-2 text-sm font-medium transition-colors ${
-                      activeSection === option.id
-                        ? "text-blue-600 border-b-2 border-blue-600"
-                        : "text-gray-500 hover:text-gray-700"
+            <div className="flex space-x-6 overflow-x-auto py-4 scrollbar-hide flex-1">
+              {navOptions.map((option) => (
+                <button
+                  key={option.id}
+                  onClick={() => handleSectionClick(option.id)}
+                  className={`whitespace-nowrap px-3 py-2 text-sm font-medium transition-colors ${activeSection === option.id
+                    ? "text-blue-600 border-b-2 border-blue-600"
+                    : "text-gray-500 hover:text-gray-700"
                     }`}
-                  >
-                    {option.label}
-                  </button>
-                ))}
-              </div>
-
-               {/* Search Input inline */}
-               <div className="hidden md:flex items-center ml-4 relative">
-                  <SearchIcon className="absolute left-3 w-4 h-4 text-gray-400" />
-                  <input 
-                    type="text" 
-                    placeholder="Filter products..." 
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-9 pr-8 py-1.5 border border-gray-200 rounded-full text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 w-48 transition-all"
-                  />
-                  {searchTerm && (
-                    <button 
-                        onClick={() => setSearchTerm('')}
-                        className="absolute right-3 p-0.5 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100"
-                    >
-                        <X className="w-3 h-3" />
-                    </button>
-                  )}
-               </div>
+                >
+                  {option.label}
+                </button>
+              ))}
             </div>
-             {/* Mobile Search */}
-             <div className="md:hidden px-4 pb-3 border-t border-gray-100 pt-2">
-                 <div className="relative">
-                    <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                     <input 
-                        type="text" 
-                        placeholder="Filter products..." 
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full pl-9 pr-8 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:bg-white transition-colors"
-                      />
-                      {searchTerm && (
-                        <button 
-                            onClick={() => setSearchTerm('')}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600"
-                        >
-                            <X className="w-4 h-4" />
-                        </button>
-                      )}
-               </div>
+
+            {/* Search Input inline */}
+            <div className="hidden md:flex items-center ml-4 relative">
+              <SearchIcon className="absolute left-3 w-4 h-4 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Filter products..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-9 pr-8 py-1.5 border border-gray-200 rounded-full text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 w-48 transition-all"
+              />
+              {searchTerm && (
+                <button
+                  onClick={() => setSearchTerm('')}
+                  className="absolute right-3 p-0.5 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100"
+                >
+                  <X className="w-3 h-3" />
+                </button>
+              )}
+            </div>
+          </div>
+          {/* Mobile Search */}
+          <div className="md:hidden px-4 pb-3 border-t border-gray-100 pt-2">
+            <div className="relative">
+              <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Filter products..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-9 pr-8 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:bg-white transition-colors"
+              />
+              {searchTerm && (
+                <button
+                  onClick={() => setSearchTerm('')}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              )}
+            </div>
           </div>
         </div>
       )}
@@ -511,22 +521,22 @@ export const ProductsModernVariant: React.FC = () => {
         <div className="container mx-auto px-4 md:px-6">
           {productsLoading && !subcategorizedProducts.length ? (
             <div className="space-y-12 animate-pulse">
-                 {[1, 2].map(i => (
-                    <div key={i} className="mb-12">
-                        <div className="h-8 w-48 bg-gray-200 rounded mb-8 mx-auto md:mx-0" />
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                            {[1, 2, 3, 4].map(j => (
-                                <ProductSkeleton key={j} />
-                            ))}
-                        </div>
-                    </div>
-                 ))}
-             </div>
+              {[1, 2].map(i => (
+                <div key={i} className="mb-12">
+                  <div className="h-8 w-48 bg-gray-200 rounded mb-8 mx-auto md:mx-0" />
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    {[1, 2, 3, 4].map(j => (
+                      <ProductSkeleton key={j} />
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
           ) : productsError ? (
-             <div className="text-center py-12">
-                <p className="text-red-500 mb-4">{productsError}</p>
-                <button onClick={() => refetch()} className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-sm">Retry</button>
-             </div>
+            <div className="text-center py-12">
+              <p className="text-red-500 mb-4">{productsError}</p>
+              <button onClick={() => refetch()} className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-sm">Retry</button>
+            </div>
           ) : (
             <div className="space-y-16 md:space-y-24 py-6 md:py-8">
               {categoryFilteredSubcategories.length > 0 ? (
@@ -539,7 +549,6 @@ export const ProductsModernVariant: React.FC = () => {
                       if (el) animateSection(el);
                     }}
                     className="scroll-mt-32"
-                    style={{ opacity: 0 }}
                   >
                     <div className="mb-8 md:mb-12 text-center">
                       <h2 className="text-3xl md:text-4xl lg:text-5xl font-light text-gray-800 mb-4 md:mb-6 tracking-wide">
@@ -574,8 +583,8 @@ export const ProductsModernVariant: React.FC = () => {
                   <p className="text-gray-500 max-w-md mx-auto mb-6">
                     We couldn't find any products matching "{searchTerm}". Try adjusting your search or category.
                   </p>
-                  <button 
-                    onClick={() => setSearchTerm('')} 
+                  <button
+                    onClick={() => setSearchTerm('')}
                     className="text-blue-600 hover:text-blue-800 font-medium hover:underline"
                   >
                     Clear search filter

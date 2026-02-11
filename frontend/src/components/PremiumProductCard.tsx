@@ -143,13 +143,17 @@ export const PremiumProductCard: React.FC<PremiumProductCardProps> = ({ product,
                             <ShoppingBag className="w-4 h-4" />
                             Add to Cart
                         </button>
-                        <Link
-                            to={`/products/${product.productId || product._id}`}
+                        <button
+                            onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                window.location.href = `/products/${product.productId || product._id}`;
+                            }}
                             className="flex items-center gap-2 px-6 py-3 bg-black/50 backdrop-blur-sm text-white font-semibold rounded-full hover:bg-black transition-all duration-300 transform hover:scale-105 shadow-lg border border-white/20"
                         >
                             <Eye className="w-4 h-4" />
                             View
-                        </Link>
+                        </button>
                     </div>
                 </div>
 
@@ -168,11 +172,12 @@ export const PremiumProductCard: React.FC<PremiumProductCardProps> = ({ product,
                 </div>
 
                 {/* Product Name */}
-                <Link to={`/products/${product.productId || product._id}`}>
-                    <h3 className="font-serif text-xl text-stone-900 mb-3 line-clamp-2 group-hover:text-amber-600 transition-colors duration-300">
+                <div>
+                    <h3 className="font-serif text-xl text-stone-900 mb-3 line-clamp-2 group-hover:text-amber-600 transition-colors duration-300 cursor-pointer"
+                        onClick={() => window.location.href = `/products/${product.productId || product._id}`}>
                         {product.name}
                     </h3>
-                </Link>
+                </div>
 
                 {/* Rating */}
                 {product.totalReviews && product.totalReviews > 0 ? (

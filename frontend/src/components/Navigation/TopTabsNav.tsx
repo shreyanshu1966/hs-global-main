@@ -6,6 +6,10 @@ import { getFilteredCategoriesWithCustom } from '../../utils/dynamicCategories';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
+
 interface TopTabsNavProps {
   activeSection: string;
   onSectionClick: (sectionId: string) => void;
@@ -87,13 +91,30 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
     };
   }, []);
 
-  // Initial animation
+  // Initial animation and Sticky behavior
   useGSAP(() => {
+    // Initial fade in
     gsap.fromTo(
       rootRef.current,
       { opacity: 0, y: -20 },
       { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }
     );
+
+    // Sticky positioning using ScrollTrigger
+    // We use a shorter end value or 'max' to ensure it stays pinned
+    ScrollTrigger.create({
+      trigger: rootRef.current,
+      start: 'top top',
+      end: 'max',
+      pin: true,
+      pinSpacing: false, // pinSpacing: false prevents the plugin from adding padding to the parent, which was pushing content down infinitely.
+      toggleClass: "is-pinned"
+    });
+
+    // Refresh ScrollTrigger on resize to ensure correct calculations
+    const handleResize = () => ScrollTrigger.refresh();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   // Get filtered categories dynamically
@@ -338,10 +359,48 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
     }
   });
 
+  // Scroll direction state for "Header + Sticky Nav" stacking
+  const [isScrollingUp, setIsScrollingUp] = useState(false);
+  const lastScrollYRef = useRef(0);
+
+  useEffect(() => {
+    let ticking = false;
+    const updateScrollDir = () => {
+      const currentScrollY = window.scrollY;
+      const diff = currentScrollY - lastScrollYRef.current;
+
+      // Threshold to prevent jitter
+      if (Math.abs(diff) > 5) {
+        if (diff < 0) {
+          // Scrolling Up
+          setIsScrollingUp(true);
+        } else {
+          // Scrolling Down
+          setIsScrollingUp(false);
+        }
+      }
+      lastScrollYRef.current = currentScrollY;
+      ticking = false;
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateScrollDir);
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
   return (
     <div
       ref={rootRef}
-      className="sticky top-0 z-40 bg-white/95 backdrop-blur-lg border-b border-gray-200 shadow-sm touch-manipulation"
+      style={{
+        transform: isScrollingUp && lastScrollYRef.current > 100 ? 'translateY(80px)' : 'translateY(0px)',
+      }}
+      className="w-full z-[49] bg-white/95 backdrop-blur-lg border-b border-gray-200 shadow-sm touch-manipulation transition-transform duration-500 ease-in-out"
     >
       <div className="container mx-auto px-3 sm:px-4">
         {/* Top Bar: Categories + Mega Menu Toggle */}

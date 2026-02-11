@@ -7,7 +7,10 @@ const {
     deleteProductWithImages,
     reorderProductImages,
     getSubcategories,
-    previewProduct
+    previewProduct,
+    processProductImages,
+    updateProductSpecifications,
+    updateProductInventoryAndShipping
 } = require('../controllers/adminProductController');
 
 const { authMiddleware, adminMiddleware } = require('../middleware/authMiddleware');
@@ -43,5 +46,13 @@ router.put('/:id',
 );
 router.delete('/:id', deleteProductWithImages);
 router.patch('/:id/reorder-images', reorderProductImages);
+
+// Enhanced ecommerce features
+router.post('/:id/process-images', 
+    uploadMedia.array('images', 10), 
+    processProductImages
+);
+router.patch('/:id/specifications', updateProductSpecifications);
+router.patch('/:id/inventory-shipping', updateProductInventoryAndShipping);
 
 module.exports = router;

@@ -1,2 +1,0 @@
-// Temporary file to hold the Discounts tab content
-// This will be inserted into Admin.tsx

@@ -262,7 +262,6 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
     return () => observer.disconnect();
   }, []);
 
-  const etsyUrl = product.furnitureSpecs?.etsyUrl || null;
   const videoUrl = product.category === 'furniture'
     ? getProductVideoUrl(product.name, product.category, product.subcategory || '')
     : null;
@@ -534,19 +533,6 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
               />
             )}
           </div>
-
-          {/* Etsy */}
-          {etsyUrl && (
-            <a
-              href={etsyUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="h-11 md:h-12 px-3 flex items-center justify-center rounded-lg"
-              style={{ backgroundColor: "#ff5c01" }}
-            >
-              <img src="/etsy_logo.webp" alt="Etsy" className="w-8 h-8 object-contain" />
-            </a>
-          )}
 
           {/* WhatsApp */}
           <a

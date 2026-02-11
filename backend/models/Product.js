@@ -2,18 +2,15 @@ const mongoose = require('mongoose');
 
 // Sub-schemas for better organization
 const furnitureSpecsSchema = new mongoose.Schema({
-    product: String,
     type: String,
     shape: String,
     material: String,
     size: String,
     surfaceFinish: String,
-    delivery: String,
-    height: String,
     colorName: String,
-    packagingDetails: String,
+    height: String,
     location: String,
-    etsyUrl: String
+    packagingDetails: String
 }, { _id: false });
 
 const slabSpecsSchema = new mongoose.Schema({
@@ -22,6 +19,46 @@ const slabSpecsSchema = new mongoose.Schema({
     origin: String,
     material: String,
     application: String
+}, { _id: false });
+
+// Custom specification schema
+const customSpecSchema = new mongoose.Schema({
+    key: {
+        type: String,
+        required: true
+    },
+    label: {
+        type: String,
+        required: true
+    },
+    value: String,
+    type: {
+        type: String,
+        enum: ['text', 'number', 'select', 'textarea'],
+        default: 'text'
+    },
+    options: [String], // For select type fields
+    order: {
+        type: Number,
+        default: 0
+    }
+}, { _id: false });
+
+// Image processing schema
+const imageProcessingSchema = new mongoose.Schema({
+    originalUrl: String,
+    processedUrl: String,
+    thumbnailUrl: String,
+    webpUrl: String,
+    cropData: {
+        x: Number,
+        y: Number,
+        width: Number,
+        height: Number,
+        rotation: Number
+    },
+    altText: String,
+    caption: String
 }, { _id: false });
 
 const productSchema = new mongoose.Schema({
@@ -66,7 +103,7 @@ const productSchema = new mongoose.Schema({
         type: Number,
         min: 0
     },
-    
+
     // Discount fields
     discount: {
         enabled: {
@@ -92,7 +129,7 @@ const productSchema = new mongoose.Schema({
             default: ''
         }
     },
-    
+
     available: {
         type: Boolean,
         default: true
@@ -121,11 +158,29 @@ const productSchema = new mongoose.Schema({
     furnitureSpecs: furnitureSpecsSchema,
     // Slab specific fields
     slabSpecs: slabSpecsSchema,
+    // Custom specifications (for additional product-specific attributes)
+    customSpecs: [customSpecSchema],
+
+    // Enhanced Image Management
+    imageProcessing: [imageProcessingSchema],
+    imageMetadata: {
+        totalSize: Number,
+        lastOptimized: Date,
+        cropVersions: [{
+            name: String,
+            url: String,
+            aspectRatio: String,
+            dimensions: {
+                width: Number,
+                height: Number
+            }
+        }]
+    },
     // SEO fields
     seoTitle: String,
     seoDescription: String,
     seoKeywords: [String],
-    
+
     // Analytics
     viewCount: {
         type: Number,
@@ -135,7 +190,7 @@ const productSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
-    
+
     // Review Statistics
     averageRating: {
         type: Number,
@@ -147,14 +202,14 @@ const productSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
-    
+
     // Status
     status: {
         type: String,
         enum: ['active', 'inactive', 'draft'],
         default: 'active'
     },
-    
+
     // Metadata
     featured: {
         type: Boolean,
@@ -170,6 +225,76 @@ const productSchema = new mongoose.Schema({
             type: String,
             default: 'cm'
         }
+    },
+
+    // Enhanced Ecommerce Features
+    inventory: {
+        trackStock: {
+            type: Boolean,
+            default: false
+        },
+        stockQuantity: {
+            type: Number,
+            default: 0
+        },
+        lowStockThreshold: {
+            type: Number,
+            default: 5
+        },
+        reservedQuantity: {
+            type: Number,
+            default: 0
+        }
+    },
+
+    shipping: {
+        requiresShipping: {
+            type: Boolean,
+            default: true
+        },
+        shippingClass: {
+            type: String,
+            enum: ['standard', 'heavy', 'fragile', 'oversized', 'white-glove'],
+            default: 'standard'
+        },
+        handlingTime: {
+            type: String,
+            default: '2-3 business days'
+        },
+        freeShippingThreshold: Number,
+        shippingNotes: String
+    },
+
+    productType: {
+        type: String,
+        enum: ['simple', 'configurable', 'custom-order'],
+        default: 'simple'
+    },
+
+    // Product variants (for configurable products)
+    variants: [{
+        name: String,
+        options: [String],
+        priceModifier: Number, // Price difference from base price
+        stockQuantity: Number,
+        sku: String,
+        images: [String]
+    }],
+
+    // Manufacturing and sourcing
+    manufacturing: {
+        isCustomMade: {
+            type: Boolean,
+            default: false
+        },
+        leadTime: String,
+        minimumOrder: {
+            type: Number,
+            default: 1
+        },
+        supplier: String,
+        artisan: String,
+        countryOfOrigin: String
     }
 }, {
     timestamps: true
@@ -185,65 +310,65 @@ productSchema.index({ priceINR: 1 });
 productSchema.index({ available: 1 });
 
 // Virtual for formatted price
-productSchema.virtual('formattedPrice').get(function() {
+productSchema.virtual('formattedPrice').get(function () {
     if (!this.priceINR) return 'Price on Request';
     return `₹${this.priceINR.toLocaleString('en-IN')}`;
 });
 
 // Instance method to increment view count
-productSchema.methods.incrementView = function() {
+productSchema.methods.incrementView = function () {
     this.viewCount = (this.viewCount || 0) + 1;
     return this.save();
 };
 
 // Instance method to increment add to cart count
-productSchema.methods.incrementAddToCart = function() {
+productSchema.methods.incrementAddToCart = function () {
     this.addToCartCount = (this.addToCartCount || 0) + 1;
     return this.save();
 };
 
 // Instance method to check if discount is currently active
-productSchema.methods.isDiscountActive = function() {
+productSchema.methods.isDiscountActive = function () {
     if (!this.discount || !this.discount.enabled || !this.discount.percentage) {
         return false;
     }
-    
+
     const now = new Date();
-    
+
     // Check start date if exists
     if (this.discount.startDate && now < this.discount.startDate) {
         return false;
     }
-    
+
     // Check end date if exists
     if (this.discount.endDate && now > this.discount.endDate) {
         return false;
     }
-    
+
     return true;
 };
 
 // Instance method to get the final price (with discount if active)
-productSchema.methods.getFinalPrice = function() {
+productSchema.methods.getFinalPrice = function () {
     if (!this.priceINR) {
         return null;
     }
-    
+
     if (this.isDiscountActive()) {
         const discountAmount = (this.priceINR * this.discount.percentage) / 100;
         return Math.round(this.priceINR - discountAmount);
     }
-    
+
     return this.priceINR;
 };
 
 // Virtual for discounted price
-productSchema.virtual('discountedPrice').get(function() {
+productSchema.virtual('discountedPrice').get(function () {
     return this.getFinalPrice();
 });
 
 // Virtual for discount amount
-productSchema.virtual('discountAmount').get(function() {
+productSchema.virtual('discountAmount').get(function () {
     if (!this.priceINR || !this.isDiscountActive()) {
         return 0;
     }
@@ -251,52 +376,52 @@ productSchema.virtual('discountAmount').get(function() {
 });
 
 // Static method to get active discounted products
-productSchema.statics.getByCategory = function(category) {
+productSchema.statics.getByCategory = function (category) {
     return this.find({ category, status: 'active', available: true })
         .sort({ featured: -1, createdAt: -1 });
 };
 
 // Static method to get featured products
-productSchema.statics.getFeatured = function(limit = 10) {
+productSchema.statics.getFeatured = function (limit = 10) {
     return this.find({ featured: true, status: 'active', available: true })
         .limit(limit)
         .sort({ createdAt: -1 });
 };
 
 // Static method for search
-productSchema.statics.search = function(query, filters = {}) {
+productSchema.statics.search = function (query, filters = {}) {
     const searchQuery = {
         status: 'active',
         available: true,
         ...filters,
         $text: { $search: query }
     };
-    
+
     return this.find(searchQuery, { score: { $meta: 'textScore' } })
         .sort({ score: { $meta: 'textScore' } });
 };
 
 // Static method to get all subcategories for a category
-productSchema.statics.getSubcategoriesByCategory = function(category) {
-    return this.distinct('subcategory', { 
+productSchema.statics.getSubcategoriesByCategory = function (category) {
+    return this.distinct('subcategory', {
         category,
         status: { $in: ['active', 'inactive', 'draft'] }
     });
 };
 
 // Static method to get predefined subcategories
-productSchema.statics.getPredefinedSubcategories = function(category) {
+productSchema.statics.getPredefinedSubcategories = function (category) {
     const furniture = [
         'tables', 'coffee-table', 'console-table', 'dining-table', 'side-table',
         'wash-basins', 'pedestal', 'countertop', 'sculptures', 'benches',
         'planters', 'fountains', 'fireplace', 'columns', 'urns', 'other'
     ];
-    
+
     const slabs = [
         'granite', 'marble', 'quartzite', 'onyx', 'limestone',
         'travertine', 'sandstone', 'slate', 'other'
     ];
-    
+
     return category === 'furniture' ? furniture : slabs;
 };
 

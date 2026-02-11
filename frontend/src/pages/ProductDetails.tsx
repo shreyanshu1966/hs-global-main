@@ -64,14 +64,26 @@ const ProductDetails = () => {
     // Build specs section
     let specs: Record<string, string> = {};
 
-    if (category === "furniture" && dbProduct.specifications) {
-      // Use specifications from database
-      specs = dbProduct.specifications;
+    if (category === "furniture" && dbProduct.furnitureSpecs) {
+      // Use furniture specifications from database
+      specs = Object.entries(dbProduct.furnitureSpecs)
+        .filter(([_, value]) => value) // Only include non-empty values
+        .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
+    } else if (category === "slabs" && dbProduct.slabSpecs) {
+      // Use slab specifications from database
+      specs = {
+        finish: dbProduct.slabSpecs.finish || selectedFinish,
+        thickness: dbProduct.slabSpecs.thickness || selectedThickness,
+        origin: dbProduct.slabSpecs.origin || "India",
+        material: dbProduct.slabSpecs.material || subcategory.replace(/-/g, " "),
+        application: dbProduct.slabSpecs.application || "Indoor / Outdoor",
+      };
     } else {
+      // Default specs for slabs without specifications
       specs = {
         finish: selectedFinish,
         thickness: selectedThickness,
-        origin: dbProduct.specifications?.origin || "India",
+        origin: "India",
         material: subcategory.replace(/-/g, " "),
         application: "Indoor / Outdoor",
       };
@@ -137,9 +149,6 @@ const ProductDetails = () => {
 
   // Check if product is in cart
   const isInCart = product ? cartState.items.some((item) => item.id === product.id) : false;
-
-  // Get Etsy URL if available from specifications
-  const etsyUrl = dbProduct?.specifications?.etsyUrl;
 
   // GSAP animation for image changes
   useGSAP(() => {
@@ -693,17 +702,6 @@ const ProductDetails = () => {
                 <Quote className="w-5 h-5" />
                 Request Custom Quote
               </Link>
-
-              {product.available && etsyUrl && (
-                <a
-                  href={etsyUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full h-12 flex items-center justify-center gap-2 px-6 rounded-xl bg-orange-500 text-white hover:bg-orange-600 transition-all duration-300 font-semibold shadow-md hover:shadow-lg"
-                >
-                  View on Etsy
-                </a>
-              )}
             </div>
           </div>
         </div>

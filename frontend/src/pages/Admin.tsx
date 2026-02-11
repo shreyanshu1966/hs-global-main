@@ -10,6 +10,7 @@ import {
     updateUserRole,
     deleteUser
 } from '../services/adminService';
+import EnhancedProductForm from '../components/EnhancedProductForm';
 import {
     TrendingUp,
     Users,
@@ -198,7 +199,7 @@ const Admin = () => {
     const [deletingProductId, setDeletingProductId] = useState<string | null>(null);
     const [showCustomSubcategory, setShowCustomSubcategory] = useState(false);
     const [customSubcategory, setCustomSubcategory] = useState('');
-    const [customSubcategories, setCustomSubcategories] = useState<{[categoryId: string]: Array<{id: string, name: string}>}>({});
+    const [customSubcategories, setCustomSubcategories] = useState<{ [categoryId: string]: Array<{ id: string, name: string }> }>({});
 
     // Product Preview state
     const [showProductPreview, setShowProductPreview] = useState(false);
@@ -254,18 +255,18 @@ const Admin = () => {
     // Lock body scroll when any modal is open
     useEffect(() => {
         if (typeof document === 'undefined') return;
-        
+
         const isModalOpen = showProductModal || showBlogModal || showDiscountModal || showQuotationModal || showContactModal || showBulkDiscountModal || showProductPreview;
-        
+
         const preventScroll = (e: Event) => {
             e.preventDefault();
             e.stopPropagation();
         };
-        
+
         if (isModalOpen) {
             document.body?.style.setProperty('overflow', 'hidden', 'important');
             document.documentElement?.style.setProperty('overflow', 'hidden', 'important');
-            
+
             // Add event listeners to prevent background scrolling
             document.addEventListener('wheel', preventScroll, { passive: false });
             document.addEventListener('touchmove', preventScroll, { passive: false });
@@ -273,13 +274,13 @@ const Admin = () => {
         } else {
             document.body?.style.removeProperty('overflow');
             document.documentElement?.style.removeProperty('overflow');
-            
+
             // Remove event listeners
             document.removeEventListener('wheel', preventScroll);
             document.removeEventListener('touchmove', preventScroll);
             document.removeEventListener('scroll', preventScroll);
         }
-        
+
         return () => {
             document.body?.style.removeProperty('overflow');
             document.documentElement?.style.removeProperty('overflow');
@@ -696,15 +697,15 @@ const Admin = () => {
                     const { addCustomSubcategory } = await import('../services/categoryService');
                     const categoryName = productFormData.category === 'furniture' ? 'Furniture' : 'Slabs';
                     await addCustomSubcategory(productFormData.category, categoryName, customSubcategory.trim());
-                    
+
                     // Reload custom subcategories to update dropdowns
                     await loadCustomSubcategories();
-                    
+
                     // Refresh navigation categories if available
                     if (typeof (window as any).refreshNavCategories === 'function') {
                         (window as any).refreshNavCategories();
                     }
-                    
+
                     console.log('✅ Custom subcategory saved successfully');
                 } catch (error) {
                     console.error('❌ Failed to save custom subcategory:', error);
@@ -771,7 +772,7 @@ const Admin = () => {
 
             // Create preview using existing images and new images
             const finalExistingImages = existingImages.filter(img => !removedImages.includes(img));
-            
+
             const response = await adminProductService.previewProduct(
                 previewFormData as ProductFormData,
                 productImages,
@@ -1991,7 +1992,7 @@ const Admin = () => {
 
                     {/* Contact Detail Modal */}
                     {showContactModal && selectedContact && isMounted && typeof document !== 'undefined' && document.body && createPortal(
-                        <div 
+                        <div
                             className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
                             onClick={() => {
                                 setShowContactModal(false);
@@ -2000,7 +2001,7 @@ const Admin = () => {
                             onWheel={(e) => e.preventDefault()}
                             onTouchMove={(e) => e.preventDefault()}
                         >
-                            <div 
+                            <div
                                 className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
                                 onClick={(e) => e.stopPropagation()}
                                 onWheel={(e) => e.stopPropagation()}
@@ -2259,7 +2260,7 @@ const Admin = () => {
 
                     {/* Quotation Detail Modal */}
                     {showQuotationModal && selectedQuotation && isMounted && typeof document !== 'undefined' && document.body && createPortal(
-                        <div 
+                        <div
                             className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
                             onClick={() => {
                                 setShowQuotationModal(false);
@@ -2268,7 +2269,7 @@ const Admin = () => {
                             onWheel={(e) => e.preventDefault()}
                             onTouchMove={(e) => e.preventDefault()}
                         >
-                            <div 
+                            <div
                                 className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
                                 onClick={(e) => e.stopPropagation()}
                                 onWheel={(e) => e.stopPropagation()}
@@ -2996,9 +2997,9 @@ const Admin = () => {
 
                     {/* Product Modal */}
                     {showProductModal && isMounted && typeof document !== 'undefined' && document.body && createPortal(
-                        <div 
-                            className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" 
-                            aria-modal="true" 
+                        <div
+                            className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+                            aria-modal="true"
                             role="dialog"
                             onClick={handleCloseProductModal}
                             onWheel={(e) => e.preventDefault()}
@@ -3006,8 +3007,8 @@ const Admin = () => {
                         >
                             {/* Modal Container - Fixed height constraint */}
                             <div
-                                className="bg-white rounded-xl shadow-2xl w-full max-w-4xl flex flex-col relative animate-in fade-in zoom-in-95 duration-200"
-                                style={{ height: '85vh', maxHeight: '900px' }}
+                                className="bg-white rounded-xl shadow-2xl w-full max-w-6xl flex flex-col relative animate-in fade-in zoom-in-95 duration-200"
+                                style={{ height: '90vh', maxHeight: '1000px' }}
                                 onClick={(e) => e.stopPropagation()}
                                 onWheel={(e) => e.stopPropagation()}
                                 onTouchMove={(e) => e.stopPropagation()}
@@ -3024,544 +3025,86 @@ const Admin = () => {
                                     </button>
                                 </div>
 
-                                <div className="flex-1 min-h-0 p-6 space-y-6 overflow-y-auto overscroll-contain custom-scrollbar">
-                                    {/* Basic Information */}
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">Product ID *</label>
-                                            <input
-                                                type="text"
-                                                required
-                                                disabled={!!editingProduct}
-                                                value={productFormData.productId || ''}
-                                                onChange={(e) => setProductFormData({ ...productFormData, productId: e.target.value })}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">Product Name *</label>
-                                            <input
-                                                type="text"
-                                                required
-                                                value={productFormData.name || ''}
-                                                onChange={(e) => setProductFormData({ ...productFormData, name: e.target.value })}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">Category *</label>
-                                            <select
-                                                required
-                                                value={productFormData.category || 'furniture'}
-                                                onChange={(e) => setProductFormData({ ...productFormData, category: e.target.value, subcategory: '' })}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                                            >
-                                                <option value="furniture">Furniture</option>
-                                                <option value="slabs">Slabs</option>
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">Subcategory *</label>
-                                            <select
-                                                required={!showCustomSubcategory}
-                                                value={showCustomSubcategory ? 'custom' : (productFormData.subcategory || '')}
-                                                onChange={(e) => {
-                                                    if (e.target.value === 'custom') {
-                                                        setShowCustomSubcategory(true);
-                                                        setCustomSubcategory('');
-                                                    } else {
-                                                        setShowCustomSubcategory(false);
-                                                        setProductFormData({ ...productFormData, subcategory: e.target.value });
-                                                    }
-                                                }}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                                            >
-                                                <option value="">Select Subcategory</option>
-                                                {productFormData.category === 'furniture' ? (
-                                                    <>
-                                                        <option value="tables">Tables</option>
-                                                        <option value="coffee-table">Coffee Table</option>
-                                                        <option value="console-table">Console Table</option>
-                                                        <option value="dining-table">Dining Table</option>
-                                                        <option value="side-table">Side Table</option>
-                                                        <option value="wash-basins">Wash Basins</option>
-                                                        <option value="pedestal">Pedestal</option>
-                                                        <option value="countertop">Countertop</option>
-                                                        <option value="sculptures">Sculptures</option>
-                                                        <option value="benches">Benches</option>
-                                                        <option value="planters">Planters</option>
-                                                        <option value="fountains">Fountains</option>
-                                                        <option value="fireplace">Fireplace</option>
-                                                        <option value="columns">Columns</option>
-                                                        <option value="urns">Urns</option>
-                                                        {/* Custom furniture subcategories */}
-                                                        {customSubcategories.furniture?.map(custom => (
-                                                            <option key={custom.id} value={custom.id}>
-                                                                {custom.name} (Custom)
-                                                            </option>
-                                                        ))}
-                                                    </>
-                                                ) : (
-                                                    <>
-                                                        <option value="granite">Granite</option>
-                                                        <option value="marble">Marble</option>
-                                                        <option value="quartzite">Quartzite</option>
-                                                        <option value="onyx">Onyx</option>
-                                                        <option value="limestone">Limestone</option>
-                                                        <option value="travertine">Travertine</option>
-                                                        <option value="sandstone">Sandstone</option>
-                                                        <option value="slate">Slate</option>
-                                                        {/* Custom slabs subcategories */}
-                                                        {customSubcategories.slabs?.map(custom => (
-                                                            <option key={custom.id} value={custom.id}>
-                                                                {custom.name} (Custom)
-                                                            </option>
-                                                        ))}
-                                                    </>
-                                                )}
-                                                <option value="custom">➕ Add Custom Subcategory</option>
-                                            </select>
+                                <div className="flex-1 min-h-0 overflow-hidden">
+                                    <EnhancedProductForm
+                                        editingProduct={editingProduct}
+                                        onSave={async (productData, images, customSpecs) => {
+                                            try {
+                                                // Extract File objects from ProductImage array (new images only)
+                                                const newImageFiles = images
+                                                    .filter(img => img.file && !img.isExisting)
+                                                    .map(img => img.file!);
 
-                                            {/* Custom Subcategory Input */}
-                                            {showCustomSubcategory && (
-                                                <div className="mt-2">
-                                                    <input
-                                                        type="text"
-                                                        required
-                                                        value={customSubcategory}
-                                                        onChange={(e) => setCustomSubcategory(e.target.value)}
-                                                        placeholder="Enter custom subcategory (e.g., outdoor-tables)"
-                                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                                                    />
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => {
-                                                            setShowCustomSubcategory(false);
-                                                            setCustomSubcategory('');
-                                                        }}
-                                                        className="mt-1 text-sm text-blue-600 hover:text-blue-700"
-                                                    >
-                                                        ← Back to predefined options
-                                                    </button>
-                                                </div>
-                                            )}
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">Price (INR)</label>
-                                            <input
-                                                type="number"
-                                                value={productFormData.priceINR || ''}
-                                                onChange={(e) => setProductFormData({ ...productFormData, priceINR: parseFloat(e.target.value) })}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
-                                            <select
-                                                value={productFormData.status || 'active'}
-                                                onChange={(e) => setProductFormData({ ...productFormData, status: e.target.value as any })}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                                            >
-                                                <option value="active">Active</option>
-                                                <option value="inactive">Inactive</option>
-                                                <option value="draft">Draft</option>
-                                            </select>
-                                        </div>
-                                    </div>
+                                                // Extract existing image URLs
+                                                const existingImageUrls = images
+                                                    .filter(img => img.isExisting && img.url)
+                                                    .map(img => img.url);
 
-                                    {/* Discount Section */}
-                                    <div className="border-t border-gray-200 pt-4">
-                                        <div className="flex items-center justify-between mb-4">
-                                            <h4 className="text-lg font-semibold text-gray-900">Discount Settings</h4>
-                                            <label className="flex items-center cursor-pointer">
-                                                <input
-                                                    type="checkbox"
-                                                    checked={productFormData.discount?.enabled || false}
-                                                    onChange={(e) => setProductFormData({
-                                                        ...productFormData,
-                                                        discount: {
-                                                            ...productFormData.discount,
-                                                            enabled: e.target.checked,
-                                                            percentage: productFormData.discount?.percentage || 0
-                                                        }
-                                                    })}
-                                                    className="w-5 h-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
-                                                />
-                                                <span className="ml-2 text-sm font-medium text-gray-700">Enable Discount</span>
-                                            </label>
-                                        </div>
+                                                // Add existing images to productData
+                                                const finalProductData = {
+                                                    ...productData,
+                                                    existingImages: existingImageUrls
+                                                };
 
-                                        {productFormData.discount?.enabled && (
-                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg">
-                                                <div>
-                                                    <label className="block text-sm font-medium text-gray-700 mb-1">Discount Percentage *</label>
-                                                    <div className="relative">
-                                                        <input
-                                                            type="number"
-                                                            min="0"
-                                                            max="100"
-                                                            required={productFormData.discount?.enabled}
-                                                            value={productFormData.discount?.percentage || 0}
-                                                            onChange={(e) => setProductFormData({
-                                                                ...productFormData,
-                                                                discount: {
-                                                                    ...productFormData.discount,
-                                                                    enabled: true,
-                                                                    percentage: parseFloat(e.target.value) || 0
-                                                                }
-                                                            })}
-                                                            className="w-full px-4 py-2 pr-8 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                                                        />
-                                                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">%</span>
-                                                    </div>
-                                                    {productFormData.priceINR && productFormData.discount?.percentage > 0 && (
-                                                        <p className="mt-1 text-sm text-green-600">
-                                                            Final Price: ₹{Math.round(productFormData.priceINR * (1 - productFormData.discount.percentage / 100)).toLocaleString('en-IN')}
-                                                            <span className="text-gray-500 ml-2">
-                                                                (Save ₹{Math.round(productFormData.priceINR * productFormData.discount.percentage / 100).toLocaleString('en-IN')})
-                                                            </span>
-                                                        </p>
-                                                    )}
-                                                </div>
-                                                <div>
-                                                    <label className="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
-                                                    <input
-                                                        type="datetime-local"
-                                                        value={productFormData.discount?.startDate ? new Date(productFormData.discount.startDate).toISOString().slice(0, 16) : ''}
-                                                        onChange={(e) => setProductFormData({
-                                                            ...productFormData,
-                                                            discount: {
-                                                                ...productFormData.discount,
-                                                                enabled: true,
-                                                                percentage: productFormData.discount?.percentage || 0,
-                                                                startDate: e.target.value || null
-                                                            }
-                                                        })}
-                                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                                                    />
-                                                    <p className="mt-1 text-xs text-gray-500">Leave empty to start immediately</p>
-                                                </div>
-                                                <div>
-                                                    <label className="block text-sm font-medium text-gray-700 mb-1">End Date</label>
-                                                    <input
-                                                        type="datetime-local"
-                                                        value={productFormData.discount?.endDate ? new Date(productFormData.discount.endDate).toISOString().slice(0, 16) : ''}
-                                                        onChange={(e) => setProductFormData({
-                                                            ...productFormData,
-                                                            discount: {
-                                                                ...productFormData.discount,
-                                                                enabled: true,
-                                                                percentage: productFormData.discount?.percentage || 0,
-                                                                endDate: e.target.value || null
-                                                            }
-                                                        })}
-                                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                                                    />
-                                                    <p className="mt-1 text-xs text-gray-500">Leave empty for no expiration</p>
-                                                </div>
-                                                <div className="md:col-span-2">
-                                                    <label className="block text-sm font-medium text-gray-700 mb-1">Discount Description</label>
-                                                    <input
-                                                        type="text"
-                                                        placeholder="e.g., Summer Sale, Clearance, Limited Time Offer"
-                                                        value={productFormData.discount?.description || ''}
-                                                        onChange={(e) => setProductFormData({
-                                                            ...productFormData,
-                                                            discount: {
-                                                                ...productFormData.discount,
-                                                                enabled: true,
-                                                                percentage: productFormData.discount?.percentage || 0,
-                                                                description: e.target.value
-                                                            }
-                                                        })}
-                                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                                                    />
-                                                </div>
-                                            </div>
-                                        )}
-                                    </div>
-
-                                    {/* Description */}
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">Description *</label>
-                                        <textarea
-                                            required
-                                            rows={4}
-                                            value={productFormData.description || ''}
-                                            onChange={(e) => setProductFormData({ ...productFormData, description: e.target.value })}
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                                        />
-                                    </div>
-
-                                    {/* Images Upload */}
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            Product Images {!editingProduct && '*'}
-                                        </label>
-                                        <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-                                            <Upload className="w-12 h-12 mx-auto text-gray-400 mb-3" />
-                                            <p className="text-sm text-gray-600 mb-2">
-                                                Click to upload or drag and drop
-                                            </p>
-                                            <p className="text-xs text-gray-500 mb-4">
-                                                Images will be converted to WebP and compressed automatically
-                                            </p>
-                                            <input
-                                                type="file"
-                                                accept="image/*"
-                                                multiple
-                                                onChange={handleProductImageChange}
-                                                className="hidden"
-                                                id="product-images"
-                                            />
-                                            <label
-                                                htmlFor="product-images"
-                                                className="inline-block px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg cursor-pointer transition-colors"
-                                            >
-                                                Select Images
-                                            </label>
-                                        </div>
-
-
-                                        {/* Existing Images (when editing) */}
-                                        {existingImages.length > 0 && (
-                                            <div className="mt-4">
-                                                <h4 className="text-sm font-medium text-gray-700 mb-2">Existing Images</h4>
-                                                <div className="grid grid-cols-4 gap-3">
-                                                    {existingImages.map((imageUrl, index) => {
-                                                        if (removedImages.includes(imageUrl)) return null;
-                                                        const isMain = index === mainImageIndex && mainNewImageIndex === null; // Only main if no new image is selected as main
-                                                        return (
-                                                            <div key={imageUrl} className="relative group">
-                                                                <img
-                                                                    src={imageUrl}
-                                                                    alt={`Existing ${index + 1}`}
-                                                                    className={`w-full h-24 object-cover rounded-lg border-2 transition-all ${isMain ? 'border-blue-600 ring-2 ring-blue-200' : 'border-gray-200'
-                                                                        }`}
-                                                                />
-                                                                {isMain && (
-                                                                    <span className="absolute top-1 left-1 px-2 py-1 bg-blue-600 text-white text-xs rounded font-semibold shadow-sm">
-                                                                        Main
-                                                                    </span>
-                                                                )}
-                                                                {/* Action Buttons */}
-                                                                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center gap-1">
-                                                                    {!isMain && (
-                                                                        <button
-                                                                            type="button"
-                                                                            onClick={() => {
-                                                                                setMainImageIndex(index);
-                                                                                setMainNewImageIndex(null);
-                                                                            }}
-                                                                            className="p-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors"
-                                                                            title="Set as main image"
-                                                                        >
-                                                                            <Star className="w-4 h-4" />
-                                                                        </button>
-                                                                    )}
-                                                                    <button
-                                                                        type="button"
-                                                                        onClick={() => setRemovedImages([...removedImages, imageUrl])}
-                                                                        className="p-1.5 bg-red-600 hover:bg-red-700 text-white rounded transition-colors"
-                                                                        title="Remove image"
-                                                                    >
-                                                                        <X className="w-4 h-4" />
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                        );
-                                                    })}
-                                                </div>
-                                            </div>
-                                        )}
-
-                                        {/* New Image Previews */}
-                                        {productImagePreviews.length > 0 && (
-                                            <div className="mt-4">
-                                                <h4 className="text-sm font-medium text-gray-700 mb-2">New Images to Upload</h4>
-                                                <div className="grid grid-cols-4 gap-3">
-                                                    {productImagePreviews.map((preview, index) => {
-                                                        const isMain = index === mainNewImageIndex;
-                                                        return (
-                                                            <div key={index} className="relative group">
-                                                                <img
-                                                                    src={preview}
-                                                                    alt={`New ${index + 1}`}
-                                                                    className={`w-full h-24 object-cover rounded-lg border-2 transition-all ${isMain ? 'border-green-600 ring-2 ring-green-200' : 'border-gray-200'
-                                                                        }`}
-                                                                />
-                                                                {isMain ? (
-                                                                    <span className="absolute top-1 left-1 px-2 py-1 bg-green-600 text-white text-xs rounded font-semibold shadow-sm">
-                                                                        Main
-                                                                    </span>
-                                                                ) : (
-                                                                    <span className="absolute top-1 right-1 px-2 py-1 bg-green-600 text-white text-xs rounded shadow-sm">
-                                                                        New
-                                                                    </span>
-                                                                )}
-                                                                {/* Action Buttons */}
-                                                                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center gap-1">
-                                                                    {!isMain && (
-                                                                        <button
-                                                                            type="button"
-                                                                            onClick={() => {
-                                                                                setMainNewImageIndex(index);
-                                                                                // We don't need to unset mainImageIndex for existing, as new index != null logic takes precedence in rendering and save logic
-                                                                            }}
-                                                                            className="p-1.5 bg-green-600 hover:bg-green-700 text-white rounded transition-colors"
-                                                                            title="Set as main image"
-                                                                        >
-                                                                            <Star className="w-4 h-4" />
-                                                                        </button>
-                                                                    )}
-                                                                    <button
-                                                                        type="button"
-                                                                        onClick={() => {
-                                                                            const newPreviews = productImagePreviews.filter((_, i) => i !== index);
-                                                                            const newImages = Array.from(productImages).filter((_, i) => i !== index);
-                                                                            setProductImagePreviews(newPreviews);
-                                                                            setProductImages(newImages);
-                                                                            if (mainNewImageIndex === index) setMainNewImageIndex(null);
-                                                                            else if (mainNewImageIndex !== null && mainNewImageIndex > index) setMainNewImageIndex(mainNewImageIndex - 1);
-                                                                        }}
-                                                                        className="p-1.5 bg-red-600 hover:bg-red-700 text-white rounded transition-colors"
-                                                                        title="Remove image"
-                                                                    >
-                                                                        <X className="w-4 h-4" />
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                        );
-                                                    })}
-                                                </div>
-                                            </div>
-                                        )}
-                                    </div>
-
-                                    {/* Video Upload */}
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            Product Video (Optional)
-                                        </label>
-                                        <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-                                            <Upload className="w-12 h-12 mx-auto text-gray-400 mb-3" />
-                                            <p className="text-sm text-gray-600 mb-2">
-                                                Upload product demonstration video
-                                            </p>
-                                            <p className="text-xs text-gray-500 mb-4">
-                                                Max size: 10MB | Formats: MP4, WebM, MOV, AVI
-                                            </p>
-                                            <input
-                                                type="file"
-                                                accept="video/mp4,video/webm,video/quicktime,video/x-msvideo"
-                                                onChange={handleProductVideoChange}
-                                                className="hidden"
-                                                id="product-video"
-                                            />
-                                            <label
-                                                htmlFor="product-video"
-                                                className="inline-block px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg cursor-pointer transition-colors"
-                                            >
-                                                Select Video
-                                            </label>
-                                        </div>
-
-                                        {/* Video Preview */}
-                                        {productVideoPreview && (
-                                            <div className="mt-4">
-                                                <video
-                                                    src={productVideoPreview}
-                                                    controls
-                                                    className="w-full max-w-md mx-auto rounded-lg border border-gray-200"
-                                                    style={{ maxHeight: '300px' }}
-                                                />
-                                                <p className="text-xs text-gray-500 mt-2 text-center">
-                                                    New video selected: {productVideo?.name}
-                                                </p>
-                                            </div>
-                                        )}
-
-                                        {/* Existing Video Display */}
-                                        {editingProduct && editingProduct.videoUrl && !productVideoPreview && !removeVideo && (
-                                            <div className="mt-4">
-                                                <p className="text-sm font-medium text-gray-700 mb-2">Current Video:</p>
-                                                <video
-                                                    src={editingProduct.videoUrl}
-                                                    controls
-                                                    className="w-full max-w-md mx-auto rounded-lg border border-gray-200"
-                                                    style={{ maxHeight: '300px' }}
-                                                />
-                                                <div className="mt-2 flex items-center justify-center gap-2">
-                                                    <label className="flex items-center gap-2 cursor-pointer">
-                                                        <input
-                                                            type="checkbox"
-                                                            checked={removeVideo}
-                                                            onChange={(e) => setRemoveVideo(e.target.checked)}
-                                                            className="w-4 h-4 text-red-600"
-                                                        />
-                                                        <span className="text-sm text-red-600">Remove video</span>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        )}
-                                    </div>
-
-                                    {/* Checkboxes */}
-                                    <div className="flex gap-6">
-                                        <label className="flex items-center gap-2 cursor-pointer">
-                                            <input
-                                                type="checkbox"
-                                                checked={productFormData.available !== false}
-                                                onChange={(e) => setProductFormData({ ...productFormData, available: e.target.checked })}
-                                                className="w-4 h-4 text-blue-600"
-                                            />
-                                            <span className="text-sm text-gray-700">Available</span>
-                                        </label>
-                                        <label className="flex items-center gap-2 cursor-pointer">
-                                            <input
-                                                type="checkbox"
-                                                checked={productFormData.featured === true}
-                                                onChange={(e) => setProductFormData({ ...productFormData, featured: e.target.checked })}
-                                                className="w-4 h-4 text-amber-600"
-                                            />
-                                            <span className="text-sm text-gray-700">Featured (Show on Homepage)</span>
-                                        </label>
-                                    </div>
-
-                                    {/* Action Buttons */}
-                                    <div className="flex gap-3 pt-6 border-t border-gray-200">
-                                        <button
-                                            onClick={handlePreviewProduct}
-                                            disabled={productLoading || previewLoading}
-                                            className="px-4 py-2 bg-gray-600 hover:bg-gray-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
-                                        >
-                                            <Layout className="w-4 h-4" />
-                                            {previewLoading ? 'Generating...' : 'Preview'}
-                                        </button>
-                                        <button
-                                            onClick={handleSaveProduct}
-                                            disabled={productLoading}
-                                            className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
-                                        >
-                                            {productLoading && (
-                                                <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                                </svg>
-                                            )}
-                                            {productLoading
-                                                ? (editingProduct ? 'Updating...' : 'Creating...')
-                                                : (editingProduct ? 'Update Product' : 'Create Product')
+                                                if (editingProduct) {
+                                                    await adminProductService.updateProduct(
+                                                        editingProduct.productId,
+                                                        finalProductData,
+                                                        newImageFiles,
+                                                        null, // video
+                                                        false // removeVideo
+                                                    );
+                                                } else {
+                                                    await adminProductService.createProduct(
+                                                        finalProductData,
+                                                        newImageFiles,
+                                                        null // video
+                                                    );
+                                                }
+                                                await loadData();
+                                                setShowProductModal(false);
+                                                setEditingProduct(null);
+                                            } catch (error) {
+                                                console.error('Error saving product:', error);
+                                                throw error;
                                             }
-                                        </button>
-                                        <button
-                                            onClick={handleCloseProductModal}
-                                            disabled={productLoading}
-                                            className="px-4 py-2 bg-gray-200 hover:bg-gray-300 disabled:bg-gray-100 disabled:cursor-not-allowed text-gray-700 rounded-lg font-medium transition-colors"
-                                        >
-                                            Cancel
-                                        </button>
-                                    </div>
+                                        }}
+                                        onCancel={handleCloseProductModal}
+                                        onPreview={async (productData, images) => {
+                                            try {
+                                                setPreviewLoading(true);
+
+                                                // Extract File objects from ProductImage array (new images only)
+                                                const newImageFiles = images
+                                                    .filter(img => img.file && !img.isExisting)
+                                                    .map(img => img.file!);
+
+                                                // Extract existing image URLs
+                                                const existingImageUrls = images
+                                                    .filter(img => img.isExisting && img.url)
+                                                    .map(img => img.url);
+
+                                                const response = await adminProductService.previewProduct(
+                                                    productData,
+                                                    newImageFiles,
+                                                    undefined, // video
+                                                    existingImageUrls
+                                                );
+                                                if (response.success) {
+                                                    setPreviewProduct(response.data);
+                                                    setShowProductPreview(true);
+                                                }
+                                            } catch (error) {
+                                                console.error('Error previewing product:', error);
+                                                alert('Failed to generate preview');
+                                                throw error;
+                                            } finally {
+                                                setPreviewLoading(false);
+                                            }
+                                        }}
+                                        loading={productLoading}
+                                        previewLoading={previewLoading}
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -3569,7 +3112,7 @@ const Admin = () => {
 
                     {/* Bulk Discount Modal */}
                     {showBulkDiscountModal && isMounted && typeof document !== 'undefined' && document.body && createPortal(
-                        <div 
+                        <div
                             className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
                             onClick={() => setShowBulkDiscountModal(false)}
                             onWheel={(e) => e.preventDefault()}
@@ -3681,7 +3224,7 @@ const Admin = () => {
 
                     {/* Blog Editor Modal */}
                     {showBlogModal && isMounted && typeof document !== 'undefined' && document.body && createPortal(
-                        <div 
+                        <div
                             className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
                             onClick={() => setShowBlogModal(false)}
                             onWheel={(e) => e.preventDefault()}
@@ -3800,7 +3343,7 @@ const Admin = () => {
 
                     {/* Discount Modal */}
                     {showDiscountModal && isMounted && typeof document !== 'undefined' && document.body && createPortal(
-                        <div 
+                        <div
                             className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
                             onClick={handleCloseDiscountModal}
                             onWheel={(e) => e.preventDefault()}
@@ -3999,9 +3542,9 @@ const Admin = () => {
 
                     {/* Product Preview Modal */}
                     {showProductPreview && previewProduct && isMounted && typeof document !== 'undefined' && document.body && createPortal(
-                        <div 
-                            className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" 
-                            aria-modal="true" 
+                        <div
+                            className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+                            aria-modal="true"
                             role="dialog"
                             onClick={handleClosePreview}
                         >
@@ -4031,7 +3574,7 @@ const Admin = () => {
                                         {/* Product Images and Video */}
                                         <div className="space-y-4">
                                             <h3 className="text-lg font-semibold text-gray-900">Images & Media</h3>
-                                            
+
                                             {/* Main Image */}
                                             {previewProduct.image && (
                                                 <div className="relative">
@@ -4080,23 +3623,23 @@ const Admin = () => {
                                         <div className="space-y-6">
                                             <div>
                                                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Product Details</h3>
-                                                
+
                                                 <div className="space-y-3">
                                                     <div className="flex items-center justify-between">
                                                         <span className="text-sm font-medium text-gray-500">Product ID:</span>
                                                         <span className="text-sm text-gray-900">{previewProduct.productId}</span>
                                                     </div>
-                                                    
+
                                                     <div className="flex items-center justify-between">
                                                         <span className="text-sm font-medium text-gray-500">Name:</span>
                                                         <span className="text-sm text-gray-900 font-medium">{previewProduct.name}</span>
                                                     </div>
-                                                    
+
                                                     <div className="flex items-center justify-between">
                                                         <span className="text-sm font-medium text-gray-500">Category:</span>
                                                         <span className="text-sm text-gray-900 capitalize">{previewProduct.category}</span>
                                                     </div>
-                                                    
+
                                                     <div className="flex items-center justify-between">
                                                         <span className="text-sm font-medium text-gray-500">Subcategory:</span>
                                                         <span className="text-sm text-gray-900 capitalize">{previewProduct.subcategory}</span>
@@ -4130,35 +3673,32 @@ const Admin = () => {
 
                                                     <div className="flex items-center justify-between">
                                                         <span className="text-sm font-medium text-gray-500">Status:</span>
-                                                        <span className={`text-sm px-2 py-1 rounded-full font-medium ${
-                                                            previewProduct.status === 'active' 
-                                                                ? 'bg-green-100 text-green-700'
-                                                                : previewProduct.status === 'inactive' 
+                                                        <span className={`text-sm px-2 py-1 rounded-full font-medium ${previewProduct.status === 'active'
+                                                            ? 'bg-green-100 text-green-700'
+                                                            : previewProduct.status === 'inactive'
                                                                 ? 'bg-red-100 text-red-700'
                                                                 : 'bg-yellow-100 text-yellow-700'
-                                                        }`}>
+                                                            }`}>
                                                             {previewProduct.status?.charAt(0).toUpperCase() + previewProduct.status?.slice(1)}
                                                         </span>
                                                     </div>
 
                                                     <div className="flex items-center justify-between">
                                                         <span className="text-sm font-medium text-gray-500">Available:</span>
-                                                        <span className={`text-sm px-2 py-1 rounded-full font-medium ${
-                                                            previewProduct.available 
-                                                                ? 'bg-green-100 text-green-700'
-                                                                : 'bg-red-100 text-red-700'
-                                                        }`}>
+                                                        <span className={`text-sm px-2 py-1 rounded-full font-medium ${previewProduct.available
+                                                            ? 'bg-green-100 text-green-700'
+                                                            : 'bg-red-100 text-red-700'
+                                                            }`}>
                                                             {previewProduct.available ? 'Yes' : 'No'}
                                                         </span>
                                                     </div>
 
                                                     <div className="flex items-center justify-between">
                                                         <span className="text-sm font-medium text-gray-500">Featured:</span>
-                                                        <span className={`text-sm px-2 py-1 rounded-full font-medium ${
-                                                            previewProduct.featured 
-                                                                ? 'bg-amber-100 text-amber-700'
-                                                                : 'bg-gray-100 text-gray-700'
-                                                        }`}>
+                                                        <span className={`text-sm px-2 py-1 rounded-full font-medium ${previewProduct.featured
+                                                            ? 'bg-amber-100 text-amber-700'
+                                                            : 'bg-gray-100 text-gray-700'
+                                                            }`}>
                                                             {previewProduct.featured ? 'Yes' : 'No'}
                                                         </span>
                                                     </div>

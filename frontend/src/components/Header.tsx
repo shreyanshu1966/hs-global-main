@@ -176,12 +176,15 @@ const Header = () => {
 
             {/* Right Actions - Icons */}
             <div className={`hidden lg:flex items-center gap-6 transition-colors duration-300 ${isTransparent ? "text-white" : "text-black"}`}>
-              <Link
-                to="/admin"
-                className="text-xs uppercase tracking-widest font-bold hover:opacity-70 transition-opacity"
-              >
-                Admin
-              </Link>
+              {/* Admin Link - Only show for admin users */}
+              {isAuthenticated && user && user.role === 'admin' && (
+                <Link
+                  to="/admin"
+                  className="text-xs uppercase tracking-widest font-bold hover:opacity-70 transition-opacity"
+                >
+                  Admin
+                </Link>
+              )}
 
               <button
                 onClick={() => setIsSearchOpen(true)}
@@ -261,6 +264,10 @@ const Header = () => {
               <div className="w-12 h-[1px] bg-white/20 my-8 mobile-nav-link" />
 
               <div className="mobile-nav-link space-y-4" style={{ opacity: 0 }}>
+                {/* Admin Link - Only show for admin users in mobile menu */}
+                {isAuthenticated && user && user.role === 'admin' && (
+                  <Link to="/admin" onClick={() => setIsOpen(false)} className="block text-sm uppercase tracking-widest text-stone-400 hover:text-white">Admin</Link>
+                )}
                 <Link to="/login" onClick={() => setIsOpen(false)} className="block text-sm uppercase tracking-widest text-stone-400 hover:text-white">Account</Link>
                 <Link to="/contact" onClick={() => setIsOpen(false)} className="block text-sm uppercase tracking-widest text-stone-400 hover:text-white">Contact</Link>
               </div>
