@@ -1015,13 +1015,15 @@ const applyDiscountToAll = async (req, res) => {
             { $set: { discount: discountData } }
         );
 
+        const updatedCount = result?.modifiedCount || result?.nModified || 0;
+
         res.json({
             success: true,
             data: {
-                updatedCount: result.modifiedCount,
+                updatedCount: updatedCount,
                 discount: discountData
             },
-            message: `Discount applied to ${result.modifiedCount} product(s)`
+            message: `Discount applied to ${updatedCount} product(s)`
         });
     } catch (error) {
         console.error('Apply discount to all error:', error);
@@ -1053,12 +1055,14 @@ const removeDiscountFromAll = async (req, res) => {
             { $set: { discount: discountData } }
         );
 
+        const updatedCount = result?.modifiedCount || result?.nModified || 0;
+
         res.json({
             success: true,
             data: {
-                updatedCount: result.modifiedCount
+                updatedCount: updatedCount
             },
-            message: `Discount removed from ${result.modifiedCount} product(s)`
+            message: `Discount removed from ${updatedCount} product(s)`
         });
     } catch (error) {
         console.error('Remove discount from all error:', error);
@@ -1106,13 +1110,15 @@ const applyBulkDiscount = async (req, res) => {
             { $set: { discount: discountData } }
         );
 
+        const updatedCount = result?.modifiedCount || result?.nModified || 0;
+
         res.json({
             success: true,
             data: {
-                updatedCount: result.modifiedCount,
+                updatedCount: updatedCount,
                 discount: discountData
             },
-            message: `Discount applied to ${result.modifiedCount} product(s)`
+            message: `Discount applied to ${updatedCount} product(s)`
         });
     } catch (error) {
         console.error('Apply bulk discount error:', error);
@@ -1153,12 +1159,14 @@ const removeBulkDiscount = async (req, res) => {
             { $set: { discount: discountData } }
         );
 
+        const updatedCount = result?.modifiedCount || result?.nModified || 0;
+
         res.json({
             success: true,
             data: {
-                updatedCount: result.modifiedCount
+                updatedCount: updatedCount
             },
-            message: `Discount removed from ${result.modifiedCount} product(s)`
+            message: `Discount removed from ${updatedCount} product(s)`
         });
     } catch (error) {
         console.error('Remove bulk discount error:', error);
