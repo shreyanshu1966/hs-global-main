@@ -196,7 +196,7 @@ export const applyDiscountToAll = async (
                 }
             }
         );
-        return response.data.data;
+        return response.data.data || { updatedCount: 0 };
     } catch (error: any) {
         console.error('Apply discount to all error:', error);
         throw new Error(error.response?.data?.message || 'Failed to apply discount to all products');
@@ -217,7 +217,7 @@ export const removeDiscountFromAll = async (token: string): Promise<{ updatedCou
                 }
             }
         );
-        return response.data.data;
+        return response.data.data || { updatedCount: 0 };
     } catch (error: any) {
         console.error('Remove discount from all error:', error);
         throw new Error(error.response?.data?.message || 'Failed to remove discount from all products');
@@ -247,7 +247,7 @@ export const applyBulkDiscount = async (
                 }
             }
         );
-        return response.data.data;
+        return response.data.data || { updatedCount: 0 };
     } catch (error: any) {
         console.error('Apply bulk discount error:', error);
         throw new Error(error.response?.data?.message || 'Failed to apply bulk discount');
@@ -268,7 +268,7 @@ export const removeBulkDiscount = async (productIds: string[], token: string): P
                 }
             }
         );
-        return response.data.data;
+        return response.data.data || { updatedCount: 0 };
     } catch (error: any) {
         console.error('Remove bulk discount error:', error);
         throw new Error(error.response?.data?.message || 'Failed to remove bulk discount');

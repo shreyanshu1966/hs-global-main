@@ -92,7 +92,7 @@ const DiscountManagement: React.FC = () => {
                 limit: 20,
                 status: statusFilter
             });
-            setProducts(productsData.data);
+            setProducts(productsData.data || []);
             setPagination(productsData.pagination);
 
         } catch (error: any) {
@@ -166,7 +166,7 @@ const DiscountManagement: React.FC = () => {
         try {
             setLoading(true);
             const result = await adminDiscountAnalyticsService.applyDiscountToAll(bulkDiscount, token);
-            alert(`✅ Discount applied to ${result.updatedCount} product(s)`);
+            alert(`✅ Discount applied to ${result?.updatedCount || 0} product(s)`);
             setShowAllModal(false);
             setBulkDiscount({ percentage: 10, startDate: '', endDate: '', description: '' });
             loadData();
@@ -187,7 +187,7 @@ const DiscountManagement: React.FC = () => {
         try {
             setLoading(true);
             const result = await adminDiscountAnalyticsService.removeDiscountFromAll(token);
-            alert(`✅ Discount removed from ${result.updatedCount} product(s)`);
+            alert(`✅ Discount removed from ${result?.updatedCount || 0} product(s)`);
             loadData();
         } catch (error: any) {
             console.error('Remove from all error:', error);
@@ -217,7 +217,7 @@ const DiscountManagement: React.FC = () => {
             setLoading(true);
             const productIds = Array.from(selectedProducts);
             const result = await adminDiscountAnalyticsService.applyBulkDiscount(productIds, bulkDiscount, token);
-            alert(`✅ Discount applied to ${result.updatedCount} product(s)`);
+            alert(`✅ Discount applied to ${result?.updatedCount || 0} product(s)`);
             setShowBulkModal(false);
             setBulkDiscount({ percentage: 10, startDate: '', endDate: '', description: '' });
             setSelectedProducts(new Set());
@@ -246,7 +246,7 @@ const DiscountManagement: React.FC = () => {
             setLoading(true);
             const productIds = Array.from(selectedProducts);
             const result = await adminDiscountAnalyticsService.removeBulkDiscount(productIds, token);
-            alert(`✅ Discount removed from ${result.updatedCount} product(s)`);
+            alert(`✅ Discount removed from ${result?.updatedCount || 0} product(s)`);
             setSelectedProducts(new Set());
             setSelectAll(false);
             loadData();
@@ -275,7 +275,7 @@ const DiscountManagement: React.FC = () => {
     };
 
     // Filter products by search
-    const filteredProducts = products.filter(product => 
+    const filteredProducts = (products || []).filter(product => 
         product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         product.productId.toLowerCase().includes(searchQuery.toLowerCase())
     );
