@@ -542,7 +542,10 @@ productSchema.statics.getFeatured = function (limit = 10) {
 productSchema.statics.getDiscountAnalytics = async function () {
     const now = new Date();
     
-    const [total, active, scheduled, expired, stats] = await Promise.all([
+    const [totalProducts, totalWithDiscounts, active, scheduled, expired, stats] = await Promise.all([
+        // Total products in database
+        this.countDocuments({}),
+        
         // Total products with discount enabled
         this.countDocuments({ 'discount.enabled': true }),
         
@@ -590,7 +593,8 @@ productSchema.statics.getDiscountAnalytics = async function () {
     ]);
     
     return {
-        total,
+        totalProducts,              // Total products in database
+        total: totalWithDiscounts,  // Total with discount enabled
         active,
         scheduled,
         expired,

@@ -8,7 +8,8 @@ import axios from 'axios';
 const API_BASE_URL = '/api/admin/products';
 
 interface DiscountAnalytics {
-    total: number;
+    totalProducts: number;  // Total products in database
+    total: number;          // Total with discount enabled
     active: number;
     scheduled: number;
     expired: number;

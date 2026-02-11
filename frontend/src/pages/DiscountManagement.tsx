@@ -5,7 +5,8 @@ import adminDiscountAnalyticsService from '../services/adminDiscountAnalyticsSer
 import { Percent, TrendingUp, Calendar, AlertCircle, RefreshCw, Filter, Search, Plus, Trash2, X, Check } from 'lucide-react';
 
 interface DiscountAnalytics {
-    total: number;
+    totalProducts: number;  // Total products in database
+    total: number;          // Total with discount enabled
     active: number;
     scheduled: number;
     expired: number;
@@ -84,6 +85,7 @@ const DiscountManagement: React.FC = () => {
 
             // Load analytics
             const analyticsData = await adminDiscountAnalyticsService.getDiscountAnalytics(token);
+            console.log('📊 Analytics loaded:', analyticsData);
             setAnalytics(analyticsData);
 
             // Load products
@@ -92,11 +94,21 @@ const DiscountManagement: React.FC = () => {
                 limit: 20,
                 status: statusFilter
             });
+            console.log('📦 Products loaded:', {
+                count: productsData.data?.length || 0,
+                pagination: productsData.pagination,
+                status: statusFilter
+            });
             setProducts(productsData.data || []);
             setPagination(productsData.pagination);
 
         } catch (error: any) {
-            console.error('Load data error:', error);
+            console.error('❌ Load data error:', error);
+            console.error('Error details:', {
+                message: error.message,
+                response: error.response?.data,
+                status: error.response?.status
+            });
             alert(error.message || 'Failed to load discount data');
         } finally {
             setLoading(false);
@@ -304,7 +316,24 @@ const DiscountManagement: React.FC = () => {
 
                 {/* Analytics Cards */}
                 {analytics && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <>
+                        {/* Summary Card */}
+                        <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg shadow-lg border border-blue-700 p-6 mb-6 text-white">
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <p className="text-sm font-medium text-blue-100">Total Products in Database</p>
+                                    <p className="text-4xl font-bold mt-2">{analytics.totalProducts || 0}</p>
+                                    <p className="text-sm text-blue-100 mt-2">
+                                        {analytics.total || 0} with discounts enabled • {analytics.active || 0} currently active
+                                    </p>
+                                </div>
+                                <div className="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                                    <Percent className="w-8 h-8 text-white" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                         {/* Active Discounts */}
                         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
                             <div className="flex items-center justify-between">
@@ -365,6 +394,7 @@ const DiscountManagement: React.FC = () => {
                             </p>
                         </div>
                     </div>
+                    </>
                 )}
 
                 {/* Expiring Soon Alert */}
@@ -522,7 +552,28 @@ const DiscountManagement: React.FC = () => {
                     ) : filteredProducts.length === 0 ? (
                         <div className="p-12 text-center">
                             <Percent className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                            <p className="text-gray-600">No products found</p>
+                            <p className="text-gray-900 font-semibold text-lg mb-2">No products found</p>
+                            {products.length > 0 ? (
+                                <p className="text-gray-600 text-sm">
+                                    No products match your search query "{searchQuery}"
+                                </p>
+                            ) : (
+                                <div className="text-gray-600 text-sm space-y-2">
+                                    <p>No products returned from API</p>
+                                    <p className="text-xs text-gray-500">
+                                        Filter: {statusFilter} • Total Products: {analytics?.totalProducts || 0}
+                                    </p>
+                                    <button
+                                        onClick={() => {
+                                            console.log('Current state:', { products, statusFilter, page, pagination });
+                                            loadData();
+                                        }}
+                                        className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                                    >
+                                        Debug & Reload
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     ) : (
                         <>
