@@ -805,6 +805,416 @@ const updateProductInventoryAndShipping = async (req, res) => {
     }
 };
 
+/**
+ * Get discount analytics and statistics
+ */
+const getDiscountAnalytics = async (req, res) => {
+    try {
+        const analytics = await Product.getDiscountAnalytics();
+        
+        // Get expiring soon (next 3 days)
+        const expiringSoon = await Product.getExpiringSoonDiscounts(3);
+        
+        res.json({
+            success: true,
+            data: {
+                ...analytics,
+                expiringSoon: expiringSoon.map(p => ({
+                    productId: p.productId,
+                    name: p.name,
+                    discount: p.discount,
+                    endDate: p.discount.endDate,
+                    daysRemaining: Math.ceil((new Date(p.discount.endDate) - new Date()) / (1000 * 60 * 60 * 24))
+                }))
+            }
+        });
+    } catch (error) {
+        console.error('Get discount analytics error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to fetch discount analytics',
+            error: error.message
+        });
+    }
+};
+
+/**
+ * Disable all expired discounts
+ */
+const disableExpiredDiscounts = async (req, res) => {
+    try {
+        const disabledCount = await Product.disableExpiredDiscounts();
+        
+        res.json({
+            success: true,
+            data: {
+                disabledCount
+            },
+            message: `Successfully disabled ${disabledCount} expired discount(s)`
+        });
+    } catch (error) {
+        console.error('Disable expired discounts error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to disable expired discounts',
+            error: error.message
+        });
+    }
+};
+
+/**
+ * Get products with active discounts
+ */
+const getDiscountedProducts = async (req, res) => {
+    try {
+        const { 
+            page = 1, 
+            limit = 20,
+            status = 'active' // active, scheduled, expired, all
+        } = req.query;
+        
+        const now = new Date();
+        let query = { 'discount.enabled': true };
+        
+        // Filter by discount status
+        if (status === 'active') {
+            query = {
+                ...query,
+                $or: [
+                    { 'discount.startDate': null, 'discount.endDate': null },
+                    { 'discount.startDate': null, 'discount.endDate': { $gte: now } },
+                    { 'discount.startDate': { $lte: now }, 'discount.endDate': null },
+                    { 'discount.startDate': { $lte: now }, 'discount.endDate': { $gte: now } }
+                ]
+            };
+        } else if (status === 'scheduled') {
+            query['discount.startDate'] = { $gt: now };
+        } else if (status === 'expired') {
+            query['discount.endDate'] = { $lt: now };
+        }
+        
+        const skip = (page - 1) * limit;
+        
+        const [products, total] = await Promise.all([
+            Product.find(query)
+                .select('productId name category subcategory priceINR discount image')
+                .skip(skip)
+                .limit(parseInt(limit))
+                .sort({ 'discount.endDate': 1 }),
+            Product.countDocuments(query)
+        ]);
+        
+        // Add discount status to each product
+        const productsWithStatus = products.map(product => {
+            const status = product.getDiscountStatus();
+            return {
+                ...product.toObject(),
+                discountStatus: status,
+                finalPrice: product.getFinalPrice()
+            };
+        });
+        
+        res.json({
+            success: true,
+            data: productsWithStatus,
+            pagination: {
+                current: parseInt(page),
+                total: Math.ceil(total / limit),
+                count: productsWithStatus.length,
+                totalItems: total
+            }
+        });
+    } catch (error) {
+        console.error('Get discounted products error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to fetch discounted products',
+            error: error.message
+        });
+    }
+};
+
+/**
+ * Update discount for a specific product
+ */
+const updateProductDiscount = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { discount } = req.body;
+        
+        const product = await Product.findById(id);
+        if (!product) {
+            return res.status(404).json({
+                success: false,
+                message: 'Product not found'
+            });
+        }
+        
+        // Update discount
+        product.discount = {
+            enabled: discount.enabled || false,
+            percentage: discount.percentage || 0,
+            startDate: discount.startDate || null,
+            endDate: discount.endDate || null,
+            description: discount.description || '',
+            createdAt: product.discount?.createdAt || new Date(),
+            lastModified: new Date()
+        };
+        
+        await product.save();
+        
+        const discountStatus = product.getDiscountStatus();
+        
+        res.json({
+            success: true,
+            data: {
+                productId: product.productId,
+                name: product.name,
+                discount: product.discount,
+                discountStatus,
+                finalPrice: product.getFinalPrice()
+            },
+            message: 'Product discount updated successfully'
+        });
+    } catch (error) {
+        console.error('Update product discount error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to update product discount',
+            error: error.message
+        });
+    }
+};
+
+/**
+ * Apply discount to all products
+ */
+const applyDiscountToAll = async (req, res) => {
+    try {
+        const { discount } = req.body;
+        
+        if (!discount || !discount.percentage) {
+            return res.status(400).json({
+                success: false,
+                message: 'Discount percentage is required'
+            });
+        }
+
+        const discountData = {
+            enabled: true,
+            percentage: Math.min(Math.max(0, discount.percentage), 100),
+            startDate: discount.startDate || null,
+            endDate: discount.endDate || null,
+            description: discount.description || '',
+            createdAt: new Date(),
+            lastModified: new Date()
+        };
+
+        const result = await Product.updateMany(
+            {},
+            { $set: { discount: discountData } }
+        );
+
+        res.json({
+            success: true,
+            data: {
+                updatedCount: result.modifiedCount,
+                discount: discountData
+            },
+            message: `Discount applied to ${result.modifiedCount} product(s)`
+        });
+    } catch (error) {
+        console.error('Apply discount to all error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to apply discount to all products',
+            error: error.message
+        });
+    }
+};
+
+/**
+ * Remove discount from all products
+ */
+const removeDiscountFromAll = async (req, res) => {
+    try {
+        const discountData = {
+            enabled: false,
+            percentage: 0,
+            startDate: null,
+            endDate: null,
+            description: '',
+            createdAt: null,
+            lastModified: new Date()
+        };
+
+        const result = await Product.updateMany(
+            {},
+            { $set: { discount: discountData } }
+        );
+
+        res.json({
+            success: true,
+            data: {
+                updatedCount: result.modifiedCount
+            },
+            message: `Discount removed from ${result.modifiedCount} product(s)`
+        });
+    } catch (error) {
+        console.error('Remove discount from all error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to remove discount from all products',
+            error: error.message
+        });
+    }
+};
+
+/**
+ * Apply discount to selected products (bulk)
+ */
+const applyBulkDiscount = async (req, res) => {
+    try {
+        const { productIds, discount } = req.body;
+        
+        if (!productIds || !Array.isArray(productIds) || productIds.length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'Product IDs array is required'
+            });
+        }
+
+        if (!discount || !discount.percentage) {
+            return res.status(400).json({
+                success: false,
+                message: 'Discount percentage is required'
+            });
+        }
+
+        const discountData = {
+            enabled: true,
+            percentage: Math.min(Math.max(0, discount.percentage), 100),
+            startDate: discount.startDate || null,
+            endDate: discount.endDate || null,
+            description: discount.description || '',
+            createdAt: new Date(),
+            lastModified: new Date()
+        };
+
+        const result = await Product.updateMany(
+            { _id: { $in: productIds } },
+            { $set: { discount: discountData } }
+        );
+
+        res.json({
+            success: true,
+            data: {
+                updatedCount: result.modifiedCount,
+                discount: discountData
+            },
+            message: `Discount applied to ${result.modifiedCount} product(s)`
+        });
+    } catch (error) {
+        console.error('Apply bulk discount error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to apply bulk discount',
+            error: error.message
+        });
+    }
+};
+
+/**
+ * Remove discount from selected products (bulk)
+ */
+const removeBulkDiscount = async (req, res) => {
+    try {
+        const { productIds } = req.body;
+        
+        if (!productIds || !Array.isArray(productIds) || productIds.length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'Product IDs array is required'
+            });
+        }
+
+        const discountData = {
+            enabled: false,
+            percentage: 0,
+            startDate: null,
+            endDate: null,
+            description: '',
+            createdAt: null,
+            lastModified: new Date()
+        };
+
+        const result = await Product.updateMany(
+            { _id: { $in: productIds } },
+            { $set: { discount: discountData } }
+        );
+
+        res.json({
+            success: true,
+            data: {
+                updatedCount: result.modifiedCount
+            },
+            message: `Discount removed from ${result.modifiedCount} product(s)`
+        });
+    } catch (error) {
+        console.error('Remove bulk discount error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to remove bulk discount',
+            error: error.message
+        });
+    }
+};
+
+/**
+ * Remove discount from a single product
+ */
+const removeProductDiscount = async (req, res) => {
+    try {
+        const { id } = req.params;
+        
+        const product = await Product.findById(id);
+        if (!product) {
+            return res.status(404).json({
+                success: false,
+                message: 'Product not found'
+            });
+        }
+        
+        product.discount = {
+            enabled: false,
+            percentage: 0,
+            startDate: null,
+            endDate: null,
+            description: '',
+            createdAt: null,
+            lastModified: new Date()
+        };
+        
+        await product.save();
+        
+        res.json({
+            success: true,
+            data: {
+                productId: product.productId,
+                name: product.name
+            },
+            message: 'Product discount removed successfully'
+        });
+    } catch (error) {
+        console.error('Remove product discount error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to remove product discount',
+            error: error.message
+        });
+    }
+};
+
 module.exports = {
     getAdminProducts,
     createProductWithImages,
@@ -815,5 +1225,15 @@ module.exports = {
     previewProduct,
     processProductImages,
     updateProductSpecifications,
-    updateProductInventoryAndShipping
+    updateProductInventoryAndShipping,
+    // Discount management
+    getDiscountAnalytics,
+    disableExpiredDiscounts,
+    getDiscountedProducts,
+    updateProductDiscount,
+    applyDiscountToAll,
+    removeDiscountFromAll,
+    applyBulkDiscount,
+    removeBulkDiscount,
+    removeProductDiscount
 };

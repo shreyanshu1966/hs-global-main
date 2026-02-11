@@ -10,11 +10,26 @@ const {
     previewProduct,
     processProductImages,
     updateProductSpecifications,
-    updateProductInventoryAndShipping
+    updateProductInventoryAndShipping,
+    // Discount management
+    getDiscountAnalytics,
+    disableExpiredDiscounts,
+    getDiscountedProducts,
+    updateProductDiscount,
+    applyDiscountToAll,
+    removeDiscountFromAll,
+    applyBulkDiscount,
+    removeBulkDiscount,
+    removeProductDiscount
 } = require('../controllers/adminProductController');
 
 const { authMiddleware, adminMiddleware } = require('../middleware/authMiddleware');
 const { uploadMedia } = require('../utils/cloudinaryUpload');
+const { 
+    validateDiscountMiddleware, 
+    sanitizeDiscountData,
+    checkExpiredDiscountMiddleware 
+} = require('../middleware/discountValidation');
 
 // All routes require authentication and admin privileges
 router.use(authMiddleware);
@@ -34,14 +49,20 @@ router.post('/',
     uploadMedia.fields([
         { name: 'images', maxCount: 10 },
         { name: 'video', maxCount: 1 }
-    ]), 
+    ]),
+    sanitizeDiscountData,
+    validateDiscountMiddleware,
+    checkExpiredDiscountMiddleware,
     createProductWithImages
 );
 router.put('/:id', 
     uploadMedia.fields([
         { name: 'images', maxCount: 10 },
         { name: 'video', maxCount: 1 }
-    ]), 
+    ]),
+    sanitizeDiscountData,
+    validateDiscountMiddleware,
+    checkExpiredDiscountMiddleware,
     updateProductWithImages
 );
 router.delete('/:id', deleteProductWithImages);
@@ -54,5 +75,33 @@ router.post('/:id/process-images',
 );
 router.patch('/:id/specifications', updateProductSpecifications);
 router.patch('/:id/inventory-shipping', updateProductInventoryAndShipping);
+
+// Discount management routes
+router.get('/analytics/discounts', getDiscountAnalytics);
+router.post('/discounts/disable-expired', disableExpiredDiscounts);
+router.get('/discounts/products', getDiscountedProducts);
+router.patch('/:id/discount', 
+    sanitizeDiscountData,
+    validateDiscountMiddleware,
+    checkExpiredDiscountMiddleware,
+    updateProductDiscount
+);
+router.delete('/:id/discount', removeProductDiscount);
+
+// Bulk discount operations
+router.post('/discounts/apply-all',
+    sanitizeDiscountData,
+    validateDiscountMiddleware,
+    checkExpiredDiscountMiddleware,
+    applyDiscountToAll
+);
+router.post('/discounts/remove-all', removeDiscountFromAll);
+router.post('/discounts/apply-bulk',
+    sanitizeDiscountData,
+    validateDiscountMiddleware,
+    checkExpiredDiscountMiddleware,
+    applyBulkDiscount
+);
+router.post('/discounts/remove-bulk', removeBulkDiscount);
 
 module.exports = router;

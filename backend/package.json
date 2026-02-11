@@ -13,7 +13,8 @@
         "seed-reviews": "node seed-reviews.js",
         "test-reviews": "node test-reviews.js",
         "update-ratings": "node update-product-ratings.js",
-        "seed-blogs": "node seed-blogs.js"
+        "seed-blogs": "node seed-blogs.js",
+        "test-crud": "node test-product-crud.js"
     },
     "dependencies": {
         "axios": "^1.13.4",
@@ -25,6 +26,7 @@
         "cors": "^2.8.5",
         "dotenv": "^16.6.1",
         "express": "^4.22.1",
+        "form-data": "^4.0.0",
         "jsonwebtoken": "^9.0.3",
         "lokijs": "^1.5.12",
         "mongoose": "^9.0.2",
