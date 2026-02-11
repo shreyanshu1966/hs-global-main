@@ -35,7 +35,9 @@ import {
     Image,
     Upload,
     Star,
-    Tag
+    Tag,
+    Percent,
+    Play
 } from 'lucide-react';
 import {
     BarChart,
@@ -57,7 +59,6 @@ import contactService, { Contact, ContactStats } from '../services/contactServic
 import quotationService, { Quotation, QuotationStats } from '../services/quotationService';
 import adminProductService, { Product, ProductFormData } from '../services/adminProductService';
 import reviewService, { Review } from '../services/reviewService';
-import { getAllDiscounts, createDiscount, updateDiscount, deleteDiscount, toggleDiscountStatus, getDiscountAnalytics, Discount, DiscountFormData, DiscountAnalytics } from '../services/adminDiscountService';
 
 interface Analytics {
     users: {
@@ -119,7 +120,7 @@ const COLORS = ['#10b981', '#f59e0b', '#ef4444', '#3b82f6', '#8b5cf6'];
 const Admin = () => {
     const { user, token, logout } = useAuth();
     const navigate = useNavigate();
-    const [activeTab, setActiveTab] = useState<'analytics' | 'orders' | 'users' | 'blogs' | 'contacts' | 'quotations' | 'products' | 'reviews' | 'discounts'>('analytics');
+    const [activeTab, setActiveTab] = useState<'analytics' | 'orders' | 'users' | 'blogs' | 'contacts' | 'quotations' | 'products' | 'reviews'>('analytics');
     const [loading, setLoading] = useState(true);
     const [isMounted, setIsMounted] = useState(false);
 
@@ -200,6 +201,11 @@ const Admin = () => {
     const [showCustomSubcategory, setShowCustomSubcategory] = useState(false);
     const [customSubcategory, setCustomSubcategory] = useState('');
     const [customSubcategories, setCustomSubcategories] = useState<{ [categoryId: string]: Array<{ id: string, name: string }> }>({});
+    
+    // Additional loading states for better UX
+    const [productsLoading, setProductsLoading] = useState(false);
+    const [bulkDiscountLoading, setBulkDiscountLoading] = useState(false);
+    const [editingProductId, setEditingProductId] = useState<string | null>(null);
 
     // Product Preview state
     const [showProductPreview, setShowProductPreview] = useState(false);
@@ -230,18 +236,27 @@ const Admin = () => {
     const [reviewsTotal, setReviewsTotal] = useState(0);
     const [reviewsHasMore, setReviewsHasMore] = useState(false);
 
-    // Discounts state
-    const [discounts, setDiscounts] = useState<Discount[]>([]);
-    const [discountsPage, setDiscountsPage] = useState(1);
-    const [discountsPagination, setDiscountsPagination] = useState<any>(null);
-    const [discountsSearch, setDiscountsSearch] = useState('');
-    const [discountsStatusFilter, setDiscountsStatusFilter] = useState('');
-    const [discountsTypeFilter, setDiscountsTypeFilter] = useState('');
-    const [discountAnalytics, setDiscountAnalytics] = useState<DiscountAnalytics | null>(null);
-    const [showDiscountModal, setShowDiscountModal] = useState(false);
-    const [editingDiscount, setEditingDiscount] = useState<Discount | null>(null);
-    const [discountFormData, setDiscountFormData] = useState<Partial<DiscountFormData>>({});
-    const [applyToAllProducts, setApplyToAllProducts] = useState(false);
+    // Search debouncing
+    const [searchDebounceTimer, setSearchDebounceTimer] = useState<NodeJS.Timeout | null>(null);
+
+    // Debounced search effect
+    useEffect(() => {
+        if (searchDebounceTimer) {
+            clearTimeout(searchDebounceTimer);
+        }
+        
+        const timer = setTimeout(() => {
+            if (activeTab === 'products') {
+                loadData();
+            }
+        }, 300); // 300ms debounce
+        
+        setSearchDebounceTimer(timer);
+        
+        return () => {
+            if (timer) clearTimeout(timer);
+        };
+    }, [productsSearch]);
 
     useEffect(() => {
         if (!user || user.role !== 'admin') {
@@ -249,14 +264,14 @@ const Admin = () => {
             return;
         }
         loadData();
-    }, [user, navigate, activeTab, usersPage, ordersPage, usersSearch, usersRoleFilter, ordersSearch, ordersStatusFilter, ordersDeliveryFilter, blogsPage, contactsPage, contactsStatusFilter, quotationsPage, quotationsStatusFilter, productsPage, productsSearch, productsCategoryFilter, productsStatusFilter, reviewsPage, reviewsStatusFilter, discountsPage, discountsSearch, discountsStatusFilter, discountsTypeFilter]);
+    }, [user, navigate, activeTab, usersPage, ordersPage, usersSearch, usersRoleFilter, ordersSearch, ordersStatusFilter, ordersDeliveryFilter, blogsPage, contactsPage, contactsStatusFilter, quotationsPage, quotationsStatusFilter, productsPage, productsCategoryFilter, productsStatusFilter, reviewsPage, reviewsStatusFilter]);
 
     // Lock body scroll when any modal is open
     // Lock body scroll when any modal is open
     useEffect(() => {
         if (typeof document === 'undefined') return;
 
-        const isModalOpen = showProductModal || showBlogModal || showDiscountModal || showQuotationModal || showContactModal || showBulkDiscountModal || showProductPreview;
+        const isModalOpen = showProductModal || showBlogModal || showQuotationModal || showContactModal || showBulkDiscountModal || showProductPreview;
 
         const preventScroll = (e: Event) => {
             e.preventDefault();
@@ -288,7 +303,7 @@ const Admin = () => {
             document.removeEventListener('touchmove', preventScroll);
             document.removeEventListener('scroll', preventScroll);
         };
-    }, [showProductModal, showBlogModal, showDiscountModal, showQuotationModal, showContactModal, showBulkDiscountModal, showProductPreview]);
+    }, [showProductModal, showBlogModal, showQuotationModal, showContactModal, showBulkDiscountModal, showProductPreview]);
 
     const loadData = async () => {
         setLoading(true);
@@ -333,6 +348,7 @@ const Admin = () => {
                 setQuotationsPagination(quotationsData.pagination);
                 setQuotationStats(statsData);
             } else if (activeTab === 'products') {
+                setProductsLoading(true);
                 const productsData = await adminProductService.getAdminProducts({
                     page: productsPage,
                     limit: 10,
@@ -342,6 +358,7 @@ const Admin = () => {
                 });
                 setProducts(productsData.data);
                 setProductsPagination(productsData.pagination);
+                setProductsLoading(false);
             } else if (activeTab === 'reviews' && token) {
                 const reviewsData = await reviewService.getAllReviews(
                     token,
@@ -352,20 +369,13 @@ const Admin = () => {
                 setReviews(reviewsData.reviews);
                 setReviewsTotal(reviewsData.total);
                 setReviewsHasMore(reviewsData.hasMore);
-            } else if (activeTab === 'discounts') {
-                const [discountsData, analyticsData] = await Promise.all([
-                    getAllDiscounts(discountsPage, 10, discountsSearch, discountsStatusFilter, discountsTypeFilter),
-                    getDiscountAnalytics()
-                ]);
-                setDiscounts(discountsData.discounts);
-                setDiscountsPagination(discountsData.pagination);
-                setDiscountAnalytics(analyticsData);
             }
         } catch (error: any) {
             console.error('Failed to load data:', error);
             alert(error.message);
         } finally {
             setLoading(false);
+            setProductsLoading(false);
         }
     };
 
@@ -509,8 +519,13 @@ const Admin = () => {
     };
 
     // Product handlers
-    const handleOpenProductModal = (product?: Product) => {
+    const handleOpenProductModal = async (product?: Product) => {
         if (product) {
+            setEditingProductId(product.productId);
+            
+            // Small delay to show loading state
+            await new Promise(resolve => setTimeout(resolve, 100));
+            
             setEditingProduct(product);
             setProductFormData({
                 productId: product.productId,
@@ -563,6 +578,7 @@ const Admin = () => {
         }
         setProductImages([]);
         setShowProductModal(true);
+        setEditingProductId(null);
     };
 
     const getPredefinedSubcategories = (category: string): string[] => {
@@ -839,7 +855,7 @@ const Admin = () => {
 
         if (!confirm(`Apply discount to ${selectedProductIds.length} products?`)) return;
 
-        setProductLoading(true);
+        setBulkDiscountLoading(true);
         try {
             const promises = selectedProductIds.map(productId => {
                 const product = products.find(p => p.productId === productId);
@@ -895,189 +911,7 @@ const Admin = () => {
             console.error('Bulk discount error:', error);
             alert(error.message || 'Failed to apply bulk discount');
         } finally {
-            setProductLoading(false);
-        }
-    };
-
-    // Discount handlers
-    const handleOpenDiscountModal = (discount?: Discount) => {
-        if (discount) {
-            setEditingDiscount(discount);
-            setDiscountFormData({
-                code: discount.code,
-                description: discount.description,
-                type: discount.type,
-                value: discount.value,
-                maxDiscount: discount.maxDiscount,
-                minOrderAmount: discount.minOrderAmount,
-                usageLimit: discount.usageLimit,
-                usagePerUser: discount.usagePerUser,
-                applicableCategories: discount.applicableCategories,
-                applicableProducts: discount.applicableProducts.map((p: any) => p._id || p),
-                startDate: discount.startDate.split('T')[0],
-                endDate: discount.endDate.split('T')[0]
-            });
-            setApplyToAllProducts(false);
-        } else {
-            setEditingDiscount(null);
-            const today = new Date().toISOString().split('T')[0];
-            const nextMonth = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
-            setDiscountFormData({
-                type: 'percentage',
-                usagePerUser: 1,
-                startDate: today,
-                endDate: nextMonth,
-                applicableCategories: [],
-                applicableProducts: []
-            });
-            setApplyToAllProducts(false);
-        }
-        setShowDiscountModal(true);
-    };
-
-    const handleCloseDiscountModal = () => {
-        setShowDiscountModal(false);
-        setEditingDiscount(null);
-        setDiscountFormData({});
-        setApplyToAllProducts(false);
-    };
-
-    const handleSaveDiscount = async () => {
-        try {
-            if (!discountFormData.code || !discountFormData.description || !discountFormData.type ||
-                !discountFormData.value || !discountFormData.startDate || !discountFormData.endDate) {
-                alert('Please fill in all required fields');
-                return;
-            }
-
-            const finalFormData: DiscountFormData = {
-                code: discountFormData.code,
-                description: discountFormData.description,
-                type: discountFormData.type as 'percentage' | 'fixed',
-                value: Number(discountFormData.value),
-                maxDiscount: discountFormData.maxDiscount ? Number(discountFormData.maxDiscount) : undefined,
-                minOrderAmount: discountFormData.minOrderAmount ? Number(discountFormData.minOrderAmount) : undefined,
-                usageLimit: discountFormData.usageLimit ? Number(discountFormData.usageLimit) : undefined,
-                usagePerUser: discountFormData.usagePerUser ? Number(discountFormData.usagePerUser) : undefined,
-                applicableCategories: applyToAllProducts ? [] : (discountFormData.applicableCategories || []),
-                applicableProducts: applyToAllProducts ? [] : (discountFormData.applicableProducts || []),
-                startDate: discountFormData.startDate,
-                endDate: discountFormData.endDate
-            };
-
-            if (editingDiscount) {
-                await updateDiscount(editingDiscount._id, finalFormData);
-                alert('Discount updated successfully');
-            } else {
-                await createDiscount(finalFormData);
-                alert('Discount created successfully');
-            }
-
-            // If "Apply to All Products" is checked, apply this discount to all products
-            if (applyToAllProducts && !editingDiscount) {
-                await handleApplyDiscountToAllProducts(finalFormData);
-            }
-
-            handleCloseDiscountModal();
-            await loadData();
-        } catch (error: any) {
-            console.error('Save discount error:', error);
-            alert(error.message || 'Failed to save discount');
-        }
-    };
-
-    const handleApplyDiscountToAllProducts = async (discountData: DiscountFormData) => {
-        try {
-            // Fetch all products
-            const allProductsData = await adminProductService.getAdminProducts({
-                page: 1,
-                limit: 1000, // Get a large number to cover all products
-                search: '',
-                category: '',
-                status: ''
-            });
-
-            const allProducts = allProductsData.data;
-
-            if (allProducts.length === 0) {
-                alert('No products found to apply discount');
-                return;
-            }
-
-            if (!confirm(`This will apply the discount to ALL ${allProducts.length} products. Continue?`)) {
-                return;
-            }
-
-            setProductLoading(true);
-
-            // Calculate discount percentage from the discount code
-            const discountPercentage = discountData.type === 'percentage' ? discountData.value : 0;
-
-            const promises = allProducts.map(product => {
-                const updatedData: Partial<ProductFormData> = {
-                    productId: product.productId,
-                    name: product.name,
-                    category: product.category,
-                    subcategory: product.subcategory,
-                    description: product.description,
-                    priceINR: product.priceINR,
-                    available: product.available,
-                    status: product.status,
-                    featured: product.featured,
-                    hasVideo: product.hasVideo,
-                    furnitureSpecs: product.furnitureSpecs,
-                    slabSpecs: product.slabSpecs,
-                    seoTitle: product.seoTitle,
-                    seoDescription: product.seoDescription,
-                    seoKeywords: product.seoKeywords,
-                    discount: {
-                        enabled: true,
-                        percentage: discountPercentage,
-                        startDate: discountData.startDate || null,
-                        endDate: discountData.endDate || null,
-                        description: discountData.description
-                    }
-                };
-
-                return adminProductService.updateProduct(
-                    product.productId,
-                    { ...updatedData, preserveExistingImages: true },
-                    undefined,
-                    undefined,
-                    false
-                );
-            });
-
-            await Promise.all(promises);
-            alert(`✅ Discount applied to all ${allProducts.length} products successfully!`);
-        } catch (error: any) {
-            console.error('Apply to all products error:', error);
-            alert(error.message || 'Failed to apply discount to all products');
-        } finally {
-            setProductLoading(false);
-        }
-    };
-
-    const handleDeleteDiscount = async (discountId: string) => {
-        if (!confirm('Are you sure you want to delete this discount?')) return;
-
-        try {
-            await deleteDiscount(discountId);
-            await loadData();
-            alert('Discount deleted successfully');
-        } catch (error: any) {
-            console.error('Delete discount error:', error);
-            alert(error.message || 'Failed to delete discount');
-        }
-    };
-
-    const handleToggleDiscountStatus = async (discountId: string) => {
-        try {
-            await toggleDiscountStatus(discountId);
-            await loadData();
-        } catch (error: any) {
-            console.error('Toggle discount status error:', error);
-            alert(error.message || 'Failed to toggle discount status');
+            setBulkDiscountLoading(false);
         }
     };
 
@@ -1175,6 +1009,28 @@ const Admin = () => {
                 </div>
 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                    {/* Quick Actions */}
+                    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg shadow-sm border border-blue-200 p-4 mb-6">
+                        <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                                <div className="p-2 bg-blue-600 rounded-lg">
+                                    <Percent className="w-5 h-5 text-white" />
+                                </div>
+                                <div>
+                                    <h3 className="text-sm font-semibold text-gray-900">Discount Management</h3>
+                                    <p className="text-xs text-gray-600">View analytics, manage product discounts, and cleanup expired offers</p>
+                                </div>
+                            </div>
+                            <button
+                                onClick={() => navigate('/admin/discounts')}
+                                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium text-sm transition-colors flex items-center gap-2"
+                            >
+                                <Percent className="w-4 h-4" />
+                                Manage Discounts
+                            </button>
+                        </div>
+                    </div>
+
                     {/* Tabs */}
                     <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-1 mb-6">
                         <div className="grid grid-cols-9 gap-1">
@@ -1257,16 +1113,6 @@ const Admin = () => {
                             >
                                 <Star className="w-4 h-4" />
                                 <span>Reviews</span>
-                            </button>
-                            <button
-                                onClick={() => setActiveTab('discounts')}
-                                className={`flex items-center justify-center gap-2 px-4 py-3 rounded-md font-medium text-sm transition-all ${activeTab === 'discounts'
-                                    ? 'bg-blue-600 text-white shadow-sm'
-                                    : 'text-gray-600 hover:bg-gray-50'
-                                    }`}
-                            >
-                                <Tag className="w-4 h-4" />
-                                <span>Discounts</span>
                             </button>
                         </div>
                     </div>
@@ -2577,228 +2423,6 @@ const Admin = () => {
                         </div>
                     )}
 
-
-                    {/* Discounts Tab */}
-                    {activeTab === 'discounts' && (
-                        <div className="space-y-6">
-                            {/* Header with Add Button */}
-                            <div className="flex justify-between items-center">
-                                <h2 className="text-2xl font-bold text-gray-900">Discount Management</h2>
-                                <button
-                                    onClick={() => handleOpenDiscountModal()}
-                                    className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
-                                >
-                                    <Plus className="w-5 h-5" />
-                                    Create Discount
-                                </button>
-                            </div>
-
-                            {/* Analytics Cards */}
-                            {discountAnalytics && (
-                                <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                                    <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
-                                        <h3 className="text-sm font-medium text-gray-600 mb-1">Total Discounts</h3>
-                                        <p className="text-2xl font-bold text-gray-900">{discountAnalytics.overview.total}</p>
-                                    </div>
-                                    <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
-                                        <h3 className="text-sm font-medium text-gray-600 mb-1">Active Discounts</h3>
-                                        <p className="text-2xl font-bold text-green-600">{discountAnalytics.overview.active}</p>
-                                    </div>
-                                    <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
-                                        <h3 className="text-sm font-medium text-gray-600 mb-1">Total Usage</h3>
-                                        <p className="text-2xl font-bold text-blue-600">{discountAnalytics.usage.total}</p>
-                                    </div>
-                                    <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
-                                        <h3 className="text-sm font-medium text-gray-600 mb-1">Average Usage</h3>
-                                        <p className="text-2xl font-bold text-purple-600">{discountAnalytics.usage.average.toFixed(1)}</p>
-                                    </div>
-                                </div>
-                            )}
-
-                            {/* Filters */}
-                            <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                    <div className="relative">
-                                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                                        <input
-                                            type="text"
-                                            placeholder="Search discounts..."
-                                            value={discountsSearch}
-                                            onChange={(e) => {
-                                                setDiscountsSearch(e.target.value);
-                                                setDiscountsPage(1);
-                                            }}
-                                            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        />
-                                    </div>
-                                    <select
-                                        value={discountsStatusFilter}
-                                        onChange={(e) => {
-                                            setDiscountsStatusFilter(e.target.value);
-                                            setDiscountsPage(1);
-                                        }}
-                                        className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    >
-                                        <option value="">All Status</option>
-                                        <option value="active">Active</option>
-                                        <option value="expired">Expired</option>
-                                        <option value="scheduled">Scheduled</option>
-                                    </select>
-                                    <select
-                                        value={discountsTypeFilter}
-                                        onChange={(e) => {
-                                            setDiscountsTypeFilter(e.target.value);
-                                            setDiscountsPage(1);
-                                        }}
-                                        className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    >
-                                        <option value="">All Types</option>
-                                        <option value="percentage">Percentage</option>
-                                        <option value="fixed">Fixed Amount</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            {/* Discounts Table */}
-                            <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-                                <div className="overflow-x-auto">
-                                    <table className="w-full">
-                                        <thead className="bg-gray-50 border-b border-gray-200">
-                                            <tr>
-                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Code</th>
-                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
-                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Value</th>
-                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Usage</th>
-                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Valid Period</th>
-                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody className="divide-y divide-gray-200">
-                                            {discounts.length === 0 ? (
-                                                <tr>
-                                                    <td colSpan={8} className="px-6 py-12 text-center text-gray-500">
-                                                        No discounts found
-                                                    </td>
-                                                </tr>
-                                            ) : (
-                                                discounts.map((discount) => {
-                                                    const now = new Date();
-                                                    const startDate = new Date(discount.startDate);
-                                                    const endDate = new Date(discount.endDate);
-                                                    const isActive = discount.isActive && now >= startDate && now <= endDate;
-                                                    const isExpired = now > endDate || !discount.isActive;
-                                                    const isScheduled = discount.isActive && now < startDate;
-
-                                                    return (
-                                                        <tr key={discount._id} className="hover:bg-gray-50">
-                                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                                <span className="font-mono font-semibold text-blue-600">{discount.code}</span>
-                                                            </td>
-                                                            <td className="px-6 py-4">
-                                                                <p className="text-sm text-gray-900 max-w-xs truncate">{discount.description}</p>
-                                                            </td>
-                                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                                <span className={`px-2 py-1 text-xs font-medium rounded-full ${discount.type === 'percentage'
-                                                                    ? 'bg-purple-100 text-purple-800'
-                                                                    : 'bg-green-100 text-green-800'
-                                                                    }`}>
-                                                                    {discount.type === 'percentage' ? 'Percentage' : 'Fixed'}
-                                                                </span>
-                                                            </td>
-                                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                                <span className="font-semibold">
-                                                                    {discount.type === 'percentage' ? `${discount.value}%` : `₹${discount.value}`}
-                                                                </span>
-                                                            </td>
-                                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                                <span className="text-sm text-gray-900">
-                                                                    {discount.usedCount} / {discount.usageLimit || '∞'}
-                                                                </span>
-                                                            </td>
-                                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                                <div>
-                                                                    <div>{new Date(discount.startDate).toLocaleDateString()}</div>
-                                                                    <div>{new Date(discount.endDate).toLocaleDateString()}</div>
-                                                                </div>
-                                                            </td>
-                                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                                <span className={`px-2 py-1 text-xs font-medium rounded-full ${isActive ? 'bg-green-100 text-green-800' :
-                                                                    isExpired ? 'bg-red-100 text-red-800' :
-                                                                        'bg-yellow-100 text-yellow-800'
-                                                                    }`}>
-                                                                    {isActive ? 'Active' : isExpired ? 'Expired' : 'Scheduled'}
-                                                                </span>
-                                                            </td>
-                                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                                <div className="flex items-center gap-2">
-                                                                    <button
-                                                                        onClick={() => handleToggleDiscountStatus(discount._id)}
-                                                                        className={`p-2 rounded-lg transition-colors ${discount.isActive
-                                                                            ? 'bg-green-100 text-green-600 hover:bg-green-200'
-                                                                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                                                                            }`}
-                                                                        title={discount.isActive ? 'Deactivate' : 'Activate'}
-                                                                    >
-                                                                        <DollarSign className="w-4 h-4" />
-                                                                    </button>
-                                                                    <button
-                                                                        onClick={() => handleOpenDiscountModal(discount)}
-                                                                        className="p-2 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200 transition-colors"
-                                                                        title="Edit"
-                                                                    >
-                                                                        <Edit2 className="w-4 h-4" />
-                                                                    </button>
-                                                                    <button
-                                                                        onClick={() => handleDeleteDiscount(discount._id)}
-                                                                        className="p-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition-colors"
-                                                                        title="Delete"
-                                                                    >
-                                                                        <Trash2 className="w-4 h-4" />
-                                                                    </button>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    );
-                                                })
-                                            )}
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                                {/* Pagination */}
-                                {discountsPagination && discountsPagination.totalPages > 1 && (
-                                    <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
-                                        <p className="text-sm text-gray-700">
-                                            Showing page {discountsPagination.currentPage} of {discountsPagination.totalPages}
-                                            {' '}({discountsPagination.totalItems} total)
-                                        </p>
-                                        <div className="flex gap-2">
-                                            <button
-                                                onClick={() => setDiscountsPage(discountsPage - 1)}
-                                                disabled={!discountsPagination.hasPrevPage}
-                                                className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                                            >
-                                                <ChevronLeft className="w-4 h-4" />
-                                                Previous
-                                            </button>
-                                            <button
-                                                onClick={() => setDiscountsPage(discountsPage + 1)}
-                                                disabled={!discountsPagination.hasNextPage}
-                                                className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                                            >
-                                                Next
-                                                <ChevronRight className="w-4 h-4" />
-                                            </button>
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                    )}
-
-
                     {/* Products Tab */}
                     {activeTab === 'products' && (
                         <div className="space-y-6">
@@ -2829,7 +2453,7 @@ const Admin = () => {
                             <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
                                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                                     <div className="relative">
-                                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                                        <Search className={`absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 ${productsLoading ? 'text-blue-500' : 'text-gray-400'} ${productsLoading ? 'animate-pulse' : ''}`} />
                                         <input
                                             type="text"
                                             placeholder="Search products..."
@@ -2838,8 +2462,13 @@ const Admin = () => {
                                                 setProductsSearch(e.target.value);
                                                 setProductsPage(1);
                                             }}
-                                            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                            className={`w-full pl-10 pr-10 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 ${productsLoading ? 'bg-gray-50' : ''}`}
                                         />
+                                        {productsLoading && (
+                                            <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                                                <div className="w-4 h-4 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin"></div>
+                                            </div>
+                                        )}
                                     </div>
                                     <select
                                         value={productsCategoryFilter}
@@ -2870,7 +2499,17 @@ const Admin = () => {
                             </div>
 
                             {/* Products Table */}
-                            <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                            <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden relative">
+                                {/* Loading overlay */}
+                                {productsLoading && (
+                                    <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-10">
+                                        <div className="flex items-center space-x-2">
+                                            <div className="w-6 h-6 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin"></div>
+                                            <span className="text-gray-600">Loading products...</span>
+                                        </div>
+                                    </div>
+                                )}
+                                
                                 <div className="overflow-x-auto">
                                     <table className="w-full">
                                         <thead className="bg-gray-50 border-b border-gray-200">
@@ -2887,6 +2526,7 @@ const Admin = () => {
                                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
                                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
                                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Discount</th>
                                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                                             </tr>
@@ -2903,11 +2543,18 @@ const Admin = () => {
                                                         />
                                                     </td>
                                                     <td className="px-6 py-4">
-                                                        <img
-                                                            src={product.image}
-                                                            alt={product.name}
-                                                            className="w-16 h-16 object-cover rounded-lg"
-                                                        />
+                                                        <div className="relative">
+                                                            <img
+                                                                src={product.image}
+                                                                alt={product.name}
+                                                                className="w-16 h-16 object-cover rounded-lg"
+                                                            />
+                                                            {product.hasVideo && (
+                                                                <div className="absolute -top-1 -right-1 bg-purple-600 text-white rounded-full p-1" title="Has video">
+                                                                    <Play className="w-3 h-3" />
+                                                                </div>
+                                                            )}
+                                                        </div>
                                                     </td>
                                                     <td className="px-6 py-4">
                                                         <div>
@@ -2922,7 +2569,80 @@ const Admin = () => {
                                                         </span>
                                                     </td>
                                                     <td className="px-6 py-4">
-                                                        {product.priceINR ? formatCurrency(product.priceINR) : 'N/A'}
+                                                        <div>
+                                                            {product.priceINR ? (
+                                                                <>
+                                                                    {product.discount?.enabled && product.discount.percentage > 0 ? (
+                                                                        <div>
+                                                                            <div className="text-sm font-medium text-green-600">
+                                                                                {formatCurrency(Math.round(product.priceINR * (1 - product.discount.percentage / 100)))}
+                                                                            </div>
+                                                                            <div className="text-xs text-gray-500 line-through">
+                                                                                {formatCurrency(product.priceINR)}
+                                                                            </div>
+                                                                        </div>
+                                                                    ) : (
+                                                                        <div className="text-sm font-medium text-gray-900">
+                                                                            {formatCurrency(product.priceINR)}
+                                                                        </div>
+                                                                    )}
+                                                                </>
+                                                            ) : 'N/A'}
+                                                        </div>
+                                                    </td>
+                                                    <td className="px-6 py-4">
+                                                        {(() => {
+                                                            if (!product.discount?.enabled || !product.discount.percentage) {
+                                                                return <span className="text-xs text-gray-400">—</span>;
+                                                            }
+
+                                                            const now = new Date();
+                                                            const startDate = product.discount.startDate ? new Date(product.discount.startDate) : null;
+                                                            const endDate = product.discount.endDate ? new Date(product.discount.endDate) : null;
+
+                                                            if (startDate && now < startDate) {
+                                                                const daysUntil = Math.ceil((startDate - now) / (1000 * 60 * 60 * 24));
+                                                                return (
+                                                                    <div>
+                                                                        <span className="px-2 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full">
+                                                                            Scheduled
+                                                                        </span>
+                                                                        <div className="text-xs text-gray-500 mt-1">
+                                                                            {product.discount.percentage}% in {daysUntil}d
+                                                                        </div>
+                                                                    </div>
+                                                                );
+                                                            } else if (endDate && now > endDate) {
+                                                                return (
+                                                                    <div>
+                                                                        <span className="px-2 py-1 text-xs font-medium bg-red-100 text-red-800 rounded-full">
+                                                                            Expired
+                                                                        </span>
+                                                                        <div className="text-xs text-gray-500 mt-1">
+                                                                            {product.discount.percentage}%
+                                                                        </div>
+                                                                    </div>
+                                                                );
+                                                            } else {
+                                                                const daysRemaining = endDate ? Math.ceil((endDate - now) / (1000 * 60 * 60 * 24)) : null;
+                                                                return (
+                                                                    <div>
+                                                                        <span className={`px-2 py-1 text-xs font-medium rounded-full ${daysRemaining && daysRemaining <= 3
+                                                                                ? 'bg-orange-100 text-orange-800'
+                                                                                : 'bg-green-100 text-green-800'
+                                                                            }`}>
+                                                                            {product.discount.percentage}% OFF
+                                                                        </span>
+                                                                        {daysRemaining && (
+                                                                            <div className={`text-xs mt-1 ${daysRemaining <= 3 ? 'text-orange-600 font-medium' : 'text-gray-500'
+                                                                                }`}>
+                                                                                {daysRemaining}d left
+                                                                            </div>
+                                                                        )}
+                                                                    </div>
+                                                                );
+                                                            }
+                                                        })()}
                                                     </td>
                                                     <td className="px-6 py-4">
                                                         <span className={`px-2 py-1 text-xs font-medium rounded-full capitalize ${product.status === 'active' ? 'bg-green-100 text-green-800' :
@@ -2936,10 +2656,18 @@ const Admin = () => {
                                                         <div className="flex items-center gap-2">
                                                             <button
                                                                 onClick={() => handleOpenProductModal(product)}
-                                                                className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                                                                disabled={editingProductId === product.productId}
+                                                                className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                                                 title="Edit product"
                                                             >
-                                                                <Edit2 className="w-4 h-4" />
+                                                                {editingProductId === product.productId ? (
+                                                                    <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                                    </svg>
+                                                                ) : (
+                                                                    <Edit2 className="w-4 h-4" />
+                                                                )}
                                                             </button>
                                                             <button
                                                                 onClick={() => handleDeleteProduct(product.productId)}
@@ -2960,6 +2688,34 @@ const Admin = () => {
                                                     </td>
                                                 </tr>
                                             ))}
+                                            
+                                            {/* Empty state */}
+                                            {!productsLoading && products.length === 0 && (
+                                                <tr>
+                                                    <td colSpan={8} className="px-6 py-12 text-center">
+                                                        <div className="flex flex-col items-center justify-center space-y-3">
+                                                            <Package className="w-12 h-12 text-gray-400" />
+                                                            <div className="text-gray-500">
+                                                                <p className="text-lg font-medium">No products found</p>
+                                                                <p className="text-sm">
+                                                                    {productsSearch || productsCategoryFilter || productsStatusFilter
+                                                                        ? 'Try adjusting your filters or search terms'
+                                                                        : 'Get started by adding your first product'
+                                                                    }
+                                                                </p>
+                                                            </div>
+                                                            {!productsSearch && !productsCategoryFilter && !productsStatusFilter && (
+                                                                <button
+                                                                    onClick={() => handleOpenProductModal()}
+                                                                    className="mt-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
+                                                                >
+                                                                    Add Product
+                                                                </button>
+                                                            )}
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            )}
                                         </tbody>
                                     </table>
                                 </div>
@@ -3028,8 +2784,11 @@ const Admin = () => {
                                 <div className="flex-1 min-h-0 overflow-hidden">
                                     <EnhancedProductForm
                                         editingProduct={editingProduct}
-                                        onSave={async (productData, images, customSpecs) => {
+                                        loading={productLoading}
+                                        previewLoading={previewLoading}
+                                        onSave={async (productData, images, customSpecs, video) => {
                                             try {
+                                                setProductLoading(true);
                                                 // Extract File objects from ProductImage array (new images only)
                                                 const newImageFiles = images
                                                     .filter(img => img.file && !img.isExisting)
@@ -3051,14 +2810,14 @@ const Admin = () => {
                                                         editingProduct.productId,
                                                         finalProductData,
                                                         newImageFiles,
-                                                        null, // video
-                                                        false // removeVideo
+                                                        video || null, // video file
+                                                        !video // removeVideo flag
                                                     );
                                                 } else {
                                                     await adminProductService.createProduct(
                                                         finalProductData,
                                                         newImageFiles,
-                                                        null // video
+                                                        video || null // video file
                                                     );
                                                 }
                                                 await loadData();
@@ -3067,10 +2826,12 @@ const Admin = () => {
                                             } catch (error) {
                                                 console.error('Error saving product:', error);
                                                 throw error;
+                                            } finally {
+                                                setProductLoading(false);
                                             }
                                         }}
                                         onCancel={handleCloseProductModal}
-                                        onPreview={async (productData, images) => {
+                                        onPreview={async (productData, images, video) => {
                                             try {
                                                 setPreviewLoading(true);
 
@@ -3204,10 +2965,16 @@ const Admin = () => {
                                     <div className="flex gap-3 pt-6 border-t border-gray-200">
                                         <button
                                             onClick={handleBulkApplyDiscount}
-                                            disabled={productLoading}
-                                            className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
+                                            disabled={bulkDiscountLoading}
+                                            className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
                                         >
-                                            {productLoading ? 'Applying...' : 'Apply Discount'}
+                                            {bulkDiscountLoading && (
+                                                <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                </svg>
+                                            )}
+                                            {bulkDiscountLoading ? 'Applying discount...' : 'Apply Discount'}
                                         </button>
                                         <button
                                             onClick={() => setShowBulkDiscountModal(false)}
@@ -3337,205 +3104,6 @@ const Admin = () => {
                                         </button>
                                     </div>
                                 </form>
-                            </div>
-                        </div>
-                        , document.body)}
-
-                    {/* Discount Modal */}
-                    {showDiscountModal && isMounted && typeof document !== 'undefined' && document.body && createPortal(
-                        <div
-                            className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
-                            onClick={handleCloseDiscountModal}
-                            onWheel={(e) => e.preventDefault()}
-                            onTouchMove={(e) => e.preventDefault()}
-                        >
-                            <div
-                                className="bg-white rounded-xl shadow-2xl w-full max-w-2xl flex flex-col relative animate-in fade-in zoom-in-95 duration-200"
-                                style={{ height: '85vh', maxHeight: '900px' }}
-                                onClick={(e) => e.stopPropagation()}
-                                onWheel={(e) => e.stopPropagation()}
-                                onTouchMove={(e) => e.stopPropagation()}
-                            >
-                                <div className="p-6 border-b border-gray-200 flex justify-between items-center sticky top-0 bg-white z-10 rounded-t-xl">
-                                    <h2 className="text-xl font-bold text-gray-900">
-                                        {editingDiscount ? 'Edit Discount' : 'Create New Discount'}
-                                    </h2>
-                                    <button
-                                        onClick={handleCloseDiscountModal}
-                                        className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-                                    >
-                                        <X className="w-5 h-5 text-gray-500" />
-                                    </button>
-                                </div>
-
-                                <div className="p-6 space-y-6">
-                                    {/* Basic Information */}
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">Discount Code *</label>
-                                            <input
-                                                type="text"
-                                                required
-                                                value={discountFormData.code || ''}
-                                                onChange={(e) => setDiscountFormData({ ...discountFormData, code: e.target.value.toUpperCase() })}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 uppercase"
-                                                placeholder="e.g., SUMMER2024"
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">Type *</label>
-                                            <select
-                                                required
-                                                value={discountFormData.type || 'percentage'}
-                                                onChange={(e) => setDiscountFormData({ ...discountFormData, type: e.target.value as 'percentage' | 'fixed' })}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                                            >
-                                                <option value="percentage">Percentage</option>
-                                                <option value="fixed">Fixed Amount</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">Description *</label>
-                                        <textarea
-                                            required
-                                            value={discountFormData.description || ''}
-                                            onChange={(e) => setDiscountFormData({ ...discountFormData, description: e.target.value })}
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                                            rows={3}
-                                            placeholder="Describe the discount offer..."
-                                        />
-                                    </div>
-
-                                    {/* Discount Value */}
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                                {discountFormData.type === 'percentage' ? 'Percentage (%)' : 'Amount (₹)'} *
-                                            </label>
-                                            <input
-                                                type="number"
-                                                required
-                                                min="0"
-                                                max={discountFormData.type === 'percentage' ? 100 : undefined}
-                                                value={discountFormData.value || ''}
-                                                onChange={(e) => setDiscountFormData({ ...discountFormData, value: Number(e.target.value) })}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                                            />
-                                        </div>
-                                        {discountFormData.type === 'percentage' && (
-                                            <div>
-                                                <label className="block text-sm font-medium text-gray-700 mb-1">Max Discount (₹)</label>
-                                                <input
-                                                    type="number"
-                                                    min="0"
-                                                    value={discountFormData.maxDiscount || ''}
-                                                    onChange={(e) => setDiscountFormData({ ...discountFormData, maxDiscount: Number(e.target.value) })}
-                                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                                                    placeholder="Optional"
-                                                />
-                                            </div>
-                                        )}
-                                    </div>
-
-                                    {/* Usage Limits */}
-                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">Min Order Amount (₹)</label>
-                                            <input
-                                                type="number"
-                                                min="0"
-                                                value={discountFormData.minOrderAmount || ''}
-                                                onChange={(e) => setDiscountFormData({ ...discountFormData, minOrderAmount: Number(e.target.value) })}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                                                placeholder="0"
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">Total Usage Limit</label>
-                                            <input
-                                                type="number"
-                                                min="0"
-                                                value={discountFormData.usageLimit || ''}
-                                                onChange={(e) => setDiscountFormData({ ...discountFormData, usageLimit: Number(e.target.value) })}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                                                placeholder="Unlimited"
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">Per User Limit</label>
-                                            <input
-                                                type="number"
-                                                min="1"
-                                                value={discountFormData.usagePerUser || 1}
-                                                onChange={(e) => setDiscountFormData({ ...discountFormData, usagePerUser: Number(e.target.value) })}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                                            />
-                                        </div>
-                                    </div>
-
-                                    {/* Valid Period */}
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">Start Date *</label>
-                                            <input
-                                                type="date"
-                                                required
-                                                value={discountFormData.startDate || ''}
-                                                onChange={(e) => setDiscountFormData({ ...discountFormData, startDate: e.target.value })}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">End Date *</label>
-                                            <input
-                                                type="date"
-                                                required
-                                                value={discountFormData.endDate || ''}
-                                                onChange={(e) => setDiscountFormData({ ...discountFormData, endDate: e.target.value })}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                                            />
-                                        </div>
-                                    </div>
-
-                                    {/* Apply to All Products Checkbox */}
-                                    {!editingDiscount && (
-                                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                                            <label className="flex items-start gap-3 cursor-pointer">
-                                                <input
-                                                    type="checkbox"
-                                                    checked={applyToAllProducts}
-                                                    onChange={(e) => setApplyToAllProducts(e.target.checked)}
-                                                    className="mt-1 w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                                                />
-                                                <div>
-                                                    <div className="font-semibold text-blue-900">Apply to All Products</div>
-                                                    <div className="text-sm text-blue-700 mt-1">
-                                                        When checked, this discount will be automatically applied to all products in your catalog.
-                                                        This will update the product-level discount for every product.
-                                                    </div>
-                                                </div>
-                                            </label>
-                                        </div>
-                                    )}
-
-                                    {/* Action Buttons */}
-                                    <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">
-                                        <button
-                                            onClick={handleCloseDiscountModal}
-                                            className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
-                                        >
-                                            Cancel
-                                        </button>
-                                        <button
-                                            onClick={handleSaveDiscount}
-                                            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                                        >
-                                            {editingDiscount ? 'Update Discount' : 'Create Discount'}
-                                        </button>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                         , document.body)}
@@ -3770,3 +3338,5 @@ const Admin = () => {
 };
 
 export default Admin;
+
+

@@ -16,6 +16,13 @@ interface OrderItem {
     price: number;
     image?: string;
     category?: string;
+    originalPrice?: number;
+    discountPercentage?: number;
+    discount?: {
+        enabled: boolean;
+        percentage: number;
+        description?: string;
+    };
 }
 
 interface ShippingAddress {
@@ -276,14 +283,37 @@ const OrderDetails: React.FC = () => {
                                                 <p className="text-sm text-gray-600 mt-1">
                                                     Quantity: {item.quantity}
                                                 </p>
+                                                {item.discount?.enabled && item.discount.percentage > 0 && (
+                                                    <div className="mt-1">
+                                                        <span className="inline-flex items-center px-2 py-0.5 bg-green-100 text-green-700 rounded-full text-xs font-medium">
+                                                            {item.discount.percentage}% OFF
+                                                        </span>
+                                                    </div>
+                                                )}
                                             </div>
                                             <div className="text-right">
-                                                <p className="font-semibold text-gray-900">
-                                                    {formatAmount(item.price * item.quantity, order.currency)}
-                                                </p>
-                                                <p className="text-sm text-gray-500">
-                                                    {formatAmount(item.price, order.currency)} each
-                                                </p>
+                                                {item.discount?.enabled && item.discount.percentage > 0 && item.originalPrice ? (
+                                                    <div>
+                                                        <p className="font-semibold text-green-600">
+                                                            {formatAmount(item.price * item.quantity, order.currency)}
+                                                        </p>
+                                                        <p className="text-sm text-gray-400 line-through">
+                                                            {formatAmount(item.originalPrice * item.quantity, order.currency)}
+                                                        </p>
+                                                        <p className="text-xs text-green-600 mt-0.5">
+                                                            Save {formatAmount((item.originalPrice - item.price) * item.quantity, order.currency)}
+                                                        </p>
+                                                    </div>
+                                                ) : (
+                                                    <div>
+                                                        <p className="font-semibold text-gray-900">
+                                                            {formatAmount(item.price * item.quantity, order.currency)}
+                                                        </p>
+                                                        <p className="text-sm text-gray-500">
+                                                            {formatAmount(item.price, order.currency)} each
+                                                        </p>
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
                                     ))}

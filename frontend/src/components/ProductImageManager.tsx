@@ -31,6 +31,8 @@ const ProductImageManager: React.FC<ProductImageManagerProps> = ({
   const [showCropper, setShowCropper] = useState(false);
   const [cropImage, setCropImage] = useState<{ src: string; file: File; imageId?: string } | null>(null);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+  const [processingImages, setProcessingImages] = useState<Set<string>>(new Set());
+  const [uploadProgress, setUploadProgress] = useState<{ [key: string]: number }>({});
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,10 +56,38 @@ const ProductImageManager: React.FC<ProductImageManagerProps> = ({
         return;
       }
 
+      const imageId = Date.now().toString() + '_' + Math.random().toString(36).substr(2, 9);
+      setProcessingImages(prev => new Set([...prev, imageId]));
+      setUploadProgress(prev => ({ ...prev, [imageId]: 0 }));
+
       const reader = new FileReader();
+      reader.onprogress = (e) => {
+        if (e.lengthComputable) {
+          const progress = Math.round((e.loaded / e.total) * 100);
+          setUploadProgress(prev => ({ ...prev, [imageId]: Math.min(progress, 90) }));
+        }
+      };
+      
       reader.onload = (e) => {
-        // Always add image directly without cropping first
-        addImage(file, e.target?.result as string);
+        // Simulate final processing time
+        setTimeout(() => {
+          setUploadProgress(prev => ({ ...prev, [imageId]: 100 }));
+          addImage(file, e.target?.result as string, imageId);
+          
+          // Clean up processing state
+          setTimeout(() => {
+            setProcessingImages(prev => {
+              const newSet = new Set(prev);
+              newSet.delete(imageId);
+              return newSet;
+            });
+            setUploadProgress(prev => {
+              const newProgress = { ...prev };
+              delete newProgress[imageId];
+              return newProgress;
+            });
+          }, 500);
+        }, 300);
       };
       reader.readAsDataURL(file);
     });
@@ -68,9 +98,9 @@ const ProductImageManager: React.FC<ProductImageManagerProps> = ({
     }
   };
 
-  const addImage = (file: File, url: string) => {
+  const addImage = (file: File, url: string, id?: string) => {
     const newImage: ProductImage = {
-      id: Date.now().toString(),
+      id: id || Date.now().toString(),
       file,
       url,
       isMain: images.length === 0, // First image is main by default

@@ -97,8 +97,8 @@ export interface CategoryResponse {
 
 class ProductService {
   // Ensure we don't double-append /api if API_BASE_URL already has it
-  private baseUrl = API_BASE_URL.endsWith('/api') 
-    ? API_BASE_URL 
+  private baseUrl = API_BASE_URL.endsWith('/api')
+    ? API_BASE_URL
     : `${API_BASE_URL}/api`;
 
   private async request<T>(endpoint: string, options?: RequestInit): Promise<T> {
@@ -139,7 +139,7 @@ class ProductService {
     maxPrice?: number;
   } = {}): Promise<ProductResponse> {
     const searchParams = new URLSearchParams();
-    
+
     Object.entries(params).forEach(([key, value]) => {
       if (value !== undefined && value !== null) {
         searchParams.append(key, value.toString());
@@ -170,7 +170,7 @@ class ProductService {
     } = {}
   ): Promise<CategoryResponse> {
     const searchParams = new URLSearchParams();
-    
+
     Object.entries(params).forEach(([key, value]) => {
       if (value !== undefined && value !== null) {
         searchParams.append(key, value.toString());
@@ -196,7 +196,7 @@ class ProductService {
     page?: number;
   } = {}): Promise<ProductResponse> {
     const searchParams = new URLSearchParams({ q: query });
-    
+
     Object.entries(params).forEach(([key, value]) => {
       if (value !== undefined && value !== null) {
         searchParams.append(key, value.toString());

@@ -12,6 +12,13 @@ interface OrderItem {
     price: number;
     image?: string;
     category?: string;
+    originalPrice?: number;
+    discountPercentage?: number;
+    discount?: {
+        enabled: boolean;
+        percentage: number;
+        description?: string;
+    };
 }
 
 interface Order {
