@@ -17,9 +17,7 @@
         "test-crud": "node test-product-crud.js",
         "check-indexes": "node check-discount-indexes.js",
         "fix-indexes": "node ensure-discount-indexes.js",
-        "fix-discounts": "node ensure-discount-indexes.js",
-        "view-db": "node view-database-data.js",
-        "check-db": "node view-database-data.js"
+        "fix-discounts": "node ensure-discount-indexes.js"
     },
     "dependencies": {
         "axios": "^1.13.4",

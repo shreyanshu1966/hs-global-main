@@ -810,12 +810,17 @@ const updateProductInventoryAndShipping = async (req, res) => {
  */
 const getDiscountAnalytics = async (req, res) => {
     try {
+        console.log('📊 getDiscountAnalytics called');
+        console.log('🔐 Auth user:', req.user?.email);
+        
         const analytics = await Product.getDiscountAnalytics();
+        console.log('📈 Analytics result:', analytics);
         
         // Get expiring soon (next 3 days)
         const expiringSoon = await Product.getExpiringSoonDiscounts(3);
+        console.log('⏰ Expiring soon count:', expiringSoon.length);
         
-        res.json({
+        const responseData = {
             success: true,
             data: {
                 ...analytics,
@@ -827,9 +832,13 @@ const getDiscountAnalytics = async (req, res) => {
                     daysRemaining: Math.ceil((new Date(p.discount.endDate) - new Date()) / (1000 * 60 * 60 * 24))
                 }))
             }
-        });
+        };
+        
+        console.log('✅ Sending response:', JSON.stringify(responseData).substring(0, 200));
+        res.json(responseData);
     } catch (error) {
-        console.error('Get discount analytics error:', error);
+        console.error('❌ Get discount analytics error:', error);
+        console.error('❌ Error stack:', error.stack);
         res.status(500).json({
             success: false,
             message: 'Failed to fetch discount analytics',
@@ -867,11 +876,17 @@ const disableExpiredDiscounts = async (req, res) => {
  */
 const getDiscountedProducts = async (req, res) => {
     try {
+        console.log('📦 getDiscountedProducts called');
+        console.log('🔐 Auth user:', req.user?.email);
+        console.log('📋 Query params:', req.query);
+        
         const { 
             page = 1, 
             limit = 20,
             status = 'all' // active, scheduled, expired, all
         } = req.query;
+        
+        console.log('🎯 Filters:', { page, limit, status });
         
         const now = new Date();
         let query = {};
@@ -902,6 +917,8 @@ const getDiscountedProducts = async (req, res) => {
             };
         }
         
+        console.log('🔍 MongoDB query:', JSON.stringify(query));
+        
         const skip = (page - 1) * limit;
         
         const [products, total] = await Promise.all([
@@ -913,6 +930,8 @@ const getDiscountedProducts = async (req, res) => {
             Product.countDocuments(query)
         ]);
         
+        console.log('📊 Results:', { productsFound: products.length, total });
+        
         // Add discount status to each product
         const productsWithStatus = products.map(product => {
             const status = product.getDiscountStatus();
@@ -923,7 +942,7 @@ const getDiscountedProducts = async (req, res) => {
             };
         });
         
-        res.json({
+        const responseData = {
             success: true,
             data: productsWithStatus,
             pagination: {
@@ -932,9 +951,13 @@ const getDiscountedProducts = async (req, res) => {
                 count: productsWithStatus.length,
                 totalItems: total
             }
-        });
+        };
+        
+        console.log('✅ Sending response with', productsWithStatus.length, 'products');
+        res.json(responseData);
     } catch (error) {
-        console.error('Get discounted products error:', error);
+        console.error('❌ Get discounted products error:', error);
+        console.error('❌ Error stack:', error.stack);
         res.status(500).json({
             success: false,
             message: 'Failed to fetch discounted products',

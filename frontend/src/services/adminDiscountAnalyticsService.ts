@@ -56,14 +56,24 @@ interface DiscountedProduct {
  */
 export const getDiscountAnalytics = async (token: string): Promise<DiscountAnalytics> => {
     try {
+        console.log('🔍 Fetching analytics from:', `${API_BASE_URL}/analytics/discounts`);
         const response = await axios.get(`${API_BASE_URL}/analytics/discounts`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         });
+        console.log('📡 Analytics API response:', response.data);
+        
+        if (!response.data || !response.data.data) {
+            console.error('⚠️ Invalid response structure:', response.data);
+            throw new Error('Invalid response format from server');
+        }
+        
         return response.data.data;
     } catch (error: any) {
-        console.error('Get discount analytics error:', error);
+        console.error('❌ Get discount analytics error:', error);
+        console.error('❌ Error response:', error.response?.data);
+        console.error('❌ Error status:', error.response?.status);
         throw new Error(error.response?.data?.message || 'Failed to fetch discount analytics');
     }
 };
@@ -107,6 +117,9 @@ export const getDiscountedProducts = async (
     try {
         const { page = 1, limit = 20, status = 'all' } = options;
         
+        console.log('🔍 Fetching products from:', `${API_BASE_URL}/discounts/products`);
+        console.log('📋 Params:', { page, limit, status });
+        
         const response = await axios.get(`${API_BASE_URL}/discounts/products`, {
             params: { page, limit, status },
             headers: {
@@ -114,12 +127,21 @@ export const getDiscountedProducts = async (
             }
         });
         
+        console.log('📡 Products API response:', response.data);
+        
+        if (!response.data) {
+            console.error('⚠️ Invalid response structure:', response.data);
+            throw new Error('Invalid response format from server');
+        }
+        
         return {
-            data: response.data.data,
+            data: response.data.data || [],
             pagination: response.data.pagination
         };
     } catch (error: any) {
-        console.error('Get discounted products error:', error);
+        console.error('❌ Get discounted products error:', error);
+        console.error('❌ Error response:', error.response?.data);
+        console.error('❌ Error status:', error.response?.status);
         throw new Error(error.response?.data?.message || 'Failed to fetch discounted products');
     }
 };
