@@ -870,16 +870,19 @@ const getDiscountedProducts = async (req, res) => {
         const { 
             page = 1, 
             limit = 20,
-            status = 'active' // active, scheduled, expired, all
+            status = 'all' // active, scheduled, expired, all
         } = req.query;
         
         const now = new Date();
-        let query = { 'discount.enabled': true };
+        let query = {};
         
         // Filter by discount status
-        if (status === 'active') {
+        if (status === 'all') {
+            // Show all products (with or without discounts)
+            query = {};
+        } else if (status === 'active') {
             query = {
-                ...query,
+                'discount.enabled': true,
                 $or: [
                     { 'discount.startDate': null, 'discount.endDate': null },
                     { 'discount.startDate': null, 'discount.endDate': { $gte: now } },
@@ -888,9 +891,15 @@ const getDiscountedProducts = async (req, res) => {
                 ]
             };
         } else if (status === 'scheduled') {
-            query['discount.startDate'] = { $gt: now };
+            query = {
+                'discount.enabled': true,
+                'discount.startDate': { $gt: now }
+            };
         } else if (status === 'expired') {
-            query['discount.endDate'] = { $lt: now };
+            query = {
+                'discount.enabled': true,
+                'discount.endDate': { $lt: now }
+            };
         }
         
         const skip = (page - 1) * limit;
