@@ -21,16 +21,26 @@ const app = express();
 
 // Middleware - Configure CORS properly
 const allowedOrigins = process.env.ALLOWED_ORIGINS
-  ? process.env.ALLOWED_ORIGINS.split(',')
+  ? process.env.ALLOWED_ORIGINS.split(',').map(origin => origin.trim())
   : ['http://localhost:5173', 'http://localhost:3000'];
+
+console.log('🌍 CORS Configuration:');
+console.log('  Environment:', process.env.NODE_ENV);
+console.log('  Allowed Origins:', allowedOrigins);
 
 app.use(cors({
   origin: (origin, callback) => {
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV === 'development') {
+    
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else if (process.env.NODE_ENV === 'development') {
+      console.log('⚠️  Development mode: Allowing origin:', origin);
       callback(null, true);
     } else {
+      console.error('❌ CORS blocked origin:', origin);
+      console.error('   Allowed origins:', allowedOrigins);
       callback(new Error('Not allowed by CORS'));
     }
   },
