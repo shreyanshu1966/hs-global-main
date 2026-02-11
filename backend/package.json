@@ -24,13 +24,14 @@
         "cookie-parser": "^1.4.7",
         "cors": "^2.8.5",
         "dotenv": "^16.6.1",
-        "express": "^4.19.2",
+        "express": "^4.22.1",
         "jsonwebtoken": "^9.0.3",
         "lokijs": "^1.5.12",
         "mongoose": "^9.0.2",
         "multer": "^2.0.2",
         "node-cron": "^4.2.1",
         "nodemailer": "^6.10.1",
+        "sharp": "^0.33.5",
         "twilio": "^5.9.0"
     }
 }

@@ -1,6 +1,12 @@
 const Product = require('../models/Product');
 const { uploadToCloudinary, uploadMultipleToCloudinary, deleteMultipleFromCloudinary } = require('../utils/cloudinaryUpload');
 const { uploadVideoToGoDaddy, deleteVideoFromGoDaddy, validateVideo } = require('../utils/godaddyVideoUpload');
+const { 
+    processMultipleProductImages, 
+    cleanupOldImageVariants, 
+    validateImageForEcommerce,
+    generateImageSEOData 
+} = require('../utils/imageProcessor');
 
 /**
  * Get all products for admin (includes inactive and draft products)
@@ -579,6 +585,226 @@ const previewProduct = async (req, res) => {
     }
 };
 
+/**
+ * Process and crop product images with enhanced features
+ */
+const processProductImages = async (req, res) => {
+    try {
+        const { productId } = req.params;
+        const { cropData } = req.body; // Array of crop data for each image
+        
+        const product = await Product.findOne({ productId });
+        if (!product) {
+            return res.status(404).json({
+                success: false,
+                message: 'Product not found'
+            });
+        }
+
+        const imageFiles = req.files?.images || [];
+        if (!imageFiles || imageFiles.length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'No images provided for processing'
+            });
+        }
+
+        // Validate images
+        const validationPromises = imageFiles.map(file => validateImageForEcommerce(file.buffer));
+        const validationResults = await Promise.all(validationPromises);
+        
+        const invalidImages = validationResults
+            .map((result, index) => ({ index, result }))
+            .filter(({ result }) => !result.isValid);
+
+        if (invalidImages.length > 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'Some images failed validation',
+                errors: invalidImages.map(({ index, result }) => ({
+                    imageIndex: index,
+                    errors: result.errors
+                }))
+            });
+        }
+
+        // Process images with cropping
+        const folderPath = `hs-global/products/${product.category}/${product.subcategory}`;
+        const cropDataArray = Array.isArray(cropData) ? cropData : [];
+        
+        const processingResult = await processMultipleProductImages(
+            imageFiles, 
+            cropDataArray, 
+            folderPath, 
+            productId
+        );
+
+        if (!processingResult.success) {
+            return res.status(500).json({
+                success: false,
+                message: 'Image processing failed',
+                error: processingResult.error
+            });
+        }
+
+        // Update product with processed images
+        const processedImageUrls = processingResult.images.map(img => img.urls.original);
+        const imageProcessingData = processingResult.images.map((img, index) => ({
+            originalUrl: img.urls.original,
+            processedUrl: img.urls.medium,
+            thumbnailUrl: img.urls.thumbnail,
+            webpUrl: img.urls.webp,
+            cropData: img.metadata.cropData,
+            ...generateImageSEOData(product.name, product.category, index)
+        }));
+
+        // Clean up old images if replacing
+        if (product.images && product.images.length > 0) {
+            await cleanupOldImageVariants(product.images);
+        }
+
+        // Update product
+        const updatedProduct = await Product.findOneAndUpdate(
+            { productId },
+            {
+                images: processedImageUrls,
+                sortedImages: processedImageUrls,
+                image: processedImageUrls[0],
+                imageProcessing: imageProcessingData,
+                'imageMetadata.totalSize': processingResult.images.reduce((sum, img) => sum + img.metadata.size, 0),
+                'imageMetadata.lastOptimized': new Date(),
+                updatedAt: new Date()
+            },
+            { new: true }
+        );
+
+        res.json({
+            success: true,
+            data: updatedProduct,
+            message: `Successfully processed ${processingResult.totalProcessed} images`,
+            processingInfo: {
+                totalProcessed: processingResult.totalProcessed,
+                variants: ['original', 'webp', 'thumbnail', 'medium', 'large'],
+                totalSize: processingResult.images.reduce((sum, img) => sum + img.metadata.size, 0)
+            }
+        });
+
+    } catch (error) {
+        console.error('Process product images error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to process product images',
+            error: error.message
+        });
+    }
+};
+
+/**
+ * Update product specifications (both standard and custom)
+ */
+const updateProductSpecifications = async (req, res) => {
+    try {
+        const { productId } = req.params;
+        const { furnitureSpecs, slabSpecs, customSpecs } = req.body;
+
+        const product = await Product.findOne({ productId });
+        if (!product) {
+            return res.status(404).json({
+                success: false,
+                message: 'Product not found'
+            });
+        }
+
+        const updateData = { updatedAt: new Date() };
+
+        // Update standard specifications based on category
+        if (product.category === 'furniture' && furnitureSpecs) {
+            updateData.furnitureSpecs = furnitureSpecs;
+        } else if (product.category === 'slabs' && slabSpecs) {
+            updateData.slabSpecs = slabSpecs;
+        }
+
+        // Update custom specifications
+        if (customSpecs && Array.isArray(customSpecs)) {
+            // Validate custom specs
+            const validCustomSpecs = customSpecs.filter(spec => 
+                spec.key && spec.label && 
+                ['text', 'number', 'select', 'textarea'].includes(spec.type)
+            );
+
+            updateData.customSpecs = validCustomSpecs.map((spec, index) => ({
+                ...spec,
+                order: spec.order || index
+            }));
+        }
+
+        const updatedProduct = await Product.findOneAndUpdate(
+            { productId },
+            updateData,
+            { new: true }
+        );
+
+        res.json({
+            success: true,
+            data: updatedProduct,
+            message: 'Product specifications updated successfully'
+        });
+
+    } catch (error) {
+        console.error('Update specifications error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to update product specifications',
+            error: error.message
+        });
+    }
+};
+
+/**
+ * Update product inventory and shipping information
+ */
+const updateProductInventoryAndShipping = async (req, res) => {
+    try {
+        const { productId } = req.params;
+        const { inventory, shipping, manufacturing, variants } = req.body;
+
+        const product = await Product.findOne({ productId });
+        if (!product) {
+            return res.status(404).json({
+                success: false,
+                message: 'Product not found'
+            });
+        }
+
+        const updateData = { updatedAt: new Date() };
+
+        if (inventory) updateData.inventory = inventory;
+        if (shipping) updateData.shipping = shipping;
+        if (manufacturing) updateData.manufacturing = manufacturing;
+        if (variants && Array.isArray(variants)) updateData.variants = variants;
+
+        const updatedProduct = await Product.findOneAndUpdate(
+            { productId },
+            updateData,
+            { new: true }
+        );
+
+        res.json({
+            success: true,
+            data: updatedProduct,
+            message: 'Product inventory and shipping information updated successfully'
+        });
+
+    } catch (error) {
+        console.error('Update inventory and shipping error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to update product inventory and shipping information',
+            error: error.message
+        });
+    }
+};
+
 module.exports = {
     getAdminProducts,
     createProductWithImages,
@@ -586,5 +812,8 @@ module.exports = {
     deleteProductWithImages,
     reorderProductImages,
     getSubcategories,
-    previewProduct
+    previewProduct,
+    processProductImages,
+    updateProductSpecifications,
+    updateProductInventoryAndShipping
 };

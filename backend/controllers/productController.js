@@ -73,10 +73,10 @@ const getAllProducts = async (req, res) => {
 const getProductById = async (req, res) => {
     try {
         const { id } = req.params;
-        
-        const product = await Product.findOne({ 
-            productId: id, 
-            status: 'active' 
+
+        const product = await Product.findOne({
+            productId: id,
+            status: 'active'
         });
 
         if (!product) {
@@ -153,10 +153,10 @@ const getProductsByCategory = async (req, res) => {
         const total = await Product.countDocuments(filters);
 
         // Get subcategories for this category
-        const subcategories = await Product.distinct('subcategory', { 
-            category, 
-            status: 'active', 
-            available: true 
+        const subcategories = await Product.distinct('subcategory', {
+            category,
+            status: 'active',
+            available: true
         });
 
         res.json({
@@ -187,7 +187,7 @@ const getProductsByCategory = async (req, res) => {
 const getFeaturedProducts = async (req, res) => {
     try {
         const { limit = 10 } = req.query;
-        
+
         const products = await Product.getFeatured(parseInt(limit));
 
         res.json({
@@ -254,7 +254,7 @@ const searchProducts = async (req, res) => {
 const createProduct = async (req, res) => {
     try {
         const productData = req.body;
-        
+
         // Check if product with same productId already exists
         const existingProduct = await Product.findOne({ productId: productData.productId });
         if (existingProduct) {
