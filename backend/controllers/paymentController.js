@@ -92,9 +92,8 @@ exports.createOrder = async (req, res) => {
         const paymentCurrency = 'USD';
         const conversionApplied = currency !== 'USD';
 
-        if (conversionApplied) {
-            // Use secure order ID from validation
-            const transactionId = validationResult.secureOrderId;
+        // Use secure order ID from validation
+        const transactionId = validationResult.secureOrderId;
 
             // ===== CRITICAL SECURITY: VALIDATE PRICES FROM DATABASE =====
             // NEVER trust prices from frontend - always fetch from database
@@ -201,7 +200,6 @@ exports.createOrder = async (req, res) => {
             console.log(`✅ Price validation passed: $${serverCalculatedTotal}`);
 
             // Use server-calculated total for PayPal
-            const paymentCurrency = 'USD';
             const itemsTotal = serverCalculatedTotal;
 
             // Get PayPal access token
@@ -378,8 +376,6 @@ exports.createOrder = async (req, res) => {
                     timestamp: new Date().toISOString()
                 }
             });
-
-        }
     } catch (error) {
         console.error('❌ Order creation failed:', {
             error: error.response?.data || error.message,
