@@ -28,6 +28,45 @@ const Checkout: React.FC = () => {
   const [isInitialized, setIsInitialized] = useState(false);
   const [retryOrderId, setRetryOrderId] = useState<string | null>(null);
 
+  // Backend-calculated prices
+  const [backendPrices, setBackendPrices] = useState<any>(null);
+  const [loadingPrices, setLoadingPrices] = useState(false);
+
+  // Fetch backend prices when cart changes
+  useEffect(() => {
+    const fetchBackendPrices = async () => {
+      if (state.items.length === 0) return;
+
+      setLoadingPrices(true);
+      try {
+        const response = await fetch(`${API_URL}/calculate-cart-total`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({
+            items: state.items.map(item => ({
+              id: item.id,
+              productId: item.id,
+              quantity: item.quantity
+            })),
+            currency: currency
+          })
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setBackendPrices(data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch backend prices:', error);
+      } finally {
+        setLoadingPrices(false);
+      }
+    };
+
+    fetchBackendPrices();
+  }, [state.items, currency]);
+
   // Load user details from authenticated user or localStorage
   useEffect(() => {
     // Check for retry order ID in URL params
@@ -97,17 +136,20 @@ const Checkout: React.FC = () => {
     }
   }, [state.phoneNumber, state.isPhoneVerified, phone]);
 
-  // Calculate totals in INR (base currency) with discounts applied
+  // Calculate totals - use backend prices if available, otherwise fallback to client calculation
   const subtotalINR = useMemo(() => {
+    if (backendPrices?.totals?.INR) {
+      return backendPrices.totals.INR;
+    }
+    // Fallback to client-side calculation
     return state.items.reduce((sum, item) => {
-      // Apply discount if present
       const hasDiscount = item.discount?.enabled && item.discount?.percentage > 0;
       const finalPrice = hasDiscount
         ? item.priceINR * (1 - item.discount!.percentage / 100)
         : item.priceINR;
       return sum + finalPrice * item.quantity;
     }, 0);
-  }, [state.items]);
+  }, [state.items, backendPrices]);
 
   // Convert to user's selected currency for display
   const subtotal = useMemo(() => convertFromINR(subtotalINR), [subtotalINR, convertFromINR]);
@@ -116,25 +158,14 @@ const Checkout: React.FC = () => {
   // Get standardized payment currency details from Context
   const { currency: paymentCurrency, rate: paymentExchangeRate } = useCurrency().getPaymentCurrency();
 
-  // Convert to payment currency
-  // Calculate payment items with individual conversion
-  const paymentItems = useMemo(() => {
-    return state.items.map(item => {
-      const priceInPaymentCurrency = (item.priceINR * paymentExchangeRate).toFixed(2);
-      return {
-        ...item,
-        priceInPaymentCurrency
-      };
-    });
-  }, [state.items, paymentExchangeRate]);
-
-  // Calculate total from the summed rounded item prices to match PayPal validation
+  // Use backend-calculated payment amount (always in USD)
   const paymentAmount = useMemo(() => {
-    const total = paymentItems.reduce((sum, item) => {
-      return sum + (parseFloat(item.priceInPaymentCurrency) * item.quantity);
-    }, 0);
-    return total.toFixed(2);
-  }, [paymentItems]);
+    if (backendPrices?.totals?.USD) {
+      return backendPrices.totals.USD.toFixed(2);
+    }
+    // Fallback: calculate from INR
+    return (subtotalINR * paymentExchangeRate).toFixed(2);
+  }, [backendPrices, subtotalINR, paymentExchangeRate]);
 
   const isEmailValid = useMemo(() => /^(?=.*@).+\..+$/i.test(email.trim()), [email]);
   const isFormValid = name && isEmailValid && phone && address1 && city && region && postalCode && country;
@@ -144,6 +175,22 @@ const Checkout: React.FC = () => {
     try {
       setIsCreatingOrder(true);
       setPaymentError(null);
+
+      // Prepare items with backend prices if available
+      const orderItems = state.items.map((item, index) => {
+        const backendItem = backendPrices?.items?.[index];
+        return {
+          id: item.id,
+          productId: item.id,
+          name: item.name,
+          quantity: item.quantity,
+          price: backendItem?.finalPriceUSD || (item.priceINR * paymentExchangeRate).toFixed(2),
+          priceINR: backendItem?.priceINR || item.priceINR,
+          image: item.image,
+          category: item.category || 'Natural Stone',
+          discount: backendItem?.discount || item.discount
+        };
+      });
 
       const response = await fetch(`${API_URL}/create-order`, {
         method: 'POST',
@@ -156,19 +203,7 @@ const Checkout: React.FC = () => {
           amount: paymentAmount,
           currency: paymentCurrency,
           receipt: `rcpt_${Date.now()}`,
-          items: paymentItems.map(item => {
-            return {
-              id: item.id,
-              productId: item.id,
-              name: item.name,
-              quantity: item.quantity,
-              price: item.priceInPaymentCurrency,
-              priceINR: item.priceINR,
-              image: item.image,
-              category: item.category || 'Natural Stone',
-              discount: item.discount
-            };
-          }),
+          items: orderItems,
           shippingAddress: {
             street: address1,
             city,
