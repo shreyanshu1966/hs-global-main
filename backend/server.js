@@ -19,10 +19,23 @@ connectDB();
 
 const app = express();
 
-// Middleware - Configure CORS properly
-const allowedOrigins = process.env.ALLOWED_ORIGINS
-  ? process.env.ALLOWED_ORIGINS.split(',').map(origin => origin.trim())
-  : ['http://localhost:5173', 'http://localhost:3000'];
+// Middleware - Configure CORS with all possible origins
+const allowedOrigins = [
+  // Production domains
+  'https://www.hsglobalexport.com',
+  'https://hsglobalexport.com',
+  'https://api.hsglobalexport.com',
+  
+  // Development domains
+  'http://localhost:5173',
+  'http://localhost:5174',
+  'http://localhost:3000',
+  'http://localhost:4173',
+  'http://127.0.0.1:5173',
+  'http://127.0.0.1:5174',
+  'http://127.0.0.1:3000',
+  'http://127.0.0.1:4173'
+];
 
 console.log('🌍 CORS Configuration:');
 console.log('  Environment:', process.env.NODE_ENV);
@@ -35,16 +48,15 @@ app.use(cors({
     
     if (allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
-    } else if (process.env.NODE_ENV === 'development') {
-      console.log('⚠️  Development mode: Allowing origin:', origin);
-      callback(null, true);
     } else {
       console.error('❌ CORS blocked origin:', origin);
       console.error('   Allowed origins:', allowedOrigins);
       callback(new Error('Not allowed by CORS'));
     }
   },
-  credentials: true
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }));
 
 app.use(bodyParser.json({ limit: '50mb' }));
