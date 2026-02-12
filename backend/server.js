@@ -110,6 +110,25 @@ app.get('/api/health', (req, res) => {
   res.json({ ok: true, timestamp: new Date().toISOString(), mode: 'MVC + MongoDB' });
 });
 
+// Global error handler - MUST be after all routes
+app.use((err, req, res, next) => {
+  // Set CORS headers on error responses
+  const origin = req.headers.origin;
+  if (origin && allowedOrigins.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin);
+    res.header('Access-Control-Allow-Credentials', 'true');
+  }
+
+  console.error('❌ Error:', err.message);
+  console.error('Stack:', err.stack);
+
+  res.status(err.status || 500).json({
+    ok: false,
+    error: err.message || 'Internal server error',
+    code: err.code || 'INTERNAL_ERROR'
+  });
+});
+
 const PORT = process.env.PORT || 3000;
 
 const { initEmailService, closeEmailService } = require('./services/emailService');
