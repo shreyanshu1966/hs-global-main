@@ -40,6 +40,91 @@ const getPayPalAccessToken = async () => {
 };
 
 /**
+ * Calculate cart total from backend prices
+ * POST /api/calculate-cart-total
+ */
+exports.calculateCartTotal = async (req, res) => {
+    try {
+        const { items, currency = 'USD' } = req.body;
+
+        if (!items || items.length === 0) {
+            return res.status(400).json({ ok: false, error: 'Cart items are required' });
+        }
+
+        const Product = require('../models/Product');
+        const validatedItems = [];
+        let totalINR = 0;
+        let totalUSD = 0;
+        const INR_TO_USD_RATE = parseFloat(process.env.INR_TO_USD_RATE || '0.012');
+
+        for (const item of items) {
+            // Fetch product from database
+            const product = await Product.findOne({
+                productId: item.id || item.productId,
+                status: 'active',
+                available: true
+            });
+
+            if (!product) {
+                return res.status(400).json({
+                    ok: false,
+                    error: `Product ${item.name || item.id} is no longer available`
+                });
+            }
+
+            // Get actual price from database (in INR)
+            const actualPriceINR = product.priceINR;
+
+            // Check if discount is actually active (server-side validation)
+            const isDiscountActive = product.isDiscountActive();
+            const discountPercentage = isDiscountActive ? product.discount.percentage : 0;
+            const discountAmount = isDiscountActive ? Math.round((actualPriceINR * discountPercentage) / 100) : 0;
+            const finalPriceINR = actualPriceINR - discountAmount;
+
+            // Convert to USD
+            const finalPriceUSD = parseFloat((finalPriceINR * INR_TO_USD_RATE).toFixed(2));
+
+            const quantity = item.quantity || 1;
+            const itemTotalINR = finalPriceINR * quantity;
+            const itemTotalUSD = finalPriceUSD * quantity;
+
+            totalINR += itemTotalINR;
+            totalUSD += itemTotalUSD;
+
+            validatedItems.push({
+                productId: product.productId,
+                name: product.name,
+                priceINR: actualPriceINR,
+                finalPriceINR: finalPriceINR,
+                finalPriceUSD: finalPriceUSD,
+                quantity: quantity,
+                discountPercentage: discountPercentage,
+                discount: isDiscountActive ? {
+                    enabled: true,
+                    percentage: product.discount.percentage
+                } : null
+            });
+        }
+
+        res.json({
+            ok: true,
+            items: validatedItems,
+            totals: {
+                INR: parseFloat(totalINR.toFixed(2)),
+                USD: parseFloat(totalUSD.toFixed(2))
+            },
+            exchangeRate: INR_TO_USD_RATE
+        });
+    } catch (error) {
+        console.error('❌ Calculate cart total failed:', error.message);
+        res.status(500).json({
+            ok: false,
+            error: error.message || 'Failed to calculate cart total'
+        });
+    }
+};
+
+/**
  * Create a new PayPal order
  * POST /api/create-order
  */
@@ -181,23 +266,27 @@ exports.createOrder = async (req, res) => {
             // Round to 2 decimal places
             serverCalculatedTotal = parseFloat(serverCalculatedTotal.toFixed(2));
 
-            // Compare with frontend amount (allow 1 cent difference for rounding)
-            const amountDifference = Math.abs(serverCalculatedTotal - parseFloat(amount));
-            if (amountDifference > 0.02) {
-                console.error(`❌ Price mismatch! Frontend: ${amount}, Server: ${serverCalculatedTotal}, Difference: ${amountDifference}`);
-                return res.status(400).json({
-                    ok: false,
-                    error: 'Price validation failed. Please refresh and try again.',
-                    code: 'PRICE_MISMATCH',
-                    details: {
-                        frontendAmount: amount,
-                        serverAmount: serverCalculatedTotal,
-                        difference: amountDifference
-                    }
-                });
+            // Compare with frontend amount for logging/monitoring only (don't reject)
+            const frontendAmountUSD = currency === 'USD' 
+                ? parseFloat(amount) 
+                : parseFloat(amount) * parseFloat(process.env.INR_TO_USD_RATE || '0.012');
+            
+            const amountDifference = Math.abs(serverCalculatedTotal - frontendAmountUSD);
+            
+            console.log(`💰 Amount validation:`, {
+                frontendCurrency: currency,
+                frontendAmount: amount,
+                frontendAmountUSD: frontendAmountUSD.toFixed(2),
+                serverCalculatedUSD: serverCalculatedTotal.toFixed(2),
+                difference: amountDifference.toFixed(2)
+            });
+            
+            // Log warning if mismatch but continue with server price
+            if (amountDifference > 1.00) {
+                console.warn(`⚠️ Price mismatch detected (using server price): Frontend: ${amount} ${currency} ($${frontendAmountUSD.toFixed(2)}), Server: $${serverCalculatedTotal}, Difference: $${amountDifference.toFixed(2)}`);
             }
 
-            console.log(`✅ Price validation passed: $${serverCalculatedTotal}`);
+            console.log(`✅ Using server-calculated price: $${serverCalculatedTotal}`);
 
             // Use server-calculated total for PayPal
             const itemsTotal = serverCalculatedTotal;
@@ -1139,21 +1228,3 @@ exports.getOrderDetails = async (req, res) => {
         });
     }
 };
-
-/**
- * Helper function to convert country name to ISO 3166-1 alpha-2 code
- */
-function getCountryCode(countryName) {
-    const countryMap = {
-        'India': 'IN',
-        'United States': 'US',
-        'United Kingdom': 'GB',
-        'Canada': 'CA',
-        'Australia': 'AU',
-        'United Arab Emirates': 'AE',
-        'Germany': 'DE',
-        'France': 'FR',
-        'Singapore': 'SG'
-    };
-    return countryMap[countryName] || 'IN';
-}
