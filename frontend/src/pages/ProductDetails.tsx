@@ -14,6 +14,7 @@ import { ReviewForm } from "../components/ReviewForm";
 import { ReviewList } from "../components/ReviewList";
 import { ReviewStats } from "../components/ReviewStats";
 import { useAuth } from "../contexts/AuthContext";
+import { useProductSEO, formatRobotsMeta } from "../hooks/useProductSEO";
 
 const ProductDetails = () => {
   const { id }: { id?: string } = useParams<{ id?: string }>();
@@ -137,6 +138,9 @@ const ProductDetails = () => {
       discountedPrice,
     };
   }, [dbProduct, dbRelatedProducts, selectedFinish, selectedThickness, formatPrice]);
+
+  // Generate comprehensive SEO metadata using the hook
+  const seoMeta = useProductSEO(product);
 
   // Breadcrumb - simplified without catalog dependencies
   const breadcrumbPath = useMemo(() => {
@@ -312,14 +316,39 @@ const ProductDetails = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Helmet>
-        <title>{product.name} | HS Global Export</title>
-        <meta name="title" content={product.name} />
-        <meta name="description" content={product.description} />
-        <meta property="og:title" content={`${product.name} | HS Global Export`} />
-        <meta property="og:description" content={product.description} />
-        <meta property="og:image" content={product.image} />
+        {/* ========== COMPREHENSIVE SEO META TAGS ========== */}
+        
+        {/* Basic SEO */}
+        <title>{seoMeta.title}</title>
+        <meta name="description" content={seoMeta.metaDescription} />
+        <meta name="keywords" content={seoMeta.metaKeywords} />
+        <meta name="author" content="HS Global Export" />
+        <meta name="robots" content={formatRobotsMeta(seoMeta.robotsIndex)} />
 
-        {/* Product Schema */}
+        {/* Canonical URL */}
+        <link rel="canonical" href={seoMeta.canonicalUrl} />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content={seoMeta.ogType} />
+        <meta property="og:url" content={seoMeta.ogUrl} />
+        <meta property="og:site_name" content={seoMeta.ogSiteName} />
+        <meta property="og:title" content={seoMeta.ogTitle} />
+        <meta property="og:description" content={seoMeta.ogDescription} />
+        <meta property="og:image" content={seoMeta.ogImage} />
+        <meta property="og:image:width" content={seoMeta.ogImageWidth} />
+        <meta property="og:image:height" content={seoMeta.ogImageHeight} />
+        <meta property="og:image:alt" content={seoMeta.ogImageAlt} />
+        <meta property="og:locale" content={seoMeta.ogLocale} />
+
+        {/* Twitter Card */}
+        <meta name="twitter:card" content={seoMeta.twitterCard} />
+        <meta name="twitter:url" content={seoMeta.twitterUrl} />
+        <meta name="twitter:title" content={seoMeta.twitterTitle} />
+        <meta name="twitter:description" content={seoMeta.twitterDescription} />
+        <meta name="twitter:image" content={seoMeta.twitterImage} />
+        <meta name="twitter:image:alt" content={seoMeta.twitterImageAlt} />
+
+        {/* Product Schema.org Structured Data */}
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
@@ -335,7 +364,8 @@ const ProductDetails = () => {
               "@type": "Offer",
               "price": product.priceINR || 0,
               "priceCurrency": "INR",
-              "availability": product.available ? "InStock" : "OutOfStock"
+              "availability": product.available ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+              "url": seoMeta.canonicalUrl
             },
             ...(reviewStats.totalReviews > 0 && {
               "aggregateRating": {
@@ -438,7 +468,7 @@ const ProductDetails = () => {
             )}
 
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 leading-tight">
-              {product.name}
+              {seoMeta.h1Tag}
             </h1>
 
             {/* Rating & Reviews */}

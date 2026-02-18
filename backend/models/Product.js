@@ -227,6 +227,21 @@ const productSchema = new mongoose.Schema({
     seoTitle: String,
     seoDescription: String,
     seoKeywords: [String],
+    // Enhanced SEO fields for complete optimization
+    seo: {
+        metaTitle: String,        // Custom meta title (50-60 chars)
+        metaDescription: String,  // Custom meta description (150-160 chars)
+        keywords: [String],       // SEO keywords array
+        h1Tag: String,           // Custom H1 tag for product page
+        ogTitle: String,         // Open Graph title
+        ogDescription: String,   // Open Graph description
+        ogImage: String,         // Open Graph image URL
+        twitterTitle: String,    // Twitter card title
+        twitterDescription: String, // Twitter card description
+        twitterImage: String,    // Twitter card image
+        canonicalUrl: String,    // Canonical URL for the product
+        slug: String            // URL-friendly slug
+    },
 
     // Analytics
     viewCount: {

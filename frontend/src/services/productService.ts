@@ -45,9 +45,25 @@ export interface Product {
   addToCartCount: number;
   averageRating?: number;
   totalReviews?: number;
+  // Legacy SEO fields (for backward compatibility)
   seoTitle?: string;
   seoDescription?: string;
   seoKeywords?: string[];
+  // Enhanced SEO fields
+  seo?: {
+    metaTitle?: string;
+    metaDescription?: string;
+    keywords?: string[];
+    h1Tag?: string;
+    ogTitle?: string;
+    ogDescription?: string;
+    ogImage?: string;
+    twitterTitle?: string;
+    twitterDescription?: string;
+    twitterImage?: string;
+    canonicalUrl?: string;
+    slug?: string;
+  };
   createdAt: string;
   updatedAt: string;
 }
