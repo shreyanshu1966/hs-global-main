@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product SEO Checker</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #333;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+    h1 {
+      color: #667eea;
+      margin-bottom: 10px;
+    }
+    .subtitle {
+      color: #666;
+      margin-bottom: 30px;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+      margin-bottom: 15px;
+      box-sizing: border-box;
+    }
+    button {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    button:hover {
+      transform: translateY(-2px);
+    }
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    #results {
+      margin-top: 30px;
+      display: none;
+    }
+    .result-item {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      border-left: 4px solid #667eea;
+    }
+    .result-item.error {
+      border-left-color: #e74c3c;
+      background: #fee;
+    }
+    .result-item.success {
+      border-left-color: #27ae60;
+      background: #efe;
+    }
+    .result-label {
+      font-weight: bold;
+      color: #667eea;
+      margin-bottom: 5px;
+    }
+    .result-value {
+      color: #555;
+      word-break: break-word;
+    }
+    .stats {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .stat-box {
+      flex: 1;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .stat-number {
+      font-size: 32px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    .stat-label {
+      font-size: 12px;
+      opacity: 0.9;
+    }
+    .loading {
+      text-align: center;
+      padding: 20px;
+      color: #667eea;
+    }
+    .warning {
+      background: #fff3cd;
+      border: 1px solid #ffc107;
+      border-radius: 6px;
+      padding: 15px;
+      margin-top: 20px;
+    }
+    .warning-title {
+      font-weight: bold;
+      color: #856404;
+      margin-bottom: 5px;
+    }
+    .warning-text {
+      color: #856404;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔍 Product SEO Checker</h1>
+    <p class="subtitle">Check if React Helmet is injecting SEO meta tags correctly</p>
+    
+    <input 
+      type="text" 
+      id="urlInput" 
+      placeholder="Enter product URL (e.g., http://localhost:5173/products/spider-green-beige-designer)"
+      value="http://localhost:5173/products/spider-green-beige-designer"
+    />
+    
+    <button id="checkBtn" onclick="checkSEO()">Check SEO Tags</button>
+    
+    <div class="warning">
+      <div class="warning-title">⚠️ Important Note:</div>
+      <div class="warning-text">
+        This tool checks the LIVE DOM after JavaScript execution. 
+        "View Source" won't show these tags because they're injected by React.
+        Search engines that can't execute JavaScript won't see them either.
+      </div>
+    </div>
+    
+    <div id="results">
+      <div class="stats">
+        <div class="stat-box">
+          <div class="stat-number" id="ogCount">0</div>
+          <div class="stat-label">Open Graph Tags</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number" id="twitterCount">0</div>
+          <div class="stat-label">Twitter Tags</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number" id="schemaCount">0</div>
+          <div class="stat-label">Schema.org</div>
+        </div>
+      </div>
+      
+      <div id="resultsList"></div>
+    </div>
+  </div>
+
+  <script>
+    async function checkSEO() {
+      const url = document.getElementById('urlInput').value.trim();
+      if (!url) {
+        alert('Please enter a URL');
+        return;
+      }
+
+      const resultsDiv = document.getElementById('results');
+      const resultsListDiv = document.getElementById('resultsList');
+      const checkBtn = document.getElementById('checkBtn');
+      
+      // Show loading
+      resultsDiv.style.display = 'block';
+      resultsListDiv.innerHTML = '<div class="loading">⏳ Loading page and checking tags...</div>';
+      checkBtn.disabled = true;
+      checkBtn.textContent = 'Checking...';
+
+      try {
+        // Create hidden iframe to load the page
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.src = url;
+        document.body.appendChild(iframe);
+
+        // Wait for page to load
+        await new Promise((resolve) => {
+          iframe.onload = () => {
+            // Give React time to render
+            setTimeout(resolve, 2000);
+          };
+        });
+
+        const doc = iframe.contentDocument || iframe.contentWindow.document;
+        
+        // Extract SEO data
+        const title = doc.title;
+        const description = doc.querySelector('meta[name="description"]')?.content;
+        const keywords = doc.querySelector('meta[name="keywords"]')?.content;
+        const canonical = doc.querySelector('link[rel="canonical"]')?.href;
+        const robots = doc.querySelector('meta[name="robots"]')?.content;
+        
+        const ogTitle = doc.querySelector('meta[property="og:title"]')?.content;
+        const ogType = doc.querySelector('meta[property="og:type"]')?.content;
+        const ogImage = doc.querySelector('meta[property="og:image"]')?.content;
+        const ogDescription = doc.querySelector('meta[property="og:description"]')?.content;
+        const ogUrl = doc.querySelector('meta[property="og:url"]')?.content;
+        
+        const twitterCard = doc.querySelector('meta[name="twitter:card"]')?.content;
+        const twitterTitle = doc.querySelector('meta[name="twitter:title"]')?.content;
+        const twitterImage = doc.querySelector('meta[name="twitter:image"]')?.content;
+        
+        const schemaScript = doc.querySelector('script[type="application/ld+json"]');
+        const schemaData = schemaScript ? JSON.parse(schemaScript.textContent) : null;
+        
+        const ogTags = doc.querySelectorAll('meta[property^="og:"]');
+        const twitterTags = doc.querySelectorAll('meta[name^="twitter:"]');
+        
+        // Update stats
+        document.getElementById('ogCount').textContent = ogTags.length;
+        document.getElementById('twitterCount').textContent = twitterTags.length;
+        document.getElementById('schemaCount').textContent = schemaData ? '✓' : '✗';
+        
+        // Build results
+        let html = '';
+        
+        // Title
+        html += buildResult('Page Title', title, title && title.length >= 40 && title.length <= 70);
+        
+        // Description
+        html += buildResult('Meta Description', description, description && description.length >= 120 && description.length <= 160);
+        
+        // Keywords
+        html += buildResult('Keywords', keywords, keywords && keywords.length > 0);
+        
+        // Canonical
+        html += buildResult('Canonical URL', canonical, canonical && canonical.includes(url.split('?')[0]));
+        
+        // Robots
+        html += buildResult('Robots Meta', robots, robots);
+        
+        // Open Graph
+        html += '<h3 style="margin-top: 25px; color: #667eea;">Open Graph Tags</h3>';
+        html += buildResult('OG Title', ogTitle, ogTitle);
+        html += buildResult('OG Type', ogType, ogType === 'product');
+        html += buildResult('OG Image', ogImage, ogImage);
+        html += buildResult('OG Description', ogDescription, ogDescription);
+        html += buildResult('OG URL', ogUrl, ogUrl);
+        
+        // Twitter
+        html += '<h3 style="margin-top: 25px; color: #667eea;">Twitter Card</h3>';
+        html += buildResult('Twitter Card', twitterCard, twitterCard === 'summary_large_image');
+        html += buildResult('Twitter Title', twitterTitle, twitterTitle);
+        html += buildResult('Twitter Image', twitterImage, twitterImage);
+        
+        // Schema.org
+        html += '<h3 style="margin-top: 25px; color: #667eea;">Schema.org Structured Data</h3>';
+        if (schemaData) {
+          html += buildResult('Schema Type', schemaData['@type'], schemaData['@type'] === 'Product');
+          html += buildResult('Product Name', schemaData.name, schemaData.name);
+          html += buildResult('Product Description', schemaData.description, schemaData.description);
+          html += buildResult('Price', schemaData.offers?.price, schemaData.offers?.price);
+          html += buildResult('Availability', schemaData.offers?.availability, schemaData.offers?.availability);
+          if (schemaData.aggregateRating) {
+            html += buildResult('Average Rating', schemaData.aggregateRating.ratingValue, true);
+            html += buildResult('Review Count', schemaData.aggregateRating.reviewCount, true);
+          }
+        } else {
+          html += buildResult('Schema.org', 'Not found', false);
+        }
+        
+        resultsListDiv.innerHTML = html;
+        
+        // Cleanup
+        document.body.removeChild(iframe);
+        
+      } catch (error) {
+        resultsListDiv.innerHTML = `<div class="result-item error">
+          <div class="result-label">Error</div>
+          <div class="result-value">${error.message}</div>
+        </div>`;
+      } finally {
+        checkBtn.disabled = false;
+        checkBtn.textContent = 'Check SEO Tags';
+      }
+    }
+    
+    function buildResult(label, value, isGood) {
+      const className = value ? (isGood ? 'success' : 'result-item') : 'error';
+      const displayValue = value || '❌ Not found';
+      return `
+        <div class="result-item ${className}">
+          <div class="result-label">${label}</div>
+          <div class="result-value">${displayValue}</div>
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>
