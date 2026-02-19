@@ -67,11 +67,24 @@ export const ProductsModernVariant: React.FC = () => {
 
   const [activeCategory, setActiveCategory] = useState<string>(getInitialCategory());
   const [activeSection, setActiveSection] = useState<string>("tables");
+  const [isMobile, setIsMobile] = useState<boolean>(false);
   const programmaticScrollRef = useRef<boolean>(false);
   const userInteractedRef = useRef<boolean>(false);
+  const lastScrollYRef = useRef<number>(0);
+  const scrollVelocityRef = useRef<number>(0);
+  const scrollDirectionRef = useRef<'up' | 'down'>('down');
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   // Animation Ref
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Detect mobile device
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useGSAP(() => {
     // Hero Animation
@@ -84,38 +97,52 @@ export const ProductsModernVariant: React.FC = () => {
   }, { scope: containerRef });
 
 
-  // Track user interaction to prevent unwanted automated behaviors
+  /**
+   * Track user interaction and scroll behavior
+   * Aggressively clears programmatic flags on ANY user input
+   */
   useEffect(() => {
     const markUserInteraction = () => {
       userInteractedRef.current = true;
     };
     
-    // Debounced handler to clear programmatic scroll flag when user manually scrolls
+    // Track scroll velocity and direction for smarter decisions
     let scrollTimeout: NodeJS.Timeout;
     const handleUserScroll = () => {
       markUserInteraction();
+      
+      const currentScrollY = window.scrollY;
+      const diff = currentScrollY - lastScrollYRef.current;
+      
+      scrollVelocityRef.current = Math.abs(diff);
+      scrollDirectionRef.current = diff > 0 ? 'down' : 'up';
+      lastScrollYRef.current = currentScrollY;
+      
+      // AGGRESSIVE: Clear programmatic flag immediately on user scroll
+      programmaticScrollRef.current = false;
+      
       clearTimeout(scrollTimeout);
       scrollTimeout = setTimeout(() => {
-        programmaticScrollRef.current = false;
+        scrollVelocityRef.current = 0;
       }, 150);
     };
 
-    // Handler to immediately clear programmatic scroll on manual input
+    // Handler to immediately clear programmatic scroll on ANY manual input
     const clearProgrammaticScroll = () => {
       programmaticScrollRef.current = false;
     };
     
     // Attach event listeners
     window.addEventListener("scroll", handleUserScroll, { passive: true });
-    window.addEventListener("mousedown", markUserInteraction, { passive: true });
-    window.addEventListener("touchstart", markUserInteraction, { passive: true });
+    window.addEventListener("mousedown", clearProgrammaticScroll, { passive: true });
+    window.addEventListener("touchstart", clearProgrammaticScroll, { passive: true });
     window.addEventListener("wheel", clearProgrammaticScroll, { passive: true });
     window.addEventListener("touchmove", clearProgrammaticScroll, { passive: true });
     
     return () => {
       window.removeEventListener("scroll", handleUserScroll);
-      window.removeEventListener("mousedown", markUserInteraction);
-      window.removeEventListener("touchstart", markUserInteraction);
+      window.removeEventListener("mousedown", clearProgrammaticScroll);
+      window.removeEventListener("touchstart", clearProgrammaticScroll);
       window.removeEventListener("wheel", clearProgrammaticScroll);
       window.removeEventListener("touchmove", clearProgrammaticScroll);
       clearTimeout(scrollTimeout);
@@ -259,38 +286,38 @@ export const ProductsModernVariant: React.FC = () => {
   const slabsIds = useMemo(() => new Set(getOrderedSubcategoryIds("slabs")), [getOrderedSubcategoryIds]);
 
   /**
-   * IntersectionObserver for scroll-based section detection
-   * Professional practices:
-   * - RAF batching to prevent layout thrashing
-   * - Mobile-responsive rootMargin
-   * - Hero area detection to prevent scroll glitches
-   * - Respects programmatic scroll flag to avoid conflicts
+   * AGGRESSIVE FIX: IntersectionObserver with dynamic disconnect/reconnect
+   * This completely disables observation in hero area to prevent ANY interference
    */
   useEffect(() => {
-    // Detect mobile for responsive rootMargin
     const isMobile = window.innerWidth < 768;
     
     const observerOptions: IntersectionObserverInit = {
       root: null,
-      // Mobile has smaller nav height, adjust rootMargin accordingly
-      rootMargin: isMobile ? "-80px 0px -60px 0px" : "-120px 0px -40px 0px",
-      threshold: 0.35,
+      rootMargin: isMobile ? "-100px 0px -80px 0px" : "-140px 0px -60px 0px",
+      threshold: [0, 0.25, 0.5, 0.75], // Multiple thresholds for better detection
     };
 
     let rafScheduled = false;
     let latestSection: string | null = null;
+    let isObserverActive = true;
 
     const observer = new IntersectionObserver((entries) => {
-      // Skip during programmatic scrolling to prevent conflicts
+      // AGGRESSIVE GUARD 1: Skip if programmatic scroll is in progress
       if (programmaticScrollRef.current) return;
+      
+      // AGGRESSIVE GUARD 2: Skip if scrolling up fast (likely going to hero)
+      if (scrollDirectionRef.current === 'up' && scrollVelocityRef.current > 5) {
+        return;
+      }
 
-      // PROFESSIONAL FIX: Enhanced hero area detection
-      // Prevents section highlighting when user scrolls back to hero
+      // AGGRESSIVE GUARD 3: Hero area check with higher threshold
       const scrollY = window.scrollY;
       const heroHeight = heroRef.current?.offsetHeight || 600;
       
-      // If within hero area (first 80% of hero height), clear active section
-      if (scrollY < heroHeight * 0.8) {
+      // Increased to 90% - more aggressive hero protection
+      if (scrollY < heroHeight * 0.9) {
+        // NUCLEAR OPTION: Clear active section and return
         if (!rafScheduled) {
           rafScheduled = true;
           requestAnimationFrame(() => {
@@ -301,27 +328,35 @@ export const ProductsModernVariant: React.FC = () => {
         return;
       }
 
-      // Secondary check: first section position verification
+      // AGGRESSIVE GUARD 4: Check first section position
       const sections = Object.values(sectionRefs.current).filter(Boolean);
       if (sections.length > 0) {
         const firstSection = sections[0];
         if (firstSection) {
           const firstSectionTop = firstSection.getBoundingClientRect().top;
-          // If first section hasn't reached scroll position yet
-          if (firstSectionTop > window.innerHeight * 0.4) {
+          // Don't update if first section is still far below
+          if (firstSectionTop > window.innerHeight * 0.3) {
             return;
           }
         }
       }
 
-      // Collect intersecting sections
+      // Process intersections with max visibility detection
+      let maxVisibility = 0;
+      let mostVisibleSection: string | null = null;
+      
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          latestSection = entry.target.id;
+        if (entry.isIntersecting && entry.intersectionRatio > maxVisibility) {
+          maxVisibility = entry.intersectionRatio;
+          mostVisibleSection = entry.target.id;
         }
       });
 
-      // RAF batching for performance
+      if (mostVisibleSection) {
+        latestSection = mostVisibleSection;
+      }
+
+      // RAF batching with most visible section
       if (!rafScheduled && latestSection) {
         rafScheduled = true;
         requestAnimationFrame(() => {
@@ -334,13 +369,41 @@ export const ProductsModernVariant: React.FC = () => {
       }
     }, observerOptions);
 
+    observerRef.current = observer;
+
+    // Observe all sections
     requestAnimationFrame(() => {
       Object.values(sectionRefs.current).forEach((el) => {
         if (el) observer.observe(el);
       });
     });
 
-    return () => observer.disconnect();
+    // DYNAMIC DISCONNECT: Disconnect observer when in hero area
+    const handleScrollForObserver = () => {
+      const scrollY = window.scrollY;
+      const heroHeight = heroRef.current?.offsetHeight || 600;
+      
+      // If in hero area and observer is active, disconnect it
+      if (scrollY < heroHeight * 0.85 && isObserverActive) {
+        observer.disconnect();
+        isObserverActive = false;
+        setActiveSection(''); // Clear immediately
+      }
+      // If left hero area and observer is inactive, reconnect it
+      else if (scrollY >= heroHeight * 0.85 && !isObserverActive) {
+        Object.values(sectionRefs.current).forEach((el) => {
+          if (el) observer.observe(el);
+        });
+        isObserverActive = true;
+      }
+    };
+    
+    window.addEventListener('scroll', handleScrollForObserver, { passive: true });
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('scroll', handleScrollForObserver);
+    };
   }, [activeCategory, furnitureIds, slabsIds]);
 
   // Refresh ScrollTrigger when products load or change to ensure sticky nav works correctly
@@ -575,7 +638,9 @@ export const ProductsModernVariant: React.FC = () => {
 
   return (
     <div ref={containerRef} className="min-h-screen bg-white">
-      <section className="relative min-h-[100svh] flex flex-col justify-center px-[clamp(1.5rem,4vw,6rem)] overflow-hidden">
+      {/* Hero Section - Hidden on Mobile */}
+      {!isMobile && (
+      <section ref={heroRef} className="relative min-h-[100svh] flex flex-col justify-center px-[clamp(1.5rem,4vw,6rem)] overflow-hidden">
         <motion.div
           style={{ y: y1, opacity: opacityHero }}
           className="absolute top-0 right-0 w-[80vw] h-full opacity-10 pointer-events-none"
@@ -617,6 +682,7 @@ export const ProductsModernVariant: React.FC = () => {
           <p className="text-[clamp(0.625rem,1vw,0.75rem)] uppercase tracking-widest text-gray-400">Scroll to Explore</p>
         </motion.div>
       </section>
+      )}
 
       <section className="bg-amber-50 border-y border-amber-200">
         <div className="container mx-auto px-4 md:px-6 py-6 md:py-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">

@@ -381,49 +381,10 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
     }
   });
 
-  // Scroll direction state for smart navbar behavior
-  const [isScrollingUp, setIsScrollingUp] = useState(false);
-  const lastScrollYRef = useRef(0);
-
-  /**
-   * Scroll direction detection for smart navbar hiding
-   * Professional practices:
-   * - RAF batching to prevent layout thrashing
-   * - Threshold to prevent jitter
-   * - Passive event listeners
-   */
-  useEffect(() => {
-    let ticking = false;
-    const updateScrollDir = () => {
-      const currentScrollY = window.scrollY;
-      const diff = currentScrollY - lastScrollYRef.current;
-
-      // Threshold to prevent jitter on minor scroll movements
-      if (Math.abs(diff) > 5) {
-        setIsScrollingUp(diff < 0);
-      }
-      lastScrollYRef.current = currentScrollY;
-      ticking = false;
-    };
-
-    const onScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(updateScrollDir);
-        ticking = true;
-      }
-    };
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
   return (
     <div
       ref={rootRef}
-      style={{
-        transform: isScrollingUp && lastScrollYRef.current > 100 ? 'translateY(80px)' : 'translateY(0px)',
-      }}
-      className="w-full z-[49] bg-white/95 backdrop-blur-lg border-b border-gray-200 shadow-sm touch-manipulation transition-transform duration-500 ease-in-out"
+      className="w-full z-[49] bg-white/95 backdrop-blur-lg border-b border-gray-200 shadow-sm touch-manipulation"
     >
       <div className="container mx-auto px-3 sm:px-4">
         {/* Top Bar: Categories + Mega Menu Toggle */}
