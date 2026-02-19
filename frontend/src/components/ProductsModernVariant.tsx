@@ -286,58 +286,38 @@ export const ProductsModernVariant: React.FC = () => {
   const slabsIds = useMemo(() => new Set(getOrderedSubcategoryIds("slabs")), [getOrderedSubcategoryIds]);
 
   /**
-   * AGGRESSIVE FIX: IntersectionObserver with dynamic disconnect/reconnect
-   * This completely disables observation in hero area to prevent ANY interference
+   * IntersectionObserver - Mobile optimized (no hero checks on mobile)
    */
   useEffect(() => {
-    const isMobile = window.innerWidth < 768;
+    const isMobileDevice = window.innerWidth < 768;
     
     const observerOptions: IntersectionObserverInit = {
       root: null,
-      rootMargin: isMobile ? "-100px 0px -80px 0px" : "-140px 0px -60px 0px",
-      threshold: [0, 0.25, 0.5, 0.75], // Multiple thresholds for better detection
+      rootMargin: isMobileDevice ? "-80px 0px -60px 0px" : "-140px 0px -60px 0px",
+      threshold: [0, 0.25, 0.5, 0.75],
     };
 
     let rafScheduled = false;
     let latestSection: string | null = null;
-    let isObserverActive = true;
 
     const observer = new IntersectionObserver((entries) => {
-      // AGGRESSIVE GUARD 1: Skip if programmatic scroll is in progress
+      // GUARD 1: Skip if programmatic scroll is in progress
       if (programmaticScrollRef.current) return;
       
-      // AGGRESSIVE GUARD 2: Skip if scrolling up fast (likely going to hero)
-      if (scrollDirectionRef.current === 'up' && scrollVelocityRef.current > 5) {
-        return;
-      }
-
-      // AGGRESSIVE GUARD 3: Hero area check with higher threshold
-      const scrollY = window.scrollY;
-      const heroHeight = heroRef.current?.offsetHeight || 600;
-      
-      // Increased to 90% - more aggressive hero protection
-      if (scrollY < heroHeight * 0.9) {
-        // NUCLEAR OPTION: Clear active section and return
-        if (!rafScheduled) {
-          rafScheduled = true;
-          requestAnimationFrame(() => {
-            setActiveSection('');
-            rafScheduled = false;
-          });
-        }
-        return;
-      }
-
-      // AGGRESSIVE GUARD 4: Check first section position
-      const sections = Object.values(sectionRefs.current).filter(Boolean);
-      if (sections.length > 0) {
-        const firstSection = sections[0];
-        if (firstSection) {
-          const firstSectionTop = firstSection.getBoundingClientRect().top;
-          // Don't update if first section is still far below
-          if (firstSectionTop > window.innerHeight * 0.3) {
-            return;
+      // GUARD 2 (Desktop only): Hero area check
+      if (!isMobileDevice) {
+        const scrollY = window.scrollY;
+        const heroHeight = heroRef.current?.offsetHeight || 600;
+        
+        if (scrollY < heroHeight * 0.8) {
+          if (!rafScheduled) {
+            rafScheduled = true;
+            requestAnimationFrame(() => {
+              setActiveSection('');
+              rafScheduled = false;
+            });
           }
+          return;
         }
       }
 
@@ -378,31 +358,8 @@ export const ProductsModernVariant: React.FC = () => {
       });
     });
 
-    // DYNAMIC DISCONNECT: Disconnect observer when in hero area
-    const handleScrollForObserver = () => {
-      const scrollY = window.scrollY;
-      const heroHeight = heroRef.current?.offsetHeight || 600;
-      
-      // If in hero area and observer is active, disconnect it
-      if (scrollY < heroHeight * 0.85 && isObserverActive) {
-        observer.disconnect();
-        isObserverActive = false;
-        setActiveSection(''); // Clear immediately
-      }
-      // If left hero area and observer is inactive, reconnect it
-      else if (scrollY >= heroHeight * 0.85 && !isObserverActive) {
-        Object.values(sectionRefs.current).forEach((el) => {
-          if (el) observer.observe(el);
-        });
-        isObserverActive = true;
-      }
-    };
-    
-    window.addEventListener('scroll', handleScrollForObserver, { passive: true });
-
     return () => {
       observer.disconnect();
-      window.removeEventListener('scroll', handleScrollForObserver);
     };
   }, [activeCategory, furnitureIds, slabsIds]);
 
@@ -683,31 +640,6 @@ export const ProductsModernVariant: React.FC = () => {
         </motion.div>
       </section>
       )}
-
-      <section className="bg-amber-50 border-y border-amber-200">
-        <div className="container mx-auto px-4 md:px-6 py-6 md:py-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div>
-            <h2 className="text-xl md:text-2xl font-semibold text-gray-900">
-              {t("product.customization_title")}
-            </h2>
-            <p className="text-gray-700">{t("product.customization_text")}</p>
-          </div>
-          <div className="flex gap-3">
-            <a
-              href="/contact"
-              className="px-5 py-2 rounded-lg bg-black text-white border-2 border-black hover:bg-white hover:text-black font-semibold transition-colors"
-            >
-              {t("product.customization_button_1")}
-            </a>
-            <a
-              href="/gallery"
-              className="px-5 py-2 rounded-lg bg-white text-black border-2 border-black hover:bg-black hover:text-white font-semibold transition-colors"
-            >
-              {t("product.customization_button_2")}
-            </a>
-          </div>
-        </div>
-      </section>
 
       <TopTabsNav
         activeSection={activeSection}
