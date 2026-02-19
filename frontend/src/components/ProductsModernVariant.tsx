@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { TopTabsNav } from "./Navigation/TopTabsNav";
 import { ProductCard } from "./ProductCard";
@@ -46,6 +46,9 @@ export const ProductsModernVariant: React.FC = () => {
         }, 100);
 
         return () => clearTimeout(scrollTimeout);
+      } else {
+        // No saved scroll position, ensure we start at top
+        window.scrollTo(0, 0);
       }
       hasRestoredScrollRef.current = true;
     }
@@ -577,26 +580,78 @@ export const ProductsModernVariant: React.FC = () => {
         onCategoryChange={handleCategoryChange}
       />
 
-      {/* Loading indicator for products */}
-      {productsLoading && (
-        <div className="fixed bottom-4 right-4 z-50 bg-white rounded-lg shadow-lg p-3 flex items-center gap-2 border border-gray-200">
-          <div className="animate-spin rounded-full h-4 w-4 border-2 border-gray-300 border-t-black"></div>
-          <span className="text-sm text-gray-600">Loading products...</span>
-        </div>
-      )}
-
       <div className="pt-6 md:pt-8" id="products">
         <div className="container mx-auto px-4 md:px-6">
+          {/* Error State with Retry */}
           {productsError && (
-            <div className="text-center py-12">
-              <p className="text-red-600 text-lg">{productsError}</p>
+            <div className="text-center py-16">
+              <div className="bg-red-50 border border-red-200 rounded-xl p-8 max-w-md mx-auto">
+                <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <p className="text-red-600 text-lg font-semibold mb-2">
+                  {productsError.includes('fetch') ? 'Connection Error' : 'Error Loading Products'}
+                </p>
+                <p className="text-gray-600 mb-6">
+                  {productsError.includes('fetch') 
+                    ? 'Please check your internet connection and try again.'
+                    : productsError}
+                </p>
+                <button
+                  onClick={() => window.location.reload()}
+                  className="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                >
+                  Try Again
+                </button>
+              </div>
             </div>
           )}
+          
+          {/* Loading Skeleton */}
+          {productsLoading && !productsError && (
+            <div className="space-y-16 md:space-y-24 py-6 md:py-8">
+              {[1, 2, 3].map((section) => (
+                <section key={section} className="scroll-mt-32">
+                  <div className="mb-8">
+                    <div className="h-10 w-48 bg-gray-200 rounded-lg animate-pulse mb-3" />
+                    <div className="h-4 w-96 max-w-full bg-gray-100 rounded animate-pulse" />
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
+                    {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
+                      <div key={item} className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100">
+                        <div className="aspect-[4/3] bg-gray-200 animate-pulse" />
+                        <div className="p-4 space-y-3">
+                          <div className="h-6 bg-gray-200 rounded w-3/4 animate-pulse" />
+                          <div className="h-4 bg-gray-100 rounded w-1/2 animate-pulse" />
+                          <div className="flex items-center justify-between pt-4">
+                            <div className="h-6 bg-gray-200 rounded w-1/3 animate-pulse" />
+                            <div className="h-10 bg-gray-200 rounded w-1/4 animate-pulse" />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              ))}
+            </div>
+          )}
+          
+          {/* Empty State */}
           {!productsLoading && !productsError && categoryFilteredSubcategories.length === 0 && (
-            <div className="text-center py-12">
+            <div className="text-center py-16">
+              <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                </svg>
+              </div>
               <p className="text-gray-600 text-lg">No products found in this category.</p>
             </div>
           )}
+          
+          {/* Products Grid */}
+          {!productsLoading && !productsError && categoryFilteredSubcategories.length > 0 && (
           <div className="space-y-16 md:space-y-24 py-6 md:py-8">
             {categoryFilteredSubcategories.map((subcategory) => (
               <section
@@ -632,6 +687,7 @@ export const ProductsModernVariant: React.FC = () => {
               </section>
             ))}
           </div>
+          )}
         </div>
       </div>
 

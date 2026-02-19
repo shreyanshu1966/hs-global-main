@@ -41,7 +41,8 @@ export const useProducts = (options: UseProductsOptions = {}): UseProductsReturn
   } = options;
 
   const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(false);
+  // Initialize loading as true when autoFetch is enabled
+  const [loading, setLoading] = useState(autoFetch);
   const [error, setError] = useState<string | null>(null);
   const [pagination, setPagination] = useState<{
     current: number;
@@ -133,7 +134,8 @@ export interface UseProductReturn {
 export const useProduct = (productId: string | undefined): UseProductReturn => {
   const [product, setProduct] = useState<Product | null>(null);
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(false);
+  // Initialize loading as true to show skeleton immediately
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const fetchProduct = useCallback(async () => {

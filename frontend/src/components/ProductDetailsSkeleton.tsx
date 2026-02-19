@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { useLayoutEffect } from 'react';
 
 /**
  * Skeleton component for ProductDetails page
  * Mirrors the actual layout to prevent layout shift (CLS)
  */
 export const ProductDetailsSkeleton: React.FC = () => {
+  // Scroll to top immediately when skeleton mounts (before paint)
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 overflow-hidden">
       {/* Main Content */}
       <div className="container mx-auto px-4 pt-24 md:pt-32 pb-8 md:pb-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
