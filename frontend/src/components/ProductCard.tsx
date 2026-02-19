@@ -221,13 +221,13 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
         setIsVideoInView(isVisible);
 
         if (isVisible) {
-          // Start playing video when card is 50% visible (with delay on mobile)
+          // Start playing video when card is 50% visible (with delay for smoother experience)
           setTimeout(() => {
             setShowVideo(true);
             // Reset video loading states for new video load
             setVideoLoaded(false);
             setVideoCanPlay(false);
-          }, isMobile ? 500 : 0); // 500ms delay on mobile for smoother experience
+          }, isMobile ? 3000 : 800); // 3s delay on mobile, 800ms on desktop
         } else {
           // Pause video when card is not visible
           setShowVideo(false);
@@ -289,7 +289,7 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
       intervalRef.current = window.setInterval(() => {
         setSlideIndex(prev => (prev + 1) % slideshowImages.length);
       }, isMobile ? 3000 : 1100); // 3s for mobile, 1.1s for desktop
-    }, 50);
+    }, 500); // 500ms initial delay before slideshow starts
 
     return () => {
       clearTimeout(t);

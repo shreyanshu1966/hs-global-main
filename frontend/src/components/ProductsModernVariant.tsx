@@ -1,15 +1,16 @@
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { TopTabsNav } from "./Navigation/TopTabsNav";
 import { ProductCard } from "./ProductCard";
 import { Product } from "../services/productService";
-import { useProducts, useCategories } from "../hooks/useProducts";
+import { useProducts } from "../hooks/useProducts";
 import { useTranslation } from "react-i18next";
 import { motion, useScroll, useTransform } from "framer-motion";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { getCloudinaryUrl } from '@/utils/cloudinary';
+// @ts-expect-error - responsive-image-helper.jsx lacks TypeScript declarations
 import { getResponsiveImage, getSrcSet } from '../utils/responsive-image-helper';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -66,13 +67,8 @@ export const ProductsModernVariant: React.FC = () => {
 
   const [activeCategory, setActiveCategory] = useState<string>(getInitialCategory());
   const [activeSection, setActiveSection] = useState<string>("tables");
-  const programmaticScrollRef = useRef(false);
-  const userInteractedRef = useRef(false);
-
-  // OPTIMIZED: Track if slabs images have been preloaded
-  const [slabsPreloaded, setSlabsPreloaded] = useState(true); // Set to true to disable preloading
-  const preloadingRef = useRef(false);
-  const anticipatoryPreloadRef = useRef(false);
+  const programmaticScrollRef = useRef<boolean>(false);
+  const userInteractedRef = useRef<boolean>(false);
 
   // Animation Ref
   const containerRef = useRef<HTMLDivElement>(null);
@@ -88,15 +84,41 @@ export const ProductsModernVariant: React.FC = () => {
   }, { scope: containerRef });
 
 
+  // Track user interaction to prevent unwanted automated behaviors
   useEffect(() => {
-    const mark = () => (userInteractedRef.current = true);
-    window.addEventListener("scroll", mark, { passive: true });
-    window.addEventListener("mousedown", mark);
-    window.addEventListener("touchstart", mark, { passive: true });
+    const markUserInteraction = () => {
+      userInteractedRef.current = true;
+    };
+    
+    // Debounced handler to clear programmatic scroll flag when user manually scrolls
+    let scrollTimeout: NodeJS.Timeout;
+    const handleUserScroll = () => {
+      markUserInteraction();
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        programmaticScrollRef.current = false;
+      }, 150);
+    };
+
+    // Handler to immediately clear programmatic scroll on manual input
+    const clearProgrammaticScroll = () => {
+      programmaticScrollRef.current = false;
+    };
+    
+    // Attach event listeners
+    window.addEventListener("scroll", handleUserScroll, { passive: true });
+    window.addEventListener("mousedown", markUserInteraction, { passive: true });
+    window.addEventListener("touchstart", markUserInteraction, { passive: true });
+    window.addEventListener("wheel", clearProgrammaticScroll, { passive: true });
+    window.addEventListener("touchmove", clearProgrammaticScroll, { passive: true });
+    
     return () => {
-      window.removeEventListener("scroll", mark);
-      window.removeEventListener("mousedown", mark);
-      window.removeEventListener("touchstart", mark);
+      window.removeEventListener("scroll", handleUserScroll);
+      window.removeEventListener("mousedown", markUserInteraction);
+      window.removeEventListener("touchstart", markUserInteraction);
+      window.removeEventListener("wheel", clearProgrammaticScroll);
+      window.removeEventListener("touchmove", clearProgrammaticScroll);
+      clearTimeout(scrollTimeout);
     };
   }, []);
 
@@ -133,12 +155,10 @@ export const ProductsModernVariant: React.FC = () => {
   }, []);
 
   // Fetch products from API
-  const { categories: dbCategories, loading: categoriesLoading } = useCategories();
   const {
     products: allProducts,
     loading: productsLoading,
-    error: productsError,
-    pagination
+    error: productsError
   } = useProducts({
     category: activeCategory,
     limit: 1000 // Get all products for the category
@@ -191,19 +211,32 @@ export const ProductsModernVariant: React.FC = () => {
     });
   }, []);
 
+  /**
+   * Programmatic scroll to section with mobile optimization
+   * Professional practices:
+   * - Mobile-specific offset calculations
+   * - Flag management to prevent observer conflicts
+   * - Proper cleanup with timeout
+   */
   const scrollToSection = useCallback(
     (sectionId: string) => {
       programmaticScrollRef.current = true;
       const el = sectionRefs.current[sectionId];
+      
       if (!el) {
         programmaticScrollRef.current = false;
         return;
       }
-      const offset = (navDims.height || 80) + 16;
+      
+      const isMobileDevice = window.innerWidth < 768;
+      // Mobile needs extra offset to account for browser UI elements
+      const offset = isMobileDevice ? (navDims.height || 80) + 32 : (navDims.height || 80) + 16;
       const targetTop = window.scrollY + el.getBoundingClientRect().top - offset;
+      
       window.scrollTo({ top: targetTop, behavior: "smooth" });
       setActiveSection(sectionId);
 
+      // Clear programmatic flag after smooth scroll completes
       setTimeout(() => {
         programmaticScrollRef.current = false;
       }, 700);
@@ -225,10 +258,22 @@ export const ProductsModernVariant: React.FC = () => {
   const furnitureIds = useMemo(() => new Set(getOrderedSubcategoryIds("furniture")), [getOrderedSubcategoryIds]);
   const slabsIds = useMemo(() => new Set(getOrderedSubcategoryIds("slabs")), [getOrderedSubcategoryIds]);
 
+  /**
+   * IntersectionObserver for scroll-based section detection
+   * Professional practices:
+   * - RAF batching to prevent layout thrashing
+   * - Mobile-responsive rootMargin
+   * - Hero area detection to prevent scroll glitches
+   * - Respects programmatic scroll flag to avoid conflicts
+   */
   useEffect(() => {
+    // Detect mobile for responsive rootMargin
+    const isMobile = window.innerWidth < 768;
+    
     const observerOptions: IntersectionObserverInit = {
       root: null,
-      rootMargin: "-120px 0px -40px 0px",
+      // Mobile has smaller nav height, adjust rootMargin accordingly
+      rootMargin: isMobile ? "-80px 0px -60px 0px" : "-120px 0px -40px 0px",
       threshold: 0.35,
     };
 
@@ -236,28 +281,52 @@ export const ProductsModernVariant: React.FC = () => {
     let latestSection: string | null = null;
 
     const observer = new IntersectionObserver((entries) => {
+      // Skip during programmatic scrolling to prevent conflicts
       if (programmaticScrollRef.current) return;
 
+      // PROFESSIONAL FIX: Enhanced hero area detection
+      // Prevents section highlighting when user scrolls back to hero
+      const scrollY = window.scrollY;
+      const heroHeight = heroRef.current?.offsetHeight || 600;
+      
+      // If within hero area (first 80% of hero height), clear active section
+      if (scrollY < heroHeight * 0.8) {
+        if (!rafScheduled) {
+          rafScheduled = true;
+          requestAnimationFrame(() => {
+            setActiveSection('');
+            rafScheduled = false;
+          });
+        }
+        return;
+      }
+
+      // Secondary check: first section position verification
+      const sections = Object.values(sectionRefs.current).filter(Boolean);
+      if (sections.length > 0) {
+        const firstSection = sections[0];
+        if (firstSection) {
+          const firstSectionTop = firstSection.getBoundingClientRect().top;
+          // If first section hasn't reached scroll position yet
+          if (firstSectionTop > window.innerHeight * 0.4) {
+            return;
+          }
+        }
+      }
+
+      // Collect intersecting sections
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           latestSection = entry.target.id;
         }
       });
 
+      // RAF batching for performance
       if (!rafScheduled && latestSection) {
         rafScheduled = true;
         requestAnimationFrame(() => {
           if (latestSection && !userInteractedRef.current) {
             setActiveSection(latestSection);
-
-            // DISABLED: Auto category switching that causes unwanted scrolling
-            // Use memoized Sets for O(1) lookup instead of O(n) array.includes()
-            // const belongsToFurniture = furnitureIds.has(latestSection);
-            // if (belongsToFurniture && activeCategory !== "furniture") {
-            //   setActiveCategory("furniture");
-            // } else if (slabsIds.has(latestSection) && activeCategory !== "slabs") {
-            //   setActiveCategory("slabs");
-            // }
           }
           rafScheduled = false;
           latestSection = null;
@@ -679,7 +748,7 @@ export const ProductsModernVariant: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
                   {subcategory.products.map((product, index) => (
                     <ProductCard
-                      key={product.id}
+                      key={product._id || product.productId}
                       product={product}
                       variant="modern"
                       index={index}

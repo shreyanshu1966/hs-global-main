@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import { ChevronDown, Grid3x3, X, Search } from 'lucide-react';
 import { SearchModal } from '../SearchModal';
 import { Subcategory } from '../../data/products';
@@ -11,10 +11,15 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 interface TopTabsNavProps {
+  /** Currently active section ID */
   activeSection: string;
+  /** Callback when section is clicked */
   onSectionClick: (sectionId: string) => void;
+  /** Callback to report navigation dimensions */
   onMeasure?: (dims: { height: number; top: number; offsetTop: number }) => void;
+  /** Currently active category (furniture/slabs) */
   activeCategory: string;
+  /** Callback when category changes */
   onCategoryChange: (categoryId: string) => void;
 }
 
@@ -26,8 +31,8 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
   onCategoryChange,
 }) => {
   const rootRef = useRef<HTMLDivElement | null>(null);
-  const programmaticScrollRef = useRef(false);
-  const categoryChangeInProgressRef = useRef(false);
+  const programmaticScrollRef = useRef<boolean>(false);
+  const categoryChangeInProgressRef = useRef<boolean>(false);
 
   // State management
   const [selectedChildren, setSelectedChildren] = useState<Record<string, string>>({});
@@ -144,7 +149,7 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
       children: Subcategory[];
     }>;
 
-    return activeCategoryObj.subcategories.map((s) => {
+    return activeCategoryObj.subcategories.map((s: Subcategory) => {
       const normalizedId = (s.id || '').trim().toLowerCase();
       const isConsolidated = ['marble', 'onyx', 'sandstone', 'travertine'].includes(normalizedId);
       let hasChildren = Array.isArray(s.subcategories) && s.subcategories.length > 0;
@@ -275,14 +280,24 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
     scrollToSection(childId);
   };
 
-  // Scroll to section helper
-  const scrollToSection = (sectionId: string) => {
+  /**
+   * Programmatic scroll to section with mobile optimization
+   * Professional practices:
+   * - Debounced execution
+   * - Mobile-specific offset
+   * - Proper cleanup of flags
+   * - RAF for smooth animation
+   */
+  const scrollToSection = useCallback((sectionId: string) => {
     setTimeout(() => {
       const el = document.getElementById(sectionId);
       if (el) {
+        const isMobileDevice = window.innerWidth < 768;
         const navH = rootRef.current ? rootRef.current.getBoundingClientRect().height : 96;
-        const offset = navH + 16;
+        // Mobile requires extra offset for browser UI elements
+        const offset = isMobileDevice ? navH + 32 : navH + 16;
         const targetTop = window.scrollY + el.getBoundingClientRect().top - offset;
+        
         window.scrollTo({ top: targetTop, behavior: 'smooth' });
 
         setTimeout(() => {
@@ -292,10 +307,17 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
         programmaticScrollRef.current = false;
       }
     }, 50);
-  };
+  }, []);
 
-  // Handle category change
-  const handleCategoryChange = (categoryId: string) => {
+  /**
+   * Handle category change with proper state management
+   * Professional practices:
+   * - Prevents rapid successive changes
+   * - Cleans up URL state
+   * - Manages loading state
+   * - Preserves scroll position properly
+   */
+  const handleCategoryChange = useCallback((categoryId: string) => {
     if (categoryChangeInProgressRef.current || categoryId === activeCategory) return;
 
     categoryChangeInProgressRef.current = true;
@@ -332,13 +354,13 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
         categoryChangeInProgressRef.current = false;
       }
     }, 50);
-  };
+  }, [activeCategory, filteredCategories, onCategoryChange, onSectionClick, scrollToSection]);
 
   // Get display name for subcategory
   const getDisplayName = (subcategory: typeof firstLevelSubs[0]) => {
     const selectedChildId = selectedChildren[subcategory.id];
     if (selectedChildId && subcategory.hasChildren) {
-      const selectedChild = subcategory.children.find(child => child.id === selectedChildId);
+      const selectedChild = subcategory.children.find((child: Subcategory) => child.id === selectedChildId);
       if (selectedChild) {
         return `${subcategory.name} › ${selectedChild.name}`;
       }
@@ -359,25 +381,26 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
     }
   });
 
-  // Scroll direction state for "Header + Sticky Nav" stacking
+  // Scroll direction state for smart navbar behavior
   const [isScrollingUp, setIsScrollingUp] = useState(false);
   const lastScrollYRef = useRef(0);
 
+  /**
+   * Scroll direction detection for smart navbar hiding
+   * Professional practices:
+   * - RAF batching to prevent layout thrashing
+   * - Threshold to prevent jitter
+   * - Passive event listeners
+   */
   useEffect(() => {
     let ticking = false;
     const updateScrollDir = () => {
       const currentScrollY = window.scrollY;
       const diff = currentScrollY - lastScrollYRef.current;
 
-      // Threshold to prevent jitter
+      // Threshold to prevent jitter on minor scroll movements
       if (Math.abs(diff) > 5) {
-        if (diff < 0) {
-          // Scrolling Up
-          setIsScrollingUp(true);
-        } else {
-          // Scrolling Down
-          setIsScrollingUp(false);
-        }
+        setIsScrollingUp(diff < 0);
       }
       lastScrollYRef.current = currentScrollY;
       ticking = false;
@@ -462,10 +485,10 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
         {!isMobile && firstLevelSubs.length > 0 && !showMegaMenu && (
           <div className="pb-3 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent hover:scrollbar-thumb-gray-400">
             <div className="flex items-center gap-2 min-w-max">
-              {firstLevelSubs.slice(0, 6).map((subcategory) => {
+              {firstLevelSubs.slice(0, 6).map((subcategory: typeof firstLevelSubs[0]) => {
                 const isActive =
                   activeSection === subcategory.id ||
-                  subcategory.children?.some(child => child.id === activeSection);
+                  subcategory.children?.some((child: Subcategory) => child.id === activeSection);
 
                 return (
                   <button
@@ -504,10 +527,10 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
         {!isMobile && expandedParentId && !showMegaMenu && (
           <div className="pb-3 border-t border-gray-200 pt-3 animate-fadeIn">
             {firstLevelSubs
-              .filter(s => s.id === expandedParentId)
-              .map(parent => (
+              .filter((s: typeof firstLevelSubs[0]) => s.id === expandedParentId)
+              .map((parent: typeof firstLevelSubs[0]) => (
                 <div key={parent.id} className="flex flex-wrap gap-2">
-                  {parent.children.map(child => {
+                  {parent.children.map((child: Subcategory) => {
                     const isActive = activeSection === child.id;
                     return (
                       <button
@@ -537,10 +560,10 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
           <div className={`container mx-auto px-3 sm:px-4 py-4 sm:py-6 ${isMobile ? 'max-h-[calc(100vh-80px)]' : 'max-h-[70vh]'
             } overflow-y-auto custom-scrollbar`}>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
-              {firstLevelSubs.map((subcategory) => {
+              {firstLevelSubs.map((subcategory: typeof firstLevelSubs[0]) => {
                 const isActive =
                   activeSection === subcategory.id ||
-                  subcategory.children?.some(child => child.id === activeSection);
+                  subcategory.children?.some((child: Subcategory) => child.id === activeSection);
                 const isExpanded = expandedParentId === subcategory.id;
 
                 return (
@@ -572,7 +595,7 @@ export const TopTabsNav: React.FC<TopTabsNavProps> = ({
                     {/* Children - Show when expanded on mobile, always show on desktop */}
                     {subcategory.hasChildren && (isMobile ? isExpanded : true) && (
                       <div className="space-y-1 pl-2 border-l-2 border-gray-300 animate-fadeIn">
-                        {subcategory.children.map(child => {
+                        {subcategory.children.map((child: Subcategory) => {
                           const isChildActive = activeSection === child.id;
                           return (
                             <button
