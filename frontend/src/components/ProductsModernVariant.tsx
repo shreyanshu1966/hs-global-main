@@ -169,11 +169,12 @@ export const ProductsModernVariant: React.FC = () => {
   // Create a map of all subcategories for product lookup
   const allSubcategories = subcategorizedProducts;
 
-  // Reset activeSection to first section when category changes
+  // Reset activeSection to first section when category changes - NO AUTO SCROLL
   useEffect(() => {
     if (orderedIds.length > 0) {
       const firstSectionId = orderedIds[0];
       setActiveSection(firstSectionId);
+      // Disabled automatic scrolling when category changes
     }
   }, [activeCategory, orderedIds]);
 
@@ -249,13 +250,14 @@ export const ProductsModernVariant: React.FC = () => {
           if (latestSection && !userInteractedRef.current) {
             setActiveSection(latestSection);
 
+            // DISABLED: Auto category switching that causes unwanted scrolling
             // Use memoized Sets for O(1) lookup instead of O(n) array.includes()
-            const belongsToFurniture = furnitureIds.has(latestSection);
-            if (belongsToFurniture && activeCategory !== "furniture") {
-              setActiveCategory("furniture");
-            } else if (slabsIds.has(latestSection) && activeCategory !== "slabs") {
-              setActiveCategory("slabs");
-            }
+            // const belongsToFurniture = furnitureIds.has(latestSection);
+            // if (belongsToFurniture && activeCategory !== "furniture") {
+            //   setActiveCategory("furniture");
+            // } else if (slabsIds.has(latestSection) && activeCategory !== "slabs") {
+            //   setActiveCategory("slabs");
+            // }
           }
           rafScheduled = false;
           latestSection = null;

@@ -24,7 +24,7 @@ const ProductDetails = () => {
   const [selectedFinish, setSelectedFinish] = useState("Polish");
   const [selectedThickness, setSelectedThickness] = useState("20mm");
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(false); // Disabled auto-play
   const [reviews, setReviews] = useState([]);
   const [reviewStats, setReviewStats] = useState({ averageRating: 0, totalReviews: 0, ratingBreakdown: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 } });
   const [reviewsLoading, setReviewsLoading] = useState(true);
@@ -170,15 +170,14 @@ const ProductDetails = () => {
     }
   }, [selectedImage, product, mainImageLoaded, prefersReducedMotion]);
 
-  // Auto image rotation - disabled when user interacted or prefers reduced motion
-  useEffect(() => {
-    if (!product || userInteracted || prefersReducedMotion || product.images.length <= 1) return;
-    const t = setInterval(() => {
-      setSelectedImage((prev) => (prev + 1) % product.images.length);
-    }, 5000); // Increased from 3500ms for less aggressive rotation
-
-    return () => clearInterval(t);
-  }, [product, userInteracted, prefersReducedMotion]);
+  // Auto image rotation - DISABLED to prevent unwanted scrolling
+  // useEffect(() => {
+  //   if (!product || userInteracted || prefersReducedMotion || product.images.length <= 1) return;
+  //   const t = setInterval(() => {
+  //     setSelectedImage((prev) => (prev + 1) % product.images.length);
+  //   }, 5000);
+  //   return () => clearInterval(t);
+  // }, [product, userInteracted, prefersReducedMotion]);
 
   // Reset states when product ID changes
   useEffect(() => {
@@ -284,16 +283,15 @@ const ProductDetails = () => {
     }
   };
 
-  useEffect(() => {
-    if (!isAutoPlaying || !product || !product.relatedProducts.length || prefersReducedMotion) return;
-
-    const t = setInterval(() => {
-      const maxSlides = product.relatedProducts.length;
-      scrollToSlide((currentSlide + 1) % maxSlides);
-    }, 4000); // Increased from 2000ms for less aggressive scrolling
-
-    return () => clearInterval(t);
-  }, [currentSlide, isAutoPlaying, product, prefersReducedMotion]);
+  // Related products auto-scroll - DISABLED to prevent unwanted scrolling
+  // useEffect(() => {
+  //   if (!isAutoPlaying || !product || !product.relatedProducts.length || prefersReducedMotion) return;
+  //   const t = setInterval(() => {
+  //     const maxSlides = product.relatedProducts.length;
+  //     scrollToSlide((currentSlide + 1) % maxSlides);
+  //   }, 4000);
+  //   return () => clearInterval(t);
+  // }, [currentSlide, isAutoPlaying, product, prefersReducedMotion]);
 
   // Sticky CTA bar on scroll - use RAF for better performance
   useEffect(() => {
