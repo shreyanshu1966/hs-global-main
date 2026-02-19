@@ -4,6 +4,7 @@ import { Helmet } from "react-helmet-async";
 import { Share2, ChevronRight, Quote, ChevronLeft, ChevronRight as ChevronRightIcon, Star, Shield, Truck, RotateCcw, Award, Heart, ZoomIn, X, Package, Ruler, Palette, MessageCircle, CheckCircle, Info } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { ProductDetailsSkeleton } from "../components/ProductDetailsSkeleton";
 
 import { AddToCartButton } from "../components/AddToCartButton";
 import { QuantityHandler } from "../components/QuantityHandler";
@@ -31,6 +32,14 @@ const ProductDetails = () => {
   const [isImageZoomed, setIsImageZoomed] = useState(false);
   const [showStickyBar, setShowStickyBar] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
+  const [userInteracted, setUserInteracted] = useState(false);
+  const [mainImageLoaded, setMainImageLoaded] = useState(false);
+  
+  // Check for reduced motion preference
+  const prefersReducedMotion = useMemo(() => {
+    if (typeof window === 'undefined') return false;
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }, []);
 
   const { state: cartState } = useCart();
   const { user } = useAuth();
@@ -154,22 +163,32 @@ const ProductDetails = () => {
   // Check if product is in cart
   const isInCart = product ? cartState.items.some((item) => item.id === product.id) : false;
 
-  // GSAP animation for image changes
+  // GSAP animation for image changes - only animate when loaded
   useGSAP(() => {
-    if (mainImageRef.current && product) {
-      gsap.fromTo(mainImageRef.current, { opacity: 0 }, { opacity: 1, duration: 0.5 });
+    if (mainImageRef.current && product && mainImageLoaded && !prefersReducedMotion) {
+      gsap.fromTo(mainImageRef.current, { opacity: 0.7 }, { opacity: 1, duration: 0.3 });
     }
-  }, [selectedImage, product]);
+  }, [selectedImage, product, mainImageLoaded, prefersReducedMotion]);
 
-  // Auto image rotation
+  // Auto image rotation - disabled when user interacted or prefers reduced motion
   useEffect(() => {
-    if (!product) return;
+    if (!product || userInteracted || prefersReducedMotion || product.images.length <= 1) return;
     const t = setInterval(() => {
       setSelectedImage((prev) => (prev + 1) % product.images.length);
-    }, 3500);
+    }, 5000); // Increased from 3500ms for less aggressive rotation
 
     return () => clearInterval(t);
-  }, [product]);
+  }, [product, userInteracted, prefersReducedMotion]);
+
+  // Reset states when product ID changes
+  useEffect(() => {
+    setSelectedImage(0);
+    setUserInteracted(false);
+    setMainImageLoaded(false);
+    setImagesLoaded({});
+    // Scroll to top when navigating to new product
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [id]);
 
   // Fetch reviews and stats
   useEffect(() => {
@@ -264,37 +283,37 @@ const ProductDetails = () => {
   };
 
   useEffect(() => {
-    if (!isAutoPlaying || !product || !product.relatedProducts.length) return;
+    if (!isAutoPlaying || !product || !product.relatedProducts.length || prefersReducedMotion) return;
 
     const t = setInterval(() => {
       const maxSlides = product.relatedProducts.length;
       scrollToSlide((currentSlide + 1) % maxSlides);
-    }, 2000);
+    }, 4000); // Increased from 2000ms for less aggressive scrolling
 
     return () => clearInterval(t);
-  }, [currentSlide, isAutoPlaying, product]);
+  }, [currentSlide, isAutoPlaying, product, prefersReducedMotion]);
 
-  // Sticky CTA bar on scroll
+  // Sticky CTA bar on scroll - use RAF for better performance
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      const scrolled = window.scrollY > 600;
-      setShowStickyBar(scrolled);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const scrolled = window.scrollY > 600;
+          setShowStickyBar(scrolled);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Show loading state
+  // Show loading state with skeleton
   if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading product...</p>
-        </div>
-      </div>
-    );
+    return <ProductDetailsSkeleton />;
   }
 
   // Show error state
@@ -388,13 +407,22 @@ const ProductDetails = () => {
               <div
                 ref={mainImageRef}
                 key={selectedImage}
-                className="aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl shadow-2xl overflow-hidden mb-4 relative"
-                style={{ opacity: 0 }}
+                className="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl shadow-2xl overflow-hidden mb-4 relative"
               >
+                {/* Loading placeholder */}
+                {!mainImageLoaded && (
+                  <div className="absolute inset-0 bg-gray-200 animate-pulse flex items-center justify-center">
+                    <div className="w-12 h-12 border-4 border-gray-300 border-t-blue-600 rounded-full animate-spin" />
+                  </div>
+                )}
                 <img
                   src={product.images[selectedImage]}
                   alt={product.name}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  width={600}
+                  height={600}
+                  decoding="async"
+                  onLoad={() => setMainImageLoaded(true)}
+                  className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-105 ${mainImageLoaded ? 'opacity-100' : 'opacity-0'}`}
                 />
 
                 {/* Image Overlay Actions */}
@@ -434,7 +462,11 @@ const ProductDetails = () => {
                   {product.images.slice(0, 6).map((img, idx) => (
                     <button
                       key={img}
-                      onClick={() => setSelectedImage(idx)}
+                      onClick={() => {
+                        setSelectedImage(idx);
+                        setUserInteracted(true);
+                        setMainImageLoaded(false);
+                      }}
                       className={`aspect-square bg-white rounded-lg md:rounded-xl overflow-hidden border-2 transition-all duration-300 hover:shadow-lg ${selectedImage === idx
                         ? "border-blue-600 ring-2 ring-blue-600/30 shadow-md scale-95"
                         : "border-gray-200 hover:border-blue-300"
@@ -443,6 +475,10 @@ const ProductDetails = () => {
                       <img
                         src={img}
                         alt={`${product.name} ${idx + 1}`}
+                        width={100}
+                        height={100}
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-cover"
                       />
                     </button>
@@ -990,10 +1026,14 @@ const ProductDetails = () => {
                       scrollSnapAlign: "start",
                     }}
                   >
-                    <div className="aspect-square overflow-hidden relative">
+                    <div className="aspect-square overflow-hidden relative bg-gray-100">
                       <img
                         src={p.image}
                         alt={p.name}
+                        width={250}
+                        height={250}
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -1034,6 +1074,9 @@ const ProductDetails = () => {
           <img
             src={product.images[selectedImage]}
             alt={product.name}
+            width={1200}
+            height={1200}
+            decoding="async"
             className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           />
@@ -1045,13 +1088,17 @@ const ProductDetails = () => {
 
       {/* Sticky Bottom CTA Bar - Mobile */}
       {showStickyBar && (
-        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t-2 border-gray-200 shadow-2xl p-4 animate-slideUp">
+        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t-2 border-gray-200 shadow-2xl p-4 transform transition-transform duration-300">
           <div className="flex items-center gap-3">
-            <div className="flex-shrink-0">
+            <div className="flex-shrink-0 w-14 h-14 bg-gray-100 rounded-lg overflow-hidden">
               <img
                 src={product.images[0]}
                 alt={product.name}
-                className="w-14 h-14 object-cover rounded-lg border-2 border-gray-200"
+                width={56}
+                height={56}
+                loading="lazy"
+                decoding="async"
+                className="w-full h-full object-cover border-2 border-gray-200 rounded-lg"
               />
             </div>
             <div className="flex-1 min-w-0">
@@ -1080,6 +1127,9 @@ const ProductDetails = () => {
           </div>
         </div>
       )}
+
+      {/* Spacer for sticky bar to prevent content from being hidden behind it */}
+      <div className={`lg:hidden h-24 ${showStickyBar ? 'block' : 'hidden'}`} aria-hidden="true" />
     </div>
   );
 };
