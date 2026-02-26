@@ -14,7 +14,6 @@ export interface FurnitureSpec {
   packagingDetails?: string;
   location?: string;
   priceINR?: number;
-  etsyUrl?: string;
 }
 
 // CSV data mapped by product name (normalized)

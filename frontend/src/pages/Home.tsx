@@ -7,6 +7,7 @@ import AtelierStory from "../components/AtelierStory";
 import Testimonials from "../components/Testimonials";
 import TrustBadges from "../components/TrustBadges";
 import VelocityScroll from "../components/VelocityScroll";
+import ContactUs from "../components/ContactUs";
 
 const Home = () => {
   return (
@@ -119,6 +120,10 @@ const Home = () => {
 
         <section>
           <Testimonials />
+        </section>
+
+        <section id="contact">
+          <ContactUs />
         </section>
 
       </main>

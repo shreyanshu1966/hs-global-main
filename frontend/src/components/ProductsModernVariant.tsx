@@ -621,10 +621,8 @@ export const ProductsModernVariant: React.FC = () => {
             <span className="block text-[clamp(0.625rem,1.2vw,0.875rem)] tracking-[0.3em] uppercase mb-[clamp(1rem,2vw,1.5rem)] text-gray-400">
               {t("product.hero_subtitle") || "Curated Collection"}
             </span>
-            <h1 className="text-[clamp(3.5rem,13vw,14vw)] leading-[0.85] font-serif tracking-tighter text-black">
-              Timeless <br />
-              <span className="ml-[8vw] italic font-light text-gray-400">Material</span> <br />
-              <span className="text-amber-900/80">Elegance</span>.
+            <h1 className="text-[clamp(1.5rem,3.5vw,3rem)] leading-[1.2] font-serif tracking-tight text-black">
+              Best Luxury & Imported Marble Stones at Marble, Granite Centre International
             </h1>
           </motion.div>
         </div>

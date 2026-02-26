@@ -1,30 +1,21 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { Mail, Phone, MapPin, ArrowRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Helmet } from "react-helmet-async";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { getResponsiveImage, getSrcSet } from '../utils/responsive-image-helper';
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
-const Contact = () => {
+const ContactUs = () => {
   const { t } = useTranslation();
 
   // Refs for animations
   const containerRef = useRef<HTMLDivElement>(null);
-  const heroTextRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLDivElement>(null);
   const infoRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
   const submitBtnRef = useRef<HTMLButtonElement>(null);
-
-  // Parallax for Hero
-  const { scrollY } = useScroll();
-  const y1 = useTransform(scrollY, [0, 500], [0, 200]);
-  const opacityHero = useTransform(scrollY, [0, 400], [1, 0]);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -159,122 +150,7 @@ const Contact = () => {
 
 
   return (
-    <div ref={containerRef} className="min-h-screen bg-white">
-
-      <Helmet>
-        {/* Basic SEO */}
-        <title>Contact Us - Get in Touch | HS Global Export</title>
-        <meta name="description" content="Contact HS Global Export for premium granite and marble solutions. Reach us at +91 81071 15116 or inquiry@hsglobalexport.com. Corporate office in Ahmedabad, factory in Rajasthan." />
-        <meta name="keywords" content="contact HS Global Export, granite supplier contact, marble exporter India, stone inquiry, get quote granite, Ahmedabad office, Rajasthan factory" />
-        <meta name="author" content="HS Global Export" />
-        <meta name="robots" content="index, follow" />
-
-        {/* Canonical URL */}
-        <link rel="canonical" href="https://hsglobalexport.com/contact" />
-
-        {/* Open Graph */}
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://hsglobalexport.com/contact" />
-        <meta property="og:site_name" content="HS Global Export" />
-        <meta property="og:title" content="Contact Us - Get in Touch | HS Global Export" />
-        <meta property="og:description" content="Contact HS Global Export for premium granite and marble solutions. Corporate office in Ahmedabad, factory in Rajasthan." />
-        <meta property="og:image" content="https://hsglobalexport.com/og-image.jpg" />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-        <meta property="og:image:alt" content="HS Global Export - Contact Us" />
-        <meta property="og:locale" content="en_US" />
-
-        {/* Twitter Card */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content="https://hsglobalexport.com/contact" />
-        <meta name="twitter:title" content="Contact Us - Get in Touch | HS Global Export" />
-        <meta name="twitter:description" content="Contact HS Global Export for premium granite and marble solutions." />
-        <meta name="twitter:image" content="https://hsglobalexport.com/og-image.jpg" />
-        <meta name="twitter:image:alt" content="HS Global Export - Contact Us" />
-
-        {/* Schema.org LocalBusiness */}
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "LocalBusiness",
-            "name": "HS Global Export",
-            "image": "https://hsglobalexport.com/logo.webp",
-            "url": "https://hsglobalexport.com",
-            "telephone": "+91-8107115116",
-            "email": "inquiry@hsglobalexport.com",
-            "address": [
-              {
-                "@type": "PostalAddress",
-                "streetAddress": "C-108, Titanium Business Park, Makarba",
-                "addressLocality": "Ahmedabad",
-                "postalCode": "380051",
-                "addressRegion": "Gujarat",
-                "addressCountry": "IN"
-              }
-            ],
-            "geo": {
-              "@type": "GeoCoordinates",
-              "latitude": "23.0225",
-              "longitude": "72.5714"
-            },
-            "openingHoursSpecification": {
-              "@type": "OpeningHoursSpecification",
-              "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-              "opens": "09:00",
-              "closes": "18:00"
-            },
-            "sameAs": [
-              "https://www.instagram.com/hsglobalexport116",
-              "https://www.linkedin.com/company/hsglobalexport",
-              "https://www.facebook.com/hsglobalexport"
-            ]
-          })}
-        </script>
-      </Helmet>
-
-      {/* Hero Banner */}
-      <section className="relative min-h-[100svh] flex flex-col justify-center px-[clamp(1.5rem,4vw,6rem)] overflow-hidden">
-        <motion.div
-          style={{ y: y1, opacity: opacityHero }}
-          className="absolute top-0 right-0 w-[80vw] h-full opacity-10 pointer-events-none"
-        >
-          <img
-            src={getResponsiveImage('export.webp', 'large') || '/export.webp'}
-            srcSet={getSrcSet('export.webp')}
-            sizes="80vw"
-            className="w-full h-full object-cover filter grayscale contrast-125"
-            alt="Contact HS Global"
-            loading="lazy"
-          />
-        </motion.div>
-
-        <div className="relative z-10 max-w-[90vw]">
-          <motion.div
-            initial={{ opacity: 0, y: 100 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <span className="block text-[clamp(0.625rem,1.2vw,0.875rem)] tracking-[0.3em] uppercase mb-[clamp(1rem,2vw,1.5rem)] text-gray-400">
-              {t('contact.hero_subtitle') || "Get in Touch"}
-            </span>
-            <h1 className="text-[clamp(3.5rem,13vw,14vw)] leading-[0.85] font-serif tracking-tighter text-black">
-              Let's <br />
-              <span className="ml-[8vw] italic font-light text-gray-400">Build</span> <br />
-              <span className="text-amber-900/80">Together</span>.
-            </h1>
-          </motion.div>
-        </div>
-
-        <motion.div
-          className="absolute bottom-[clamp(2rem,4vw,3rem)] left-[clamp(1.5rem,4vw,6rem)] flex items-center gap-[clamp(0.75rem,2vw,1rem)]"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 1 }}
-        >
-          <div className="h-[1px] w-[clamp(3rem,8vw,6rem)] bg-gray-300"></div>
-          <p className="text-[clamp(0.625rem,1vw,0.75rem)] uppercase tracking-widest text-gray-400">Scroll to Connect</p>
-        </motion.div>
-      </section>
+    <div ref={containerRef} className="bg-white">
 
       {/* Minimalist Contact Section */}
       <section className="py-24">
@@ -466,15 +342,6 @@ const Contact = () => {
               </div>
             </div>
 
-            {/* Bottom CTA */}
-            <div ref={ctaRef} className="text-center mt-24 py-16 border-t border-gray-200" style={{ opacity: 0 }}>
-              <p className="text-xl text-gray-600 mb-6">
-                {t('contact.cta_title')}
-              </p>
-              <p className="text-4xl font-light text-gray-900">
-                {t('contact.cta_text')}
-              </p>
-            </div>
           </div>
         </div>
       </section>
@@ -497,4 +364,4 @@ const Contact = () => {
   );
 };
 
-export default Contact;
+export default ContactUs;

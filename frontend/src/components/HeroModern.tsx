@@ -73,10 +73,11 @@ const HeroModern = () => {
 
 
                     {/* Main Heading */}
-                    <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-white mb-6 md:mb-8 leading-[0.95]">
-                        Timeless
-                        <span className="block mt-2 italic text-white/70">Marble</span>
-                        <span className="block mt-2">Furniture</span>
+                    <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-white mb-6 md:mb-8 leading-[1.1]">
+                        <span className="block">Best Marble Furniture</span>
+                        <span className="block">Manufacturer, Supplier</span>
+                        <span className="block text-white/90">& Exporter</span>
+                        <span className="block text-amber-400">Worldwide</span>
                     </h1>
 
                     {/* Subheading */}

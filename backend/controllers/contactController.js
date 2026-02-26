@@ -4,10 +4,10 @@ const { sendContactNotificationEmail, sendCustomerConfirmationEmail } = require(
 // Submit contact form
 exports.submitContactForm = async (req, res) => {
     try {
-        const { name, email, subject, message, referenceImage } = req.body;
+        const { name, email, phone, subject, message, referenceImage } = req.body;
 
         // Validation
-        if (!name || !email || !subject || !message) {
+        if (!name || !email || !phone || !subject || !message) {
             return res.status(400).json({
                 ok: false,
                 error: 'All required fields must be filled'
@@ -31,6 +31,7 @@ exports.submitContactForm = async (req, res) => {
         const contactData = {
             name: name.trim(),
             email: email.trim().toLowerCase(),
+            phone: phone.trim(),
             subject: subject.trim(),
             message: message.trim(),
             ipAddress,
@@ -47,6 +48,7 @@ exports.submitContactForm = async (req, res) => {
         const emailData = {
             name: contact.name,
             email: contact.email,
+            phone: contact.phone,
             subject: contact.subject,
             message: contact.message,
             referenceImage: contact.referenceImage,

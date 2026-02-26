@@ -16,6 +16,7 @@ import { ReviewList } from "../components/ReviewList";
 import { ReviewStats } from "../components/ReviewStats";
 import { useAuth } from "../contexts/AuthContext";
 import { useProductSEO, formatRobotsMeta } from "../hooks/useProductSEO";
+import ContactUs from "../components/ContactUs";
 
 const ProductDetails = () => {
   const { id }: { id?: string } = useParams<{ id?: string }>();
@@ -34,7 +35,9 @@ const ProductDetails = () => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [userInteracted, setUserInteracted] = useState(false);
   const [mainImageLoaded, setMainImageLoaded] = useState(false);
-  
+  const [showAllReviews, setShowAllReviews] = useState(false);
+  const [showReviewForm, setShowReviewForm] = useState(false);
+
   // Check for reduced motion preference
   const prefersReducedMotion = useMemo(() => {
     if (typeof window === 'undefined') return false;
@@ -77,7 +80,7 @@ const ProductDetails = () => {
     if (category === "furniture" && dbProduct.furnitureSpecs) {
       // Use furniture specifications from database
       specs = Object.entries(dbProduct.furnitureSpecs)
-        .filter(([_, value]) => value) // Only include non-empty values
+        .filter(([key, value]) => value && key !== 'etsyUrl') // Exclude empty values and etsyUrl
         .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
     } else if (category === "slabs" && dbProduct.slabSpecs) {
       // Use slab specifications from database
@@ -333,7 +336,7 @@ const ProductDetails = () => {
                 </div>
               </div>
             </div>
-            
+
             {/* Error content */}
             <div className="flex flex-col items-start">
               <div className="bg-red-50 border border-red-200 rounded-xl p-6 w-full mb-6">
@@ -342,12 +345,12 @@ const ProductDetails = () => {
                   {error?.includes('fetch') ? 'Connection Error' : 'Product Not Found'}
                 </h2>
                 <p className="text-gray-600 mb-4">
-                  {error?.includes('fetch') 
+                  {error?.includes('fetch')
                     ? 'Unable to load product. Please check your internet connection and try again.'
                     : 'The product you are looking for does not exist or has been removed.'}
                 </p>
                 <div className="flex flex-wrap gap-3">
-                  <button 
+                  <button
                     onClick={() => refetch()}
                     className="px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium flex items-center gap-2"
                   >
@@ -356,15 +359,15 @@ const ProductDetails = () => {
                     </svg>
                     Try Again
                   </button>
-                  <Link 
-                    to="/products" 
+                  <Link
+                    to="/products"
                     className="px-5 py-2.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium"
                   >
                     Browse Products
                   </Link>
                 </div>
               </div>
-              
+
               {/* Placeholder specs */}
               <div className="bg-white rounded-xl shadow-sm border-2 border-gray-200 p-5 w-full">
                 <div className="h-6 w-32 bg-gray-200 rounded mb-4" />
@@ -389,7 +392,7 @@ const ProductDetails = () => {
     <div className="min-h-screen bg-gray-50">
       <Helmet>
         {/* ========== COMPREHENSIVE SEO META TAGS ========== */}
-        
+
         {/* Basic SEO */}
         <title>{seoMeta.title}</title>
         <meta name="description" content={seoMeta.metaDescription} />
@@ -1008,24 +1011,64 @@ const ProductDetails = () => {
 
               {/* Review List and Form */}
               <div className="lg:col-span-2 space-y-8">
-                <ReviewList reviews={reviews} loading={reviewsLoading} />
+                {/* Reviews List */}
+                <div>
+                  <ReviewList reviews={showAllReviews ? reviews : reviews.slice(0, 2)} loading={reviewsLoading} />
 
-                {user ? (
-                  <div>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-4">Write a Review</h3>
-                    <ReviewForm productId={product.id} onReviewSubmitted={handleReviewSubmitted} />
-                  </div>
-                ) : (
-                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 text-center">
-                    <p className="text-gray-600 mb-4">Please sign in to write a review</p>
-                    <Link
-                      to="/login"
-                      className="inline-block px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
-                    >
-                      Sign In
-                    </Link>
-                  </div>
-                )}
+                  {/* See More/Less Button */}
+                  {reviews.length > 2 && (
+                    <div className="mt-6 text-center">
+                      <button
+                        onClick={() => setShowAllReviews(!showAllReviews)}
+                        className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg"
+                      >
+                        {showAllReviews ? (
+                          <>
+                            <ChevronLeft className="w-5 h-5" />
+                            Show Less
+                          </>
+                        ) : (
+                          <>
+                            Show More ({reviews.length - 2} more reviews)
+                            <ChevronRight className="w-5 h-5" />
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                {/* Write a Review Section */}
+                <div className="border-t-2 border-gray-200 pt-6">
+                  <button
+                    onClick={() => setShowReviewForm(!showReviewForm)}
+                    className="w-full flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-gray-100 hover:from-gray-100 hover:to-gray-200 rounded-lg transition-all duration-300 border-2 border-gray-300 hover:border-blue-400"
+                  >
+                    <h3 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
+                      <MessageCircle className="w-5 h-5 text-blue-600" />
+                      Write a Review
+                    </h3>
+                    <ChevronRight className={`w-6 h-6 text-gray-600 transition-transform duration-300 ${showReviewForm ? 'rotate-90' : ''}`} />
+                  </button>
+
+                  {showReviewForm && (
+                    <div className="mt-4 animate-in fade-in slide-in-from-top-2 duration-300">
+                      {user ? (
+                        <ReviewForm productId={product.id} onReviewSubmitted={handleReviewSubmitted} />
+                      ) : (
+                        <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 text-center">
+                          <p className="text-gray-600 mb-4">Please sign in to write a review</p>
+                          <Link
+                            to="/login"
+                            className="inline-block px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                          >
+                            Sign In
+                          </Link>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -1110,6 +1153,11 @@ const ProductDetails = () => {
           </div>
         </div>
       )}
+
+      {/* Contact Us */}
+      <section className="bg-white border-t border-gray-200">
+        <ContactUs />
+      </section>
 
       {/* Image Zoom Modal */}
       {isImageZoomed && (

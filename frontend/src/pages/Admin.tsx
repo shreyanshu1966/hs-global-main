@@ -201,7 +201,7 @@ const Admin = () => {
     const [showCustomSubcategory, setShowCustomSubcategory] = useState(false);
     const [customSubcategory, setCustomSubcategory] = useState('');
     const [customSubcategories, setCustomSubcategories] = useState<{ [categoryId: string]: Array<{ id: string, name: string }> }>({});
-    
+
     // Additional loading states for better UX
     const [productsLoading, setProductsLoading] = useState(false);
     const [bulkDiscountLoading, setBulkDiscountLoading] = useState(false);
@@ -244,15 +244,15 @@ const Admin = () => {
         if (searchDebounceTimer) {
             clearTimeout(searchDebounceTimer);
         }
-        
+
         const timer = setTimeout(() => {
             if (activeTab === 'products') {
                 loadData();
             }
         }, 300); // 300ms debounce
-        
+
         setSearchDebounceTimer(timer);
-        
+
         return () => {
             if (timer) clearTimeout(timer);
         };
@@ -522,10 +522,10 @@ const Admin = () => {
     const handleOpenProductModal = async (product?: Product) => {
         if (product) {
             setEditingProductId(product.productId);
-            
+
             // Small delay to show loading state
             await new Promise(resolve => setTimeout(resolve, 100));
-            
+
             setEditingProduct(product);
             setProductFormData({
                 productId: product.productId,
@@ -1753,7 +1753,7 @@ const Admin = () => {
                                         <thead className="bg-gray-50 border-b border-gray-200">
                                             <tr>
                                                 <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Name</th>
-                                                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Email</th>
+                                                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Contact Info</th>
                                                 <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Subject</th>
                                                 <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Status</th>
                                                 <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Date</th>
@@ -1768,6 +1768,7 @@ const Admin = () => {
                                                     </td>
                                                     <td className="px-6 py-4 whitespace-nowrap">
                                                         <div className="text-sm text-gray-600">{contact.email}</div>
+                                                        {contact.phone && <div className="text-xs text-gray-500">{contact.phone}</div>}
                                                     </td>
                                                     <td className="px-6 py-4">
                                                         <div className="text-sm text-gray-900 max-w-xs truncate">{contact.subject}</div>
@@ -1878,6 +1879,16 @@ const Admin = () => {
                                             <a href={`mailto:${selectedContact.email}`} className="text-blue-600 hover:underline">
                                                 {selectedContact.email}
                                             </a>
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                                            <p className="text-gray-900">
+                                                {selectedContact.phone ? (
+                                                    <a href={`tel:${selectedContact.phone}`} className="text-blue-600 hover:underline">
+                                                        {selectedContact.phone}
+                                                    </a>
+                                                ) : 'N/A'}
+                                            </p>
                                         </div>
                                         <div className="col-span-2">
                                             <label className="block text-sm font-medium text-gray-700 mb-1">Subject</label>
@@ -2509,7 +2520,7 @@ const Admin = () => {
                                         </div>
                                     </div>
                                 )}
-                                
+
                                 <div className="overflow-x-auto">
                                     <table className="w-full">
                                         <thead className="bg-gray-50 border-b border-gray-200">
@@ -2628,8 +2639,8 @@ const Admin = () => {
                                                                 return (
                                                                     <div>
                                                                         <span className={`px-2 py-1 text-xs font-medium rounded-full ${daysRemaining && daysRemaining <= 3
-                                                                                ? 'bg-orange-100 text-orange-800'
-                                                                                : 'bg-green-100 text-green-800'
+                                                                            ? 'bg-orange-100 text-orange-800'
+                                                                            : 'bg-green-100 text-green-800'
                                                                             }`}>
                                                                             {product.discount.percentage}% OFF
                                                                         </span>
@@ -2688,7 +2699,7 @@ const Admin = () => {
                                                     </td>
                                                 </tr>
                                             ))}
-                                            
+
                                             {/* Empty state */}
                                             {!productsLoading && products.length === 0 && (
                                                 <tr>

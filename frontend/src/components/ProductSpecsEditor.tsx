@@ -13,7 +13,6 @@ interface FurnitureSpecs {
   colorName?: string;
   packagingDetails?: string;
   location?: string;
-  etsyUrl?: string;
 }
 
 interface SlabSpecs {

@@ -251,13 +251,23 @@ const Header = () => {
             <div className="flex flex-col space-y-6">
               {links.map((link) => (
                 <div key={link.path} className="mobile-nav-link" style={{ opacity: 0 }}>
-                  <Link
-                    to={link.path}
-                    onClick={() => setIsOpen(false)}
-                    className={`block font-serif text-4xl md:text-5xl font-light hover:italic transition-all ${location.pathname === link.path ? "text-white italic" : "text-stone-400"}`}
-                  >
-                    {link.label}
-                  </Link>
+                  {link.path === "/contact" ? (
+                    <Link
+                      to={link.path}
+                      onClick={() => setIsOpen(false)}
+                      className="inline-block px-8 py-4 bg-amber-500 hover:bg-amber-600 text-white font-bold text-lg uppercase tracking-wider transition-all duration-300 rounded-none border-2 border-amber-500 hover:border-amber-600"
+                    >
+                      {link.label}
+                    </Link>
+                  ) : (
+                    <Link
+                      to={link.path}
+                      onClick={() => setIsOpen(false)}
+                      className={`block font-serif text-4xl md:text-5xl font-light hover:italic transition-all ${location.pathname === link.path ? "text-white italic" : "text-stone-400"}`}
+                    >
+                      {link.label}
+                    </Link>
+                  )}
                 </div>
               ))}
 
@@ -269,7 +279,6 @@ const Header = () => {
                   <Link to="/admin" onClick={() => setIsOpen(false)} className="block text-sm uppercase tracking-widest text-stone-400 hover:text-white">Admin</Link>
                 )}
                 <Link to="/login" onClick={() => setIsOpen(false)} className="block text-sm uppercase tracking-widest text-stone-400 hover:text-white">Account</Link>
-                <Link to="/contact" onClick={() => setIsOpen(false)} className="block text-sm uppercase tracking-widest text-stone-400 hover:text-white">Contact</Link>
               </div>
             </div>
           </div>

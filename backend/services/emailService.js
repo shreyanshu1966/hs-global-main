@@ -424,7 +424,7 @@ exports.sendOrderConfirmationEmail = async (email, name, orderDetails) => {
     try {
         // Get currency code - default to USD
         const currency = orderDetails.currency || 'USD';
-        
+
         // Format amount based on actual currency (prices are already in standard units, not cents/paise)
         const formatAmount = (amount) => {
             return parseFloat(amount).toLocaleString('en-US', {
@@ -694,6 +694,7 @@ exports.sendContactNotificationEmail = async (contactData) => {
                             <div class="info-box">
                                 <p><span class="label">Name:</span> ${contactData.name}</p>
                                 <p><span class="label">Email:</span> <a href="mailto:${contactData.email}">${contactData.email}</a></p>
+                                <p><span class="label">Phone:</span> ${contactData.phone}</p>
                                 <p><span class="label">Subject:</span> ${contactData.subject}</p>
                                 <p><span class="label">Submitted:</span> ${new Date(contactData.submittedAt).toLocaleString('en-IN', {
                 year: 'numeric',

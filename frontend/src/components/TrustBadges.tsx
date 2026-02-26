@@ -9,27 +9,27 @@ const TrustBadges: React.FC = () => {
   const badges = [
     {
       title: t("trust_badges.customizable") || "Bespoke",
-      icon: <Gem className="w-6 h-6" />,
+      icon: <Gem className="w-12 h-12" />,
       desc: "Tailored to your vision"
     },
     {
       title: t("trust_badges.sustainable_sourcing") || "Ethical",
-      icon: <Globe className="w-6 h-6" />,
+      icon: <Globe className="w-12 h-12" />,
       desc: "Responsibly mined"
     },
     {
       title: t("trust_badges.worldwide_shipping") || "Global",
-      icon: <Truck className="w-6 h-6" />,
+      icon: <Truck className="w-12 h-12" />,
       desc: "Worldwide delivery"
     },
     {
       title: t("trust_badges.superior_quality") || "Quality",
-      icon: <Star className="w-6 h-6" />,
+      icon: <Star className="w-12 h-12" />,
       desc: "Hand-inspected"
     },
     {
       title: t("trust_badges.exquisite_detailing") || "Craft",
-      icon: <ShieldCheck className="w-6 h-6" />,
+      icon: <ShieldCheck className="w-12 h-12" />,
       desc: "Precision fabrication"
     },
   ];
