@@ -23,9 +23,9 @@ const About = () => {
 
       <Helmet>
         {/* Basic SEO */}
-        <title>About Us - Heritage Etched in Stone | HS Global Export</title>
-        <meta name="description" content="Discover HS Global Export's 25+ year legacy in premium granite and marble. From Rajasthan quarries to global excellence, learn about our commitment to quality and craftsmanship." />
-        <meta name="keywords" content="about HS Global Export, granite supplier history, marble exporter India, Rajasthan stone quarry, premium stone company, natural stone heritage, luxury stone supplier" />
+        <title>About Us - Heritage & Craftsmanship | HS Global Export</title>
+        <meta name="description" content="Discover HS Global Export's nearly 50-year family legacy in premium natural stone and handcrafted marble products. From an Ahmedabad workshop to global excellence." />
+        <meta name="keywords" content="about HS Global Export, marble furniture, handcrafted natural stone, onyx marble, global stone supplier, custom marble sinks, Ahmedabad marble workshop" />
         <meta name="author" content="HS Global Export" />
         <meta name="robots" content="index, follow" />
 
@@ -36,8 +36,8 @@ const About = () => {
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://hsglobalexport.com/about" />
         <meta property="og:site_name" content="HS Global Export" />
-        <meta property="og:title" content="About Us - Heritage Etched in Stone | HS Global Export" />
-        <meta property="og:description" content="Discover HS Global Export's 25+ year legacy in premium granite and marble. From Rajasthan quarries to global excellence." />
+        <meta property="og:title" content="About Us - Heritage & Craftsmanship | HS Global Export" />
+        <meta property="og:description" content="Discover HS Global Export's nearly 50-year legacy in premium natural stone and handcrafted marble products. From Ahmedabad to the world." />
         <meta property="og:image" content="https://hsglobalexport.com/og-image.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
@@ -47,8 +47,8 @@ const About = () => {
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:url" content="https://hsglobalexport.com/about" />
-        <meta name="twitter:title" content="About Us - Heritage Etched in Stone | HS Global Export" />
-        <meta name="twitter:description" content="Discover HS Global Export's 25+ year legacy in premium granite and marble. From Rajasthan quarries to global excellence." />
+        <meta name="twitter:title" content="About Us - Heritage & Craftsmanship | HS Global Export" />
+        <meta name="twitter:description" content="Discover HS Global Export's nearly 50-year legacy in premium natural stone and handcrafted marble." />
         <meta name="twitter:image" content="https://hsglobalexport.com/og-image.jpg" />
         <meta name="twitter:image:alt" content="HS Global Export - About Our Company" />
 
@@ -58,21 +58,22 @@ const About = () => {
             "@context": "https://schema.org",
             "@type": "AboutPage",
             "name": "About HS Global Export",
-            "description": "Learn about HS Global Export's heritage in premium granite and marble supply",
+            "description": "Learn about HS Global Export's heritage in handcrafted premium marble supply",
             "url": "https://hsglobalexport.com/about",
             "mainEntity": {
               "@type": "Organization",
               "name": "HS Global Export",
-              "foundingDate": "1995",
+              "foundingDate": "1985",
               "foundingLocation": {
                 "@type": "Place",
                 "address": {
                   "@type": "PostalAddress",
-                  "addressRegion": "Rajasthan",
+                  "addressLocality": "Ahmedabad",
+                  "addressRegion": "Gujarat",
                   "addressCountry": "IN"
                 }
               },
-              "description": "Premium granite and marble supplier with 25+ years of excellence"
+              "description": "Premium marble furniture and handcrafted natural stone products manufacturer with nearly 50 years of family heritage."
             }
           })}
         </script>
@@ -102,11 +103,11 @@ const About = () => {
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           >
             <span className="block text-[clamp(0.625rem,1.2vw,0.875rem)] tracking-[0.3em] uppercase mb-[clamp(1rem,2vw,1.5rem)] text-gray-400">
-              {t("about.hero_subtitle") || "Est. 1995 • Rajasthan, India"}
+              {t("about.hero_subtitle") || "Est. 1985 • Ahmedabad, India"}
             </span>
             <h1 className="text-[clamp(3.5rem,13vw,14vw)] leading-[0.85] font-serif tracking-tighter text-black">
               Heritage <br />
-              <span className="ml-[8vw] italic font-light text-gray-400">Etched</span> <br />
+              <span className="ml-[8vw] italic font-light text-gray-400">Handcrafted</span> <br />
               In <span className="text-secondary-foreground">Stone</span>.
             </h1>
           </motion.div>
@@ -129,7 +130,7 @@ const About = () => {
       {/* 3. MARQUEE SEPARATOR */}
       <div className="py-[clamp(2rem,4vw,3rem)] border-y border-gray-100 bg-black text-white">
         <VelocityScroll
-          items={["Excellence", "Precision", "Heritage", "Global", "Luxury", "Timeless"]}
+          items={["Handcrafted", "Heritage", "Natural Stone", "Global Exporter", "Artisanal", "Timeless"]}
           default_velocity={3}
           className="font-serif text-[clamp(2rem,6vw,4rem)] opacity-80"
         />
@@ -141,12 +142,12 @@ const About = () => {
           <div className="mb-[clamp(3rem,8vw,6rem)] grid grid-cols-1 md:grid-cols-2 gap-[clamp(2rem,4vw,3rem)] items-end">
             <div>
               <ShinyText
-                text="Our Philosophy"
+                text="The Art of Stone"
                 className="text-[clamp(0.625rem,1.2vw,0.875rem)] tracking-[0.2em] uppercase mb-[clamp(0.75rem,1.5vw,1rem)] block text-gray-500"
                 speed={3}
               />
               <h2 className="text-[clamp(2.5rem,7vw,4.5rem)] font-serif text-black leading-tight">
-                Crafting <br /> <i className="text-gray-400 font-light">Perfection</i>
+                Crafting <br /> <i className="text-gray-400 font-light">Elegance</i>
               </h2>
             </div>
             <div className="max-w-md">
@@ -158,7 +159,7 @@ const About = () => {
                 containerClassName=""
                 textClassName="text-gray-600 leading-relaxed text-[clamp(0.875rem,1.8vw,1.125rem)] font-normal"
               >
-                We believe every slab tells a story. Our mission is to preserve that narrative while elevating it to meet the standards of modern luxury architecture.
+                Each sink and piece of furniture we create is more than just a fixture—it's a work of art shaped by generations of craftsmanship in White Marble, Green Marble, Onyx, and beyond.
               </ScrollReveal>
             </div>
           </div>
@@ -174,7 +175,7 @@ const About = () => {
           src={getResponsiveImage("granite-solutions.webp", "large") || "/granite-solutions.webp"}
           srcSet={getSrcSet("granite-solutions.webp")}
           sizes="100vw"
-          alt="Quarry"
+          alt="Artisanal Workshop"
           className="w-full h-full object-cover transform scale-100 group-hover:scale-105 transition-transform duration-[2s] ease-out"
           loading="lazy"
         />
@@ -199,11 +200,12 @@ const About = () => {
             containerClassName="mb-[clamp(2rem,4vw,3rem)]"
             textClassName="text-[clamp(1.5rem,5vw,3rem)] font-serif leading-tight text-gray-900 font-normal"
           >
-            We don't just export stone; we export a piece of India's geological soul to the world.
+            If you’re looking to bring the timeless beauty of real marble into your space, you’re in the right place. Your satisfaction and quality are always our top priorities. I always welcome your visit to my shop.
           </ScrollReveal>
           <div className="flex flex-col items-center">
             <div className="w-[clamp(3rem,8vw,4rem)] h-[2px] bg-black mb-[clamp(1rem,2vw,1.5rem)]"></div>
-            <p className="text-[clamp(0.625rem,1.2vw,0.875rem)] tracking-widest uppercase font-semibold">The HS Global Team</p>
+            <p className="text-[clamp(0.625rem,1.2vw,0.875rem)] tracking-widest uppercase font-semibold">Vaibhav Solanki</p>
+            <p className="text-gray-500 text-sm mt-1">Founder, HS Global Export</p>
           </div>
         </div>
       </section>
@@ -219,21 +221,21 @@ const StickyStorySection = () => {
 
   const stories = [
     {
-      title: "The Beginning",
-      year: "1995",
-      desc: "Started as a humble quarry operation in the heart of Rajasthan, we identified independent deposits of high-quality granite that sparked a vision.",
+      title: "Family Roots",
+      year: "1985",
+      desc: "Our journey began in the culturally rich city of Ahmedabad, India. What started as a small family workshop has grown into a trusted name. Our family has devoted nearly 50 years to perfecting the art of marble work.",
       img: "export.webp"
     },
     {
-      title: "Global Expansion",
-      year: "2010",
-      desc: "Crossed borders to supply major architectural projects in the Middle East and Europe, establishing our reputation for reliability and scale.",
+      title: "Global Vision",
+      year: "2000s",
+      desc: "Vaibhav Solanki established HS Global Export as the most recognized marble brand. His directional orientation expanded our reach, importing quality marble from around the world to become a true global trendsetter.",
       img: "marble-solutions.webp"
     },
     {
-      title: "Sustainable Future",
-      year: "2024",
-      desc: "Investing in eco-friendly mining tech and water recycling, pushing the industry towards a greener, more responsible future.",
+      title: "Artisanal Craft",
+      year: "Today",
+      desc: "Every piece is entirely handmade by experienced artisans. We cut, sand, and polish it ourselves. No mass production, no copy-paste designs. We respect the soul of natural stone and blend it with clean, modern lines.",
       img: "granite-solutions.webp"
     }
   ];
@@ -289,29 +291,29 @@ const StoryPanel = ({ data, index }: { data: any, index: number }) => {
 const PhilosophyGrid = () => {
   const items = [
     {
-      title: "Premium Quality",
-      desc: "Sourced from the finest mines.",
+      title: "Handmade Artisanship",
+      desc: "Each piece is carefully handcrafted, celebrating the natural beauty of stone.",
       icon: <Award className="w-[clamp(1.5rem,3vw,2rem)] h-[clamp(1.5rem,3vw,2rem)] text-white" />,
       col: "md:col-span-2",
       img: "about-premium-quality.png"
     },
     {
-      title: "Global Reach",
-      desc: "50+ Countries served.",
-      icon: <Globe className="w-[clamp(1.5rem,3vw,2rem)] h-[clamp(1.5rem,3vw,2rem)] text-white" />,
-      col: "md:col-span-1",
-      img: "about-global-reach.png"
-    },
-    {
-      title: "Precision",
-      desc: "Italian Tech Processing.",
+      title: "Custom Tailoring",
+      desc: "Unique dimensions and personalized designs to fit your exact needs.",
       icon: <Target className="w-[clamp(1.5rem,3vw,2rem)] h-[clamp(1.5rem,3vw,2rem)] text-white" />,
       col: "md:col-span-1",
       img: "about-precision.png"
     },
     {
-      title: "Client Focus",
-      desc: "End-to-end support.",
+      title: "Global Reach",
+      desc: "Extensive experience with safe, global shipping straight to your home.",
+      icon: <Globe className="w-[clamp(1.5rem,3vw,2rem)] h-[clamp(1.5rem,3vw,2rem)] text-white" />,
+      col: "md:col-span-1",
+      img: "about-global-reach.png"
+    },
+    {
+      title: "Personalized Care",
+      desc: "Stay informed with photos and updates as we craft your masterpiece.",
       icon: <Users className="w-[clamp(1.5rem,3vw,2rem)] h-[clamp(1.5rem,3vw,2rem)] text-white" />,
       col: "md:col-span-2",
       img: "about-client-focus.png"

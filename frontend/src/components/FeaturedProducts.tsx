@@ -57,8 +57,8 @@ const FeaturedProducts = () => {
                         Curated Selection
                     </span>
                     <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-stone-900 mb-6 leading-tight">
-                        Featured
-                        <span className="block italic text-stone-500">Masterpieces</span>
+                        Best
+                        <span className="block italic text-stone-500">Sellers</span>
                     </h2>
                     <p className="text-lg text-stone-600 font-light leading-relaxed">
                         Discover our most sought-after marble furniture pieces, handpicked for their exceptional craftsmanship and timeless design.

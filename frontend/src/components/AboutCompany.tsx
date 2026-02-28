@@ -32,7 +32,7 @@ const AboutCompany: React.FC = () => {
           <div className="order-2 lg:order-1">
             <div className="inline-flex items-center gap-3 mb-8">
               <span className="h-[1px] w-12 bg-stone-300"></span>
-              <span className="text-xs tracking-[0.3em] uppercase text-stone-500 font-medium">Since 2010</span>
+              <span className="text-xs tracking-[0.3em] uppercase text-stone-500 font-medium">Since 1985</span>
             </div>
 
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-light text-primary mb-8 leading-[1.1] tracking-tight">
@@ -46,10 +46,10 @@ const AboutCompany: React.FC = () => {
 
             <div className="space-y-6 text-gray-600 text-base md:text-lg leading-relaxed font-light mb-10">
               <TextReveal delay={0.2}>
-                <p>{t('home.about_description_1') || "We search the globe for the earth's most exquisite materials, bringing the raw beauty of nature directly to your architectural masterpieces."}</p>
+                <p>{t('home.about_description_1') || "Hs Global Export is a leading global trendsetter in Natural Stone, rooted in a nearly 50-year family legacy from Ahmedabad."}</p>
               </TextReveal>
               <TextReveal delay={0.3}>
-                <p>{t('home.about_description_2') || "From the quarries of Italy to the mountains of India, our collection represents the pinnacle of quality and aesthetic refinement."}</p>
+                <p>{t('home.about_description_2') || "We specialize in crafting exquisite, handmade marble furniture and custom stone sinks, blending traditional craftsmanship with clean, modern lines."}</p>
               </TextReveal>
             </div>
 
@@ -69,12 +69,12 @@ const AboutCompany: React.FC = () => {
               <TextReveal delay={0.5}>
                 <div className="flex items-center gap-8">
                   <div className="flex flex-col">
-                    <span className="text-4xl md:text-5xl font-serif font-light text-primary">500+</span>
-                    <span className="text-xs text-gray-500 uppercase tracking-wider mt-1">Projects Completed</span>
+                    <span className="text-4xl md:text-5xl font-serif font-light text-primary">50+</span>
+                    <span className="text-xs text-gray-500 uppercase tracking-wider mt-1">Countries Served</span>
                   </div>
                   <div className="h-12 w-[1px] bg-stone-200"></div>
                   <div className="flex flex-col">
-                    <span className="text-4xl md:text-5xl font-serif font-light text-primary">15+</span>
+                    <span className="text-4xl md:text-5xl font-serif font-light text-primary">Nearly 50</span>
                     <span className="text-xs text-gray-500 uppercase tracking-wider mt-1">Years Experience</span>
                   </div>
                 </div>

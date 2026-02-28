@@ -1,19 +1,19 @@
 import { Helmet } from "react-helmet-async";
-import HeroModern from "../components/HeroModern";
-import ProductCategoriesGrid from "../components/ProductCategoriesGrid";
-import FeaturedProducts from "../components/FeaturedProducts";
-import MaterialShowcase from "../components/MaterialShowcase";
-import AtelierStory from "../components/AtelierStory";
-import Testimonials from "../components/Testimonials";
-import TrustBadges from "../components/TrustBadges";
-import VelocityScroll from "../components/VelocityScroll";
-import ContactUs from "../components/ContactUs";
+import HeroSlider from "../components/home/HeroSlider";
+import ValueMarquee from "../components/home/ValueMarquee";
+import CategoryShowcase from "../components/home/CategoryShowcase";
+
+import BestSellersCarousel from "../components/home/BestSellersCarousel";
+import CraftSection from "../components/home/CraftSection";
+import ProjectMasonry from "../components/home/ProjectMasonry";
+import TestimonialEditorial from "../components/home/TestimonialEditorial";
+import HomeCTA from "../components/home/HomeCTA";
 
 const Home = () => {
   return (
     <>
       <Helmet>
-        {/* ✅ Schema Markup with www */}
+        {/* Schema Markup */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -54,7 +54,6 @@ const Home = () => {
           content="marble furniture, marble dining table, marble coffee table, marble wash basin, marble sculptures, granite slabs, marble slabs, natural stone, luxury furniture, handcrafted furniture, HS Global Export"
         />
 
-        {/* ✅ OpenGraph / Canonical URLs all with www */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.hsglobalexport.com/" />
         <meta property="og:site_name" content="HS Global Export" />
@@ -66,7 +65,6 @@ const Home = () => {
         <meta property="og:image:alt" content="HS Global Export - Premium Marble Furniture" />
         <meta property="og:locale" content="en_US" />
 
-        {/* ✅ Twitter Card Tags */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:url" content="https://www.hsglobalexport.com/" />
         <meta name="twitter:title" content="Premium Marble Furniture & Natural Stone Slabs | HS Global Export" />
@@ -80,56 +78,48 @@ const Home = () => {
         <meta name="robots" content="index, follow" />
       </Helmet>
 
-      {/* Main content */}
-      <main className="bg-white selection:bg-stone-900 selection:text-white">
-
-        {/* 1. Hero: Modern B2C Hero with Clear CTAs */}
+      <main className="bg-white selection:bg-[#1a1a1a] selection:text-white">
+        {/* 1. Immersive Hero Slider */}
         <section>
-          <HeroModern />
+          <HeroSlider />
         </section>
 
-        {/* 2. Marquee Separator */}
-        <div id="feature-marquee">
-          <VelocityScroll />
-        </div>
+        {/* 2. Brand Values Marquee */}
+        <ValueMarquee />
 
-        {/* 3. Product Categories: Clear Navigation to Products */}
+        {/* 3. Editorial Category Showcase */}
         <section>
-          <ProductCategoriesGrid />
+          <CategoryShowcase />
         </section>
 
-        {/* 4. Featured Products: Bestsellers & New Arrivals */}
+
+        {/* 5. Best Sellers Carousel */}
         <section>
-          <FeaturedProducts />
+          <BestSellersCarousel />
         </section>
 
-        {/* 5. Material Library: Interactive Stone Showcase */}
+        {/* 6. Craft Story (Dark Section) */}
         <section>
-          <MaterialShowcase />
+          <CraftSection />
         </section>
 
-        {/* 6. Story: The Atelier - Craftsmanship */}
+        {/* 7. Project Gallery / In Situ */}
         <section>
-          <AtelierStory />
+          <ProjectMasonry />
         </section>
 
-        {/* 7. Trust & Social Proof */}
+        {/* 8. Testimonials */}
         <section>
-          <TrustBadges />
+          <TestimonialEditorial />
         </section>
 
+        {/* 9. CTA Strip */}
         <section>
-          <Testimonials />
+          <HomeCTA />
         </section>
-
-        <section id="contact">
-          <ContactUs />
-        </section>
-
       </main>
     </>
   );
 };
 
 export default Home;
-
