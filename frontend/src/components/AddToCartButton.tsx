@@ -31,6 +31,17 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
 
   const { contextSafe } = useGSAP({ scope: buttonRef });
 
+  // Helper to get the correct product ID regardless of product shape
+  // ProductCard uses product.productId, ProductDetails builds a local object with product.id or product._id
+  const getProductId = (): string => {
+    return (product as any).productId || (product as any)._id || (product as any).id || '';
+  };
+
+  // Helper to get the product's primary image
+  const getProductImage = (): string => {
+    return product.image || (product.images && product.images[0]) || '/demo2.webp';
+  };
+
   // Helper to get raw INR price as number
   const getRawINRPrice = (): number => {
     // 1. Check if priceINR is directly available (preferred)
@@ -45,12 +56,13 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
     const handlePhoneVerified = (e: Event) => {
       const customEvent = e as CustomEvent;
       const verifiedProductId = customEvent.detail?.productId;
+      const resolvedId = getProductId();
 
-      if (product.category === 'furniture' && verifiedProductId === product.productId) {
+      if (product.category === 'furniture' && verifiedProductId === resolvedId) {
         addItem({
-          id: product.productId,
+          id: resolvedId,
           name: product.name,
-          image: product.image,
+          image: getProductImage(),
           priceINR: getRawINRPrice(),
           category: product.category,
           subcategory: product.subcategory,
@@ -85,10 +97,11 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
     }
 
     // For furniture: Add to cart directly with raw INR price
+    const resolvedId = getProductId();
     const cartItem = {
-      id: product.productId, // Use productId as the unique identifier
+      id: resolvedId, // Resolve ID from productId, _id, or id depending on product shape
       name: product.name,
-      image: product.image,
+      image: getProductImage(),
       priceINR: getRawINRPrice(),
       category: product.category,
       subcategory: product.subcategory,
@@ -98,7 +111,7 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
     addItem(cartItem);
 
     // Track add to cart analytics
-    trackAddToCart(product.productId);
+    trackAddToCart(resolvedId);
 
     // Button feedback animation
     setIsAdded(true);

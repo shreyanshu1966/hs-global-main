@@ -25,26 +25,37 @@ interface ProductCardProps {
 }
 
 
-/* ---------- helper normalizer ----------- */
+/* ---------- name normalizer — preserves & - and other chars that appear in folder names ----------- */
 const normalizeName = (name: string) =>
-  name.replace(/[^a-z0-9\s]/gi, ' ')
-    .replace(/\s+/g, ' ')
+  name
+    .replace(/\s+/g, ' ')   // collapse multiple spaces only
     .trim()
-    .replace(/\b\w/g, (c) => c.toUpperCase());
+    .replace(/\b\w/g, (c) => c.toUpperCase()); // title-case each word
 
 /* ---------- video paths ----------- */
 const getProductVideoUrl = (productName: string, category: string, subcategory: string) => {
   if (category !== 'furniture') return null;
 
+  // Use product name as-is (title-cased) to match actual folder names
   const folderProduct = normalizeName(productName);
   const folderSub = normalizeName(subcategory);
 
-  if (subcategory.toLowerCase().includes('table')) {
+  const subLower = subcategory.toLowerCase();
+
+  if (subLower.includes('table')) {
     return `/videos/Tables/${folderSub}/${folderProduct}/video.mp4`;
   }
-  if (subcategory.toLowerCase().includes('pedestal') || subcategory.toLowerCase().includes('countertop')) {
+  if (subLower.includes('pedestal') || subLower.includes('countertop')) {
     return `/videos/Wash Basins/${folderSub}/${folderProduct}/video.mp4`;
   }
+  if (subLower.includes('sculpture')) {
+    // Sculptures are stored at /videos/Sculptures/{ProductName}/video.mp4 (no sub-folder)
+    return `/videos/Sculptures/${folderProduct}/video.mp4`;
+  }
+  if (subLower.includes('wash basin') || subLower.includes('basin')) {
+    return `/videos/Wash Basins/${folderSub}/${folderProduct}/video.mp4`;
+  }
+  // Generic fallback
   return `/videos/${folderSub}/${folderProduct}/video.mp4`;
 };
 
@@ -103,7 +114,6 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
   const [showVideo, setShowVideo] = useState(false);
   const [videoError, setVideoError] = useState(false);
   const [isInViewport, setIsInViewport] = useState(false);
-  const [isVideoInView, setIsVideoInView] = useState(false);
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [videoCanPlay, setVideoCanPlay] = useState(false);
 
@@ -117,14 +127,19 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
 
   const { contextSafe } = useGSAP({ scope: cardRef });
 
-  // Detect mobile device
+  // Detect mobile device — only use userAgent + screen width, NOT ontouchstart
+  // (Windows touch-screen laptops incorrectly register ontouchstart, blocking hover)
   const isMobile = useMemo(() => {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
-      ('ontouchstart' in window) ||
       (window.innerWidth <= 768);
   }, []);
 
   const isSlab = product.category === 'slabs';
+
+  // Compute video URL early so effects that depend on it can reference it
+  const videoUrl = product.category === 'furniture'
+    ? getProductVideoUrl(product.name, product.category, product.subcategory || '')
+    : null;
 
   // Use pre-sorted images from product data (no runtime sorting!)
   const imagePaths = useMemo(() => {
@@ -211,44 +226,38 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
     return () => observer.disconnect();
   }, [index]);
 
-  /* ---- video viewport detection for mobile auto-play ---- */
+  /* ---- video viewport detection: works on both mobile AND desktop ---- */
   useEffect(() => {
-    if (!cardRef.current || !isMobile || !product.hasVideo || videoError) return;
+    if (!cardRef.current || !videoUrl || videoError) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         const isVisible = entry.isIntersecting;
-        setIsVideoInView(isVisible);
 
         if (isVisible) {
-          // Start playing video when card is 50% visible (with delay for smoother experience)
+          // On mobile use a delay; on desktop start immediately
+          const delay = isMobile ? 3000 : 0;
           setTimeout(() => {
             setShowVideo(true);
-            // Reset video loading states for new video load
             setVideoLoaded(false);
             setVideoCanPlay(false);
-          }, isMobile ? 3000 : 800); // 3s delay on mobile, 800ms on desktop
+          }, delay);
         } else {
-          // Pause video when card is not visible
           setShowVideo(false);
-          if (videoRef.current) {
-            videoRef.current.pause();
-          }
-          // Reset video loading states
+          if (videoRef.current) videoRef.current.pause();
           setVideoLoaded(false);
           setVideoCanPlay(false);
         }
       },
       {
-        threshold: 0.5, // Play when 50% of card is visible
-        rootMargin: '0px 0px -100px 0px' // Start slightly before fully visible
+        threshold: 0.5,
+        rootMargin: '0px 0px -100px 0px'
       }
     );
 
     observer.observe(cardRef.current);
-
     return () => observer.disconnect();
-  }, [isMobile, product.hasVideo, videoError]);
+  }, [videoUrl, videoError, isMobile]);
 
   /* ---- viewport detect ---- */
   useEffect(() => {
@@ -264,20 +273,14 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
     return () => observer.disconnect();
   }, []);
 
-  const videoUrl = product.category === 'furniture'
-    ? getProductVideoUrl(product.name, product.category, product.subcategory || '')
-    : null;
-
   /* ---- slideshow ---- */
   useEffect(() => {
-    // On mobile, don't slideshow if video is playing
-    const shouldSkipSlideshow = isMobile
-      ? (product.category === 'furniture' && product.hasVideo && !videoError && isVideoInView)
-      : (product.category === 'furniture' && product.hasVideo && !videoError);
+    // Skip slideshow if video is playing and confirmed
+    const videoIsPlaying = showVideo && !videoError && videoCanPlay;
 
     const shouldShowSlideshow = isMobile
-      ? !shouldSkipSlideshow && slideshowImages.length > 1
-      : !shouldSkipSlideshow && isHovering && slideshowImages.length > 1;
+      ? !videoIsPlaying && slideshowImages.length > 1
+      : !videoIsPlaying && isHovering && slideshowImages.length > 1;
 
     if (!shouldShowSlideshow) {
       if (intervalRef.current) clearInterval(intervalRef.current);
@@ -288,40 +291,46 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
     const t = setTimeout(() => {
       intervalRef.current = window.setInterval(() => {
         setSlideIndex(prev => (prev + 1) % slideshowImages.length);
-      }, isMobile ? 3000 : 1100); // 3s for mobile, 1.1s for desktop
-    }, 500); // 500ms initial delay before slideshow starts
+      }, isMobile ? 3000 : 1100);
+    }, 500);
 
     return () => {
       clearTimeout(t);
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, [isHovering, product.hasVideo, slideshowImages.length, product.category, videoError, isMobile, isVideoInView]);
+  }, [isHovering, slideshowImages.length, videoError, isMobile, showVideo, videoCanPlay]);
 
   /* ---- hover handlers ---- */
-  const handleMouseEnter = contextSafe(() => {
-    if (isMobile) return; // Skip hover logic on mobile
+  // GSAP animation is kept in contextSafe; React state is set OUTSIDE contextSafe
+  // because mixing GSAP contextSafe with setState can silently suppress updates.
+  const animateCardUp = contextSafe(() => {
+    gsap.to(cardRef.current, { y: -4, duration: 0.2, ease: 'power1.out' });
+  });
+  const animateCardDown = contextSafe(() => {
+    gsap.to(cardRef.current, { y: 0, duration: 0.2, ease: 'power1.in' });
+  });
 
+  const handleMouseEnter = () => {
+    if (isMobile) return;
     setIsHovering(true);
-    gsap.to(cardRef.current, { y: -4, duration: 0.2, ease: "power1.out" });
-    if (product.category === 'furniture' && product.hasVideo && !videoError) {
+    animateCardUp();
+    // Show video for furniture cards that have a matching video file
+    if (product.category === 'furniture' && videoUrl && !videoError) {
       setShowVideo(true);
-      // Reset video loading states for new video load
       setVideoLoaded(false);
       setVideoCanPlay(false);
     }
-  });
+  };
 
-  const handleMouseLeave = contextSafe(() => {
-    if (isMobile) return; // Skip hover logic on mobile
-
+  const handleMouseLeave = () => {
+    if (isMobile) return;
     setIsHovering(false);
-    gsap.to(cardRef.current, { y: 0, duration: 0.2, ease: "power1.in" });
+    animateCardDown();
     setShowVideo(false);
     setSlideIndex(0);
-    // Reset video loading states
     setVideoLoaded(false);
     setVideoCanPlay(false);
-  });
+  };
 
   /* ---- click memory ---- */
   const handleCardClick = () => {
@@ -353,8 +362,8 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
         style={{ aspectRatio: '4/5' }}
       >
 
-        {/* VIDEO */}
-        {showVideo && product.hasVideo && videoUrl && !videoError && (
+        {/* VIDEO — attempts to play for any furniture card; falls back to images on error */}
+        {showVideo && videoUrl && !videoError && (
           <video
             ref={videoRef}
             key={videoUrl}
@@ -366,30 +375,27 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
             preload="metadata"
             className={`absolute inset-0 w-full h-full object-contain z-20 bg-transparent transition-opacity duration-500 ${videoLoaded && videoCanPlay ? 'opacity-100' : 'opacity-0'
               }`}
-            onError={(e) => {
-              // Gracefully handle video 404 by setting error state
-              console.log(`Video failed to load: ${videoUrl}`);
+            onError={() => {
+              // File not found or unplayable — fall back to images silently
               setVideoError(true);
               setShowVideo(false);
               setVideoLoaded(false);
               setVideoCanPlay(false);
             }}
             onLoadStart={() => {
-              // Reset error state when video starts loading
               setVideoError(false);
               setVideoLoaded(false);
               setVideoCanPlay(false);
             }}
             onLoadedData={() => {
-              // Video metadata loaded, but might not be ready to play
               setVideoLoaded(true);
             }}
             onCanPlay={() => {
-              // Video is ready to play without interruption
               setVideoCanPlay(true);
-              // Ensure video plays on mobile when loaded
-              if (isMobile && isVideoInView && videoRef.current) {
-                videoRef.current.play().catch(console.warn);
+              if (videoRef.current) {
+                videoRef.current.play().catch(() => {
+                  // Autoplay blocked — still show the video element
+                });
               }
             }}
           />
@@ -404,9 +410,9 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
           </div>
         )}
 
-        {/* IMAGE SLIDESHOW */}
+        {/* IMAGE SLIDESHOW — hidden while video is actively playing */}
         {showContent && (
-          !product.hasVideo ||
+          !videoUrl ||
           !showVideo ||
           videoError ||
           !videoLoaded ||

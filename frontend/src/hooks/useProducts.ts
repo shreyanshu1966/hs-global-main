@@ -10,6 +10,8 @@ export interface UseProductsOptions {
   limit?: number;
   sortBy?: string;
   sortOrder?: 'asc' | 'desc';
+  minPrice?: number;
+  maxPrice?: number;
   autoFetch?: boolean;
 }
 
@@ -37,6 +39,8 @@ export const useProducts = (options: UseProductsOptions = {}): UseProductsReturn
     limit = 20,
     sortBy = 'createdAt',
     sortOrder = 'desc',
+    minPrice,
+    maxPrice,
     autoFetch = true
   } = options;
 
@@ -62,7 +66,9 @@ export const useProducts = (options: UseProductsOptions = {}): UseProductsReturn
         response = await productService.searchProducts(search, {
           category,
           limit,
-          page
+          page,
+          minPrice,
+          maxPrice
         });
       } else if (category) {
         response = await productService.getProductsByCategory(category, {
@@ -70,7 +76,9 @@ export const useProducts = (options: UseProductsOptions = {}): UseProductsReturn
           limit,
           subcategory,
           sortBy,
-          sortOrder
+          sortOrder,
+          minPrice,
+          maxPrice
         });
         if (response.success && 'data' in response && typeof response.data === 'object') {
           setProducts(response.data.products);
@@ -87,7 +95,9 @@ export const useProducts = (options: UseProductsOptions = {}): UseProductsReturn
           subcategory,
           featured,
           sortBy,
-          sortOrder
+          sortOrder,
+          minPrice,
+          maxPrice
         });
       }
 
@@ -104,7 +114,7 @@ export const useProducts = (options: UseProductsOptions = {}): UseProductsReturn
     } finally {
       setLoading(false);
     }
-  }, [category, subcategory, featured, search, page, limit, sortBy, sortOrder]);
+  }, [category, subcategory, featured, search, page, limit, sortBy, sortOrder, minPrice, maxPrice]);
 
   useEffect(() => {
     if (autoFetch) {

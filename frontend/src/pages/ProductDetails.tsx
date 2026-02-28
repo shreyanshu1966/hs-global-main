@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState, useLayoutEffect, useMemo } from "react";
+import { useEffect, useRef, useState, useLayoutEffect, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { Info, Package } from "lucide-react";
+import { motion } from "framer-motion";
 import ContactUs from "../components/ContactUs";
 import { ProductDetailsSkeleton } from "../components/ProductDetailsSkeleton";
 import { ProductGallery } from "../components/product/ProductGallery";
@@ -351,15 +352,20 @@ const ProductDetails = () => {
 
 
       {/* Main Content using new modular approach */}
-      <main className="min-h-screen bg-white pb-20">
+      <motion.main
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        className="min-h-screen bg-white pb-20"
+      >
         {/* Breadcrumbs - Minimal */}
         <div className="container mx-auto px-6 py-4 md:py-6 mt-20 md:mt-24 border-b border-[#E8E3DC]">
-          <nav className="flex items-center gap-2 text-sm text-[#6B6B6B]">
-            <Link to="/" className="hover:text-[#2B2B2B] transition-colors">Home</Link>
-            <span className="text-[#E8E3DC]">/</span>
-            <Link to="/products" className="hover:text-[#2B2B2B] transition-colors capitalize">{product.category}</Link>
-            <span className="text-[#E8E3DC]">/</span>
-            <span className="text-[#2B2B2B] font-medium truncate max-w-[200px] md:max-w-none">{product.name}</span>
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm text-[#6B6B6B]">
+            <Link to="/" className="hover:text-[#2B2B2B] transition-colors focus:ring-2 focus:ring-amber-500 rounded px-1">Home</Link>
+            <span aria-hidden="true" className="text-[#E8E3DC]">/</span>
+            <Link to="/products" className="hover:text-[#2B2B2B] transition-colors capitalize focus:ring-2 focus:ring-amber-500 rounded px-1">{product.category}</Link>
+            <span aria-hidden="true" className="text-[#E8E3DC]">/</span>
+            <span aria-current="page" className="text-[#2B2B2B] font-medium truncate max-w-[200px] md:max-w-none px-1">{product.name}</span>
           </nav>
         </div>
 
@@ -437,7 +443,7 @@ const ProductDetails = () => {
         <section className="border-t border-[#E8E3DC]">
           <ContactUs />
         </section>
-      </main>
+      </motion.main>
     </div>
   );
 };

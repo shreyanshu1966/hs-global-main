@@ -183,6 +183,8 @@ class ProductService {
       subcategory?: string;
       sortBy?: string;
       sortOrder?: 'asc' | 'desc';
+      minPrice?: number;
+      maxPrice?: number;
     } = {}
   ): Promise<CategoryResponse> {
     const searchParams = new URLSearchParams();
@@ -210,6 +212,8 @@ class ProductService {
     category?: string;
     limit?: number;
     page?: number;
+    minPrice?: number;
+    maxPrice?: number;
   } = {}): Promise<ProductResponse> {
     const searchParams = new URLSearchParams({ q: query });
 
