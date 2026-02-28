@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { TopTabsNav } from "./Navigation/TopTabsNav";
-import { ProductCard } from "./ProductCard";
+import { ProductCard } from "./cards/ProductCard";
+import { ProductCardSkeleton } from "./cards/ProductCardSkeleton";
 import { Product } from "../services/productService";
 import { useProducts } from "../hooks/useProducts";
 import { useTranslation } from "react-i18next";
@@ -105,22 +106,22 @@ export const ProductsModernVariant: React.FC = () => {
     const markUserInteraction = () => {
       userInteractedRef.current = true;
     };
-    
+
     // Track scroll velocity and direction for smarter decisions
     let scrollTimeout: NodeJS.Timeout;
     const handleUserScroll = () => {
       markUserInteraction();
-      
+
       const currentScrollY = window.scrollY;
       const diff = currentScrollY - lastScrollYRef.current;
-      
+
       scrollVelocityRef.current = Math.abs(diff);
       scrollDirectionRef.current = diff > 0 ? 'down' : 'up';
       lastScrollYRef.current = currentScrollY;
-      
+
       // AGGRESSIVE: Clear programmatic flag immediately on user scroll
       programmaticScrollRef.current = false;
-      
+
       clearTimeout(scrollTimeout);
       scrollTimeout = setTimeout(() => {
         scrollVelocityRef.current = 0;
@@ -131,14 +132,14 @@ export const ProductsModernVariant: React.FC = () => {
     const clearProgrammaticScroll = () => {
       programmaticScrollRef.current = false;
     };
-    
+
     // Attach event listeners
     window.addEventListener("scroll", handleUserScroll, { passive: true });
     window.addEventListener("mousedown", clearProgrammaticScroll, { passive: true });
     window.addEventListener("touchstart", clearProgrammaticScroll, { passive: true });
     window.addEventListener("wheel", clearProgrammaticScroll, { passive: true });
     window.addEventListener("touchmove", clearProgrammaticScroll, { passive: true });
-    
+
     return () => {
       window.removeEventListener("scroll", handleUserScroll);
       window.removeEventListener("mousedown", clearProgrammaticScroll);
@@ -249,17 +250,17 @@ export const ProductsModernVariant: React.FC = () => {
     (sectionId: string) => {
       programmaticScrollRef.current = true;
       const el = sectionRefs.current[sectionId];
-      
+
       if (!el) {
         programmaticScrollRef.current = false;
         return;
       }
-      
+
       const isMobileDevice = window.innerWidth < 768;
       // Mobile needs extra offset to account for browser UI elements
       const offset = isMobileDevice ? (navDims.height || 80) + 32 : (navDims.height || 80) + 16;
       const targetTop = window.scrollY + el.getBoundingClientRect().top - offset;
-      
+
       window.scrollTo({ top: targetTop, behavior: "smooth" });
       setActiveSection(sectionId);
 
@@ -290,7 +291,7 @@ export const ProductsModernVariant: React.FC = () => {
    */
   useEffect(() => {
     const isMobileDevice = window.innerWidth < 768;
-    
+
     const observerOptions: IntersectionObserverInit = {
       root: null,
       rootMargin: isMobileDevice ? "-80px 0px -60px 0px" : "-140px 0px -60px 0px",
@@ -303,12 +304,12 @@ export const ProductsModernVariant: React.FC = () => {
     const observer = new IntersectionObserver((entries) => {
       // GUARD 1: Skip if programmatic scroll is in progress
       if (programmaticScrollRef.current) return;
-      
+
       // GUARD 2 (Desktop only): Hero area check
       if (!isMobileDevice) {
         const scrollY = window.scrollY;
         const heroHeight = heroRef.current?.offsetHeight || 600;
-        
+
         if (scrollY < heroHeight * 0.8) {
           if (!rafScheduled) {
             rafScheduled = true;
@@ -324,7 +325,7 @@ export const ProductsModernVariant: React.FC = () => {
       // Process intersections with max visibility detection
       let maxVisibility = 0;
       let mostVisibleSection: string | null = null;
-      
+
       entries.forEach((entry) => {
         if (entry.isIntersecting && entry.intersectionRatio > maxVisibility) {
           maxVisibility = entry.intersectionRatio;
@@ -597,46 +598,46 @@ export const ProductsModernVariant: React.FC = () => {
     <div ref={containerRef} className="min-h-screen bg-white">
       {/* Hero Section - Hidden on Mobile */}
       {!isMobile && (
-      <section ref={heroRef} className="relative min-h-[100svh] flex flex-col justify-center px-[clamp(1.5rem,4vw,6rem)] overflow-hidden">
-        <motion.div
-          style={{ y: y1, opacity: opacityHero }}
-          className="absolute top-0 right-0 w-[80vw] h-full opacity-10 pointer-events-none"
-        >
-          <img
-            src={getResponsiveImage("products-hero.webp", "large") || "/products-hero.webp"}
-            srcSet={getSrcSet("products-hero.webp")}
-            sizes="80vw"
-            className="w-full h-full object-cover filter grayscale contrast-125"
-            alt="HS Global Products"
-            loading="lazy"
-          />
-        </motion.div>
-
-        <div className="relative z-10 max-w-[90vw]">
+        <section ref={heroRef} className="relative min-h-[100svh] flex flex-col justify-center px-[clamp(1.5rem,4vw,6rem)] overflow-hidden">
           <motion.div
-            initial={{ opacity: 0, y: 100 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            style={{ y: y1, opacity: opacityHero }}
+            className="absolute top-0 right-0 w-[80vw] h-full opacity-10 pointer-events-none"
           >
-            <span className="block text-[clamp(0.625rem,1.2vw,0.875rem)] tracking-[0.3em] uppercase mb-[clamp(1rem,2vw,1.5rem)] text-gray-400">
-              {t("product.hero_subtitle") || "Curated Collection"}
-            </span>
-            <h1 className="text-[clamp(1.5rem,3.5vw,3rem)] leading-[1.2] font-serif tracking-tight text-black">
-              Best Luxury & Imported Marble Stones at Marble, Granite Centre International
-            </h1>
+            <img
+              src={getResponsiveImage("products-hero.webp", "large") || "/products-hero.webp"}
+              srcSet={getSrcSet("products-hero.webp")}
+              sizes="80vw"
+              className="w-full h-full object-cover filter grayscale contrast-125"
+              alt="HS Global Products"
+              loading="lazy"
+            />
           </motion.div>
-        </div>
 
-        <motion.div
-          className="absolute bottom-[clamp(2rem,4vw,3rem)] left-[clamp(1.5rem,4vw,6rem)] flex items-center gap-[clamp(0.75rem,2vw,1rem)]"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 1 }}
-        >
-          <div className="h-[1px] w-[clamp(3rem,8vw,6rem)] bg-gray-300"></div>
-          <p className="text-[clamp(0.625rem,1vw,0.75rem)] uppercase tracking-widest text-gray-400">Scroll to Explore</p>
-        </motion.div>
-      </section>
+          <div className="relative z-10 max-w-[90vw]">
+            <motion.div
+              initial={{ opacity: 0, y: 100 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <span className="block text-[clamp(0.625rem,1.2vw,0.875rem)] tracking-[0.3em] uppercase mb-[clamp(1rem,2vw,1.5rem)] text-gray-400">
+                {t("product.hero_subtitle") || "Curated Collection"}
+              </span>
+              <h1 className="text-[clamp(1.5rem,3.5vw,3rem)] leading-[1.2] font-serif tracking-tight text-black">
+                Best Luxury & Imported Marble Stones at Marble, Granite Centre International
+              </h1>
+            </motion.div>
+          </div>
+
+          <motion.div
+            className="absolute bottom-[clamp(2rem,4vw,3rem)] left-[clamp(1.5rem,4vw,6rem)] flex items-center gap-[clamp(0.75rem,2vw,1rem)]"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1, duration: 1 }}
+          >
+            <div className="h-[1px] w-[clamp(3rem,8vw,6rem)] bg-gray-300"></div>
+            <p className="text-[clamp(0.625rem,1vw,0.75rem)] uppercase tracking-widest text-gray-400">Scroll to Explore</p>
+          </motion.div>
+        </section>
       )}
 
       <TopTabsNav
@@ -662,7 +663,7 @@ export const ProductsModernVariant: React.FC = () => {
                   {productsError.includes('fetch') ? 'Connection Error' : 'Error Loading Products'}
                 </p>
                 <p className="text-gray-600 mb-6">
-                  {productsError.includes('fetch') 
+                  {productsError.includes('fetch')
                     ? 'Please check your internet connection and try again.'
                     : productsError}
                 </p>
@@ -675,7 +676,7 @@ export const ProductsModernVariant: React.FC = () => {
               </div>
             </div>
           )}
-          
+
           {/* Loading Skeleton */}
           {productsLoading && !productsError && (
             <div className="space-y-16 md:space-y-24 py-6 md:py-8">
@@ -685,26 +686,16 @@ export const ProductsModernVariant: React.FC = () => {
                     <div className="h-10 w-48 bg-gray-200 rounded-lg animate-pulse mb-3" />
                     <div className="h-4 w-96 max-w-full bg-gray-100 rounded animate-pulse" />
                   </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 md:gap-12">
                     {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
-                      <div key={item} className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100">
-                        <div className="aspect-[4/3] bg-gray-200 animate-pulse" />
-                        <div className="p-4 space-y-3">
-                          <div className="h-6 bg-gray-200 rounded w-3/4 animate-pulse" />
-                          <div className="h-4 bg-gray-100 rounded w-1/2 animate-pulse" />
-                          <div className="flex items-center justify-between pt-4">
-                            <div className="h-6 bg-gray-200 rounded w-1/3 animate-pulse" />
-                            <div className="h-10 bg-gray-200 rounded w-1/4 animate-pulse" />
-                          </div>
-                        </div>
-                      </div>
+                      <ProductCardSkeleton key={item} />
                     ))}
                   </div>
                 </section>
               ))}
             </div>
           )}
-          
+
           {/* Empty State */}
           {!productsLoading && !productsError && categoryFilteredSubcategories.length === 0 && (
             <div className="text-center py-16">
@@ -716,44 +707,42 @@ export const ProductsModernVariant: React.FC = () => {
               <p className="text-gray-600 text-lg">No products found in this category.</p>
             </div>
           )}
-          
+
           {/* Products Grid */}
           {!productsLoading && !productsError && categoryFilteredSubcategories.length > 0 && (
-          <div className="space-y-16 md:space-y-24 py-6 md:py-8">
-            {categoryFilteredSubcategories.map((subcategory) => (
-              <section
-                key={subcategory.id}
-                id={subcategory.id}
-                ref={(el) => {
-                  sectionRefs.current[subcategory.id] = el;
-                  if (el) animateSection(el); // Animate on ref assignment / update
-                }}
-                className="scroll-mt-32"
-              >
-                <div className="mb-8 md:mb-12 text-center">
-                  <h2
-                    className="text-3xl md:text-4xl lg:text-5xl font-light text-gray-800 mb-4 md:mb-6 tracking-wide"
-                  >
-                    {subcategory.name}
-                  </h2>
-                  <div
-                    className="w-16 md:w-24 h-px bg-amber-500 mx-auto divider-line"
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
-                  {subcategory.products.map((product, index) => (
-                    <ProductCard
-                      key={product._id || product.productId}
-                      product={product}
-                      variant="modern"
-                      index={index}
+            <div className="space-y-16 md:space-y-24 py-6 md:py-8">
+              {categoryFilteredSubcategories.map((subcategory) => (
+                <section
+                  key={subcategory.id}
+                  id={subcategory.id}
+                  ref={(el) => {
+                    sectionRefs.current[subcategory.id] = el;
+                    if (el) animateSection(el); // Animate on ref assignment / update
+                  }}
+                  className="scroll-mt-32"
+                >
+                  <div className="mb-8 md:mb-12 text-center">
+                    <h2
+                      className="text-3xl md:text-4xl lg:text-5xl font-light text-gray-800 mb-4 md:mb-6 tracking-wide"
+                    >
+                      {subcategory.name}
+                    </h2>
+                    <div
+                      className="w-16 md:w-24 h-px bg-amber-500 mx-auto divider-line"
                     />
-                  ))}
-                </div>
-              </section>
-            ))}
-          </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 md:gap-12 max-w-7xl mx-auto">
+                    {subcategory.products.map((product) => (
+                      <ProductCard
+                        key={product._id || product.productId}
+                        product={product}
+                      />
+                    ))}
+                  </div>
+                </section>
+              ))}
+            </div>
           )}
         </div>
       </div>

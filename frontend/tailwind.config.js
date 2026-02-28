@@ -9,9 +9,11 @@ export default {
         feature_banner: "url('/feature/gallerybanner.jpg')",
       },
       colors: {
-        primary: "#1C1C1C",
-        secondary: "#F5F5F5",
-        accent: "#B8860B",
+        primary: "#2B2B2B",
+        secondary: "#6B6B6B",
+        accent: "#B8944A",
+        cream: "#FAF8F5",
+        divider: "#E8E3DC",
         accent2: "#DAA520",
         background: "#FFFFFF",
         text: {
