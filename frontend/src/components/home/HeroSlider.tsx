@@ -8,7 +8,7 @@ interface Slide {
     video?: string;
     tagline: string;
     heading: string[];
-    cta: { label: string; to: string };
+    cta: { label: string; to: string; state?: Record<string, unknown> };
 }
 
 const slides: Slide[] = [
@@ -23,7 +23,7 @@ const slides: Slide[] = [
         image: "/gallery/Wash Basins/IMG-20250525-WA0109.webp",
         tagline: "Bathroom Atelier",
         heading: ["Where Water", "Meets Marble."],
-        cta: { label: "View Wash Basins", to: "/products?cat=furniture#pedestal" },
+        cta: { label: "View Wash Basins", to: "/products?cat=furniture#pedestal", state: { target: "pedestal" } },
     },
     {
         image: "/gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.20 PM (1).webp",
@@ -35,7 +35,7 @@ const slides: Slide[] = [
         image: "/gallery/Coffee Table/IMG-20250525-WA0046.webp",
         tagline: "New Arrivals",
         heading: ["Timeless Tables,", "Modern Sensibility."],
-        cta: { label: "Shop Collection", to: "/products?cat=furniture#coffee-table" },
+        cta: { label: "Shop Collection", to: "/products?cat=furniture#coffee-table", state: { target: "coffee-table" } },
     },
 ];
 
@@ -230,6 +230,7 @@ const HeroSlider = () => {
                         <div>
                             <Link
                                 to={slide.cta.to}
+                                state={slide.cta.state}
                                 className="group inline-flex items-center gap-3 px-8 py-4 border border-white/30 text-white hover:bg-white hover:text-[#1a1a1a] transition-all duration-500"
                             >
                                 <span className="text-sm font-semibold tracking-[0.15em] uppercase">

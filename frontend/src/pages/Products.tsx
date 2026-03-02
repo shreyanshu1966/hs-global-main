@@ -17,8 +17,11 @@ const Products = () => {
 
   // Parse initial query params
   const queryParams = new URLSearchParams(location.search);
+  const locationState = location.state as { target?: string } | null;
+  const hashTarget = location.hash ? location.hash.substring(1) : "";
+
   const initialCategory = queryParams.get("category") || queryParams.get("cat") || "";
-  const initialSubcategory = queryParams.get("subcategory") || "";
+  const initialSubcategory = queryParams.get("subcategory") || locationState?.target || hashTarget || "";
   const initialMinPrice = queryParams.get("minPrice") ? Number(queryParams.get("minPrice")) : undefined;
   const initialMaxPrice = queryParams.get("maxPrice") ? Number(queryParams.get("maxPrice")) : undefined;
 
