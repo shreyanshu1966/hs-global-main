@@ -97,13 +97,13 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product, variant,
   const displayPrice = useMemo(() => {
     if (!product.available) return "Unavailable";
 
-    if (product.priceINR) {
-      return formatPrice(finalPrice);
-    }
-
-    // Fallback for slabs or items without price
-    return "Price on Request";
-  }, [product, formatPrice, finalPrice]);
+                  // On mobile use a delay; on desktop start immediately
+                  const delay = isMobile ? 1300 : 0;
+                  setTimeout(() => {
+                    setShowVideo(true);
+                    setVideoLoaded(false);
+                    setVideoCanPlay(false);
+                  }, delay);
 
   /* ------------------------------------------------------
      Rest of your existing card logic unchanged

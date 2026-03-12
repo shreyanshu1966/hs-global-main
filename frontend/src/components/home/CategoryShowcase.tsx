@@ -96,7 +96,7 @@ const CategoryShowcase = () => {
     }, []);
 
     return (
-        <section ref={sectionRef} className="py-24 md:py-36 lg:py-44 bg-white">
+        <section ref={sectionRef} className="py-4 md:py-4 lg:py-4 bg-white">
             {/* Section Header — centered with normal padding */}
             <div className="max-w-7xl mx-auto px-4 md:px-6 mb-16 md:mb-24">
                 <div className="max-w-3xl">
@@ -173,12 +173,11 @@ const CategoryShowcase = () => {
             <div className="mt-16 md:mt-20 text-center">
                 <Link
                     to="/products"
-                    className="group inline-flex items-center gap-3 text-[#1a1a1a] hover:text-[#C4A265] transition-colors duration-300"
+                    className="group inline-flex items-center gap-3 px-6 py-3 rounded-full font-semibold tracking-[0.15em] uppercase text-white bg-[#1a1a1a] shadow-lg hover:bg-[#333] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#8A8682] focus:ring-offset-2"
+                    style={{ fontSize: "1.05rem", letterSpacing: "0.15em" }}
                 >
-                    <span className="text-sm font-semibold tracking-[0.15em] uppercase">
-                        View All Products
-                    </span>
-                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                    <span className="">View All Products</span>
+                    <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1.5" />
                 </Link>
             </div>
         </section>

@@ -77,7 +77,7 @@ const ProjectMasonry = () => {
 
     return (
         <>
-            <section ref={sectionRef} className="py-24 md:py-36 lg:py-44 bg-[#F7F5F0]">
+            <section ref={sectionRef} className="py-12 md:py-24 lg:py-34 bg-[#F7F5F0]">
                 {/* Header */}
                 <div className="max-w-7xl mx-auto px-4 md:px-6 mb-12 md:mb-16">
                     <div className="flex items-end justify-between">
@@ -92,12 +92,11 @@ const ProjectMasonry = () => {
 
                         <Link
                             to="/gallery"
-                            className="group inline-flex items-center gap-2 text-[#8A8682] hover:text-[#1a1a1a] transition-colors duration-300"
+                            className="group inline-flex items-center gap-3 px-5 py-2.5 rounded-full font-semibold tracking-[0.15em] uppercase text-white bg-[#1a1a1a] shadow-lg hover:bg-[#333] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#8A8682] focus:ring-offset-2"
+                            style={{ fontSize: "0.95rem", letterSpacing: "0.15em" }}
                         >
-                            <span className="text-xs font-semibold tracking-[0.15em] uppercase">
-                                View Gallery
-                            </span>
-                            <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+                            <span>View Gallery</span>
+                            <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1.5" />
                         </Link>
                     </div>
                 </div>

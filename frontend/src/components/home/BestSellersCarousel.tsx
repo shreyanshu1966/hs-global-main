@@ -116,7 +116,7 @@ const BestSellersCarousel = () => {
     if (products.length === 0) return null;
 
     return (
-        <section className="py-24 md:py-36 bg-white">
+        <section className="py-12 md:py-12 bg-white">
             {/* Section Header */}
             <div className="max-w-7xl mx-auto px-4 md:px-6 mb-12 md:mb-16">
                 <div className="flex items-end justify-between">
