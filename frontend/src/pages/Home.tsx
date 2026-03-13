@@ -42,35 +42,35 @@ const Home = () => {
         />
 
         <title>
-          Premium Marble Furniture & Natural Stone Slabs | HS Global Export
+          Best Marble Furniture, Granite Handcrafted Products Manufacturers and Trusted Global Supplier & Exporter
         </title>
 
         <meta
           name="description"
-          content="Discover handcrafted marble furniture including dining tables, coffee tables, wash basins, and sculptures. Premium natural stone slabs in marble, granite, and more. Custom luxury stone solutions."
+          content="HS Global Export : Premium Granite & Marble Solutions - Handcrafted Products Manufacturers with Free Delivery | USA | UK"
         />
         <meta
           name="keywords"
-          content="marble furniture, marble dining table, marble coffee table, marble wash basin, marble sculptures, granite slabs, marble slabs, natural stone, luxury furniture, handcrafted furniture, HS Global Export"
+          content="Premium Granite Furniture Exporter, Marble Furniture Manufacturer, Italian Onyx Furniture, Indian Marble Furniture Export, Beige and Grey Marble Furniture, Marble Sinks and Tiles Exporter, Global Granite & Marble Supplier, Luxury Marble Furniture, Custom Marble Furniture, High-Quality Marble Tiles Export, Premium Marble Sink Manufacturers, Marble Home Décor Exporter, Natural Stone Furniture Manufacturer, Marble Bathroom Sinks, Granite & Marble Export Worldwide, Onyx Marble Furniture Exporter, Luxury Stone Furniture for Export, Global Supplier of Marble Tiles, High-End Marble Furniture, Wholesale Marble Furniture Exporter."
         />
 
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.hsglobalexport.com/" />
         <meta property="og:site_name" content="HS Global Export" />
-        <meta property="og:title" content="Premium Marble Furniture & Natural Stone Slabs | HS Global Export" />
-        <meta property="og:description" content="Handcrafted marble furniture and premium natural stone slabs. Transform your space with timeless elegance." />
-        <meta property="og:image" content="https://hsglobalexport.com/og-image.jpg" />
+        <meta property="og:title" content="Best Marble Furniture, Granite Handcrafted Products Manufacturers and Trusted Global Supplier & Exporter" />
+        <meta property="og:description" content="HS Global Export : Premium Granite & Marble Solutions - Handcrafted Products Manufacturers with Free Delivery | USA | UK" />
+        <meta property="og:image" content="https://www.hsglobalexport.com/og-image.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
-        <meta property="og:image:alt" content="HS Global Export - Premium Marble Furniture" />
+        <meta property="og:image:alt" content="HS Global Export - Premium Granite & Marble" />
         <meta property="og:locale" content="en_US" />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:url" content="https://www.hsglobalexport.com/" />
-        <meta name="twitter:title" content="Premium Marble Furniture & Natural Stone Slabs | HS Global Export" />
-        <meta name="twitter:description" content="Handcrafted marble furniture and premium natural stone slabs. Transform your space with timeless elegance." />
-        <meta name="twitter:image" content="https://hsglobalexport.com/og-image.jpg" />
-        <meta name="twitter:image:alt" content="HS Global Export - Premium Marble Furniture" />
+        <meta name="twitter:title" content="Best Marble Furniture, Granite Handcrafted Products Manufacturers and Trusted Global Supplier & Exporter" />
+        <meta name="twitter:description" content="HS Global Export : Premium Granite & Marble Solutions - Handcrafted Products Manufacturers with Free Delivery | USA | UK" />
+        <meta name="twitter:image" content="https://www.hsglobalexport.com/og-image.jpg" />
+        <meta name="twitter:image:alt" content="HS Global Export - Premium Granite & Marble" />
 
         <link rel="canonical" href="https://www.hsglobalexport.com/" />
 

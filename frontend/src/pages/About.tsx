@@ -23,22 +23,22 @@ const About = () => {
 
       <Helmet>
         {/* Basic SEO */}
-        <title>About Us - Heritage & Craftsmanship | HS Global Export</title>
-        <meta name="description" content="Discover HS Global Export's nearly 50-year family legacy in premium natural stone and handcrafted marble products. From an Ahmedabad workshop to global excellence." />
-        <meta name="keywords" content="about HS Global Export, marble furniture, handcrafted natural stone, onyx marble, global stone supplier, custom marble sinks, Ahmedabad marble workshop" />
+        <title>Best Marble Sink, Marble Decor, Granite Sink, Tiles - USA, UK and Across wold wide</title>
+        <meta name="description" content="HS Global Export offers premium marble sinks, granite sinks, tiles, and marble décor, supplying high-quality natural stone products across the USA, UK, and worldwide." />
+        <meta name="keywords" content="About Us, Best Marble Sink, Marble Decor, Granite Sink, Marble Tiles Exporter, Granite Tiles Supplier, Marble Sink Manufacturer, Luxury Marble Decor, Natural Stone Sinks, Premium Granite Sink, Marble Tiles USA, Marble Tiles UK, Granite & Marble Tiles Worldwide, Marble Products Exporter, Global Marble Supplier, Marble & Granite Export Worldwide, High-Quality Marble Tiles, Custom Marble Sink, Stone Decor Manufacturer, International Marble Exporter" />
         <meta name="author" content="HS Global Export" />
         <meta name="robots" content="index, follow" />
 
         {/* Canonical URL */}
-        <link rel="canonical" href="https://hsglobalexport.com/about" />
+        <link rel="canonical" href="https://www.hsglobalexport.com/about" />
 
         {/* Open Graph */}
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://hsglobalexport.com/about" />
+        <meta property="og:url" content="https://www.hsglobalexport.com/about" />
         <meta property="og:site_name" content="HS Global Export" />
-        <meta property="og:title" content="About Us - Heritage & Craftsmanship | HS Global Export" />
-        <meta property="og:description" content="Discover HS Global Export's nearly 50-year legacy in premium natural stone and handcrafted marble products. From Ahmedabad to the world." />
-        <meta property="og:image" content="https://hsglobalexport.com/og-image.jpg" />
+        <meta property="og:title" content="Best Marble Sink, Marble Decor, Granite Sink, Tiles - USA, UK and Across wold wide" />
+        <meta property="og:description" content="HS Global Export offers premium marble sinks, granite sinks, tiles, and marble décor, supplying high-quality natural stone products across the USA, UK, and worldwide." />
+        <meta property="og:image" content="https://www.hsglobalexport.com/og-image.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:image:alt" content="HS Global Export - About Our Company" />
@@ -46,10 +46,10 @@ const About = () => {
 
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content="https://hsglobalexport.com/about" />
-        <meta name="twitter:title" content="About Us - Heritage & Craftsmanship | HS Global Export" />
-        <meta name="twitter:description" content="Discover HS Global Export's nearly 50-year legacy in premium natural stone and handcrafted marble." />
-        <meta name="twitter:image" content="https://hsglobalexport.com/og-image.jpg" />
+        <meta name="twitter:url" content="https://www.hsglobalexport.com/about" />
+        <meta name="twitter:title" content="Best Marble Sink, Marble Decor, Granite Sink, Tiles - USA, UK and Across wold wide" />
+        <meta name="twitter:description" content="HS Global Export offers premium marble sinks, granite sinks, tiles, and marble décor, supplying high-quality natural stone products across the USA, UK, and worldwide." />
+        <meta name="twitter:image" content="https://www.hsglobalexport.com/og-image.jpg" />
         <meta name="twitter:image:alt" content="HS Global Export - About Our Company" />
 
         {/* Schema.org AboutPage */}

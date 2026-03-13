@@ -300,34 +300,34 @@ const Gallery = memo(() => {
 
       <Helmet>
         {/* Basic SEO */}
-        <title>Photo Gallery - Stunning Stone Installations | HS Global Export</title>
-        <meta name="description" content="Browse our gallery of premium granite and marble installations. Explore completed projects, custom designs, and luxury stone applications from HS Global Export." />
-        <meta name="keywords" content="granite gallery, marble installations, stone projects, luxury interiors gallery, granite designs, marble applications, stone portfolio, completed projects" />
+        <title>Best Luxury & Imported Marble Stones Galarry - Hs Global Export</title>
+        <meta name="description" content="HS Global Export presents a premium gallery of luxury and imported marble stones, offering high-quality natural stone collections crafted for elegant residential and commercial applications worldwide." />
+        <meta name="keywords" content="Best Luxury Marble Stones, Imported Marble Gallery, Luxury Marble Gallery, Premium Marble Stones, Italian Marble Supplier, Imported Marble Exporter, Marble Stone Gallery, High-End Marble Collection, Natural Stone Gallery, Marble Showroom Exporter, Luxury Stone Supplier, Marble Slabs Gallery, Premium Imported Marble, HS Global Export, Global Marble Exporter, Luxury Italian Marble, Marble Exporter Worldwide, Granite & Tiles Supplier, Imported Marble Exporter, Marble Tiles Manufacturer, Premium Granite Supplier, Marble Export USA, Marble Export UK, Natural Stone Exporter, Luxury Marble Supplier, Italian Marble Export, Global Marble & Granite Supply, HS Global Export" />
         <meta name="author" content="HS Global Export" />
         <meta name="robots" content="index, follow" />
 
         {/* Canonical URL */}
-        <link rel="canonical" href="https://hsglobalexport.com/gallery" />
+        <link rel="canonical" href="https://www.hsglobalexport.com/gallery" />
 
         {/* Open Graph */}
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://hsglobalexport.com/gallery" />
+        <meta property="og:url" content="https://www.hsglobalexport.com/gallery" />
         <meta property="og:site_name" content="HS Global Export" />
-        <meta property="og:title" content="Photo Gallery - Stunning Stone Installations | HS Global Export" />
-        <meta property="og:description" content="Browse our gallery of premium granite and marble installations. Explore completed projects and luxury stone applications." />
-        <meta property="og:image" content="https://hsglobalexport.com/og-image.jpg" />
+        <meta property="og:title" content="Best Luxury & Imported Marble Stones Galarry - Hs Global Export" />
+        <meta property="og:description" content="HS Global Export presents a premium gallery of luxury and imported marble stones, offering high-quality natural stone collections crafted for elegant residential and commercial applications worldwide." />
+        <meta property="og:image" content="https://www.hsglobalexport.com/og-image.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
-        <meta property="og:image:alt" content="HS Global Export - Stone Gallery" />
+        <meta property="og:image:alt" content="HS Global Export - Gallery" />
         <meta property="og:locale" content="en_US" />
 
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content="https://hsglobalexport.com/gallery" />
-        <meta name="twitter:title" content="Photo Gallery - Stunning Stone Installations | HS Global Export" />
-        <meta name="twitter:description" content="Browse our gallery of premium granite and marble installations." />
-        <meta name="twitter:image" content="https://hsglobalexport.com/og-image.jpg" />
-        <meta name="twitter:image:alt" content="HS Global Export - Stone Gallery" />
+        <meta name="twitter:url" content="https://www.hsglobalexport.com/gallery" />
+        <meta name="twitter:title" content="Best Luxury & Imported Marble Stones Galarry - Hs Global Export" />
+        <meta name="twitter:description" content="HS Global Export presents a premium gallery of luxury and imported marble stones, offering high-quality natural stone collections crafted for elegant residential and commercial applications worldwide." />
+        <meta name="twitter:image" content="https://www.hsglobalexport.com/og-image.jpg" />
+        <meta name="twitter:image:alt" content="HS Global Export - Gallery" />
 
         {/* Schema.org ImageGallery */}
         <script type="application/ld+json">

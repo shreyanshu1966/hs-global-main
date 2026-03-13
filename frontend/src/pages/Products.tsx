@@ -119,9 +119,28 @@ const Products = () => {
   return (
     <>
       <Helmet>
-        <title>Premium Granite & Marble Products | HS Global Export</title>
-        <meta name="description" content="Explore our extensive collection of premium granite, marble, sandstone, and natural stone products." />
-        <link rel="canonical" href="https://hsglobalexport.com/products" />
+        <title>Best Luxury & Imported Marble Stones at Marble, Granite Centre International</title>
+        <meta name="description" content="Best Marble & Granite Company at USA, UK and Across wold wide - Hs Global Export" />
+        <meta name="keywords" content="Premium Granite Stones, Marble Tiles Supplier, Imported Marble, Marble Slabs Manufacturer, Granite Tiles Exporter, High Quality Marble, Natural Stone Supplier, Custom Marble Orders, Granite Slabs Supplier, Luxury Marble Stones, Marble Centre, Stone Tiles Manufacturer, Marble Flooring Tiles, Granite & Marble Slabs, Premium Natural Stone, Marble for Interior & Exterior, Customized Stone Solutions" />
+        <meta name="author" content="HS Global Export" />
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href="https://www.hsglobalexport.com/products" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.hsglobalexport.com/products" />
+        <meta property="og:site_name" content="HS Global Export" />
+        <meta property="og:title" content="Best Luxury & Imported Marble Stones at Marble, Granite Centre International" />
+        <meta property="og:description" content="Best Marble & Granite Company at USA, UK and Across wold wide - Hs Global Export" />
+        <meta property="og:image" content="https://www.hsglobalexport.com/og-image.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="HS Global Export - Products" />
+        <meta property="og:locale" content="en_US" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://www.hsglobalexport.com/products" />
+        <meta name="twitter:title" content="Best Luxury & Imported Marble Stones at Marble, Granite Centre International" />
+        <meta name="twitter:description" content="Best Marble & Granite Company at USA, UK and Across wold wide - Hs Global Export" />
+        <meta name="twitter:image" content="https://www.hsglobalexport.com/og-image.jpg" />
+        <meta name="twitter:image:alt" content="HS Global Export - Products" />
       </Helmet>
 
       {/* Main Page Layout */}
