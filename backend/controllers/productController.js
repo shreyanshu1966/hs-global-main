@@ -1,5 +1,36 @@
 const Product = require('../models/Product');
 
+const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+const buildSubcategoryFilter = (subcategory) => {
+    if (!subcategory || typeof subcategory !== 'string') {
+        return undefined;
+    }
+
+    const normalized = subcategory.trim().toLowerCase();
+    if (!normalized) {
+        return undefined;
+    }
+
+    const aliasMap = {
+        others: 'other',
+        'center-table': 'dining-table',
+        'center-tables': 'dining-table',
+        center: 'dining-table',
+        'wash-basin': 'wash-basins',
+        'wash basin': 'wash-basins'
+    };
+
+    const canonical = aliasMap[normalized] || normalized;
+    const escaped = escapeRegex(canonical);
+    const flexiblePattern = escaped.replace(/[-_\s]+/g, '[-_\\s]*');
+
+    return {
+        $regex: `^${flexiblePattern}$`,
+        $options: 'i'
+    };
+};
+
 // Get all products with pagination and filters
 const getAllProducts = async (req, res) => {
     try {
@@ -23,7 +54,8 @@ const getAllProducts = async (req, res) => {
 
         // Apply filters
         if (category) filters.category = category;
-        if (subcategory) filters.subcategory = subcategory;
+        const subcategoryFilter = buildSubcategoryFilter(subcategory);
+        if (subcategoryFilter) filters.subcategory = subcategoryFilter;
         if (featured !== undefined) filters.featured = featured === 'true';
         if (minPrice) filters.priceINR = { ...filters.priceINR, $gte: parseFloat(minPrice) };
         if (maxPrice) filters.priceINR = { ...filters.priceINR, $lte: parseFloat(maxPrice) };
@@ -133,7 +165,8 @@ const getProductsByCategory = async (req, res) => {
             available: true
         };
 
-        if (subcategory) filters.subcategory = subcategory;
+        const subcategoryFilter = buildSubcategoryFilter(subcategory);
+        if (subcategoryFilter) filters.subcategory = subcategoryFilter;
 
         const sort = {};
         if (sortBy === 'featured') {
