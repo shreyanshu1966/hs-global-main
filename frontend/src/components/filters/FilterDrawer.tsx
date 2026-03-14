@@ -10,6 +10,7 @@ interface FilterDrawerProps {
     categories: Category[];
     activeCategory: string;
     activeSubcategory: string;
+    hideCategorySelection?: boolean;
     minPrice?: number;
     maxPrice?: number;
     onCategoryChange: (cat: string) => void;

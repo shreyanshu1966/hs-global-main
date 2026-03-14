@@ -6,6 +6,7 @@ interface FilterSidebarProps {
     categories: Category[];
     activeCategory: string;
     activeSubcategory: string;
+    hideCategorySelection?: boolean;
     minPrice?: number;
     maxPrice?: number;
     onCategoryChange: (cat: string) => void;
@@ -18,6 +19,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
     categories,
     activeCategory,
     activeSubcategory,
+    hideCategorySelection = false,
     minPrice,
     maxPrice,
     onCategoryChange,
@@ -44,7 +46,11 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
         onPriceChange(min, max);
     };
 
-    const hasActiveFilters = activeCategory || activeSubcategory || minPrice || maxPrice;
+    const hasActiveFilters =
+        (!hideCategorySelection && !!activeCategory) ||
+        !!activeSubcategory ||
+        !!minPrice ||
+        !!maxPrice;
 
     const currentCategoryData = categories.find(c => c.category === activeCategory);
 
@@ -76,49 +82,73 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
 
                     {isCategoryOpen && (
                         <div className="space-y-3">
-                            <button
-                                key="all"
-                                onClick={() => { onCategoryChange(""); onSubcategoryChange(""); }}
-                                className={`block w-full text-left text-sm ${!activeCategory ? "text-amber-600 font-medium" : "text-gray-600 hover:text-black"}`}
-                            >
-                                All Categories
-                            </button>
-                            {categories.map((cat) => (
-                                <div key={cat.category} className="space-y-2">
-                                    <button
-                                        onClick={() => {
-                                            onCategoryChange(cat.category);
-                                            if (activeCategory !== cat.category) {
-                                                onSubcategoryChange("");
-                                            }
-                                        }}
-                                        className={`block w-full text-left text-sm capitalize ${activeCategory === cat.category ? "text-amber-600 font-medium" : "text-gray-600 hover:text-black"}`}
-                                    >
-                                        {cat.category.replace(/-/g, ' ')}
-                                    </button>
-
-                                    {/* Subcategories (only show if category is active) */}
-                                    {activeCategory === cat.category && cat.subcategories && cat.subcategories.length > 0 && (
-                                        <div className="pl-4 space-y-2 mt-2 border-l border-gray-100">
+                            {hideCategorySelection ? (
+                                currentCategoryData && currentCategoryData.subcategories && currentCategoryData.subcategories.length > 0 ? (
+                                    <div className="pl-4 space-y-2 mt-2 border-l border-gray-100">
+                                        <button
+                                            onClick={() => onSubcategoryChange("")}
+                                            className={`block w-full text-left text-sm capitalize ${!activeSubcategory ? "text-amber-600 font-medium" : "text-gray-500 hover:text-black"}`}
+                                        >
+                                            All in {currentCategoryData.category.replace(/-/g, ' ')}
+                                        </button>
+                                        {currentCategoryData.subcategories.map(sub => (
                                             <button
-                                                onClick={() => onSubcategoryChange("")}
-                                                className={`block w-full text-left text-sm capitalize ${!activeSubcategory ? "text-amber-600 font-medium" : "text-gray-500 hover:text-black"}`}
+                                                key={sub}
+                                                onClick={() => onSubcategoryChange(sub)}
+                                                className={`block w-full text-left text-sm capitalize ${activeSubcategory === sub ? "text-amber-600 font-medium" : "text-gray-500 hover:text-black"}`}
                                             >
-                                                All in {cat.category.replace(/-/g, ' ')}
+                                                {sub.replace(/-/g, ' ')}
                                             </button>
-                                            {cat.subcategories.map(sub => (
-                                                <button
-                                                    key={sub}
-                                                    onClick={() => onSubcategoryChange(sub)}
-                                                    className={`block w-full text-left text-sm capitalize ${activeSubcategory === sub ? "text-amber-600 font-medium" : "text-gray-500 hover:text-black"}`}
-                                                >
-                                                    {sub.replace(/-/g, ' ')}
-                                                </button>
-                                            ))}
+                                        ))}
+                                    </div>
+                                ) : null
+                            ) : (
+                                <>
+                                    <button
+                                        key="all"
+                                        onClick={() => { onCategoryChange(""); onSubcategoryChange(""); }}
+                                        className={`block w-full text-left text-sm ${!activeCategory ? "text-amber-600 font-medium" : "text-gray-600 hover:text-black"}`}
+                                    >
+                                        All Categories
+                                    </button>
+                                    {categories.map((cat) => (
+                                        <div key={cat.category} className="space-y-2">
+                                            <button
+                                                onClick={() => {
+                                                    onCategoryChange(cat.category);
+                                                    if (activeCategory !== cat.category) {
+                                                        onSubcategoryChange("");
+                                                    }
+                                                }}
+                                                className={`block w-full text-left text-sm capitalize ${activeCategory === cat.category ? "text-amber-600 font-medium" : "text-gray-600 hover:text-black"}`}
+                                            >
+                                                {cat.category.replace(/-/g, ' ')}
+                                            </button>
+
+                                            {/* Subcategories (only show if category is active) */}
+                                            {activeCategory === cat.category && cat.subcategories && cat.subcategories.length > 0 && (
+                                                <div className="pl-4 space-y-2 mt-2 border-l border-gray-100">
+                                                    <button
+                                                        onClick={() => onSubcategoryChange("")}
+                                                        className={`block w-full text-left text-sm capitalize ${!activeSubcategory ? "text-amber-600 font-medium" : "text-gray-500 hover:text-black"}`}
+                                                    >
+                                                        All in {cat.category.replace(/-/g, ' ')}
+                                                    </button>
+                                                    {cat.subcategories.map(sub => (
+                                                        <button
+                                                            key={sub}
+                                                            onClick={() => onSubcategoryChange(sub)}
+                                                            className={`block w-full text-left text-sm capitalize ${activeSubcategory === sub ? "text-amber-600 font-medium" : "text-gray-500 hover:text-black"}`}
+                                                        >
+                                                            {sub.replace(/-/g, ' ')}
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            )}
                                         </div>
-                                    )}
-                                </div>
-                            ))}
+                                    ))}
+                                </>
+                            )}
                         </div>
                     )}
                 </div>

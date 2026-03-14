@@ -1,185 +1,310 @@
-import { useRef, useLayoutEffect } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { productService, Product } from "../../services/productService";
+import { getProductCloudinaryUrl } from "../../utils/productCloudinary";
+import { useCurrency } from "../../contexts/CurrencyContext";
 
-gsap.registerPlugin(ScrollTrigger);
-
-interface Category {
+interface CategoryConfig {
     id: string;
     title: string;
     subtitle: string;
-    image: string;
-    link: string;
-    target?: string;
-    layout: "full" | "half";
+    primaryTarget: string;
+    targets: string[];
 }
 
-const categories: Category[] = [
+interface CategoryProducts {
+    config: CategoryConfig;
+    products: Product[];
+}
+
+const categoryConfigs: CategoryConfig[] = [
     {
         id: "coffee-tables",
         title: "Coffee Tables",
         subtitle: "Living Centerpieces",
-        image: "/furniture/coffee-table.jpg",
-        link: "/products?cat=furniture#coffee-table",
-        target: "coffee-table",
-        layout: "full",
+        primaryTarget: "coffee-table",
+        targets: ["coffee-table", "coffee table"],
     },
-    {
-        id: "console-tables",
-        title: "Console Tables",
-        subtitle: "Statement Pieces",
-        image: "/furniture/console.jpg",
-        link: "/products?cat=furniture#console-table",
-        target: "console-table",
-        layout: "half",
-    },
+    
     {
         id: "wash-basins",
         title: "Wash Basins",
         subtitle: "Bathroom Luxury",
-        image: "/gallery/Wash Basins/IMG-20250525-WA0109.webp",
-        link: "/products?cat=furniture#pedestal",
-        target: "pedestal",
-        layout: "half",
+        primaryTarget: "pedestal",
+        targets: ["pedestal", "countertop", "wash-basin", "wash basin"],
+    },
+    {
+        id: "countertops",
+        title: "Countertops",
+        subtitle: "Functional Luxury",
+        primaryTarget: "countertop",
+        targets: ["countertop", "counter-top"],
     },
     {
         id: "dining-tables",
         title: "Dining Tables",
         subtitle: "Gathering Spaces",
-        image: "/furniture/dining-table.jpg",
-        link: "/products?cat=furniture#dining-table",
-        target: "dining-table",
-        layout: "half",
+        primaryTarget: "dining-table",
+        targets: ["center-table", "dining-table", "center table", "dining table"],
     },
     {
         id: "sculptures",
         title: "Sculptures & Décor",
         subtitle: "Artistic Accents",
-        image: "/furniture/sculpture-stand.jpg",
-        link: "/products?cat=furniture#sculptures",
-        target: "sculptures",
-        layout: "half",
-    },
-    {
-        id: "slabs",
-        title: "Premium Slabs",
-        subtitle: "Raw Materials",
-        image: "/gallery/Slabs/WhatsApp Image 2025-11-05 at 1.45.19 PM (2).webp",
-        link: "/products?cat=slabs",
-        layout: "full",
+        primaryTarget: "sculptures",
+        targets: ["sculptures", "sculpture", "decor", "decorative"],
     },
 ];
 
+const normalizeSubcategory = (value: string) =>
+    value.toLowerCase().trim().replace(/\s+/g, "-");
+
 const CategoryShowcase = () => {
-    const sectionRef = useRef<HTMLDivElement>(null);
+    const [sections, setSections] = useState<CategoryProducts[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const rowRefs = useRef<Record<string, HTMLDivElement | null>>({});
+    const { formatPrice } = useCurrency();
 
-    useLayoutEffect(() => {
-        const ctx = gsap.context(() => {
-            gsap.utils.toArray<HTMLElement>(".cat-item").forEach((card) => {
-                gsap.from(card, {
-                    y: 80,
-                    opacity: 0,
-                    duration: 1,
-                    ease: "power3.out",
-                    scrollTrigger: {
-                        trigger: card,
-                        start: "top 88%",
-                        toggleActions: "play none none none",
-                    },
+    useEffect(() => {
+        let isMounted = true;
+
+        const loadCategoryProducts = async () => {
+            try {
+                setLoading(true);
+                setError(null);
+
+                const response = await productService.getProductsByCategory("furniture", {
+                    limit: 120,
+                    sortBy: "createdAt",
+                    sortOrder: "desc",
                 });
-            });
-        }, sectionRef);
 
-        return () => ctx.revert();
+                const allFurnitureProducts = response.success
+                    ? response.data.products.map((product) => {
+                        const baseImages =
+                            product.images && product.images.length > 0
+                                ? product.images
+                                : product.image
+                                ? [product.image]
+                                : ["/demo2.webp"];
+
+                        return {
+                            ...product,
+                            images: baseImages,
+                            image: baseImages[0] || "/demo2.webp",
+                        };
+                    })
+                    : [];
+
+                const data = categoryConfigs.map((config) => {
+                    const targetSet = new Set(config.targets.map(normalizeSubcategory));
+                    const categoryProducts = allFurnitureProducts.filter((product) =>
+                        targetSet.has(normalizeSubcategory(product.subcategory || ""))
+                    );
+
+                    const featuredProducts = categoryProducts.filter((product) => product.featured);
+                    const products = (featuredProducts.length > 0 ? featuredProducts : categoryProducts).slice(0, 10);
+
+                    return { config, products };
+                });
+
+                if (!isMounted) return;
+                setSections(data.filter((section) => section.products.length > 0));
+            } catch (loadError) {
+                console.error("Failed to load category products", loadError);
+                if (isMounted) setError("Unable to load category collections right now.");
+            } finally {
+                if (isMounted) setLoading(false);
+            }
+        };
+
+        loadCategoryProducts();
+
+        return () => {
+            isMounted = false;
+        };
     }, []);
 
-    return (
-        <section ref={sectionRef} className="py-4 md:py-4 lg:py-4 bg-white">
-            {/* Section Header — centered with normal padding */}
-            <div className="max-w-7xl mx-auto px-4 md:px-6 mb-16 md:mb-24">
-                <div className="max-w-3xl">
-                    <span className="block text-[11px] font-semibold tracking-[0.3em] uppercase text-[#C4A265] mb-5">
-                        Shop by Category
-                    </span>
-                    <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-[#1a1a1a] leading-[1.05] mb-6 !font-normal">
-                        Explore Our
-                        <span className="block italic text-[#8A8682] mt-1">
-                            Collections
-                        </span>
-                    </h2>
-                    <p className="text-base md:text-lg text-[#8A8682] font-light leading-relaxed max-w-xl">
-                        From sculptural tables to textured slabs — every piece is
-                        handcrafted from the world's finest natural stone.
-                    </p>
-                </div>
-            </div>
+    const getImageUrl = useMemo(
+        () => (product: Product) => {
+            const img =
+                product.sortedImages?.[0] ||
+                product.image ||
+                product.images?.[0] ||
+                "/demo2.webp";
 
-            {/* Categories Grid — edge-to-edge with minimal padding */}
-            <div className="px-2 md:px-3 lg:px-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3">
-                    {categories.map((cat) => (
-                        <Link
-                            key={cat.id}
-                            to={cat.link}
-                            state={cat.target ? { target: cat.target } : undefined}
-                            className={`cat-item group relative overflow-hidden bg-[#F7F5F0] ${cat.layout === "full" ? "md:col-span-2" : ""
-                                }`}
-                        >
-                            {/* Image */}
-                            <div
-                                className={`relative overflow-hidden ${cat.layout === "full"
-                                    ? "h-[50vh] md:h-[65vh]"
-                                    : "h-[40vh] md:h-[50vh]"
-                                    }`}
-                            >
-                                <img
-                                    src={cat.image}
-                                    alt={cat.title}
-                                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1.4s] ease-out group-hover:scale-105"
-                                    loading="lazy"
-                                />
-                                {/* Gradient overlay */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-transparent" />
-                            </div>
+            return img.startsWith("http") || img.startsWith("/")
+                ? img
+                : getProductCloudinaryUrl(img);
+        },
+        []
+    );
 
-                            {/* Content overlay */}
-                            <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10">
-                                <span className="block text-[10px] font-semibold tracking-[0.2em] uppercase text-[#C4A265] mb-2">
-                                    {cat.subtitle}
-                                </span>
-                                <h3 className="font-serif text-2xl md:text-3xl lg:text-4xl text-white mb-4 leading-tight !font-normal">
-                                    {cat.title}
-                                </h3>
+    const scrollRow = (id: string, direction: "left" | "right") => {
+        const row = rowRefs.current[id];
+        if (!row) return;
 
-                                {/* CTA */}
-                                <div className="inline-flex items-center gap-2 text-white/70 group-hover:text-white transition-colors duration-300">
-                                    <span className="text-xs font-semibold tracking-[0.15em] uppercase">
-                                        Explore
-                                    </span>
-                                    <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1.5" />
+        const cardWidth = row.querySelector(".category-product-card")?.clientWidth || 280;
+        const distance = cardWidth + 20;
+        row.scrollBy({
+            left: direction === "left" ? -distance : distance,
+            behavior: "smooth",
+        });
+    };
+
+    if (loading) {
+        return (
+            <section className="py-12 md:py-16 bg-white">
+                <div className="max-w-7xl mx-auto px-4 md:px-6">
+                    <div className="h-3 w-36 bg-[#E8E3DC] rounded mb-5 animate-pulse" />
+                    <div className="h-10 w-72 bg-[#E8E3DC] rounded mb-10 animate-pulse" />
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        {[1, 2, 3, 4].map((skeleton) => (
+                            <div key={skeleton} className="bg-[#F7F5F0] animate-pulse">
+                                <div className="aspect-[4/5] bg-[#E8E3DC]" />
+                                <div className="p-4 space-y-2">
+                                    <div className="h-4 w-24 bg-[#E8E3DC] rounded" />
+                                    <div className="h-5 w-40 bg-[#E8E3DC] rounded" />
                                 </div>
                             </div>
-
-                            {/* Hover border */}
-                            <div className="absolute inset-0 border border-white/0 group-hover:border-white/15 transition-all duration-500 pointer-events-none" />
-                        </Link>
-                    ))}
+                        ))}
+                    </div>
                 </div>
+            </section>
+        );
+    }
+
+    if (error || sections.length === 0) {
+        return null;
+    }
+
+    return (
+        <section className="py-8 md:py-10 bg-white">
+            <div className="space-y-14 md:space-y-16 px-2 md:px-3 lg:px-4">
+                {sections.map((section) => (
+                    <div key={section.config.id}>
+                        <div className="max-w-7xl mx-auto px-2 md:px-3 mb-6 flex items-end justify-between gap-4">
+                            <div>
+                                <span className="block text-[10px] font-semibold tracking-[0.2em] uppercase text-[#8A8682] mb-2">
+                                    {section.config.subtitle}
+                                </span>
+                                <h3 className="font-serif text-2xl md:text-3xl lg:text-4xl text-[#1a1a1a] leading-tight !font-normal">
+                                    {section.config.title}
+                                </h3>
+                            </div>
+
+                            <div className="flex items-center gap-3">
+                                <button
+                                    onClick={() => scrollRow(section.config.id, "left")}
+                                    className="hidden md:flex w-10 h-10 items-center justify-center border border-[#1a1a1a]/20 text-[#1a1a1a] hover:bg-[#1a1a1a] hover:text-white transition-colors"
+                                    aria-label={`Scroll ${section.config.title} left`}
+                                >
+                                    <ChevronLeft className="w-4 h-4" />
+                                </button>
+                                <button
+                                    onClick={() => scrollRow(section.config.id, "right")}
+                                    className="hidden md:flex w-10 h-10 items-center justify-center border border-[#1a1a1a]/20 text-[#1a1a1a] hover:bg-[#1a1a1a] hover:text-white transition-colors"
+                                    aria-label={`Scroll ${section.config.title} right`}
+                                >
+                                    <ChevronRight className="w-4 h-4" />
+                                </button>
+
+                                <Link
+                                    to={`/products?subcategory=${section.config.primaryTarget}`}
+                                    state={{ target: section.config.primaryTarget }}
+                                    className="group inline-flex items-center gap-2 text-[#8A8682] hover:text-[#1a1a1a] transition-colors duration-300"
+                                >
+                                    <span className="text-xs font-semibold tracking-[0.15em] uppercase">
+                                        View All
+                                    </span>
+                                    <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+                                </Link>
+                            </div>
+                        </div>
+
+                        <div
+                            ref={(el) => {
+                                rowRefs.current[section.config.id] = el;
+                            }}
+                            className="flex gap-5 overflow-x-auto snap-x snap-mandatory pb-2"
+                            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+                        >
+                            {section.products.map((product) => {
+                                const hasDiscount =
+                                    product.discount?.enabled &&
+                                    product.discount.percentage > 0;
+                                const originalPrice = product.priceINR || 0;
+                                const finalPrice = hasDiscount
+                                    ? originalPrice -
+                                      (originalPrice * product.discount!.percentage) / 100
+                                    : originalPrice;
+
+                                return (
+                                    <Link
+                                        key={`${section.config.id}-${product._id}`}
+                                        to={`/products/${product.productId || product._id}`}
+                                        className="category-product-card flex-shrink-0 w-[74vw] sm:w-[46vw] md:w-[30vw] lg:w-[22vw] snap-start group"
+                                    >
+                                        <div className="relative overflow-hidden bg-[#F7F5F0]" style={{ aspectRatio: "4/5" }}>
+                                            <img
+                                                src={getImageUrl(product)}
+                                                alt={product.name}
+                                                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                                loading="lazy"
+                                            />
+
+                                            {hasDiscount && (
+                                                <div className="absolute top-3 left-3 bg-[#1a1a1a] text-white px-3 py-1">
+                                                    <span className="text-[10px] font-semibold tracking-wider uppercase">
+                                                        Save {product.discount!.percentage}%
+                                                    </span>
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        <div className="py-4">
+                                            <span className="text-[10px] font-semibold tracking-[0.15em] uppercase text-[#8A8682] block mb-2">
+                                                {section.config.title}
+                                            </span>
+                                            <h4 className="font-serif text-lg text-[#1a1a1a] mb-2 leading-snug line-clamp-2 !font-normal group-hover:text-[#C4A265] transition-colors duration-300">
+                                                {product.name}
+                                            </h4>
+                                            <div className="flex items-baseline gap-2">
+                                                <span className="text-base font-semibold text-[#1a1a1a]">
+                                                    {formatPrice(finalPrice)}
+                                                </span>
+                                                {hasDiscount && (
+                                                    <span className="text-sm text-[#8A8682] line-through">
+                                                        {formatPrice(originalPrice)}
+                                                    </span>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </Link>
+                                );
+                            })}
+                        </div>
+                    </div>
+                ))}
             </div>
 
-            {/* View All Products */}
-            <div className="mt-16 md:mt-20 text-center">
+            <div className="mt-14 md:mt-16 text-center">
                 <Link
                     to="/products"
                     className="group inline-flex items-center gap-3 px-6 py-3 rounded-full font-semibold tracking-[0.15em] uppercase text-white bg-[#1a1a1a] shadow-lg hover:bg-[#333] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#8A8682] focus:ring-offset-2"
                     style={{ fontSize: "1.05rem", letterSpacing: "0.15em" }}
                 >
-                    <span className="">View All Products</span>
+                    <span>View All Products</span>
                     <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1.5" />
                 </Link>
             </div>
+
+            <style>{`
+                .category-product-card::-webkit-scrollbar { display: none; }
+                div[class*="overflow-x-auto"]::-webkit-scrollbar { display: none; }
+            `}</style>
         </section>
     );
 };

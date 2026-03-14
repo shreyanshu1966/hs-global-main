@@ -146,7 +146,7 @@ const Header = () => {
                 srcSet={getSrcSet("logo.webp")}
                 alt="HS Global Export"
                 className={`transition-all duration-300 object-contain ${isScrolled ? "h-10 w-auto opacity-100" : "h-12 w-auto opacity-90 hover:opacity-100"
-                  } ${isTransparent ? "brightness-0 invert" : ""}`}
+                  }`}
                 loading="eager"
               />
             </Link>

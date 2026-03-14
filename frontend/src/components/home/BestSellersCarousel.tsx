@@ -14,28 +14,48 @@ const BestSellersCarousel = () => {
     const [canScrollRight, setCanScrollRight] = useState(true);
 
     useEffect(() => {
+        const normalizeProducts = (items: Product[]) =>
+            items.map((product) => {
+                const baseImages =
+                    product.images && product.images.length > 0
+                        ? product.images
+                        : product.image
+                            ? [product.image]
+                            : ["/demo2.webp"];
+
+                return {
+                    ...product,
+                    images: baseImages,
+                    image: baseImages[0] || "/demo2.webp",
+                };
+            });
+
         const load = async () => {
             try {
                 setLoading(true);
-                const response = await productService.getFeaturedProducts(8);
-                if (response.success && Array.isArray(response.data)) {
-                    const normalized = response.data.map((product) => {
-                        const baseImages =
-                            product.images && product.images.length > 0
-                                ? product.images
-                                : product.image
-                                    ? [product.image]
-                                    : ["/demo2.webp"];
-                        return {
-                            ...product,
-                            images: baseImages,
-                            image: baseImages[0] || "/demo2.webp",
-                        };
-                    });
-                    setProducts(normalized);
+                const featuredResponse = await productService.getFeaturedProducts(8);
+
+                if (featuredResponse.success && Array.isArray(featuredResponse.data) && featuredResponse.data.length > 0) {
+                    setProducts(normalizeProducts(featuredResponse.data));
+                    return;
+                }
+
+                // Fallback: show latest furniture products if no featured products are configured.
+                const fallbackResponse = await productService.getAllProducts({
+                    category: "furniture",
+                    limit: 8,
+                    sortBy: "createdAt",
+                    sortOrder: "desc",
+                });
+
+                if (fallbackResponse.success && Array.isArray(fallbackResponse.data)) {
+                    setProducts(normalizeProducts(fallbackResponse.data));
+                } else {
+                    setProducts([]);
                 }
             } catch (error) {
                 console.error("Failed to load featured products:", error);
+                setProducts([]);
             } finally {
                 setLoading(false);
             }
@@ -125,7 +145,7 @@ const BestSellersCarousel = () => {
                             Curated Selection
                         </span>
                         <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-[#1a1a1a] leading-tight !font-normal">
-                            Best Sellers
+                            Featured Products
                         </h2>
                     </div>
 

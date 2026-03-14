@@ -4,10 +4,11 @@ import ValueMarquee from "../components/home/ValueMarquee";
 import CategoryShowcase from "../components/home/CategoryShowcase";
 
 import BestSellersCarousel from "../components/home/BestSellersCarousel";
-import CraftSection from "../components/home/CraftSection";
-import ProjectMasonry from "../components/home/ProjectMasonry";
+import NewArrivalsStrip from "../components/home/NewArrivalsStrip";
+import CustomerFavoritesCarousel from "../components/home/CustomerFavoritesCarousel";
 import TestimonialEditorial from "../components/home/TestimonialEditorial";
 import HomeCTA from "../components/home/HomeCTA";
+import BlogsCarousel from "../components/home/BlogsCarousel";
 
 const Home = () => {
   return (
@@ -87,26 +88,40 @@ const Home = () => {
         {/* 2. Brand Values Marquee */}
         <ValueMarquee />
 
-        {/* 3. Editorial Category Showcase */}
-        <section>
-          <CategoryShowcase />
-        </section>
-
-
-        {/* 5. Best Sellers Carousel */}
+        {/* 3. Best Sellers Carousel */}
         <section>
           <BestSellersCarousel />
         </section>
 
-        {/* 6. Craft Story (Dark Section) */}
+        {/* 4. New Arrivals */}
         <section>
-          <CraftSection />
+          <NewArrivalsStrip />
         </section>
 
-        {/* 7. Project Gallery / In Situ */}
+        {/* 5. Customer Favorites */}
+        <section>
+          <CustomerFavoritesCarousel />
+        </section>
+
+        {/* 6. Blog Carousel */}
+        <section>
+          <BlogsCarousel />
+        </section>
+
+        {/* 7. Editorial Category Showcase */}
+        <section>
+          <CategoryShowcase />
+        </section>
+
+        {/* 6. Craft Story (Dark Section) */}
+        {/* <section>
+          <CraftSection />
+        </section> */}
+
+        {/* 7. Project Gallery / In Situ
         <section>
           <ProjectMasonry />
-        </section>
+        </section> */}
 
         {/* 8. Testimonials */}
         <section>

@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useRef } from 'react';
+import React, { useEffect, useMemo, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Product } from '../../services/productService';
 import { useCurrency } from '../../contexts/CurrencyContext';
@@ -33,12 +33,18 @@ const getVideoUrl = (name: string, subcategory: string): string => {
 };
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '' }) => {
+    const VIDEO_START_DELAY_MS = 1300;
     const { formatPrice } = useCurrency();
     const [showVideo, setShowVideo] = useState(false);
     const [videoError, setVideoError] = useState(false);
     const [videoReady, setVideoReady] = useState(false);
     const [imgHover, setImgHover] = useState(false);
+    const [isTouchDevice, setIsTouchDevice] = useState(false);
+    const [isInMiddleBand, setIsInMiddleBand] = useState(false);
+    const [hasUserInteracted, setHasUserInteracted] = useState(false);
+    const cardRef = useRef<HTMLDivElement>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
+    const videoStartTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     // ---- Pricing ----
     const { finalPrice, originalPrice, hasDiscount } = useMemo(() => {
@@ -77,27 +83,126 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
     const isFurniture = product.category === 'furniture';
     const videoUrl = isFurniture ? getVideoUrl(product.name, product.subcategory || '') : null;
 
-    // ---- Hover handlers ----
-    const handleEnter = () => {
-        setImgHover(true);
-        if (isFurniture && videoUrl && !videoError) {
-            setShowVideo(true);
-            setVideoReady(false);
-        }
-    };
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        const mediaQuery = window.matchMedia('(hover: none), (pointer: coarse)');
 
-    const handleLeave = () => {
-        setImgHover(false);
+        const updateTouchMode = () => {
+            setIsTouchDevice(mediaQuery.matches);
+        };
+
+        updateTouchMode();
+
+        if (typeof mediaQuery.addEventListener === 'function') {
+            mediaQuery.addEventListener('change', updateTouchMode);
+        } else {
+            mediaQuery.addListener(updateTouchMode);
+        }
+
+        return () => {
+            if (typeof mediaQuery.removeEventListener === 'function') {
+                mediaQuery.removeEventListener('change', updateTouchMode);
+            } else {
+                mediaQuery.removeListener(updateTouchMode);
+            }
+        };
+    }, []);
+
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+
+        const markUserInteracted = () => {
+            setHasUserInteracted(true);
+        };
+
+        const options: AddEventListenerOptions = { passive: true };
+        window.addEventListener('scroll', markUserInteracted, options);
+        window.addEventListener('touchstart', markUserInteracted, options);
+        window.addEventListener('mousemove', markUserInteracted, options);
+        window.addEventListener('wheel', markUserInteracted, options);
+        window.addEventListener('keydown', markUserInteracted);
+
+        return () => {
+            window.removeEventListener('scroll', markUserInteracted);
+            window.removeEventListener('touchstart', markUserInteracted);
+            window.removeEventListener('mousemove', markUserInteracted);
+            window.removeEventListener('wheel', markUserInteracted);
+            window.removeEventListener('keydown', markUserInteracted);
+        };
+    }, []);
+
+    useEffect(() => {
+        if (typeof window === 'undefined' || !cardRef.current || typeof IntersectionObserver === 'undefined') {
+            return;
+        }
+
+        // Treat middle ~30% of viewport as active autoplay zone.
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                setIsInMiddleBand(entry.isIntersecting);
+            },
+            {
+                root: null,
+                rootMargin: '-35% 0px -35% 0px',
+                threshold: 0,
+            }
+        );
+
+        observer.observe(cardRef.current);
+        return () => {
+            observer.disconnect();
+        };
+    }, []);
+
+    const shouldShowVideo = Boolean(
+        hasUserInteracted && isFurniture && videoUrl && !videoError && (imgHover || isInMiddleBand)
+    );
+
+    useEffect(() => {
+        if (videoStartTimerRef.current) {
+            clearTimeout(videoStartTimerRef.current);
+            videoStartTimerRef.current = null;
+        }
+
+        if (shouldShowVideo) {
+            videoStartTimerRef.current = setTimeout(() => {
+                setShowVideo(true);
+                videoStartTimerRef.current = null;
+            }, VIDEO_START_DELAY_MS);
+            return;
+        }
+
         setShowVideo(false);
+
         setVideoReady(false);
         if (videoRef.current) {
             videoRef.current.pause();
             videoRef.current.currentTime = 0;
         }
+    }, [VIDEO_START_DELAY_MS, shouldShowVideo]);
+
+    useEffect(() => {
+        return () => {
+            if (!videoStartTimerRef.current) return;
+            clearTimeout(videoStartTimerRef.current);
+            videoStartTimerRef.current = null;
+        };
+    }, []);
+
+    // ---- Hover handlers ----
+    const handleEnter = () => {
+        if (isTouchDevice) return;
+        setImgHover(true);
+    };
+
+    const handleLeave = () => {
+        if (isTouchDevice) return;
+        setImgHover(false);
     };
 
     return (
         <div
+            ref={cardRef}
             className={`group ${className}`}
             onMouseEnter={handleEnter}
             onMouseLeave={handleLeave}
@@ -122,23 +227,24 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
                         <img
                             src={secondaryImage}
                             alt={`${product.name} secondary view`}
-                            className={`absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 transition-opacity duration-500 ${imgHover ? 'opacity-100' : 'opacity-0'
+                            className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-105 ${imgHover ? 'opacity-100' : 'opacity-0'
                                 }`}
                             loading="lazy"
                         />
                     )}
 
-                    {/* VIDEO — only rendered when hovered + furniture + no prior error */}
+                    {/* VIDEO — rendered only when user has interacted and card is active */}
                     {showVideo && videoUrl && !videoError && (
                         <video
                             ref={videoRef}
                             key={videoUrl}
                             src={videoUrl}
+                            poster={primaryImage}
                             autoPlay
                             muted
                             loop
                             playsInline
-                            preload="auto"
+                            preload={isTouchDevice ? 'metadata' : 'auto'}
                             className={`absolute inset-0 w-full h-full object-contain z-10 bg-transparent transition-opacity duration-500 ${videoReady ? 'opacity-100' : 'opacity-0'
                                 }`}
                             onError={() => {

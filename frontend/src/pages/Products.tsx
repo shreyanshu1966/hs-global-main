@@ -11,6 +11,44 @@ import { FilterSidebar } from "../components/filters/FilterSidebar";
 import { FilterDrawer } from "../components/filters/FilterDrawer";
 import { SortDropdown } from "../components/filters/SortDropdown";
 
+const FIXED_FILTER_CATEGORY = "furniture";
+const HIDDEN_FURNITURE_SUBCATEGORIES = new Set(["other", "dining-table"]);
+const PREFERRED_FURNITURE_SUBCATEGORY_ORDER = [
+  "other",
+  "tables",
+  "coffee-table",
+  "console-table",
+  "dining-table",
+  "side-table",
+  "wash-basins",
+  "countertop",
+  "sculptures",
+  "pedestal",
+  "benches",
+  "planters",
+  "fountains",
+  "fireplace",
+  "columns",
+  "urns"
+];
+
+const normalizeFilterValue = (value: string) => value.toLowerCase().trim().replace(/\s+/g, "-");
+
+const SUBCATEGORY_ALIAS_MAP: Record<string, string> = {
+  "others": "other",
+  "center-table": "dining-table",
+  "center-tables": "dining-table",
+  "center": "dining-table",
+  "wash-basin": "wash-basins",
+  "wash-basin-s": "wash-basins",
+  "wash-basinss": "wash-basins"
+};
+
+const toCanonicalSubcategory = (value: string) => {
+  const normalized = normalizeFilterValue(value || "");
+  return SUBCATEGORY_ALIAS_MAP[normalized] || normalized;
+};
+
 const Products = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -20,8 +58,9 @@ const Products = () => {
   const locationState = location.state as { target?: string } | null;
   const hashTarget = location.hash ? location.hash.substring(1) : "";
 
-  const initialCategory = queryParams.get("category") || queryParams.get("cat") || "";
-  const initialSubcategory = queryParams.get("subcategory") || locationState?.target || hashTarget || "";
+  const initialCategory = FIXED_FILTER_CATEGORY;
+  const rawInitialSubcategory = queryParams.get("subcategory") || locationState?.target || hashTarget || "";
+  const initialSubcategory = toCanonicalSubcategory(rawInitialSubcategory);
   const initialMinPrice = queryParams.get("minPrice") ? Number(queryParams.get("minPrice")) : undefined;
   const initialMaxPrice = queryParams.get("maxPrice") ? Number(queryParams.get("maxPrice")) : undefined;
 
@@ -56,6 +95,46 @@ const Products = () => {
 
   // Fetch Categories
   const { categories } = useCategories();
+  const furnitureCategory = categories.find(
+    (cat) => normalizeFilterValue(cat.category || "") === FIXED_FILTER_CATEGORY
+  );
+
+  const availableSubcategories = Array.from(
+    new Set(
+      (furnitureCategory?.subcategories || [])
+        .map((sub) => toCanonicalSubcategory(sub))
+        .filter((sub) => Boolean(sub) && !HIDDEN_FURNITURE_SUBCATEGORIES.has(sub))
+    )
+  );
+
+  const orderedSubcategories = availableSubcategories.length > 0
+    ? [
+      ...PREFERRED_FURNITURE_SUBCATEGORY_ORDER.filter((sub) => availableSubcategories.includes(sub)),
+      ...availableSubcategories
+        .filter((sub) => !PREFERRED_FURNITURE_SUBCATEGORY_ORDER.includes(sub))
+        .sort((a, b) => a.localeCompare(b))
+    ]
+    : PREFERRED_FURNITURE_SUBCATEGORY_ORDER.filter(
+      (sub) => !HIDDEN_FURNITURE_SUBCATEGORIES.has(sub)
+    );
+
+  const filteredCategories = furnitureCategory
+    ? [
+      {
+        ...furnitureCategory,
+        category: FIXED_FILTER_CATEGORY,
+        subcategories: orderedSubcategories
+      }
+    ]
+    : [
+      {
+        category: FIXED_FILTER_CATEGORY,
+        subcategories: PREFERRED_FURNITURE_SUBCATEGORY_ORDER.filter(
+          (sub) => !HIDDEN_FURNITURE_SUBCATEGORIES.has(sub)
+        ),
+        count: 0
+      }
+    ];
 
   // Fetch Products
   const { products, loading, error, pagination } = useProducts({
@@ -83,13 +162,13 @@ const Products = () => {
     window.scrollTo(0, 0);
   }, [activeCategory, activeSubcategory, minPrice, maxPrice, navigate]);
 
-  const handleCategoryChange = useCallback((cat: string) => {
-    setActiveCategory(cat);
+  const handleCategoryChange = useCallback(() => {
+    setActiveCategory(FIXED_FILTER_CATEGORY);
     setPage(1);
   }, []);
 
   const handleSubcategoryChange = useCallback((sub: string) => {
-    setActiveSubcategory(sub);
+    setActiveSubcategory(toCanonicalSubcategory(sub));
     setPage(1);
   }, []);
 
@@ -106,7 +185,7 @@ const Products = () => {
   }, []);
 
   const clearFilters = useCallback(() => {
-    setActiveCategory("");
+    setActiveCategory(FIXED_FILTER_CATEGORY);
     setActiveSubcategory("");
     setMinPrice(undefined);
     setMaxPrice(undefined);
@@ -172,9 +251,10 @@ const Products = () => {
                 className="sticky top-24 bg-white p-6 rounded-2xl shadow-sm border border-gray-100 max-h-[calc(100vh-8rem)] overflow-y-auto overscroll-contain"
               >
                 <FilterSidebar
-                  categories={categories}
+                  categories={filteredCategories}
                   activeCategory={activeCategory}
                   activeSubcategory={activeSubcategory}
+                  hideCategorySelection
                   minPrice={minPrice}
                   maxPrice={maxPrice}
                   onCategoryChange={handleCategoryChange}
@@ -189,9 +269,10 @@ const Products = () => {
             <FilterDrawer
               isOpen={isFilterDrawerOpen}
               onClose={() => setIsFilterDrawerOpen(false)}
-              categories={categories}
+              categories={filteredCategories}
               activeCategory={activeCategory}
               activeSubcategory={activeSubcategory}
+              hideCategorySelection
               minPrice={minPrice}
               maxPrice={maxPrice}
               onCategoryChange={handleCategoryChange}
