@@ -34,15 +34,7 @@ export function RelatedProducts({ relatedProducts, scrollRelated, relatedRef }: 
             >
                 {relatedProducts.map((p) => (
                     <div key={p.id} className="min-w-[300px] snap-start">
-                        <ProductCard
-                            product={{
-                                ...p, // P contains id, name, image from DB related logic (but needs to match ProductCard structure or be casted correctly)
-                                productId: p.id,
-                                images: [p.image],
-                                sortedImages: [p.image],
-                                category: 'furniture', // fallback, since related doesn't have it all from query sometimes
-                            }}
-                        />
+                        <ProductCard product={p} />
                     </div>
                 ))}
             </div>

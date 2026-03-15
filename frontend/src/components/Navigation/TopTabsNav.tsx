@@ -1,8 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import { ChevronDown, Grid3x3, X, Search } from 'lucide-react';
 import { SearchModal } from '../SearchModal';
-import { Subcategory } from '../../data/products';
-import { getFilteredCategoriesWithCustom } from '../../utils/dynamicCategories';
+import { getFilteredCategoriesWithCustom, type Subcategory } from '../../utils/dynamicCategories';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 

@@ -8,7 +8,6 @@ import { ProductDetailsSkeleton } from "../components/ProductDetailsSkeleton";
 import { ProductGallery } from "../components/product/ProductGallery";
 import { useCart } from "../contexts/CartContext";
 import { useProduct } from "../hooks/useProducts";
-import { useCurrency } from "../contexts/CurrencyContext";
 import { useProductSEO, formatRobotsMeta } from "../hooks/useProductSEO";
 import { ProductInfo } from "../components/product/ProductInfo";
 import { ProductOverview } from "../components/product/ProductOverview";
@@ -19,7 +18,6 @@ import { RelatedProducts } from "../components/product/RelatedProducts";
 
 const ProductDetails = () => {
   const { id }: { id?: string } = useParams<{ id?: string }>();
-  const { formatPrice } = useCurrency();
   const [selectedFinish, setSelectedFinish] = useState("Polish");
   const [selectedThickness, setSelectedThickness] = useState("20mm");
   const [reviews, setReviews] = useState([]);
@@ -47,12 +45,8 @@ const ProductDetails = () => {
     const category = dbProduct.category || "slabs";
     const subcategory = dbProduct.subcategory || "marble";
 
-    // Related products from API
-    const relatedPick = dbRelatedProducts.slice(0, 10).map((p) => ({
-      id: p._id,
-      name: p.name,
-      image: p.image || p.images?.[0] || "/demo2.webp",
-    }));
+    // Related products from API (pass through normalized product shape)
+    const relatedPick = dbRelatedProducts.slice(0, 10);
 
     // Build specs section
     let specs: Record<string, string> = {};
@@ -82,28 +76,7 @@ const ProductDetails = () => {
       };
     }
 
-    // Pricing logic
-    let displayPrice = "Price on Request";
     const isAvailable = dbProduct.available !== false;
-
-    // Discount calculation (do this first)
-    const hasDiscount = dbProduct.discount?.enabled &&
-      dbProduct.discount?.percentage > 0 &&
-      (!dbProduct.discount?.startDate || new Date(dbProduct.discount.startDate) <= new Date()) &&
-      (!dbProduct.discount?.endDate || new Date(dbProduct.discount.endDate) >= new Date());
-
-    const discountPercentage = hasDiscount ? dbProduct.discount!.percentage : 0;
-    const originalPrice = dbProduct.priceINR || 0;
-    const discountedPrice = hasDiscount && originalPrice > 0
-      ? originalPrice * (1 - discountPercentage / 100)
-      : originalPrice;
-
-    if (!isAvailable) {
-      displayPrice = "Currently Unavailable";
-    } else if (dbProduct.priceINR) {
-      // Use discounted price if discount is active
-      displayPrice = formatPrice(hasDiscount ? discountedPrice : dbProduct.priceINR);
-    }
 
     const moq = category === "slabs" ? "MOQ: 20 m²" : "";
 
@@ -114,7 +87,6 @@ const ProductDetails = () => {
       subcategory,
       image: baseImages[0],
       images: baseImages,
-      price: displayPrice,
       priceINR: dbProduct.priceINR,
       moq,
       specs,
@@ -124,12 +96,8 @@ const ProductDetails = () => {
       averageRating: dbProduct.averageRating,
       totalReviews: dbProduct.totalReviews,
       discount: dbProduct.discount,
-      hasDiscount,
-      discountPercentage,
-      originalPrice,
-      discountedPrice,
     };
-  }, [dbProduct, dbRelatedProducts, selectedFinish, selectedThickness, formatPrice]);
+  }, [dbProduct, dbRelatedProducts, selectedFinish, selectedThickness]);
 
   // Generate comprehensive SEO metadata using the hook
   const seoMeta = useProductSEO(product);

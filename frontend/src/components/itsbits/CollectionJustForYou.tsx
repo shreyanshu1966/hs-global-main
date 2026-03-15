@@ -3,6 +3,13 @@ import { useHorizontalCarousel } from './useHorizontalCarousel';
 import { useEffect, useState } from 'react';
 import { fetchItsbitsProducts, ItsbitsCardItem } from './productData';
 
+interface CollectionJustForYouProps {
+  title?: string;
+  subtitle?: string;
+  viewMoreText?: string;
+  viewMoreLink?: string;
+}
+
 const fallbackPicks: ItsbitsCardItem[] = [
   { id: 'fallback-pick-1', image: '/marble-solutions.webp', title: 'Bookmatched Calacatta Marble Sets', designer: 'Marble Collection', price: 'Tailored Quote', href: '/products' },
   { id: 'fallback-pick-2', image: '/granite-solutions.webp', title: 'Statement Granite for Modern Kitchens', designer: 'Granite Collection', price: 'Project Pricing', href: '/products' },
@@ -11,7 +18,12 @@ const fallbackPicks: ItsbitsCardItem[] = [
   { id: 'fallback-pick-5', image: '/products-hero.webp', title: 'Premium Slab Collection', designer: 'Stone Collection', price: 'Bulk & Retail Options', href: '/products' },
 ];
 
-const CollectionJustForYou = () => {
+const CollectionJustForYou = ({
+  title = 'Collection Just For You',
+  subtitle = 'Get Inspired by this collection of items picked just for you',
+  viewMoreText = 'View More',
+  viewMoreLink = '/products',
+}: CollectionJustForYouProps) => {
   const { trackRef, canScrollPrev, canScrollNext, scrollPrev, scrollNext } = useHorizontalCarousel(0.88);
   const [picks, setPicks] = useState<ItsbitsCardItem[]>(fallbackPicks);
 
@@ -62,10 +74,10 @@ const CollectionJustForYou = () => {
       <div className="itsbits-personalized-inner">
         <div className="itsbits-personalized-header">
           <h2 className="itsbits-personalized-title">
-            Collection <em>Just For You</em>
+            {title}
           </h2>
-          <p className="itsbits-personalized-subtitle">Get Inspired by this collection of items picked just for you</p>
-          <a href="/products" className="itsbits-personalized-link">View More</a>
+          <p className="itsbits-personalized-subtitle">{subtitle}</p>
+          <a href={viewMoreLink} className="itsbits-personalized-link">{viewMoreText}</a>
         </div>
 
         <div className="relative">

@@ -1,52 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useCurrency } from '../contexts/CurrencyContext';
-import adminDiscountAnalyticsService from '../services/adminDiscountAnalyticsService';
+import { adminPricingApi } from '../modules/product/api';
+import type { DiscountAnalytics, DiscountedProduct } from '../modules/product/types';
 import { Percent, TrendingUp, Calendar, AlertCircle, RefreshCw, Filter, Search, Plus, Trash2, X, Check } from 'lucide-react';
-
-interface DiscountAnalytics {
-    totalProducts: number;  // Total products in database
-    total: number;          // Total with discount enabled
-    active: number;
-    scheduled: number;
-    expired: number;
-    needsCleanup: number;
-    avgPercentage: number;
-    maxPercentage: number;
-    minPercentage: number;
-    expiringSoon: Array<{
-        productId: string;
-        name: string;
-        discount: any;
-        endDate: string;
-        daysRemaining: number;
-    }>;
-}
-
-interface DiscountedProduct {
-    _id: string;
-    productId: string;
-    name: string;
-    category: string;
-    subcategory: string;
-    priceINR: number;
-    discount: {
-        enabled: boolean;
-        percentage: number;
-        startDate?: string;
-        endDate?: string;
-        description?: string;
-    };
-    image: string;
-    discountStatus: {
-        status: 'active' | 'scheduled' | 'expired' | 'none';
-        message: string;
-        daysRemaining?: number;
-        hoursRemaining?: number;
-        isExpiringSoon?: boolean;
-    };
-    finalPrice: number;
-}
 
 const DiscountManagement: React.FC = () => {
     const { token } = useAuth();
@@ -84,15 +41,16 @@ const DiscountManagement: React.FC = () => {
             setLoading(true);
 
             // Load analytics
-            const analyticsData = await adminDiscountAnalyticsService.getDiscountAnalytics(token);
+            const analyticsData = await adminPricingApi.getDiscountAnalytics(token);
             console.log('📊 Analytics loaded:', analyticsData);
             setAnalytics(analyticsData);
 
             // Load products
-            const productsData = await adminDiscountAnalyticsService.getDiscountedProducts(token, {
+            const productsData = await adminPricingApi.getDiscountedProducts({
                 page,
                 limit: 20,
-                status: statusFilter
+                status: statusFilter,
+                token
             });
             console.log('📦 Products loaded:', {
                 count: productsData.data?.length || 0,
@@ -130,7 +88,7 @@ const DiscountManagement: React.FC = () => {
 
         try {
             setCleanupLoading(true);
-            const result = await adminDiscountAnalyticsService.disableExpiredDiscounts(token);
+            const result = await adminPricingApi.disableExpiredDiscounts(token);
             alert(`✅ Successfully disabled ${result.disabledCount} expired discount(s)`);
             loadData();
         } catch (error: any) {
@@ -177,7 +135,7 @@ const DiscountManagement: React.FC = () => {
 
         try {
             setLoading(true);
-            const result = await adminDiscountAnalyticsService.applyDiscountToAll(bulkDiscount, token);
+            const result = await adminPricingApi.applyDiscountToAll(bulkDiscount, token);
             alert(`✅ Discount applied to ${result?.updatedCount || 0} product(s)`);
             setShowAllModal(false);
             setBulkDiscount({ percentage: 10, startDate: '', endDate: '', description: '' });
@@ -198,7 +156,7 @@ const DiscountManagement: React.FC = () => {
 
         try {
             setLoading(true);
-            const result = await adminDiscountAnalyticsService.removeDiscountFromAll(token);
+            const result = await adminPricingApi.removeDiscountFromAll(token);
             alert(`✅ Discount removed from ${result?.updatedCount || 0} product(s)`);
             loadData();
         } catch (error: any) {
@@ -228,7 +186,7 @@ const DiscountManagement: React.FC = () => {
         try {
             setLoading(true);
             const productIds = Array.from(selectedProducts);
-            const result = await adminDiscountAnalyticsService.applyBulkDiscount(productIds, bulkDiscount, token);
+            const result = await adminPricingApi.applyBulkDiscount(productIds, bulkDiscount, token);
             alert(`✅ Discount applied to ${result?.updatedCount || 0} product(s)`);
             setShowBulkModal(false);
             setBulkDiscount({ percentage: 10, startDate: '', endDate: '', description: '' });
@@ -257,7 +215,7 @@ const DiscountManagement: React.FC = () => {
         try {
             setLoading(true);
             const productIds = Array.from(selectedProducts);
-            const result = await adminDiscountAnalyticsService.removeBulkDiscount(productIds, token);
+            const result = await adminPricingApi.removeBulkDiscount(productIds, token);
             alert(`✅ Discount removed from ${result?.updatedCount || 0} product(s)`);
             setSelectedProducts(new Set());
             setSelectAll(false);
@@ -277,7 +235,7 @@ const DiscountManagement: React.FC = () => {
         if (!confirm(`Remove discount from "${productName}"?`)) return;
 
         try {
-            await adminDiscountAnalyticsService.removeProductDiscount(productId, token);
+            await adminPricingApi.removeProductDiscount(productId, token);
             alert('✅ Discount removed successfully');
             loadData();
         } catch (error: any) {

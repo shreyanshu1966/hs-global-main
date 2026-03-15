@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
@@ -6,87 +6,18 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { useTranslation } from 'react-i18next';
 import { ArrowRight } from "lucide-react";
-
-import { categories as productCategories, Subcategory } from "../data/products";
+import { productService } from "../services/productService";
 
 interface SliderItem {
   id: string;
   title: string;
   image: string;
-  videoUrl?: string;
 }
-
-const useFurnitureSlides = (): SliderItem[] => {
-  return useMemo(() => {
-    // Get all video files from furniture folders
-    const videoFiles = import.meta.glob('/src/assets/furnitures/**/*.{mp4,webm,mov}', {
-      query: '?url',
-      import: 'default',
-      eager: true
-    }) as Record<string, string>;
-
-    const furniture = productCategories.find(c => c.id === 'furniture');
-    if (!furniture) return [];
-
-    const slides: SliderItem[] = [];
-
-    const pushFromSub = (sub: Subcategory) => {
-      const firstProduct = sub.products && sub.products[0];
-      const img = firstProduct?.image;
-
-      if (img && firstProduct) {
-        // Find matching video for this subcategory
-        const productName = firstProduct.name.toLowerCase().trim();
-        const subcategoryName = sub.name.toLowerCase().trim();
-
-        let matchedVideo: string | undefined;
-
-        for (const [videoPath, videoUrl] of Object.entries(videoFiles)) {
-          const pathParts = videoPath.split('/').filter(Boolean);
-          const videoProductFolder = pathParts[pathParts.length - 2]?.toLowerCase().trim();
-          const videoSubcategory = pathParts[pathParts.length - 3]?.toLowerCase().trim();
-
-          if (videoProductFolder === productName && videoSubcategory === subcategoryName) {
-            matchedVideo = videoUrl;
-            break;
-          }
-        }
-
-        slides.push({
-          id: sub.id,
-          title: sub.name,
-          image: img,
-          videoUrl: matchedVideo
-        });
-      }
-    };
-
-    furniture.subcategories.forEach(main => {
-      if (Array.isArray(main.subcategories) && main.subcategories.length) {
-        main.subcategories.forEach(child => pushFromSub(child));
-      } else if (Array.isArray(main.products) && main.products.length) {
-        pushFromSub(main);
-      }
-    });
-
-    return slides;
-  }, []);
-};
 
 const CategorySlide: React.FC<{
   cat: SliderItem;
   onClick: () => void;
 }> = ({ cat, onClick }) => {
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const [videoLoaded, setVideoLoaded] = useState(false);
-  const [videoCanPlay, setVideoCanPlay] = useState(false);
-
-  useEffect(() => {
-    if (videoRef.current && cat.videoUrl) {
-      videoRef.current.play().catch(() => { });
-    }
-  }, [cat.videoUrl]);
-
   return (
     <div
       onClick={onClick}
@@ -100,27 +31,6 @@ const CategorySlide: React.FC<{
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-110"
           loading="lazy"
         />
-        
-        {/* Show video overlay when loaded and ready */}
-        {cat.videoUrl && (
-          <video
-            ref={videoRef}
-            src={cat.videoUrl}
-            className={`absolute inset-0 w-full h-full object-cover transition-all duration-1000 ease-out group-hover:scale-110 ${
-              videoLoaded && videoCanPlay ? 'opacity-100' : 'opacity-0'
-            }`}
-            loop
-            muted
-            playsInline
-            autoPlay
-            onLoadedData={() => setVideoLoaded(true)}
-            onCanPlay={() => setVideoCanPlay(true)}
-            onError={() => {
-              setVideoLoaded(false);
-              setVideoCanPlay(false);
-            }}
-          />
-        )}
         
         {/* Cinematic Noir Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-500" />
@@ -152,7 +62,51 @@ const CategorySlide: React.FC<{
 const CategoriesSlider: React.FC = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const furnitureSlides = useFurnitureSlides();
+  const [furnitureSlides, setFurnitureSlides] = useState<SliderItem[]>([]);
+
+  useEffect(() => {
+    let isCancelled = false;
+
+    const loadSlides = async () => {
+      try {
+        const response = await productService.getProductsByCategory('furniture', {
+          limit: 200,
+          sortBy: 'featured',
+          sortOrder: 'desc',
+        });
+
+        if (!response.success || isCancelled) {
+          if (!isCancelled) setFurnitureSlides([]);
+          return;
+        }
+
+        const seen = new Set<string>();
+        const nextSlides: SliderItem[] = [];
+
+        response.data.products.forEach((product) => {
+          const subKey = String(product.subcategory || '').trim().toLowerCase();
+          if (!subKey || seen.has(subKey)) return;
+
+          seen.add(subKey);
+          nextSlides.push({
+            id: subKey,
+            title: product.subcategory,
+            image: product.image || product.images?.[0] || '/general/marble.jpg',
+          });
+        });
+
+        setFurnitureSlides(nextSlides);
+      } catch (error) {
+        console.error('Failed to load furniture slides:', error);
+        if (!isCancelled) setFurnitureSlides([]);
+      }
+    };
+
+    loadSlides();
+    return () => {
+      isCancelled = true;
+    };
+  }, []);
 
   return (
     <section className="py-20 md:py-32 bg-white overflow-hidden">

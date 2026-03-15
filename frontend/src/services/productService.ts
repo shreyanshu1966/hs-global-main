@@ -1,4 +1,5 @@
 import { API_BASE_URL } from '../config';
+import { legacyCompatibleProductApi } from '../modules/product/api/legacyCompatibleApi';
 
 export interface Product {
   _id: string;
@@ -154,22 +155,14 @@ class ProductService {
     minPrice?: number;
     maxPrice?: number;
   } = {}): Promise<ProductResponse> {
-    const searchParams = new URLSearchParams();
-
-    Object.entries(params).forEach(([key, value]) => {
-      if (value !== undefined && value !== null) {
-        searchParams.append(key, value.toString());
-      }
-    });
-
-    return this.request<ProductResponse>(`/products?${searchParams.toString()}`);
+    return legacyCompatibleProductApi.getAllProducts(params);
   }
 
   /**
    * Get single product by ID
    */
   async getProductById(id: string): Promise<SingleProductResponse> {
-    return this.request<SingleProductResponse>(`/products/${id}`);
+    return legacyCompatibleProductApi.getProductById(id);
   }
 
   /**
@@ -187,22 +180,14 @@ class ProductService {
       maxPrice?: number;
     } = {}
   ): Promise<CategoryResponse> {
-    const searchParams = new URLSearchParams();
-
-    Object.entries(params).forEach(([key, value]) => {
-      if (value !== undefined && value !== null) {
-        searchParams.append(key, value.toString());
-      }
-    });
-
-    return this.request<CategoryResponse>(`/products/category/${category}?${searchParams.toString()}`);
+    return legacyCompatibleProductApi.getProductsByCategory(category, params);
   }
 
   /**
    * Get featured products
    */
   async getFeaturedProducts(limit = 10): Promise<ProductResponse> {
-    return this.request<ProductResponse>(`/products/featured?limit=${limit}`);
+    return legacyCompatibleProductApi.getFeaturedProducts(limit);
   }
 
   /**
@@ -215,32 +200,21 @@ class ProductService {
     minPrice?: number;
     maxPrice?: number;
   } = {}): Promise<ProductResponse> {
-    const searchParams = new URLSearchParams({ q: query });
-
-    Object.entries(params).forEach(([key, value]) => {
-      if (value !== undefined && value !== null) {
-        searchParams.append(key, value.toString());
-      }
-    });
-
-    return this.request<ProductResponse>(`/products/search?${searchParams.toString()}`);
+    return legacyCompatibleProductApi.searchProducts(query, params);
   }
 
   /**
    * Get product categories and subcategories
    */
   async getCategories(): Promise<{ success: boolean; data: Category[] }> {
-    return this.request<{ success: boolean; data: Category[] }>('/products/categories');
+    return legacyCompatibleProductApi.getCategories();
   }
 
   /**
    * Track add to cart for analytics
    */
   async trackAddToCart(productId: string): Promise<{ success: boolean; message: string }> {
-    return this.request<{ success: boolean; message: string }>('/products/track/add-to-cart', {
-      method: 'POST',
-      body: JSON.stringify({ productId }),
-    });
+    return legacyCompatibleProductApi.trackAddToCart(productId);
   }
 
   /**

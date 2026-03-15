@@ -32,8 +32,6 @@ import {
     Layout,
     Mail,
     Layers,
-    Image,
-    Upload,
     Star,
     Tag,
     Percent,
@@ -42,8 +40,6 @@ import {
 import {
     BarChart,
     Bar,
-    LineChart,
-    Line,
     PieChart,
     Pie,
     Cell,
@@ -57,8 +53,17 @@ import {
 import blogService, { Blog } from '../services/blogService';
 import contactService, { Contact, ContactStats } from '../services/contactService';
 import quotationService, { Quotation, QuotationStats } from '../services/quotationService';
-import adminProductService, { Product, ProductFormData } from '../services/adminProductService';
+import { adminProductApi } from '../modules/product/api';
+import type { AdminProduct as Product, AdminProductFormData as ProductFormData } from '../modules/product/types';
 import reviewService, { Review } from '../services/reviewService';
+import {
+    fetchCustomCategories,
+    addCustomSubcategory,
+    updateCustomSubcategory,
+    deleteCustomSubcategory,
+} from '../services/categoryService';
+import { productService } from '../services/productService';
+import HomePageManagement from '../components/admin/HomePageManagement';
 
 interface Analytics {
     users: {
@@ -120,7 +125,7 @@ const COLORS = ['#10b981', '#f59e0b', '#ef4444', '#3b82f6', '#8b5cf6'];
 const Admin = () => {
     const { user, token, logout } = useAuth();
     const navigate = useNavigate();
-    const [activeTab, setActiveTab] = useState<'analytics' | 'orders' | 'users' | 'blogs' | 'contacts' | 'quotations' | 'products' | 'reviews'>('analytics');
+    const [activeTab, setActiveTab] = useState<'analytics' | 'orders' | 'users' | 'blogs' | 'contacts' | 'quotations' | 'products' | 'categories' | 'reviews' | 'homepage'>('analytics');
     const [loading, setLoading] = useState(true);
     const [isMounted, setIsMounted] = useState(false);
 
@@ -188,19 +193,19 @@ const Admin = () => {
     const [editingProduct, setEditingProduct] = useState<Product | null>(null);
     const [productFormData, setProductFormData] = useState<Partial<ProductFormData>>({});
     const [productImages, setProductImages] = useState<File[]>([]);
-    const [productImagePreviews, setProductImagePreviews] = useState<string[]>([]);
+    const [, setProductImagePreviews] = useState<string[]>([]);
     const [existingImages, setExistingImages] = useState<string[]>([]); // For editing existing products
     const [removedImages, setRemovedImages] = useState<string[]>([]); // Track images to remove
     const [mainImageIndex, setMainImageIndex] = useState<number>(0); // Track which image is main (existing)
     const [mainNewImageIndex, setMainNewImageIndex] = useState<number | null>(null); // Track which NEW image is main
     const [productVideo, setProductVideo] = useState<File | null>(null);
-    const [productVideoPreview, setProductVideoPreview] = useState<string | null>(null);
+    const [, setProductVideoPreview] = useState<string | null>(null);
     const [removeVideo, setRemoveVideo] = useState(false);
     const [productLoading, setProductLoading] = useState(false);
     const [deletingProductId, setDeletingProductId] = useState<string | null>(null);
     const [showCustomSubcategory, setShowCustomSubcategory] = useState(false);
     const [customSubcategory, setCustomSubcategory] = useState('');
-    const [customSubcategories, setCustomSubcategories] = useState<{ [categoryId: string]: Array<{ id: string, name: string }> }>({});
+    const [, setCustomSubcategories] = useState<{ [categoryId: string]: Array<{ id: string, name: string }> }>({});
 
     // Additional loading states for better UX
     const [productsLoading, setProductsLoading] = useState(false);
@@ -235,6 +240,23 @@ const Admin = () => {
     const [reviewsStatusFilter, setReviewsStatusFilter] = useState('');
     const [reviewsTotal, setReviewsTotal] = useState(0);
     const [reviewsHasMore, setReviewsHasMore] = useState(false);
+
+    // Category management state
+    const [categoryOptions, setCategoryOptions] = useState<string[]>([]);
+    const [customCategoryData, setCustomCategoryData] = useState<Record<string, Array<{ id: string; name: string; isCustom: boolean }>>>({});
+    const [categoryMetaMap, setCategoryMetaMap] = useState<Record<string, { subcategories: string[]; count: number }>>({});
+    const [selectedCategoryId, setSelectedCategoryId] = useState('furniture');
+    const [newSubcategoryName, setNewSubcategoryName] = useState('');
+    const [selectedProductIdForCategory, setSelectedProductIdForCategory] = useState('');
+    const [targetSubcategoryForCategory, setTargetSubcategoryForCategory] = useState('');
+    const [allProductsForCategoryManagement, setAllProductsForCategoryManagement] = useState<Product[]>([]);
+    const [categoryProducts, setCategoryProducts] = useState<Product[]>([]);
+    const [categorySaving, setCategorySaving] = useState(false);
+    const [editingCustomSubcategory, setEditingCustomSubcategory] = useState<{
+        categoryId: string;
+        subcategoryId: string;
+        name: string;
+    } | null>(null);
 
     // Search debouncing
     const [searchDebounceTimer, setSearchDebounceTimer] = useState<NodeJS.Timeout | null>(null);
@@ -349,7 +371,7 @@ const Admin = () => {
                 setQuotationStats(statsData);
             } else if (activeTab === 'products') {
                 setProductsLoading(true);
-                const productsData = await adminProductService.getAdminProducts({
+                const productsData = await adminProductApi.getAdminProducts({
                     page: productsPage,
                     limit: 10,
                     search: productsSearch,
@@ -359,6 +381,80 @@ const Admin = () => {
                 setProducts(productsData.data);
                 setProductsPagination(productsData.pagination);
                 setProductsLoading(false);
+            } else if (activeTab === 'categories') {
+                const [customData, categoriesData, adminProductsData] = await Promise.all([
+                    fetchCustomCategories(),
+                    productService.getCategories(),
+                    adminProductApi.getAdminProducts({ page: 1, limit: 1000, sortBy: 'name', sortOrder: 'asc' }),
+                ]);
+
+                setCustomCategoryData(customData || {});
+
+                const productList = adminProductsData?.data || [];
+                setAllProductsForCategoryManagement(productList);
+
+                const metaFromApi: Record<string, { subcategories: string[]; count: number }> = {};
+                if (categoriesData.success) {
+                    categoriesData.data.forEach((item) => {
+                        metaFromApi[item.category] = {
+                            subcategories: item.subcategories || [],
+                            count: item.count || 0,
+                        };
+                    });
+                }
+
+                // Ensure categories used by products are also represented.
+                productList.forEach((product) => {
+                    const categoryId = String(product.category || '').trim();
+                    const subcategory = String(product.subcategory || '').trim();
+                    if (!categoryId) return;
+
+                    if (!metaFromApi[categoryId]) {
+                        metaFromApi[categoryId] = { subcategories: [], count: 0 };
+                    }
+
+                    if (subcategory && !metaFromApi[categoryId].subcategories.includes(subcategory)) {
+                        metaFromApi[categoryId].subcategories.push(subcategory);
+                    }
+                    metaFromApi[categoryId].count = (metaFromApi[categoryId].count || 0) + 1;
+                });
+
+                Object.keys(customData || {}).forEach((categoryId) => {
+                    if (!metaFromApi[categoryId]) {
+                        metaFromApi[categoryId] = { subcategories: [], count: 0 };
+                    }
+
+                    (customData[categoryId] || []).forEach((sub) => {
+                        if (!metaFromApi[categoryId].subcategories.includes(sub.name)) {
+                            metaFromApi[categoryId].subcategories.push(sub.name);
+                        }
+                    });
+                });
+
+                Object.keys(metaFromApi).forEach((categoryId) => {
+                    metaFromApi[categoryId].subcategories = metaFromApi[categoryId].subcategories
+                        .filter(Boolean)
+                        .sort((a, b) => a.localeCompare(b));
+                });
+
+                setCategoryMetaMap(metaFromApi);
+
+                const dynamicCategories = categoriesData.success
+                    ? categoriesData.data.map((item) => item.category)
+                    : [];
+                const productCategories = productList
+                    .map((product) => String(product.category || '').trim())
+                    .filter(Boolean);
+                const combined = Array.from(new Set([
+                    ...dynamicCategories,
+                    ...Object.keys(customData || {}),
+                    ...productCategories,
+                ])).sort((a, b) => a.localeCompare(b));
+                setCategoryOptions(combined);
+
+                if (combined.length > 0 && !combined.includes(selectedCategoryId)) {
+                    setSelectedCategoryId(combined[0]);
+                }
             } else if (activeTab === 'reviews' && token) {
                 const reviewsData = await reviewService.getAllReviews(
                     token,
@@ -621,37 +717,6 @@ const Admin = () => {
         setCustomSubcategory('');
     };
 
-    const handleProductImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const files = Array.from(e.target.files || []);
-        if (files.length === 0) return;
-
-        setProductImages(prev => [...prev, ...files]);
-
-        // Create previews
-        const newPreviews = files.map(file => URL.createObjectURL(file));
-        setProductImagePreviews(prev => [...prev, ...newPreviews]);
-    };
-
-    const handleProductVideoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            // Validate file size (10MB)
-            if (file.size > 10 * 1024 * 1024) {
-                alert('Video file size must be less than 10MB');
-                return;
-            }
-            // Validate file type
-            const allowedTypes = ['video/mp4', 'video/webm', 'video/quicktime', 'video/x-msvideo'];
-            if (!allowedTypes.includes(file.type)) {
-                alert('Only MP4, WebM, MOV, and AVI video formats are allowed');
-                return;
-            }
-            setProductVideo(file);
-            setProductVideoPreview(URL.createObjectURL(file));
-            setRemoveVideo(false);
-        }
-    };
-
     const handleSaveProduct = async () => {
         if (productLoading) return; // Prevent double submission
 
@@ -711,7 +776,7 @@ const Admin = () => {
             if (showCustomSubcategory && customSubcategory.trim()) {
                 try {
                     const { addCustomSubcategory } = await import('../services/categoryService');
-                    const categoryName = productFormData.category === 'furniture' ? 'Furniture' : 'Slabs';
+                    const categoryName = 'Furniture';
                     await addCustomSubcategory(productFormData.category, categoryName, customSubcategory.trim());
 
                     // Reload custom subcategories to update dropdowns
@@ -723,7 +788,7 @@ const Admin = () => {
                     }
 
                     console.log('✅ Custom subcategory saved successfully');
-                } catch (error) {
+                } catch (error: any) {
                     console.error('❌ Failed to save custom subcategory:', error);
                     setProductLoading(false);
                     alert(`Failed to save custom subcategory "${customSubcategory}". Error: ${error.message || error}. Please try again or use a predefined subcategory.`);
@@ -733,7 +798,7 @@ const Admin = () => {
 
             if (editingProduct) {
                 // Update existing product
-                await adminProductService.updateProduct(
+                await adminProductApi.updateProduct(
                     editingProduct.productId,
                     finalFormData,
                     finalProductFiles,
@@ -748,7 +813,7 @@ const Admin = () => {
                     alert('Please select at least one image');
                     return;
                 }
-                await adminProductService.createProduct(
+                await adminProductApi.createProduct(
                     finalFormData as ProductFormData,
                     finalProductFiles,
                     productVideo
@@ -766,48 +831,6 @@ const Admin = () => {
         }
     };
 
-    const handlePreviewProduct = async () => {
-        if (previewLoading) return; // Prevent double submission
-
-        try {
-            // Use custom subcategory if provided, otherwise use form data
-            const finalSubcategory = showCustomSubcategory ? customSubcategory : productFormData.subcategory;
-
-            if (!productFormData.productId || !productFormData.name || !productFormData.category || !finalSubcategory || !productFormData.description) {
-                alert('Please fill in all required fields before previewing');
-                return;
-            }
-
-            // Prepare preview data
-            const previewFormData = {
-                ...productFormData,
-                subcategory: finalSubcategory
-            };
-
-            setPreviewLoading(true);
-
-            // Create preview using existing images and new images
-            const finalExistingImages = existingImages.filter(img => !removedImages.includes(img));
-
-            const response = await adminProductService.previewProduct(
-                previewFormData as ProductFormData,
-                productImages,
-                productVideo || undefined,
-                finalExistingImages
-            );
-
-            if (response.success) {
-                setPreviewProduct(response.data);
-                setShowProductPreview(true);
-            }
-        } catch (error: any) {
-            console.error('Preview product error:', error);
-            alert(error.message || 'Failed to generate preview');
-        } finally {
-            setPreviewLoading(false);
-        }
-    };
-
     const handleClosePreview = () => {
         setShowProductPreview(false);
         setPreviewProduct(null);
@@ -822,7 +845,7 @@ const Admin = () => {
 
         try {
             setDeletingProductId(productId);
-            await adminProductService.deleteProduct(productId);
+            await adminProductApi.deleteProduct(productId);
             await loadData();
             alert('✅ Product deleted successfully!');
         } catch (error: any) {
@@ -830,6 +853,189 @@ const Admin = () => {
             alert(error.message || 'Failed to delete product');
         } finally {
             setDeletingProductId(null);
+        }
+    };
+
+    const handleAddCustomSubcategory = async () => {
+        const name = newSubcategoryName.trim();
+        if (!selectedCategoryId || !name) {
+            alert('Please select a category and enter a subcategory name.');
+            return;
+        }
+
+        try {
+            setCategorySaving(true);
+            const categoryLabel = selectedCategoryId.charAt(0).toUpperCase() + selectedCategoryId.slice(1);
+            await addCustomSubcategory(selectedCategoryId, categoryLabel, name);
+            setNewSubcategoryName('');
+            await loadData();
+        } catch (error: any) {
+            console.error('Failed to add custom subcategory:', error);
+            alert(error.message || 'Failed to add custom subcategory');
+        } finally {
+            setCategorySaving(false);
+        }
+    };
+
+    const handleUpdateCustomSubcategory = async () => {
+        if (!editingCustomSubcategory) return;
+        const { categoryId, subcategoryId, name } = editingCustomSubcategory;
+        const nextName = name.trim();
+        if (!nextName) {
+            alert('Subcategory name is required.');
+            return;
+        }
+
+        try {
+            setCategorySaving(true);
+            await updateCustomSubcategory(categoryId, subcategoryId, nextName);
+            setEditingCustomSubcategory(null);
+            await loadData();
+        } catch (error: any) {
+            console.error('Failed to update custom subcategory:', error);
+            alert(error.message || 'Failed to update custom subcategory');
+        } finally {
+            setCategorySaving(false);
+        }
+    };
+
+    const handleDeleteCustomSubcategory = async (categoryId: string, subcategoryId: string) => {
+        if (!confirm('Delete this custom subcategory?')) return;
+
+        try {
+            setCategorySaving(true);
+            await deleteCustomSubcategory(categoryId, subcategoryId);
+            await loadData();
+        } catch (error: any) {
+            console.error('Failed to delete custom subcategory:', error);
+            alert(error.message || 'Failed to delete custom subcategory');
+        } finally {
+            setCategorySaving(false);
+        }
+    };
+
+    useEffect(() => {
+        const selected = String(selectedCategoryId || '').trim();
+        if (!selected) {
+            setCategoryProducts([]);
+            return;
+        }
+
+        setCategoryProducts(
+            allProductsForCategoryManagement.filter(
+                (product) => String(product.category || '').trim() === selected
+            )
+        );
+    }, [selectedCategoryId, allProductsForCategoryManagement]);
+
+    const getAllSubcategoriesForSelectedCategory = (): string[] => {
+        const fromMeta = categoryMetaMap[selectedCategoryId]?.subcategories || [];
+        const fromCustom = (customCategoryData[selectedCategoryId] || []).map((sub) => sub.name);
+        return Array.from(new Set([...fromMeta, ...fromCustom]))
+            .filter(Boolean)
+            .sort((a, b) => a.localeCompare(b));
+    };
+
+    const getCategoryLabel = (categoryId: string) =>
+        categoryId
+            .split('-')
+            .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+            .join(' ');
+
+    const handleAssignProductToCategory = async () => {
+        const productId = selectedProductIdForCategory;
+        const categoryId = selectedCategoryId;
+        const subcategory = targetSubcategoryForCategory.trim();
+
+        if (!productId || !categoryId || !subcategory) {
+            alert('Please select a product, category, and subcategory.');
+            return;
+        }
+
+        const product = allProductsForCategoryManagement.find((p) => p.productId === productId);
+        if (!product) {
+            alert('Selected product not found. Please refresh and try again.');
+            return;
+        }
+
+        try {
+            setCategorySaving(true);
+            await adminProductApi.updateProduct(
+                product.productId,
+                {
+                    productId: product.productId,
+                    name: product.name,
+                    category: categoryId,
+                    subcategory,
+                    description: product.description,
+                    priceINR: product.priceINR,
+                    available: product.available,
+                    status: product.status,
+                    featured: product.featured,
+                    hasVideo: product.hasVideo,
+                    furnitureSpecs: product.furnitureSpecs,
+                    slabSpecs: product.slabSpecs,
+                    seoTitle: product.seoTitle,
+                    seoDescription: product.seoDescription,
+                    seoKeywords: product.seoKeywords,
+                    preserveExistingImages: true,
+                },
+                undefined,
+                undefined,
+                false
+            );
+
+            setSelectedProductIdForCategory('');
+            setTargetSubcategoryForCategory('');
+            await loadData();
+            alert('Product category updated successfully.');
+        } catch (error: any) {
+            console.error('Failed to assign product to category:', error);
+            alert(error.message || 'Failed to update product category');
+        } finally {
+            setCategorySaving(false);
+        }
+    };
+
+    const handleRemoveProductFromCategory = async (product: Product) => {
+        if (!confirm(`Remove "${product.name}" from ${getCategoryLabel(selectedCategoryId)}?`)) {
+            return;
+        }
+
+        try {
+            setCategorySaving(true);
+            await adminProductApi.updateProduct(
+                product.productId,
+                {
+                    productId: product.productId,
+                    name: product.name,
+                    category: 'uncategorized',
+                    subcategory: 'general',
+                    description: product.description,
+                    priceINR: product.priceINR,
+                    available: product.available,
+                    status: product.status,
+                    featured: product.featured,
+                    hasVideo: product.hasVideo,
+                    furnitureSpecs: product.furnitureSpecs,
+                    slabSpecs: product.slabSpecs,
+                    seoTitle: product.seoTitle,
+                    seoDescription: product.seoDescription,
+                    seoKeywords: product.seoKeywords,
+                    preserveExistingImages: true,
+                },
+                undefined,
+                undefined,
+                false
+            );
+
+            await loadData();
+            alert('Product removed from category.');
+        } catch (error: any) {
+            console.error('Failed to remove product from category:', error);
+            alert(error.message || 'Failed to remove product from category');
+        } finally {
+            setCategorySaving(false);
         }
     };
 
@@ -886,7 +1092,7 @@ const Admin = () => {
                     }
                 };
 
-                return adminProductService.updateProduct(
+                return adminProductApi.updateProduct(
                     productId,
                     { ...updatedData, preserveExistingImages: true },
                     undefined,
@@ -962,14 +1168,6 @@ const Admin = () => {
         ];
     };
 
-    const prepareDeliveryStatusData = () => {
-        if (!analytics) return [];
-        return analytics.orders.deliveryStatus.map(status => ({
-            name: status._id.charAt(0).toUpperCase() + status._id.slice(1),
-            value: status.count
-        }));
-    };
-
     if (loading && !analytics && users.length === 0 && orders.length === 0) {
         return (
             <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -1033,7 +1231,7 @@ const Admin = () => {
 
                     {/* Tabs */}
                     <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-1 mb-6">
-                        <div className="grid grid-cols-9 gap-1">
+                        <div className="grid grid-cols-10 gap-1">
                             <button
                                 onClick={() => setActiveTab('analytics')}
                                 className={`flex items-center justify-center gap-2 px-4 py-3 rounded-md font-medium text-sm transition-all ${activeTab === 'analytics'
@@ -1075,6 +1273,16 @@ const Admin = () => {
                                 <span>Products</span>
                             </button>
                             <button
+                                onClick={() => setActiveTab('categories')}
+                                className={`flex items-center justify-center gap-2 px-4 py-3 rounded-md font-medium text-sm transition-all ${activeTab === 'categories'
+                                    ? 'bg-blue-600 text-white shadow-sm'
+                                    : 'text-gray-600 hover:bg-gray-50'
+                                    }`}
+                            >
+                                <Tag className="w-4 h-4" />
+                                <span>Categories</span>
+                            </button>
+                            <button
                                 onClick={() => setActiveTab('blogs')}
                                 className={`flex items-center justify-center gap-2 px-4 py-3 rounded-md font-medium text-sm transition-all ${activeTab === 'blogs'
                                     ? 'bg-blue-600 text-white shadow-sm'
@@ -1083,6 +1291,16 @@ const Admin = () => {
                             >
                                 <Layout className="w-4 h-4" />
                                 <span>Blogs</span>
+                            </button>
+                            <button
+                                onClick={() => setActiveTab('homepage')}
+                                className={`flex items-center justify-center gap-2 px-4 py-3 rounded-md font-medium text-sm transition-all ${activeTab === 'homepage'
+                                    ? 'bg-blue-600 text-white shadow-sm'
+                                    : 'text-gray-600 hover:bg-gray-50'
+                                    }`}
+                            >
+                                <Play className="w-4 h-4" />
+                                <span>Home Page</span>
                             </button>
                             <button
                                 onClick={() => setActiveTab('contacts')}
@@ -1204,13 +1422,13 @@ const Admin = () => {
                                                 cx="50%"
                                                 cy="50%"
                                                 labelLine={false}
-                                                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                                                label={({ name, percent }) => `${name} ${(((percent || 0) * 100).toFixed(0))}%`}
                                                 outerRadius={100}
                                                 fill="#8884d8"
                                                 dataKey="value"
                                             >
                                                 {prepareOrderStatusData().map((entry, index) => (
-                                                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                                    <Cell key={`cell-${entry.name}-${index}`} fill={COLORS[index % COLORS.length]} />
                                                 ))}
                                             </Pie>
                                             <Tooltip
@@ -1230,7 +1448,7 @@ const Admin = () => {
                             <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
                                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Delivery Status</h3>
                                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                                    {analytics.orders.deliveryStatus.map((status, index) => (
+                                    {analytics.orders.deliveryStatus.map((status) => (
                                         <div key={status._id} className="bg-gray-50 rounded-lg p-4 text-center border border-gray-200">
                                             <p className="text-2xl font-bold text-gray-900 mb-1">{status.count}</p>
                                             <p className="text-sm font-medium text-gray-600 capitalize">{status._id}</p>
@@ -2491,7 +2709,6 @@ const Admin = () => {
                                     >
                                         <option value="">All Categories</option>
                                         <option value="furniture">Furniture</option>
-                                        <option value="slabs">Slabs</option>
                                     </select>
                                     <select
                                         value={productsStatusFilter}
@@ -2612,7 +2829,7 @@ const Admin = () => {
                                                             const endDate = product.discount.endDate ? new Date(product.discount.endDate) : null;
 
                                                             if (startDate && now < startDate) {
-                                                                const daysUntil = Math.ceil((startDate - now) / (1000 * 60 * 60 * 24));
+                                                                const daysUntil = Math.ceil((startDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
                                                                 return (
                                                                     <div>
                                                                         <span className="px-2 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full">
@@ -2635,7 +2852,7 @@ const Admin = () => {
                                                                     </div>
                                                                 );
                                                             } else {
-                                                                const daysRemaining = endDate ? Math.ceil((endDate - now) / (1000 * 60 * 60 * 24)) : null;
+                                                                const daysRemaining = endDate ? Math.ceil((endDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)) : null;
                                                                 return (
                                                                     <div>
                                                                         <span className={`px-2 py-1 text-xs font-medium rounded-full ${daysRemaining && daysRemaining <= 3
@@ -2762,6 +2979,223 @@ const Admin = () => {
                         </div>
                     )}
 
+                    {/* Categories Tab */}
+                    {activeTab === 'categories' && (
+                        <div className="space-y-6">
+                            <div className="flex justify-between items-center">
+                                <h2 className="text-2xl font-bold text-gray-900">Category Management</h2>
+                            </div>
+
+                            <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
+                                <h3 className="text-sm font-semibold text-gray-700 mb-3">All Categories</h3>
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                                    {categoryOptions.map((category) => {
+                                        const meta = categoryMetaMap[category] || { subcategories: [], count: 0 };
+                                        const isActive = category === selectedCategoryId;
+                                        return (
+                                            <button
+                                                key={category}
+                                                onClick={() => setSelectedCategoryId(category)}
+                                                className={`text-left p-3 rounded-lg border transition-colors ${isActive
+                                                    ? 'border-blue-500 bg-blue-50'
+                                                    : 'border-gray-200 hover:border-blue-300 hover:bg-gray-50'
+                                                    }`}
+                                            >
+                                                <p className="font-semibold text-gray-900">{getCategoryLabel(category)}</p>
+                                                <p className="text-xs text-gray-600 mt-1">
+                                                    {meta.count || 0} products • {meta.subcategories.length || 0} subcategories
+                                                </p>
+                                            </button>
+                                        );
+                                    })}
+                                    {categoryOptions.length === 0 && (
+                                        <div className="text-sm text-gray-500">No categories found.</div>
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <select
+                                        value={selectedCategoryId}
+                                        onChange={(e) => setSelectedCategoryId(e.target.value)}
+                                        className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                    >
+                                        {categoryOptions.map((category) => (
+                                            <option key={category} value={category}>
+                                                {getCategoryLabel(category)}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <input
+                                        type="text"
+                                        value={newSubcategoryName}
+                                        onChange={(e) => setNewSubcategoryName(e.target.value)}
+                                        placeholder="New custom subcategory"
+                                        className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                    />
+                                    <button
+                                        onClick={handleAddCustomSubcategory}
+                                        disabled={categorySaving}
+                                        className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium disabled:opacity-50"
+                                    >
+                                        Add Subcategory
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
+                                <h3 className="text-sm font-semibold text-gray-700 mb-3">Add Product To Category</h3>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <select
+                                        value={selectedProductIdForCategory}
+                                        onChange={(e) => setSelectedProductIdForCategory(e.target.value)}
+                                        className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                    >
+                                        <option value="">Select Product</option>
+                                        {allProductsForCategoryManagement
+                                            .filter((product) => String(product.category || '') !== selectedCategoryId)
+                                            .map((product) => (
+                                                <option key={product.productId} value={product.productId}>
+                                                    {product.name} ({product.productId})
+                                                </option>
+                                            ))}
+                                    </select>
+
+                                    <select
+                                        value={targetSubcategoryForCategory}
+                                        onChange={(e) => setTargetSubcategoryForCategory(e.target.value)}
+                                        className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                    >
+                                        <option value="">Select Subcategory</option>
+                                        {getAllSubcategoriesForSelectedCategory().map((sub) => (
+                                            <option key={sub} value={sub}>{sub}</option>
+                                        ))}
+                                    </select>
+
+                                    <button
+                                        onClick={handleAssignProductToCategory}
+                                        disabled={categorySaving}
+                                        className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium disabled:opacity-50"
+                                    >
+                                        Add Product
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                                <div className="p-4 border-b border-gray-200">
+                                    <h3 className="text-lg font-semibold text-gray-900">
+                                        Custom Subcategories for {selectedCategoryId || 'Category'}
+                                    </h3>
+                                </div>
+
+                                <div className="divide-y divide-gray-100">
+                                    {(customCategoryData[selectedCategoryId] || []).length === 0 && (
+                                        <div className="p-6 text-sm text-gray-500">No custom subcategories found.</div>
+                                    )}
+
+                                    {(customCategoryData[selectedCategoryId] || []).map((sub) => (
+                                        <div key={sub.id} className="p-4 flex items-center justify-between gap-3">
+                                            {editingCustomSubcategory?.subcategoryId === sub.id && editingCustomSubcategory?.categoryId === selectedCategoryId ? (
+                                                <input
+                                                    type="text"
+                                                    value={editingCustomSubcategory.name}
+                                                    onChange={(e) =>
+                                                        setEditingCustomSubcategory({
+                                                            ...editingCustomSubcategory,
+                                                            name: e.target.value,
+                                                        })
+                                                    }
+                                                    className="px-3 py-2 border border-gray-300 rounded-lg w-full max-w-md"
+                                                />
+                                            ) : (
+                                                <div className="text-gray-900 font-medium">{sub.name}</div>
+                                            )}
+
+                                            <div className="flex items-center gap-2">
+                                                {editingCustomSubcategory?.subcategoryId === sub.id && editingCustomSubcategory?.categoryId === selectedCategoryId ? (
+                                                    <>
+                                                        <button
+                                                            onClick={handleUpdateCustomSubcategory}
+                                                            disabled={categorySaving}
+                                                            className="px-3 py-2 text-sm bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50"
+                                                        >
+                                                            Save
+                                                        </button>
+                                                        <button
+                                                            onClick={() => setEditingCustomSubcategory(null)}
+                                                            className="px-3 py-2 text-sm bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
+                                                        >
+                                                            Cancel
+                                                        </button>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <button
+                                                            onClick={() =>
+                                                                setEditingCustomSubcategory({
+                                                                    categoryId: selectedCategoryId,
+                                                                    subcategoryId: sub.id,
+                                                                    name: sub.name,
+                                                                })
+                                                            }
+                                                            className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg"
+                                                        >
+                                                            <Edit2 className="w-4 h-4" />
+                                                        </button>
+                                                        <button
+                                                            onClick={() => handleDeleteCustomSubcategory(selectedCategoryId, sub.id)}
+                                                            className="p-2 text-red-600 hover:bg-red-50 rounded-lg"
+                                                        >
+                                                            <Trash2 className="w-4 h-4" />
+                                                        </button>
+                                                    </>
+                                                )}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                                <div className="p-4 border-b border-gray-200">
+                                    <h3 className="text-lg font-semibold text-gray-900">
+                                        Products In {selectedCategoryId || 'Category'}
+                                    </h3>
+                                </div>
+
+                                <div className="divide-y divide-gray-100">
+                                    {categoryProducts.length === 0 && (
+                                        <div className="p-6 text-sm text-gray-500">No products in this category.</div>
+                                    )}
+
+                                    {categoryProducts.map((product) => (
+                                        <div key={product.productId} className="p-4 flex items-center justify-between gap-3">
+                                            <div>
+                                                <p className="font-medium text-gray-900">{product.name}</p>
+                                                <p className="text-xs text-gray-500">
+                                                    {product.productId} • {product.subcategory || 'no-subcategory'}
+                                                </p>
+                                            </div>
+
+                                            <button
+                                                onClick={() => handleRemoveProductFromCategory(product)}
+                                                disabled={categorySaving}
+                                                className="px-3 py-2 text-sm bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50"
+                                            >
+                                                Remove From Category
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Home Page Management Tab */}
+                    {activeTab === 'homepage' && <HomePageManagement />}
+
                     {/* Product Modal */}
                     {showProductModal && isMounted && typeof document !== 'undefined' && document.body && createPortal(
                         <div
@@ -2799,6 +3233,7 @@ const Admin = () => {
                                         previewLoading={previewLoading}
                                         onSave={async (productData, images, customSpecs, video) => {
                                             try {
+                                                void customSpecs;
                                                 setProductLoading(true);
                                                 // Extract File objects from ProductImage array (new images only)
                                                 const newImageFiles = images
@@ -2817,7 +3252,7 @@ const Admin = () => {
                                                 };
 
                                                 if (editingProduct) {
-                                                    await adminProductService.updateProduct(
+                                                    await adminProductApi.updateProduct(
                                                         editingProduct.productId,
                                                         finalProductData,
                                                         newImageFiles,
@@ -2825,7 +3260,7 @@ const Admin = () => {
                                                         !video // removeVideo flag
                                                     );
                                                 } else {
-                                                    await adminProductService.createProduct(
+                                                    await adminProductApi.createProduct(
                                                         finalProductData,
                                                         newImageFiles,
                                                         video || null // video file
@@ -2856,10 +3291,10 @@ const Admin = () => {
                                                     .filter(img => img.isExisting && img.url)
                                                     .map(img => img.url);
 
-                                                const response = await adminProductService.previewProduct(
+                                                const response = await adminProductApi.previewProduct(
                                                     productData,
                                                     newImageFiles,
-                                                    undefined, // video
+                                                    video || undefined,
                                                     existingImageUrls
                                                 );
                                                 if (response.success) {
@@ -2874,8 +3309,6 @@ const Admin = () => {
                                                 setPreviewLoading(false);
                                             }
                                         }}
-                                        loading={productLoading}
-                                        previewLoading={previewLoading}
                                     />
                                 </div>
                             </div>
@@ -3228,10 +3661,10 @@ const Admin = () => {
                                                         <div className="flex items-center justify-between">
                                                             <span className="text-sm font-medium text-gray-500">Price:</span>
                                                             <div className="text-right">
-                                                                {previewProduct.discount?.enabled && previewProduct.discountedPrice ? (
+                                                                {previewProduct.discount?.enabled && previewProduct.discount?.percentage ? (
                                                                     <>
                                                                         <span className="text-lg font-bold text-gray-900">
-                                                                            ₹{previewProduct.discountedPrice.toLocaleString('en-IN')}
+                                                                            ₹{Math.round(previewProduct.priceINR * (1 - (previewProduct.discount.percentage / 100))).toLocaleString('en-IN')}
                                                                         </span>
                                                                         <br />
                                                                         <span className="text-sm text-gray-500 line-through">

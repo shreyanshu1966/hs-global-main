@@ -1,9 +1,8 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
-import { optimizeCloudinaryUrl, getCollectionCloudinaryUrl } from '../utils/collectionCloudinary';
-import { categories } from '../data/products';
-import type { Subcategory } from '../data/products';
+import { optimizeCloudinaryUrl } from '../utils/collectionCloudinary';
+import { productService } from '../services/productService';
 
 type MainCategory = "marble" | "granite" | "sandstone" | "onyx" | "travertine";
 
@@ -19,76 +18,69 @@ interface StoneGroup {
   stones: StoneItem[];
 }
 
-function buildGroupsFromProducts(): StoneGroup[] {
-  const mainCategories: { key: MainCategory; title: string }[] = [
-    { key: "marble", title: "Marble" },
-    { key: "granite", title: "Granite" },
-    { key: "sandstone", title: "Sandstone" },
-    { key: "onyx", title: "Onyx" },
-    { key: "travertine", title: "Travertine" },
-  ];
-
-  const slabsCategory = categories.find(c => c.id === 'slabs');
-  if (!slabsCategory) return [];
-
-  const extractProducts = (sub: Subcategory): any[] => { // Using any[] temporarily for Product type
-    let prods: any[] = [];
-    if (sub.products) prods.push(...sub.products);
-    if (sub.subcategories) {
-      sub.subcategories.forEach(s => {
-        prods.push(...extractProducts(s));
-      });
-    }
-    return prods;
-  };
-
-  const result: StoneGroup[] = [];
-
-  for (const cat of mainCategories) {
-    // Find the specific category (e.g. "granite") inside "slabs"
-    const targetSub = slabsCategory.subcategories.find(s => s.id === cat.key);
-
-    if (!targetSub) continue;
-
-    // Collect all products under this category (e.g. Granite -> Alaska -> Product)
-    const categoryProducts = extractProducts(targetSub);
-
-    // Convert to StoneItem format
-    const items: StoneItem[] = categoryProducts
-      .filter(p => p.image || (p.images && p.images.length > 0))
-      .map((product) => {
-        let imageUrl = product.image;
-        if (!imageUrl && product.images && product.images.length > 0) {
-          // Convert /src/assets/Collection/... to Collection/...
-          const relativePath = product.images[0].replace('/src/assets/Collection/', '');
-          imageUrl = getCollectionCloudinaryUrl(relativePath);
-        }
-
-        return {
-          id: product.id,
-          name: product.name,
-          image: optimizeCloudinaryUrl(imageUrl || "", {
-            width: 200,
-            height: 200,
-            quality: 85,
-            format: 'auto'
-          }),
-          category: cat.key,
-        };
-      });
-
-    // Take up to 8 items
-    result.push({ title: cat.title, stones: items.slice(0, 8) });
-  }
-
-  return result;
-}
-
 const ChooseStone: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const DEMO_IMG = "/general/marble.jpg";
-  const groups = useMemo(() => buildGroupsFromProducts(), []);
+  const [groups, setGroups] = useState<StoneGroup[]>([]);
+
+  useEffect(() => {
+    let isCancelled = false;
+
+    const loadGroups = async () => {
+      const mainCategories: { key: MainCategory; title: string }[] = [
+        { key: "marble", title: "Marble" },
+        { key: "granite", title: "Granite" },
+        { key: "sandstone", title: "Sandstone" },
+        { key: "onyx", title: "Onyx" },
+        { key: "travertine", title: "Travertine" },
+      ];
+
+      try {
+        const responses = await Promise.all(
+          mainCategories.map((cat) =>
+            productService.getProductsByCategory('slabs', {
+              subcategory: cat.key,
+              limit: 8,
+              sortBy: 'featured',
+              sortOrder: 'desc',
+            })
+          )
+        );
+
+        if (isCancelled) return;
+
+        const nextGroups: StoneGroup[] = responses.map((response, index) => {
+          const categoryInfo = mainCategories[index];
+          const items: StoneItem[] = response.success
+            ? (response.data.products || []).map((product) => ({
+                id: product.productId,
+                name: product.name,
+                image: optimizeCloudinaryUrl(product.image || product.images?.[0] || DEMO_IMG, {
+                  width: 200,
+                  height: 200,
+                  quality: 85,
+                  format: 'auto',
+                }),
+                category: categoryInfo.key,
+              }))
+            : [];
+
+          return { title: categoryInfo.title, stones: items.slice(0, 8) };
+        });
+
+        setGroups(nextGroups.filter((group) => group.stones.length > 0));
+      } catch (error) {
+        console.error('Failed to load stone groups:', error);
+        if (!isCancelled) setGroups([]);
+      }
+    };
+
+    loadGroups();
+    return () => {
+      isCancelled = true;
+    };
+  }, []);
 
   const handleClick = (stone: StoneItem) => {
     navigate(`/products/${stone.id}`);

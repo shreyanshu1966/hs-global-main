@@ -13,8 +13,11 @@ class PaymentMonitor {
             failedPayments: 0,
             averageProcessingTime: 0,
             riskDistribution: { LOW: 0, MEDIUM: 0, HIGH: 0 },
+            pricingMismatches24h: 0,
             lastUpdated: null
         };
+
+        this.pricingTelemetry = [];
         
         // Update metrics every 5 minutes
         setInterval(() => {
@@ -74,6 +77,57 @@ class PaymentMonitor {
         } catch (error) {
             console.error('Failed to update payment metrics:', error);
         }
+    }
+
+    /**
+     * Record pricing telemetry emitted by checkout flow.
+     */
+    recordPricingTelemetry(entry) {
+        const normalized = {
+            timestamp: new Date(),
+            severity: entry?.severity || 'info',
+            source: entry?.source || 'checkout',
+            userId: entry?.userId || null,
+            localTotalINR: Number(entry?.localTotalINR || 0),
+            backendTotalINR: Number(entry?.backendTotalINR || 0),
+            deltaINR: Number(entry?.deltaINR || 0),
+            itemCount: Number(entry?.itemCount || 0),
+            lineMismatches: Array.isArray(entry?.lineMismatches) ? entry.lineMismatches : []
+        };
+
+        this.pricingTelemetry.push(normalized);
+
+        // Keep in-memory buffer bounded.
+        if (this.pricingTelemetry.length > 1000) {
+            this.pricingTelemetry = this.pricingTelemetry.slice(-1000);
+        }
+
+        const since24h = Date.now() - 24 * 60 * 60 * 1000;
+        this.metrics.pricingMismatches24h = this.pricingTelemetry.filter(
+            (item) => new Date(item.timestamp).getTime() >= since24h && item.severity === 'warning'
+        ).length;
+
+        if (normalized.severity === 'warning') {
+            console.warn('⚠️ Pricing mismatch telemetry recorded:', {
+                source: normalized.source,
+                deltaINR: normalized.deltaINR,
+                itemCount: normalized.itemCount,
+                lineMismatches: normalized.lineMismatches.length
+            });
+        }
+    }
+
+    getPricingTelemetrySummary() {
+        const since24h = Date.now() - 24 * 60 * 60 * 1000;
+        const last24h = this.pricingTelemetry.filter(
+            (item) => new Date(item.timestamp).getTime() >= since24h
+        );
+
+        return {
+            totalEvents24h: last24h.length,
+            warningEvents24h: last24h.filter((item) => item.severity === 'warning').length,
+            latestEvents: last24h.slice(-20)
+        };
     }
 
     /**

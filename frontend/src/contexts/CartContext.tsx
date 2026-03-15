@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
+import { getEffectivePriceINR } from '../modules/product/pricing';
 
 export interface CartItem {
   id: string;
@@ -214,7 +215,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const getTotalPriceNumeric = (): number => {
     return state.items.reduce((sum, item) => {
-      return sum + (item.priceINR * item.quantity);
+      return sum + (getEffectivePriceINR(item) * item.quantity);
     }, 0);
   };
 

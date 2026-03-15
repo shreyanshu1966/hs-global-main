@@ -3,6 +3,12 @@ import { useHorizontalCarousel } from './useHorizontalCarousel';
 import { useEffect, useState } from 'react';
 import { fetchItsbitsProducts, ItsbitsCardItem } from './productData';
 
+interface NewArrivalsCarouselProps {
+  headingTitle?: string;
+  ctaText?: string;
+  ctaLink?: string;
+}
+
 const fallbackArrivals: ItsbitsCardItem[] = [
   { id: 'fallback-1', image: '/products-hero.webp', title: 'Premium Italian Marble Slabs', designer: 'Marble Collection', price: 'Request Quote', href: '/products' },
   { id: 'fallback-2', image: '/marble-solutions.webp', title: 'Custom Marble Vanities', designer: 'Bespoke Studio', price: 'Made to Order', href: '/products' },
@@ -12,7 +18,11 @@ const fallbackArrivals: ItsbitsCardItem[] = [
   { id: 'fallback-6', image: '/about-hero.webp', title: 'Architectural Stone Projects', designer: 'Project Solutions', price: 'Consultation', href: '/products' },
 ];
 
-const NewArrivalsCarousel = () => {
+const NewArrivalsCarousel = ({
+  headingTitle = 'HS Global Highlights',
+  ctaText = 'Explore All Products',
+  ctaLink = '/products',
+}: NewArrivalsCarouselProps) => {
   const { trackRef, canScrollPrev, canScrollNext, scrollPrev, scrollNext } = useHorizontalCarousel(0.82);
   const [newArrivals, setNewArrivals] = useState<ItsbitsCardItem[]>(fallbackArrivals);
 
@@ -55,10 +65,10 @@ const NewArrivalsCarousel = () => {
         {/* Left Title Block */}
         <div className="itsbits-highlight-copy flex-shrink-0 flex flex-col justify-start mt-2">
           <h2 className="itsbits-highlight-title">
-            HS Global Highlights
+            {headingTitle}
           </h2>
-          <a href="/products" className="itsbits-highlight-cta hover:opacity-70 transition-opacity">
-            Explore All Products
+          <a href={ctaLink} className="itsbits-highlight-cta hover:opacity-70 transition-opacity">
+            {ctaText}
           </a>
         </div>
 

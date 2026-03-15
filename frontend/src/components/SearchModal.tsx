@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { X, Search } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { categories, Product } from '../data/products';
+import { productService, type Product } from '../services/productService';
 import gsap from 'gsap';
 
 interface SearchModalProps {
@@ -24,42 +24,34 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
             return;
         }
 
-        const query = searchQuery.toLowerCase();
-        const results: Array<{ product: Product; subcategoryId: string; categoryId: string }> = [];
+        const timer = setTimeout(async () => {
+            try {
+                const response = await productService.searchProducts(searchQuery.trim(), { limit: 10, page: 1 });
+                if (!response.success || !Array.isArray(response.data)) {
+                    setSearchResults([]);
+                    return;
+                }
 
-        categories.forEach((category) => {
-            const searchInSubcategories = (subcategories: any[], categoryId: string) => {
-                subcategories.forEach((subcategory) => {
-                    if (subcategory.products) {
-                        subcategory.products.forEach((product: Product) => {
-                            if (
-                                product.name.toLowerCase().includes(query) ||
-                                product.description?.toLowerCase().includes(query)
-                            ) {
-                                results.push({
-                                    product,
-                                    subcategoryId: subcategory.id,
-                                    categoryId,
-                                });
-                            }
-                        });
-                    }
-                    if (subcategory.subcategories) {
-                        searchInSubcategories(subcategory.subcategories, categoryId);
-                    }
-                });
-            };
+                setSearchResults(
+                    response.data.map((product) => ({
+                        product,
+                        subcategoryId: product.subcategory,
+                        categoryId: product.category,
+                    }))
+                );
+            } catch (error) {
+                console.error('Search failed:', error);
+                setSearchResults([]);
+            }
+        }, 250);
 
-            searchInSubcategories(category.subcategories, category.id);
-        });
-
-        setSearchResults(results.slice(0, 10)); // Limit to 10 results
+        return () => clearTimeout(timer);
     }, [searchQuery]);
 
     // Handle product click
     const handleProductClick = (result: typeof searchResults[0]) => {
         sessionStorage.setItem('scrollY', '0');
-        navigate(`/products/${result.product.id}`, {
+        navigate(`/products/${result.product.productId || (result.product as any).id}`, {
             state: { targetProduct: result.product.name },
         });
         onClose();
@@ -200,14 +192,14 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
                         <div className="p-2">
                             {searchResults.map((result, index) => (
                                 <button
-                                    key={`${result.product.id}-${index}`}
+                                    key={`${result.product.productId || (result.product as any).id}-${index}`}
                                     onClick={() => handleProductClick(result)}
                                     className="search-result-item w-full flex items-center gap-4 p-3 hover:bg-gray-50 rounded-lg transition-colors text-left"
                                     style={{ opacity: 0 }}
                                 >
-                                    {result.product.images && result.product.images[0] && (
+                                    {(result.product.image || (result.product.images && result.product.images[0])) && (
                                         <img
-                                            src={result.product.images[0]}
+                                            src={result.product.image || result.product.images?.[0]}
                                             alt={result.product.name}
                                             className="w-16 h-16 object-cover rounded-lg"
                                         />

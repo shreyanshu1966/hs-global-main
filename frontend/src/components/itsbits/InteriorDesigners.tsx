@@ -1,20 +1,31 @@
 import { useHorizontalCarousel } from './useHorizontalCarousel';
 
-const InteriorDesigners = () => {
+interface CollectionCard {
+  title: string;
+  link: string;
+  image: string;
+}
+
+interface InteriorDesignersProps {
+  sectionTitle?: string;
+  cards?: CollectionCard[];
+}
+
+const InteriorDesigners = ({ sectionTitle = 'Explore HS Global Collections', cards: cardsProp = [] }: InteriorDesignersProps) => {
   const { trackRef, canScrollPrev, canScrollNext, scrollPrev, scrollNext } = useHorizontalCarousel(0.85);
 
-  const designers = [
-    { name: 'Marble Coffee Tables', link: '/products?cat=furniture#coffee-table', img: '/marble-solutions.webp' },
-    { name: 'Marble Console Tables', link: '/products?cat=furniture#console-table', img: '/granite-solutions.webp' },
-    { name: 'Luxury Marble Furniture', link: '/products?cat=furniture', img: '/service.webp' },
-    { name: 'Project Gallery', link: '/gallery', img: '/gallery-hero.webp' },
-    { name: 'Talk to HS Global Team', link: '/contact', img: '/export.webp' },
+  const designers = cardsProp.length > 0 ? cardsProp : [
+    { title: 'Marble Coffee Tables', link: '/products?cat=furniture#coffee-table', image: '/marble-solutions.webp' },
+    { title: 'Marble Console Tables', link: '/products?cat=furniture#console-table', image: '/granite-solutions.webp' },
+    { title: 'Luxury Marble Furniture', link: '/products?cat=furniture', image: '/service.webp' },
+    { title: 'Project Gallery', link: '/gallery', image: '/gallery-hero.webp' },
+    { title: 'Talk to HS Global Team', link: '/contact', image: '/export.webp' },
   ];
 
   return (
     <section className="itsbits-section-rail itsbits-collections-section">
       <h2 className="dibs-section-title itsbits-collections-title itsbits-collections-title-base">
-        Explore HS Global Collections
+        {sectionTitle}
       </h2>
 
       <div className="relative">
@@ -39,8 +50,8 @@ const InteriorDesigners = () => {
             >
               <div className="itsbits-collections-image itsbits-collections-image-base">
                 <img
-                  src={designer.img}
-                  alt={designer.name}
+                  src={designer.image}
+                  alt={designer.title}
                   className="itsbits-collections-image-media group-hover:opacity-90 transition-opacity duration-300"
                   onError={(e) => {
                     e.currentTarget.src = `https://placehold.co/400x500/e2e2e2/333?text=Designer+${i + 1}`;
@@ -48,7 +59,7 @@ const InteriorDesigners = () => {
                 />
               </div>
               <span className="itsbits-collections-name itsbits-collections-name-base group-hover:underline underline-offset-4">
-                {designer.name}
+                {designer.title}
               </span>
             </a>
           ))}

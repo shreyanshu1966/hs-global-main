@@ -1,12 +1,22 @@
-import React, { useState } from 'react';
-import { ZoomIn, Heart, Award } from 'lucide-react';
+import { useState } from 'react';
+import { ZoomIn, Heart } from 'lucide-react';
+import { getDiscountPercentage, hasActiveDiscount } from '../../modules/product/pricing';
+import { getProductDisplayImages } from '../../modules/product/selectors';
 
 interface ProductGalleryProps {
     product: {
         name: string;
         images: string[];
-        hasDiscount?: boolean;
-        discountPercentage?: number;
+        sortedImages?: string[];
+        image?: string;
+        priceINR?: number;
+        discount?: {
+            enabled: boolean;
+            percentage: number;
+            startDate?: string | null;
+            endDate?: string | null;
+            description?: string;
+        };
     };
 }
 
@@ -14,13 +24,17 @@ export function ProductGallery({ product }: ProductGalleryProps) {
     const [selectedImage, setSelectedImage] = useState(0);
     const [isImageZoomed, setIsImageZoomed] = useState(false);
     const [isFavorite, setIsFavorite] = useState(false);
+    const galleryImages = getProductDisplayImages(product as any);
+    const images = galleryImages.length > 0 ? galleryImages : product.images;
+    const hasDiscount = hasActiveDiscount(product as any);
+    const discountPercentage = getDiscountPercentage(product as any);
 
     return (
         <div className="flex flex-col gap-6">
             {/* Main Image */}
             <div className="aspect-[4/3] bg-[#FAF8F5] relative group overflow-hidden">
                 <img
-                    src={product.images[selectedImage]}
+                    src={images[selectedImage]}
                     alt={product.name}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
@@ -46,19 +60,19 @@ export function ProductGallery({ product }: ProductGalleryProps) {
                 </div>
 
                 {/* Discount Badge */}
-                {product.hasDiscount && product.discountPercentage && (
+                {hasDiscount && discountPercentage > 0 && (
                     <div className="absolute bottom-4 right-4">
                         <div className="bg-[#8B3A3A] text-white px-4 py-2 font-bold text-sm flex items-center gap-1.5 uppercase tracking-wide">
-                            Sale -{product.discountPercentage}%
+                            Sale -{discountPercentage}%
                         </div>
                     </div>
                 )}
             </div>
 
             {/* Thumbnails */}
-            {product.images.length > 1 && (
+            {images.length > 1 && (
                 <div className="grid grid-cols-5 md:grid-cols-6 gap-3">
-                    {product.images.slice(0, 6).map((img, idx) => (
+                    {images.slice(0, 6).map((img, idx) => (
                         <button
                             key={idx}
                             onClick={() => setSelectedImage(idx)}
@@ -85,13 +99,13 @@ export function ProductGallery({ product }: ProductGalleryProps) {
                     onClick={() => setIsImageZoomed(false)}
                 >
                     <img
-                        src={product.images[selectedImage]}
+                        src={images[selectedImage]}
                         alt={product.name}
                         className="max-w-full max-h-[90vh] object-contain cursor-default"
                         onClick={(e) => e.stopPropagation()}
                     />
                     <div className="absolute bottom-8 text-[#2B2B2B] text-sm uppercase tracking-wider">
-                        {selectedImage + 1} / {product.images.length}
+                        {selectedImage + 1} / {images.length}
                     </div>
                 </div>
             )}

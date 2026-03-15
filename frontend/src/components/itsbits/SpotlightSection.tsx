@@ -1,21 +1,33 @@
 import { useHorizontalCarousel } from './useHorizontalCarousel';
 
-const SpotlightSection = () => {
+interface SpotlightCard {
+  title: string;
+  subtitle: string;
+  image: string;
+  link: string;
+}
+
+interface SpotlightSectionProps {
+  sectionTitle?: string;
+  cards?: SpotlightCard[];
+}
+
+const SpotlightSection = ({ sectionTitle = 'HS Global Spotlight', cards: cardsProp = [] }: SpotlightSectionProps) => {
   const { trackRef, canScrollPrev, canScrollNext, scrollPrev, scrollNext } = useHorizontalCarousel(0.9);
 
-  const cards = [
+  const cards = cardsProp.length > 0 ? cardsProp : [
     { title: 'Italian Marble Excellence', sub: 'Browse Slab Collections', img: '/marble-solutions.webp' },
     { title: 'Premium Granite Program', sub: 'Explore Granite Range', img: '/granite-solutions.webp' },
     { title: 'Luxury Furniture Craft', sub: 'View Furniture Pieces', img: '/service.webp' },
     { title: 'Global Export Network', sub: 'See Delivery Capability', img: '/export.webp' },
     { title: 'Tailored Fabrication', sub: 'Review Custom Services', img: '/services-custom-fabrication.png' },
     { title: 'Project Gallery', sub: 'Discover Completed Works', img: '/gallery-hero.webp' },
-  ];
+  ].map((card) => ({ title: card.title, subtitle: card.sub, image: card.img, link: '/products' }));
 
   return (
     <section className="w-full itsbits-section-rail itsbits-spotlight-section">
       <h2 className="dibs-section-title text-center itsbits-spotlight-title">
-        HS Global Spotlight
+        {sectionTitle}
       </h2>
 
       <div className="relative">
@@ -33,13 +45,14 @@ const SpotlightSection = () => {
         <div className="itsbits-rail-shell">
           <div ref={trackRef} className="itsbits-track itsbits-track-tight overflow-x-auto scroll-smooth">
             {cards.map((item, i) => (
-              <div 
+              <a
                 key={i} 
+                href={item.link || '/products'}
                 className="shrink-0 cursor-pointer group itsbits-spotlight-item"
               >
                 <div className="itsbits-spotlight-image-wrap">
                   <img 
-                    src={item.img} 
+                    src={item.image} 
                     alt={item.title} 
                     className="w-full group-hover:opacity-90 transition-opacity duration-200"
                     onError={(e) => {
@@ -52,9 +65,9 @@ const SpotlightSection = () => {
                   {item.title}
                 </div>
                 <div className="dibs-body-light text-[#222] group-hover:underline underline-offset-4 itsbits-spotlight-item-subtitle">
-                  {item.sub}
+                  {item.subtitle}
                 </div>
-              </div>
+              </a>
             ))}
           </div>
           <div className="itsbits-swipe-cue md:hidden" aria-hidden="true">Swipe</div>

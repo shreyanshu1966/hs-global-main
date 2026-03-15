@@ -3,34 +3,17 @@ import { Link } from 'react-router-dom';
 import { Product } from '../../services/productService';
 import { useCurrency } from '../../contexts/CurrencyContext';
 import { getProductCloudinaryUrl } from '../../utils/productCloudinary';
+import {
+    hasActiveDiscount,
+    getBasePriceINR,
+    getEffectivePriceINR,
+} from '../../modules/product/pricing';
+import { getProductDisplayImages } from '../../modules/product/selectors';
 
 interface ProductCardProps {
     product: Product;
     className?: string;
 }
-
-/* ---- Build video URL from product name + subcategory ---- */
-const getVideoUrl = (name: string, subcategory: string): string => {
-    const sub = subcategory.toLowerCase();
-
-    // Convert hyphenated slug OR spaced string to folder-friendly title case:
-    // "coffee-table" → "Coffee Table"    "Coffee Table" → "Coffee Table"
-    const slugToFolder = (s: string) =>
-        s.replace(/-/g, ' ')              // hyphens → spaces first
-            .replace(/\s+/g, ' ')
-            .trim()
-            .replace(/\b\w/g, c => c.toUpperCase());
-
-    // Use product name exactly as stored in DB (folder names match DB product names)
-    const folderName = name.trim();
-    const folderSub = slugToFolder(subcategory);
-
-    if (sub.includes('table')) return `/videos/Tables/${folderSub}/${folderName}/video.mp4`;
-    if (sub.includes('sculpture')) return `/videos/Sculptures/${folderName}/video.mp4`;
-    if (sub.includes('pedestal') || sub.includes('countertop')) return `/videos/Wash Basins/${folderSub}/${folderName}/video.mp4`;
-    if (sub.includes('basin')) return `/videos/Wash Basins/${folderSub}/${folderName}/video.mp4`;
-    return `/videos/${folderSub}/${folderName}/video.mp4`;
-};
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '' }) => {
     const VIDEO_START_DELAY_MS = 1300;
@@ -41,32 +24,21 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
     const [imgHover, setImgHover] = useState(false);
     const [isTouchDevice, setIsTouchDevice] = useState(false);
     const [isInMiddleBand, setIsInMiddleBand] = useState(false);
-    const [hasUserInteracted, setHasUserInteracted] = useState(false);
     const cardRef = useRef<HTMLDivElement>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
     const videoStartTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     // ---- Pricing ----
-    const { finalPrice, originalPrice, hasDiscount } = useMemo(() => {
-        const now = new Date();
-        const discount = product.discount;
-        const active = discount?.enabled &&
-            discount.percentage > 0 &&
-            (!discount.startDate || new Date(discount.startDate) <= now) &&
-            (!discount.endDate || new Date(discount.endDate) >= now);
-        if (active && product.priceINR) {
-            const off = Math.round((product.priceINR * discount.percentage) / 100);
-            return { hasDiscount: true, finalPrice: product.priceINR - off, originalPrice: product.priceINR };
-        }
-        return { hasDiscount: false, finalPrice: product.priceINR || 0, originalPrice: product.priceINR || 0 };
-    }, [product]);
+    const hasDiscount = useMemo(() => hasActiveDiscount(product), [product]);
+    const finalPrice = useMemo(() => getEffectivePriceINR(product), [product]);
+    const originalPrice = useMemo(() => getBasePriceINR(product), [product]);
 
     const displayPrice = product.priceINR ? formatPrice(finalPrice) : 'Price on Request';
 
     // ---- Images ----
     const images = useMemo(() => {
-        const src = (product.sortedImages?.length ?? 0) > 0
-            ? product.sortedImages!
+        const src = getProductDisplayImages(product).length > 0
+            ? getProductDisplayImages(product)
             : [product.image, ...(product.images || [])].filter(Boolean);
         const transformed = src.map(p => {
             if (!p) return '';
@@ -81,7 +53,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
 
     // ---- Video URL (only for furniture, never null here — errors handled by onError) ----
     const isFurniture = product.category === 'furniture';
-    const videoUrl = isFurniture ? getVideoUrl(product.name, product.subcategory || '') : null;
+    const videoUrl = isFurniture && (product.hasVideo || Boolean(product.videoUrl)) ? product.videoUrl || null : null;
 
     useEffect(() => {
         if (typeof window === 'undefined') return;
@@ -109,29 +81,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
     }, []);
 
     useEffect(() => {
-        if (typeof window === 'undefined') return;
-
-        const markUserInteracted = () => {
-            setHasUserInteracted(true);
-        };
-
-        const options: AddEventListenerOptions = { passive: true };
-        window.addEventListener('scroll', markUserInteracted, options);
-        window.addEventListener('touchstart', markUserInteracted, options);
-        window.addEventListener('mousemove', markUserInteracted, options);
-        window.addEventListener('wheel', markUserInteracted, options);
-        window.addEventListener('keydown', markUserInteracted);
-
-        return () => {
-            window.removeEventListener('scroll', markUserInteracted);
-            window.removeEventListener('touchstart', markUserInteracted);
-            window.removeEventListener('mousemove', markUserInteracted);
-            window.removeEventListener('wheel', markUserInteracted);
-            window.removeEventListener('keydown', markUserInteracted);
-        };
-    }, []);
-
-    useEffect(() => {
         if (typeof window === 'undefined' || !cardRef.current || typeof IntersectionObserver === 'undefined') {
             return;
         }
@@ -155,7 +104,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
     }, []);
 
     const shouldShowVideo = Boolean(
-        hasUserInteracted && isFurniture && videoUrl && !videoError && (imgHover || isInMiddleBand)
+        isFurniture &&
+        videoUrl &&
+        !videoError &&
+        (isTouchDevice ? isInMiddleBand : imgHover)
     );
 
     useEffect(() => {
@@ -165,10 +117,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
         }
 
         if (shouldShowVideo) {
+            const startDelay = isTouchDevice ? VIDEO_START_DELAY_MS : 0;
             videoStartTimerRef.current = setTimeout(() => {
                 setShowVideo(true);
                 videoStartTimerRef.current = null;
-            }, VIDEO_START_DELAY_MS);
+            }, startDelay);
             return;
         }
 
@@ -179,7 +132,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
             videoRef.current.pause();
             videoRef.current.currentTime = 0;
         }
-    }, [VIDEO_START_DELAY_MS, shouldShowVideo]);
+    }, [VIDEO_START_DELAY_MS, isTouchDevice, shouldShowVideo]);
 
     useEffect(() => {
         return () => {
@@ -255,6 +208,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
                             onCanPlay={() => {
                                 setVideoReady(true);
                                 videoRef.current?.play().catch(() => { });
+                            }}
+                            onLoadedData={() => {
+                                setVideoReady(true);
                             }}
                         />
                     )}

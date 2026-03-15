@@ -3,6 +3,7 @@ import { X, Save, Eye, Image as ImageIcon, Video } from 'lucide-react';
 import ProductImageManager from '../components/ProductImageManager';
 import ProductSpecsEditor from '../components/ProductSpecsEditor';
 import ProductVideoManager from '../components/ProductVideoManager';
+import { productService, type Category } from '../services/productService';
 
 interface EnhancedProductFormProps {
   editingProduct?: any;
@@ -44,22 +45,13 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
   const [formData, setFormData] = useState({
     productId: '',
     name: '',
-    category: 'furniture',
     subcategory: '',
     description: '',
     priceINR: '',
     status: 'active',
     available: true,
     featured: false,
-    dimensions: {
-      length: '',
-      width: '',
-      height: '',
-      unit: 'cm'
-    },
-    weight: '',
     furnitureSpecs: {} as any,
-    slabSpecs: {} as any,
     discount: {
       enabled: false,
       percentage: 0,
@@ -70,13 +62,12 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
   });
 
   const [images, setImages] = useState<ProductImage[]>([]);
-  const [mainImageId, setMainImageId] = useState<string>('');
   const [customSpecs, setCustomSpecs] = useState<any[]>([]);
   const [showCustomSubcategory, setShowCustomSubcategory] = useState(false);
   const [customSubcategory, setCustomSubcategory] = useState('');
+  const [availableSubcategories, setAvailableSubcategories] = useState<string[]>([]);
   const [video, setVideo] = useState<VideoFile | null>(null);
   const [videoUploading, setVideoUploading] = useState(false);
-  const [imageUploadProgress, setImageUploadProgress] = useState<{ [key: string]: number }>({});
   
   // Loading states for form submission
   const [validationLoading, setValidationLoading] = useState(false);
@@ -85,18 +76,29 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
   // Computed value to disable form during any loading state
   const isFormDisabled = validationLoading || formSubmitting || loading || previewLoading || videoUploading;
 
-  // Predefined subcategories
-  const subcategories = {
-    furniture: [
-      'tables', 'coffee-table', 'console-table', 'dining-table', 'side-table',
-      'wash-basins', 'pedestal', 'countertop', 'sculptures', 'benches',
-      'planters', 'fountains', 'fireplace', 'columns', 'urns', 'other'
-    ],
-    slabs: [
-      'granite', 'marble', 'quartzite', 'onyx', 'limestone',
-      'travertine', 'sandstone', 'slate', 'other'
-    ]
-  };
+  // Load categories/subcategories dynamically from API (no hardcoded taxonomy).
+  useEffect(() => {
+    const loadDynamicCategories = async () => {
+      try {
+        const response = await productService.getCategories();
+        if (!response.success || !Array.isArray(response.data)) {
+          setAvailableSubcategories([]);
+          return;
+        }
+
+        const furnitureCategory = (response.data as Category[]).find(
+          (item) => String(item.category).toLowerCase() === 'furniture'
+        );
+
+        setAvailableSubcategories(furnitureCategory?.subcategories || []);
+      } catch (error) {
+        console.error('Failed to load categories for product form:', error);
+        setAvailableSubcategories([]);
+      }
+    };
+
+    loadDynamicCategories();
+  }, []);
 
   // Initialize form when editing
   useEffect(() => {
@@ -104,22 +106,13 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
       setFormData({
         productId: editingProduct.productId || '',
         name: editingProduct.name || '',
-        category: editingProduct.category || 'furniture',
         subcategory: editingProduct.subcategory || '',
         description: editingProduct.description || '',
         priceINR: editingProduct.priceINR || '',
         status: editingProduct.status || 'active',
         available: editingProduct.available !== false,
         featured: editingProduct.featured || false,
-        dimensions: {
-          length: editingProduct.dimensions?.length || '',
-          width: editingProduct.dimensions?.width || '',
-          height: editingProduct.dimensions?.height || '',
-          unit: editingProduct.dimensions?.unit || 'cm'
-        },
-        weight: editingProduct.weight || '',
         furnitureSpecs: editingProduct.furnitureSpecs || {},
-        slabSpecs: editingProduct.slabSpecs || {},
         discount: editingProduct.discount || {
           enabled: false,
           percentage: 0,
@@ -128,7 +121,6 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
           description: ''
         }
       });
-
       // Set existing images
       if (editingProduct.images && editingProduct.images.length > 0) {
         const existingImages = editingProduct.images.map((url: string, index: number) => ({
@@ -138,12 +130,17 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
           isExisting: true
         }));
         setImages(existingImages);
-        setMainImageId(existingImages[0]?.id || '');
       }
 
       // Set custom specs
       if (editingProduct.customSpecs) {
         setCustomSpecs(editingProduct.customSpecs);
+      }
+
+      // Legacy slabs records are edited as furniture with a custom subcategory.
+      if (editingProduct.category === 'slabs' && editingProduct.subcategory) {
+        setShowCustomSubcategory(true);
+        setCustomSubcategory(editingProduct.subcategory);
       }
 
       // Set existing video
@@ -161,6 +158,16 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
     }
   }, [editingProduct]);
 
+  useEffect(() => {
+    if (!editingProduct?.subcategory || availableSubcategories.length === 0) return;
+
+    const exists = availableSubcategories.includes(editingProduct.subcategory);
+    if (!exists) {
+      setShowCustomSubcategory(true);
+      setCustomSubcategory(editingProduct.subcategory);
+    }
+  }, [editingProduct, availableSubcategories]);
+
   const handleInputChange = (field: string, value: any) => {
     if (field.includes('.')) {
       const [parent, child] = field.split('.');
@@ -177,11 +184,7 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
   };
 
   const handleSpecsChange = (specs: any, customSpecsData?: any[]) => {
-    if (formData.category === 'furniture') {
-      setFormData(prev => ({ ...prev, furnitureSpecs: specs }));
-    } else {
-      setFormData(prev => ({ ...prev, slabSpecs: specs }));
-    }
+    setFormData(prev => ({ ...prev, furnitureSpecs: specs }));
 
     if (customSpecsData) {
       setCustomSpecs(customSpecsData);
@@ -196,7 +199,9 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
       setValidationLoading(true);
       
       // Validate required fields
-      if (!formData.productId || !formData.name || !formData.description || !formData.subcategory) {
+      const finalSubcategory = showCustomSubcategory ? customSubcategory.trim() : formData.subcategory;
+
+      if (!formData.productId || !formData.name || !formData.description || !finalSubcategory) {
         alert('Please fill in all required fields (Product ID, Name, Subcategory, Description)');
         setValidationLoading(false);
         return;
@@ -214,16 +219,17 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
 
       // Prepare final form data
       const finalFormData = {
-        ...formData,
-        subcategory: showCustomSubcategory ? customSubcategory : formData.subcategory,
+        productId: formData.productId,
+        name: formData.name,
+        category: 'furniture',
+        subcategory: finalSubcategory,
+        description: formData.description,
         priceINR: formData.priceINR ? parseFloat(formData.priceINR.toString()) : undefined,
-        weight: formData.weight ? parseFloat(formData.weight.toString()) : undefined,
-        dimensions: {
-          length: formData.dimensions.length ? parseFloat(formData.dimensions.length.toString()) : undefined,
-          width: formData.dimensions.width ? parseFloat(formData.dimensions.width.toString()) : undefined,
-          height: formData.dimensions.height ? parseFloat(formData.dimensions.height.toString()) : undefined,
-          unit: formData.dimensions.unit
-        },
+        status: formData.status,
+        available: formData.available,
+        featured: formData.featured,
+        furnitureSpecs: formData.furnitureSpecs,
+        discount: formData.discount,
         hasVideo: !!video
       };
 
@@ -256,10 +262,21 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
       }
       
       setValidationLoading(false);
+
+      const finalSubcategory = showCustomSubcategory ? customSubcategory.trim() : formData.subcategory;
       
       const finalFormData = {
-        ...formData,
-        subcategory: showCustomSubcategory ? customSubcategory : formData.subcategory,
+        productId: formData.productId,
+        name: formData.name,
+        category: 'furniture',
+        subcategory: finalSubcategory,
+        description: formData.description,
+        priceINR: formData.priceINR ? parseFloat(formData.priceINR.toString()) : undefined,
+        status: formData.status,
+        available: formData.available,
+        featured: formData.featured,
+        furnitureSpecs: formData.furnitureSpecs,
+        discount: formData.discount,
         hasVideo: !!video
       };
 
@@ -417,22 +434,6 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Category <span className="text-red-500">*</span>
-                </label>
-                <select
-                  required
-                  disabled={isFormDisabled}
-                  value={formData.category}
-                  onChange={(e) => handleInputChange('category', e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
-                >
-                  <option value="furniture">Furniture</option>
-                  <option value="slabs">Slabs</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
                   Subcategory <span className="text-red-500">*</span>
                 </label>
                 <select
@@ -450,7 +451,7 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="">Select Subcategory</option>
-                  {subcategories[formData.category as keyof typeof subcategories].map(sub => (
+                  {availableSubcategories.map(sub => (
                     <option key={sub} value={sub}>
                       {sub.charAt(0).toUpperCase() + sub.slice(1).replace('-', ' ')}
                     </option>
@@ -688,7 +689,7 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
                         const endDate = formData.discount.endDate ? new Date(formData.discount.endDate) : null;
 
                         if (startDate && now < startDate) {
-                          const daysUntil = Math.ceil((startDate - now) / (1000 * 60 * 60 * 24));
+                          const daysUntil = Math.ceil((startDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
                           return (
                             <p className="text-sm text-blue-700">
                               🟡 <strong>Scheduled:</strong> Discount will start in {daysUntil} day(s)
@@ -701,8 +702,8 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
                             </p>
                           );
                         } else if (endDate) {
-                          const daysRemaining = Math.ceil((endDate - now) / (1000 * 60 * 60 * 24));
-                          const hoursRemaining = Math.ceil((endDate - now) / (1000 * 60 * 60));
+                          const daysRemaining = Math.ceil((endDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+                          const hoursRemaining = Math.ceil((endDate.getTime() - now.getTime()) / (1000 * 60 * 60));
 
                           return (
                             <p className={`text-sm ${daysRemaining <= 3 ? 'text-orange-700' : 'text-green-700'}`}>
@@ -726,78 +727,12 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
             )}
           </div>
 
-          {/* Dimensions Section */}
-          <div className="space-y-4 border-t pt-4">
-            <h3 className="text-lg font-semibold text-gray-900">Dimensions & Weight</h3>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Length</label>
-                <input
-                  type="number"
-                  min="0"
-                  value={formData.dimensions.length}
-                  onChange={(e) => handleInputChange('dimensions.length', e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                  placeholder="e.g., 120"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Width</label>
-                <input
-                  type="number"
-                  min="0"
-                  value={formData.dimensions.width}
-                  onChange={(e) => handleInputChange('dimensions.width', e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                  placeholder="e.g., 60"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Height</label>
-                <input
-                  type="number"
-                  min="0"
-                  value={formData.dimensions.height}
-                  onChange={(e) => handleInputChange('dimensions.height', e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                  placeholder="e.g., 45"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Unit</label>
-                <select
-                  value={formData.dimensions.unit}
-                  onChange={(e) => handleInputChange('dimensions.unit', e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="mm">mm</option>
-                  <option value="cm">cm</option>
-                  <option value="m">m</option>
-                  <option value="in">in</option>
-                  <option value="ft">ft</option>
-                </select>
-              </div>
-            </div>
-
-            <div className="md:w-1/3">
-              <label className="block text-sm font-medium text-gray-700 mb-1">Weight (kg)</label>
-              <input
-                type="number"
-                min="0"
-                value={formData.weight}
-                onChange={(e) => handleInputChange('weight', e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                placeholder="e.g., 50"
-              />
-            </div>
-          </div>
-
           {/* Product Specifications */}
           <div className="space-y-4 border-t pt-4">
             <ProductSpecsEditor
-              category={formData.category as 'furniture' | 'slabs'}
+              category={'furniture'}
               furnitureSpecs={formData.furnitureSpecs}
-              slabSpecs={formData.slabSpecs}
+              slabSpecs={{}}
               customSpecs={customSpecs}
               onSpecsChange={handleSpecsChange}
             />
@@ -812,7 +747,7 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
             <ProductImageManager
               images={images}
               onImagesChange={setImages}
-              onMainImageChange={setMainImageId}
+              onMainImageChange={() => {}}
               aspectRatio={1}
               allowCrop={true}
               maxImages={10}
@@ -923,13 +858,6 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
               disabled={isFormDisabled}
               className="px-6 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors flex items-center gap-2"
             >
-              {(loading || videoUploading || formSubmitting || validationLoading) && (
-                <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-              )}
-              <Save className="w-4 h-4" />
               {(loading || videoUploading || formSubmitting || validationLoading) && (
                 <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>

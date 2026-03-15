@@ -32,6 +32,22 @@ const Checkout: React.FC = () => {
   const [backendPrices, setBackendPrices] = useState<any>(null);
   const [loadingPrices, setLoadingPrices] = useState(false);
 
+  const backendItemMap = useMemo(() => {
+    const map = new Map<string, any>();
+    (backendPrices?.items || []).forEach((item: any) => {
+      if (item?.productId) {
+        map.set(String(item.productId), item);
+      }
+    });
+    return map;
+  }, [backendPrices]);
+
+  const hasAuthoritativePricing = useMemo(() => {
+    if (!backendPrices?.ok || !Array.isArray(backendPrices?.items)) return false;
+    if (backendPrices.items.length !== state.items.length) return false;
+    return state.items.every((item) => backendItemMap.has(String(item.id)));
+  }, [backendPrices, state.items, backendItemMap]);
+
   // Fetch backend prices when cart changes
   useEffect(() => {
     const fetchBackendPrices = async () => {
@@ -56,9 +72,67 @@ const Checkout: React.FC = () => {
         if (response.ok) {
           const data = await response.json();
           setBackendPrices(data);
+
+          // Emit telemetry when local cart math diverges from backend authoritative totals.
+          const localTotalINR = state.items.reduce((sum, item) => sum + (item.priceINR * item.quantity), 0);
+          const backendTotalINR = Number(data?.totals?.INR || 0);
+          const deltaINR = Number((backendTotalINR - localTotalINR).toFixed(2));
+
+          const lineMismatches = (data?.items || [])
+            .map((backendItem: any) => {
+              const localItem = state.items.find((item) => String(item.id) === String(backendItem.productId));
+              if (!localItem) {
+                return {
+                  productId: backendItem.productId,
+                  reason: 'missing-local-item',
+                  backendFinalPriceINR: backendItem.finalPriceINR
+                };
+              }
+
+              const localUnitPrice = Number(localItem.priceINR || 0);
+              const backendUnitPrice = Number(backendItem.finalPriceINR || 0);
+              const unitDelta = Number((backendUnitPrice - localUnitPrice).toFixed(2));
+
+              if (Math.abs(unitDelta) <= 0.01) {
+                return null;
+              }
+
+              return {
+                productId: backendItem.productId,
+                localUnitPriceINR: localUnitPrice,
+                backendUnitPriceINR: backendUnitPrice,
+                unitDeltaINR: unitDelta
+              };
+            })
+            .filter(Boolean);
+
+          if (Math.abs(deltaINR) > 0.01 || lineMismatches.length > 0) {
+            fetch(`${API_URL}/payment-pricing-telemetry`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              credentials: 'include',
+              body: JSON.stringify({
+                severity: 'warning',
+                source: 'checkout-page',
+                localTotalINR,
+                backendTotalINR,
+                deltaINR,
+                itemCount: state.items.length,
+                lineMismatches
+              }),
+            }).catch(() => {
+              // Non-blocking telemetry
+            });
+          }
+        } else {
+          const errorData = await response.json().catch(() => ({}));
+          setBackendPrices(null);
+          setPaymentError(errorData.error || 'Unable to validate live pricing. Please refresh and try again.');
         }
       } catch (error) {
         console.error('Failed to fetch backend prices:', error);
+        setBackendPrices(null);
+        setPaymentError('Unable to validate live pricing. Please check your connection and try again.');
       } finally {
         setLoadingPrices(false);
       }
@@ -136,36 +210,28 @@ const Checkout: React.FC = () => {
     }
   }, [state.phoneNumber, state.isPhoneVerified, phone]);
 
-  // Calculate totals - use backend prices if available, otherwise fallback to client calculation
+  // Calculate totals from backend-authoritative pricing only.
   const subtotalINR = useMemo(() => {
-    if (backendPrices?.totals?.INR) {
-      return backendPrices.totals.INR;
+    if (hasAuthoritativePricing && backendPrices?.totals?.INR !== undefined) {
+      return Number(backendPrices.totals.INR);
     }
-    // Fallback to client-side calculation
-    return state.items.reduce((sum, item) => {
-      const hasDiscount = item.discount?.enabled && item.discount?.percentage > 0;
-      const finalPrice = hasDiscount
-        ? item.priceINR * (1 - item.discount!.percentage / 100)
-        : item.priceINR;
-      return sum + finalPrice * item.quantity;
-    }, 0);
-  }, [state.items, backendPrices]);
+    return 0;
+  }, [backendPrices, hasAuthoritativePricing]);
 
   // Convert to user's selected currency for display
   const subtotal = useMemo(() => convertFromINR(subtotalINR), [subtotalINR, convertFromINR]);
   const totalAmount = subtotal;
 
   // Get standardized payment currency details from Context
-  const { currency: paymentCurrency, rate: paymentExchangeRate } = useCurrency().getPaymentCurrency();
+  const { currency: paymentCurrency } = useCurrency().getPaymentCurrency();
 
   // Use backend-calculated payment amount (always in USD)
   const paymentAmount = useMemo(() => {
-    if (backendPrices?.totals?.USD) {
-      return backendPrices.totals.USD.toFixed(2);
+    if (hasAuthoritativePricing && backendPrices?.totals?.USD !== undefined) {
+      return Number(backendPrices.totals.USD).toFixed(2);
     }
-    // Fallback: calculate from INR
-    return (subtotalINR * paymentExchangeRate).toFixed(2);
-  }, [backendPrices, subtotalINR, paymentExchangeRate]);
+    return '0.00';
+  }, [backendPrices, hasAuthoritativePricing]);
 
   const isEmailValid = useMemo(() => /^(?=.*@).+\..+$/i.test(email.trim()), [email]);
   const isFormValid = name && isEmailValid && phone && address1 && city && region && postalCode && country;
@@ -176,19 +242,27 @@ const Checkout: React.FC = () => {
       setIsCreatingOrder(true);
       setPaymentError(null);
 
-      // Prepare items with backend prices if available
-      const orderItems = state.items.map((item, index) => {
-        const backendItem = backendPrices?.items?.[index];
+      if (!hasAuthoritativePricing) {
+        throw new Error('Live pricing validation is required before payment. Please wait for prices to load.');
+      }
+
+      // Prepare items from backend-authoritative line totals only.
+      const orderItems = state.items.map((item) => {
+        const backendItem = backendItemMap.get(String(item.id));
+        if (!backendItem) {
+          throw new Error(`Pricing not available for ${item.name}. Please refresh and try again.`);
+        }
+
         return {
           id: item.id,
           productId: item.id,
           name: item.name,
           quantity: item.quantity,
-          price: backendItem?.finalPriceUSD || (item.priceINR * paymentExchangeRate).toFixed(2),
-          priceINR: backendItem?.priceINR || item.priceINR,
+          price: Number(backendItem.finalPriceUSD).toFixed(2),
+          priceINR: Number(backendItem.priceINR),
           image: item.image,
           category: item.category || 'Natural Stone',
-          discount: backendItem?.discount || item.discount
+          discount: backendItem.discount || null
         };
       });
 
@@ -462,18 +536,18 @@ const Checkout: React.FC = () => {
                     <div className="flex-1 min-w-0 flex flex-col justify-between">
                       <div>
                         <h4 className="text-sm font-semibold text-black truncate">{item.name}</h4>
-                        {item.discount?.enabled && item.discount.percentage > 0 ? (
+                        {backendItemMap.get(String(item.id))?.discountPercentage > 0 ? (
                           <div className="space-y-0.5">
                             <div className="flex items-center gap-2">
-                              <p className="text-sm font-bold text-green-600">{formatPrice(item.priceINR * (1 - item.discount.percentage / 100))}</p>
+                              <p className="text-sm font-bold text-green-600">{formatPrice(Number(backendItemMap.get(String(item.id))?.finalPriceINR || 0))}</p>
                               <span className="px-1.5 py-0.5 bg-red-500 text-white rounded text-xs font-bold">
-                                {item.discount.percentage}% OFF
+                                {backendItemMap.get(String(item.id))?.discountPercentage || 0}% OFF
                               </span>
                             </div>
-                            <p className="text-xs text-gray-500 line-through">{formatPrice(item.priceINR)}</p>
+                            <p className="text-xs text-gray-500 line-through">{formatPrice(Number(backendItemMap.get(String(item.id))?.priceINR || 0))}</p>
                           </div>
                         ) : (
-                          <p className="text-sm text-gray-500">{formatPrice(item.priceINR)}</p>
+                          <p className="text-sm text-gray-500">{formatPrice(Number(backendItemMap.get(String(item.id))?.priceINR || 0))}</p>
                         )}
                       </div>
                       <div className="flex items-center gap-3">
@@ -496,15 +570,25 @@ const Checkout: React.FC = () => {
                     </div>
                     <div className="text-right">
                       <p className="text-sm font-semibold text-black">
-                        {item.discount?.enabled && item.discount.percentage > 0
-                          ? formatPrice(item.priceINR * (1 - item.discount.percentage / 100) * item.quantity)
-                          : formatPrice(item.priceINR * item.quantity)
-                        }
+                        {formatPrice(Number(backendItemMap.get(String(item.id))?.finalPriceINR || 0) * item.quantity)}
                       </p>
                     </div>
                   </div>
                 ))}
               </div>
+
+              {loadingPrices && (
+                <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-700 flex items-center gap-2">
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Validating live prices from server...
+                </div>
+              )}
+
+              {!loadingPrices && !hasAuthoritativePricing && (
+                <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
+                  Live pricing is unavailable right now. Payment is disabled until server pricing is validated.
+                </div>
+              )}
 
               <div className="mt-6 pt-6 border-t border-gray-100 space-y-3">
                 <div className="flex justify-between text-sm text-gray-600">
@@ -547,7 +631,7 @@ const Checkout: React.FC = () => {
                 <div className="mt-6">
                   <button
                     onClick={handlePayPalCheckout}
-                    disabled={!isFormValid}
+                    disabled={!isFormValid || !hasAuthoritativePricing || loadingPrices}
                     className="w-full bg-[#0070ba] hover:bg-[#005ea6] text-white font-semibold py-4 px-6 rounded-lg transition-all duration-200 flex items-center justify-center gap-3 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">

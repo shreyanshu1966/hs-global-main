@@ -5,6 +5,7 @@ import { AddToCartButton } from '../AddToCartButton';
 import { QuantityHandler } from '../QuantityHandler';
 import { Heading, Body, Caption } from '../ui/Typography';
 import { Button } from '../ui/Button';
+import { getBasePriceINR, getEffectivePriceINR, hasActiveDiscount } from '../../modules/product/pricing';
 
 interface ProductInfoProps {
     product: any;
@@ -30,6 +31,9 @@ export function ProductInfo({
     reviewsRef,
 }: ProductInfoProps) {
     const { formatPrice } = useCurrency();
+    const hasDiscount = hasActiveDiscount(product);
+    const basePriceINR = getBasePriceINR(product);
+    const effectivePriceINR = getEffectivePriceINR(product);
 
     return (
         <div className="flex flex-col space-y-8">
@@ -82,17 +86,17 @@ export function ProductInfo({
 
             {/* Price */}
             <div className="space-y-4">
-                {product.priceINR ? (
+                {basePriceINR ? (
                     <>
-                        {product.hasDiscount ? (
+                        {hasDiscount ? (
                             <div className="flex flex-col gap-2">
                                 <Caption>Special Price</Caption>
                                 <div className="flex items-end gap-3 flex-wrap">
                                     <span className="text-4xl lg:text-5xl font-sans font-bold text-[#8B3A3A]">
-                                        {formatPrice(product.discountedPrice)}
+                                        {formatPrice(effectivePriceINR)}
                                     </span>
                                     <span className="text-xl text-[#6B6B6B] line-through mb-1">
-                                        {formatPrice(product.originalPrice)}
+                                        {formatPrice(basePriceINR)}
                                     </span>
                                 </div>
                                 {product.discount?.description && (
@@ -105,7 +109,7 @@ export function ProductInfo({
                             <div className="flex flex-col gap-2">
                                 <Caption>Price</Caption>
                                 <div className="text-4xl lg:text-5xl font-sans font-bold text-[#2B2B2B]">
-                                    {formatPrice(product.priceINR)}
+                                    {formatPrice(basePriceINR)}
                                 </div>
                             </div>
                         )}

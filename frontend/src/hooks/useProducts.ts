@@ -1,5 +1,14 @@
 import { useState, useEffect, useCallback } from 'react';
-import { productService, Product, Category } from '../services/productService';
+import { Product, Category } from '../services/productService';
+import {
+  fetchCategories as fetchProductCategories,
+  fetchCategoryProducts,
+  fetchFeaturedProducts,
+  fetchProductById,
+  fetchProductList,
+  fetchSearchedProducts,
+  trackAddToCart as trackAddToCartEvent,
+} from '../modules/product/store';
 
 export interface UseProductsOptions {
   category?: string;
@@ -63,7 +72,7 @@ export const useProducts = (options: UseProductsOptions = {}): UseProductsReturn
       let response;
 
       if (search) {
-        response = await productService.searchProducts(search, {
+        response = await fetchSearchedProducts(search, {
           category,
           limit,
           page,
@@ -71,7 +80,7 @@ export const useProducts = (options: UseProductsOptions = {}): UseProductsReturn
           maxPrice
         });
       } else if (category) {
-        response = await productService.getProductsByCategory(category, {
+        response = await fetchCategoryProducts(category, {
           page,
           limit,
           subcategory,
@@ -86,9 +95,9 @@ export const useProducts = (options: UseProductsOptions = {}): UseProductsReturn
           return;
         }
       } else if (featured) {
-        response = await productService.getFeaturedProducts(limit);
+        response = await fetchFeaturedProducts(limit);
       } else {
-        response = await productService.getAllProducts({
+        response = await fetchProductList({
           page,
           limit,
           category,
@@ -159,7 +168,7 @@ export const useProduct = (productId: string | undefined): UseProductReturn => {
     setError(null);
 
     try {
-      const response = await productService.getProductById(productId);
+      const response = await fetchProductById(productId);
 
       if (response.success && response.data) {
         setProduct(response.data.product);
@@ -210,7 +219,7 @@ export const useCategories = (): UseCategoriesReturn => {
     setError(null);
 
     try {
-      const response = await productService.getCategories();
+      const response = await fetchProductCategories();
 
       if (response.success) {
         setCategories(response.data);
@@ -243,7 +252,7 @@ export const useCategories = (): UseCategoriesReturn => {
 export const useTrackAddToCart = () => {
   const trackAddToCart = useCallback(async (productId: string) => {
     try {
-      await productService.trackAddToCart(productId);
+      await trackAddToCartEvent(productId);
     } catch (error) {
       // Silently fail as this is just for analytics
       console.warn('Failed to track add to cart:', error);

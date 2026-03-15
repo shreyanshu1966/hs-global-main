@@ -1,16 +1,34 @@
-const FeaturedBanner = () => {
+interface FeaturedBannerProps {
+  title?: string;
+  body?: string;
+  ctaText?: string;
+  link?: string;
+  image?: string;
+  fallbackImage?: string;
+  imageAlt?: string;
+}
+
+const FeaturedBanner = ({
+  title = 'Build Your Signature Stone Collection',
+  body = 'From concept and cutting to export logistics, HS Global delivers premium marble and granite solutions for architects, designers, and global buyers.',
+  ctaText = 'Start Your Project',
+  link = '/contact',
+  image = '/banner4.webp',
+  fallbackImage = '/banner.webp',
+  imageAlt = 'HS Global Export Services',
+}: FeaturedBannerProps) => {
   return (
-    <a href="/contact" className="itsbits-featured-link">
+    <a href={link} className="itsbits-featured-link">
       <div className="itsbits-featured-wrap itsbits-featured-section">
         
         {/* Image Side */}
         <div className="itsbits-featured-image-wrap">
           <img 
-            src="/banner4.webp" 
-            alt="HS Global Export Services"
+            src={image}
+            alt={imageAlt}
             className="itsbits-featured-image"
             onError={(e) => {
-              e.currentTarget.src = '/banner.webp';
+              e.currentTarget.src = fallbackImage;
             }}
           />
         </div>
@@ -18,14 +36,14 @@ const FeaturedBanner = () => {
         {/* Text Side */}
         <div className="itsbits-featured-copy">
           <h2 className="itsbits-featured-title itsbits-featured-title-reset">
-            Build Your Signature Stone Collection
+            {title}
           </h2>
           <p className="itsbits-featured-body itsbits-featured-body-spacing">
-            From concept and cutting to export logistics, HS Global delivers premium marble and granite solutions for architects, designers, and global buyers.
+            {body}
           </p>
           <div>
             <span className="itsbits-featured-cta">
-              Start Your Project
+              {ctaText}
             </span>
           </div>
         </div>

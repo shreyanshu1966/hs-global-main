@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react';
-import { Product } from '../data/products';
+import type { Product } from '../services/productService';
 
 // Lazy load ProductCard for code splitting
 const ProductCard = lazy(() => import('./ProductCard').then(module => ({ default: module.ProductCard })));
