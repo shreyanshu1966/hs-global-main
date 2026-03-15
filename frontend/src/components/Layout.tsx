@@ -27,6 +27,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
     // Check if we're on the products page
     const isProductsPage = location.pathname === '/products';
+    const isItsbitsHome = location.pathname === '/';
 
     useGSAP(() => {
         // Simple entry animation on route change
@@ -38,18 +39,18 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
     return (
         <div className="min-h-screen flex flex-col">
-            {!isAdminPage && <Header />}
+            {!isAdminPage && !isItsbitsHome && <Header />}
             <main
                 ref={mainRef}
                 className="flex-grow"
             >
                 {children}
             </main>
-            {!isAdminPage && <Footer />}
-            {!isAdminPage && <FloatingCartButton />}
-            {!isAdminPage && <CartDrawer />}
-            {!isAdminPage && <PhoneVerifyModal />}
-            {!isAdminPage && <AddedToCartNotification />}
+            {!isAdminPage && !isItsbitsHome && <Footer />}
+            {!isAdminPage && !isItsbitsHome && <FloatingCartButton />}
+            {!isAdminPage && !isItsbitsHome && <CartDrawer />}
+            {!isAdminPage && !isItsbitsHome && <PhoneVerifyModal />}
+            {!isAdminPage && !isItsbitsHome && <AddedToCartNotification />}
             {/* Temporarily disabled - Get Your Quote popup */}
             {/* {!isAdminPage && (
                 <LeadCapturePopup
@@ -57,7 +58,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                     onClose={closeLeadPopup}
                 />
             )} */}
-            {!isAdminPage && !isProductsPage && <FloatingWhatsApp />}
+            {!isAdminPage && !isProductsPage && !isItsbitsHome && <FloatingWhatsApp />}
             <NoiseOverlay />
         </div>
     );

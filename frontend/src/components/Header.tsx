@@ -6,7 +6,6 @@ import { useGSAP } from "@gsap/react";
 import { useTranslation } from "react-i18next";
 import { LocationSelector } from "./LocationSelector";
 import { CartIcon } from "./CartIcon";
-import { getResponsiveImage, getSrcSet } from "../utils/responsive-image-helper";
 import { useAuth } from "../contexts/AuthContext";
 import { SearchModal } from "./SearchModal";
 
@@ -141,14 +140,18 @@ const Header = () => {
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Link to="/" className="flex-shrink-0 group relative z-50">
-              <img
-                src={getResponsiveImage("logo.webp", "mobile") || "/logo.png"}
-                srcSet={getSrcSet("logo.webp")}
-                alt="HS Global Export"
-                className={`transition-all duration-300 object-contain ${isScrolled ? "h-10 w-auto opacity-100" : "h-12 w-auto opacity-90 hover:opacity-100"
-                  }`}
-                loading="eager"
-              />
+              <div className="leading-none transition-all duration-300 opacity-95 group-hover:opacity-100">
+                <span
+                  className={`block font-serif tracking-[0.32em] uppercase text-xs sm:text-sm ${isTransparent ? "text-white" : "text-black"}`}
+                >
+                  HS GLOBAL
+                </span>
+                <span
+                  className={`block mt-1 text-[10px] sm:text-[11px] tracking-[0.45em] uppercase ${isTransparent ? "text-white/75" : "text-stone-500"}`}
+                >
+                  EXPORT
+                </span>
+              </div>
             </Link>
 
             {/* Desktop Navigation - Minimalist */}

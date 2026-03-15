@@ -1,0 +1,120 @@
+import ProductCard from './ProductCard';
+import { useHorizontalCarousel } from './useHorizontalCarousel';
+import { useEffect, useState } from 'react';
+import { fetchItsbitsProducts, ItsbitsCardItem } from './productData';
+
+const fallbackArrivals: ItsbitsCardItem[] = [
+  { id: 'fallback-1', image: '/products-hero.webp', title: 'Premium Italian Marble Slabs', designer: 'Marble Collection', price: 'Request Quote', href: '/products' },
+  { id: 'fallback-2', image: '/marble-solutions.webp', title: 'Custom Marble Vanities', designer: 'Bespoke Studio', price: 'Made to Order', href: '/products' },
+  { id: 'fallback-3', image: '/granite-solutions.webp', title: 'Granite Countertop Solutions', designer: 'Granite Collection', price: 'Bulk Pricing', href: '/products' },
+  { id: 'fallback-4', image: '/service.webp', title: 'Handcrafted Stone Furniture', designer: 'Furniture Collection', price: 'From Project Spec', href: '/products' },
+  { id: 'fallback-5', image: '/export.webp', title: 'Worldwide Export Packaging', designer: 'Export Services', price: 'Global Dispatch', href: '/products' },
+  { id: 'fallback-6', image: '/about-hero.webp', title: 'Architectural Stone Projects', designer: 'Project Solutions', price: 'Consultation', href: '/products' },
+];
+
+const NewArrivalsCarousel = () => {
+  const { trackRef, canScrollPrev, canScrollNext, scrollPrev, scrollNext } = useHorizontalCarousel(0.82);
+  const [newArrivals, setNewArrivals] = useState<ItsbitsCardItem[]>(fallbackArrivals);
+
+  useEffect(() => {
+    let isActive = true;
+
+    const loadProducts = async () => {
+      try {
+        const products = await fetchItsbitsProducts({
+          limit: 12,
+          sortBy: 'createdAt',
+          sortOrder: 'desc',
+          marbleFurnitureOnly: true,
+        });
+
+        if (!isActive) {
+          return;
+        }
+
+        setNewArrivals(products.length > 0 ? products : fallbackArrivals);
+      } catch (error) {
+        console.error('Failed to load HS Global highlights:', error);
+        if (isActive) {
+          setNewArrivals(fallbackArrivals);
+        }
+      }
+    };
+
+    loadProducts();
+
+    return () => {
+      isActive = false;
+    };
+  }, []);
+
+  return (
+    <section className="w-full mx-auto itsbits-section-rail">
+      <div className="flex items-start w-full itsbits-highlight-grid">
+        
+        {/* Left Title Block */}
+        <div className="itsbits-highlight-copy flex-shrink-0 flex flex-col justify-start mt-2">
+          <h2 className="itsbits-highlight-title">
+            HS Global Highlights
+          </h2>
+          <a href="/products" className="itsbits-highlight-cta hover:opacity-70 transition-opacity">
+            Explore All Products
+          </a>
+        </div>
+
+        {/* Carousel Area */}
+        <div className="flex-1 min-w-0 flex items-center itsbits-carousel-row">
+          
+          {/* Left Arrow Button */}
+          <button 
+            onClick={scrollPrev}
+            disabled={!canScrollPrev}
+            className="itsbits-arrow itsbits-arrow-pad-left hidden md:flex"
+            aria-label="Previous"
+          >
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="currentColor">
+              <path d="m22.762 32-9.828-12 9.828-12 2.477 2.014L17.069 20l8.17 9.986L22.762 32Z" />
+            </svg>
+          </button>
+
+          {/* Product Grid / Track */}
+          <div className="flex-1 overflow-hidden itsbits-rail-shell">
+            <div ref={trackRef} className="itsbits-track overflow-x-auto scroll-smooth itsbits-track-standard">
+              {newArrivals.map((item) => (
+                <div 
+                  key={item.id} 
+                  className="shrink-0 flex flex-col itsbits-rail-item"
+                >
+                  <ProductCard 
+                    image={item.image} 
+                    title={item.title} 
+                    designer={item.designer} 
+                    price={item.price} 
+                    originalPrice={item.originalPrice}
+                    productLink={item.href}
+                  />
+                </div>
+              ))}
+            </div>
+            <div className="itsbits-swipe-cue md:hidden" aria-hidden="true">Swipe</div>
+          </div>
+
+          {/* Right Arrow Button */}
+          <button 
+            onClick={scrollNext}
+            disabled={!canScrollNext}
+            className="itsbits-arrow itsbits-arrow-pad-right hidden md:flex"
+            aria-label="Next"
+          >
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="currentColor">
+              <path d="m17.238 32-2.476-2.014L22.934 20l-8.172-9.986L17.238 8l9.828 12-9.828 12Z" />
+            </svg>
+          </button>
+          
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default NewArrivalsCarousel;
