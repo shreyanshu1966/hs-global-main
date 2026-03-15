@@ -6,6 +6,7 @@ const { authMiddleware } = require('../middleware/authMiddleware');
 // Mounted at /api
 // Cart pricing
 router.post('/calculate-cart-total', paymentController.calculateCartTotal);
+router.post('/payment-pricing-telemetry', paymentController.logPricingTelemetry);
 
 // Payment lifecycle routes
 router.post('/create-order', authMiddleware, paymentController.createOrder);

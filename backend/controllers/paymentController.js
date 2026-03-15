@@ -2,6 +2,7 @@ const Order = require('../models/Order');
 const User = require('../models/User');
 const { sendOrderConfirmationEmail, sendPaymentFailedEmail } = require('../services/emailService');
 const { validatePaymentFlow, verifyPayPalOrder } = require('../services/paymentValidation');
+const { paymentMonitor } = require('../services/paymentMonitoring');
 const axios = require('axios');
 
 // PayPal Configuration
@@ -1226,5 +1227,39 @@ exports.getOrderDetails = async (req, res) => {
             ok: false,
             error: 'Failed to get order details'
         });
+    }
+};
+
+/**
+ * Pricing telemetry endpoint for checkout mismatch monitoring
+ * POST /api/payment-pricing-telemetry
+ */
+exports.logPricingTelemetry = async (req, res) => {
+    try {
+        const {
+            severity = 'info',
+            source = 'checkout',
+            localTotalINR,
+            backendTotalINR,
+            deltaINR,
+            itemCount,
+            lineMismatches
+        } = req.body || {};
+
+        paymentMonitor.recordPricingTelemetry({
+            severity,
+            source,
+            userId: req.user?._id ? String(req.user._id) : null,
+            localTotalINR,
+            backendTotalINR,
+            deltaINR,
+            itemCount,
+            lineMismatches
+        });
+
+        return res.status(200).json({ ok: true });
+    } catch (error) {
+        console.error('❌ Failed to log pricing telemetry:', error.message);
+        return res.status(500).json({ ok: false, error: 'Failed to log pricing telemetry' });
     }
 };
