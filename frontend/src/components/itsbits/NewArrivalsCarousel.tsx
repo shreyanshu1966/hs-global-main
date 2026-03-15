@@ -7,6 +7,15 @@ interface NewArrivalsCarouselProps {
   headingTitle?: string;
   ctaText?: string;
   ctaLink?: string;
+  sourceType?: 'category' | 'tag' | 'manual';
+  manualProductIds?: string[];
+  tag?: string;
+  limit?: number;
+  category?: string;
+  featured?: boolean;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
+  marbleFurnitureOnly?: boolean;
 }
 
 const fallbackArrivals: ItsbitsCardItem[] = [
@@ -22,9 +31,19 @@ const NewArrivalsCarousel = ({
   headingTitle = 'HS Global Highlights',
   ctaText = 'Explore All Products',
   ctaLink = '/products',
+  sourceType = 'category',
+  manualProductIds = [],
+  tag = '',
+  limit = 12,
+  category = 'furniture',
+  featured = false,
+  sortBy = 'createdAt',
+  sortOrder = 'desc',
+  marbleFurnitureOnly = true,
 }: NewArrivalsCarouselProps) => {
   const { trackRef, canScrollPrev, canScrollNext, scrollPrev, scrollNext } = useHorizontalCarousel(0.82);
   const [newArrivals, setNewArrivals] = useState<ItsbitsCardItem[]>(fallbackArrivals);
+  const manualIdsKey = manualProductIds.join('|');
 
   useEffect(() => {
     let isActive = true;
@@ -32,10 +51,14 @@ const NewArrivalsCarousel = ({
     const loadProducts = async () => {
       try {
         const products = await fetchItsbitsProducts({
-          limit: 12,
-          sortBy: 'createdAt',
-          sortOrder: 'desc',
-          marbleFurnitureOnly: true,
+          limit,
+          category: sourceType === 'category' ? category || undefined : undefined,
+          tag: sourceType === 'tag' ? tag : undefined,
+          productIds: sourceType === 'manual' ? manualProductIds : undefined,
+          featured,
+          sortBy,
+          sortOrder,
+          marbleFurnitureOnly,
         });
 
         if (!isActive) {
@@ -56,7 +79,7 @@ const NewArrivalsCarousel = ({
     return () => {
       isActive = false;
     };
-  }, []);
+  }, [sourceType, manualIdsKey, tag, limit, category, featured, sortBy, sortOrder, marbleFurnitureOnly]);
 
   return (
     <section className="w-full mx-auto itsbits-section-rail">

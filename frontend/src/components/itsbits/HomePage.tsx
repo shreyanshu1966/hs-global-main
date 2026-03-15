@@ -41,6 +41,15 @@ const HomePage = () => {
         headingTitle={config.newArrivals.title}
         ctaText={config.newArrivals.ctaText}
         ctaLink={config.newArrivals.ctaLink}
+        sourceType={config.newArrivals.sourceType}
+        manualProductIds={config.newArrivals.manualProductIds}
+        tag={config.newArrivals.tag}
+        limit={config.newArrivals.limit}
+        category={config.newArrivals.category}
+        featured={config.newArrivals.featured}
+        sortBy={config.newArrivals.sortBy}
+        sortOrder={config.newArrivals.sortOrder}
+        marbleFurnitureOnly={config.newArrivals.marbleFurnitureOnly}
       />
 
       {/* ===== SECTION 2: In the Spotlight ===== */}
@@ -66,7 +75,18 @@ const HomePage = () => {
       {config.productCarousels
         .filter((item) => item.enabled)
         .map((item, index) => (
-          <ProductCarousel key={`${item.title}-${index}`} title={item.title} viewAllLink={item.viewAllLink} />
+          <ProductCarousel
+            key={`${item.title}-${index}`}
+            title={item.title}
+            viewAllLink={item.viewAllLink}
+            sourceType={item.sourceType}
+            manualProductIds={item.manualProductIds}
+            sourceCategory={item.sourceCategory}
+            sourceTag={item.sourceTag}
+            limit={item.limit}
+            sortBy={item.sortBy}
+            sortOrder={item.sortOrder}
+          />
         ))}
 
       {/* ===== SECTION 7: Featured Banner — Red Carpet Style (50/50 split) ===== */}
@@ -81,7 +101,11 @@ const HomePage = () => {
       />
 
       {/* ===== SECTION 8: Journal ===== */}
-      <IntrospectiveMagazine />
+      <IntrospectiveMagazine
+        titlePrefix={config.journal.titlePrefix}
+        titleSuffix={config.journal.titleSuffix}
+        articles={config.journal.articles}
+      />
 
       {/* ===== SECTION 9: Collections ===== */}
       <InteriorDesigners
@@ -94,7 +118,14 @@ const HomePage = () => {
       />
 
       {/* ===== SECTION 10: HS Global Promise ===== */}
-      <PromiseBanner />
+      <PromiseBanner
+        titlePrefix={config.promise.titlePrefix}
+        titleHighlight={config.promise.titleHighlight}
+        body={config.promise.body}
+        ctaText={config.promise.ctaText}
+        ctaLink={config.promise.ctaLink}
+        items={config.promise.items}
+      />
 
     </main>
   );

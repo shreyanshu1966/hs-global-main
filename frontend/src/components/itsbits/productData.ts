@@ -110,6 +110,8 @@ const isMarbleFurniture = (product: Product): boolean => {
 export const fetchItsbitsProducts = async (options: {
   limit?: number;
   category?: string;
+  tag?: string;
+  productIds?: string[];
   featured?: boolean;
   sortBy?: string;
   sortOrder?: 'asc' | 'desc';
@@ -118,11 +120,31 @@ export const fetchItsbitsProducts = async (options: {
   const {
     limit = 10,
     category,
+    tag,
+    productIds,
     featured = false,
     sortBy = 'createdAt',
     sortOrder = 'desc',
     marbleFurnitureOnly = false,
   } = options;
+
+  if (Array.isArray(productIds) && productIds.length > 0) {
+    const results = await Promise.all(
+      productIds.map(async (id) => {
+        try {
+          const response = await productService.getProductById(id);
+          if (response.success && response.data?.product) {
+            return response.data.product;
+          }
+          return null;
+        } catch {
+          return null;
+        }
+      })
+    );
+
+    return results.filter(Boolean).map((item) => mapProductToItsbitsCard(item as Product));
+  }
 
   const requiredCategory = marbleFurnitureOnly ? 'furniture' : category;
 
@@ -152,6 +174,8 @@ export const fetchItsbitsProducts = async (options: {
     ? await productService.getFeaturedProducts(limit)
     : await productService.getAllProducts({
         limit,
+        ...(category ? { category } : {}),
+        ...(tag ? { tag } : {}),
         sortBy,
         sortOrder,
       });

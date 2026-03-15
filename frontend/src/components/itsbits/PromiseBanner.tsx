@@ -1,5 +1,18 @@
-const PromiseBanner = () => {
-  const promises = [
+interface PromiseItem {
+  icon: string;
+  text: string;
+}
+
+interface PromiseBannerProps {
+  titlePrefix?: string;
+  titleHighlight?: string;
+  body?: string;
+  ctaText?: string;
+  ctaLink?: string;
+  items?: PromiseItem[];
+}
+
+const defaultPromises: PromiseItem[] = [
     { icon: 'M10.95 15.55 16.6 9.9l-1.425-1.425L10.95 12.7l-2.1-2.1-1.425 1.425 3.525 3.525ZM12 22c-2.317-.583-4.23-1.913-5.737-3.988C4.754 15.938 4 13.633 4 11.1V5l8-3 8 3v6.1c0 2.533-.754 4.838-2.262 6.912C16.229 20.087 14.317 21.418 12 22Zm0-2.1c1.733-.55 3.167-1.65 4.3-3.3s1.7-3.483 1.7-5.5V6.375l-6-2.25-6 2.25V11.1c0 2.017.567 3.85 1.7 5.5s2.567 2.75 4.3 3.3Z', text: 'Verified Premium Stone Sourcing' },
     { icon: 'M4 8h16V6H4v2ZM2 6c0-.55.196-1.02.587-1.412A1.926 1.926 0 0 1 4 4h16c.55 0 1.02.196 1.413.588.391.391.587.862.587 1.412v6H4v6h4.1v2H4c-.55 0-1.02-.196-1.413-.587A1.926 1.926 0 0 1 2 18V6Zm12.95 16-4.25-4.25 1.4-1.4 2.85 2.8 5.65-5.65 1.4 1.45L14.95 22ZM4 6v12-4.5 2.825V6Z', text: 'Transparent Quotations' },
     { icon: 'M15.25 5.5c-.35 0-.646-.12-.887-.362A1.207 1.207 0 0 1 14 4.25c0-.35.12-.646.363-.888.241-.241.537-.362.887-.362s.646.12.887.362c.242.242.363.538.363.888s-.12.646-.363.888a1.207 1.207 0 0 1-.887.362Zm0 16.5c-.35 0-.646-.12-.887-.363A1.207 1.207 0 0 1 14 20.75c0-.35.12-.646.363-.887.241-.242.537-.363.887-.363s.646.12.887.363c.242.241.363.537.363.887s-.12.646-.363.887a1.207 1.207 0 0 1-.887.363Zm4-13c-.35 0-.646-.12-.887-.363A1.207 1.207 0 0 1 18 7.75c0-.35.12-.646.363-.888.241-.241.537-.362.887-.362s.646.12.887.362c.242.242.363.538.363.888s-.12.646-.363.887A1.207 1.207 0 0 1 19.25 9Zm0 9.5c-.35 0-.646-.12-.887-.363A1.207 1.207 0 0 1 18 17.25c0-.35.12-.646.363-.887.241-.242.537-.363.887-.363s.646.12.887.363c.242.241.363.537.363.887s-.12.646-.363.887a1.207 1.207 0 0 1-.887.363Zm1.5-4.75c-.35 0-.646-.12-.887-.363a1.207 1.207 0 0 1-.363-.887c0-.35.12-.646.363-.887.241-.242.537-.363.887-.363s.646.12.887.363c.242.241.363.537.363.887s-.12.646-.363.887a1.207 1.207 0 0 1-.887.363ZM12 22.5a9.738 9.738 0 0 1-3.9-.788 10.099 10.099 0 0 1-3.175-2.137c-.9-.9-1.612-1.958-2.137-3.175A9.738 9.738 0 0 1 2 12.5c0-1.383.263-2.683.788-3.9a10.099 10.099 0 0 1 2.137-3.175c.9-.9 1.958-1.612 3.175-2.137A9.738 9.738 0 0 1 12 2.5v2c-2.233 0-4.125.775-5.675 2.325C4.775 8.375 4 10.267 4 12.5c0 2.233.775 4.125 2.325 5.675C7.875 19.725 9.767 20.5 12 20.5v2Zm3.3-5.3L11 12.9V7.5h2v4.6l3.7 3.7-1.4 1.4Z', text: 'On-Time Production Timelines' },
@@ -8,25 +21,34 @@ const PromiseBanner = () => {
     { icon: 'M6 20a2.893 2.893 0 0 1-2.125-.875A2.893 2.893 0 0 1 3 17H1V6c0-.55.196-1.02.587-1.412A1.926 1.926 0 0 1 3 4h14v4h3l3 4v5h-2c0 .833-.292 1.542-.875 2.125A2.893 2.893 0 0 1 18 20a2.893 2.893 0 0 1-2.125-.875A2.893 2.893 0 0 1 15 17H9c0 .833-.292 1.542-.875 2.125A2.893 2.893 0 0 1 6 20Zm0-2c.283 0 .52-.096.713-.288A.968.968 0 0 0 7 17a.968.968 0 0 0-.287-.712A.967.967 0 0 0 6 16a.967.967 0 0 0-.713.288A.968.968 0 0 0 5 17c0 .283.096.52.287.712.192.192.43.288.713.288Zm-3-3h.8c.283-.3.608-.542.975-.725A2.701 2.701 0 0 1 6 14c.45 0 .858.092 1.225.275.367.183.692.425.975.725H15V6H3v9Zm15 3c.283 0 .52-.096.712-.288A.968.968 0 0 0 19 17a.968.968 0 0 0-.288-.712A.968.968 0 0 0 18 16a.968.968 0 0 0-.712.288A.968.968 0 0 0 17 17c0 .283.096.52.288.712.191.192.429.288.712.288Zm-1-5h4.25L19 10h-2v3Z', text: 'Secure Worldwide Export Delivery' }
   ];
 
+const PromiseBanner = ({
+  titlePrefix = 'The HS Global',
+  titleHighlight = 'Promise',
+  body = 'We commit to premium quality, transparent communication, and dependable execution for every stone project.',
+  ctaText = 'Learn More',
+  ctaLink = '/contact',
+  items = defaultPromises,
+}: PromiseBannerProps) => {
+
   return (
     <section className="itsbits-promise-wrap">
       
       {/* Left Text Block */}
       <div className="itsbits-promise-copy itsbits-promise-copy-base">
         <h2 className="itsbits-promise-title itsbits-promise-title-base">
-          The HS Global <span className="itsbits-promise-title-em">Promise</span>
+          {titlePrefix} <span className="itsbits-promise-title-em">{titleHighlight}</span>
         </h2>
         <p className="itsbits-promise-body itsbits-promise-body-base">
-          We commit to premium quality, transparent communication, and dependable execution for every stone project.
+          {body}
         </p>
-        <a href="/contact" className="itsbits-promise-link hover:opacity-70 transition-opacity">
-          Learn More
+        <a href={ctaLink} className="itsbits-promise-link hover:opacity-70 transition-opacity">
+          {ctaText}
         </a>
       </div>
 
       {/* Right Grid */}
       <div className="itsbits-promise-grid itsbits-promise-grid-base">
-        {promises.map((p, i) => (
+        {items.map((p, i) => (
           <div key={i} className="itsbits-promise-item itsbits-promise-item-base">
             <svg width="24" height="24" viewBox="0 0 24 24" className="itsbits-promise-icon">
               <path d={p.icon} />

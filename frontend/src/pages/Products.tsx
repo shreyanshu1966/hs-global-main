@@ -240,8 +240,8 @@ const Products = () => {
           </div>
         </div>
 
-        <div className="container mx-auto px-4 lg:px-6">
-          <div className="flex flex-col lg:flex-row gap-8">
+        <div className="w-full max-w-[1680px] mx-auto px-4 sm:px-6 xl:px-8">
+          <div className="flex flex-col lg:flex-row gap-6 xl:gap-8">
 
             {/* Desktop Sidebar Filter */}
             <div className="hidden lg:block w-72 shrink-0">

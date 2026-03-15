@@ -3,6 +3,20 @@ import { useHorizontalCarousel } from './useHorizontalCarousel';
 import { useEffect, useState } from 'react';
 import { fetchItsbitsProducts, ItsbitsCardItem, parseCategoryFromLink } from './productData';
 
+type CarouselSourceType = 'category' | 'tag' | 'manual';
+
+interface ProductCarouselProps {
+  title: string;
+  viewAllLink: string;
+  sourceType?: CarouselSourceType;
+  manualProductIds?: string[];
+  sourceCategory?: string;
+  sourceTag?: string;
+  limit?: number;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
+}
+
 const fallbackProducts: ItsbitsCardItem[] = [
   { id: 'fallback-carousel-1', image: '/products-hero.webp', title: 'Calacatta Marble Selection', designer: 'Marble Collection', price: 'Project Quote', href: '/products' },
   { id: 'fallback-carousel-2', image: '/marble-solutions.webp', title: 'Bespoke Marble Furniture', designer: 'Furniture Collection', price: 'Custom Build', href: '/products' },
@@ -11,10 +25,21 @@ const fallbackProducts: ItsbitsCardItem[] = [
   { id: 'fallback-carousel-5', image: '/export.webp', title: 'International Delivery', designer: 'Export Logistics', price: 'Worldwide Shipping', href: '/products' },
 ];
 
-const ProductCarousel = ({ title, viewAllLink }: { title: string, viewAllLink: string }) => {
+const ProductCarousel = ({
+  title,
+  viewAllLink,
+  sourceType = 'category',
+  manualProductIds = [],
+  sourceCategory,
+  sourceTag,
+  limit = 10,
+  sortBy = 'createdAt',
+  sortOrder = 'desc',
+}: ProductCarouselProps) => {
   const { trackRef, canScrollPrev, canScrollNext, scrollPrev, scrollNext } = useHorizontalCarousel(0.88);
   const [isLoading, setIsLoading] = useState(true);
   const [products, setProducts] = useState<ItsbitsCardItem[]>(fallbackProducts);
+  const manualIdsKey = manualProductIds.join('|');
 
   useEffect(() => {
     let isActive = true;
@@ -22,21 +47,23 @@ const ProductCarousel = ({ title, viewAllLink }: { title: string, viewAllLink: s
 
     const loadProducts = async () => {
       try {
-        const category = parseCategoryFromLink(viewAllLink);
+        const category = sourceCategory || parseCategoryFromLink(viewAllLink);
         const shouldPreferFeatured = viewAllLink === '/gallery' || /favorites?/i.test(title);
 
         let items = await fetchItsbitsProducts({
-          limit: 10,
-          category,
+          limit,
+          category: sourceType === 'category' ? category : undefined,
+          tag: sourceType === 'tag' ? sourceTag : undefined,
+          productIds: sourceType === 'manual' ? manualProductIds : undefined,
           featured: shouldPreferFeatured,
-          sortBy: shouldPreferFeatured ? 'viewCount' : 'createdAt',
-          sortOrder: 'desc',
+          sortBy: shouldPreferFeatured ? 'viewCount' : sortBy,
+          sortOrder,
           marbleFurnitureOnly: true,
         });
 
         if (items.length === 0 && category) {
           items = await fetchItsbitsProducts({
-            limit: 10,
+            limit,
             sortBy: 'createdAt',
             sortOrder: 'desc',
             marbleFurnitureOnly: true,
@@ -65,7 +92,7 @@ const ProductCarousel = ({ title, viewAllLink }: { title: string, viewAllLink: s
     return () => {
       isActive = false;
     };
-  }, [title, viewAllLink]);
+  }, [title, viewAllLink, sourceType, manualIdsKey, sourceCategory, sourceTag, limit, sortBy, sortOrder]);
 
   return (
     <section>
