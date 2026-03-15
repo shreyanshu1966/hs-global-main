@@ -103,9 +103,12 @@ const ProductCarousel = ({
         </h2>
         <a 
           href={viewAllLink} 
-          className="hover:underline itsbits-carousel-link"
+          className="itsbits-carousel-link"
         >
-          View Collection
+          <span>View More</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M8 5l8 7-8 7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
         </a>
       </div>
 

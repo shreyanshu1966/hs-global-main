@@ -123,15 +123,15 @@ const Header = () => {
   };
 
   const navItems = [
-    { label: 'New Arrivals', href: '/products?cat=furniture&sort=newest', active: true },
-    { label: 'All Furniture', href: '/products?cat=furniture' },
-    { label: 'Coffee Tables', href: '/products?cat=furniture#coffee-table' },
-    { label: 'Console Tables', href: '/products?cat=furniture#console-table' },
-    { label: 'Gallery', href: '/gallery' },
-    { label: 'Services', href: '/services' },
-    { label: 'Journal', href: '/blog' },
-    { label: 'About HS Global', href: '/about' },
-    { label: 'Get Quote', href: '/contact', isSale: true },
+    { label: 'New Arrivals', mobileLabel: 'New', href: '/products?cat=furniture&sort=newest', active: true },
+    { label: 'All Furniture', mobileLabel: 'Furniture', href: '/products?cat=furniture' },
+    { label: 'Coffee Tables', mobileLabel: 'Coffee', href: '/products?cat=furniture#coffee-table' },
+    { label: 'Console Tables', mobileLabel: 'Console', href: '/products?cat=furniture#console-table' },
+    { label: 'Gallery', mobileLabel: 'Gallery', href: '/gallery' },
+    { label: 'Services', mobileLabel: 'Services', href: '/services' },
+    { label: 'Journal', mobileLabel: 'Journal', href: '/blog' },
+    { label: 'About HS Global', mobileLabel: 'About', href: '/about' },
+    { label: 'Get Quote', mobileLabel: 'Quote', href: '/contact', isSale: true },
   ];
 
   return (
@@ -333,7 +333,8 @@ const Header = () => {
                     fontWeight: item.active || item.isSale ? 600 : 300,
                   }}
                 >
-                  {item.label}
+                  <span className="itsbits-nav-label-desktop">{item.label}</span>
+                  <span className="itsbits-nav-label-mobile">{item.mobileLabel || item.label}</span>
                 </a>
               </li>
             ))}

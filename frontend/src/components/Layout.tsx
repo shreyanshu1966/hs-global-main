@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
-import Header from './Header';
-import Footer from './Footer';
+import Header from './itsbits/Header';
+import Footer from './itsbits/Footer';
 import { useLocation } from 'react-router-dom';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
@@ -12,6 +12,7 @@ import LeadCapturePopup from './LeadCapturePopup';
 import { useLeadCapturePopup } from '../hooks/useLeadCapturePopup';
 import NoiseOverlay from './NoiseOverlay';
 import FloatingWhatsApp from './FloatingWhatsApp';
+import '../styles/itsbits-home.css';
 
 interface LayoutProps {
     children: React.ReactNode;
@@ -23,7 +24,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     const mainRef = useRef<HTMLDivElement>(null);
 
     // Check if we're on the admin page
-    const isAdminPage = location.pathname === '/admin';
+    const isAdminPage = location.pathname.startsWith('/admin');
 
     // Check if we're on the products page
     const isProductsPage = location.pathname === '/products';
@@ -38,15 +39,15 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     }, [location.pathname]);
 
     return (
-        <div className="min-h-screen flex flex-col">
-            {!isAdminPage && !isItsbitsHome && <Header />}
+        <div className="itsbits-home min-h-screen flex flex-col">
+            {!isAdminPage && <Header />}
             <main
                 ref={mainRef}
                 className="flex-grow"
             >
                 {children}
             </main>
-            {!isAdminPage && !isItsbitsHome && <Footer />}
+            {!isAdminPage && <Footer />}
             {!isAdminPage && !isItsbitsHome && <FloatingCartButton />}
             {!isAdminPage && <CartDrawer />}
             {!isAdminPage && !isItsbitsHome && <PhoneVerifyModal />}
