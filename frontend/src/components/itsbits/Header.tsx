@@ -227,7 +227,7 @@ const Header = () => {
             {isAuthenticated && user?.role === "admin" && (
               <Link
                 to="/admin"
-                className="inline-block text-[11px] uppercase tracking-[0.14em] font-semibold text-black no-underline transition-colors duration-200 hover:text-[#444]"
+                className="itsbits-top-action itsbits-top-action-text inline-flex items-center justify-center text-[11px] uppercase tracking-[0.14em] font-semibold text-black no-underline transition-colors duration-200 hover:text-[#444]"
               >
                 Admin
               </Link>
@@ -236,7 +236,7 @@ const Header = () => {
             {isAuthenticated ? (
               <Link
                 to="/profile"
-                className="inline-flex items-center justify-center text-black no-underline transition-colors duration-200 hover:text-[#444]"
+                className="itsbits-top-action inline-flex items-center justify-center text-black no-underline transition-colors duration-200 hover:text-[#444]"
                 aria-label="Account"
               >
                 <svg viewBox="0 0 250 250" fill="currentColor" width="18" height="18" aria-hidden="true">
@@ -246,13 +246,15 @@ const Header = () => {
             ) : (
               <Link
                 to="/login"
-                className="inline-block text-[11px] uppercase tracking-[0.14em] font-semibold text-black no-underline transition-colors duration-200 hover:text-[#444]"
+                className="itsbits-top-action itsbits-top-action-text inline-flex items-center justify-center text-[11px] uppercase tracking-[0.14em] font-semibold text-black no-underline transition-colors duration-200 hover:text-[#444]"
               >
                 Login
               </Link>
             )}
 
-            <CartIcon />
+            <div className="itsbits-top-action itsbits-top-action-cart">
+              <CartIcon />
+            </div>
           </div>
         </div>
       </div>

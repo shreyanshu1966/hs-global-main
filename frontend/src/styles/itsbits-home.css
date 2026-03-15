@@ -238,7 +238,20 @@
 
 .itsbits-home .itsbits-right-icons {
   flex-basis: 261px;
-  gap: 4px;
+  gap: 10px;
+}
+
+.itsbits-home .itsbits-top-action {
+  min-width: 34px;
+  min-height: 34px;
+}
+
+.itsbits-home .itsbits-top-action-text {
+  padding: 0 6px;
+}
+
+.itsbits-home .itsbits-top-action-cart .relative {
+  padding: 0;
 }
 
 .itsbits-home .itsbits-icon-link {
@@ -1302,6 +1315,19 @@
     flex-basis: auto;
   }
 
+  .itsbits-home .itsbits-right-icons {
+    margin-left: auto;
+    min-width: 170px;
+    justify-content: space-between !important;
+    gap: 12px;
+  }
+
+  .itsbits-home .itsbits-top-action-text {
+    font-size: 10px !important;
+    letter-spacing: 0.1em !important;
+    padding: 0 2px;
+  }
+
   .itsbits-home .itsbits-logo {
     width: 146px;
   }
@@ -1531,6 +1557,11 @@
 
   .itsbits-home .itsbits-logo {
     width: 132px;
+  }
+
+  .itsbits-home .itsbits-right-icons {
+    min-width: 160px;
+    gap: 10px;
   }
 
   .itsbits-home .itsbits-logo-main {
