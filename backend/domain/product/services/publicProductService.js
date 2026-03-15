@@ -48,6 +48,17 @@ const getAllProducts = async (query) => {
         filters.featured = query.featured === 'true';
     }
 
+    if (query.tag) {
+        const tags = String(query.tag)
+            .split(',')
+            .map((tag) => tag.trim())
+            .filter(Boolean);
+
+        if (tags.length > 0) {
+            filters.tags = { $in: tags };
+        }
+    }
+
     const minPrice = parsePrice(query.minPrice);
     const maxPrice = parsePrice(query.maxPrice);
 
