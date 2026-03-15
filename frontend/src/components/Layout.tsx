@@ -48,7 +48,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             </main>
             {!isAdminPage && !isItsbitsHome && <Footer />}
             {!isAdminPage && !isItsbitsHome && <FloatingCartButton />}
-            {!isAdminPage && !isItsbitsHome && <CartDrawer />}
+            {!isAdminPage && <CartDrawer />}
             {!isAdminPage && !isItsbitsHome && <PhoneVerifyModal />}
             {!isAdminPage && !isItsbitsHome && <AddedToCartNotification />}
             {/* Temporarily disabled - Get Your Quote popup */}

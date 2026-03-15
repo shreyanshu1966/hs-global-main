@@ -1,9 +1,23 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Search } from "lucide-react";
+import { useAuth } from "../../contexts/AuthContext";
+import { CartIcon } from "../CartIcon";
+import { productService, Product } from "../../services/productService";
 
 const Header = () => {
   const [isBottomNavVisible, setIsBottomNavVisible] = useState(true);
-  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<Product[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
+  const [isDesktopDropdownOpen, setIsDesktopDropdownOpen] = useState(false);
+  const [isMobileDropdownOpen, setIsMobileDropdownOpen] = useState(false);
   const lastScrollYRef = useRef(0);
+  const desktopSearchRef = useRef<HTMLDivElement>(null);
+  const mobileSearchRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+  const { isAuthenticated, user } = useAuth();
 
   useEffect(() => {
     let ticking = false;
@@ -34,26 +48,79 @@ const Header = () => {
   }, []);
 
   useEffect(() => {
-    const onResize = () => {
-      if (window.innerWidth >= 768) {
-        setIsMobileSearchOpen(false);
-      }
-    };
-
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        setIsMobileSearchOpen(false);
+        setIsDesktopDropdownOpen(false);
+        setIsMobileDropdownOpen(false);
       }
     };
 
-    window.addEventListener("resize", onResize);
     window.addEventListener("keydown", onKeyDown);
 
     return () => {
-      window.removeEventListener("resize", onResize);
       window.removeEventListener("keydown", onKeyDown);
     };
   }, []);
+
+  useEffect(() => {
+    const trimmed = searchQuery.trim();
+    if (trimmed.length < 2) {
+      setSearchResults([]);
+      setHasSearched(false);
+      setIsSearching(false);
+      return;
+    }
+
+    const timer = window.setTimeout(async () => {
+      setIsSearching(true);
+      try {
+        const response = await productService.searchProducts(trimmed, { limit: 8, page: 1 });
+        const items = Array.isArray(response.data) ? response.data : [];
+        setSearchResults(items);
+      } catch (_error) {
+        setSearchResults([]);
+      } finally {
+        setIsSearching(false);
+        setHasSearched(true);
+      }
+    }, 220);
+
+    return () => window.clearTimeout(timer);
+  }, [searchQuery]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
+
+      if (desktopSearchRef.current && !desktopSearchRef.current.contains(target)) {
+        setIsDesktopDropdownOpen(false);
+      }
+
+      if (mobileSearchRef.current && !mobileSearchRef.current.contains(target)) {
+        setIsMobileDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const showNoResults = useMemo(
+    () => hasSearched && !isSearching && searchQuery.trim().length >= 2 && searchResults.length === 0,
+    [hasSearched, isSearching, searchQuery, searchResults.length]
+  );
+
+  const handleSelectProduct = (product: Product) => {
+    const id = product.productId || product._id;
+    if (!id) return;
+
+    setSearchQuery("");
+    setSearchResults([]);
+    setHasSearched(false);
+    setIsDesktopDropdownOpen(false);
+    setIsMobileDropdownOpen(false);
+    navigate(`/products/${id}`);
+  };
 
   const navItems = [
     { label: 'New Arrivals', href: '/products?cat=furniture&sort=newest', active: true },
@@ -68,7 +135,8 @@ const Header = () => {
   ];
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 font-sans itsbits-header itsbits-header-root">
+    <>
+      <header className="fixed top-0 left-0 w-full z-50 font-sans itsbits-header itsbits-header-root">
       {/* ===== Top Bar (Logo + Search + Icons) — height: 84px ===== */}
       <div
         className="bg-white flex justify-center relative itsbits-top-bar"
@@ -96,91 +164,154 @@ const Header = () => {
             </a>
           </div>
 
-          {/* Search Bar — pill-shaped with 1.5px border */}
-          <div className="flex-1 relative hidden md:block itsbits-desktop-search">
+          {/* Search Bar — dropdown autocomplete */}
+          <div ref={desktopSearchRef} className="flex-1 relative hidden md:block itsbits-desktop-search">
             <div
               className="flex relative itsbits-search-shell"
             >
               <div className="flex-grow relative">
                 <input
                   type="text"
+                  value={searchQuery}
+                  onChange={(event) => {
+                    setSearchQuery(event.target.value);
+                    setIsDesktopDropdownOpen(true);
+                  }}
+                  onFocus={() => setIsDesktopDropdownOpen(true)}
                   placeholder="Search HS Global"
-                  className="w-full h-full bg-transparent border-none outline-none text-[#222] font-light itsbits-search-input itsbits-search-input-text"
+                  className="w-full h-full bg-transparent border-none outline-none text-left text-[#222] font-light itsbits-search-input itsbits-search-input-text"
+                  aria-label="Search products"
                 />
               </div>
-              {/* Search Icon Button */}
-              <button
-                aria-label="Search"
-                className="flex-none flex items-center justify-center text-black itsbits-search-submit"
-              >
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="m19.6 21-6.3-6.3A6.096 6.096 0 0 1 9.5 16c-1.817 0-3.354-.63-4.612-1.887C3.629 12.854 3 11.317 3 9.5c0-1.817.63-3.354 1.888-4.612C6.146 3.629 7.683 3 9.5 3c1.817 0 3.354.63 4.613 1.888C15.37 6.146 16 7.683 16 9.5a6.096 6.096 0 0 1-1.3 3.8l6.3 6.3-1.4 1.4ZM9.5 14c1.25 0 2.313-.438 3.188-1.313C13.562 11.813 14 10.75 14 9.5c0-1.25-.438-2.313-1.313-3.188C11.813 5.438 10.75 5 9.5 5c-1.25 0-2.313.438-3.188 1.313S5 8.25 5 9.5c0 1.25.438 2.313 1.313 3.188C7.188 13.562 8.25 14 9.5 14Z" />
-                </svg>
-              </button>
+              <div className="flex-none flex items-center justify-center text-black itsbits-search-submit" aria-hidden="true">
+                <Search width="22" height="22" />
+              </div>
             </div>
+
+            {isDesktopDropdownOpen && searchQuery.trim().length >= 2 && (
+              <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-[#e5e7eb] rounded-2xl shadow-[0_12px_32px_rgba(0,0,0,0.12)] max-h-[380px] overflow-y-auto z-[80]">
+                {isSearching && (
+                  <div className="px-4 py-3 text-sm text-[#6b7280]">Searching...</div>
+                )}
+
+                {!isSearching && searchResults.map((product) => (
+                  <button
+                    key={product.productId || product._id}
+                    type="button"
+                    onClick={() => handleSelectProduct(product)}
+                    className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-[#f8f8f8] transition-colors"
+                  >
+                    <div className="w-12 h-12 rounded-md overflow-hidden bg-[#f3f4f6] shrink-0">
+                      {product.image ? (
+                        <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                      ) : null}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium text-[#111827] truncate">{product.name}</p>
+                      <p className="text-xs text-[#6b7280] capitalize truncate">
+                        {product.category}{product.subcategory ? ` • ${product.subcategory}` : ""}
+                      </p>
+                    </div>
+                  </button>
+                ))}
+
+                {showNoResults && (
+                  <div className="px-4 py-4 text-sm text-[#6b7280]">No products found.</div>
+                )}
+              </div>
+            )}
           </div>
 
-          {/* Right Icons (Favorites + Cart) */}
+          {/* Right Actions */}
           <div className="flex items-center justify-end itsbits-right-icons">
-            <button
-              type="button"
-              aria-label={isMobileSearchOpen ? "Close search" : "Open search"}
-              aria-expanded={isMobileSearchOpen}
-              aria-controls="itsbits-mobile-search"
-              onClick={() => setIsMobileSearchOpen((prev) => !prev)}
-              className="itsbits-mobile-search-toggle md:hidden"
-            >
-              {isMobileSearchOpen ? (
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M6.4 19 5 17.6 10.6 12 5 6.4 6.4 5 12 10.6 17.6 5 19 6.4 13.4 12 19 17.6 17.6 19 12 13.4 6.4 19Z" />
+            {isAuthenticated && user?.role === "admin" && (
+              <Link
+                to="/admin"
+                className="inline-block text-[11px] uppercase tracking-[0.14em] font-semibold text-black no-underline transition-colors duration-200 hover:text-[#444]"
+              >
+                Admin
+              </Link>
+            )}
+
+            {isAuthenticated ? (
+              <Link
+                to="/profile"
+                className="inline-flex items-center justify-center text-black no-underline transition-colors duration-200 hover:text-[#444]"
+                aria-label="Account"
+              >
+                <svg viewBox="0 0 250 250" fill="currentColor" width="18" height="18" aria-hidden="true">
+                  <path d="M125 22c28.1 0 50.9 22.8 50.9 50.9S153.1 123.8 125 123.8 74.1 101 74.1 72.9 96.9 22 125 22Zm0 15.6c-19.5 0-35.3 15.8-35.3 35.3s15.8 35.3 35.3 35.3 35.3-15.8 35.3-35.3-15.8-35.3-35.3-35.3Zm0 94.9c50.2 0 90.9 31.2 90.9 69.8v6.8h-15.6v-6.8c0-28.4-33.8-54.2-75.3-54.2s-75.3 25.8-75.3 54.2v6.8H34.1v-6.8c0-38.6 40.7-69.8 90.9-69.8Z" />
                 </svg>
-              ) : (
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="m19.6 21-6.3-6.3A6.096 6.096 0 0 1 9.5 16c-1.817 0-3.354-.63-4.612-1.887C3.629 12.854 3 11.317 3 9.5c0-1.817.63-3.354 1.888-4.612C6.146 3.629 7.683 3 9.5 3c1.817 0 3.354.63 4.613 1.888C15.37 6.146 16 7.683 16 9.5a6.096 6.096 0 0 1-1.3 3.8l6.3 6.3-1.4 1.4ZM9.5 14c1.25 0 2.313-.438 3.188-1.313C13.562 11.813 14 10.75 14 9.5c0-1.25-.438-2.313-1.313-3.188C11.813 5.438 10.75 5 9.5 5c-1.25 0-2.313.438-3.188 1.313S5 8.25 5 9.5c0 1.25.438 2.313 1.313 3.188C7.188 13.562 8.25 14 9.5 14Z" />
-                </svg>
-              )}
-            </button>
-            {/* Favorites / Heart */}
-            <a
-              href="/profile"
-              className="inline-block relative cursor-pointer text-black no-underline transition-colors duration-200 hover:text-[#444] itsbits-icon-link"
-            >
-              <svg viewBox="0 0 250 250" fill="currentColor" width="18" height="18">
-                <path d="M29.2 129.3C22.7 120.8 1.5 91.6.3 71.9-.9 51.8 4 35.7 15 24.1 30 8.1 51.4 6.3 59.8 6.3c1.3 0 2.2 0 2.8.1 16.2.4 39.5 7.6 58.9 39.4l3.4 5.6 3.6-5.5c16.8-25.7 37.1-39 60.3-39.5 3 0 28.9-.9 48 20.6 7.2 8.1 15.3 21.4 12.5 45.6-1.9 16.9-12.5 34.8-22.5 48.4-11.8 16.1-90.2 110.3-101.9 124L29.2 129.3zM59.8 16c-7.2 0-25.6 1.2-37.8 14.7C12.6 41.2 8.5 54 10 71.3c.7 8.9 5 18.7 13.6 32.7 6.4 10.4 12.6 18.7 13.3 19.6l88 106.4 83.8-101s11.1-13.7 18.1-25.5c6.2-10.5 12-22.5 13-31.3 1.7-15.7-1.6-29.1-10.2-38.6-17.9-19.8-40-17.3-41-17.3-25.6.3-47.2 19.7-64.2 57.5-2.3-6.2-5.9-14.6-11-22.9-13.6-22.4-31.3-34.5-51.3-34.8-.7-.1-1.5-.1-2.3-.1z" />
-              </svg>
-            </a>
-            {/* Cart / Bag */}
-            <a
-              href="/products"
-              className="inline-block relative cursor-pointer text-black no-underline transition-colors duration-200 hover:text-[#444] itsbits-icon-link"
-            >
-              <svg viewBox="0 0 225 208.5" fill="currentColor" width="18" height="18">
-                <path d="M199.29 208.5H18.92L0 51.25h225zm-173.9-8h167.72l23.1-141.25H8.39z" />
-                <path d="M162 59H62.32l1.3-5.06a120 120 0 0110.95-26.52C84.77 9.5 97.77 0 112.16 0s27.39 9.48 37.6 27.42a120.3 120.3 0 0110.94 26.52zm-89.6-8h79.52c-4.16-12.35-16.82-43-39.76-43S76.57 38.65 72.4 51z" />
-              </svg>
-            </a>
+              </Link>
+            ) : (
+              <Link
+                to="/login"
+                className="inline-block text-[11px] uppercase tracking-[0.14em] font-semibold text-black no-underline transition-colors duration-200 hover:text-[#444]"
+              >
+                Login
+              </Link>
+            )}
+
+            <CartIcon />
           </div>
         </div>
       </div>
 
       <div
         id="itsbits-mobile-search"
-        className={`itsbits-mobile-search md:hidden ${isMobileSearchOpen ? 'is-open' : ''}`}
+        className="itsbits-mobile-search md:hidden is-open"
       >
-        <div className="itsbits-mobile-search-inner">
+        <div ref={mobileSearchRef} className="itsbits-mobile-search-inner">
           <div className="itsbits-mobile-search-shell">
             <input
               type="text"
+              value={searchQuery}
+              onChange={(event) => {
+                setSearchQuery(event.target.value);
+                setIsMobileDropdownOpen(true);
+              }}
+              onFocus={() => setIsMobileDropdownOpen(true)}
               placeholder="Search HS Global"
-              className="itsbits-mobile-search-input"
-              aria-label="Search HS Global"
+              className="itsbits-mobile-search-input text-left"
+              aria-label="Search products"
             />
-            <button type="button" className="itsbits-mobile-search-submit" aria-label="Submit search">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="m19.6 21-6.3-6.3A6.096 6.096 0 0 1 9.5 16c-1.817 0-3.354-.63-4.612-1.887C3.629 12.854 3 11.317 3 9.5c0-1.817.63-3.354 1.888-4.612C6.146 3.629 7.683 3 9.5 3c1.817 0 3.354.63 4.613 1.888C15.37 6.146 16 7.683 16 9.5a6.096 6.096 0 0 1-1.3 3.8l6.3 6.3-1.4 1.4ZM9.5 14c1.25 0 2.313-.438 3.188-1.313C13.562 11.813 14 10.75 14 9.5c0-1.25-.438-2.313-1.313-3.188C11.813 5.438 10.75 5 9.5 5c-1.25 0-2.313.438-3.188 1.313S5 8.25 5 9.5c0 1.25.438 2.313 1.313 3.188C7.188 13.562 8.25 14 9.5 14Z" />
-              </svg>
-            </button>
+            <div className="itsbits-mobile-search-submit" aria-hidden="true">
+              <Search width="20" height="20" />
+            </div>
           </div>
+
+          {isMobileDropdownOpen && searchQuery.trim().length >= 2 && (
+            <div className="mt-2 bg-white border border-[#e5e7eb] rounded-2xl shadow-[0_8px_24px_rgba(0,0,0,0.12)] max-h-[280px] overflow-y-auto">
+              {isSearching && (
+                <div className="px-4 py-3 text-sm text-[#6b7280]">Searching...</div>
+              )}
+
+              {!isSearching && searchResults.map((product) => (
+                <button
+                  key={`mobile-${product.productId || product._id}`}
+                  type="button"
+                  onClick={() => handleSelectProduct(product)}
+                  className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-[#f8f8f8] transition-colors"
+                >
+                  <div className="w-10 h-10 rounded-md overflow-hidden bg-[#f3f4f6] shrink-0">
+                    {product.image ? (
+                      <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                    ) : null}
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-[#111827] truncate">{product.name}</p>
+                    <p className="text-xs text-[#6b7280] capitalize truncate">
+                      {product.category}{product.subcategory ? ` • ${product.subcategory}` : ""}
+                    </p>
+                  </div>
+                </button>
+              ))}
+
+              {showNoResults && (
+                <div className="px-4 py-4 text-sm text-[#6b7280]">No products found.</div>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
@@ -209,7 +340,8 @@ const Header = () => {
           </ul>
         </nav>
       </div>
-    </header>
+      </header>
+    </>
   );
 };
 

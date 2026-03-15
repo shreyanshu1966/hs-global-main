@@ -34,10 +34,12 @@ const searchProducts = ({ query, filters, skip, limit }) => Product.search(query
     .skip(skip)
     .limit(limit);
 
-const countSearchProducts = async ({ query, filters }) => {
-    const totalQuery = await Product.search(query, filters);
-    return Product.countDocuments(totalQuery.getQuery());
-};
+const countSearchProducts = ({ query, filters }) => Product.countDocuments({
+    status: 'active',
+    available: true,
+    ...filters,
+    $text: { $search: query }
+});
 
 const aggregatePublicCategories = () => Product.aggregate([
     {
