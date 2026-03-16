@@ -4,6 +4,7 @@ const { sendOrderConfirmationEmail, sendPaymentFailedEmail } = require('../servi
 const { validatePaymentFlow, verifyPayPalOrder } = require('../services/paymentValidation');
 const { paymentMonitor } = require('../services/paymentMonitoring');
 const axios = require('axios');
+const mongoose = require('mongoose');
 
 // PayPal Configuration
 const PAYPAL_CLIENT_ID = process.env.PAYPAL_CLIENT_ID;
@@ -59,17 +60,28 @@ exports.calculateCartTotal = async (req, res) => {
         const INR_TO_USD_RATE = parseFloat(process.env.INR_TO_USD_RATE || '0.012');
 
         for (const item of items) {
+            const requestedId = String(item.productId || item.id || '').trim();
+
+            if (!requestedId) {
+                return res.status(400).json({ ok: false, error: 'Invalid product identifier in cart item' });
+            }
+
+            const lookup = [{ productId: requestedId }];
+            if (mongoose.Types.ObjectId.isValid(requestedId)) {
+                lookup.push({ _id: requestedId });
+            }
+
             // Fetch product from database
             const product = await Product.findOne({
-                productId: item.id || item.productId,
                 status: 'active',
-                available: true
+                available: true,
+                $or: lookup
             });
 
             if (!product) {
                 return res.status(400).json({
                     ok: false,
-                    error: `Product ${item.name || item.id} is no longer available`
+                    error: `Product ${item.name || requestedId} is no longer available`
                 });
             }
 
@@ -93,6 +105,7 @@ exports.calculateCartTotal = async (req, res) => {
             totalUSD += itemTotalUSD;
 
             validatedItems.push({
+                requestedId,
                 productId: product.productId,
                 name: product.name,
                 priceINR: actualPriceINR,
