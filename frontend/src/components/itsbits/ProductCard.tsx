@@ -7,9 +7,10 @@ interface ProductCardProps {
   price: string;
   originalPrice?: string;
   productLink?: string;
+  showPrice?: boolean;
 }
 
-const ProductCard = ({ image, title, designer, price, originalPrice, productLink }: ProductCardProps) => {
+const ProductCard = ({ image, title, designer, price, originalPrice, productLink, showPrice = true }: ProductCardProps) => {
   const navigateToProduct = () => {
     if (productLink) {
       window.location.href = productLink;
@@ -62,14 +63,16 @@ const ProductCard = ({ image, title, designer, price, originalPrice, productLink
         <div className="itsbits-product-designer itsbits-product-designer-text text-[14px] text-[#666] leading-tight mb-[6px]">
           {designer}
         </div>
-        <div className="flex items-center gap-[6px] mt-auto">
-          {originalPrice && (
-            <span className="itsbits-price-old text-[14px] text-[#222] line-through decoration-1">{originalPrice}</span>
-          )}
-          <span className={`itsbits-price-new text-[14px] ${originalPrice ? 'text-[#d60000] itsbits-price-new-discount' : 'text-[#222]'}`}>
-            {price}
-          </span>
-        </div>
+        {showPrice && (
+          <div className="flex items-center gap-[6px] mt-auto">
+            {originalPrice && (
+              <span className="itsbits-price-old text-[14px] text-[#222] line-through decoration-1">{originalPrice}</span>
+            )}
+            <span className={`itsbits-price-new text-[14px] ${originalPrice ? 'text-[#d60000] itsbits-price-new-discount' : 'text-[#222]'}`}>
+              {price}
+            </span>
+          </div>
+        )}
       </div>
     </div>
   );

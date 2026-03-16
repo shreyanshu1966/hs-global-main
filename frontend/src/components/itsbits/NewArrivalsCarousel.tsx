@@ -42,11 +42,13 @@ const NewArrivalsCarousel = ({
   marbleFurnitureOnly = true,
 }: NewArrivalsCarouselProps) => {
   const { trackRef, canScrollPrev, canScrollNext, scrollPrev, scrollNext } = useHorizontalCarousel(0.82);
-  const [newArrivals, setNewArrivals] = useState<ItsbitsCardItem[]>(fallbackArrivals);
+  const [newArrivals, setNewArrivals] = useState<ItsbitsCardItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const manualIdsKey = manualProductIds.join('|');
 
   useEffect(() => {
     let isActive = true;
+    setIsLoading(true);
 
     const loadProducts = async () => {
       try {
@@ -70,6 +72,10 @@ const NewArrivalsCarousel = ({
         console.error('Failed to load HS Global highlights:', error);
         if (isActive) {
           setNewArrivals(fallbackArrivals);
+        }
+      } finally {
+        if (isActive) {
+          setIsLoading(false);
         }
       }
     };
@@ -113,21 +119,30 @@ const NewArrivalsCarousel = ({
           {/* Product Grid / Track */}
           <div className="flex-1 overflow-hidden itsbits-rail-shell">
             <div ref={trackRef} className="itsbits-track overflow-x-auto scroll-smooth itsbits-track-standard">
-              {newArrivals.map((item) => (
-                <div 
-                  key={item.id} 
-                  className="shrink-0 flex flex-col itsbits-rail-item"
-                >
-                  <ProductCard 
-                    image={item.image} 
-                    title={item.title} 
-                    designer={item.designer} 
-                    price={item.price} 
-                    originalPrice={item.originalPrice}
-                    productLink={item.href}
-                  />
-                </div>
-              ))}
+              {isLoading
+                ? Array.from({ length: 5 }).map((_, i) => (
+                    <div key={`highlight-skeleton-${i}`} className="shrink-0 flex flex-col itsbits-rail-item">
+                      <div className="dibs-skeleton" style={{ width: '100%', aspectRatio: '4 / 5', marginBottom: '10px' }} />
+                      <div className="dibs-skeleton" style={{ width: '88%', height: '18px', marginBottom: '6px' }} />
+                      <div className="dibs-skeleton" style={{ width: '72%', height: '18px' }} />
+                    </div>
+                  ))
+                : newArrivals.map((item) => (
+                    <div 
+                      key={item.id} 
+                      className="shrink-0 flex flex-col itsbits-rail-item"
+                    >
+                      <ProductCard 
+                        image={item.image} 
+                        title={item.title} 
+                        designer={item.designer} 
+                        price={item.price} 
+                        originalPrice={item.originalPrice}
+                        productLink={item.href}
+                        showPrice={false}
+                      />
+                    </div>
+                  ))}
             </div>
             <div className="itsbits-swipe-cue md:hidden" aria-hidden="true">Swipe</div>
           </div>
