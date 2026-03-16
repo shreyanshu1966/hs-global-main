@@ -81,7 +81,8 @@ const ProductDetails = () => {
     const moq = category === "slabs" ? "MOQ: 20 m²" : "";
 
     return {
-      id: dbProduct._id,
+      id: dbProduct.productId || dbProduct._id,
+      productId: dbProduct.productId,
       name: dbProduct.name,
       category,
       subcategory,

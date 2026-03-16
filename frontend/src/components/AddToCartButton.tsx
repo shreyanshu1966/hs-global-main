@@ -61,6 +61,7 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
       if (product.category === 'furniture' && verifiedProductId === resolvedId) {
         addItem({
           id: resolvedId,
+          productId: (product as any).productId || resolvedId,
           name: product.name,
           image: getProductImage(),
           priceINR: getRawINRPrice(),
@@ -100,6 +101,7 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
     const resolvedId = getProductId();
     const cartItem = {
       id: resolvedId, // Resolve ID from productId, _id, or id depending on product shape
+      productId: (product as any).productId || resolvedId,
       name: product.name,
       image: getProductImage(),
       priceINR: getRawINRPrice(),

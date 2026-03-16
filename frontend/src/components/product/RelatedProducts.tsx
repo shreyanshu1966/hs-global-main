@@ -32,8 +32,8 @@ export function RelatedProducts({ relatedProducts, scrollRelated, relatedRef }: 
                 ref={relatedRef}
                 className="flex gap-8 overflow-x-auto pb-8 snap-x snap-mandatory scroll-smooth custom-scrollbar"
             >
-                {relatedProducts.map((p) => (
-                    <div key={p.id} className="min-w-[300px] snap-start">
+                {relatedProducts.map((p, index) => (
+                    <div key={p.productId || p._id || p.id || `related-${index}`} className="min-w-[300px] snap-start">
                         <ProductCard product={p} />
                     </div>
                 ))}

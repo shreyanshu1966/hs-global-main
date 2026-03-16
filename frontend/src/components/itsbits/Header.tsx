@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Search } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
 import { CartIcon } from "../CartIcon";
+import { LocationSelector } from "../LocationSelector";
 import { productService, Product } from "../../services/productService";
 
 const Header = () => {
@@ -255,6 +256,10 @@ const Header = () => {
             <div className="itsbits-top-action itsbits-top-action-cart">
               <CartIcon />
             </div>
+
+            <div className="itsbits-currency-wrap hidden lg:block">
+              <LocationSelector />
+            </div>
           </div>
         </div>
       </div>
@@ -314,6 +319,10 @@ const Header = () => {
               )}
             </div>
           )}
+
+          <div className="mt-2 flex justify-end lg:hidden">
+            <LocationSelector />
+          </div>
         </div>
       </div>
 

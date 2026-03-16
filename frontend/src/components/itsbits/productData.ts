@@ -6,17 +6,14 @@ export interface ItsbitsCardItem {
   image: string;
   title: string;
   designer: string;
-  price: string;
+  price?: string;
   originalPrice?: string;
+  priceINR?: number;
+  originalPriceINR?: number;
+  priceLabel?: string;
   href: string;
   createdAt?: string;
 }
-
-const inrFormatter = new Intl.NumberFormat('en-IN', {
-  style: 'currency',
-  currency: 'INR',
-  maximumFractionDigits: 0,
-});
 
 const toTitleCase = (value: string) =>
   value
@@ -37,36 +34,41 @@ export const getItsbitsProductImage = (product: Product): string => {
     : getProductCloudinaryUrl(imagePath);
 };
 
-const getPriceLabels = (product: Product): { price: string; originalPrice?: string } => {
+const getPriceLabels = (product: Product): {
+  priceINR?: number;
+  originalPriceINR?: number;
+  priceLabel?: string;
+} => {
   const basePrice = product.priceINR || 0;
   const hasDiscount = Boolean(product.discount?.enabled && product.discount.percentage > 0 && basePrice > 0);
 
   if (basePrice <= 0) {
-    return { price: 'Request Quote' };
+    return { priceLabel: 'Request Quote' };
   }
 
   if (!hasDiscount) {
-    return { price: inrFormatter.format(basePrice) };
+    return { priceINR: basePrice };
   }
 
   const finalPrice = basePrice - (basePrice * product.discount!.percentage) / 100;
   return {
-    price: inrFormatter.format(finalPrice),
-    originalPrice: inrFormatter.format(basePrice),
+    priceINR: finalPrice,
+    originalPriceINR: basePrice,
   };
 };
 
 export const mapProductToItsbitsCard = (product: Product): ItsbitsCardItem => {
   const categoryLabel = toTitleCase(product.subcategory || product.category || 'HS Global Collection');
-  const { price, originalPrice } = getPriceLabels(product);
+  const { priceINR, originalPriceINR, priceLabel } = getPriceLabels(product);
 
   return {
     id: product.productId || product._id,
     image: getItsbitsProductImage(product),
     title: product.name,
     designer: categoryLabel,
-    price,
-    originalPrice,
+    priceINR,
+    originalPriceINR,
+    priceLabel,
     href: `/products/${product.productId || product._id}`,
     createdAt: product.createdAt,
   };

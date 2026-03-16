@@ -138,6 +138,9 @@ const NewArrivalsCarousel = ({
                         designer={item.designer} 
                         price={item.price} 
                         originalPrice={item.originalPrice}
+                        priceINR={item.priceINR}
+                        originalPriceINR={item.originalPriceINR}
+                        priceLabel={item.priceLabel}
                         productLink={item.href}
                         showPrice={false}
                       />

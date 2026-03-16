@@ -32,11 +32,16 @@ const Checkout: React.FC = () => {
   const [backendPrices, setBackendPrices] = useState<any>(null);
   const [loadingPrices, setLoadingPrices] = useState(false);
 
+  const getCheckoutItemId = (item: any): string => String(item?.productId || item?.id || '');
+
   const backendItemMap = useMemo(() => {
     const map = new Map<string, any>();
     (backendPrices?.items || []).forEach((item: any) => {
       if (item?.productId) {
         map.set(String(item.productId), item);
+      }
+      if (item?.requestedId) {
+        map.set(String(item.requestedId), item);
       }
     });
     return map;
@@ -45,7 +50,7 @@ const Checkout: React.FC = () => {
   const hasAuthoritativePricing = useMemo(() => {
     if (!backendPrices?.ok || !Array.isArray(backendPrices?.items)) return false;
     if (backendPrices.items.length !== state.items.length) return false;
-    return state.items.every((item) => backendItemMap.has(String(item.id)));
+    return state.items.every((item) => backendItemMap.has(getCheckoutItemId(item)));
   }, [backendPrices, state.items, backendItemMap]);
 
   // Fetch backend prices when cart changes
@@ -61,8 +66,8 @@ const Checkout: React.FC = () => {
           credentials: 'include',
           body: JSON.stringify({
             items: state.items.map(item => ({
-              id: item.id,
-              productId: item.id,
+              id: getCheckoutItemId(item),
+              productId: getCheckoutItemId(item),
               quantity: item.quantity
             })),
             currency: currency
@@ -80,7 +85,10 @@ const Checkout: React.FC = () => {
 
           const lineMismatches = (data?.items || [])
             .map((backendItem: any) => {
-              const localItem = state.items.find((item) => String(item.id) === String(backendItem.productId));
+              const localItem = state.items.find((item) => {
+                const localId = getCheckoutItemId(item);
+                return localId === String(backendItem.productId || '') || localId === String(backendItem.requestedId || '');
+              });
               if (!localItem) {
                 return {
                   productId: backendItem.productId,
@@ -248,14 +256,15 @@ const Checkout: React.FC = () => {
 
       // Prepare items from backend-authoritative line totals only.
       const orderItems = state.items.map((item) => {
-        const backendItem = backendItemMap.get(String(item.id));
+        const checkoutItemId = getCheckoutItemId(item);
+        const backendItem = backendItemMap.get(checkoutItemId);
         if (!backendItem) {
           throw new Error(`Pricing not available for ${item.name}. Please refresh and try again.`);
         }
 
         return {
-          id: item.id,
-          productId: item.id,
+          id: checkoutItemId,
+          productId: checkoutItemId,
           name: item.name,
           quantity: item.quantity,
           price: Number(backendItem.finalPriceUSD).toFixed(2),
@@ -536,18 +545,18 @@ const Checkout: React.FC = () => {
                     <div className="flex-1 min-w-0 flex flex-col justify-between">
                       <div>
                         <h4 className="text-sm font-semibold text-black truncate">{item.name}</h4>
-                        {backendItemMap.get(String(item.id))?.discountPercentage > 0 ? (
+                        {backendItemMap.get(getCheckoutItemId(item))?.discountPercentage > 0 ? (
                           <div className="space-y-0.5">
                             <div className="flex items-center gap-2">
-                              <p className="text-sm font-bold text-green-600">{formatPrice(Number(backendItemMap.get(String(item.id))?.finalPriceINR || 0))}</p>
+                              <p className="text-sm font-bold text-green-600">{formatPrice(Number(backendItemMap.get(getCheckoutItemId(item))?.finalPriceINR || 0))}</p>
                               <span className="px-1.5 py-0.5 bg-red-500 text-white rounded text-xs font-bold">
-                                {backendItemMap.get(String(item.id))?.discountPercentage || 0}% OFF
+                                {backendItemMap.get(getCheckoutItemId(item))?.discountPercentage || 0}% OFF
                               </span>
                             </div>
-                            <p className="text-xs text-gray-500 line-through">{formatPrice(Number(backendItemMap.get(String(item.id))?.priceINR || 0))}</p>
+                            <p className="text-xs text-gray-500 line-through">{formatPrice(Number(backendItemMap.get(getCheckoutItemId(item))?.priceINR || 0))}</p>
                           </div>
                         ) : (
-                          <p className="text-sm text-gray-500">{formatPrice(Number(backendItemMap.get(String(item.id))?.priceINR || 0))}</p>
+                          <p className="text-sm text-gray-500">{formatPrice(Number(backendItemMap.get(getCheckoutItemId(item))?.priceINR || 0))}</p>
                         )}
                       </div>
                       <div className="flex items-center gap-3">
@@ -570,7 +579,7 @@ const Checkout: React.FC = () => {
                     </div>
                     <div className="text-right">
                       <p className="text-sm font-semibold text-black">
-                        {formatPrice(Number(backendItemMap.get(String(item.id))?.finalPriceINR || 0) * item.quantity)}
+                        {formatPrice(Number(backendItemMap.get(getCheckoutItemId(item))?.finalPriceINR || 0) * item.quantity)}
                       </p>
                     </div>
                   </div>

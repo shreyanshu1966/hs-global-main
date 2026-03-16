@@ -145,6 +145,9 @@ const ProductCarousel = ({
                         designer={p.designer}
                         price={p.price}
                         originalPrice={p.originalPrice}
+                        priceINR={p.priceINR}
+                        originalPriceINR={p.originalPriceINR}
+                        priceLabel={p.priceLabel}
                         productLink={p.href}
                       />
                     </div>

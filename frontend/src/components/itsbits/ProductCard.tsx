@@ -1,16 +1,24 @@
 import type { KeyboardEventHandler } from 'react';
+import { useCurrency } from '../../contexts/CurrencyContext';
 
 interface ProductCardProps {
   image: string;
   title: string;
   designer: string;
-  price: string;
+  price?: string;
   originalPrice?: string;
+  priceINR?: number;
+  originalPriceINR?: number;
+  priceLabel?: string;
   productLink?: string;
   showPrice?: boolean;
 }
 
-const ProductCard = ({ image, title, designer, price, originalPrice, productLink, showPrice = true }: ProductCardProps) => {
+const ProductCard = ({ image, title, designer, price, originalPrice, priceINR, originalPriceINR, priceLabel, productLink, showPrice = true }: ProductCardProps) => {
+  const { formatPrice } = useCurrency();
+
+  const resolvedPrice = priceLabel || (typeof priceINR === 'number' ? formatPrice(priceINR) : (price || 'Request Quote'));
+  const resolvedOriginalPrice = typeof originalPriceINR === 'number' ? formatPrice(originalPriceINR) : originalPrice;
   const navigateToProduct = () => {
     if (productLink) {
       window.location.href = productLink;
@@ -65,11 +73,11 @@ const ProductCard = ({ image, title, designer, price, originalPrice, productLink
         </div>
         {showPrice && (
           <div className="flex items-center gap-[6px] mt-auto">
-            {originalPrice && (
-              <span className="itsbits-price-old text-[14px] text-[#222] line-through decoration-1">{originalPrice}</span>
+            {resolvedOriginalPrice && (
+              <span className="itsbits-price-old text-[14px] text-[#222] line-through decoration-1">{resolvedOriginalPrice}</span>
             )}
-            <span className={`itsbits-price-new text-[14px] ${originalPrice ? 'text-[#d60000] itsbits-price-new-discount' : 'text-[#222]'}`}>
-              {price}
+            <span className={`itsbits-price-new text-[14px] ${resolvedOriginalPrice ? 'text-[#d60000] itsbits-price-new-discount' : 'text-[#222]'}`}>
+              {resolvedPrice}
             </span>
           </div>
         )}

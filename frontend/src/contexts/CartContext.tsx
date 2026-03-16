@@ -3,6 +3,7 @@ import { getEffectivePriceINR } from '../modules/product/pricing';
 
 export interface CartItem {
   id: string;
+  productId?: string;
   name: string;
   image: string;
   priceINR: number; // Always store in INR (base currency)

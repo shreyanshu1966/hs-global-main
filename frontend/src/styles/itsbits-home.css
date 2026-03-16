@@ -254,6 +254,17 @@
   padding: 0;
 }
 
+.itsbits-home .itsbits-currency-wrap {
+  display: inline-flex;
+  align-items: center;
+}
+
+.itsbits-home .itsbits-currency-wrap > div > button {
+  height: 34px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
 .itsbits-home .itsbits-icon-link {
   width: 18px;
   height: 18px;
@@ -1164,8 +1175,8 @@
 }
 
 .itsbits-home .itsbits-footer-brand-image {
-  width: 168px;
-  height: 50px;
+  width: 504px;
+  height: 150px;
   object-fit: contain;
 }
 
@@ -1320,6 +1331,12 @@
     min-width: 170px;
     justify-content: space-between !important;
     gap: 12px;
+  }
+
+  .itsbits-home .itsbits-currency-wrap > div > button {
+    height: 32px;
+    padding-left: 8px;
+    padding-right: 8px;
   }
 
   .itsbits-home .itsbits-top-action-text {
@@ -1642,8 +1659,8 @@
   }
 
   .itsbits-home .itsbits-footer-brand-image {
-    width: 136px;
-    height: 40px;
+    width: 408px;
+    height: 120px;
   }
 }
 
