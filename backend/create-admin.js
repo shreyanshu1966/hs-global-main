@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const User = require('./models/User');
-const bcrypt = require('bcryptjs');
 const path = require('path');
 const fs = require('fs');
 
@@ -15,22 +14,23 @@ if (fs.existsSync(envPath)) {
 async function createOrUpdateAdmin() {
     try {
         // Connect to MongoDB
-        await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/hs-global');
+        await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/hs_global_export');
         console.log('Connected to MongoDB');
 
         // Get email from command line argument
         const email = process.argv[2];
         const name = process.argv[3];
         const password = process.argv[4];
+        const phone = process.argv[5] || process.env.ADMIN_PHONE || '+10000000000';
 
         if (!email) {
             console.error('Please provide an email address');
             console.log('\nUsage:');
             console.log('  To promote existing user: node create-admin.js <email>');
-            console.log('  To create new admin:      node create-admin.js <email> <name> <password>');
+            console.log('  To create new admin:      node create-admin.js <email> <name> <password> [phone]');
             console.log('\nExamples:');
             console.log('  node create-admin.js user@example.com');
-            console.log('  node create-admin.js admin@example.com "Admin User" "SecurePassword123"');
+            console.log('  node create-admin.js admin@example.com "Admin User" "SecurePassword123" "+919999999999"');
             process.exit(1);
         }
 
@@ -64,6 +64,7 @@ async function createOrUpdateAdmin() {
                 email: email.toLowerCase(),
                 name: name,
                 password: password, // Will be hashed by the pre-save hook
+                phone,
                 role: 'admin',
                 emailVerified: true // Auto-verify admin users
             });
