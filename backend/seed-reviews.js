@@ -388,8 +388,11 @@ const seedReviews = async () => {
         
         await connectDB();
         
-        // Get all existing products
-        const products = await Product.find({ status: 'active' });
+        // Get active products that have stable product identifiers
+        const products = await Product.find({
+            status: 'active',
+            productId: { $exists: true, $ne: '' }
+        }).select('productId name category subcategory furnitureSpecs slabSpecs');
         console.log(`📦 Found ${products.length} products to generate reviews for`);
         
         if (products.length === 0) {
