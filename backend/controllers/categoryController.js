@@ -52,11 +52,11 @@ const addCustomSubcategory = async (req, res) => {
             });
         }
 
-        // Validate categoryId
-        if (!['furniture', 'slabs'].includes(categoryId)) {
+        // Validate categoryId format (slug-like)
+        if (!/^[a-z0-9-]+$/i.test(String(categoryId))) {
             return res.status(400).json({
                 success: false,
-                message: 'categoryId must be either "furniture" or "slabs"'
+                message: 'categoryId must be a valid identifier (letters, numbers, hyphens)'
             });
         }
 

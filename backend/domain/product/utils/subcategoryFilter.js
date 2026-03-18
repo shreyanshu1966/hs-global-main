@@ -1,0 +1,40 @@
+const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+const SUBCATEGORY_ALIAS_MAP = {
+    others: 'other',
+    'center-table': 'dining-table',
+    'center-tables': 'dining-table',
+    center: 'dining-table',
+    'wash-basin': 'wash-basins',
+    'wash basin': 'wash-basins'
+};
+
+const normalizeSubcategory = (subcategory) => {
+    if (!subcategory || typeof subcategory !== 'string') {
+        return '';
+    }
+
+    return subcategory.trim().toLowerCase();
+};
+
+const buildSubcategoryFilter = (subcategory) => {
+    const normalized = normalizeSubcategory(subcategory);
+    if (!normalized) {
+        return undefined;
+    }
+
+    const canonical = SUBCATEGORY_ALIAS_MAP[normalized] || normalized;
+    const escaped = escapeRegex(canonical);
+    const flexiblePattern = escaped.replace(/[-_\s]+/g, '[-_\\s]*');
+
+    return {
+        $regex: `^${flexiblePattern}$`,
+        $options: 'i'
+    };
+};
+
+module.exports = {
+    SUBCATEGORY_ALIAS_MAP,
+    normalizeSubcategory,
+    buildSubcategoryFilter
+};

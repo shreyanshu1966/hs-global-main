@@ -1,96 +1,21 @@
 const Product = require('../models/Product');
+const publicProductService = require('../domain/product/services/publicProductService');
+const {
+    toLegacyListResponse,
+    toLegacySingleResponse,
+    toLegacyCategoryResponse,
+    toLegacyFeaturedResponse,
+    toV2ListResponse,
+    toV2SingleResponse,
+    toV2CategoryResponse,
+    toV2FeaturedResponse
+} = require('../domain/product/adapters/legacyProductAdapter');
 
-const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-
-const buildSubcategoryFilter = (subcategory) => {
-    if (!subcategory || typeof subcategory !== 'string') {
-        return undefined;
-    }
-
-    const normalized = subcategory.trim().toLowerCase();
-    if (!normalized) {
-        return undefined;
-    }
-
-    const aliasMap = {
-        others: 'other',
-        'center-table': 'dining-table',
-        'center-tables': 'dining-table',
-        center: 'dining-table',
-        'wash-basin': 'wash-basins',
-        'wash basin': 'wash-basins'
-    };
-
-    const canonical = aliasMap[normalized] || normalized;
-    const escaped = escapeRegex(canonical);
-    const flexiblePattern = escaped.replace(/[-_\s]+/g, '[-_\\s]*');
-
-    return {
-        $regex: `^${flexiblePattern}$`,
-        $options: 'i'
-    };
-};
-
-// Get all products with pagination and filters
+// Get all products with pagination and filters (legacy response contract)
 const getAllProducts = async (req, res) => {
     try {
-        const {
-            page = 1,
-            limit = 20,
-            category,
-            subcategory,
-            featured,
-            search,
-            sortBy = 'createdAt',
-            sortOrder = 'desc',
-            minPrice,
-            maxPrice
-        } = req.query;
-
-        const filters = {
-            status: 'active',
-            available: true
-        };
-
-        // Apply filters
-        if (category) filters.category = category;
-        const subcategoryFilter = buildSubcategoryFilter(subcategory);
-        if (subcategoryFilter) filters.subcategory = subcategoryFilter;
-        if (featured !== undefined) filters.featured = featured === 'true';
-        if (minPrice) filters.priceINR = { ...filters.priceINR, $gte: parseFloat(minPrice) };
-        if (maxPrice) filters.priceINR = { ...filters.priceINR, $lte: parseFloat(maxPrice) };
-
-        let query;
-
-        // Handle search
-        if (search) {
-            query = Product.search(search, filters);
-        } else {
-            query = Product.find(filters);
-        }
-
-        // Apply sorting
-        const sort = {};
-        sort[sortBy] = sortOrder === 'desc' ? -1 : 1;
-        query = query.sort(sort);
-
-        // Apply pagination
-        const skip = (page - 1) * limit;
-        query = query.skip(skip).limit(parseInt(limit));
-
-        const products = await query.exec();
-        const total = await Product.countDocuments(filters);
-
-        res.json({
-            success: true,
-            data: products,
-            pagination: {
-                current: parseInt(page),
-                total: Math.ceil(total / limit),
-                count: products.length,
-                totalItems: total
-            }
-        });
+        const result = await publicProductService.getAllProducts(req.query);
+        res.json(toLegacyListResponse(result));
     } catch (error) {
         console.error('Get products error:', error);
         res.status(500).json({
@@ -101,42 +26,20 @@ const getAllProducts = async (req, res) => {
     }
 };
 
-// Get single product by ID
+// Get single product by ID (legacy response contract)
 const getProductById = async (req, res) => {
     try {
         const { id } = req.params;
+        const result = await publicProductService.getProductById(id);
 
-        const product = await Product.findOne({
-            productId: id,
-            status: 'active'
-        });
-
-        if (!product) {
+        if (!result) {
             return res.status(404).json({
                 success: false,
                 message: 'Product not found'
             });
         }
 
-        // Increment view count
-        await product.incrementView();
-
-        // Get related products
-        const relatedProducts = await Product.find({
-            _id: { $ne: product._id },
-            category: product.category,
-            subcategory: product.subcategory,
-            status: 'active',
-            available: true
-        }).limit(10).select('productId name image priceINR category subcategory');
-
-        res.json({
-            success: true,
-            data: {
-                product,
-                relatedProducts
-            }
-        });
+        res.json(toLegacySingleResponse(result));
     } catch (error) {
         console.error('Get product by ID error:', error);
         res.status(500).json({
@@ -147,65 +50,12 @@ const getProductById = async (req, res) => {
     }
 };
 
-// Get products by category
+// Get products by category (legacy response contract)
 const getProductsByCategory = async (req, res) => {
     try {
         const { category } = req.params;
-        const {
-            page = 1,
-            limit = 20,
-            subcategory,
-            sortBy = 'featured',
-            sortOrder = 'desc'
-        } = req.query;
-
-        const filters = {
-            category,
-            status: 'active',
-            available: true
-        };
-
-        const subcategoryFilter = buildSubcategoryFilter(subcategory);
-        if (subcategoryFilter) filters.subcategory = subcategoryFilter;
-
-        const sort = {};
-        if (sortBy === 'featured') {
-            sort.featured = -1;
-            sort.createdAt = -1;
-        } else {
-            sort[sortBy] = sortOrder === 'desc' ? -1 : 1;
-        }
-
-        const skip = (page - 1) * limit;
-
-        const products = await Product.find(filters)
-            .sort(sort)
-            .skip(skip)
-            .limit(parseInt(limit));
-
-        const total = await Product.countDocuments(filters);
-
-        // Get subcategories for this category
-        const subcategories = await Product.distinct('subcategory', {
-            category,
-            status: 'active',
-            available: true
-        });
-
-        res.json({
-            success: true,
-            data: {
-                products,
-                subcategories,
-                category
-            },
-            pagination: {
-                current: parseInt(page),
-                total: Math.ceil(total / limit),
-                count: products.length,
-                totalItems: total
-            }
-        });
+        const result = await publicProductService.getProductsByCategory(category, req.query);
+        res.json(toLegacyCategoryResponse(result));
     } catch (error) {
         console.error('Get products by category error:', error);
         res.status(500).json({
@@ -216,17 +66,12 @@ const getProductsByCategory = async (req, res) => {
     }
 };
 
-// Get featured products
+// Get featured products (legacy response contract)
 const getFeaturedProducts = async (req, res) => {
     try {
         const { limit = 10 } = req.query;
-
-        const products = await Product.getFeatured(parseInt(limit));
-
-        res.json({
-            success: true,
-            data: products
-        });
+        const result = await publicProductService.getFeaturedProducts(limit);
+        res.json(toLegacyFeaturedResponse(result));
     } catch (error) {
         console.error('Get featured products error:', error);
         res.status(500).json({
@@ -237,44 +82,115 @@ const getFeaturedProducts = async (req, res) => {
     }
 };
 
-// Search products
+// Search products (legacy response contract)
 const searchProducts = async (req, res) => {
     try {
-        const { q, category, limit = 20, page = 1 } = req.query;
-
-        if (!q || q.trim() === '') {
+        const result = await publicProductService.searchProducts(req.query);
+        res.json({
+            ...toLegacyListResponse(result),
+            searchTerm: result.searchTerm
+        });
+    } catch (error) {
+        if (error.code === 'VALIDATION_ERROR') {
             return res.status(400).json({
                 success: false,
-                message: 'Search query is required'
+                message: error.message
             });
         }
 
-        const filters = {};
-        if (category) filters.category = category;
+        console.error('Search products error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to search products',
+            error: error.message
+        });
+    }
+};
 
-        const skip = (page - 1) * limit;
+// V2 public endpoints with unified DTO contract
+const getAllProductsV2 = async (req, res) => {
+    try {
+        const result = await publicProductService.getAllProducts(req.query);
+        res.json(toV2ListResponse(result));
+    } catch (error) {
+        console.error('Get products v2 error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to fetch products',
+            error: error.message
+        });
+    }
+};
 
-        const products = await Product.search(q.trim(), filters)
-            .skip(skip)
-            .limit(parseInt(limit));
+const getProductByIdV2 = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const result = await publicProductService.getProductById(id);
 
-        // Get total count for pagination
-        const totalQuery = await Product.search(q.trim(), filters);
-        const total = await Product.countDocuments(totalQuery.getQuery());
+        if (!result) {
+            return res.status(404).json({
+                success: false,
+                message: 'Product not found'
+            });
+        }
 
+        res.json(toV2SingleResponse(result));
+    } catch (error) {
+        console.error('Get product by ID v2 error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to fetch product',
+            error: error.message
+        });
+    }
+};
+
+const getProductsByCategoryV2 = async (req, res) => {
+    try {
+        const { category } = req.params;
+        const result = await publicProductService.getProductsByCategory(category, req.query);
+        res.json(toV2CategoryResponse(result));
+    } catch (error) {
+        console.error('Get products by category v2 error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to fetch products',
+            error: error.message
+        });
+    }
+};
+
+const getFeaturedProductsV2 = async (req, res) => {
+    try {
+        const { limit = 10 } = req.query;
+        const result = await publicProductService.getFeaturedProducts(limit);
+        res.json(toV2FeaturedResponse(result));
+    } catch (error) {
+        console.error('Get featured products v2 error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to fetch featured products',
+            error: error.message
+        });
+    }
+};
+
+const searchProductsV2 = async (req, res) => {
+    try {
+        const result = await publicProductService.searchProducts(req.query);
         res.json({
-            success: true,
-            data: products,
-            pagination: {
-                current: parseInt(page),
-                total: Math.ceil(total / limit),
-                count: products.length,
-                totalItems: total
-            },
-            searchTerm: q.trim()
+            ...toV2ListResponse(result),
+            searchTerm: result.searchTerm
         });
     } catch (error) {
-        console.error('Search products error:', error);
+        if (error.code === 'VALIDATION_ERROR') {
+            return res.status(400).json({
+                success: false,
+                message: error.message
+            });
+        }
+
+        console.error('Search products v2 error:', error);
         res.status(500).json({
             success: false,
             message: 'Failed to search products',
@@ -404,39 +320,35 @@ const trackAddToCart = async (req, res) => {
     }
 };
 
-// Get product categories and subcategories
+// Get product categories and subcategories (legacy)
 const getCategories = async (req, res) => {
     try {
-        const categories = await Product.aggregate([
-            {
-                $match: { status: 'active', available: true }
-            },
-            {
-                $group: {
-                    _id: '$category',
-                    subcategories: { $addToSet: '$subcategory' },
-                    count: { $sum: 1 }
-                }
-            },
-            {
-                $project: {
-                    _id: 0,
-                    category: '$_id',
-                    subcategories: 1,
-                    count: 1
-                }
-            },
-            {
-                $sort: { category: 1 }
-            }
-        ]);
-
+        const result = await publicProductService.getPublicCategories();
         res.json({
             success: true,
-            data: categories
+            data: result.categories
         });
     } catch (error) {
         console.error('Get categories error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to fetch categories',
+            error: error.message
+        });
+    }
+};
+
+// Get product facets with tags (v2)
+const getCategoriesV2 = async (req, res) => {
+    try {
+        const result = await publicProductService.getPublicCategories();
+        res.json({
+            success: true,
+            data: result.facets,
+            schemaVersion: 'v2'
+        });
+    } catch (error) {
+        console.error('Get categories v2 error:', error);
         res.status(500).json({
             success: false,
             message: 'Failed to fetch categories',
@@ -451,9 +363,15 @@ module.exports = {
     getProductsByCategory,
     getFeaturedProducts,
     searchProducts,
+    getAllProductsV2,
+    getProductByIdV2,
+    getProductsByCategoryV2,
+    getFeaturedProductsV2,
+    searchProductsV2,
     createProduct,
     updateProduct,
     deleteProduct,
     trackAddToCart,
-    getCategories
+    getCategories,
+    getCategoriesV2
 };
