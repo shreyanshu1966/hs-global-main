@@ -19,7 +19,8 @@
         "fix-indexes": "node ensure-discount-indexes.js",
         "fix-discounts": "node ensure-discount-indexes.js",
         "migrate-furniture:dry": "node scripts/migrate-furniture-db.js --dry-run",
-        "migrate-furniture:apply": "node scripts/migrate-furniture-db.js --apply"
+        "migrate-furniture:apply": "node scripts/migrate-furniture-db.js --apply",
+        "migrate:bootstrap": "node migrate-bootstrap.js"
     },
     "dependencies": {
         "axios": "^1.13.4",
