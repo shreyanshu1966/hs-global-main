@@ -31,6 +31,8 @@
   --itsbits-header-medium-size: 22px;
   --itsbits-rail-item-width: clamp(220px, 21vw, 268px);
   --itsbits-spotlight-item-width: clamp(260px, 28vw, 340px);
+  --itsbits-spotlight-image-ratio: 1 / 1;
+  --itsbits-featured-image-ratio: 3 / 2;
   --itsbits-personalized-item-width: 20%;
   --itsbits-highlight-gap: 27px;
   --itsbits-carousel-row-gap: 12px;
@@ -677,6 +679,17 @@
 
 .itsbits-home .itsbits-spotlight-image-wrap {
   margin-bottom: 14px;
+  width: 100%;
+  aspect-ratio: var(--itsbits-spotlight-image-ratio);
+  overflow: hidden;
+  background: #f4f3ec;
+}
+
+.itsbits-home .itsbits-spotlight-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .itsbits-home .itsbits-spotlight-item-title {
@@ -811,7 +824,8 @@
 
 .itsbits-home .itsbits-featured-image-wrap {
   flex-basis: 50%;
-  height: 500px;
+  height: auto;
+  aspect-ratio: var(--itsbits-featured-image-ratio);
   overflow: hidden;
 }
 
@@ -1222,7 +1236,8 @@
 
   .itsbits-home .itsbits-featured-image-wrap {
     flex-basis: auto;
-    height: 380px;
+    height: auto;
+    aspect-ratio: var(--itsbits-featured-image-ratio);
   }
 
   .itsbits-home .itsbits-featured-copy {
@@ -1604,7 +1619,8 @@
   }
 
   .itsbits-home .itsbits-featured-image-wrap {
-    height: 260px;
+    height: auto;
+    aspect-ratio: var(--itsbits-featured-image-ratio);
   }
 
   .itsbits-home .itsbits-featured-copy {

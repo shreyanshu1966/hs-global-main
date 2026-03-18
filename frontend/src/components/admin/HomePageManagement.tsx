@@ -711,6 +711,132 @@ const HomePageManagement = () => {
       </div>
 
       <div className={panelClass}>
+        <h3 className="text-lg font-semibold text-slate-900">Product Video Carousel</h3>
+        <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
+          <input
+            value={config.videoCarousel.title}
+            onChange={(e) => setConfig((prev) => ({ ...prev, videoCarousel: { ...prev.videoCarousel, title: e.target.value } }))}
+            placeholder="Section title"
+            className={inputClass}
+          />
+          <input
+            value={config.videoCarousel.ctaText}
+            onChange={(e) => setConfig((prev) => ({ ...prev, videoCarousel: { ...prev.videoCarousel, ctaText: e.target.value } }))}
+            placeholder="CTA text"
+            className={inputClass}
+          />
+          <input
+            value={config.videoCarousel.ctaLink}
+            onChange={(e) => setConfig((prev) => ({ ...prev, videoCarousel: { ...prev.videoCarousel, ctaLink: e.target.value } }))}
+            placeholder="CTA link"
+            className={inputClass}
+          />
+        </div>
+
+        <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
+          <label className="flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-700">
+            <input
+              type="checkbox"
+              checked={config.videoCarousel.enabled}
+              onChange={(e) =>
+                setConfig((prev) => ({
+                  ...prev,
+                  videoCarousel: { ...prev.videoCarousel, enabled: e.target.checked },
+                }))
+              }
+            />
+            Enable video carousel
+          </label>
+
+          <select
+            value={config.videoCarousel.sourceType}
+            onChange={(e) =>
+              setConfig((prev) => ({
+                ...prev,
+                videoCarousel: {
+                  ...prev.videoCarousel,
+                  sourceType: e.target.value as 'category' | 'tag' | 'manual',
+                },
+              }))
+            }
+            className={inputClass}
+          >
+            <option value="category">Source: Category</option>
+            <option value="tag">Source: Tag</option>
+            <option value="manual">Source: Manual Product IDs</option>
+          </select>
+
+          <input
+            type="number"
+            min={1}
+            max={24}
+            value={config.videoCarousel.limit}
+            onChange={(e) => {
+              const value = Math.min(24, Math.max(1, Number(e.target.value || 8)));
+              setConfig((prev) => ({ ...prev, videoCarousel: { ...prev.videoCarousel, limit: value } }));
+            }}
+            placeholder="Videos count"
+            className={inputClass}
+          />
+
+          {config.videoCarousel.sourceType === 'category' && (
+            <input
+              value={config.videoCarousel.sourceCategory}
+              onChange={(e) => setConfig((prev) => ({ ...prev, videoCarousel: { ...prev.videoCarousel, sourceCategory: e.target.value } }))}
+              placeholder="Category (example: furniture)"
+              className={inputClass}
+            />
+          )}
+
+          {config.videoCarousel.sourceType === 'tag' && (
+            <input
+              value={config.videoCarousel.sourceTag}
+              onChange={(e) => setConfig((prev) => ({ ...prev, videoCarousel: { ...prev.videoCarousel, sourceTag: e.target.value } }))}
+              placeholder="Tag (example: best seller)"
+              className={inputClass}
+            />
+          )}
+
+          {config.videoCarousel.sourceType === 'manual' && (
+            <ProductSearchSelector
+              selectedProductIds={config.videoCarousel.manualProductIds}
+              onChange={(manualProductIds: string[]) =>
+                setConfig((prev) => ({
+                  ...prev,
+                  videoCarousel: { ...prev.videoCarousel, manualProductIds },
+                }))
+              }
+              maxItems={24}
+              className="md:col-span-3"
+            />
+          )}
+
+          <input
+            value={config.videoCarousel.sortBy}
+            onChange={(e) => setConfig((prev) => ({ ...prev, videoCarousel: { ...prev.videoCarousel, sortBy: e.target.value } }))}
+            placeholder="Sort by (createdAt/priceINR/name)"
+            className={inputClass}
+          />
+          <select
+            value={config.videoCarousel.sortOrder}
+            onChange={(e) =>
+              setConfig((prev) => ({
+                ...prev,
+                videoCarousel: {
+                  ...prev.videoCarousel,
+                  sortOrder: e.target.value as 'asc' | 'desc',
+                },
+              }))
+            }
+            className={inputClass}
+          >
+            <option value="desc">Sort: Descending</option>
+            <option value="asc">Sort: Ascending</option>
+          </select>
+        </div>
+      </div>
+
+      <div className={panelClass}>
         <h3 className="text-lg font-semibold text-slate-900">Featured Banner</h3>
         <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
           <input value={config.featuredBanner.title} onChange={(e) => setConfig((prev) => ({ ...prev, featuredBanner: { ...prev.featuredBanner, title: e.target.value } }))} placeholder="Banner title" className={inputClass} />

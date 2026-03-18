@@ -65,6 +65,19 @@ export interface HomePageConfig {
     title: string;
     cards: HomePageLinkCard[];
   };
+  videoCarousel: {
+    title: string;
+    ctaText: string;
+    ctaLink: string;
+    enabled: boolean;
+    sourceType: 'category' | 'tag' | 'manual';
+    manualProductIds: string[];
+    sourceCategory: string;
+    sourceTag: string;
+    limit: number;
+    sortBy: string;
+    sortOrder: 'asc' | 'desc';
+  };
   featuredBanner: {
     title: string;
     body: string;
@@ -191,6 +204,19 @@ const defaultConfig: HomePageConfig = {
       { title: 'Talk to HS Global Team', subtitle: '', image: '/export.webp', link: '/contact' },
     ],
   },
+  videoCarousel: {
+    title: 'Product Videos',
+    ctaText: 'View All Products',
+    ctaLink: '/products',
+    enabled: true,
+    sourceType: 'category',
+    manualProductIds: [],
+    sourceCategory: 'furniture',
+    sourceTag: '',
+    limit: 8,
+    sortBy: 'createdAt',
+    sortOrder: 'desc',
+  },
   featuredBanner: {
     title: 'Build Your Signature Stone Collection',
     body: 'From concept and cutting to export logistics, HS Global delivers premium marble and granite solutions for architects, designers, and global buyers.',
@@ -254,6 +280,7 @@ const normalizeConfig = (config?: Partial<HomePageConfig> | null): HomePageConfi
     ...(config?.collections || {}),
     cards: Array.isArray(config?.collections?.cards) ? config!.collections!.cards : defaultConfig.collections.cards,
   },
+  videoCarousel: { ...defaultConfig.videoCarousel, ...(config?.videoCarousel || {}) },
   featuredBanner: { ...defaultConfig.featuredBanner, ...(config?.featuredBanner || {}) },
   journal: {
     ...defaultConfig.journal,

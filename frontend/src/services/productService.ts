@@ -21,6 +21,10 @@ export interface Product {
     description?: string;
   };
   hasVideo: boolean;
+  videoUrl?: string | null;
+  videoFilename?: string | null;
+  videoSize?: number | null;
+  videoUploadedAt?: string | null;
   furnitureSpecs?: {
     type?: string;
     shape?: string;

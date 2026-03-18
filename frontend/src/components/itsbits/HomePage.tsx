@@ -7,6 +7,8 @@ import IntrospectiveMagazine from './IntrospectiveMagazine';
 import InteriorDesigners from './InteriorDesigners';
 import PromiseBanner from './PromiseBanner';
 import ProductCarousel from './ProductCarousel';
+import VideoProductCarousel from './VideoProductCarousel';
+import GalleryImageCarousel from './GalleryImageCarousel';
 import { HomePageConfig, homePageConfigService } from '../../services/homePageConfigService';
 
 const HomePage = () => {
@@ -89,7 +91,23 @@ const HomePage = () => {
           />
         ))}
 
-      {/* ===== SECTION 7: Featured Banner — Red Carpet Style (50/50 split) ===== */}
+      {/* ===== SECTION 8: Product Videos Carousel ===== */}
+      {config.videoCarousel.enabled && (
+        <VideoProductCarousel
+          title={config.videoCarousel.title}
+          ctaText={config.videoCarousel.ctaText}
+          ctaLink={config.videoCarousel.ctaLink}
+          sourceType={config.videoCarousel.sourceType}
+          manualProductIds={config.videoCarousel.manualProductIds}
+          sourceCategory={config.videoCarousel.sourceCategory}
+          sourceTag={config.videoCarousel.sourceTag}
+          limit={config.videoCarousel.limit}
+          sortBy={config.videoCarousel.sortBy}
+          sortOrder={config.videoCarousel.sortOrder}
+        />
+      )}
+
+      {/* ===== SECTION 9: Featured Banner — Red Carpet Style (50/50 split) ===== */}
       <FeaturedBanner
         title={config.featuredBanner.title}
         body={config.featuredBanner.body}
@@ -100,14 +118,17 @@ const HomePage = () => {
         imageAlt={config.featuredBanner.imageAlt}
       />
 
-      {/* ===== SECTION 8: Journal ===== */}
+      {/* ===== SECTION 10: Gallery Image Carousel ===== */}
+      <GalleryImageCarousel />
+
+      {/* ===== SECTION 11: Journal ===== */}
       <IntrospectiveMagazine
         titlePrefix={config.journal.titlePrefix}
         titleSuffix={config.journal.titleSuffix}
         articles={config.journal.articles}
       />
 
-      {/* ===== SECTION 9: Collections ===== */}
+      {/* ===== SECTION 12: Collections ===== */}
       <InteriorDesigners
         sectionTitle={config.collections.title}
         cards={config.collections.cards.map((card) => ({
@@ -117,7 +138,7 @@ const HomePage = () => {
         }))}
       />
 
-      {/* ===== SECTION 10: HS Global Promise ===== */}
+      {/* ===== SECTION 13: HS Global Promise ===== */}
       <PromiseBanner
         titlePrefix={config.promise.titlePrefix}
         titleHighlight={config.promise.titleHighlight}

@@ -114,6 +114,19 @@ const sanitizeConfigPayload = (payload) => {
         .map(sanitizeLinkCard)
         .filter((item) => item.title && item.image),
     },
+    videoCarousel: {
+      title: String(payload?.videoCarousel?.title || base.videoCarousel.title).trim(),
+      ctaText: String(payload?.videoCarousel?.ctaText || base.videoCarousel.ctaText).trim(),
+      ctaLink: String(payload?.videoCarousel?.ctaLink || base.videoCarousel.ctaLink).trim(),
+      enabled: payload?.videoCarousel?.enabled !== false,
+      sourceType: sanitizeSourceType(payload?.videoCarousel?.sourceType || base.videoCarousel.sourceType),
+      manualProductIds: sanitizeManualIds(payload?.videoCarousel?.manualProductIds || base.videoCarousel.manualProductIds),
+      sourceCategory: String(payload?.videoCarousel?.sourceCategory || base.videoCarousel.sourceCategory || '').trim(),
+      sourceTag: String(payload?.videoCarousel?.sourceTag || base.videoCarousel.sourceTag || '').trim(),
+      limit: Math.min(24, Math.max(1, Number(payload?.videoCarousel?.limit || base.videoCarousel.limit || 8))),
+      sortBy: String(payload?.videoCarousel?.sortBy || base.videoCarousel.sortBy || 'createdAt').trim() || 'createdAt',
+      sortOrder: payload?.videoCarousel?.sortOrder === 'asc' ? 'asc' : 'desc',
+    },
     featuredBanner: {
       title: String(payload?.featuredBanner?.title || base.featuredBanner.title).trim(),
       body: String(payload?.featuredBanner?.body || base.featuredBanner.body).trim(),
