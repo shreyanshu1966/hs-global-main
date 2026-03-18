@@ -4,8 +4,9 @@ import { useHorizontalCarousel } from './useHorizontalCarousel';
 type GalleryItem = {
   id: string;
   title: string;
+  category: string;
+  code: string;
   image: string;
-  href: string;
 };
 
 const galleryFiles = import.meta.glob('../../../public/gallery/**/*.{webp,jpg,jpeg,png}', {
@@ -22,46 +23,96 @@ const toTitle = (value: string) =>
     .trim()
     .replace(/\b\w/g, (char) => char.toUpperCase());
 
+const toSlug = (value: string) =>
+  decodeURIComponent(value.replace(/\+/g, ' '))
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+
 const buildGalleryItems = (): GalleryItem[] => {
-  const entries = Object.entries(galleryFiles)
-    .map(([path, url]) => {
-      const parts = path.split('/').filter(Boolean);
-      const fileName = parts[parts.length - 1] || '';
-      const category = parts[parts.length - 2] || 'Gallery';
-      const title = `${toTitle(category)} - ${toTitle(fileName)}`;
+  const interim: { path: string; title: string; category: string; image: string }[] = [];
+
+  Object.entries(galleryFiles).forEach(([path, url]) => {
+    const relativePath = path.replace(/^..\/..\/public\//, '').replace(/^\//, '');
+    const parts = relativePath.split('/').filter(Boolean);
+    const galleryIndex = parts.indexOf('gallery');
+    if (galleryIndex === -1 || !parts[galleryIndex + 1]) {
+      return;
+    }
+
+    const category = toTitle(parts[galleryIndex + 1]);
+    const fileName = parts[parts.length - 1] || '';
+    const title = toTitle(fileName);
+
+    interim.push({
+      path: relativePath,
+      title,
+      category,
+      image: url,
+    });
+  });
+
+  const categoryIndex = new Map<string, number>();
+
+  return interim
+    .sort((a, b) => a.category.localeCompare(b.category) || a.title.localeCompare(b.title))
+    .map((entry) => {
+      const nextIndex = (categoryIndex.get(entry.category) || 0) + 1;
+      categoryIndex.set(entry.category, nextIndex);
+
+      const code = `HS${entry.category.slice(0, 2).toUpperCase()}${String(nextIndex).padStart(3, '0')}`;
 
       return {
-        id: path,
-        title,
-        image: url,
-        href: '/gallery',
+        id: toSlug(entry.path),
+        title: entry.title,
+        category: entry.category,
+        code,
+        image: entry.image,
       };
-    })
-    .sort((a, b) => a.title.localeCompare(b.title));
-
-  return entries;
+    });
 };
 
 const fallbackItems: GalleryItem[] = [
   {
     id: 'fallback-gallery-1',
     title: 'Project Gallery',
+    category: 'Gallery',
+    code: 'HSGA001',
     image: '/gallery-hero.webp',
-    href: '/gallery',
   },
   {
     id: 'fallback-gallery-2',
     title: 'Stone Craft Showcase',
+    category: 'Gallery',
+    code: 'HSGA002',
     image: '/marble-solutions.webp',
-    href: '/gallery',
   },
   {
     id: 'fallback-gallery-3',
     title: 'Furniture Gallery',
+    category: 'Gallery',
+    code: 'HSGA003',
     image: '/service.webp',
-    href: '/gallery',
   },
 ];
+
+const getAbsoluteImageUrl = (imageUrl: string): string => {
+  if (/^https?:\/\//i.test(imageUrl)) {
+    return imageUrl;
+  }
+
+  if (typeof window !== 'undefined') {
+    return `${window.location.origin}${imageUrl.startsWith('/') ? imageUrl : `/${imageUrl}`}`;
+  }
+
+  return imageUrl;
+};
+
+const getWhatsAppHref = (item: GalleryItem): string => {
+  const imageUrl = getAbsoluteImageUrl(item.image);
+  const message = `Hi, I'm interested in code ${item.code} from the ${item.category} gallery. Image ID: ${item.id}. Image: ${imageUrl}`;
+  return `https://wa.me/918107115116?text=${encodeURIComponent(message)}`;
+};
 
 const GalleryImageCarousel = () => {
   const { trackRef, canScrollPrev, canScrollNext, scrollPrev, scrollNext } = useHorizontalCarousel(0.88);
@@ -101,8 +152,11 @@ const GalleryImageCarousel = () => {
               {items.map((item) => (
                 <a
                   key={item.id}
-                  href={item.href}
+                  href={getWhatsAppHref(item)}
+                  target="_blank"
+                  rel="noreferrer"
                   className="group itsbits-rail-item itsbits-track-item-no-shrink block overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
+                  aria-label={`Open WhatsApp for gallery item ${item.code}`}
                 >
                   <div className="relative aspect-[4/3] bg-slate-100">
                     <img
@@ -111,9 +165,6 @@ const GalleryImageCarousel = () => {
                       loading="lazy"
                       className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
-                  </div>
-                  <div className="p-3">
-                    <p className="line-clamp-1 text-sm font-semibold text-slate-900 group-hover:underline">{item.title}</p>
                   </div>
                 </a>
               ))}
