@@ -1,7 +1,9 @@
 import type { KeyboardEventHandler } from 'react';
 import { useCurrency } from '../../contexts/CurrencyContext';
+import { useWishlist } from '../../contexts/WishlistContext';
 
 interface ProductCardProps {
+  id?: string;
   image: string;
   title: string;
   designer: string;
@@ -14,8 +16,11 @@ interface ProductCardProps {
   showPrice?: boolean;
 }
 
-const ProductCard = ({ image, title, designer, price, originalPrice, priceINR, originalPriceINR, priceLabel, productLink, showPrice = true }: ProductCardProps) => {
+const ProductCard = ({ id, image, title, designer, price, originalPrice, priceINR, originalPriceINR, priceLabel, productLink, showPrice = true }: ProductCardProps) => {
   const { formatPrice } = useCurrency();
+  const { isInWishlist, toggleWishlist } = useWishlist();
+  const wishlistId = id || productLink || title;
+  const isWishlisted = isInWishlist(wishlistId);
 
   const resolvedPrice = priceLabel || (typeof priceINR === 'number' ? formatPrice(priceINR) : (price || 'Request Quote'));
   const resolvedOriginalPrice = typeof originalPriceINR === 'number' ? formatPrice(originalPriceINR) : originalPrice;
@@ -56,8 +61,23 @@ const ProductCard = ({ image, title, designer, price, originalPrice, priceINR, o
           }}
         />
         {/* Favorite Button Overlay */}
-        <button className="absolute top-[9px] right-[9px] w-[32px] h-[32px] bg-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-sm z-10 hover:bg-gray-50" aria-label="Add to favorites" type="button" onClick={(event) => event.stopPropagation()}>
-           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <button
+          className={`absolute top-[9px] right-[9px] w-[32px] h-[32px] rounded-full flex items-center justify-center transition-colors shadow-sm z-10 ${isWishlisted ? 'bg-[#8b3a3a] text-white' : 'bg-white text-[#1f2937] hover:bg-gray-50'}`}
+          aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
+          type="button"
+          onClick={(event) => {
+            event.stopPropagation();
+            toggleWishlist({
+              id: wishlistId,
+              title,
+              image,
+              href: productLink,
+              designer,
+              price: resolvedPrice,
+            });
+          }}
+        >
+           <svg width="18" height="18" viewBox="0 0 24 24" fill={isWishlisted ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="1.5">
              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
            </svg>
         </button>

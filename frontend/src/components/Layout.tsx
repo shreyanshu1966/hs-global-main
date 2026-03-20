@@ -42,6 +42,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <div className="itsbits-home min-h-screen flex flex-col">
             {!isAdminPage && <Header />}
             <main
+                id="mainContent"
                 ref={mainRef}
                 className="flex-grow"
             >

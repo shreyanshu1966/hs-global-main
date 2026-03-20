@@ -25,6 +25,7 @@
   --itsbits-header-top-height: 84px;
   --itsbits-header-nav-height: 50px;
   --itsbits-header-offset: calc(var(--itsbits-header-top-height) + var(--itsbits-header-nav-height) + 6px);
+  --itsbits-content-top-trim: 16px;
   --itsbits-page-gutter: 36px;
   --itsbits-section-header-margin: 45px;
   --itsbits-section-title-size: 28px;
@@ -39,8 +40,8 @@
   overflow-x: hidden;
 }
 
-.itsbits-home main#mainContent {
-  margin-top: var(--itsbits-header-offset) !important;
+.itsbits-home > main#mainContent {
+  margin-top: max(0px, calc(var(--itsbits-header-offset) - var(--itsbits-content-top-trim))) !important;
 }
 
 .itsbits-home .dibs-section-title {
@@ -169,6 +170,10 @@
   padding: 9px 9px 9px 0;
 }
 
+.itsbits-home .itsbits-arrivals-arrow {
+  display: inline-flex;
+}
+
 .itsbits-home .itsbits-header {
   border-bottom: 1px solid #efefef;
 }
@@ -190,6 +195,13 @@
 
 .itsbits-home .itsbits-logo-wrap {
   flex-basis: 261px;
+  position: relative;
+}
+
+.itsbits-home .itsbits-mobile-menu-trigger {
+  display: none;
+  background: #f3f3f3;
+  border: 1px solid #ddd;
 }
 
 .itsbits-home .itsbits-logo {
@@ -214,6 +226,10 @@
   color: #6b7280;
   margin-top: 4px;
   line-height: 1;
+}
+
+.itsbits-home .itsbits-logo-mobile-full {
+  display: none;
 }
 
 .itsbits-home .itsbits-search-shell {
@@ -256,9 +272,34 @@
   padding: 0;
 }
 
+.itsbits-home .itsbits-top-action-cart button {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.itsbits-home .itsbits-top-action-cart svg {
+  width: 17px;
+  height: 17px;
+}
+
 .itsbits-home .itsbits-currency-wrap {
   display: inline-flex;
   align-items: center;
+}
+
+.itsbits-home .itsbits-currency-desktop-only {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .itsbits-home .itsbits-currency-desktop-only {
+    display: inline-flex;
+  }
 }
 
 .itsbits-home .itsbits-currency-wrap > div > button {
@@ -379,6 +420,46 @@
   font-size: 14px;
   padding-top: 9px;
   text-decoration: none;
+}
+
+.itsbits-home .itsbits-nav-link-cta {
+  background: #111;
+  color: #fff;
+  border-radius: 9999px;
+  padding: 8px 14px;
+  min-height: 34px;
+  align-items: center;
+  font-size: 12px;
+  letter-spacing: 0.09em;
+}
+
+.itsbits-home .itsbits-nav-link-cta:hover {
+  background: #000;
+  color: #fff;
+}
+
+.itsbits-home .itsbits-nav-link-cta::after {
+  display: none;
+}
+
+.itsbits-home .itsbits-top-action-wishlist {
+  position: relative;
+}
+
+.itsbits-home .itsbits-wishlist-count {
+  position: absolute;
+  top: -5px;
+  right: -7px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 9999px;
+  background: #8b3a3a;
+  color: #fff;
+  font-size: 10px;
+  line-height: 16px;
+  font-weight: 600;
+  text-align: center;
 }
 
 .itsbits-home .itsbits-nav-label-mobile {
@@ -1299,6 +1380,10 @@
     display: none !important;
   }
 
+  .itsbits-home .itsbits-arrivals-arrow {
+    display: inline-flex !important;
+  }
+
   .itsbits-home .itsbits-swipe-cue {
     display: inline-flex;
     align-items: center;
@@ -1308,6 +1393,10 @@
 @media (hover: none), (pointer: coarse) {
   .itsbits-home .itsbits-arrow {
     display: none !important;
+  }
+
+  .itsbits-home .itsbits-arrivals-arrow {
+    display: inline-flex !important;
   }
 
   .itsbits-home .itsbits-swipe-cue {
@@ -1343,15 +1432,46 @@
 
   .itsbits-home .itsbits-right-icons {
     margin-left: auto;
-    min-width: 170px;
-    justify-content: space-between !important;
-    gap: 12px;
+    min-width: auto;
+    justify-content: flex-end !important;
+    gap: 6px;
+  }
+
+  .itsbits-home .itsbits-mobile-menu-trigger {
+    display: inline-flex;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 6;
+    width: 32px;
+    height: 32px;
+    border-radius: 9999px;
+    border: 1px solid #ddd;
+    background: #f3f3f3;
+  }
+
+  .itsbits-home .itsbits-logo-wrap {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+
+  .itsbits-home .itsbits-top-inner {
+    justify-content: space-between;
   }
 
   .itsbits-home .itsbits-currency-wrap > div > button {
-    height: 32px;
-    padding-left: 8px;
-    padding-right: 8px;
+    height: 28px;
+    padding-left: 6px;
+    padding-right: 6px;
+    border-radius: 9999px;
+  }
+
+  .itsbits-home .itsbits-currency-wrap > div > button span {
+    font-size: 11px;
   }
 
   .itsbits-home .itsbits-top-action-text {
@@ -1361,7 +1481,8 @@
   }
 
   .itsbits-home .itsbits-logo {
-    width: 146px;
+    width: 148px;
+    text-align: center;
   }
 
   .itsbits-home .itsbits-logo-main {
@@ -1371,6 +1492,27 @@
 
   .itsbits-home .itsbits-logo-sub {
     display: none !important;
+  }
+
+  .itsbits-home .itsbits-logo-main {
+    display: none !important;
+  }
+
+  .itsbits-home .itsbits-logo-mobile-full {
+    display: block;
+    font-size: 11px !important;
+    letter-spacing: 0.11em !important;
+    line-height: 1.2;
+  }
+
+  .itsbits-home .itsbits-top-action {
+    min-width: 30px;
+    min-height: 30px;
+  }
+
+  .itsbits-home .itsbits-top-action svg {
+    width: 17px;
+    height: 17px;
   }
 
   .itsbits-home .itsbits-icon-link {
@@ -1387,8 +1529,13 @@
   }
 
   .itsbits-home .itsbits-mobile-search-inner {
-    width: calc(100% - 20px);
-    padding: 8px 0;
+    width: calc(100% - 16px);
+    padding: 10px 0 8px;
+  }
+
+  .itsbits-home .itsbits-mobile-search-shell {
+    height: 40px;
+    border-radius: 9999px;
   }
 
   .itsbits-home .itsbits-header nav {
@@ -1557,6 +1704,12 @@
     letter-spacing: 0.06em !important;
   }
 
+  .itsbits-home .itsbits-nav-link-cta {
+    padding: 7px 12px;
+    min-height: 30px;
+    font-size: 11px !important;
+  }
+
   .itsbits-home .itsbits-nav-label-desktop {
     display: none;
   }
@@ -1588,12 +1741,12 @@
   }
 
   .itsbits-home .itsbits-logo {
-    width: 132px;
+    width: 148px;
   }
 
   .itsbits-home .itsbits-right-icons {
-    min-width: 160px;
-    gap: 10px;
+    min-width: auto;
+    gap: 4px;
   }
 
   .itsbits-home .itsbits-logo-main {
@@ -1601,8 +1754,23 @@
     letter-spacing: 0.27em !important;
   }
 
+  .itsbits-home .itsbits-logo-mobile-full {
+    font-size: 11px !important;
+    letter-spacing: 0.11em !important;
+  }
+
   .itsbits-home .itsbits-mobile-search-inner {
-    width: calc(100% - 14px);
+    width: calc(100% - 12px);
+  }
+
+  .itsbits-home .itsbits-currency-wrap > div > button {
+    height: 26px;
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  .itsbits-home .itsbits-currency-wrap > div > button span {
+    font-size: 10px;
   }
 
   .itsbits-home .itsbits-nav-link {

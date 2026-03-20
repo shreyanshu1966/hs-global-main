@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Search } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Heart, Menu, Search, X } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
 import { CartIcon } from "../CartIcon";
 import { LocationSelector } from "../LocationSelector";
 import { productService, Product } from "../../services/productService";
+import { useWishlist } from "../../contexts/WishlistContext";
 
 const Header = () => {
   const [isBottomNavVisible, setIsBottomNavVisible] = useState(true);
@@ -14,11 +15,27 @@ const Header = () => {
   const [hasSearched, setHasSearched] = useState(false);
   const [isDesktopDropdownOpen, setIsDesktopDropdownOpen] = useState(false);
   const [isMobileDropdownOpen, setIsMobileDropdownOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const lastScrollYRef = useRef(0);
   const desktopSearchRef = useRef<HTMLDivElement>(null);
   const mobileSearchRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const location = useLocation();
   const { isAuthenticated, user } = useAuth();
+  const { count: wishlistCount } = useWishlist();
+
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (!isMobileMenuOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [isMobileMenuOpen]);
 
   useEffect(() => {
     let ticking = false;
@@ -53,6 +70,7 @@ const Header = () => {
       if (event.key === "Escape") {
         setIsDesktopDropdownOpen(false);
         setIsMobileDropdownOpen(false);
+        setIsMobileMenuOpen(false);
       }
     };
 
@@ -132,7 +150,7 @@ const Header = () => {
     { label: 'Services', mobileLabel: 'Services', href: '/services' },
     { label: 'Journal', mobileLabel: 'Journal', href: '/blog' },
     { label: 'About HS Global', mobileLabel: 'About', href: '/about' },
-    { label: 'Get Quote', mobileLabel: 'Quote', href: '/contact', isSale: true },
+    { label: 'Get Quote', mobileLabel: 'Get Quote', href: '/contact', isSale: true },
   ];
 
   return (
@@ -147,6 +165,17 @@ const Header = () => {
         >
           {/* Logo */}
           <div className="flex-shrink-0 itsbits-logo-wrap">
+            <button
+              type="button"
+              aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+              onClick={() => {
+                setIsMobileMenuOpen((prev) => !prev);
+              }}
+              className="itsbits-mobile-menu-trigger md:hidden inline-flex items-center justify-center text-black"
+            >
+              {isMobileMenuOpen ? <X width="19" height="19" /> : <Menu width="19" height="19" />}
+            </button>
+
             <a
               href="/"
               aria-label="HS Global Logo"
@@ -161,6 +190,9 @@ const Header = () => {
                 className="itsbits-logo-sub itsbits-logo-sub-text block uppercase"
               >
                 EXPORT
+              </span>
+              <span className="itsbits-logo-mobile-full itsbits-logo-main-text uppercase">
+                HS GLOBAL EXPORT
               </span>
             </a>
           </div>
@@ -228,7 +260,7 @@ const Header = () => {
             {isAuthenticated && user?.role === "admin" && (
               <Link
                 to="/admin"
-                className="itsbits-top-action itsbits-top-action-text inline-flex items-center justify-center text-[11px] uppercase tracking-[0.14em] font-semibold text-black no-underline transition-colors duration-200 hover:text-[#444]"
+                className="itsbits-top-action itsbits-top-action-text hidden md:inline-flex items-center justify-center text-[11px] uppercase tracking-[0.14em] font-semibold text-black no-underline transition-colors duration-200 hover:text-[#444]"
               >
                 Admin
               </Link>
@@ -237,7 +269,7 @@ const Header = () => {
             {isAuthenticated ? (
               <Link
                 to="/profile"
-                className="itsbits-top-action inline-flex items-center justify-center text-black no-underline transition-colors duration-200 hover:text-[#444]"
+                className="itsbits-top-action hidden md:inline-flex items-center justify-center text-black no-underline transition-colors duration-200 hover:text-[#444]"
                 aria-label="Account"
               >
                 <svg viewBox="0 0 250 250" fill="currentColor" width="18" height="18" aria-hidden="true">
@@ -247,22 +279,102 @@ const Header = () => {
             ) : (
               <Link
                 to="/login"
-                className="itsbits-top-action itsbits-top-action-text inline-flex items-center justify-center text-[11px] uppercase tracking-[0.14em] font-semibold text-black no-underline transition-colors duration-200 hover:text-[#444]"
+                className="itsbits-top-action itsbits-top-action-text hidden md:inline-flex items-center justify-center text-[11px] uppercase tracking-[0.14em] font-semibold text-black no-underline transition-colors duration-200 hover:text-[#444]"
               >
                 Login
               </Link>
             )}
 
+            <Link
+              to="/wishlist"
+              className="itsbits-top-action itsbits-top-action-wishlist inline-flex items-center justify-center text-black no-underline transition-colors duration-200 hover:text-[#b43f5a] relative"
+              aria-label="Wishlist"
+            >
+              <Heart width="18" height="18" />
+              {wishlistCount > 0 && (
+                <span className="itsbits-wishlist-count">{wishlistCount > 99 ? '99+' : wishlistCount}</span>
+              )}
+            </Link>
+
             <div className="itsbits-top-action itsbits-top-action-cart">
               <CartIcon />
             </div>
 
-            <div className="itsbits-currency-wrap hidden lg:block">
+            <div className="itsbits-currency-wrap">
               <LocationSelector />
             </div>
           </div>
         </div>
       </div>
+
+      {isMobileMenuOpen && (
+        <div 
+          className="md:hidden fixed z-[9999]" 
+          style={{ top: 0, left: 0, width: '100%', height: '100%', minHeight: '100vh', backgroundColor: '#ffffff' }} 
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          <div
+            className="absolute top-0 left-0 w-full h-full bg-white"
+            style={{ backgroundColor: '#ffffff', overflowY: 'auto' }}
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="h-[84px] border-b border-[#e5e7eb] px-4 flex items-center justify-between bg-white">
+              <span className="text-[13px] uppercase tracking-[0.12em] text-[#222]">Menu</span>
+              <button
+                type="button"
+                aria-label="Close menu"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="itsbits-top-action inline-flex items-center justify-center text-black"
+              >
+                <X width="19" height="19" />
+              </button>
+            </div>
+
+            <nav className="py-1">
+              {navItems.map((item) => (
+                <a
+                  key={`mobile-menu-${item.label}`}
+                  href={item.href}
+                  className={`block border-b border-[#ececec] px-5 py-4 text-[17px] leading-[1.25] ${item.isSale ? 'text-[#d26a00] font-semibold' : 'text-[#111] font-light'}`}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {item.label}
+                </a>
+              ))}
+            </nav>
+
+            <div className="border-t border-[#ececec] pt-2">
+              {isAuthenticated ? (
+                <Link
+                  to="/profile"
+                  className="block px-5 py-4 text-[17px] font-light text-[#111]"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  My Account
+                </Link>
+              ) : (
+                <Link
+                  to="/login"
+                  className="block px-5 py-4 text-[17px] font-light text-[#111]"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Login
+                </Link>
+              )}
+
+              {isAuthenticated && user?.role === "admin" && (
+                <Link
+                  to="/admin"
+                  className="block px-5 py-4 text-[17px] font-light text-[#111]"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Admin
+                </Link>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
       <div
         id="itsbits-mobile-search"
@@ -320,15 +432,12 @@ const Header = () => {
             </div>
           )}
 
-          <div className="mt-2 flex justify-end lg:hidden">
-            <LocationSelector />
-          </div>
         </div>
       </div>
 
       {/* ===== Bottom Nav Bar — height: 50px ===== */}
       <div
-        className={`itsbits-bottom-nav bg-white flex justify-center relative ${isBottomNavVisible ? 'is-visible' : 'is-hidden'}`}
+        className={`itsbits-bottom-nav bg-white hidden md:flex justify-center relative ${isBottomNavVisible ? 'is-visible' : 'is-hidden'}`}
       >
         <nav
           className="flex items-center itsbits-header-inner itsbits-nav-inner"
@@ -338,9 +447,9 @@ const Header = () => {
               <li key={item.label}>
                 <a
                   href={item.href}
-                  className={`itsbits-nav-link inline-block relative no-underline cursor-pointer ${item.active ? 'is-active' : ''}`}
+                  className={`itsbits-nav-link inline-block relative no-underline cursor-pointer ${item.active ? 'is-active' : ''} ${item.isSale ? 'itsbits-nav-link-cta' : ''}`}
                   style={{
-                    color: item.isSale ? '#d26a00' : '#000',
+                    color: item.isSale ? '#fff' : '#000',
                     fontWeight: item.active || item.isSale ? 600 : 300,
                   }}
                 >

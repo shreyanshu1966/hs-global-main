@@ -140,6 +140,7 @@ const ProductCarousel = ({
                 : products.map((p) => (
                     <div key={p.id} className="itsbits-rail-item itsbits-track-item-no-shrink">
                       <ProductCard
+                        id={String(p.id)}
                         image={p.image}
                         title={p.title}
                         designer={p.designer}

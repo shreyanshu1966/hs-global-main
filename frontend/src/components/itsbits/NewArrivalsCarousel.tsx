@@ -103,21 +103,20 @@ const NewArrivalsCarousel = ({
 
         {/* Carousel Area */}
         <div className="flex-1 min-w-0 flex items-center itsbits-carousel-row">
-          
-          {/* Left Arrow Button */}
-          <button 
-            onClick={scrollPrev}
-            disabled={!canScrollPrev}
-            className="itsbits-arrow itsbits-arrow-pad-left hidden md:flex"
-            aria-label="Previous"
-          >
-            <svg width="40" height="40" viewBox="0 0 40 40" fill="currentColor">
-              <path d="m22.762 32-9.828-12 9.828-12 2.477 2.014L17.069 20l8.17 9.986L22.762 32Z" />
-            </svg>
-          </button>
+          <div className="relative flex-1 min-w-0">
+            <button
+              onClick={scrollPrev}
+              disabled={!canScrollPrev}
+              className="itsbits-arrow itsbits-arrow-left hidden md:flex"
+              aria-label="Previous highlights"
+            >
+              <svg width="30" height="30" viewBox="0 0 40 40" fill="currentColor">
+                <path d="m22.762 32-9.828-12 9.828-12 2.477 2.014L17.069 20l8.17 9.986L22.762 32Z" />
+              </svg>
+            </button>
 
-          {/* Product Grid / Track */}
-          <div className="flex-1 overflow-hidden itsbits-rail-shell">
+            {/* Product Grid / Track */}
+            <div className="flex-1 overflow-hidden itsbits-rail-shell">
             <div ref={trackRef} className="itsbits-track overflow-x-auto scroll-smooth itsbits-track-standard">
               {isLoading
                 ? Array.from({ length: 5 }).map((_, i) => (
@@ -133,6 +132,7 @@ const NewArrivalsCarousel = ({
                       className="shrink-0 flex flex-col itsbits-rail-item"
                     >
                       <ProductCard 
+                        id={String(item.id)}
                         image={item.image} 
                         title={item.title} 
                         designer={item.designer} 
@@ -148,20 +148,19 @@ const NewArrivalsCarousel = ({
                   ))}
             </div>
             <div className="itsbits-swipe-cue md:hidden" aria-hidden="true">Swipe</div>
-          </div>
+            </div>
 
-          {/* Right Arrow Button */}
-          <button 
-            onClick={scrollNext}
-            disabled={!canScrollNext}
-            className="itsbits-arrow itsbits-arrow-pad-right hidden md:flex"
-            aria-label="Next"
-          >
-            <svg width="40" height="40" viewBox="0 0 40 40" fill="currentColor">
-              <path d="m17.238 32-2.476-2.014L22.934 20l-8.172-9.986L17.238 8l9.828 12-9.828 12Z" />
-            </svg>
-          </button>
-          
+            <button
+              onClick={scrollNext}
+              disabled={!canScrollNext}
+              className="itsbits-arrow itsbits-arrow-right hidden md:flex"
+              aria-label="Next highlights"
+            >
+              <svg width="30" height="30" viewBox="0 0 40 40" fill="currentColor">
+                <path d="m17.238 32-2.476-2.014L22.934 20l-8.172-9.986L17.238 8l9.828 12-9.828 12Z" />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
     </section>

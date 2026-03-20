@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Product } from '../../services/productService';
 import { useCurrency } from '../../contexts/CurrencyContext';
+import { useWishlist } from '../../contexts/WishlistContext';
 import { getProductCloudinaryUrl } from '../../utils/productCloudinary';
 import {
     hasActiveDiscount,
@@ -18,6 +19,7 @@ interface ProductCardProps {
 export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '' }) => {
     const VIDEO_START_DELAY_MS = 1300;
     const { formatPrice } = useCurrency();
+    const { isInWishlist, toggleWishlist } = useWishlist();
     const [showVideo, setShowVideo] = useState(false);
     const [videoError, setVideoError] = useState(false);
     const [videoReady, setVideoReady] = useState(false);
@@ -34,6 +36,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
     const originalPrice = useMemo(() => getBasePriceINR(product), [product]);
 
     const displayPrice = product.priceINR ? formatPrice(finalPrice) : 'Price on Request';
+    const wishlistId = String(product.productId || product._id || product.name);
+    const isWishlisted = isInWishlist(wishlistId);
 
     // ---- Images ----
     const images = useMemo(() => {
@@ -163,6 +167,28 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
             <Link to={`/products/${product.productId || product._id}`} className="block">
                 {/* ---- Image / Video container ---- */}
                 <div className="aspect-[4/3] bg-[#FAF8F5] overflow-hidden relative">
+
+                    <button
+                        type="button"
+                        aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
+                        className={`absolute top-3 right-3 z-30 w-9 h-9 rounded-full flex items-center justify-center shadow-sm transition-colors ${isWishlisted ? 'bg-[#8b3a3a] text-white' : 'bg-white/95 text-[#222] hover:bg-white'}`}
+                        onClick={(event) => {
+                            event.preventDefault();
+                            event.stopPropagation();
+                            toggleWishlist({
+                                id: wishlistId,
+                                title: product.name,
+                                image: primaryImage,
+                                href: `/products/${product.productId || product._id}`,
+                                designer: product.category,
+                                price: displayPrice,
+                            });
+                        }}
+                    >
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill={isWishlisted ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="1.6">
+                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                        </svg>
+                    </button>
 
                     {/* Primary image */}
                     <img

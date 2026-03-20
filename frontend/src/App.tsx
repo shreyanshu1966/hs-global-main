@@ -8,6 +8,7 @@ import InitialUserForm from "./components/InitialUserForm";
 import SmoothScroll from "./components/SmoothScroll";
 import { AuthProvider } from "./contexts/AuthContext";
 import { CurrencyProvider } from "./contexts/CurrencyContext";
+import { WishlistProvider } from "./contexts/WishlistContext";
 
 // Lazy load pages for better performance
 const Home = lazy(() => import("./pages/Home"));
@@ -32,6 +33,7 @@ const VerifyEmail = lazy(() => import("./pages/VerifyEmail"));
 const LoginOTP = lazy(() => import("./pages/LoginOTP"));
 const Admin = lazy(() => import("./pages/Admin"));
 const DiscountManagement = lazy(() => import("./pages/DiscountManagement"));
+const Wishlist = lazy(() => import("./pages/Wishlist"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 import { ProtectedRoute } from "./components/ProtectedRoute";
 
@@ -82,43 +84,46 @@ function App() {
     <HelmetProvider>
       <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <CurrencyProvider>
-          <AuthProvider>
-            <SmoothScroll>
-              <ScrollToTop />
-              <Layout>
-                {showInitialForm && <InitialUserForm onSubmit={handleFormSubmit} />}
+          <WishlistProvider>
+            <AuthProvider>
+              <SmoothScroll>
+                <ScrollToTop />
+                <Layout>
+                  {showInitialForm && <InitialUserForm onSubmit={handleFormSubmit} />}
 
-                <Suspense fallback={<LoadingSpinner />}>
-                  <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="/products" element={<Products />} />
-                    <Route path="/products/:id" element={<ProductDetails />} />
-                    <Route path="/gallery" element={<Gallery />} />
-                    <Route path="/gallery/:id" element={<GalleryDetails />} />
-                    <Route path="/contact" element={<Contact />} />
-                    <Route path="/services" element={<Services />} />
-                    <Route path="/blog" element={<Blogs />} />
-                    <Route path="/blog/:slug" element={<BlogDetail />} />
-                    <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
-                    <Route path="/checkout-success" element={<ProtectedRoute><CheckoutSuccess /></ProtectedRoute>} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/login-otp" element={<LoginOTP />} />
-                    <Route path="/signup" element={<Signup />} />
-                    <Route path="/forgot-password" element={<ForgotPassword />} />
-                    <Route path="/reset-password/:token" element={<ResetPassword />} />
-                    <Route path="/verify-email/:token" element={<VerifyEmail />} />
-                    <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-                    <Route path="/orders/:orderId" element={<ProtectedRoute><OrderDetails /></ProtectedRoute>} />
-                    <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
-                    <Route path="/admin/discounts" element={<ProtectedRoute><DiscountManagement /></ProtectedRoute>} />
-                    <Route path="*" element={<NotFound />} />
-                  </Routes>
-                </Suspense>
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <Routes>
+                      <Route path="/" element={<Home />} />
+                      <Route path="/about" element={<About />} />
+                      <Route path="/products" element={<Products />} />
+                      <Route path="/products/:id" element={<ProductDetails />} />
+                      <Route path="/gallery" element={<Gallery />} />
+                      <Route path="/gallery/:id" element={<GalleryDetails />} />
+                      <Route path="/contact" element={<Contact />} />
+                      <Route path="/services" element={<Services />} />
+                      <Route path="/blog" element={<Blogs />} />
+                      <Route path="/blog/:slug" element={<BlogDetail />} />
+                      <Route path="/wishlist" element={<Wishlist />} />
+                      <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
+                      <Route path="/checkout-success" element={<ProtectedRoute><CheckoutSuccess /></ProtectedRoute>} />
+                      <Route path="/login" element={<Login />} />
+                      <Route path="/login-otp" element={<LoginOTP />} />
+                      <Route path="/signup" element={<Signup />} />
+                      <Route path="/forgot-password" element={<ForgotPassword />} />
+                      <Route path="/reset-password/:token" element={<ResetPassword />} />
+                      <Route path="/verify-email/:token" element={<VerifyEmail />} />
+                      <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+                      <Route path="/orders/:orderId" element={<ProtectedRoute><OrderDetails /></ProtectedRoute>} />
+                      <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
+                      <Route path="/admin/discounts" element={<ProtectedRoute><DiscountManagement /></ProtectedRoute>} />
+                      <Route path="*" element={<NotFound />} />
+                    </Routes>
+                  </Suspense>
 
-              </Layout>
-            </SmoothScroll>
-          </AuthProvider>
+                </Layout>
+              </SmoothScroll>
+            </AuthProvider>
+          </WishlistProvider>
         </CurrencyProvider>
       </BrowserRouter>
     </HelmetProvider>

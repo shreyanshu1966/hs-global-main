@@ -97,6 +97,7 @@ const CollectionJustForYou = ({
               {picks.map((item) => (
                 <div key={item.id} className="itsbits-personalized-item itsbits-track-item-no-shrink">
                   <ProductCard
+                    id={String(item.id)}
                     image={item.image}
                     title={item.title}
                     designer={item.designer}

@@ -223,7 +223,7 @@ const Products = () => {
       </Helmet>
 
       {/* Main Page Layout */}
-      <div className="min-h-screen bg-gray-50 pt-24 pb-16">
+      <div className="min-h-screen bg-gray-50 pt-10 md:pt-12 pb-16">
         {/* Header / Hero Section */}
         <div className="bg-white border-b border-gray-200 py-12 px-4 shadow-sm mb-8">
           <div className="container mx-auto text-center max-w-3xl">
