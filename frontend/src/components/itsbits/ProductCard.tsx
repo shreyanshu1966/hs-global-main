@@ -55,6 +55,8 @@ const ProductCard = ({ id, image, title, designer, price, originalPrice, priceIN
         <img 
           src={image} 
           alt={title} 
+          loading="lazy"
+          decoding="async"
           className="w-full h-full object-cover" 
           onError={(e) => {
             e.currentTarget.src = `https://placehold.co/400x500/f0efe8/aaa?text=${encodeURIComponent(title)}`;

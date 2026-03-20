@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Product, productService } from '../../services/productService';
 import { getItsbitsProductImage } from './productData';
 import { useHorizontalCarousel } from './useHorizontalCarousel';
+import { useInView } from 'react-intersection-observer';
 
 type CarouselSourceType = 'category' | 'tag' | 'manual';
 
@@ -26,6 +27,47 @@ interface VideoItem {
   href: string;
   category: string;
 }
+
+const VideoCarouselCard = ({ item }: { item: VideoItem }) => {
+  const { ref, inView } = useInView({
+    threshold: 0.35,
+    rootMargin: '200px 0px',
+    triggerOnce: false,
+  });
+
+  return (
+    <div ref={ref} className="itsbits-rail-item itsbits-track-item-no-shrink">
+      <a href={item.href} className="group block overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div className="relative aspect-video bg-slate-900">
+          {inView ? (
+            <video
+              src={item.videoUrl}
+              poster={item.image}
+              className="h-full w-full object-cover"
+              muted
+              autoPlay
+              loop
+              playsInline
+              preload="metadata"
+            />
+          ) : (
+            <img
+              src={item.image}
+              alt={item.title}
+              loading="lazy"
+              decoding="async"
+              className="h-full w-full object-cover"
+            />
+          )}
+        </div>
+        <div className="p-3">
+          <p className="line-clamp-1 text-sm font-semibold text-slate-900 group-hover:underline">{item.title}</p>
+          <p className="mt-1 text-xs uppercase tracking-wide text-slate-500">{item.category}</p>
+        </div>
+      </a>
+    </div>
+  );
+};
 
 const toVideoItem = (product: Product): VideoItem | null => {
   if (!product.hasVideo || !product.videoUrl) {
@@ -191,28 +233,7 @@ const VideoProductCarousel = ({
                       <div className="dibs-skeleton" style={{ width: '52%', height: '14px' }} />
                     </div>
                   ))
-                : items.map((item) => (
-                    <div key={item.id} className="itsbits-rail-item itsbits-track-item-no-shrink">
-                      <a href={item.href} className="group block overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-                        <div className="relative aspect-video bg-slate-900">
-                          <video
-                            src={item.videoUrl}
-                            poster={item.image}
-                            className="h-full w-full object-cover"
-                            muted
-                            autoPlay
-                            loop
-                            playsInline
-                            preload="metadata"
-                          />
-                        </div>
-                        <div className="p-3">
-                          <p className="line-clamp-1 text-sm font-semibold text-slate-900 group-hover:underline">{item.title}</p>
-                          <p className="mt-1 text-xs uppercase tracking-wide text-slate-500">{item.category}</p>
-                        </div>
-                      </a>
-                    </div>
-                  ))}
+                : items.map((item) => <VideoCarouselCard key={item.id} item={item} />)}
             </div>
             <div className="itsbits-swipe-cue md:hidden" aria-hidden="true">Swipe</div>
           </div>
