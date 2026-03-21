@@ -320,6 +320,76 @@ body {
   @apply btn bg-accent text-white hover:bg-accent/90;
 }
 
+/* Unified cart popup/drawer styles */
+.cart-panel-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.28rem;
+  line-height: 1.05;
+  letter-spacing: 0.01em;
+  color: #111111;
+}
+
+.cart-panel-count {
+  font-size: 11px;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.cart-item-title {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font-size: 0.97rem;
+  line-height: 1.3rem;
+  color: #111111;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.cart-item-title:hover {
+  text-decoration: underline;
+}
+
+.cart-action-primary,
+.cart-action-secondary {
+  height: 44px;
+  padding: 0 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.cart-action-primary {
+  border: 1px solid #111111;
+  background: #111111;
+  color: #ffffff;
+  font-size: 0.86rem;
+}
+
+.cart-action-primary:hover {
+  background: #2a2722;
+}
+
+.cart-action-secondary {
+  border: 1px solid #111111;
+  background: #ffffff;
+  color: #111111;
+  font-size: 0.73rem;
+  min-width: 7.25rem;
+}
+
+.cart-action-secondary:hover {
+  background: #f8f8f8;
+}
+
 .btn-secondary {
   @apply btn bg-white text-accent border-2 border-accent hover:bg-accent hover:text-white;
 }

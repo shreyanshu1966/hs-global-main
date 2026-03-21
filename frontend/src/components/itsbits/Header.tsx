@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Heart, Menu, Search, X } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
-import { CartIcon } from "../CartIcon";
+import { CartMenu } from "../CartMenu";
 import { LocationSelector } from "../LocationSelector";
 import { productService, Product } from "../../services/productService";
 import { useWishlist } from "../../contexts/WishlistContext";
@@ -297,7 +297,7 @@ const Header = () => {
             </Link>
 
             <div className="itsbits-top-action itsbits-top-action-cart">
-              <CartIcon />
+              <CartMenu />
             </div>
 
             <div className="itsbits-currency-wrap">

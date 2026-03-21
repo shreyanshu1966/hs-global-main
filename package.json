@@ -19,9 +19,11 @@
         "clear:cache": "node scripts/clear-cache-deployment.js"
     },
     "dependencies": {
+        "classnames": "^2.5.1",
         "cloudinary": "^2.8.0",
         "concurrently": "^8.2.2",
-        "dotenv": "^17.2.3"
+        "dotenv": "^17.2.3",
+        "tailwind-merge": "^3.5.0"
     },
     "devDependencies": {
         "sharp": "^0.34.5"

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useLayoutEffect, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { Info, Package } from "lucide-react";
+import { Info, Package, ShieldCheck, BadgeCheck, Truck, Scale } from "lucide-react";
 import { motion } from "framer-motion";
 import ContactUs from "../components/ContactUs";
 import { ProductDetailsSkeleton } from "../components/ProductDetailsSkeleton";
@@ -10,9 +10,7 @@ import { useCart } from "../contexts/CartContext";
 import { useProduct } from "../hooks/useProducts";
 import { useProductSEO, formatRobotsMeta } from "../hooks/useProductSEO";
 import { ProductInfo } from "../components/product/ProductInfo";
-import { ProductOverview } from "../components/product/ProductOverview";
 import { ProductSpecifications } from "../components/product/ProductSpecifications";
-import { ProductStory } from "../components/product/ProductStory";
 import { ProductReviews } from "../components/product/ProductReviews";
 import { RelatedProducts } from "../components/product/RelatedProducts";
 
@@ -180,6 +178,15 @@ const ProductDetails = () => {
     }
   };
 
+  const scrollRelated = (dir: 'left' | 'right') => {
+    if (!relatedRef.current) return;
+    const amount = 360;
+    relatedRef.current.scrollBy({
+      left: dir === 'left' ? -amount : amount,
+      behavior: 'smooth',
+    });
+  };
+
   // Show loading state with skeleton
   if (loading) {
     return <ProductDetailsSkeleton />;
@@ -255,7 +262,7 @@ const ProductDetails = () => {
 
   // Render UI
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#f8fafc]">
       <Helmet>
         {/* ========== COMPREHENSIVE SEO META TAGS ========== */}
 
@@ -325,22 +332,22 @@ const ProductDetails = () => {
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        className="min-h-screen bg-white pb-20"
+        className="min-h-screen bg-[#f8fafc] pb-20"
       >
         {/* Breadcrumbs - Minimal */}
-        <div className="container mx-auto px-6 py-4 md:py-6 mt-20 md:mt-24 border-b border-[#E8E3DC]">
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm text-[#6B6B6B]">
-            <Link to="/" className="hover:text-[#2B2B2B] transition-colors focus:ring-2 focus:ring-amber-500 rounded px-1">Home</Link>
-            <span aria-hidden="true" className="text-[#E8E3DC]">/</span>
-            <Link to="/products" className="hover:text-[#2B2B2B] transition-colors capitalize focus:ring-2 focus:ring-amber-500 rounded px-1">{product.category}</Link>
-            <span aria-hidden="true" className="text-[#E8E3DC]">/</span>
-            <span aria-current="page" className="text-[#2B2B2B] font-medium truncate max-w-[200px] md:max-w-none px-1">{product.name}</span>
+        <div className="container mx-auto px-6 py-5 md:py-7 mt-20 md:mt-24 border-b border-[#e2e8f0] bg-white">
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[11px] uppercase tracking-[0.11em] text-[#64748b]">
+            <Link to="/" className="hover:text-[#111827] transition-colors focus:ring-2 focus:ring-slate-400 rounded px-1">Home</Link>
+            <span aria-hidden="true" className="text-[#cbd5e1]">/</span>
+            <Link to="/products" className="hover:text-[#111827] transition-colors capitalize focus:ring-2 focus:ring-slate-400 rounded px-1">{product.category}</Link>
+            <span aria-hidden="true" className="text-[#cbd5e1]">/</span>
+            <span aria-current="page" className="text-[#111827] font-semibold truncate max-w-[200px] md:max-w-none px-1 tracking-[0.07em]">{product.name}</span>
           </nav>
         </div>
 
         {/* Hero: 60/40 split */}
-        <section className="container mx-auto px-6 py-12 lg:py-20 mb-10">
-          <div className="grid lg:grid-cols-12 gap-12 lg:gap-20">
+        <section className="container mx-auto px-6 py-10 lg:py-14">
+          <div className="grid lg:grid-cols-12 gap-10 lg:gap-16">
             <div className="lg:col-span-7">
               <ProductGallery product={product} />
             </div>
@@ -360,29 +367,68 @@ const ProductDetails = () => {
           </div>
         </section>
 
-        {/* Overview Container */}
-        <section className="bg-[#FAF8F5] py-20 lg:py-32">
-          <div className="container mx-auto px-6">
-            <ProductOverview product={product} />
-          </div>
-        </section>
-
-        {/* Specs & Story Split */}
-        <section className="py-20 lg:py-32">
-          <div className="container mx-auto px-6">
-            <div className="grid lg:grid-cols-2 gap-16 lg:gap-24">
-              <ProductSpecifications
-                product={product}
-                selectedFinish={selectedFinish}
-                selectedThickness={selectedThickness}
-              />
-              <ProductStory product={product} />
+        {/* Trust Strip */}
+        <section className="border-y border-[#e2e8f0] bg-[#f1f5f9]">
+          <div className="container mx-auto px-6 py-8 lg:py-10">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="flex items-start gap-3">
+                <ShieldCheck className="w-5 h-5 text-[#475569] mt-0.5" />
+                <div>
+                  <p className="text-[11px] uppercase tracking-[0.1em] text-[#64748b]">Guarantee</p>
+                  <p className="text-sm text-[#111827]">Authenticity Assured</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <BadgeCheck className="w-5 h-5 text-[#475569] mt-0.5" />
+                <div>
+                  <p className="text-[11px] uppercase tracking-[0.1em] text-[#64748b]">Promise</p>
+                  <p className="text-sm text-[#111827]">Vetted Seller Network</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <Truck className="w-5 h-5 text-[#475569] mt-0.5" />
+                <div>
+                  <p className="text-[11px] uppercase tracking-[0.1em] text-[#64748b]">Delivery</p>
+                  <p className="text-sm text-[#111827]">Trusted Global Shipping</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <Scale className="w-5 h-5 text-[#475569] mt-0.5" />
+                <div>
+                  <p className="text-[11px] uppercase tracking-[0.1em] text-[#64748b]">Price Match</p>
+                  <p className="text-sm text-[#111827]">Best Value Commitment</p>
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
+        {/* Item Details */}
+        <section className="bg-white py-14 lg:py-16 border-b border-[#e2e8f0]">
+          <div className="container mx-auto px-6">
+            <ProductSpecifications
+              product={product}
+              selectedFinish={selectedFinish}
+              selectedThickness={selectedThickness}
+            />
+          </div>
+        </section>
+
+        {/* Related Products */}
+        {product.relatedProducts && product.relatedProducts.length > 0 && (
+          <section className="py-14 lg:py-16 bg-[#f8fafc] border-b border-[#e2e8f0]">
+            <div className="container mx-auto px-6">
+              <RelatedProducts
+                relatedProducts={product.relatedProducts}
+                scrollRelated={scrollRelated}
+                relatedRef={relatedRef}
+              />
+            </div>
+          </section>
+        )}
+
         {/* Reviews */}
-        <section className="bg-[#FAF8F5] py-20 lg:py-32">
+        <section className="bg-white py-14 lg:py-16 border-y border-[#e2e8f0]">
           <div className="container mx-auto px-6">
             <ProductReviews
               product={product}
@@ -395,21 +441,8 @@ const ProductDetails = () => {
           </div>
         </section>
 
-        {/* Related Products */}
-        {product.relatedProducts && product.relatedProducts.length > 0 && (
-          <section className="py-20 lg:py-32">
-            <div className="container mx-auto px-6">
-              <RelatedProducts
-                relatedProducts={product.relatedProducts}
-                scrollRelated={() => { }} // We need to update RelatedProducts as well to use a ref-based scroll, or re-add the function
-                relatedRef={relatedRef}
-              />
-            </div>
-          </section>
-        )}
-
         {/* Contact Strip */}
-        <section className="border-t border-[#E8E3DC]">
+        <section className="border-t border-[#e2e8f0] bg-[#f8fafc]">
           <ContactUs />
         </section>
       </motion.main>

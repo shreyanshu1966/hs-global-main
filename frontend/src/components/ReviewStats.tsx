@@ -20,15 +20,15 @@ interface ReviewStatsProps {
 export const ReviewStats = ({ stats, loading }: ReviewStatsProps) => {
   if (loading) {
     return (
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 animate-pulse">
+      <div className="bg-white border border-[#e2e8f0] p-6 animate-pulse">
         <div className="flex items-center space-x-8">
           <div className="text-center">
-            <div className="h-16 w-24 bg-gray-200 rounded mb-2"></div>
-            <div className="h-4 w-20 bg-gray-200 rounded"></div>
+            <div className="h-16 w-24 bg-[#e2e8f0] mb-2"></div>
+            <div className="h-4 w-20 bg-[#e2e8f0]"></div>
           </div>
           <div className="flex-1 space-y-3">
             {[1, 2, 3, 4, 5].map((i) => (
-              <div key={i} className="h-4 bg-gray-200 rounded"></div>
+              <div key={i} className="h-4 bg-[#e2e8f0]"></div>
             ))}
           </div>
         </div>
@@ -45,11 +45,11 @@ export const ReviewStats = ({ stats, loading }: ReviewStatsProps) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <div className="bg-white border border-[#e2e8f0] p-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Overall Rating */}
-        <div className="text-center md:border-r border-gray-200">
-          <div className="text-5xl font-bold text-gray-900 mb-2">
+        <div className="text-center md:border-r border-[#e2e8f0]">
+          <div className="text-5xl font-['Playfair_Display'] font-bold text-[#26211a] mb-2">
             {stats.averageRating.toFixed(1)}
           </div>
           <div className="flex items-center justify-center mb-2">
@@ -64,7 +64,7 @@ export const ReviewStats = ({ stats, loading }: ReviewStatsProps) => {
               />
             ))}
           </div>
-          <p className="text-gray-600">
+          <p className="text-[#64748b] text-sm uppercase tracking-[0.08em]">
             Based on {stats.totalReviews} review{stats.totalReviews !== 1 ? 's' : ''}
           </p>
         </div>
@@ -74,16 +74,16 @@ export const ReviewStats = ({ stats, loading }: ReviewStatsProps) => {
           {[5, 4, 3, 2, 1].map((rating) => (
             <div key={rating} className="flex items-center space-x-3">
               <div className="flex items-center space-x-1 w-12">
-                <span className="text-sm font-medium text-gray-700">{rating}</span>
+                <span className="text-sm font-medium text-[#475569]">{rating}</span>
                 <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
               </div>
-              <div className="flex-1 bg-gray-200 rounded-full h-2 overflow-hidden">
+              <div className="flex-1 bg-[#e2e8f0] rounded-full h-2 overflow-hidden">
                 <div
-                  className="bg-yellow-400 h-full transition-all duration-500"
+                  className="bg-[#475569] h-full transition-all duration-500"
                   style={{ width: `${getPercentage(stats.ratingBreakdown[rating as keyof typeof stats.ratingBreakdown])}%` }}
                 />
               </div>
-              <span className="text-sm text-gray-600 w-12 text-right">
+              <span className="text-sm text-[#64748b] w-12 text-right">
                 {stats.ratingBreakdown[rating as keyof typeof stats.ratingBreakdown]}
               </span>
             </div>

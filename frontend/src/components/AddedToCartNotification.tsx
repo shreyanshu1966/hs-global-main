@@ -95,7 +95,11 @@ export const AddedToCartNotification: React.FC = () => {
                 <span>Qty: {state.lastAddedItem.quantity}</span>
                 <span>•</span>
                 <span className="font-semibold">
-                  {formatPrice(convertFromINR(state.lastAddedItem.priceINR))}
+                  {formatPrice(convertFromINR(
+                    (state.lastAddedItem.discount?.enabled && state.lastAddedItem.discount.percentage > 0)
+                      ? state.lastAddedItem.priceINR * (1 - (state.lastAddedItem.discount.percentage ?? 0) / 100)
+                      : state.lastAddedItem.priceINR
+                  ))}
                 </span>
               </div>
             </div>
@@ -114,7 +118,15 @@ export const AddedToCartNotification: React.FC = () => {
       
       <div className="mt-3 pt-3 border-t border-gray-100">
         <div className="flex items-center justify-between text-xs text-gray-600">
-          <span>Cart Total: {formatPrice(convertFromINR(state.items.reduce((sum, item) => sum + (item.priceINR * item.quantity), 0)))}</span>
+          <span>Cart Total: {formatPrice(
+            state.items.reduce((sum, item) => {
+              const hasDiscount = item.discount?.enabled && item.discount.percentage > 0;
+              const effectivePriceINR = hasDiscount
+                ? item.priceINR * (1 - (item.discount?.percentage ?? 0) / 100)
+                : item.priceINR;
+              return sum + convertFromINR(effectivePriceINR) * item.quantity;
+            }, 0)
+          )}</span>
           <span>{state.items.reduce((total, item) => total + item.quantity, 0)} items</span>
         </div>
       </div>

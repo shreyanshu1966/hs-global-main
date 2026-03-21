@@ -60,22 +60,22 @@ export const ReviewForm = ({ productId, onReviewSubmitted }: ReviewFormProps) =>
   };
 
   return (
-    <div className="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-xl border-2 border-gray-200 p-6 md:p-8">
+    <div className="bg-white border border-[#e2e8f0] p-6 md:p-8">
       {success && (
-        <div className="mb-6 p-5 bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-300 rounded-xl flex items-start gap-3 shadow-md animate-slideDown">
+        <div className="mb-6 p-5 bg-[#ebf4ee] border border-[#afceb7] flex items-start gap-3 animate-slideDown">
           <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" />
           <div>
-            <h4 className="font-bold text-green-900 mb-1">Review Submitted!</h4>
+            <h4 className="font-bold text-green-900 mb-1 uppercase tracking-[0.08em] text-xs">Review Submitted</h4>
             <p className="text-green-800">Thank you! Your review will be published after approval.</p>
           </div>
         </div>
       )}
 
       {error && (
-        <div className="mb-6 p-5 bg-gradient-to-r from-red-50 to-orange-50 border-2 border-red-300 rounded-xl flex items-start gap-3 shadow-md">
+        <div className="mb-6 p-5 bg-[#f8ebea] border border-[#d8b0ae] flex items-start gap-3">
           <AlertCircle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
           <div>
-            <h4 className="font-bold text-red-900 mb-1">Error</h4>
+            <h4 className="font-bold text-red-900 mb-1 uppercase tracking-[0.08em] text-xs">Error</h4>
             <p className="text-red-800">{error}</p>
           </div>
         </div>
@@ -83,8 +83,8 @@ export const ReviewForm = ({ productId, onReviewSubmitted }: ReviewFormProps) =>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Rating */}
-        <div className="bg-white p-5 rounded-xl border-2 border-gray-200">
-          <label className="block text-base font-bold text-gray-900 mb-3">
+        <div className="bg-[#f8fafc] p-5 border border-[#e2e8f0]">
+          <label className="block text-sm font-semibold uppercase tracking-[0.09em] text-[#2b2722] mb-3">
             Rate Your Experience *
           </label>
           <div className="flex items-center gap-2">
@@ -100,14 +100,14 @@ export const ReviewForm = ({ productId, onReviewSubmitted }: ReviewFormProps) =>
                 <Star
                   className={`w-10 h-10 transition-all duration-200 ${
                     star <= (hoveredRating || formData.rating)
-                      ? 'fill-yellow-400 text-yellow-400 drop-shadow-lg'
-                      : 'text-gray-300 hover:text-gray-400'
+                      ? 'fill-[#f59e0b] text-[#f59e0b]'
+                      : 'text-[#cbd5e1] hover:text-[#94a3b8]'
                   }`}
                 />
               </button>
             ))}
             {formData.rating > 0 && (
-              <span className="ml-3 px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm font-bold">
+              <span className="ml-3 px-3 py-1 bg-[#f1f5f9] text-[#334155] rounded text-xs font-semibold uppercase tracking-[0.07em]">
                 {formData.rating} {formData.rating === 5 ? '⭐ Excellent!' : formData.rating === 4 ? '👍 Great!' : formData.rating === 3 ? '😊 Good' : formData.rating === 2 ? '😐 Fair' : '😟 Poor'}
               </span>
             )}
@@ -117,7 +117,7 @@ export const ReviewForm = ({ productId, onReviewSubmitted }: ReviewFormProps) =>
         <div className="grid md:grid-cols-2 gap-5">
           {/* Name */}
           <div>
-            <label htmlFor="userName" className="block text-sm font-bold text-gray-900 mb-2">
+            <label htmlFor="userName" className="block text-xs font-semibold uppercase tracking-[0.09em] text-[#2b2722] mb-2">
               Your Name *
             </label>
             <input
@@ -126,14 +126,14 @@ export const ReviewForm = ({ productId, onReviewSubmitted }: ReviewFormProps) =>
               required
               value={formData.userName}
               onChange={(e) => setFormData({ ...formData, userName: e.target.value })}
-              className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+              className="w-full px-4 py-3 border border-[#cbd5e1] bg-white focus:outline-none focus:border-[#2b2722] transition-all"
               placeholder="Enter your name"
             />
           </div>
 
           {/* Email */}
           <div>
-            <label htmlFor="userEmail" className="block text-sm font-bold text-gray-900 mb-2">
+            <label htmlFor="userEmail" className="block text-xs font-semibold uppercase tracking-[0.09em] text-[#2b2722] mb-2">
               Your Email *
             </label>
             <input
@@ -142,10 +142,10 @@ export const ReviewForm = ({ productId, onReviewSubmitted }: ReviewFormProps) =>
               required
               value={formData.userEmail}
               onChange={(e) => setFormData({ ...formData, userEmail: e.target.value })}
-              className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+              className="w-full px-4 py-3 border border-[#cbd5e1] bg-white focus:outline-none focus:border-[#2b2722] transition-all"
               placeholder="your@email.com"
             />
-            <p className="mt-1.5 text-xs text-gray-500 flex items-center gap-1">
+            <p className="mt-1.5 text-xs text-[#64748b] flex items-center gap-1">
               <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
               </svg>
@@ -156,7 +156,7 @@ export const ReviewForm = ({ productId, onReviewSubmitted }: ReviewFormProps) =>
 
         {/* Title */}
         <div>
-          <label htmlFor="title" className="block text-sm font-bold text-gray-900 mb-2">
+          <label htmlFor="title" className="block text-xs font-semibold uppercase tracking-[0.09em] text-[#2b2722] mb-2">
             Review Title *
           </label>
           <input
@@ -166,14 +166,14 @@ export const ReviewForm = ({ productId, onReviewSubmitted }: ReviewFormProps) =>
             maxLength={200}
             value={formData.title}
             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-            className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+            className="w-full px-4 py-3 border border-[#cbd5e1] bg-white focus:outline-none focus:border-[#2b2722] transition-all"
             placeholder="Sum up your experience in a few words"
           />
         </div>
 
         {/* Comment */}
         <div>
-          <label htmlFor="comment" className="block text-sm font-bold text-gray-900 mb-2">
+          <label htmlFor="comment" className="block text-xs font-semibold uppercase tracking-[0.09em] text-[#2b2722] mb-2">
             Your Review *
           </label>
           <textarea
@@ -183,12 +183,12 @@ export const ReviewForm = ({ productId, onReviewSubmitted }: ReviewFormProps) =>
             rows={6}
             value={formData.comment}
             onChange={(e) => setFormData({ ...formData, comment: e.target.value })}
-            className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-none"
+            className="w-full px-4 py-3 border border-[#cbd5e1] bg-white focus:outline-none focus:border-[#2b2722] transition-all resize-none"
             placeholder="Share your detailed thoughts about this product..."
           />
           <div className="mt-2 flex items-center justify-between">
-            <p className="text-xs text-gray-500">Be specific and honest to help others</p>
-            <p className={`text-xs font-medium ${formData.comment.length > 1900 ? 'text-red-600' : 'text-gray-500'}`}>
+            <p className="text-xs text-[#64748b]">Be specific and honest to help others</p>
+            <p className={`text-xs font-medium ${formData.comment.length > 1900 ? 'text-red-600' : 'text-[#64748b]'}`}>
               {formData.comment.length}/2000
             </p>
           </div>
@@ -198,7 +198,7 @@ export const ReviewForm = ({ productId, onReviewSubmitted }: ReviewFormProps) =>
         <button
           type="submit"
           disabled={isSubmitting || formData.rating === 0}
-          className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-4 px-6 rounded-xl font-bold text-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2 group"
+          className="w-full bg-[#1f1c18] text-[#f8fafc] py-4 px-6 font-semibold uppercase tracking-[0.09em] hover:bg-[#353029] transition-all duration-300 disabled:bg-[#94a3b8] disabled:cursor-not-allowed flex items-center justify-center gap-2 group"
         >
           {isSubmitting ? (
             <>

@@ -47,6 +47,7 @@ const ContactUs = () => {
   const [submitted, setSubmitted] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [referenceImage, setReferenceImage] = useState<string>("");
+  const fieldBase = "w-full px-4 py-3 text-[15px] bg-white border transition-all duration-300 text-[#111827] focus:outline-none placeholder-[#94a3b8]";
 
   const onSubmit = async (ev: React.FormEvent) => {
     ev.preventDefault();
@@ -150,111 +151,111 @@ const ContactUs = () => {
 
 
   return (
-    <div ref={containerRef} className="bg-white">
+    <div ref={containerRef} className="bg-[#f8fafc]">
 
       {/* Minimalist Contact Section */}
-      <section className="py-24">
+      <section className="py-16 lg:py-20">
         <div className="container mx-auto px-4 md:px-6">
           <div className="max-w-6xl mx-auto">
 
             {/* Header */}
             <div ref={headerRef} className="text-center mb-20" style={{ opacity: 0 }}>
-              <h2 className="text-4xl md:text-6xl font-light text-gray-900 mb-6">
+              <h2 className="text-4xl md:text-6xl font-['Playfair_Display'] font-semibold text-[#111827] mb-4">
                 {t('contact.title')}
               </h2>
-              <div className="w-24 h-px bg-gray-900 mx-auto"></div>
+              <div className="w-24 h-px bg-[#64748b] mx-auto"></div>
             </div>
 
             {/* Grid Layout */}
-            <div className="grid lg:grid-cols-2 gap-20">
+            <div className="grid lg:grid-cols-2 gap-10 lg:gap-12">
 
               {/* Contact Form */}
-              <div ref={formRef} style={{ opacity: 0 }}>
-                <h3 className="text-2xl font-light text-gray-900 mb-10">{t('contact.form_title')}</h3>
+              <div ref={formRef} style={{ opacity: 0 }} className="bg-white border border-[#e2e8f0] p-6 md:p-8">
+                <h3 className="text-2xl font-['Playfair_Display'] font-semibold text-[#111827] mb-8">{t('contact.form_title')}</h3>
 
                 <form className="space-y-8" onSubmit={onSubmit} noValidate>
-                  <div className="grid md:grid-cols-2 gap-8">
-                    <div className="relative">
+                  <div className="grid md:grid-cols-2 gap-5">
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-[0.1em] text-[#475569] mb-2">Name</label>
                       <input
                         type="text"
-                        placeholder="Name"
+                        placeholder="Your name"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        className={`w-full px-0 py-4 text-lg bg-transparent border-0 border-b-2 focus:ring-0 placeholder-gray-400 transition-all duration-300 text-gray-900 focus:outline-none ${errors.name ? 'border-red-500 focus:border-red-500' : 'border-gray-300 focus:border-gray-300'}`}
+                        className={`${fieldBase} ${errors.name ? 'border-red-500 focus:border-red-500' : 'border-[#cbd5e1] focus:border-[#111827]'}`}
                       />
-                      <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gray-900 transition-all duration-300 focus-within:w-full"></div>
                       {errors.name && <p className="text-red-600 text-sm mt-1">{errors.name}</p>}
                     </div>
-                    <div className="relative">
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-[0.1em] text-[#475569] mb-2">Email</label>
                       <input
                         type="email"
-                        placeholder="Email"
+                        placeholder="you@example.com"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className={`w-full px-0 py-4 text-lg bg-transparent border-0 border-b-2 focus:ring-0 placeholder-gray-400 transition-all duration-300 text-gray-900 focus:outline-none ${errors.email ? 'border-red-500 focus:border-red-500' : 'border-gray-300 focus:border-gray-300'}`}
+                        className={`${fieldBase} ${errors.email ? 'border-red-500 focus:border-red-500' : 'border-[#cbd5e1] focus:border-[#111827]'}`}
                       />
-                      <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gray-900 transition-all duration-300 focus-within:w-full"></div>
                       {errors.email && <p className="text-red-600 text-sm mt-1">{errors.email}</p>}
                     </div>
                   </div>
 
-                  <div className="grid md:grid-cols-2 gap-8">
-                    <div className="relative">
+                  <div className="grid md:grid-cols-2 gap-5">
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-[0.1em] text-[#475569] mb-2">Phone Number</label>
                       <input
                         type="tel"
-                        placeholder="Phone Number"
+                        placeholder="+91 00000 00000"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
-                        className={`w-full px-0 py-4 text-lg bg-transparent border-0 border-b-2 focus:ring-0 placeholder-gray-400 transition-all duration-300 text-gray-900 focus:outline-none ${errors.phone ? 'border-red-500 focus:border-red-500' : 'border-gray-300 focus:border-gray-300'}`}
+                        className={`${fieldBase} ${errors.phone ? 'border-red-500 focus:border-red-500' : 'border-[#cbd5e1] focus:border-[#111827]'}`}
                       />
-                      <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gray-900 transition-all duration-300 focus-within:w-full"></div>
                       {errors.phone && <p className="text-red-600 text-sm mt-1">{errors.phone}</p>}
                     </div>
-                    <div className="relative">
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-[0.1em] text-[#475569] mb-2">Subject</label>
                       <input
                         type="text"
-                        placeholder="Subject"
+                        placeholder="How can we help?"
                         value={subject}
                         onChange={(e) => setSubject(e.target.value)}
-                        className={`w-full px-0 py-4 text-lg bg-transparent border-0 border-b-2 focus:ring-0 placeholder-gray-400 transition-all duration-300 text-gray-900 focus:outline-none ${errors.subject ? 'border-red-500 focus:border-red-500' : 'border-gray-300 focus:border-gray-300'}`}
+                        className={`${fieldBase} ${errors.subject ? 'border-red-500 focus:border-red-500' : 'border-[#cbd5e1] focus:border-[#111827]'}`}
                       />
-                      <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gray-900 transition-all duration-300 focus-within:w-full"></div>
                       {errors.subject && <p className="text-red-600 text-sm mt-1">{errors.subject}</p>}
                     </div>
                   </div>
 
-                  <div className="relative">
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-[0.1em] text-[#475569] mb-2">Message</label>
                     <textarea
                       rows={5}
-                      placeholder="Message"
+                      placeholder="Tell us what you are looking for"
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
-                      className={`w-full px-0 py-4 text-lg bg-transparent border-0 border-b-2 focus:ring-0 placeholder-gray-400 resize-none transition-all duration-300 text-gray-900 focus:outline-none ${errors.message ? 'border-red-500 focus:border-red-500' : 'border-gray-300 focus:border-gray-300'}`}
+                      className={`${fieldBase} resize-none ${errors.message ? 'border-red-500 focus:border-red-500' : 'border-[#cbd5e1] focus:border-[#111827]'}`}
                     />
-                    <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gray-900 transition-all duration-300 focus-within:w-full"></div>
                     {errors.message && <p className="text-red-600 text-sm mt-1">{errors.message}</p>}
                   </div>
 
                   {/* Reference Image Upload (Optional) */}
-                  <div className="relative">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Reference Image <span className="text-gray-400 font-normal">(Optional)</span>
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-[0.1em] text-[#475569] mb-2">
+                      Reference Image <span className="text-[#94a3b8] font-normal">(Optional)</span>
                     </label>
                     <div className="flex items-center gap-4">
-                      <label className="cursor-pointer inline-flex items-center px-4 py-2 border-2 border-gray-300 rounded-lg hover:border-gray-900 transition-colors">
+                      <label className="cursor-pointer inline-flex items-center px-4 py-2 border border-[#cbd5e1] bg-[#f8fafc] hover:bg-[#eef2f7] transition-colors text-[#334155] text-sm">
                         <input
                           type="file"
                           accept="image/*"
                           onChange={handleImageUpload}
                           className="hidden"
                         />
-                        <span className="text-gray-700">Choose Image</span>
+                        <span>Choose Image</span>
                       </label>
                       {referenceImage && (
                         <button
                           type="button"
                           onClick={() => setReferenceImage("")}
-                          className="text-red-600 hover:text-red-800 text-sm underline"
+                          className="text-red-700 hover:text-red-900 text-sm underline"
                         >
                           Remove
                         </button>
@@ -265,21 +266,21 @@ const ContactUs = () => {
                         <img
                           src={referenceImage}
                           alt="Reference"
-                          className="max-w-xs max-h-48 rounded-lg border-2 border-gray-200"
+                          className="max-w-xs max-h-48 border border-[#cbd5e1]"
                         />
                       </div>
                     )}
-                    <p className="text-xs text-gray-500 mt-2">Upload a reference image if needed (Max 5MB)</p>
+                    <p className="text-xs text-[#64748b] mt-2">Upload a reference image if needed (Max 5MB)</p>
                   </div>
 
                   {!!sendError && (
-                    <div className="rounded-lg border border-red-300 bg-red-50 text-red-800 p-3 text-sm">{sendError}</div>
+                    <div className="border border-[#d8b0ae] bg-[#f8ebea] text-red-800 p-3 text-sm">{sendError}</div>
                   )}
                   <button
                     ref={submitBtnRef}
                     type="submit"
                     disabled={isSending}
-                    className={`group relative inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-white bg-gray-900 hover:text-gray-900 hover:bg-white border-2 border-gray-900 transition-colors duration-300 overflow-hidden ${isSending ? 'opacity-70 cursor-not-allowed' : ''}`}
+                    className={`group relative inline-flex items-center justify-center px-8 py-3.5 text-sm font-semibold uppercase tracking-[0.1em] text-[#f8f2e7] bg-[#1f1c18] hover:bg-[#353029] border border-[#1f1c18] transition-colors duration-300 overflow-hidden ${isSending ? 'opacity-70 cursor-not-allowed' : ''}`}
                     onMouseEnter={handleBtnHover}
                     onMouseLeave={handleBtnLeave}
                     onMouseDown={handleBtnTap}
@@ -294,44 +295,44 @@ const ContactUs = () => {
               </div>
 
               {/* Contact Information */}
-              <div ref={infoRef} style={{ opacity: 0 }}>
-                <h3 className="text-2xl font-light text-gray-900 mb-10">{t('contact.info_title')}</h3>
+              <div ref={infoRef} style={{ opacity: 0 }} className="bg-white border border-[#e2e8f0] p-6 md:p-8">
+                <h3 className="text-2xl font-['Playfair_Display'] font-semibold text-[#111827] mb-8">{t('contact.info_title')}</h3>
 
-                <div className="space-y-12">
+                <div className="space-y-8">
                   <div className="flex items-start space-x-6">
-                    <div className="w-12 h-12 flex items-center justify-center">
-                      <Mail className="w-6 h-6 text-gray-900" />
+                    <div className="w-12 h-12 flex items-center justify-center bg-[#f8fafc] border border-[#e2e8f0]">
+                      <Mail className="w-5 h-5 text-[#111827]" />
                     </div>
                     <div>
-                      <h4 className="text-lg font-medium text-gray-900 mb-2">{t('contact.email')}</h4>
-                      <a href="mailto:inquiry@hsglobalexport.com" className="text-gray-600 hover:text-gray-900">inquiry@hsglobalexport.com</a>
+                      <h4 className="text-base font-semibold uppercase tracking-[0.08em] text-[#475569] mb-2">{t('contact.email')}</h4>
+                      <a href="mailto:inquiry@hsglobalexport.com" className="text-[#334155] hover:text-[#111827]">inquiry@hsglobalexport.com</a>
                     </div>
                   </div>
 
                   <div className="flex items-start space-x-6">
-                    <div className="w-12 h-12 flex items-center justify-center">
-                      <Phone className="w-6 h-6 text-gray-900" />
+                    <div className="w-12 h-12 flex items-center justify-center bg-[#f8fafc] border border-[#e2e8f0]">
+                      <Phone className="w-5 h-5 text-[#111827]" />
                     </div>
                     <div>
-                      <h4 className="text-lg font-medium text-gray-900 mb-2">{t('contact.phone')}</h4>
-                      <a href="tel:+918107115116" className="text-gray-600 hover:text-gray-900">+91 81071 15116</a>
+                      <h4 className="text-base font-semibold uppercase tracking-[0.08em] text-[#475569] mb-2">{t('contact.phone')}</h4>
+                      <a href="tel:+918107115116" className="text-[#334155] hover:text-[#111827]">+91 81071 15116</a>
                     </div>
                   </div>
 
                   <div className="flex items-start space-x-6">
-                    <div className="w-12 h-12 flex items-center justify-center">
-                      <MapPin className="w-6 h-6 text-gray-900" />
+                    <div className="w-12 h-12 flex items-center justify-center bg-[#f8fafc] border border-[#e2e8f0]">
+                      <MapPin className="w-5 h-5 text-[#111827]" />
                     </div>
                     <div>
-                      <h4 className="text-lg font-medium text-gray-900 mb-2">{t('contact.location')}</h4>
-                      <div className="space-y-3 text-gray-600">
+                      <h4 className="text-base font-semibold uppercase tracking-[0.08em] text-[#475569] mb-2">{t('contact.location')}</h4>
+                      <div className="space-y-3 text-[#475569]">
                         <a href="https://maps.app.goo.gl/SLV59xn17PS7k2z76" target="_blank" rel="noreferrer" className="block hover:underline">
-                          <span className="font-medium">{t('contact.corporate_title')}</span><br />
+                          <span className="font-semibold text-[#334155]">{t('contact.corporate_title')}</span><br />
                           {t('contact.corporate_address_1')}<br />
                           {t('contact.corporate_address_2')}
                         </a>
                         <p>
-                          <span className="font-medium">{t('contact.factory')}</span><br />
+                          <span className="font-semibold text-[#334155]">{t('contact.factory')}</span><br />
                           {t('contact.factory_address_1')}<br />
                           {t('contact.factory_address_2')}
                         </p>
@@ -348,12 +349,12 @@ const ContactUs = () => {
       {/* Success Modal */}
       {submitted && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 p-6 text-center">
-            <h3 className="text-2xl font-semibold text-gray-900 mb-2">{t('contact.cta_thanks')}</h3>
-            <p className="text-gray-600 mb-6">{t('contact.cta_success')}</p>
+          <div className="bg-white border border-[#e2e8f0] shadow-2xl max-w-md w-full mx-4 p-6 text-center">
+            <h3 className="text-2xl font-['Playfair_Display'] font-semibold text-[#111827] mb-2">{t('contact.cta_thanks')}</h3>
+            <p className="text-[#475569] mb-6">{t('contact.cta_success')}</p>
             <button
               onClick={() => setSubmitted(false)}
-              className="inline-flex items-center justify-center px-6 py-3 text-white bg-gray-900 hover:text-gray-900 hover:bg-white border-2 border-gray-900 rounded-lg transition-colors"
+              className="inline-flex items-center justify-center px-6 py-3 text-[#f8f2e7] bg-[#1f1c18] hover:bg-[#353029] border border-[#1f1c18] transition-colors uppercase tracking-[0.08em] text-xs font-semibold"
             >
               {t('contact.cta_close')}
             </button>

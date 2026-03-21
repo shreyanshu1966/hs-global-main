@@ -30,28 +30,28 @@ export function ProductGallery({ product }: ProductGalleryProps) {
     const discountPercentage = getDiscountPercentage(product as any);
 
     return (
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-5 lg:gap-6">
             {/* Main Image */}
-            <div className="aspect-[4/3] bg-[#FAF8F5] relative group overflow-hidden">
+            <div className="aspect-[4/3] bg-[#f8fafc] relative group overflow-hidden border border-[#e2e8f0]">
                 <img
                     src={images[selectedImage]}
                     alt={product.name}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.035]"
                 />
 
                 {/* Hover Actions */}
-                <div className="absolute inset-0 bg-transparent group-hover:bg-black/5 transition-colors duration-300">
+                <div className="absolute inset-0 bg-transparent group-hover:bg-black/10 transition-colors duration-300">
                     <button
                         onClick={() => setIsImageZoomed(true)}
-                        className="absolute top-4 right-4 bg-white/90 p-3 shadow-sm opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-white hover:scale-105"
+                        className="absolute top-4 right-4 bg-white/95 border border-[#e2e8f0] p-3 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-[#f8fafc] hover:scale-105"
                         aria-label="Zoom image"
                     >
-                        <ZoomIn className="w-5 h-5 text-[#2B2B2B]" />
+                        <ZoomIn className="w-5 h-5 text-[#2d2a25]" />
                     </button>
 
                     <button
                         onClick={() => setIsFavorite(!isFavorite)}
-                        className={`absolute top-4 left-4 p-3 shadow-sm transition-all duration-300 hover:scale-105 ${isFavorite ? 'bg-[#8B3A3A] text-white' : 'bg-white/90 text-[#2B2B2B] hover:bg-white'
+                        className={`absolute top-4 left-4 p-3 border border-[#e2e8f0] transition-all duration-300 hover:scale-105 ${isFavorite ? 'bg-[#8b3131] text-[#fff8ee]' : 'bg-white/95 text-[#1f2937] hover:bg-[#f8fafc]'
                             }`}
                         aria-label="Add to favorites"
                     >
@@ -62,7 +62,7 @@ export function ProductGallery({ product }: ProductGalleryProps) {
                 {/* Discount Badge */}
                 {hasDiscount && discountPercentage > 0 && (
                     <div className="absolute bottom-4 right-4">
-                        <div className="bg-[#8B3A3A] text-white px-4 py-2 font-bold text-sm flex items-center gap-1.5 uppercase tracking-wide">
+                        <div className="bg-[#111827] text-[#f8fafc] border border-[#1f2937] px-3.5 py-2 text-[11px] font-semibold flex items-center gap-1.5 uppercase tracking-[0.1em]">
                             Sale -{discountPercentage}%
                         </div>
                     </div>
@@ -71,14 +71,14 @@ export function ProductGallery({ product }: ProductGalleryProps) {
 
             {/* Thumbnails */}
             {images.length > 1 && (
-                <div className="grid grid-cols-5 md:grid-cols-6 gap-3">
+                <div className="grid grid-cols-5 md:grid-cols-6 gap-2.5">
                     {images.slice(0, 6).map((img, idx) => (
                         <button
                             key={idx}
                             onClick={() => setSelectedImage(idx)}
-                            className={`aspect-[4/3] bg-[#FAF8F5] overflow-hidden transition-all duration-300 ${selectedImage === idx
-                                    ? 'border-2 border-[#2B2B2B]'
-                                    : 'border border-[#E8E3DC] hover:border-[#2B2B2B]'
+                                className={`aspect-[4/3] bg-[#f8fafc] overflow-hidden transition-all duration-300 border ${selectedImage === idx
+                                    ? 'border-[#22201c] ring-1 ring-[#22201c]'
+                                    : 'border-[#e2e8f0] hover:border-[#64748b]'
                                 }`}
                         >
                             <img
@@ -95,16 +95,16 @@ export function ProductGallery({ product }: ProductGalleryProps) {
             {/* Zoom Modal */}
             {isImageZoomed && (
                 <div
-                    className="fixed inset-0 z-50 bg-[#FAF8F5] flex items-center justify-center p-4 cursor-zoom-out"
+                    className="fixed inset-0 z-50 bg-[#131210]/95 flex items-center justify-center p-4 cursor-zoom-out"
                     onClick={() => setIsImageZoomed(false)}
                 >
                     <img
                         src={images[selectedImage]}
                         alt={product.name}
-                        className="max-w-full max-h-[90vh] object-contain cursor-default"
+                        className="max-w-full max-h-[90vh] object-contain cursor-default border border-[#475569]"
                         onClick={(e) => e.stopPropagation()}
                     />
-                    <div className="absolute bottom-8 text-[#2B2B2B] text-sm uppercase tracking-wider">
+                    <div className="absolute bottom-8 text-[#ebe5d8] text-xs uppercase tracking-[0.12em]">
                         {selectedImage + 1} / {images.length}
                     </div>
                 </div>
