@@ -335,7 +335,7 @@ const ProductDetails = () => {
         className="min-h-screen bg-[#f8fafc] pb-20"
       >
         {/* Breadcrumbs - Minimal */}
-        <div className="container mx-auto px-6 py-5 md:py-7 mt-20 md:mt-24 border-b border-[#e2e8f0] bg-white">
+        <div className="container mx-auto px-6 py-5 md:py-7 mt-24 md:mt-28 border-b border-[#e2e8f0] bg-white">
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[11px] uppercase tracking-[0.11em] text-[#64748b]">
             <Link to="/" className="hover:text-[#111827] transition-colors focus:ring-2 focus:ring-slate-400 rounded px-1">Home</Link>
             <span aria-hidden="true" className="text-[#cbd5e1]">/</span>

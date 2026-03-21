@@ -8,8 +8,6 @@ import { FloatingCartButton } from './FloatingCartButton';
 import { CartDrawer } from './CartDrawer';
 import { PhoneVerifyModal } from './PhoneVerifyModal';
 import { AddedToCartNotification } from './AddedToCartNotification';
-import LeadCapturePopup from './LeadCapturePopup';
-import { useLeadCapturePopup } from '../hooks/useLeadCapturePopup';
 import NoiseOverlay from './NoiseOverlay';
 import FloatingWhatsApp from './FloatingWhatsApp';
 import '../styles/itsbits-home.css';
@@ -19,7 +17,6 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
-    const { isOpen: isLeadPopupOpen, closePopup: closeLeadPopup } = useLeadCapturePopup();
     const location = useLocation();
     const mainRef = useRef<HTMLDivElement>(null);
 
@@ -28,13 +25,14 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
     // Check if we're on the products page
     const isProductsPage = location.pathname === '/products';
+    const needsHeaderOffset = isProductsPage;
     const isItsbitsHome = location.pathname === '/';
 
     useGSAP(() => {
         // Simple entry animation on route change
         gsap.fromTo(mainRef.current,
             { opacity: 0, y: 20 },
-            { opacity: 1, y: 0, duration: 0.5, ease: "power2.out", clearProps: "transform" }
+            { opacity: 1, y: 0, duration: 0.5, ease: "power2.out", clearProps: "transform,opacity" }
         );
     }, [location.pathname]);
 
@@ -42,9 +40,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <div className="itsbits-home min-h-screen flex flex-col">
             {!isAdminPage && <Header />}
             <main
-                id="mainContent"
                 ref={mainRef}
                 className="flex-grow"
+                style={needsHeaderOffset ? { marginTop: 'max(0px, calc(var(--itsbits-header-offset) - var(--itsbits-content-top-trim)))' } : undefined}
             >
                 {children}
             </main>
@@ -53,13 +51,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             {!isAdminPage && <CartDrawer />}
             {!isAdminPage && !isItsbitsHome && <PhoneVerifyModal />}
             {!isAdminPage && !isItsbitsHome && <AddedToCartNotification />}
-            {/* Temporarily disabled - Get Your Quote popup */}
-            {/* {!isAdminPage && (
-                <LeadCapturePopup
-                    isOpen={isLeadPopupOpen}
-                    onClose={closeLeadPopup}
-                />
-            )} */}
             {!isAdminPage && !isProductsPage && !isItsbitsHome && <FloatingWhatsApp />}
             <NoiseOverlay />
         </div>
