@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Category } from '../../services/productService';
-import { ChevronDown, ChevronUp, X } from 'lucide-react';
+import { ChevronDown, X } from 'lucide-react';
+import * as Accordion from '@radix-ui/react-accordion';
+import * as Slider from '@radix-ui/react-slider';
+import { useCurrency } from '../../contexts/CurrencyContext';
 
 interface FilterSidebarProps {
     categories: Category[];
@@ -27,23 +30,33 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
     onPriceChange,
     onClearFilters,
 }) => {
-    const [isCategoryOpen, setIsCategoryOpen] = useState(true);
-    const [isPriceOpen, setIsPriceOpen] = useState(true);
+    const { getCurrencySymbol, exchangeRates, currency } = useCurrency();
+    const rate = exchangeRates[currency] || exchangeRates.INR || 1;
+    
+    // We arbitrarily choose 1,000,000 INR as the max slider value for the UI if we don't know the catalogue max
+    const GLOBAL_MAX_INR = 1000000;
+    const maxLocalLimit = Math.ceil(GLOBAL_MAX_INR * rate);
+    const stepLocal = Math.ceil(50 * rate);
 
-    const [localMin, setLocalMin] = useState<string>(minPrice ? String(minPrice) : '');
-    const [localMax, setLocalMax] = useState<string>(maxPrice ? String(maxPrice) : '');
+    const [localRange, setLocalRange] = useState<[number, number]>([
+        minPrice ? Math.floor(minPrice * rate) : 0,
+        maxPrice ? Math.ceil(maxPrice * rate) : maxLocalLimit
+    ]);
 
     // Sync local state if props change from outside
     useEffect(() => {
-        setLocalMin(minPrice ? String(minPrice) : '');
-        setLocalMax(maxPrice ? String(maxPrice) : '');
-    }, [minPrice, maxPrice]);
+        setLocalRange([
+            minPrice ? Math.floor(minPrice * rate) : 0,
+            maxPrice ? Math.ceil(maxPrice * rate) : maxLocalLimit
+        ]);
+    }, [minPrice, maxPrice, rate, maxLocalLimit]);
 
-    const handlePriceSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        const min = localMin ? Number(localMin) : undefined;
-        const max = localMax ? Number(localMax) : undefined;
-        onPriceChange(min, max);
+    const handlePriceCommit = (value: number[]) => {
+        const [minLocal, maxLocal] = value;
+        const newMinINR = minLocal > 0 ? Math.floor(minLocal / rate) : undefined;
+        // If maxLocal is at absolute maximum, we set max to undefined to not limit upper bound
+        const newMaxINR = maxLocal < maxLocalLimit ? Math.ceil(maxLocal / rate) : undefined;
+        onPriceChange(newMinINR, newMaxINR);
     };
 
     const hasActiveFilters =
@@ -69,19 +82,17 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
                 )}
             </div>
 
-            <div className="space-y-6">
+            <Accordion.Root type="multiple" defaultValue={['categories', 'price']} className="space-y-6">
                 {/* Categories Section */}
-                <div className="border-b border-gray-200 pb-6">
-                    <button
-                        className="flex w-full items-center justify-between text-gray-900 mb-4"
-                        onClick={() => setIsCategoryOpen(!isCategoryOpen)}
-                    >
-                        <span className="font-medium">Category</span>
-                        {isCategoryOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                    </button>
-
-                    {isCategoryOpen && (
-                        <div className="space-y-3">
+                <Accordion.Item value="categories" className="border-b border-gray-200 pb-6">
+                    <Accordion.Header>
+                        <Accordion.Trigger className="flex w-full items-center justify-between text-gray-900 mb-4 group">
+                            <span className="font-medium">Category</span>
+                            <ChevronDown className="w-4 h-4 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+                        </Accordion.Trigger>
+                    </Accordion.Header>
+                    <Accordion.Content className="overflow-hidden data-[state=closed]:animate-slideUp data-[state=open]:animate-slideDown">
+                        <div className="space-y-3 pt-1">
                             {hideCategorySelection ? (
                                 currentCategoryData && currentCategoryData.subcategories && currentCategoryData.subcategories.length > 0 ? (
                                     <div className="pl-4 space-y-2 mt-2 border-l border-gray-100">
@@ -103,16 +114,19 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
                                     </div>
                                 ) : null
                             ) : (
-                                <>
+                                <div className="space-y-4">
                                     <button
                                         key="all"
-                                        onClick={() => { onCategoryChange(""); onSubcategoryChange(""); }}
+                                        onClick={() => { 
+                                            onCategoryChange(""); 
+                                            onSubcategoryChange(""); 
+                                        }}
                                         className={`block w-full text-left text-sm ${!activeCategory ? "text-amber-600 font-medium" : "text-gray-600 hover:text-black"}`}
                                     >
                                         All Categories
                                     </button>
                                     {categories.map((cat) => (
-                                        <div key={cat.category} className="space-y-2">
+                                        <div key={cat.category} className="space-y-3">
                                             <button
                                                 onClick={() => {
                                                     onCategoryChange(cat.category);
@@ -125,7 +139,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
                                                 {cat.category.replace(/-/g, ' ')}
                                             </button>
 
-                                            {/* Subcategories (only show if category is active) */}
+                                            {/* Subcategories */}
                                             {activeCategory === cat.category && cat.subcategories && cat.subcategories.length > 0 && (
                                                 <div className="pl-4 space-y-2 mt-2 border-l border-gray-100">
                                                     <button
@@ -147,51 +161,50 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
                                             )}
                                         </div>
                                     ))}
-                                </>
+                                </div>
                             )}
                         </div>
-                    )}
-                </div>
+                    </Accordion.Content>
+                </Accordion.Item>
 
                 {/* Price Section */}
-                <div className="border-b border-gray-200 pb-6">
-                    <button
-                        className="flex w-full items-center justify-between text-gray-900 mb-4"
-                        onClick={() => setIsPriceOpen(!isPriceOpen)}
-                    >
-                        <span className="font-medium">Price Range (OMR)</span>
-                        {isPriceOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                    </button>
-
-                    {isPriceOpen && (
-                        <form onSubmit={handlePriceSubmit} className="space-y-3">
-                            <div className="flex items-center gap-2">
-                                <input
-                                    type="number"
-                                    placeholder="Min"
-                                    value={localMin}
-                                    onChange={(e) => setLocalMin(e.target.value)}
-                                    className="w-full px-3 py-2 border border-gray-200 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-amber-500"
-                                />
-                                <span className="text-gray-400">-</span>
-                                <input
-                                    type="number"
-                                    placeholder="Max"
-                                    value={localMax}
-                                    onChange={(e) => setLocalMax(e.target.value)}
-                                    className="w-full px-3 py-2 border border-gray-200 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-amber-500"
-                                />
-                            </div>
-                            <button
-                                type="submit"
-                                className="w-full py-2 bg-gray-50 hover:bg-gray-100 text-gray-800 text-sm font-medium rounded-md transition-colors border border-gray-200"
+                <Accordion.Item value="price" className="border-b border-gray-200 pb-6">
+                    <Accordion.Header>
+                        <Accordion.Trigger className="flex w-full items-center justify-between text-gray-900 mb-4 group">
+                            <span className="font-medium">Price Range ({currency})</span>
+                            <ChevronDown className="w-4 h-4 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+                        </Accordion.Trigger>
+                    </Accordion.Header>
+                    <Accordion.Content className="overflow-hidden data-[state=closed]:animate-slideUp data-[state=open]:animate-slideDown">
+                        <div className="pt-2 px-2 pb-4">
+                            <Slider.Root
+                                className="relative flex items-center select-none touch-none w-full h-5"
+                                value={localRange}
+                                max={maxLocalLimit}
+                                step={stepLocal}
+                                onValueChange={(val: number[]) => setLocalRange([val[0], val[1]])}
+                                onValueCommit={handlePriceCommit}
                             >
-                                Apply Range
-                            </button>
-                        </form>
-                    )}
-                </div>
-            </div>
+                                <Slider.Track className="bg-gray-200 relative grow rounded-full h-[3px]">
+                                    <Slider.Range className="absolute bg-amber-600 rounded-full h-full" />
+                                </Slider.Track>
+                                <Slider.Thumb className="block w-5 h-5 bg-white border-2 border-amber-600 shadow-md rounded-full hover:bg-amber-50 focus:outline-none focus:ring-2 focus:ring-amber-500 transition-colors cursor-grab active:cursor-grabbing" aria-label="Min price" />
+                                <Slider.Thumb className="block w-5 h-5 bg-white border-2 border-amber-600 shadow-md rounded-full hover:bg-amber-50 focus:outline-none focus:ring-2 focus:ring-amber-500 transition-colors cursor-grab active:cursor-grabbing" aria-label="Max price" />
+                            </Slider.Root>
+                            
+                            <div className="flex items-center justify-between mt-6">
+                                <span className="text-sm font-medium text-gray-600 bg-gray-50 px-3 py-1.5 rounded-md border border-gray-200">
+                                    {getCurrencySymbol()}{localRange[0].toLocaleString()}
+                                </span>
+                                <span className="text-gray-400 text-sm">-</span>
+                                <span className="text-sm font-medium text-gray-600 bg-gray-50 px-3 py-1.5 rounded-md border border-gray-200">
+                                    {localRange[1] >= maxLocalLimit ? `${getCurrencySymbol()}${localRange[1].toLocaleString()}+` : `${getCurrencySymbol()}${localRange[1].toLocaleString()}`}
+                                </span>
+                            </div>
+                        </div>
+                    </Accordion.Content>
+                </Accordion.Item>
+            </Accordion.Root>
         </aside>
     );
 };

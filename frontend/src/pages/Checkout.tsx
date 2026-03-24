@@ -3,7 +3,8 @@ import { useCart } from '../contexts/CartContext';
 import { useCurrency } from '../contexts/CurrencyContext';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { Minus, Plus, Trash2, ArrowLeft, Loader2 } from 'lucide-react';
+import { Minus, Plus, Trash2, ArrowLeft, Loader2, ChevronDown } from 'lucide-react';
+import { Country, State, City } from 'country-state-city';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
@@ -446,6 +447,31 @@ const Checkout: React.FC = () => {
                   />
                 </div>
 
+                <div className="md:col-span-2 pt-2">
+                  <h3 className="text-lg font-medium text-black border-b border-gray-100 pb-2 mb-4">Shipping Address</h3>
+                </div>
+
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">Country / Region</label>
+                  <div className="relative">
+                    <select
+                      value={country}
+                      onChange={(e) => {
+                        setCountry(e.target.value);
+                        setRegion('');
+                        setCity('');
+                      }}
+                      className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all appearance-none"
+                    >
+                      <option value="">Select Country</option>
+                      {Country.getAllCountries().map((c) => (
+                        <option key={c.isoCode} value={c.name}>{c.name}</option>
+                      ))}
+                    </select>
+                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+                  </div>
+                </div>
+
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-1.5">Address Line 1</label>
                   <input
@@ -467,21 +493,75 @@ const Checkout: React.FC = () => {
                 </div>
 
                 <div className="md:col-span-1">
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">City</label>
-                  <input
-                    value={city}
-                    onChange={(e) => setCity(e.target.value)}
-                    className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all"
-                  />
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">State / Province</label>
+                  {(() => {
+                    const countryCode = Country.getAllCountries().find((c) => c.name === country)?.isoCode;
+                    const availableStates = countryCode ? State.getStatesOfCountry(countryCode) : [];
+                    
+                    if (availableStates.length > 0) {
+                      return (
+                        <div className="relative">
+                          <select
+                            value={region}
+                            onChange={(e) => {
+                              setRegion(e.target.value);
+                              setCity('');
+                            }}
+                            className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all appearance-none"
+                          >
+                            <option value="">Select State/Province</option>
+                            {availableStates.map((s) => (
+                              <option key={s.isoCode} value={s.name}>{s.name}</option>
+                            ))}
+                          </select>
+                          <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+                        </div>
+                      );
+                    }
+                    return (
+                      <input
+                        value={region}
+                        onChange={(e) => setRegion(e.target.value)}
+                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all"
+                        placeholder="State / Region"
+                      />
+                    );
+                  })()}
                 </div>
 
                 <div className="md:col-span-1">
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">Region / State</label>
-                  <input
-                    value={region}
-                    onChange={(e) => setRegion(e.target.value)}
-                    className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all"
-                  />
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">City</label>
+                  {(() => {
+                    const countryCode = Country.getAllCountries().find((c) => c.name === country)?.isoCode;
+                    const stateCode = countryCode && region ? State.getStatesOfCountry(countryCode).find((s) => s.name === region)?.isoCode : undefined;
+                    const availableCities = countryCode && stateCode ? City.getCitiesOfState(countryCode, stateCode) : [];
+
+                    if (availableCities.length > 0) {
+                      return (
+                        <div className="relative">
+                          <select
+                            value={city}
+                            onChange={(e) => setCity(e.target.value)}
+                            className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all appearance-none"
+                          >
+                            <option value="">Select City</option>
+                            {availableCities.map((c) => (
+                              <option key={c.name} value={c.name}>{c.name}</option>
+                            ))}
+                          </select>
+                          <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+                        </div>
+                      );
+                    }
+                    return (
+                      <input
+                        value={city}
+                        onChange={(e) => setCity(e.target.value)}
+                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all"
+                        placeholder="City"
+                      />
+                    );
+                  })()}
                 </div>
 
                 <div className="md:col-span-1">
@@ -490,26 +570,8 @@ const Checkout: React.FC = () => {
                     value={postalCode}
                     onChange={(e) => setPostalCode(e.target.value)}
                     className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all"
+                    placeholder="ZIP / Postal Code"
                   />
-                </div>
-
-                <div className="md:col-span-1">
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">Country</label>
-                  <select
-                    value={country}
-                    onChange={(e) => setCountry(e.target.value)}
-                    className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all appearance-none"
-                  >
-                    <option>India</option>
-                    <option>United States</option>
-                    <option>United Kingdom</option>
-                    <option>Canada</option>
-                    <option>Australia</option>
-                    <option>United Arab Emirates</option>
-                    <option>Germany</option>
-                    <option>France</option>
-                    <option>Singapore</option>
-                  </select>
                 </div>
 
               </div>

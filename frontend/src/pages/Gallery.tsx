@@ -148,6 +148,14 @@ const Gallery = memo(() => {
     return allItems.filter(i => i.category === currentItem.category && i.id !== currentItem.id);
   }, [allItems, currentItem]);
 
+  const categoryCounts = useMemo(() => {
+    const counts: Record<string, number> = { All: allItems.length };
+    allItems.forEach((item) => {
+      counts[item.category] = (counts[item.category] || 0) + 1;
+    });
+    return counts;
+  }, [allItems]);
+
   const filteredItems = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
     return allItems.filter((item) => {
@@ -296,7 +304,7 @@ const Gallery = memo(() => {
 
 
   return (
-    <div ref={containerRef} className="min-h-screen bg-white">
+    <div ref={containerRef} className="min-h-screen bg-[radial-gradient(circle_at_5%_0%,#f5f5f4_0%,#ffffff_50%)]">
 
       <Helmet>
         {/* Basic SEO */}
@@ -354,6 +362,8 @@ const Gallery = memo(() => {
       {/* Hero matching Products/About/Services style */}
       {/* Hero matching Products/About/Services style */}
       <section className="relative min-h-[100svh] flex flex-col justify-center px-[clamp(1.5rem,4vw,6rem)] overflow-hidden">
+        <div className="pointer-events-none absolute -left-24 top-[15%] h-64 w-64 rounded-full bg-black/5 blur-3xl" />
+        <div className="pointer-events-none absolute right-0 top-0 h-[45vh] w-[32vw] bg-gradient-to-b from-black/10 to-transparent" />
         <motion.div
           style={{ y: y1, opacity: opacityHero }}
           className="absolute top-0 right-0 w-[80vw] h-full opacity-10 pointer-events-none"
@@ -374,14 +384,17 @@ const Gallery = memo(() => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           >
-            <span className="block text-[clamp(0.625rem,1.2vw,0.875rem)] tracking-[0.3em] uppercase mb-[clamp(1rem,2vw,1.5rem)] text-gray-400">
+            <span className="block text-[clamp(0.625rem,1.2vw,0.875rem)] tracking-[0.3em] uppercase mb-[clamp(1rem,2vw,1.5rem)] text-zinc-500">
               {t('gallery.hero_subtitle') || "Visual Journey"}
             </span>
-            <h1 className="text-[clamp(3.5rem,13vw,14vw)] leading-[0.85] font-serif tracking-tighter text-black">
+            <h1 className="text-[clamp(3.5rem,13vw,14vw)] leading-[0.85] font-serif tracking-tighter text-black drop-shadow-[0_8px_24px_rgba(0,0,0,0.06)]">
               Artistry <br />
-              <span className="ml-[8vw] italic font-light text-gray-400">In</span> <br />
+              <span className="ml-[8vw] italic font-light text-zinc-400">In</span> <br />
               <span className="text-secondary-foreground">Detail</span>.
             </h1>
+            <p className="mt-6 max-w-2xl text-sm md:text-base text-zinc-600 leading-relaxed">
+              Discover handcrafted stone compositions and architectural details from our curated global portfolio.
+            </p>
           </motion.div>
         </div>
 
@@ -392,27 +405,42 @@ const Gallery = memo(() => {
           transition={{ delay: 1, duration: 1 }}
         >
           <div className="h-[1px] w-[clamp(3rem,8vw,6rem)] bg-gray-300"></div>
-          <p className="text-[clamp(0.625rem,1vw,0.75rem)] uppercase tracking-widest text-gray-400">Scroll to Explore</p>
+          <p className="text-[clamp(0.625rem,1vw,0.75rem)] uppercase tracking-widest text-zinc-500">Scroll to Explore</p>
         </motion.div>
       </section>
 
-      <section className="py-12">
-        <div className="container mx-auto px-4">
+      <section className="pb-14 md:pb-20">
+        <div className="max-w-[1400px] mx-auto px-4 md:px-6">
+          <div className="mb-8 md:mb-10 grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
+            <div className="rounded-2xl border border-black/10 bg-white/75 backdrop-blur-sm px-4 py-3">
+              <div className="text-xs uppercase tracking-[0.2em] text-zinc-500">Total Works</div>
+              <div className="mt-1 text-2xl font-semibold text-black">{allItems.length}</div>
+            </div>
+            <div className="rounded-2xl border border-black/10 bg-white/75 backdrop-blur-sm px-4 py-3">
+              <div className="text-xs uppercase tracking-[0.2em] text-zinc-500">Categories</div>
+              <div className="mt-1 text-2xl font-semibold text-black">{Math.max(cats.length - 1, 0)}</div>
+            </div>
+            <div className="rounded-2xl border border-black/10 bg-white/75 backdrop-blur-sm px-4 py-3">
+              <div className="text-xs uppercase tracking-[0.2em] text-zinc-500">Visible Now</div>
+              <div className="mt-1 text-2xl font-semibold text-black">{filteredItems.length}</div>
+            </div>
+          </div>
+
           {/* Search and Filters */}
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-8">
-            <div className="relative w-full md:w-80">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-6">
+            <div className="relative w-full md:w-[22rem]">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" />
               <input
                 type="text"
                 placeholder="Search photos..."
-                className="pl-10 pr-4 py-2 w-full rounded-lg border-2 border-black focus:outline-none focus:ring-0 focus:border-black"
+                className="pl-10 pr-4 py-3 w-full rounded-xl border border-black/20 bg-white/85 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-black/20 focus:border-black/30 transition"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
             <button
               onClick={() => setShowFilters((s) => !s)}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border-2 border-black bg-white text-black hover:bg-black hover:text-white transition-colors"
+              className="inline-flex items-center gap-2 px-4 py-3 rounded-xl border border-black/20 bg-white/85 backdrop-blur-sm text-black hover:bg-black hover:text-white transition-colors"
             >
               <SlidersHorizontal className="w-4 h-4" /> {t('gallery.filters')}
             </button>
@@ -420,7 +448,7 @@ const Gallery = memo(() => {
 
           <div
             ref={filterContainerRef}
-            className="mb-8 p-4 rounded-2xl border-2 border-black bg-white"
+            className="mb-8 p-4 rounded-2xl border border-black/15 bg-white/75 backdrop-blur-sm"
             style={{ display: showFilters ? 'block' : 'none', opacity: showFilters ? 1 : 0 }}
           >
             <div className="flex flex-wrap gap-2">
@@ -428,9 +456,9 @@ const Gallery = memo(() => {
                 <button
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
-                  className={`px-4 py-2 rounded-full border-2 transition-all ${activeCategory === cat ? 'bg-black text-white border-black' : 'bg-white text-black border-black hover:bg-black hover:text-white'}`}
+                  className={`px-4 py-2 rounded-full border text-sm transition-all ${activeCategory === cat ? 'bg-black text-white border-black shadow-[0_8px_20px_rgba(0,0,0,0.15)]' : 'bg-white/90 text-black border-black/20 hover:bg-black hover:text-white hover:border-black'}`}
                 >
-                  {cat}
+                  {cat} <span className="opacity-75">({categoryCounts[cat] || 0})</span>
                 </button>
               ))}
             </div>
@@ -439,7 +467,7 @@ const Gallery = memo(() => {
           {/* Bento-Style Gallery Grid - Dense, No Gaps */}
           {filteredItems.length > 0 ? (
             <div
-              className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 auto-rows-[180px] gap-2"
+              className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 auto-rows-[180px] gap-2 md:gap-3"
               style={{ gridAutoFlow: 'dense' }}
             >
               {filteredItems.slice(0, visibleCount).map((item, index) => {
@@ -459,7 +487,7 @@ const Gallery = memo(() => {
                 return (
                   <div
                     key={item.id}
-                    className={`group relative overflow-hidden rounded-xl border-2 border-black bg-white cursor-pointer ${getBentoClass(index)}`}
+                    className={`group relative overflow-hidden rounded-2xl border border-black/15 bg-white/90 shadow-[0_4px_24px_rgba(0,0,0,0.05)] cursor-pointer ${getBentoClass(index)}`}
                     onClick={() => handleItemClick(item.id)}
                     ref={(el) => attachObserver(el, index)}
                     style={{ opacity: 0, transform: 'translateY(20px)' }}
@@ -467,13 +495,20 @@ const Gallery = memo(() => {
                     <div className="w-full h-full bg-white relative">
                       {/* Category tag */}
                       <div className="absolute top-2 left-2 z-[1]">
-                        <span className="px-2 py-1 rounded-full text-xs font-semibold bg-black text-white border border-black group-hover:bg-white group-hover:text-black transition-colors">
+                        <span className="px-2 py-1 rounded-full text-[11px] font-semibold bg-black text-white border border-black group-hover:bg-white group-hover:text-black transition-colors">
                           {item.category}
                         </span>
                       </div>
+                      <div className="absolute top-2 right-2 z-[1]">
+                        <span className="px-2 py-1 rounded-full text-[11px] font-semibold bg-white/90 text-black border border-black/20">
+                          {item.code}
+                        </span>
+                      </div>
                       {/* Overlay gradient on hover */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-[1]" />
-                      {/* Title on hover */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-[1]" />
+                      <div className="absolute inset-x-0 bottom-0 z-[2] p-3 translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                        <div className="text-white text-sm font-semibold line-clamp-2">{item.title}</div>
+                      </div>
 
                       <img
                         src={item.image}
@@ -621,7 +656,7 @@ const Gallery = memo(() => {
                 {canPrev && (
                   <button
                     onClick={() => swiperRef && swiperRef.slidePrev()}
-                    className="hidden sm:flex absolute left-2 top-1/2 -translate-y-1/2 z-10 inline-flex items-center justify-center w-10 h-10 rounded-full border-2 border-black bg-white/80 backdrop-blur-md text-black hover:bg-black hover:text-white transition-colors"
+                    className="hidden sm:flex absolute left-2 top-1/2 -translate-y-1/2 z-10 items-center justify-center w-10 h-10 rounded-full border-2 border-black bg-white/80 backdrop-blur-md text-black hover:bg-black hover:text-white transition-colors"
                     aria-label="Previous"
                   >
                     <ChevronLeft className="w-5 h-5" />
@@ -630,7 +665,7 @@ const Gallery = memo(() => {
                 {canNext && (
                   <button
                     onClick={() => swiperRef && swiperRef.slideNext()}
-                    className="hidden sm:flex absolute right-2 top-1/2 -translate-y-1/2 z-10 inline-flex items-center justify-center w-10 h-10 rounded-full border-2 border-black bg-white/80 backdrop-blur-md text-black hover:bg-black hover:text-white transition-colors"
+                    className="hidden sm:flex absolute right-2 top-1/2 -translate-y-1/2 z-10 items-center justify-center w-10 h-10 rounded-full border-2 border-black bg-white/80 backdrop-blur-md text-black hover:bg-black hover:text-white transition-colors"
                     aria-label="Next"
                   >
                     <ChevronRight className="w-5 h-5" />

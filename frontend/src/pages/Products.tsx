@@ -164,6 +164,7 @@ const Products = () => {
 
   const handleCategoryChange = useCallback(() => {
     setActiveCategory(FIXED_FILTER_CATEGORY);
+    setActiveSubcategory("");
     setPage(1);
   }, []);
 

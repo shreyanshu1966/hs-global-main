@@ -62,6 +62,10 @@ const Footer = () => {
               <a href="/contact" className="itsbits-footer-link hover:underline">Get Help</a>
               <a href="mailto:inquiry@hsglobalexport.com" className="itsbits-footer-link hover:underline">inquiry@hsglobalexport.com</a>
               <a href="/contact" className="itsbits-footer-link hover:underline">HS Global Promise</a>
+              <address className="itsbits-footer-link not-italic">
+                C-108, Titanium Business Park, Makarba,<br />
+                Ahmedabad - 380051
+              </address>
             </div>
           </div>
 
