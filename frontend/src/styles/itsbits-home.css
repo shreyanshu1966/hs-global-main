@@ -97,7 +97,6 @@
   -ms-overflow-style: none;
   scroll-snap-type: x mandatory;
   scroll-padding-left: 8px;
-  touch-action: pan-x;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-inline: contain;
 }

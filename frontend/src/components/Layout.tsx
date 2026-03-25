@@ -23,10 +23,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     // Check if we're on the admin page
     const isAdminPage = location.pathname.startsWith('/admin');
 
-    // Check if we're on the products page
-    const isProductsPage = location.pathname === '/products';
-    const needsHeaderOffset = isProductsPage;
+    // Check if we're on special pages
     const isItsbitsHome = location.pathname === '/';
+    const isProductsPage = location.pathname === '/products';
+    const needsHeaderOffset = !isItsbitsHome && !isAdminPage;
 
     useGSAP(() => {
         // Simple entry animation on route change

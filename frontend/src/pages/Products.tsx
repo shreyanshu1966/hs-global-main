@@ -224,7 +224,7 @@ const Products = () => {
       </Helmet>
 
       {/* Main Page Layout */}
-      <div className="min-h-screen bg-gray-50 pt-10 md:pt-12 pb-16">
+      <div className="min-h-screen bg-gray-50 pb-16">
         {/* Header / Hero Section */}
         <div className="bg-white border-b border-gray-200 py-12 px-4 shadow-sm mb-8">
           <div className="container mx-auto text-center max-w-3xl">
@@ -249,7 +249,7 @@ const Products = () => {
               <div
                 ref={filterSidebarRef}
                 onWheel={handleSidebarWheel}
-                className="sticky top-24 bg-white p-6 rounded-2xl shadow-sm border border-gray-100 max-h-[calc(100vh-8rem)] overflow-y-auto overscroll-contain"
+                className="sticky top-40 bg-white p-6 rounded-2xl shadow-sm border border-gray-100 max-h-[calc(100vh-10rem)] overflow-y-auto overscroll-contain"
               >
                 <FilterSidebar
                   categories={filteredCategories}
@@ -286,7 +286,7 @@ const Products = () => {
             <div className="flex-1">
 
               {/* Toolbar: Filter Button (Mobile) & Sort Dropdown */}
-              <div className="sticky top-20 lg:top-24 z-30 flex flex-col sm:flex-row items-center justify-between bg-white/90 backdrop-blur-md p-4 rounded-xl shadow-md border border-gray-100 mb-6 gap-4">
+              <div className="sticky top-32 lg:top-40 z-30 flex flex-col sm:flex-row items-center justify-between bg-white/90 backdrop-blur-md p-4 rounded-xl shadow-md border border-gray-100 mb-6 gap-4">
                 <div className="flex items-center justify-between w-full sm:w-auto">
                   <button
                     onClick={() => setIsFilterDrawerOpen(true)}

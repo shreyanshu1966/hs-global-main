@@ -1,7 +1,8 @@
+
 import React, { useState, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { Eye, EyeOff, Mail, Lock, User, Loader2 } from 'lucide-react';
+import { Eye, EyeOff, Loader2 } from 'lucide-react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 
@@ -22,8 +23,8 @@ const Login: React.FC = () => {
     useGSAP(() => {
         if (formRef.current) {
             gsap.fromTo(formRef.current,
-                { opacity: 0, y: 30 },
-                { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }
+                { opacity: 0, y: 15 },
+                { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }
             );
         }
     }, { scope: containerRef });
@@ -31,35 +32,32 @@ const Login: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
-        
-        // Validate email format
+
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
-            setError('Please enter a valid email address');
+            setError('Please enter a valid email address.');
             return;
         }
-        
-        // Validate password
+
         if (password.length < 6) {
-            setError('Password must be at least 6 characters');
+            setError('Password must be at least 6 characters.');
             return;
         }
-        
+
         setIsLoading(true);
 
         try {
             await login(email, password);
-            // Redirect to previous page or profile
             const from = (location.state as any)?.from || '/profile';
             navigate(from);
         } catch (err: any) {
             console.error('Login error:', err);
             if (err.message.includes('Invalid credentials')) {
-                setError('Invalid email or password. Please check your credentials and try again.');
+                setError('Invalid email or password.');
             } else if (err.message.includes('not found')) {
-                setError('No account found with this email address.');
+                setError('No account found with this email.');
             } else {
-                setError(err.message || 'Login failed. Please try again.');
+                setError(err.message || 'Login failed.');
             }
         } finally {
             setIsLoading(false);
@@ -67,117 +65,131 @@ const Login: React.FC = () => {
     };
 
     return (
-        <div ref={containerRef} className="min-h-screen pt-24 pb-20 bg-gradient-to-br from-gray-50 to-gray-100">
-            <div className="max-w-md mx-auto px-4">
-                <div ref={formRef} className="bg-white rounded-2xl shadow-xl p-8 border border-gray-200">
-                    {/* Header */}
-                    <div className="text-center mb-8">
-                        <div className="w-16 h-16 bg-black rounded-full flex items-center justify-center mx-auto mb-4">
-                            <User className="w-8 h-8 text-white" />
-                        </div>
-                        <h1 className="text-3xl font-bold text-black mb-2">Welcome Back</h1>
-                        <p className="text-gray-600">Sign in to your account</p>
+        <div ref={containerRef} className="min-h-[calc(100vh-134px)] flex bg-white font-sans text-gray-900">
+            {/* Left Column: Image / Branding */}
+            <div className="hidden lg:flex w-1/2 bg-gray-50 flex-col relative overflow-hidden" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fit=crop')", backgroundSize: 'cover', backgroundPosition: 'center' }}>
+                <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]"></div>
+                <div className="relative z-10 p-12 lg:p-16 h-full flex flex-col justify-between text-white">
+                    <div>
+                        <Link to="/" className="text-2xl font-bold font-serif tracking-tight text-white hover:text-gray-200 transition-colors inline-block">
+                            HS Global
+                        </Link>
+                    </div>
+                    <div className="max-w-md">
+                        <h2 className="text-4xl lg:text-5xl font-serif font-medium leading-tight mb-6">
+                            Exquisite materials for your masterpiece.
+                        </h2>
+                        <p className="text-lg font-light text-gray-200">
+                            Join thousands of professionals sourcing the best globally.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Right Column: Form */}
+            <div className="w-full lg:w-1/2 flex items-center justify-center p-8 sm:p-12 xl:p-24 relative bg-white">
+                <div ref={formRef} className="w-full max-w-[420px]">
+                    <div className="mb-12 lg:hidden">
+                        <Link to="/" className="font-serif text-2xl font-bold tracking-tight text-black">
+                            HS Global
+                        </Link>
                     </div>
 
-                    {/* Error Message */}
+                    <div className="mb-10">
+                        <h1 className="text-3xl font-bold text-gray-900 mb-3 tracking-tight font-sans">Log in</h1>
+                        <p className="text-gray-500 text-sm">
+                            Don't have an account?{' '}
+                            <Link to="/signup" className="text-black font-semibold hover:underline decoration-1 underline-offset-4">
+                                Sign up
+                            </Link>
+                        </p>
+                    </div>
+
                     {error && (
-                        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
+                        <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 text-sm">
                             {error}
                         </div>
                     )}
 
-                    {/* Form */}
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                        {/* Email */}
+                    <form onSubmit={handleSubmit} className="space-y-5">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Email Address
+                            <label className="block text-sm font-semibold text-gray-900 mb-2">
+                                Email
                             </label>
-                            <div className="relative">
-                                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                                <input
-                                    type="email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all"
-                                    placeholder="you@example.com"
-                                    required
-                                />
-                            </div>
+                            <input
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md focus:ring-1 focus:ring-black focus:border-black outline-none transition-colors text-sm"
+                                placeholder="name@example.com"
+                                required
+                            />
                         </div>
 
-                        {/* Password */}
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Password
-                            </label>
+                            <div className="flex justify-between items-center mb-2">
+                                <label className="block text-sm font-semibold text-gray-900">
+                                    Password
+                                </label>
+                            </div>
                             <div className="relative">
-                                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                                 <input
                                     type={showPassword ? 'text' : 'password'}
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full pl-11 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all"
-                                    placeholder="Enter your password"
+                                    className="w-full pl-4 pr-12 py-3 bg-white border border-gray-300 rounded-md focus:ring-1 focus:ring-black focus:border-black outline-none transition-colors text-sm"
+                                    placeholder="••••••••"
                                     required
                                 />
                                 <button
                                     type="button"
                                     onClick={() => setShowPassword(!showPassword)}
-                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors p-1"
+                                    tabIndex={-1}
                                 >
-                                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                                 </button>
+                            </div>
+                            <div className="mt-2 text-right">
+                                <Link to="/forgot-password" className="text-xs font-medium text-gray-500 hover:text-black transition-colors underline-offset-2 hover:underline">
+                                    Forgot password?
+                                </Link>
                             </div>
                         </div>
 
-                        {/* Submit Button */}
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className="w-full py-3 bg-black text-white font-semibold rounded-lg hover:bg-gray-800 transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="w-full py-3 mt-4 bg-black text-white text-sm font-semibold rounded-md hover:bg-gray-800 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {isLoading ? (
                                 <>
-                                    <Loader2 className="w-5 h-5 animate-spin" />
-                                    Signing in...
+                                    <Loader2 className="w-4 h-4 animate-spin" />
+                                    Logging in...
                                 </>
                             ) : (
-                                'Sign In'
+                                'Log in'
                             )}
                         </button>
                     </form>
 
-                    {/* Forgot Password */}
-                    <div className="mt-4 text-center">
-                        <Link to="/forgot-password" className="text-sm text-gray-600 hover:text-black transition-colors">
-                            Forgot your password?
+                    <div className="mt-8 mb-8 relative">
+                        <div className="absolute inset-0 flex items-center">
+                            <div className="w-full border-t border-gray-200"></div>
+                        </div>
+                        <div className="relative flex justify-center text-sm">
+                            <span className="px-4 bg-white text-gray-400 text-xs uppercase tracking-wider">Or continue with</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <Link
+                            to="/login-otp"
+                            className="w-full py-3 border border-gray-300 text-gray-900 text-sm font-semibold rounded-md hover:bg-gray-50 transition-colors text-center flex items-center justify-center gap-2"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-smartphone"><rect width="14" height="20" x="5" y="2" rx="2" ry="2" /><path d="M12 18h.01" /></svg>
+                            Log in with OTP
                         </Link>
-                    </div>
-
-                    {/* Divider */}
-                    <div className="my-6 flex items-center gap-4">
-                        <div className="flex-1 h-px bg-gray-300"></div>
-                        <span className="text-sm text-gray-500">OR</span>
-                        <div className="flex-1 h-px bg-gray-300"></div>
-                    </div>
-
-                    {/* OTP Login */}
-                    <Link
-                        to="/login-otp"
-                        className="block w-full py-3 border-2 border-black text-black font-semibold rounded-lg hover:bg-black hover:text-white transition-all duration-200 text-center"
-                    >
-                        Login with OTP
-                    </Link>
-
-                    {/* Footer */}
-                    <div className="mt-6 text-center">
-                        <p className="text-gray-600">
-                            Don't have an account?{' '}
-                            <Link to="/signup" className="text-black font-semibold hover:underline">
-                                Sign up
-                            </Link>
-                        </p>
                     </div>
                 </div>
             </div>
