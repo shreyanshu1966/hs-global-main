@@ -8,16 +8,16 @@ import "@fontsource/playfair-display/700.css";
 import "@fontsource/inter";
 import './i18n';
 
-// Register service worker for caching
+// Unregister any existing service workers to fix caching issues
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
-      .then((registration) => {
-        console.log('SW registered: ', registration);
-      })
-      .catch((registrationError) => {
-        console.log('SW registration failed: ', registrationError);
-      });
+  navigator.serviceWorker.getRegistrations().then((registrations) => {
+    for (let registration of registrations) {
+      registration.unregister().then(
+        (success) => console.log('ServiceWorker unregistered: ', success)
+      );
+    }
+  }).catch((err) => {
+    console.log('Service Worker unregistration failed: ', err);
   });
 }
 import { CartProvider } from './contexts/CartContext';
