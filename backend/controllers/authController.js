@@ -1,6 +1,11 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const emailService = require('../services/emailService');
+const { OAuth2Client } = require('google-auth-library');
+
+// We use a dummy clientId if process.env.GOOGLE_CLIENT_ID is not provided
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '1047190342938-1234567890.apps.googleusercontent.com';
+const client = new OAuth2Client(GOOGLE_CLIENT_ID);
 
 // Generate JWT token
 const generateToken = (userId) => {
@@ -661,5 +666,75 @@ exports.loginWithOTP = async (req, res) => {
             ok: false,
             error: 'Login failed'
         });
+    }
+};
+
+// @desc    Google Authentication (Login/Signup)
+// @route   POST /api/auth/google
+// @access  Public
+exports.googleAuth = async (req, res) => {
+    try {
+        const { token } = req.body;
+        
+        if (!token) {
+            return res.status(400).json({ ok: false, error: 'Token is required' });
+        }
+
+        const ticket = await client.verifyIdToken({
+            idToken: token,
+            audience: GOOGLE_CLIENT_ID,
+        });
+
+        const payload = ticket.getPayload();
+        if (!payload) {
+            return res.status(400).json({ ok: false, error: 'Invalid token payload' });
+        }
+
+        const { sub, email, name, picture, email_verified } = payload;
+
+        // Check if user already exists
+        let user = await User.findOne({ email: email.toLowerCase() });
+
+        if (!user) {
+            // Create user
+            user = await User.create({
+                name,
+                email: email.toLowerCase(),
+                googleId: sub,
+                emailVerified: email_verified,
+                avatar: picture
+            });
+        } else {
+            // If user exists but doesn't have googleId or avatar, update it
+            if (!user.googleId || !user.avatar) {
+                user.googleId = sub;
+                // Only update avatar if user doesn't have one
+                if (!user.avatar) {
+                    user.avatar = picture;
+                }
+                user.emailVerified = user.emailVerified || email_verified;
+                await user.save({ validateBeforeSave: false });
+            }
+        }
+
+        const jwtToken = generateToken(user._id);
+
+        res.cookie('token', jwtToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+        });
+
+        res.json({
+            ok: true,
+            message: 'Google authentication successful',
+            token: jwtToken,
+            user: user.toPublicJSON()
+        });
+
+    } catch (error) {
+        console.error('Google auth error:', error);
+        res.status(500).json({ ok: false, error: 'Google authentication failed' });
     }
 };
