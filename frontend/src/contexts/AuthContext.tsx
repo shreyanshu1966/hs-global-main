@@ -26,6 +26,7 @@ interface AuthContextType {
     isAuthenticated: boolean;
     isLoading: boolean;
     login: (email: string, password: string) => Promise<void>;
+    googleLogin: (credential: string) => Promise<void>;
     register: (name: string, email: string, password: string, phone: string) => Promise<void>;
     logout: () => void;
     updateProfile: (data: Partial<User>) => Promise<void>;
@@ -142,6 +143,31 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
     };
 
+    const googleLogin = async (credential: string) => {
+        try {
+            const response = await fetch(`${API_URL}/auth/google`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ token: credential })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok || !data.ok) {
+                throw new Error(data.error || 'Google login failed');
+            }
+
+            setToken(data.token);
+            setUser(data.user);
+            localStorage.setItem('authToken', data.token);
+            localStorage.setItem('authUser', JSON.stringify(data.user));
+        } catch (error: any) {
+            throw new Error(error.message || 'Google login failed');
+        }
+    };
+
     const register = async (name: string, email: string, password: string, phone: string) => {
         try {
             const response = await fetch(`${API_URL}/auth/register`, {
@@ -237,6 +263,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         isAuthenticated: !!user && !!token,
         isLoading,
         login,
+        googleLogin,
         register,
         logout,
         updateProfile,

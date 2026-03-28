@@ -5,11 +5,12 @@ import { useAuth } from '../contexts/AuthContext';
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
+import { GoogleLogin } from '@react-oauth/google';
 
 const Login: React.FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const { login } = useAuth();
+    const { login, googleLogin } = useAuth();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -59,6 +60,21 @@ const Login: React.FC = () => {
             } else {
                 setError(err.message || 'Login failed.');
             }
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleGoogleSuccess = async (credential: string) => {
+        setError('');
+        setIsLoading(true);
+        try {
+            await googleLogin(credential);
+            const from = (location.state as any)?.from || '/profile';
+            navigate(from);
+        } catch (err: any) {
+            console.error('Google login error:', err);
+            setError(err.message || 'Google login failed.');
         } finally {
             setIsLoading(false);
         }
@@ -182,7 +198,21 @@ const Login: React.FC = () => {
                         </div>
                     </div>
 
-                    <div>
+                    <div className="flex flex-col gap-3">
+                        <div className="flex justify-center w-full [&>div]:w-full">
+                            <GoogleLogin
+                                onSuccess={credentialResponse => {
+                                    if (credentialResponse.credential) {
+                                        handleGoogleSuccess(credentialResponse.credential);
+                                    }
+                                }}
+                                onError={() => {
+                                    setError('Google authentication failed');
+                                }}
+                                useOneTap
+                            />
+                        </div>
+
                         <Link
                             to="/login-otp"
                             className="w-full py-3 border border-gray-300 text-gray-900 text-sm font-semibold rounded-md hover:bg-gray-50 transition-colors text-center flex items-center justify-center gap-2"

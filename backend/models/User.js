@@ -19,15 +19,14 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: [true, 'Password is required'],
+        // Password is now optional because Google OAuth users won't have it initially
         minlength: [6, 'Password must be at least 6 characters'],
         select: false // Don't return password by default
     },
     phone: {
         type: String,
-        required: [true, 'Phone number is required'],
         trim: true,
-        match: [/^\+?[\d\s-()]+$/, 'Please provide a valid phone number']
+        // optional for Google users
     },
     phoneVerified: {
         type: Boolean,
@@ -68,6 +67,11 @@ const userSchema = new mongoose.Schema({
     avatar: {
         type: String,
         default: ''
+    },
+    googleId: {
+        type: String,
+        sparse: true,
+        unique: true
     },
     orders: [{
         type: mongoose.Schema.Types.ObjectId,

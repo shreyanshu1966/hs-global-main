@@ -25,18 +25,23 @@ import { PhoneVerificationProvider } from './contexts/PhoneVerificationContext';
 import { SlabCustomizationProvider } from './contexts/SlabCustomizationContext';
 import { SlabCustomizationModal } from './components/SlabCustomizationModal';
 import { LocalizationProvider } from './contexts/LocalizationContext';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || '1047190342938-1234567890.apps.googleusercontent.com';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <LocalizationProvider>
-      <CartProvider>
-        <PhoneVerificationProvider>
-          <SlabCustomizationProvider>
-            <App />
-            <SlabCustomizationModal />
-          </SlabCustomizationProvider>
-        </PhoneVerificationProvider>
-      </CartProvider>
-    </LocalizationProvider>
+    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+      <LocalizationProvider>
+        <CartProvider>
+          <PhoneVerificationProvider>
+            <SlabCustomizationProvider>
+              <App />
+              <SlabCustomizationModal />
+            </SlabCustomizationProvider>
+          </PhoneVerificationProvider>
+        </CartProvider>
+      </LocalizationProvider>
+    </GoogleOAuthProvider>
   </StrictMode>
 );

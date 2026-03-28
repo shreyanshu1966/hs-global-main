@@ -4,10 +4,11 @@ import { useAuth } from '../contexts/AuthContext';
 import { Eye, EyeOff, Loader2, CheckCircle } from 'lucide-react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
+import { GoogleLogin } from '@react-oauth/google';
 
 const Signup: React.FC = () => {
     const navigate = useNavigate();
-    const { register } = useAuth();
+    const { register, googleLogin } = useAuth();
 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -106,6 +107,20 @@ const Signup: React.FC = () => {
             setRegistrationSuccess(true);
         } catch (err: any) {
             setError(err.message || 'Registration failed. Please try again.');
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleGoogleSuccess = async (credential: string) => {
+        setError('');
+        setIsLoading(true);
+        try {
+            await googleLogin(credential);
+            navigate('/profile');
+        } catch (err: any) {
+            console.error('Google signup error:', err);
+            setError(err.message || 'Google authentication failed.');
         } finally {
             setIsLoading(false);
         }
@@ -317,7 +332,30 @@ const Signup: React.FC = () => {
                                 </button>
                             </form>
                             
-                            <p className="text-xs text-gray-500 mt-8 text-center leading-relaxed">
+                            <div className="mt-8 mb-6 relative">
+                                <div className="absolute inset-0 flex items-center">
+                                    <div className="w-full border-t border-gray-200"></div>
+                                </div>
+                                <div className="relative flex justify-center text-sm">
+                                    <span className="px-4 bg-white text-gray-400 text-xs uppercase tracking-wider">Or continue with</span>
+                                </div>
+                            </div>
+
+                            <div className="flex justify-center w-full [&>div]:w-full mb-6">
+                                <GoogleLogin
+                                    onSuccess={credentialResponse => {
+                                        if (credentialResponse.credential) {
+                                            handleGoogleSuccess(credentialResponse.credential);
+                                        }
+                                    }}
+                                    onError={() => {
+                                        setError('Google authentication failed');
+                                    }}
+                                    useOneTap
+                                />
+                            </div>
+                            
+                            <p className="text-xs text-gray-500 mt-4 text-center leading-relaxed">
                                 By signing up, you agree to our <a href="#" className="underline">Terms of Service</a> and <a href="#" className="underline">Privacy Policy</a>.
                             </p>
                         </>
