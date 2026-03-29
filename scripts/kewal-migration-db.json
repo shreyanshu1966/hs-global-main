@@ -1,0 +1,3024 @@
+{
+  "meta": {
+    "generatedAt": "2026-03-29T06:20:55.260Z",
+    "sourceFolder": "Kewal 19-03-2026",
+    "cloudName": "dynd1aan0",
+    "totalCategories": 7,
+    "totalProducts": 73,
+    "dryRun": false
+  },
+  "categories": [
+    {
+      "folderName": "3 Sphere Balls Table",
+      "subcategory": "3 Sphere Balls Table",
+      "slug": "three-sphere-balls-table",
+      "dbCategory": "furniture",
+      "productCount": 4
+    },
+    {
+      "folderName": "Center Table",
+      "subcategory": "Center Table",
+      "slug": "center-table",
+      "dbCategory": "furniture",
+      "productCount": 9
+    },
+    {
+      "folderName": "Console Tables",
+      "subcategory": "Console Table",
+      "slug": "console-table",
+      "dbCategory": "furniture",
+      "productCount": 13
+    },
+    {
+      "folderName": "Lamps",
+      "subcategory": "Lamps",
+      "slug": "lamps",
+      "dbCategory": "furniture",
+      "productCount": 1
+    },
+    {
+      "folderName": "Pedestal Wash Basins",
+      "subcategory": "Pedestal Wash Basin",
+      "slug": "pedestal-wash-basin",
+      "dbCategory": "furniture",
+      "productCount": 5
+    },
+    {
+      "folderName": "Side Tables",
+      "subcategory": "Side Table",
+      "slug": "side-table",
+      "dbCategory": "furniture",
+      "productCount": 21
+    },
+    {
+      "folderName": "Wash Basins",
+      "subcategory": "Wash Basin",
+      "slug": "wash-basin",
+      "dbCategory": "furniture",
+      "productCount": 20
+    }
+  ],
+  "products": [
+    {
+      "productId": "emerald-green-marble-coffee-table",
+      "name": "Emerald Green Marble Coffee Table",
+      "category": "furniture",
+      "subcategory": "3 Sphere Balls Table",
+      "subcategorySlug": "three-sphere-balls-table",
+      "catFolder": "3 Sphere Balls Table",
+      "cloudinaryDir": "hs-global/furniture/three-sphere-balls-table/emerald-green-marble-coffee-table",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728430/hs-global/furniture/three-sphere-balls-table/emerald-green-marble-coffee-table/Gemini_Generated_Image_xeq5g8xeq5g8xeq5.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728433/hs-global/furniture/three-sphere-balls-table/emerald-green-marble-coffee-table/Screenshot%202026-03-19%20132931%20%281%29.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728436/hs-global/furniture/three-sphere-balls-table/emerald-green-marble-coffee-table/Screenshot%202026-03-19%20133035.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728439/hs-global/furniture/three-sphere-balls-table/emerald-green-marble-coffee-table/Screenshot%202026-03-19%20133132.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728441/hs-global/furniture/three-sphere-balls-table/emerald-green-marble-coffee-table/Screenshot%202026-03-19%20133611.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728430/hs-global/furniture/three-sphere-balls-table/emerald-green-marble-coffee-table/Gemini_Generated_Image_xeq5g8xeq5g8xeq5.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Tables/Coffee Table/Emerald Green Marble Coffee Table/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Green Marble",
+        "colorName": "Green",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "Emerald Green Marble Coffee Table - 3 Sphere Balls Table | HS Global Export",
+      "seoDescription": "Premium Emerald Green Marble Coffee Table — handcrafted 3 Sphere Balls Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "emerald green marble coffee table",
+        "3 sphere balls table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:21:03.915Z"
+    },
+    {
+      "productId": "lava-oro-spherical-base-table",
+      "name": "Lava Oro Spherical Base Table",
+      "category": "furniture",
+      "subcategory": "3 Sphere Balls Table",
+      "subcategorySlug": "three-sphere-balls-table",
+      "catFolder": "3 Sphere Balls Table",
+      "cloudinaryDir": "hs-global/furniture/three-sphere-balls-table/lava-oro-spherical-base-table",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728443/hs-global/furniture/three-sphere-balls-table/lava-oro-spherical-base-table/Gemini_Generated_Image_3eoh6j3eoh6j3eoh.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728445/hs-global/furniture/three-sphere-balls-table/lava-oro-spherical-base-table/Gemini_Generated_Image_a9zkjna9zkjna9zk.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728448/hs-global/furniture/three-sphere-balls-table/lava-oro-spherical-base-table/Gemini_Generated_Image_flsi1vflsi1vflsi.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728450/hs-global/furniture/three-sphere-balls-table/lava-oro-spherical-base-table/Gemini_Generated_Image_fvdc5wfvdc5wfvdc.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728452/hs-global/furniture/three-sphere-balls-table/lava-oro-spherical-base-table/Gemini_Generated_Image_y78xvy78xvy78xvy.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728443/hs-global/furniture/three-sphere-balls-table/lava-oro-spherical-base-table/Gemini_Generated_Image_3eoh6j3eoh6j3eoh.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Tables/Center Table/Lava Oro Spherical Base Table/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Lava Oro",
+        "colorName": "Gold",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "Lava Oro Spherical Base Table - 3 Sphere Balls Table | HS Global Export",
+      "seoDescription": "Premium Lava Oro Spherical Base Table — handcrafted 3 Sphere Balls Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "lava oro spherical base table",
+        "3 sphere balls table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:21:11.171Z"
+    },
+    {
+      "productId": "luxury-katni-pink-marble-coffee-table",
+      "name": "Luxury Katni Pink Marble Coffee Table",
+      "category": "furniture",
+      "subcategory": "3 Sphere Balls Table",
+      "subcategorySlug": "three-sphere-balls-table",
+      "catFolder": "3 Sphere Balls Table",
+      "cloudinaryDir": "hs-global/furniture/three-sphere-balls-table/luxury-katni-pink-marble-coffee-table",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728454/hs-global/furniture/three-sphere-balls-table/luxury-katni-pink-marble-coffee-table/Gemini_Generated_Image_bshyaobshyaobshy.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728456/hs-global/furniture/three-sphere-balls-table/luxury-katni-pink-marble-coffee-table/Gemini_Generated_Image_d0frfld0frfld0fr.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728458/hs-global/furniture/three-sphere-balls-table/luxury-katni-pink-marble-coffee-table/Gemini_Generated_Image_qr3cdvqr3cdvqr3c.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728460/hs-global/furniture/three-sphere-balls-table/luxury-katni-pink-marble-coffee-table/Screenshot%202026-03-19%20163111.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728462/hs-global/furniture/three-sphere-balls-table/luxury-katni-pink-marble-coffee-table/Screenshot%202026-03-19%20163824.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728464/hs-global/furniture/three-sphere-balls-table/luxury-katni-pink-marble-coffee-table/Screenshot%202026-03-19%20164327.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728454/hs-global/furniture/three-sphere-balls-table/luxury-katni-pink-marble-coffee-table/Gemini_Generated_Image_bshyaobshyaobshy.jpg",
+      "hasVideo": false,
+      "videoUrl": null,
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Katni Pink Marble",
+        "colorName": "Pink",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "Luxury Katni Pink Marble Coffee Table - 3 Sphere Balls Table | HS Global Export",
+      "seoDescription": "Premium Luxury Katni Pink Marble Coffee Table — handcrafted 3 Sphere Balls Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "luxury katni pink marble coffee table",
+        "3 sphere balls table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:21:19.389Z"
+    },
+    {
+      "productId": "panda-white",
+      "name": "Panda White",
+      "category": "furniture",
+      "subcategory": "3 Sphere Balls Table",
+      "subcategorySlug": "three-sphere-balls-table",
+      "catFolder": "3 Sphere Balls Table",
+      "cloudinaryDir": "hs-global/furniture/three-sphere-balls-table/panda-white",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728466/hs-global/furniture/three-sphere-balls-table/panda-white/Gemini_Generated_Image_f7it3nf7it3nf7it.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728468/hs-global/furniture/three-sphere-balls-table/panda-white/Gemini_Generated_Image_ir1l3iir1l3iir1l.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728471/hs-global/furniture/three-sphere-balls-table/panda-white/Gemini_Generated_Image_j0bwzhj0bwzhj0bw.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728473/hs-global/furniture/three-sphere-balls-table/panda-white/Gemini_Generated_Image_q813g0q813g0q813.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728476/hs-global/furniture/three-sphere-balls-table/panda-white/HS1TC013.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728478/hs-global/furniture/three-sphere-balls-table/panda-white/Screenshot%202026-03-19%20175715.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728466/hs-global/furniture/three-sphere-balls-table/panda-white/Gemini_Generated_Image_f7it3nf7it3nf7it.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Tables/Coffee Table/Panda White/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Panda White Marble",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "Panda White - 3 Sphere Balls Table | HS Global Export",
+      "seoDescription": "Premium Panda White — handcrafted 3 Sphere Balls Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "panda white",
+        "3 sphere balls table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:21:27.920Z"
+    },
+    {
+      "productId": "beige-travertine-centre-dinning-table",
+      "name": "Beige Travertine Centre-Dinning Table",
+      "category": "furniture",
+      "subcategory": "Center Table",
+      "subcategorySlug": "center-table",
+      "catFolder": "Center Table",
+      "cloudinaryDir": "hs-global/furniture/center-table/beige-travertine-centre-dinning-table",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727152/hs-global/furniture/center-table/beige-travertine-centre-dinning-table/Gemini_Generated_Image_1ppqow1ppqow1ppq.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727156/hs-global/furniture/center-table/beige-travertine-centre-dinning-table/Gemini_Generated_Image_37nrs137nrs137nr.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727160/hs-global/furniture/center-table/beige-travertine-centre-dinning-table/Gemini_Generated_Image_4g7gid4g7gid4g7g.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727165/hs-global/furniture/center-table/beige-travertine-centre-dinning-table/Gemini_Generated_Image_77k4h377k4h377k4.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727169/hs-global/furniture/center-table/beige-travertine-centre-dinning-table/Gemini_Generated_Image_agrajuagrajuagra.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727173/hs-global/furniture/center-table/beige-travertine-centre-dinning-table/Gemini_Generated_Image_c4k3ztc4k3ztc4k3.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727177/hs-global/furniture/center-table/beige-travertine-centre-dinning-table/Gemini_Generated_Image_g521exg521exg521.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727181/hs-global/furniture/center-table/beige-travertine-centre-dinning-table/Gemini_Generated_Image_hg0aahg0aahg0aah.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727185/hs-global/furniture/center-table/beige-travertine-centre-dinning-table/Gemini_Generated_Image_us6ud9us6ud9us6u.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727190/hs-global/furniture/center-table/beige-travertine-centre-dinning-table/Gemini_Generated_Image_yuheoyyuheoyyuhe.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727152/hs-global/furniture/center-table/beige-travertine-centre-dinning-table/Gemini_Generated_Image_1ppqow1ppqow1ppq.jpg",
+      "hasVideo": false,
+      "videoUrl": null,
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Travertine",
+        "colorName": "Beige",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "Beige Travertine Centre-Dinning Table - Center Table | HS Global Export",
+      "seoDescription": "Premium Beige Travertine Centre-Dinning Table — handcrafted Center Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "beige travertine centre-dinning table",
+        "center table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:21:40.666Z"
+    },
+    {
+      "productId": "black-marble-block",
+      "name": "Black Marble Block",
+      "category": "furniture",
+      "subcategory": "Center Table",
+      "subcategorySlug": "center-table",
+      "catFolder": "Center Table",
+      "cloudinaryDir": "hs-global/furniture/center-table/black-marble-block",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727367/hs-global/furniture/center-table/black-marble-block/Gemini_Generated_Image_2bp02z2bp02z2bp0.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727369/hs-global/furniture/center-table/black-marble-block/Gemini_Generated_Image_72wxl372wxl372wx.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727371/hs-global/furniture/center-table/black-marble-block/Gemini_Generated_Image_ccwlzjccwlzjccwl.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727373/hs-global/furniture/center-table/black-marble-block/Gemini_Generated_Image_r1l49sr1l49sr1l4.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727375/hs-global/furniture/center-table/black-marble-block/Screenshot%202026-03-19%20115903.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727377/hs-global/furniture/center-table/black-marble-block/Screenshot%202026-03-19%20115953.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727367/hs-global/furniture/center-table/black-marble-block/Gemini_Generated_Image_2bp02z2bp02z2bp0.jpg",
+      "hasVideo": false,
+      "videoUrl": null,
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Black Marble",
+        "colorName": "Black",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "Black Marble Block - Center Table | HS Global Export",
+      "seoDescription": "Premium Black Marble Block — handcrafted Center Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "black marble block",
+        "center table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:21:48.409Z"
+    },
+    {
+      "productId": "green-emerald-marble-block",
+      "name": "Green Emerald Marble Block",
+      "category": "furniture",
+      "subcategory": "Center Table",
+      "subcategorySlug": "center-table",
+      "catFolder": "Center Table",
+      "cloudinaryDir": "hs-global/furniture/center-table/green-emerald-marble-block",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727380/hs-global/furniture/center-table/green-emerald-marble-block/Gemini_Generated_Image_22u73u22u73u22u7.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727383/hs-global/furniture/center-table/green-emerald-marble-block/Gemini_Generated_Image_l95g81l95g81l95g.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727385/hs-global/furniture/center-table/green-emerald-marble-block/Screenshot%202026-03-19%20122100.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727387/hs-global/furniture/center-table/green-emerald-marble-block/Screenshot%202026-03-19%20122213.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727389/hs-global/furniture/center-table/green-emerald-marble-block/Screenshot%202026-03-19%20122314.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727380/hs-global/furniture/center-table/green-emerald-marble-block/Gemini_Generated_Image_22u73u22u73u22u7.jpg",
+      "hasVideo": false,
+      "videoUrl": null,
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Green Marble",
+        "colorName": "Green",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "Green Emerald Marble Block - Center Table | HS Global Export",
+      "seoDescription": "Premium Green Emerald Marble Block — handcrafted Center Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "green emerald marble block",
+        "center table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:21:54.978Z"
+    },
+    {
+      "productId": "green-marble-coffee-table",
+      "name": "Green Marble Coffee Table",
+      "category": "furniture",
+      "subcategory": "Center Table",
+      "subcategorySlug": "center-table",
+      "catFolder": "Center Table",
+      "cloudinaryDir": "hs-global/furniture/center-table/green-marble-coffee-table",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727392/hs-global/furniture/center-table/green-marble-coffee-table/Gemini_Generated_Image_8jpgg18jpgg18jpg.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727394/hs-global/furniture/center-table/green-marble-coffee-table/Gemini_Generated_Image_9do0799do0799do0.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727396/hs-global/furniture/center-table/green-marble-coffee-table/Gemini_Generated_Image_l1vmbpl1vmbpl1vm.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727399/hs-global/furniture/center-table/green-marble-coffee-table/Gemini_Generated_Image_njfe9xnjfe9xnjfe.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727402/hs-global/furniture/center-table/green-marble-coffee-table/Screenshot%202026-03-19%20160101.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727405/hs-global/furniture/center-table/green-marble-coffee-table/Screenshot%202026-03-19%20160237.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727407/hs-global/furniture/center-table/green-marble-coffee-table/Screenshot%202026-03-19%20160357.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727392/hs-global/furniture/center-table/green-marble-coffee-table/Gemini_Generated_Image_8jpgg18jpgg18jpg.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Tables/Coffee Table/Green Marble Coffee Table/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Green Marble",
+        "colorName": "Green",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "Green Marble Coffee Table - Center Table | HS Global Export",
+      "seoDescription": "Premium Green Marble Coffee Table — handcrafted Center Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "green marble coffee table",
+        "center table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:22:04.551Z"
+    },
+    {
+      "productId": "marble-nesting-coffee-table-set",
+      "name": "Marble Nesting Coffee Table Set",
+      "category": "furniture",
+      "subcategory": "Center Table",
+      "subcategorySlug": "center-table",
+      "catFolder": "Center Table",
+      "cloudinaryDir": "hs-global/furniture/center-table/marble-nesting-coffee-table-set",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727409/hs-global/furniture/center-table/marble-nesting-coffee-table-set/Gemini_Generated_Image_bxxvtsbxxvtsbxxv.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727411/hs-global/furniture/center-table/marble-nesting-coffee-table-set/Gemini_Generated_Image_dfb2mndfb2mndfb2.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727413/hs-global/furniture/center-table/marble-nesting-coffee-table-set/Gemini_Generated_Image_dkywo9dkywo9dkyw.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727416/hs-global/furniture/center-table/marble-nesting-coffee-table-set/Gemini_Generated_Image_ivrezrivrezrivre.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727419/hs-global/furniture/center-table/marble-nesting-coffee-table-set/Gemini_Generated_Image_zcmyhczcmyhczcmy.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727422/hs-global/furniture/center-table/marble-nesting-coffee-table-set/Screenshot%202026-03-19%20173647.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727424/hs-global/furniture/center-table/marble-nesting-coffee-table-set/Screenshot%202026-03-19%20173907.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727427/hs-global/furniture/center-table/marble-nesting-coffee-table-set/Screenshot%202026-03-19%20174102.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727409/hs-global/furniture/center-table/marble-nesting-coffee-table-set/Gemini_Generated_Image_bxxvtsbxxvtsbxxv.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Tables/Coffee Table/Marble Nesting Coffee Table Set/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Natural Stone",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "Marble Nesting Coffee Table Set - Center Table | HS Global Export",
+      "seoDescription": "Premium Marble Nesting Coffee Table Set — handcrafted Center Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "marble nesting coffee table set",
+        "center table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:22:15.157Z"
+    },
+    {
+      "productId": "natural-marble-pebble-cluster",
+      "name": "Natural Marble Pebble Cluster",
+      "category": "furniture",
+      "subcategory": "Center Table",
+      "subcategorySlug": "center-table",
+      "catFolder": "Center Table",
+      "cloudinaryDir": "hs-global/furniture/center-table/natural-marble-pebble-cluster",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727429/hs-global/furniture/center-table/natural-marble-pebble-cluster/Gemini_Generated_Image_3e3bjs3e3bjs3e3b.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727432/hs-global/furniture/center-table/natural-marble-pebble-cluster/Gemini_Generated_Image_k139ggk139ggk139.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727434/hs-global/furniture/center-table/natural-marble-pebble-cluster/Gemini_Generated_Image_kanbsukanbsukanb.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727437/hs-global/furniture/center-table/natural-marble-pebble-cluster/Gemini_Generated_Image_wwe591wwe591wwe5.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727439/hs-global/furniture/center-table/natural-marble-pebble-cluster/HS1TC0011.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727442/hs-global/furniture/center-table/natural-marble-pebble-cluster/Screenshot%202026-03-19%20170834.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727429/hs-global/furniture/center-table/natural-marble-pebble-cluster/Gemini_Generated_Image_3e3bjs3e3bjs3e3b.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Tables/Coffee Table/Natural Marble Pebble Cluster/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Natural Stone",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "Natural Marble Pebble Cluster - Center Table | HS Global Export",
+      "seoDescription": "Premium Natural Marble Pebble Cluster — handcrafted Center Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "natural marble pebble cluster",
+        "center table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:22:23.086Z"
+    },
+    {
+      "productId": "polished-travertine-coffee-table-with-planter",
+      "name": "Polished Travertine Coffee Table With Planter",
+      "category": "furniture",
+      "subcategory": "Center Table",
+      "subcategorySlug": "center-table",
+      "catFolder": "Center Table",
+      "cloudinaryDir": "hs-global/furniture/center-table/polished-travertine-coffee-table-with-planter",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727445/hs-global/furniture/center-table/polished-travertine-coffee-table-with-planter/Gemini_Generated_Image_8slmp18slmp18slm.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727447/hs-global/furniture/center-table/polished-travertine-coffee-table-with-planter/Gemini_Generated_Image_b1pzlb1pzlb1pzlb.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727450/hs-global/furniture/center-table/polished-travertine-coffee-table-with-planter/Gemini_Generated_Image_d8mppad8mppad8mp.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727452/hs-global/furniture/center-table/polished-travertine-coffee-table-with-planter/Gemini_Generated_Image_fy2dcofy2dcofy2d.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727454/hs-global/furniture/center-table/polished-travertine-coffee-table-with-planter/Gemini_Generated_Image_jyzw8bjyzw8bjyzw.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727445/hs-global/furniture/center-table/polished-travertine-coffee-table-with-planter/Gemini_Generated_Image_8slmp18slmp18slm.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Tables/Coffee Table/Polished Travertine Coffee Table with Planter/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Travertine",
+        "colorName": "Beige",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "Polished Travertine Coffee Table With Planter - Center Table | HS Global Export",
+      "seoDescription": "Premium Polished Travertine Coffee Table With Planter — handcrafted Center Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "polished travertine coffee table with planter",
+        "center table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:22:29.903Z"
+    },
+    {
+      "productId": "statuario-oval-shaped",
+      "name": "Statuario Oval Shaped",
+      "category": "furniture",
+      "subcategory": "Center Table",
+      "subcategorySlug": "center-table",
+      "catFolder": "Center Table",
+      "cloudinaryDir": "hs-global/furniture/center-table/statuario-oval-shaped",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727456/hs-global/furniture/center-table/statuario-oval-shaped/Gemini_Generated_Image_5ny9h95ny9h95ny9.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727459/hs-global/furniture/center-table/statuario-oval-shaped/Gemini_Generated_Image_vovdf2vovdf2vovd.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727460/hs-global/furniture/center-table/statuario-oval-shaped/HS1TCO025.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727462/hs-global/furniture/center-table/statuario-oval-shaped/Screenshot%202026-03-19%20130926.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727465/hs-global/furniture/center-table/statuario-oval-shaped/Screenshot%202026-03-19%20131333.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727456/hs-global/furniture/center-table/statuario-oval-shaped/Gemini_Generated_Image_5ny9h95ny9h95ny9.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Tables/Center Table/Statuario Oval-Shaped/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Statuario Marble",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "Statuario Oval Shaped - Center Table | HS Global Export",
+      "seoDescription": "Premium Statuario Oval Shaped — handcrafted Center Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "statuario oval shaped",
+        "center table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:22:36.254Z"
+    },
+    {
+      "productId": "white-marble-coffee-table",
+      "name": "White Marble Coffee Table",
+      "category": "furniture",
+      "subcategory": "Center Table",
+      "subcategorySlug": "center-table",
+      "catFolder": "Center Table",
+      "cloudinaryDir": "hs-global/furniture/center-table/white-marble-coffee-table",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727467/hs-global/furniture/center-table/white-marble-coffee-table/Gemini_Generated_Image_2h62ug2h62ug2h62.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727470/hs-global/furniture/center-table/white-marble-coffee-table/Gemini_Generated_Image_vaxodrvaxodrvaxo.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727472/hs-global/furniture/center-table/white-marble-coffee-table/Gemini_Generated_Image_veoa50veoa50veoa.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727475/hs-global/furniture/center-table/white-marble-coffee-table/Gemini_Generated_Image_xatxnexatxnexatx.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727477/hs-global/furniture/center-table/white-marble-coffee-table/Gemini_Generated_Image_z45ul7z45ul7z45u.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727467/hs-global/furniture/center-table/white-marble-coffee-table/Gemini_Generated_Image_2h62ug2h62ug2h62.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Tables/Coffee Table/White Marble Coffee Table/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "White Marble",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "White Marble Coffee Table - Center Table | HS Global Export",
+      "seoDescription": "Premium White Marble Coffee Table — handcrafted Center Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "white marble coffee table",
+        "center table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:22:42.868Z"
+    },
+    {
+      "productId": "banswara-white-marble-console-table",
+      "name": "Banswara White Marble Console Table",
+      "category": "furniture",
+      "subcategory": "Console Table",
+      "subcategorySlug": "console-table",
+      "catFolder": "Console Tables",
+      "cloudinaryDir": "hs-global/furniture/console-table/banswara-white-marble-console-table",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727479/hs-global/furniture/console-table/banswara-white-marble-console-table/Gemini_Generated_Image_3l0zrj3l0zrj3l0z.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727482/hs-global/furniture/console-table/banswara-white-marble-console-table/Gemini_Generated_Image_7gki5y7gki5y7gki.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727485/hs-global/furniture/console-table/banswara-white-marble-console-table/Gemini_Generated_Image_fs8kmjfs8kmjfs8k.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727487/hs-global/furniture/console-table/banswara-white-marble-console-table/Gemini_Generated_Image_m1c1xfm1c1xfm1c1.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727490/hs-global/furniture/console-table/banswara-white-marble-console-table/Gemini_Generated_Image_wadn6ewadn6ewadn.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727479/hs-global/furniture/console-table/banswara-white-marble-console-table/Gemini_Generated_Image_3l0zrj3l0zrj3l0z.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Tables/Console Table/Banswara White Marble Console Table/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "White Marble",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "Banswara White Marble Console Table - Console Table | HS Global Export",
+      "seoDescription": "Premium Banswara White Marble Console Table — handcrafted Console Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "banswara white marble console table",
+        "console table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:22:49.473Z"
+    },
+    {
+      "productId": "cappuccino-brown-marble-console-table",
+      "name": "Cappuccino Brown Marble Console Table",
+      "category": "furniture",
+      "subcategory": "Console Table",
+      "subcategorySlug": "console-table",
+      "catFolder": "Console Tables",
+      "cloudinaryDir": "hs-global/furniture/console-table/cappuccino-brown-marble-console-table",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727495/hs-global/furniture/console-table/cappuccino-brown-marble-console-table/Gemini_Generated_Image_1chpoh1chpoh1chp.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727498/hs-global/furniture/console-table/cappuccino-brown-marble-console-table/Gemini_Generated_Image_2icqkh2icqkh2icq.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727501/hs-global/furniture/console-table/cappuccino-brown-marble-console-table/Gemini_Generated_Image_5y0d8d5y0d8d5y0d.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727504/hs-global/furniture/console-table/cappuccino-brown-marble-console-table/Gemini_Generated_Image_c1hpm9c1hpm9c1hp.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727508/hs-global/furniture/console-table/cappuccino-brown-marble-console-table/Gemini_Generated_Image_fxmgm6fxmgm6fxmg.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727511/hs-global/furniture/console-table/cappuccino-brown-marble-console-table/Gemini_Generated_Image_odq8stodq8stodq8.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727495/hs-global/furniture/console-table/cappuccino-brown-marble-console-table/Gemini_Generated_Image_1chpoh1chpoh1chp.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Tables/Console Table/Cappuccino Brown Marble Console Table/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Cappuccino Brown Marble",
+        "colorName": "Brown",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "Cappuccino Brown Marble Console Table - Console Table | HS Global Export",
+      "seoDescription": "Premium Cappuccino Brown Marble Console Table — handcrafted Console Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "cappuccino brown marble console table",
+        "console table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:22:57.366Z"
+    },
+    {
+      "productId": "exotic-white-marble-arch-console-table",
+      "name": "Exotic White Marble Arch Console Table",
+      "category": "furniture",
+      "subcategory": "Console Table",
+      "subcategorySlug": "console-table",
+      "catFolder": "Console Tables",
+      "cloudinaryDir": "hs-global/furniture/console-table/exotic-white-marble-arch-console-table",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727513/hs-global/furniture/console-table/exotic-white-marble-arch-console-table/Gemini_Generated_Image_2mrxze2mrxze2mrx.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727516/hs-global/furniture/console-table/exotic-white-marble-arch-console-table/Gemini_Generated_Image_592e33592e33592e.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727520/hs-global/furniture/console-table/exotic-white-marble-arch-console-table/Gemini_Generated_Image_78jmz778jmz778jm.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727522/hs-global/furniture/console-table/exotic-white-marble-arch-console-table/Gemini_Generated_Image_cq782acq782acq78.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727524/hs-global/furniture/console-table/exotic-white-marble-arch-console-table/Gemini_Generated_Image_mnnvwmmnnvwmmnnv.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727513/hs-global/furniture/console-table/exotic-white-marble-arch-console-table/Gemini_Generated_Image_2mrxze2mrxze2mrx.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Tables/Console Table/Exotic White Marble Arch Console Table/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "White Marble",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "Exotic White Marble Arch Console Table - Console Table | HS Global Export",
+      "seoDescription": "Premium Exotic White Marble Arch Console Table — handcrafted Console Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "exotic white marble arch console table",
+        "console table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:23:03.725Z"
+    },
+    {
+      "productId": "green-marble-console-table",
+      "name": "Green Marble Console Table",
+      "category": "furniture",
+      "subcategory": "Console Table",
+      "subcategorySlug": "console-table",
+      "catFolder": "Console Tables",
+      "cloudinaryDir": "hs-global/furniture/console-table/green-marble-console-table",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727527/hs-global/furniture/console-table/green-marble-console-table/Gemini_Generated_Image_1y2xhw1y2xhw1y2x.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727530/hs-global/furniture/console-table/green-marble-console-table/Gemini_Generated_Image_7qvvcx7qvvcx7qvv.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727533/hs-global/furniture/console-table/green-marble-console-table/Gemini_Generated_Image_hpfq6shpfq6shpfq.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727536/hs-global/furniture/console-table/green-marble-console-table/Gemini_Generated_Image_mgnoyymgnoyymgno.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727539/hs-global/furniture/console-table/green-marble-console-table/Gemini_Generated_Image_z0cxjwz0cxjwz0cx.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727527/hs-global/furniture/console-table/green-marble-console-table/Gemini_Generated_Image_1y2xhw1y2xhw1y2x.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Tables/Console Table/Green Marble Console Table/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Green Marble",
+        "colorName": "Green",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "Green Marble Console Table - Console Table | HS Global Export",
+      "seoDescription": "Premium Green Marble Console Table — handcrafted Console Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "green marble console table",
+        "console table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:23:10.383Z"
+    },
+    {
+      "productId": "green-marble-entryway-console-table",
+      "name": "Green Marble Entryway Console Table",
+      "category": "furniture",
+      "subcategory": "Console Table",
+      "subcategorySlug": "console-table",
+      "catFolder": "Console Tables",
+      "cloudinaryDir": "hs-global/furniture/console-table/green-marble-entryway-console-table",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727542/hs-global/furniture/console-table/green-marble-entryway-console-table/Gemini_Generated_Image_3jmel43jmel43jme.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727545/hs-global/furniture/console-table/green-marble-entryway-console-table/Gemini_Generated_Image_4qiw324qiw324qiw.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727547/hs-global/furniture/console-table/green-marble-entryway-console-table/Gemini_Generated_Image_a2ih16a2ih16a2ih.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727549/hs-global/furniture/console-table/green-marble-entryway-console-table/Gemini_Generated_Image_lnfshflnfshflnfs.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727552/hs-global/furniture/console-table/green-marble-entryway-console-table/Gemini_Generated_Image_w61cusw61cusw61c.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727542/hs-global/furniture/console-table/green-marble-entryway-console-table/Gemini_Generated_Image_3jmel43jmel43jme.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Tables/Console Table/Green Marble Entryway Console Table/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Green Marble",
+        "colorName": "Green",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "Green Marble Entryway Console Table - Console Table | HS Global Export",
+      "seoDescription": "Premium Green Marble Entryway Console Table — handcrafted Console Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "green marble entryway console table",
+        "console table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:23:16.652Z"
+    },
+    {
+      "productId": "green-marble-polished-console-table",
+      "name": "Green Marble Polished Console Table",
+      "category": "furniture",
+      "subcategory": "Console Table",
+      "subcategorySlug": "console-table",
+      "catFolder": "Console Tables",
+      "cloudinaryDir": "hs-global/furniture/console-table/green-marble-polished-console-table",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727555/hs-global/furniture/console-table/green-marble-polished-console-table/Gemini_Generated_Image_188ss1188ss1188s.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727557/hs-global/furniture/console-table/green-marble-polished-console-table/Gemini_Generated_Image_1encq31encq31enc.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727560/hs-global/furniture/console-table/green-marble-polished-console-table/Gemini_Generated_Image_elz0y4elz0y4elz0.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727564/hs-global/furniture/console-table/green-marble-polished-console-table/Gemini_Generated_Image_k3wz5pk3wz5pk3wz.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727567/hs-global/furniture/console-table/green-marble-polished-console-table/Gemini_Generated_Image_rlilb7rlilb7rlil.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727555/hs-global/furniture/console-table/green-marble-polished-console-table/Gemini_Generated_Image_188ss1188ss1188s.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Tables/Console Table/Green Marble Polished Console Table/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Green Marble",
+        "colorName": "Green",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "Green Marble Polished Console Table - Console Table | HS Global Export",
+      "seoDescription": "Premium Green Marble Polished Console Table — handcrafted Console Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "green marble polished console table",
+        "console table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:23:23.080Z"
+    },
+    {
+      "productId": "handcrafted-banswara-white-marble-console-table",
+      "name": "Handcrafted Banswara White Marble Console Table",
+      "category": "furniture",
+      "subcategory": "Console Table",
+      "subcategorySlug": "console-table",
+      "catFolder": "Console Tables",
+      "cloudinaryDir": "hs-global/furniture/console-table/handcrafted-banswara-white-marble-console-table",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727570/hs-global/furniture/console-table/handcrafted-banswara-white-marble-console-table/Gemini_Generated_Image_4cn96m4cn96m4cn9.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727573/hs-global/furniture/console-table/handcrafted-banswara-white-marble-console-table/Gemini_Generated_Image_5klhwc5klhwc5klh.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727576/hs-global/furniture/console-table/handcrafted-banswara-white-marble-console-table/Gemini_Generated_Image_qab80pqab80pqab8.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727578/hs-global/furniture/console-table/handcrafted-banswara-white-marble-console-table/Gemini_Generated_Image_u6lbx5u6lbx5u6lb.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727580/hs-global/furniture/console-table/handcrafted-banswara-white-marble-console-table/Gemini_Generated_Image_vz7opvz7opvz7opv.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727570/hs-global/furniture/console-table/handcrafted-banswara-white-marble-console-table/Gemini_Generated_Image_4cn96m4cn96m4cn9.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Tables/Console Table/Handcrafted Banswara White Marble Console Table/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "White Marble",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "Handcrafted Banswara White Marble Console Table - Console Table | HS Global Export",
+      "seoDescription": "Premium Handcrafted Banswara White Marble Console Table — handcrafted Console Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "handcrafted banswara white marble console table",
+        "console table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:23:29.716Z"
+    },
+    {
+      "productId": "handcrafted-exotic-white-marble-console-table",
+      "name": "Handcrafted Exotic White Marble Console Table",
+      "category": "furniture",
+      "subcategory": "Console Table",
+      "subcategorySlug": "console-table",
+      "catFolder": "Console Tables",
+      "cloudinaryDir": "hs-global/furniture/console-table/handcrafted-exotic-white-marble-console-table",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727582/hs-global/furniture/console-table/handcrafted-exotic-white-marble-console-table/Gemini_Generated_Image_5z6ngr5z6ngr5z6n.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727584/hs-global/furniture/console-table/handcrafted-exotic-white-marble-console-table/Gemini_Generated_Image_al7oagal7oagal7o.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727587/hs-global/furniture/console-table/handcrafted-exotic-white-marble-console-table/Gemini_Generated_Image_bukyyebukyyebuky.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727590/hs-global/furniture/console-table/handcrafted-exotic-white-marble-console-table/Gemini_Generated_Image_cj9pqtcj9pqtcj9p.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727592/hs-global/furniture/console-table/handcrafted-exotic-white-marble-console-table/Gemini_Generated_Image_jnmzd9jnmzd9jnmz.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727582/hs-global/furniture/console-table/handcrafted-exotic-white-marble-console-table/Gemini_Generated_Image_5z6ngr5z6ngr5z6n.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Tables/Console Table/Handcrafted Exotic White Marble Console Table/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "White Marble",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "Handcrafted Exotic White Marble Console Table - Console Table | HS Global Export",
+      "seoDescription": "Premium Handcrafted Exotic White Marble Console Table — handcrafted Console Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "handcrafted exotic white marble console table",
+        "console table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:23:36.271Z"
+    },
+    {
+      "productId": "handcrafted-marine-black-marble-console-table",
+      "name": "Handcrafted Marine Black Marble Console Table",
+      "category": "furniture",
+      "subcategory": "Console Table",
+      "subcategorySlug": "console-table",
+      "catFolder": "Console Tables",
+      "cloudinaryDir": "hs-global/furniture/console-table/handcrafted-marine-black-marble-console-table",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727594/hs-global/furniture/console-table/handcrafted-marine-black-marble-console-table/Gemini_Generated_Image_5o1myd5o1myd5o1m.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727596/hs-global/furniture/console-table/handcrafted-marine-black-marble-console-table/Gemini_Generated_Image_7fdig47fdig47fdi.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727599/hs-global/furniture/console-table/handcrafted-marine-black-marble-console-table/Gemini_Generated_Image_86ntmv86ntmv86nt.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727604/hs-global/furniture/console-table/handcrafted-marine-black-marble-console-table/Gemini_Generated_Image_ccljyxccljyxcclj.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727606/hs-global/furniture/console-table/handcrafted-marine-black-marble-console-table/Gemini_Generated_Image_x212r7x212r7x212.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727594/hs-global/furniture/console-table/handcrafted-marine-black-marble-console-table/Gemini_Generated_Image_5o1myd5o1myd5o1m.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Tables/Console Table/Handcrafted Marine Black Marble Console Table/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Black Marble",
+        "colorName": "Black",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "Handcrafted Marine Black Marble Console Table - Console Table | HS Global Export",
+      "seoDescription": "Premium Handcrafted Marine Black Marble Console Table — handcrafted Console Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "handcrafted marine black marble console table",
+        "console table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:23:42.669Z"
+    },
+    {
+      "productId": "modern-sculptural-marble-console-table",
+      "name": "Modern Sculptural Marble Console Table",
+      "category": "furniture",
+      "subcategory": "Console Table",
+      "subcategorySlug": "console-table",
+      "catFolder": "Console Tables",
+      "cloudinaryDir": "hs-global/furniture/console-table/modern-sculptural-marble-console-table",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727608/hs-global/furniture/console-table/modern-sculptural-marble-console-table/Gemini_Generated_Image_1eezs51eezs51eez.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727610/hs-global/furniture/console-table/modern-sculptural-marble-console-table/Gemini_Generated_Image_5b0rni5b0rni5b0r.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727612/hs-global/furniture/console-table/modern-sculptural-marble-console-table/Gemini_Generated_Image_kvd3wjkvd3wjkvd3.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727615/hs-global/furniture/console-table/modern-sculptural-marble-console-table/Gemini_Generated_Image_n2isrnn2isrnn2is.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727617/hs-global/furniture/console-table/modern-sculptural-marble-console-table/Gemini_Generated_Image_r0r1xnr0r1xnr0r1.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727619/hs-global/furniture/console-table/modern-sculptural-marble-console-table/Gemini_Generated_Image_wlhfgbwlhfgbwlhf.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727608/hs-global/furniture/console-table/modern-sculptural-marble-console-table/Gemini_Generated_Image_1eezs51eezs51eez.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Tables/Console Table/Modern Sculptural Marble Console Table/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Natural Stone",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "Modern Sculptural Marble Console Table - Console Table | HS Global Export",
+      "seoDescription": "Premium Modern Sculptural Marble Console Table — handcrafted Console Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "modern sculptural marble console table",
+        "console table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:23:50.757Z"
+    },
+    {
+      "productId": "travertine-stone-arch-console-table",
+      "name": "Travertine Stone Arch Console Table",
+      "category": "furniture",
+      "subcategory": "Console Table",
+      "subcategorySlug": "console-table",
+      "catFolder": "Console Tables",
+      "cloudinaryDir": "hs-global/furniture/console-table/travertine-stone-arch-console-table",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727621/hs-global/furniture/console-table/travertine-stone-arch-console-table/Gemini_Generated_Image_fti680fti680fti6.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727624/hs-global/furniture/console-table/travertine-stone-arch-console-table/Gemini_Generated_Image_med6l8med6l8med6.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727628/hs-global/furniture/console-table/travertine-stone-arch-console-table/Gemini_Generated_Image_or85suor85suor85.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727630/hs-global/furniture/console-table/travertine-stone-arch-console-table/Gemini_Generated_Image_ozmfl1ozmfl1ozmf.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727632/hs-global/furniture/console-table/travertine-stone-arch-console-table/Gemini_Generated_Image_spkrmpspkrmpspkr.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727621/hs-global/furniture/console-table/travertine-stone-arch-console-table/Gemini_Generated_Image_fti680fti680fti6.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Tables/Console Table/Travertine Stone Arch Console Table/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Travertine",
+        "colorName": "Beige",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "Travertine Stone Arch Console Table - Console Table | HS Global Export",
+      "seoDescription": "Premium Travertine Stone Arch Console Table — handcrafted Console Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "travertine stone arch console table",
+        "console table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:23:57.868Z"
+    },
+    {
+      "productId": "travertine-stone-console-table",
+      "name": "Travertine Stone Console Table",
+      "category": "furniture",
+      "subcategory": "Console Table",
+      "subcategorySlug": "console-table",
+      "catFolder": "Console Tables",
+      "cloudinaryDir": "hs-global/furniture/console-table/travertine-stone-console-table",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727634/hs-global/furniture/console-table/travertine-stone-console-table/Gemini_Generated_Image_a3csu2a3csu2a3cs.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727636/hs-global/furniture/console-table/travertine-stone-console-table/Gemini_Generated_Image_dfdlrydfdlrydfdl.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727638/hs-global/furniture/console-table/travertine-stone-console-table/Gemini_Generated_Image_fzrh9cfzrh9cfzrh.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727640/hs-global/furniture/console-table/travertine-stone-console-table/Gemini_Generated_Image_iwax0oiwax0oiwax.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727642/hs-global/furniture/console-table/travertine-stone-console-table/Gemini_Generated_Image_z9qs64z9qs64z9qs.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727634/hs-global/furniture/console-table/travertine-stone-console-table/Gemini_Generated_Image_a3csu2a3csu2a3cs.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Tables/Console Table/Travertine Stone Console Table/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Travertine",
+        "colorName": "Beige",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "Travertine Stone Console Table - Console Table | HS Global Export",
+      "seoDescription": "Premium Travertine Stone Console Table — handcrafted Console Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "travertine stone console table",
+        "console table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:24:04.300Z"
+    },
+    {
+      "productId": "white-marble-console-table-with-metal-legs",
+      "name": "White Marble Console Table With Metal Legs",
+      "category": "furniture",
+      "subcategory": "Console Table",
+      "subcategorySlug": "console-table",
+      "catFolder": "Console Tables",
+      "cloudinaryDir": "hs-global/furniture/console-table/white-marble-console-table-with-metal-legs",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727644/hs-global/furniture/console-table/white-marble-console-table-with-metal-legs/Gemini_Generated_Image_131jgc131jgc131j.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727646/hs-global/furniture/console-table/white-marble-console-table-with-metal-legs/Gemini_Generated_Image_cof57ncof57ncof5.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727648/hs-global/furniture/console-table/white-marble-console-table-with-metal-legs/Gemini_Generated_Image_h31g9zh31g9zh31g.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727650/hs-global/furniture/console-table/white-marble-console-table-with-metal-legs/Gemini_Generated_Image_m0mwo6m0mwo6m0mw.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727653/hs-global/furniture/console-table/white-marble-console-table-with-metal-legs/Gemini_Generated_Image_r5n43ur5n43ur5n4.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774727644/hs-global/furniture/console-table/white-marble-console-table-with-metal-legs/Gemini_Generated_Image_131jgc131jgc131j.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Tables/Console Table/White Marble Console Table with Metal Legs/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "White Marble",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "White Marble Console Table With Metal Legs - Console Table | HS Global Export",
+      "seoDescription": "Premium White Marble Console Table With Metal Legs — handcrafted Console Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "white marble console table with metal legs",
+        "console table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:24:11.091Z"
+    },
+    {
+      "productId": "aurora-marble-table-lamp",
+      "name": "Aurora Marble Table Lamp",
+      "category": "furniture",
+      "subcategory": "Lamps",
+      "subcategorySlug": "lamps",
+      "catFolder": "Lamps",
+      "cloudinaryDir": "hs-global/furniture/lamps/aurora-marble-table-lamp",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728640/hs-global/furniture/lamps/aurora-marble-table-lamp/Gemini_Generated_Image_7cvwcb7cvwcb7cvw.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728642/hs-global/furniture/lamps/aurora-marble-table-lamp/Gemini_Generated_Image_dofr7gdofr7gdofr.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728644/hs-global/furniture/lamps/aurora-marble-table-lamp/Gemini_Generated_Image_odlvmzodlvmzodlv.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728647/hs-global/furniture/lamps/aurora-marble-table-lamp/Gemini_Generated_Image_olfsw7olfsw7olfs.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728640/hs-global/furniture/lamps/aurora-marble-table-lamp/Gemini_Generated_Image_7cvwcb7cvwcb7cvw.jpg",
+      "hasVideo": false,
+      "videoUrl": null,
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Natural Stone",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "Aurora Marble Table Lamp - Lamps | HS Global Export",
+      "seoDescription": "Premium Aurora Marble Table Lamp — handcrafted Lamps from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "aurora marble table lamp",
+        "lamps",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:24:16.196Z"
+    },
+    {
+      "productId": "cylindrical-gear-cut-marble",
+      "name": "Cylindrical Gear Cut Marble",
+      "category": "furniture",
+      "subcategory": "Pedestal Wash Basin",
+      "subcategorySlug": "pedestal-wash-basin",
+      "catFolder": "Pedestal Wash Basins",
+      "cloudinaryDir": "hs-global/furniture/pedestal-wash-basin/cylindrical-gear-cut-marble",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728649/hs-global/furniture/pedestal-wash-basin/cylindrical-gear-cut-marble/Gemini_Generated_Image_a6lnhoa6lnhoa6ln.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728651/hs-global/furniture/pedestal-wash-basin/cylindrical-gear-cut-marble/Gemini_Generated_Image_ocxk3zocxk3zocxk.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728654/hs-global/furniture/pedestal-wash-basin/cylindrical-gear-cut-marble/Gemini_Generated_Image_qsgku2qsgku2qsgk.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728657/hs-global/furniture/pedestal-wash-basin/cylindrical-gear-cut-marble/Gemini_Generated_Image_svqp6msvqp6msvqp.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728659/hs-global/furniture/pedestal-wash-basin/cylindrical-gear-cut-marble/Gemini_Generated_Image_yr9q9zyr9q9zyr9q.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728649/hs-global/furniture/pedestal-wash-basin/cylindrical-gear-cut-marble/Gemini_Generated_Image_a6lnhoa6lnhoa6ln.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Wash Basins/Pedestal/Cylindrical Gear-Cut Marble/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Natural Stone",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India",
+        "product": "Pedestal Wash Basin"
+      },
+      "seoTitle": "Cylindrical Gear Cut Marble - Pedestal Wash Basin | HS Global Export",
+      "seoDescription": "Premium Cylindrical Gear Cut Marble — handcrafted Pedestal Wash Basin from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "cylindrical gear cut marble",
+        "pedestal wash basin",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:24:22.763Z"
+    },
+    {
+      "productId": "italic-brown-cylindrical-shaped",
+      "name": "Italic Brown Cylindrical Shaped",
+      "category": "furniture",
+      "subcategory": "Pedestal Wash Basin",
+      "subcategorySlug": "pedestal-wash-basin",
+      "catFolder": "Pedestal Wash Basins",
+      "cloudinaryDir": "hs-global/furniture/pedestal-wash-basin/italic-brown-cylindrical-shaped",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728661/hs-global/furniture/pedestal-wash-basin/italic-brown-cylindrical-shaped/Gemini_Generated_Image_3ww583ww583ww583.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728663/hs-global/furniture/pedestal-wash-basin/italic-brown-cylindrical-shaped/Gemini_Generated_Image_ejdj6ejdj6ejdj6e.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728666/hs-global/furniture/pedestal-wash-basin/italic-brown-cylindrical-shaped/Gemini_Generated_Image_ety8dfety8dfety8.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728668/hs-global/furniture/pedestal-wash-basin/italic-brown-cylindrical-shaped/Gemini_Generated_Image_kv9ag3kv9ag3kv9a.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728670/hs-global/furniture/pedestal-wash-basin/italic-brown-cylindrical-shaped/Gemini_Generated_Image_xb99lpxb99lpxb99.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728661/hs-global/furniture/pedestal-wash-basin/italic-brown-cylindrical-shaped/Gemini_Generated_Image_3ww583ww583ww583.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Wash Basins/Pedestal/Italic Brown Cylindrical-Shaped/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Natural Stone",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India",
+        "product": "Pedestal Wash Basin"
+      },
+      "seoTitle": "Italic Brown Cylindrical Shaped - Pedestal Wash Basin | HS Global Export",
+      "seoDescription": "Premium Italic Brown Cylindrical Shaped — handcrafted Pedestal Wash Basin from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "italic brown cylindrical shaped",
+        "pedestal wash basin",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:24:30.001Z"
+    },
+    {
+      "productId": "makrana-white-square-carved",
+      "name": "Makrana White Square Carved",
+      "category": "furniture",
+      "subcategory": "Pedestal Wash Basin",
+      "subcategorySlug": "pedestal-wash-basin",
+      "catFolder": "Pedestal Wash Basins",
+      "cloudinaryDir": "hs-global/furniture/pedestal-wash-basin/makrana-white-square-carved",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728672/hs-global/furniture/pedestal-wash-basin/makrana-white-square-carved/Gemini_Generated_Image_d1mghjd1mghjd1mg.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728674/hs-global/furniture/pedestal-wash-basin/makrana-white-square-carved/Gemini_Generated_Image_kyt4sxkyt4sxkyt4.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728676/hs-global/furniture/pedestal-wash-basin/makrana-white-square-carved/Gemini_Generated_Image_mspynwmspynwmspy.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728679/hs-global/furniture/pedestal-wash-basin/makrana-white-square-carved/Gemini_Generated_Image_tr1n9htr1n9htr1n.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728681/hs-global/furniture/pedestal-wash-basin/makrana-white-square-carved/Gemini_Generated_Image_zdjqdczdjqdczdjq.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728672/hs-global/furniture/pedestal-wash-basin/makrana-white-square-carved/Gemini_Generated_Image_d1mghjd1mghjd1mg.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Wash Basins/Pedestal/Makrana White Square-carved/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Makrana White Marble",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India",
+        "product": "Pedestal Wash Basin"
+      },
+      "seoTitle": "Makrana White Square Carved - Pedestal Wash Basin | HS Global Export",
+      "seoDescription": "Premium Makrana White Square Carved — handcrafted Pedestal Wash Basin from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "makrana white square carved",
+        "pedestal wash basin",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:24:36.718Z"
+    },
+    {
+      "productId": "striped-white-marble-pedestal-sink",
+      "name": "Striped White Marble Pedestal Sink",
+      "category": "furniture",
+      "subcategory": "Pedestal Wash Basin",
+      "subcategorySlug": "pedestal-wash-basin",
+      "catFolder": "Pedestal Wash Basins",
+      "cloudinaryDir": "hs-global/furniture/pedestal-wash-basin/striped-white-marble-pedestal-sink",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728684/hs-global/furniture/pedestal-wash-basin/striped-white-marble-pedestal-sink/Gemini_Generated_Image_2ww4x52ww4x52ww4.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728686/hs-global/furniture/pedestal-wash-basin/striped-white-marble-pedestal-sink/Gemini_Generated_Image_keohoikeohoikeoh.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728688/hs-global/furniture/pedestal-wash-basin/striped-white-marble-pedestal-sink/Gemini_Generated_Image_p2739ap2739ap273.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728691/hs-global/furniture/pedestal-wash-basin/striped-white-marble-pedestal-sink/Gemini_Generated_Image_ywgn8iywgn8iywgn.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728693/hs-global/furniture/pedestal-wash-basin/striped-white-marble-pedestal-sink/Gemini_Generated_Image_z50rq5z50rq5z50r.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728684/hs-global/furniture/pedestal-wash-basin/striped-white-marble-pedestal-sink/Gemini_Generated_Image_2ww4x52ww4x52ww4.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Wash Basins/Pedestal/Striped White Marble Pedestal Sink/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "White Marble",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India",
+        "product": "Pedestal Wash Basin"
+      },
+      "seoTitle": "Striped White Marble Pedestal Sink - Pedestal Wash Basin | HS Global Export",
+      "seoDescription": "Premium Striped White Marble Pedestal Sink — handcrafted Pedestal Wash Basin from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "striped white marble pedestal sink",
+        "pedestal wash basin",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:24:43.767Z"
+    },
+    {
+      "productId": "wide-bowl-forest-green-marble",
+      "name": "Wide Bowl Forest Green Marble",
+      "category": "furniture",
+      "subcategory": "Pedestal Wash Basin",
+      "subcategorySlug": "pedestal-wash-basin",
+      "catFolder": "Pedestal Wash Basins",
+      "cloudinaryDir": "hs-global/furniture/pedestal-wash-basin/wide-bowl-forest-green-marble",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728695/hs-global/furniture/pedestal-wash-basin/wide-bowl-forest-green-marble/Gemini_Generated_Image_7thvmz7thvmz7thv.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728698/hs-global/furniture/pedestal-wash-basin/wide-bowl-forest-green-marble/Gemini_Generated_Image_hnoq0ohnoq0ohnoq.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728700/hs-global/furniture/pedestal-wash-basin/wide-bowl-forest-green-marble/Gemini_Generated_Image_jeyesjeyesjeyesj.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728702/hs-global/furniture/pedestal-wash-basin/wide-bowl-forest-green-marble/Gemini_Generated_Image_jt3e73jt3e73jt3e.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728705/hs-global/furniture/pedestal-wash-basin/wide-bowl-forest-green-marble/Gemini_Generated_Image_trkxvotrkxvotrkx.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728695/hs-global/furniture/pedestal-wash-basin/wide-bowl-forest-green-marble/Gemini_Generated_Image_7thvmz7thvmz7thv.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Wash Basins/Pedestal/Wide-Bowl Forest Green Marble/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Green Marble",
+        "colorName": "Green",
+        "surfaceFinish": "Polished",
+        "location": "India",
+        "product": "Pedestal Wash Basin"
+      },
+      "seoTitle": "Wide Bowl Forest Green Marble - Pedestal Wash Basin | HS Global Export",
+      "seoDescription": "Premium Wide Bowl Forest Green Marble — handcrafted Pedestal Wash Basin from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "wide bowl forest green marble",
+        "pedestal wash basin",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:24:50.754Z"
+    },
+    {
+      "productId": "ashby-round-side-table",
+      "name": "Ashby Round Side Table",
+      "category": "furniture",
+      "subcategory": "Side Table",
+      "subcategorySlug": "side-table",
+      "catFolder": "Side Tables",
+      "cloudinaryDir": "hs-global/furniture/side-table/ashby-round-side-table",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728707/hs-global/furniture/side-table/ashby-round-side-table/Gemini_Generated_Image_3z18063z18063z18.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728709/hs-global/furniture/side-table/ashby-round-side-table/Gemini_Generated_Image_elkgcfelkgcfelkg.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728711/hs-global/furniture/side-table/ashby-round-side-table/Gemini_Generated_Image_et54ytet54ytet54.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728713/hs-global/furniture/side-table/ashby-round-side-table/Gemini_Generated_Image_n31oz5n31oz5n31o.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728715/hs-global/furniture/side-table/ashby-round-side-table/Gemini_Generated_Image_nbmulinbmulinbmu.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728707/hs-global/furniture/side-table/ashby-round-side-table/Gemini_Generated_Image_3z18063z18063z18.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Tables/Side Table/Ashby Round Side Table/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Natural Stone",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "Ashby Round Side Table - Side Table | HS Global Export",
+      "seoDescription": "Premium Ashby Round Side Table — handcrafted Side Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "ashby round side table",
+        "side table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:24:57.980Z"
+    },
+    {
+      "productId": "banswara-white-marble-side-table",
+      "name": "Banswara White Marble Side Table",
+      "category": "furniture",
+      "subcategory": "Side Table",
+      "subcategorySlug": "side-table",
+      "catFolder": "Side Tables",
+      "cloudinaryDir": "hs-global/furniture/side-table/banswara-white-marble-side-table",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728717/hs-global/furniture/side-table/banswara-white-marble-side-table/Screenshot%202026-03-25%20125817.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728719/hs-global/furniture/side-table/banswara-white-marble-side-table/Screenshot%202026-03-25%20130001.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728721/hs-global/furniture/side-table/banswara-white-marble-side-table/Screenshot%202026-03-25%20130117.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728723/hs-global/furniture/side-table/banswara-white-marble-side-table/Screenshot%202026-03-25%20130459.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728725/hs-global/furniture/side-table/banswara-white-marble-side-table/Screenshot%202026-03-25%20130644.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728717/hs-global/furniture/side-table/banswara-white-marble-side-table/Screenshot%202026-03-25%20125817.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Tables/Side Table/Banswara White Marble Side Table/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "White Marble",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "Banswara White Marble Side Table - Side Table | HS Global Export",
+      "seoDescription": "Premium Banswara White Marble Side Table — handcrafted Side Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "banswara white marble side table",
+        "side table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:25:04.459Z"
+    },
+    {
+      "productId": "beige-travertine-curved-round",
+      "name": "Beige Travertine Curved Round",
+      "category": "furniture",
+      "subcategory": "Side Table",
+      "subcategorySlug": "side-table",
+      "catFolder": "Side Tables",
+      "cloudinaryDir": "hs-global/furniture/side-table/beige-travertine-curved-round",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728727/hs-global/furniture/side-table/beige-travertine-curved-round/Gemini_Generated_Image_2x4xmg2x4xmg2x4x.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728729/hs-global/furniture/side-table/beige-travertine-curved-round/Gemini_Generated_Image_3o26hx3o26hx3o26.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728731/hs-global/furniture/side-table/beige-travertine-curved-round/Gemini_Generated_Image_abipztabipztabip.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728733/hs-global/furniture/side-table/beige-travertine-curved-round/Gemini_Generated_Image_jcr8sgjcr8sgjcr8.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728737/hs-global/furniture/side-table/beige-travertine-curved-round/Gemini_Generated_Image_pagsygpagsygpags.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728727/hs-global/furniture/side-table/beige-travertine-curved-round/Gemini_Generated_Image_2x4xmg2x4xmg2x4x.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Tables/Side Table/Beige Travertine Curved Round/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Travertine",
+        "colorName": "Beige",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "Beige Travertine Curved Round - Side Table | HS Global Export",
+      "seoDescription": "Premium Beige Travertine Curved Round — handcrafted Side Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "beige travertine curved round",
+        "side table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:25:12.667Z"
+    },
+    {
+      "productId": "black-and-white-marble-cube-table",
+      "name": "Black And White Marble Cube Table",
+      "category": "furniture",
+      "subcategory": "Side Table",
+      "subcategorySlug": "side-table",
+      "catFolder": "Side Tables",
+      "cloudinaryDir": "hs-global/furniture/side-table/black-and-white-marble-cube-table",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728739/hs-global/furniture/side-table/black-and-white-marble-cube-table/Gemini_Generated_Image_36hn2736hn2736hn.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728741/hs-global/furniture/side-table/black-and-white-marble-cube-table/Gemini_Generated_Image_5l6ctx5l6ctx5l6c.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728744/hs-global/furniture/side-table/black-and-white-marble-cube-table/Gemini_Generated_Image_kmf496kmf496kmf4.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728746/hs-global/furniture/side-table/black-and-white-marble-cube-table/Gemini_Generated_Image_oaan3xoaan3xoaan.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728748/hs-global/furniture/side-table/black-and-white-marble-cube-table/Gemini_Generated_Image_pm4l3rpm4l3rpm4l.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728739/hs-global/furniture/side-table/black-and-white-marble-cube-table/Gemini_Generated_Image_36hn2736hn2736hn.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Tables/Side Table/Black and White Marble Cube Table/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "White Marble",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "Black And White Marble Cube Table - Side Table | HS Global Export",
+      "seoDescription": "Premium Black And White Marble Cube Table — handcrafted Side Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "black and white marble cube table",
+        "side table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:25:19.733Z"
+    },
+    {
+      "productId": "black-marble-side-table",
+      "name": "Black Marble Side Table",
+      "category": "furniture",
+      "subcategory": "Side Table",
+      "subcategorySlug": "side-table",
+      "catFolder": "Side Tables",
+      "cloudinaryDir": "hs-global/furniture/side-table/black-marble-side-table",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728750/hs-global/furniture/side-table/black-marble-side-table/Gemini_Generated_Image_1fdjpe1fdjpe1fdj.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728752/hs-global/furniture/side-table/black-marble-side-table/Gemini_Generated_Image_hhoksahhoksahhok.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728754/hs-global/furniture/side-table/black-marble-side-table/Gemini_Generated_Image_nbxm9anbxm9anbxm.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728757/hs-global/furniture/side-table/black-marble-side-table/Gemini_Generated_Image_s4npwzs4npwzs4np.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728759/hs-global/furniture/side-table/black-marble-side-table/Gemini_Generated_Image_vdebn4vdebn4vdeb.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728750/hs-global/furniture/side-table/black-marble-side-table/Gemini_Generated_Image_1fdjpe1fdjpe1fdj.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Tables/Side Table/Black Marble Side Table/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Black Marble",
+        "colorName": "Black",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "Black Marble Side Table - Side Table | HS Global Export",
+      "seoDescription": "Premium Black Marble Side Table — handcrafted Side Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "black marble side table",
+        "side table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:25:26.593Z"
+    },
+    {
+      "productId": "fantasy-brown-marble-side-table",
+      "name": "Fantasy Brown Marble Side Table",
+      "category": "furniture",
+      "subcategory": "Side Table",
+      "subcategorySlug": "side-table",
+      "catFolder": "Side Tables",
+      "cloudinaryDir": "hs-global/furniture/side-table/fantasy-brown-marble-side-table",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728762/hs-global/furniture/side-table/fantasy-brown-marble-side-table/Gemini_Generated_Image_cex6l2cex6l2cex6.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728765/hs-global/furniture/side-table/fantasy-brown-marble-side-table/Gemini_Generated_Image_hhrlsahhrlsahhrl.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728767/hs-global/furniture/side-table/fantasy-brown-marble-side-table/Gemini_Generated_Image_pepy6hpepy6hpepy.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728770/hs-global/furniture/side-table/fantasy-brown-marble-side-table/Gemini_Generated_Image_w46zkpw46zkpw46z.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728772/hs-global/furniture/side-table/fantasy-brown-marble-side-table/Gemini_Generated_Image_xa4ve0xa4ve0xa4v.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728762/hs-global/furniture/side-table/fantasy-brown-marble-side-table/Gemini_Generated_Image_cex6l2cex6l2cex6.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Tables/Side Table/Fantasy Brown Marble Side Table/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Natural Stone",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "Fantasy Brown Marble Side Table - Side Table | HS Global Export",
+      "seoDescription": "Premium Fantasy Brown Marble Side Table — handcrafted Side Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "fantasy brown marble side table",
+        "side table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:25:34.090Z"
+    },
+    {
+      "productId": "green-marble-side-table",
+      "name": "Green Marble Side Table",
+      "category": "furniture",
+      "subcategory": "Side Table",
+      "subcategorySlug": "side-table",
+      "catFolder": "Side Tables",
+      "cloudinaryDir": "hs-global/furniture/side-table/green-marble-side-table",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728774/hs-global/furniture/side-table/green-marble-side-table/Gemini_Generated_Image_54io0x54io0x54io.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728776/hs-global/furniture/side-table/green-marble-side-table/Gemini_Generated_Image_hc6zjqhc6zjqhc6z.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728778/hs-global/furniture/side-table/green-marble-side-table/Gemini_Generated_Image_imowofimowofimow.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728781/hs-global/furniture/side-table/green-marble-side-table/Gemini_Generated_Image_l7zpm4l7zpm4l7zp.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728783/hs-global/furniture/side-table/green-marble-side-table/Gemini_Generated_Image_t9rjryt9rjryt9rj.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728774/hs-global/furniture/side-table/green-marble-side-table/Gemini_Generated_Image_54io0x54io0x54io.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Tables/Side Table/Green Marble Side Table/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Green Marble",
+        "colorName": "Green",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "Green Marble Side Table - Side Table | HS Global Export",
+      "seoDescription": "Premium Green Marble Side Table — handcrafted Side Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "green marble side table",
+        "side table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:25:41.590Z"
+    },
+    {
+      "productId": "luxury-polished-black-marble-side-table",
+      "name": "Luxury Polished Black Marble Side Table",
+      "category": "furniture",
+      "subcategory": "Side Table",
+      "subcategorySlug": "side-table",
+      "catFolder": "Side Tables",
+      "cloudinaryDir": "hs-global/furniture/side-table/luxury-polished-black-marble-side-table",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728785/hs-global/furniture/side-table/luxury-polished-black-marble-side-table/Gemini_Generated_Image_7b76qq7b76qq7b76.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728787/hs-global/furniture/side-table/luxury-polished-black-marble-side-table/Gemini_Generated_Image_9coqgr9coqgr9coq.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728790/hs-global/furniture/side-table/luxury-polished-black-marble-side-table/Gemini_Generated_Image_gfn9vxgfn9vxgfn9.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728792/hs-global/furniture/side-table/luxury-polished-black-marble-side-table/Gemini_Generated_Image_nebk9tnebk9tnebk.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728795/hs-global/furniture/side-table/luxury-polished-black-marble-side-table/Gemini_Generated_Image_r8adqbr8adqbr8ad.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728785/hs-global/furniture/side-table/luxury-polished-black-marble-side-table/Gemini_Generated_Image_7b76qq7b76qq7b76.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Tables/Side Table/Luxury Polished Black Marble Side Table/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Black Marble",
+        "colorName": "Black",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "Luxury Polished Black Marble Side Table - Side Table | HS Global Export",
+      "seoDescription": "Premium Luxury Polished Black Marble Side Table — handcrafted Side Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "luxury polished black marble side table",
+        "side table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:25:48.098Z"
+    },
+    {
+      "productId": "marine-black-marble-side-table",
+      "name": "Marine Black Marble Side Table",
+      "category": "furniture",
+      "subcategory": "Side Table",
+      "subcategorySlug": "side-table",
+      "catFolder": "Side Tables",
+      "cloudinaryDir": "hs-global/furniture/side-table/marine-black-marble-side-table",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728797/hs-global/furniture/side-table/marine-black-marble-side-table/Gemini_Generated_Image_moj2fumoj2fumoj2.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728799/hs-global/furniture/side-table/marine-black-marble-side-table/Screenshot%202026-03-25%20161218.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728801/hs-global/furniture/side-table/marine-black-marble-side-table/Screenshot%202026-03-25%20161323.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728803/hs-global/furniture/side-table/marine-black-marble-side-table/Screenshot%202026-03-25%20161616.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728805/hs-global/furniture/side-table/marine-black-marble-side-table/Screenshot%202026-03-25%20161718.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728797/hs-global/furniture/side-table/marine-black-marble-side-table/Gemini_Generated_Image_moj2fumoj2fumoj2.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Tables/Side Table/Marine Black Marble Side Table/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Black Marble",
+        "colorName": "Black",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "Marine Black Marble Side Table - Side Table | HS Global Export",
+      "seoDescription": "Premium Marine Black Marble Side Table — handcrafted Side Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "marine black marble side table",
+        "side table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:25:54.477Z"
+    },
+    {
+      "productId": "marine-black-stone-side-table",
+      "name": "Marine Black Stone Side Table",
+      "category": "furniture",
+      "subcategory": "Side Table",
+      "subcategorySlug": "side-table",
+      "catFolder": "Side Tables",
+      "cloudinaryDir": "hs-global/furniture/side-table/marine-black-stone-side-table",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728807/hs-global/furniture/side-table/marine-black-stone-side-table/Screenshot%202026-03-25%20164038.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728809/hs-global/furniture/side-table/marine-black-stone-side-table/Screenshot%202026-03-25%20164100.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728811/hs-global/furniture/side-table/marine-black-stone-side-table/Screenshot%202026-03-25%20164145.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728813/hs-global/furniture/side-table/marine-black-stone-side-table/Screenshot%202026-03-25%20164242.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728815/hs-global/furniture/side-table/marine-black-stone-side-table/Screenshot%202026-03-25%20164325.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728807/hs-global/furniture/side-table/marine-black-stone-side-table/Screenshot%202026-03-25%20164038.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Tables/Side Table/Marine Black Stone Side Table/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Black Marble",
+        "colorName": "Black",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "Marine Black Stone Side Table - Side Table | HS Global Export",
+      "seoDescription": "Premium Marine Black Stone Side Table — handcrafted Side Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "marine black stone side table",
+        "side table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:26:00.868Z"
+    },
+    {
+      "productId": "mint-sandstone-side-table",
+      "name": "Mint Sandstone Side Table",
+      "category": "furniture",
+      "subcategory": "Side Table",
+      "subcategorySlug": "side-table",
+      "catFolder": "Side Tables",
+      "cloudinaryDir": "hs-global/furniture/side-table/mint-sandstone-side-table",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728816/hs-global/furniture/side-table/mint-sandstone-side-table/Screenshot%202026-03-25%20162559.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728818/hs-global/furniture/side-table/mint-sandstone-side-table/Screenshot%202026-03-25%20162700.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728820/hs-global/furniture/side-table/mint-sandstone-side-table/Screenshot%202026-03-25%20162747.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728822/hs-global/furniture/side-table/mint-sandstone-side-table/Screenshot%202026-03-25%20162902.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728825/hs-global/furniture/side-table/mint-sandstone-side-table/Screenshot%202026-03-25%20162953.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728816/hs-global/furniture/side-table/mint-sandstone-side-table/Screenshot%202026-03-25%20162559.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Tables/Side Table/Mint Sandstone Side Table/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Sandstone",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "Mint Sandstone Side Table - Side Table | HS Global Export",
+      "seoDescription": "Premium Mint Sandstone Side Table — handcrafted Side Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "mint sandstone side table",
+        "side table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:26:07.079Z"
+    },
+    {
+      "productId": "osaka-beige-travertine",
+      "name": "Osaka Beige Travertine",
+      "category": "furniture",
+      "subcategory": "Side Table",
+      "subcategorySlug": "side-table",
+      "catFolder": "Side Tables",
+      "cloudinaryDir": "hs-global/furniture/side-table/osaka-beige-travertine",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728827/hs-global/furniture/side-table/osaka-beige-travertine/Screenshot%202026-03-25%20164927.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728830/hs-global/furniture/side-table/osaka-beige-travertine/Screenshot%202026-03-25%20165026.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728833/hs-global/furniture/side-table/osaka-beige-travertine/Screenshot%202026-03-25%20165110.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728835/hs-global/furniture/side-table/osaka-beige-travertine/Screenshot%202026-03-25%20165529.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728837/hs-global/furniture/side-table/osaka-beige-travertine/Screenshot%202026-03-25%20165754.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728827/hs-global/furniture/side-table/osaka-beige-travertine/Screenshot%202026-03-25%20164927.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Tables/Side Table/Osaka - Beige Travertine/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Travertine",
+        "colorName": "Beige",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "Osaka Beige Travertine - Side Table | HS Global Export",
+      "seoDescription": "Premium Osaka Beige Travertine — handcrafted Side Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "osaka beige travertine",
+        "side table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:26:13.142Z"
+    },
+    {
+      "productId": "panda-white-marble-side-table",
+      "name": "Panda White Marble Side Table",
+      "category": "furniture",
+      "subcategory": "Side Table",
+      "subcategorySlug": "side-table",
+      "catFolder": "Side Tables",
+      "cloudinaryDir": "hs-global/furniture/side-table/panda-white-marble-side-table",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728839/hs-global/furniture/side-table/panda-white-marble-side-table/Screenshot%202026-03-25%20171430.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728841/hs-global/furniture/side-table/panda-white-marble-side-table/Screenshot%202026-03-25%20171623.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728843/hs-global/furniture/side-table/panda-white-marble-side-table/Screenshot%202026-03-25%20171710.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728845/hs-global/furniture/side-table/panda-white-marble-side-table/Screenshot%202026-03-25%20171800.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728847/hs-global/furniture/side-table/panda-white-marble-side-table/Screenshot%202026-03-25%20171910.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728839/hs-global/furniture/side-table/panda-white-marble-side-table/Screenshot%202026-03-25%20171430.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Tables/Side Table/Panda White Marble Side Table/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Panda White Marble",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "Panda White Marble Side Table - Side Table | HS Global Export",
+      "seoDescription": "Premium Panda White Marble Side Table — handcrafted Side Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "panda white marble side table",
+        "side table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:26:19.238Z"
+    },
+    {
+      "productId": "polished-modern-luxury-stone-side-table",
+      "name": "Polished Modern Luxury Stone Side Table",
+      "category": "furniture",
+      "subcategory": "Side Table",
+      "subcategorySlug": "side-table",
+      "catFolder": "Side Tables",
+      "cloudinaryDir": "hs-global/furniture/side-table/polished-modern-luxury-stone-side-table",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728849/hs-global/furniture/side-table/polished-modern-luxury-stone-side-table/Screenshot%202026-03-25%20170208.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728851/hs-global/furniture/side-table/polished-modern-luxury-stone-side-table/Screenshot%202026-03-25%20170254.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728853/hs-global/furniture/side-table/polished-modern-luxury-stone-side-table/Screenshot%202026-03-25%20170357.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728855/hs-global/furniture/side-table/polished-modern-luxury-stone-side-table/Screenshot%202026-03-25%20170502.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728857/hs-global/furniture/side-table/polished-modern-luxury-stone-side-table/Screenshot%202026-03-25%20170514.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728849/hs-global/furniture/side-table/polished-modern-luxury-stone-side-table/Screenshot%202026-03-25%20170208.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Tables/Side Table/Polished Modern Luxury Stone Side Table/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Natural Stone",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "Polished Modern Luxury Stone Side Table - Side Table | HS Global Export",
+      "seoDescription": "Premium Polished Modern Luxury Stone Side Table — handcrafted Side Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "polished modern luxury stone side table",
+        "side table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:26:25.559Z"
+    },
+    {
+      "productId": "spider-green-beige-designer",
+      "name": "Spider Green Beige Designer",
+      "category": "furniture",
+      "subcategory": "Side Table",
+      "subcategorySlug": "side-table",
+      "catFolder": "Side Tables",
+      "cloudinaryDir": "hs-global/furniture/side-table/spider-green-beige-designer",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728859/hs-global/furniture/side-table/spider-green-beige-designer/Screenshot%202026-03-25%20174009.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728861/hs-global/furniture/side-table/spider-green-beige-designer/Screenshot%202026-03-25%20174101.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728863/hs-global/furniture/side-table/spider-green-beige-designer/Screenshot%202026-03-25%20174154.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728866/hs-global/furniture/side-table/spider-green-beige-designer/Screenshot%202026-03-25%20174321.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728868/hs-global/furniture/side-table/spider-green-beige-designer/Screenshot%202026-03-25%20174603.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728859/hs-global/furniture/side-table/spider-green-beige-designer/Screenshot%202026-03-25%20174009.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Tables/Side Table/Spider Green-Beige Designer/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Natural Stone",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "Spider Green Beige Designer - Side Table | HS Global Export",
+      "seoDescription": "Premium Spider Green Beige Designer — handcrafted Side Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "spider green beige designer",
+        "side table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:26:31.788Z"
+    },
+    {
+      "productId": "statuario-block-leg-rounded",
+      "name": "Statuario Block Leg Rounded",
+      "category": "furniture",
+      "subcategory": "Side Table",
+      "subcategorySlug": "side-table",
+      "catFolder": "Side Tables",
+      "cloudinaryDir": "hs-global/furniture/side-table/statuario-block-leg-rounded",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728870/hs-global/furniture/side-table/statuario-block-leg-rounded/Gemini_Generated_Image_kormydkormydkorm.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728872/hs-global/furniture/side-table/statuario-block-leg-rounded/Screenshot%202026-03-19%20125218.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728874/hs-global/furniture/side-table/statuario-block-leg-rounded/Screenshot%202026-03-19%20125550.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728876/hs-global/furniture/side-table/statuario-block-leg-rounded/Screenshot%202026-03-19%20125825.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728878/hs-global/furniture/side-table/statuario-block-leg-rounded/Screenshot%202026-03-19%20125916.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728870/hs-global/furniture/side-table/statuario-block-leg-rounded/Gemini_Generated_Image_kormydkormydkorm.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Tables/Center Table/Statuario Block-Leg Rounded/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Statuario Marble",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "Statuario Block Leg Rounded - Side Table | HS Global Export",
+      "seoDescription": "Premium Statuario Block Leg Rounded — handcrafted Side Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "statuario block leg rounded",
+        "side table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:26:38.216Z"
+    },
+    {
+      "productId": "travertine-stone-side-table",
+      "name": "Travertine Stone Side Table",
+      "category": "furniture",
+      "subcategory": "Side Table",
+      "subcategorySlug": "side-table",
+      "catFolder": "Side Tables",
+      "cloudinaryDir": "hs-global/furniture/side-table/travertine-stone-side-table",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728880/hs-global/furniture/side-table/travertine-stone-side-table/Screenshot%202026-03-25%20175100.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728881/hs-global/furniture/side-table/travertine-stone-side-table/Screenshot%202026-03-25%20175434.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728884/hs-global/furniture/side-table/travertine-stone-side-table/Screenshot%202026-03-25%20175524.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728886/hs-global/furniture/side-table/travertine-stone-side-table/Screenshot%202026-03-25%20175620.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728889/hs-global/furniture/side-table/travertine-stone-side-table/Screenshot%202026-03-25%20175718.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728880/hs-global/furniture/side-table/travertine-stone-side-table/Screenshot%202026-03-25%20175100.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Tables/Side Table/Travertine Stone Side Table/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Travertine",
+        "colorName": "Beige",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "Travertine Stone Side Table - Side Table | HS Global Export",
+      "seoDescription": "Premium Travertine Stone Side Table — handcrafted Side Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "travertine stone side table",
+        "side table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:26:44.102Z"
+    },
+    {
+      "productId": "vondel-side-table",
+      "name": "Vondel Side Table",
+      "category": "furniture",
+      "subcategory": "Side Table",
+      "subcategorySlug": "side-table",
+      "catFolder": "Side Tables",
+      "cloudinaryDir": "hs-global/furniture/side-table/vondel-side-table",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728890/hs-global/furniture/side-table/vondel-side-table/Screenshot%202026-03-25%20180215.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728892/hs-global/furniture/side-table/vondel-side-table/Screenshot%202026-03-25%20180513.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728894/hs-global/furniture/side-table/vondel-side-table/Screenshot%202026-03-25%20180600.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728896/hs-global/furniture/side-table/vondel-side-table/Screenshot%202026-03-25%20180655.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728899/hs-global/furniture/side-table/vondel-side-table/Screenshot%202026-03-25%20180756.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728890/hs-global/furniture/side-table/vondel-side-table/Screenshot%202026-03-25%20180215.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Tables/Side Table/Vondel Side Table/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Natural Stone",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "Vondel Side Table - Side Table | HS Global Export",
+      "seoDescription": "Premium Vondel Side Table — handcrafted Side Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "vondel side table",
+        "side table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:26:50.437Z"
+    },
+    {
+      "productId": "white-cluster-bullet",
+      "name": "White Cluster Bullet",
+      "category": "furniture",
+      "subcategory": "Side Table",
+      "subcategorySlug": "side-table",
+      "catFolder": "Side Tables",
+      "cloudinaryDir": "hs-global/furniture/side-table/white-cluster-bullet",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728901/hs-global/furniture/side-table/white-cluster-bullet/Gemini_Generated_Image_1tu1541tu1541tu1.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728903/hs-global/furniture/side-table/white-cluster-bullet/Gemini_Generated_Image_59bg9o59bg9o59bg.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728905/hs-global/furniture/side-table/white-cluster-bullet/Gemini_Generated_Image_72oibe72oibe72oi.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728908/hs-global/furniture/side-table/white-cluster-bullet/Gemini_Generated_Image_lizo4rlizo4rlizo.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728909/hs-global/furniture/side-table/white-cluster-bullet/Gemini_Generated_Image_lptt7mlptt7mlptt.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728912/hs-global/furniture/side-table/white-cluster-bullet/Gemini_Generated_Image_sudocksudocksudo.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728901/hs-global/furniture/side-table/white-cluster-bullet/Gemini_Generated_Image_1tu1541tu1541tu1.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Tables/Coffee Table/White Cluster Bullet/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Natural Stone",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "White Cluster Bullet - Side Table | HS Global Export",
+      "seoDescription": "Premium White Cluster Bullet — handcrafted Side Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "white cluster bullet",
+        "side table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:26:58.654Z"
+    },
+    {
+      "productId": "white-cylindrical-cluster",
+      "name": "White Cylindrical Cluster",
+      "category": "furniture",
+      "subcategory": "Side Table",
+      "subcategorySlug": "side-table",
+      "catFolder": "Side Tables",
+      "cloudinaryDir": "hs-global/furniture/side-table/white-cylindrical-cluster",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728914/hs-global/furniture/side-table/white-cylindrical-cluster/Screenshot%202026-03-25%20181328.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728916/hs-global/furniture/side-table/white-cylindrical-cluster/Screenshot%202026-03-25%20181427.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728919/hs-global/furniture/side-table/white-cylindrical-cluster/Screenshot%202026-03-25%20181544.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728920/hs-global/furniture/side-table/white-cylindrical-cluster/Screenshot%202026-03-25%20181820.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728922/hs-global/furniture/side-table/white-cylindrical-cluster/Screenshot%202026-03-25%20181937.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728914/hs-global/furniture/side-table/white-cylindrical-cluster/Screenshot%202026-03-25%20181328.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Tables/Side Table/White Cylindrical Cluster/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Natural Stone",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "White Cylindrical Cluster - Side Table | HS Global Export",
+      "seoDescription": "Premium White Cylindrical Cluster — handcrafted Side Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "white cylindrical cluster",
+        "side table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:27:04.485Z"
+    },
+    {
+      "productId": "white-marble-side-table",
+      "name": "White Marble Side Table",
+      "category": "furniture",
+      "subcategory": "Side Table",
+      "subcategorySlug": "side-table",
+      "catFolder": "Side Tables",
+      "cloudinaryDir": "hs-global/furniture/side-table/white-marble-side-table",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728924/hs-global/furniture/side-table/white-marble-side-table/Screenshot%202026-03-25%20182701.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728926/hs-global/furniture/side-table/white-marble-side-table/Screenshot%202026-03-25%20182713.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728928/hs-global/furniture/side-table/white-marble-side-table/Screenshot%202026-03-25%20182813.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728930/hs-global/furniture/side-table/white-marble-side-table/Screenshot%202026-03-25%20182936.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728931/hs-global/furniture/side-table/white-marble-side-table/Screenshot%202026-03-25%20183048.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728924/hs-global/furniture/side-table/white-marble-side-table/Screenshot%202026-03-25%20182701.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Tables/Side Table/White Marble Side Table/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "White Marble",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India"
+      },
+      "seoTitle": "White Marble Side Table - Side Table | HS Global Export",
+      "seoDescription": "Premium White Marble Side Table — handcrafted Side Table from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "white marble side table",
+        "side table",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:27:10.671Z"
+    },
+    {
+      "productId": "albeta-marble",
+      "name": "Albeta Marble",
+      "category": "furniture",
+      "subcategory": "Wash Basin",
+      "subcategorySlug": "wash-basin",
+      "catFolder": "Wash Basins",
+      "cloudinaryDir": "hs-global/furniture/wash-basin/albeta-marble",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728933/hs-global/furniture/wash-basin/albeta-marble/Gemini_Generated_Image_6mtr4t6mtr4t6mtr.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728935/hs-global/furniture/wash-basin/albeta-marble/Gemini_Generated_Image_a6qjp8a6qjp8a6qj.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728937/hs-global/furniture/wash-basin/albeta-marble/Gemini_Generated_Image_dmdiyvdmdiyvdmdi.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728939/hs-global/furniture/wash-basin/albeta-marble/Gemini_Generated_Image_hxouzwhxouzwhxou.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728941/hs-global/furniture/wash-basin/albeta-marble/Gemini_Generated_Image_i2e016i2e016i2e0.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728933/hs-global/furniture/wash-basin/albeta-marble/Gemini_Generated_Image_6mtr4t6mtr4t6mtr.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Wash Basins/Countertop/Albeta Marble/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Albeta Marble",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India",
+        "product": "Wash Basin"
+      },
+      "seoTitle": "Albeta Marble - Wash Basin | HS Global Export",
+      "seoDescription": "Premium Albeta Marble — handcrafted Wash Basin from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "albeta marble",
+        "wash basin",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:27:17.265Z"
+    },
+    {
+      "productId": "amazon-green",
+      "name": "Amazon Green",
+      "category": "furniture",
+      "subcategory": "Wash Basin",
+      "subcategorySlug": "wash-basin",
+      "catFolder": "Wash Basins",
+      "cloudinaryDir": "hs-global/furniture/wash-basin/amazon-green",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728943/hs-global/furniture/wash-basin/amazon-green/Gemini_Generated_Image_4l12hw4l12hw4l12.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728945/hs-global/furniture/wash-basin/amazon-green/Gemini_Generated_Image_60030r60030r6003.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728947/hs-global/furniture/wash-basin/amazon-green/Gemini_Generated_Image_atbesatbesatbesa.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728949/hs-global/furniture/wash-basin/amazon-green/Gemini_Generated_Image_oqp3wkoqp3wkoqp3.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728951/hs-global/furniture/wash-basin/amazon-green/Gemini_Generated_Image_uzbv53uzbv53uzbv.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728943/hs-global/furniture/wash-basin/amazon-green/Gemini_Generated_Image_4l12hw4l12hw4l12.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Wash Basins/Countertop/Amazon Green/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Amazon Green Marble",
+        "colorName": "Green",
+        "surfaceFinish": "Polished",
+        "location": "India",
+        "product": "Wash Basin"
+      },
+      "seoTitle": "Amazon Green - Wash Basin | HS Global Export",
+      "seoDescription": "Premium Amazon Green — handcrafted Wash Basin from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "amazon green",
+        "wash basin",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:27:24.162Z"
+    },
+    {
+      "productId": "bidasar-beige",
+      "name": "Bidasar Beige",
+      "category": "furniture",
+      "subcategory": "Wash Basin",
+      "subcategorySlug": "wash-basin",
+      "catFolder": "Wash Basins",
+      "cloudinaryDir": "hs-global/furniture/wash-basin/bidasar-beige",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728954/hs-global/furniture/wash-basin/bidasar-beige/Gemini_Generated_Image_270re0270re0270r.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728956/hs-global/furniture/wash-basin/bidasar-beige/Gemini_Generated_Image_fhb5hnfhb5hnfhb5.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728958/hs-global/furniture/wash-basin/bidasar-beige/Gemini_Generated_Image_mukr17mukr17mukr.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728960/hs-global/furniture/wash-basin/bidasar-beige/Gemini_Generated_Image_rwjg3nrwjg3nrwjg.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728962/hs-global/furniture/wash-basin/bidasar-beige/Gemini_Generated_Image_yh7keiyh7keiyh7k.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728954/hs-global/furniture/wash-basin/bidasar-beige/Gemini_Generated_Image_270re0270re0270r.jpg",
+      "hasVideo": false,
+      "videoUrl": null,
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Bidasar Beige Marble",
+        "colorName": "Beige",
+        "surfaceFinish": "Polished",
+        "location": "India",
+        "product": "Wash Basin"
+      },
+      "seoTitle": "Bidasar Beige - Wash Basin | HS Global Export",
+      "seoDescription": "Premium Bidasar Beige — handcrafted Wash Basin from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "bidasar beige",
+        "wash basin",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:27:30.531Z"
+    },
+    {
+      "productId": "decorative-carved-stone",
+      "name": "Decorative Carved Stone",
+      "category": "furniture",
+      "subcategory": "Wash Basin",
+      "subcategorySlug": "wash-basin",
+      "catFolder": "Wash Basins",
+      "cloudinaryDir": "hs-global/furniture/wash-basin/decorative-carved-stone",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728964/hs-global/furniture/wash-basin/decorative-carved-stone/Gemini_Generated_Image_3qp8ms3qp8ms3qp8.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728966/hs-global/furniture/wash-basin/decorative-carved-stone/Gemini_Generated_Image_afr95eafr95eafr9.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728968/hs-global/furniture/wash-basin/decorative-carved-stone/Gemini_Generated_Image_hoj0xphoj0xphoj0.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728970/hs-global/furniture/wash-basin/decorative-carved-stone/Gemini_Generated_Image_ndtiwondtiwondti.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728972/hs-global/furniture/wash-basin/decorative-carved-stone/Gemini_Generated_Image_p6qe8bp6qe8bp6qe.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728964/hs-global/furniture/wash-basin/decorative-carved-stone/Gemini_Generated_Image_3qp8ms3qp8ms3qp8.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Wash Basins/Countertop/Decorative Carved Stone/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Natural Stone",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India",
+        "product": "Wash Basin"
+      },
+      "seoTitle": "Decorative Carved Stone - Wash Basin | HS Global Export",
+      "seoDescription": "Premium Decorative Carved Stone — handcrafted Wash Basin from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "decorative carved stone",
+        "wash basin",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:27:37.201Z"
+    },
+    {
+      "productId": "forest-green-marble-countertop",
+      "name": "Forest Green Marble Countertop",
+      "category": "furniture",
+      "subcategory": "Wash Basin",
+      "subcategorySlug": "wash-basin",
+      "catFolder": "Wash Basins",
+      "cloudinaryDir": "hs-global/furniture/wash-basin/forest-green-marble-countertop",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728974/hs-global/furniture/wash-basin/forest-green-marble-countertop/Gemini_Generated_Image_765mf1765mf1765m.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728976/hs-global/furniture/wash-basin/forest-green-marble-countertop/Gemini_Generated_Image_7ugz2n7ugz2n7ugz.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728980/hs-global/furniture/wash-basin/forest-green-marble-countertop/Gemini_Generated_Image_fso2q5fso2q5fso2.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728981/hs-global/furniture/wash-basin/forest-green-marble-countertop/Gemini_Generated_Image_rxqeehrxqeehrxqe.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728984/hs-global/furniture/wash-basin/forest-green-marble-countertop/Gemini_Generated_Image_v0owtjv0owtjv0ow.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728974/hs-global/furniture/wash-basin/forest-green-marble-countertop/Gemini_Generated_Image_765mf1765mf1765m.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Wash Basins/Countertop/Forest Green Marble Countertop/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Green Marble",
+        "colorName": "Green",
+        "surfaceFinish": "Polished",
+        "location": "India",
+        "product": "Wash Basin"
+      },
+      "seoTitle": "Forest Green Marble Countertop - Wash Basin | HS Global Export",
+      "seoDescription": "Premium Forest Green Marble Countertop — handcrafted Wash Basin from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "forest green marble countertop",
+        "wash basin",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:27:43.847Z"
+    },
+    {
+      "productId": "green-marble-vessel-sink",
+      "name": "Green Marble Vessel Sink",
+      "category": "furniture",
+      "subcategory": "Wash Basin",
+      "subcategorySlug": "wash-basin",
+      "catFolder": "Wash Basins",
+      "cloudinaryDir": "hs-global/furniture/wash-basin/green-marble-vessel-sink",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728985/hs-global/furniture/wash-basin/green-marble-vessel-sink/Gemini_Generated_Image_h6qko7h6qko7h6qk.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728987/hs-global/furniture/wash-basin/green-marble-vessel-sink/Gemini_Generated_Image_k4c2x6k4c2x6k4c2.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728989/hs-global/furniture/wash-basin/green-marble-vessel-sink/Gemini_Generated_Image_rokd0frokd0frokd.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728991/hs-global/furniture/wash-basin/green-marble-vessel-sink/Gemini_Generated_Image_wd1r9zwd1r9zwd1r.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728993/hs-global/furniture/wash-basin/green-marble-vessel-sink/Gemini_Generated_Image_yifm99yifm99yifm.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728985/hs-global/furniture/wash-basin/green-marble-vessel-sink/Gemini_Generated_Image_h6qko7h6qko7h6qk.jpg",
+      "hasVideo": false,
+      "videoUrl": null,
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Green Marble",
+        "colorName": "Green",
+        "surfaceFinish": "Polished",
+        "location": "India",
+        "product": "Wash Basin"
+      },
+      "seoTitle": "Green Marble Vessel Sink - Wash Basin | HS Global Export",
+      "seoDescription": "Premium Green Marble Vessel Sink — handcrafted Wash Basin from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "green marble vessel sink",
+        "wash basin",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:27:50.681Z"
+    },
+    {
+      "productId": "hand-carved-marble-lotus-flower",
+      "name": "Hand Carved Marble Lotus Flower",
+      "category": "furniture",
+      "subcategory": "Wash Basin",
+      "subcategorySlug": "wash-basin",
+      "catFolder": "Wash Basins",
+      "cloudinaryDir": "hs-global/furniture/wash-basin/hand-carved-marble-lotus-flower",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728995/hs-global/furniture/wash-basin/hand-carved-marble-lotus-flower/Gemini_Generated_Image_6slj5t6slj5t6slj.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728998/hs-global/furniture/wash-basin/hand-carved-marble-lotus-flower/Gemini_Generated_Image_77o2w977o2w977o2.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729000/hs-global/furniture/wash-basin/hand-carved-marble-lotus-flower/Gemini_Generated_Image_cal7zkcal7zkcal7.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729002/hs-global/furniture/wash-basin/hand-carved-marble-lotus-flower/Gemini_Generated_Image_dwltzdwltzdwltzd.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729004/hs-global/furniture/wash-basin/hand-carved-marble-lotus-flower/Gemini_Generated_Image_srbe0tsrbe0tsrbe.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774728995/hs-global/furniture/wash-basin/hand-carved-marble-lotus-flower/Gemini_Generated_Image_6slj5t6slj5t6slj.jpg",
+      "hasVideo": false,
+      "videoUrl": null,
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Natural Stone",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India",
+        "product": "Wash Basin"
+      },
+      "seoTitle": "Hand Carved Marble Lotus Flower - Wash Basin | HS Global Export",
+      "seoDescription": "Premium Hand Carved Marble Lotus Flower — handcrafted Wash Basin from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "hand carved marble lotus flower",
+        "wash basin",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:27:57.319Z"
+    },
+    {
+      "productId": "handcrafted-makrana-white-marble-fluted-countertop",
+      "name": "Handcrafted Makrana White Marble Fluted Countertop",
+      "category": "furniture",
+      "subcategory": "Wash Basin",
+      "subcategorySlug": "wash-basin",
+      "catFolder": "Wash Basins",
+      "cloudinaryDir": "hs-global/furniture/wash-basin/handcrafted-makrana-white-marble-fluted-countertop",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729006/hs-global/furniture/wash-basin/handcrafted-makrana-white-marble-fluted-countertop/Gemini_Generated_Image_as7tnlas7tnlas7t.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729009/hs-global/furniture/wash-basin/handcrafted-makrana-white-marble-fluted-countertop/Gemini_Generated_Image_jzv95mjzv95mjzv9.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729011/hs-global/furniture/wash-basin/handcrafted-makrana-white-marble-fluted-countertop/Gemini_Generated_Image_sr6v8csr6v8csr6v.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729013/hs-global/furniture/wash-basin/handcrafted-makrana-white-marble-fluted-countertop/Gemini_Generated_Image_xduvnbxduvnbxduv.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729015/hs-global/furniture/wash-basin/handcrafted-makrana-white-marble-fluted-countertop/Gemini_Generated_Image_y6im7oy6im7oy6im.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729006/hs-global/furniture/wash-basin/handcrafted-makrana-white-marble-fluted-countertop/Gemini_Generated_Image_as7tnlas7tnlas7t.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Wash Basins/Countertop/Handcrafted Makrana White Marble Fluted Countertop/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "White Marble",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India",
+        "product": "Wash Basin"
+      },
+      "seoTitle": "Handcrafted Makrana White Marble Fluted Countertop - Wash Basin | HS Global Export",
+      "seoDescription": "Premium Handcrafted Makrana White Marble Fluted Countertop — handcrafted Wash Basin from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "handcrafted makrana white marble fluted countertop",
+        "wash basin",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:28:03.977Z"
+    },
+    {
+      "productId": "ivory-natural-marble-countertop-sink",
+      "name": "Ivory Natural Marble Countertop Sink",
+      "category": "furniture",
+      "subcategory": "Wash Basin",
+      "subcategorySlug": "wash-basin",
+      "catFolder": "Wash Basins",
+      "cloudinaryDir": "hs-global/furniture/wash-basin/ivory-natural-marble-countertop-sink",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729017/hs-global/furniture/wash-basin/ivory-natural-marble-countertop-sink/Gemini_Generated_Image_dd6sx7dd6sx7dd6s.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729018/hs-global/furniture/wash-basin/ivory-natural-marble-countertop-sink/Gemini_Generated_Image_mjzk64mjzk64mjzk.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729020/hs-global/furniture/wash-basin/ivory-natural-marble-countertop-sink/Gemini_Generated_Image_nptf8nnptf8nnptf.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729022/hs-global/furniture/wash-basin/ivory-natural-marble-countertop-sink/Gemini_Generated_Image_s34bits34bits34b.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729024/hs-global/furniture/wash-basin/ivory-natural-marble-countertop-sink/Gemini_Generated_Image_w9akskw9akskw9ak.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729017/hs-global/furniture/wash-basin/ivory-natural-marble-countertop-sink/Gemini_Generated_Image_dd6sx7dd6sx7dd6s.jpg",
+      "hasVideo": false,
+      "videoUrl": null,
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Ivory Marble",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India",
+        "product": "Wash Basin"
+      },
+      "seoTitle": "Ivory Natural Marble Countertop Sink - Wash Basin | HS Global Export",
+      "seoDescription": "Premium Ivory Natural Marble Countertop Sink — handcrafted Wash Basin from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "ivory natural marble countertop sink",
+        "wash basin",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:28:10.477Z"
+    },
+    {
+      "productId": "kumari-grey-natural-stone-sink",
+      "name": "Kumari Grey Natural Stone Sink",
+      "category": "furniture",
+      "subcategory": "Wash Basin",
+      "subcategorySlug": "wash-basin",
+      "catFolder": "Wash Basins",
+      "cloudinaryDir": "hs-global/furniture/wash-basin/kumari-grey-natural-stone-sink",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729026/hs-global/furniture/wash-basin/kumari-grey-natural-stone-sink/Gemini_Generated_Image_5x519k5x519k5x51.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729029/hs-global/furniture/wash-basin/kumari-grey-natural-stone-sink/Gemini_Generated_Image_cotgl2cotgl2cotg.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729031/hs-global/furniture/wash-basin/kumari-grey-natural-stone-sink/Gemini_Generated_Image_e7vqnee7vqnee7vq.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729033/hs-global/furniture/wash-basin/kumari-grey-natural-stone-sink/Gemini_Generated_Image_hj8lghj8lghj8lgh.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729035/hs-global/furniture/wash-basin/kumari-grey-natural-stone-sink/Gemini_Generated_Image_jmdxvxjmdxvxjmdx.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729026/hs-global/furniture/wash-basin/kumari-grey-natural-stone-sink/Gemini_Generated_Image_5x519k5x519k5x51.jpg",
+      "hasVideo": false,
+      "videoUrl": null,
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Kumari Grey Marble",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India",
+        "product": "Wash Basin"
+      },
+      "seoTitle": "Kumari Grey Natural Stone Sink - Wash Basin | HS Global Export",
+      "seoDescription": "Premium Kumari Grey Natural Stone Sink — handcrafted Wash Basin from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "kumari grey natural stone sink",
+        "wash basin",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:28:17.359Z"
+    },
+    {
+      "productId": "lotus-petal-floral-carved",
+      "name": "Lotus Petal Floral Carved",
+      "category": "furniture",
+      "subcategory": "Wash Basin",
+      "subcategorySlug": "wash-basin",
+      "catFolder": "Wash Basins",
+      "cloudinaryDir": "hs-global/furniture/wash-basin/lotus-petal-floral-carved",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729037/hs-global/furniture/wash-basin/lotus-petal-floral-carved/Gemini_Generated_Image_2d8a892d8a892d8a.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729040/hs-global/furniture/wash-basin/lotus-petal-floral-carved/Gemini_Generated_Image_7segrn7segrn7seg.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729042/hs-global/furniture/wash-basin/lotus-petal-floral-carved/Gemini_Generated_Image_deuu62deuu62deuu.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729044/hs-global/furniture/wash-basin/lotus-petal-floral-carved/Gemini_Generated_Image_rs9ci2rs9ci2rs9c.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729046/hs-global/furniture/wash-basin/lotus-petal-floral-carved/Screenshot%202026-03-23%20123543.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729037/hs-global/furniture/wash-basin/lotus-petal-floral-carved/Gemini_Generated_Image_2d8a892d8a892d8a.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Wash Basins/Countertop/Lotus Petal Floral-carved/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Natural Stone",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India",
+        "product": "Wash Basin"
+      },
+      "seoTitle": "Lotus Petal Floral Carved - Wash Basin | HS Global Export",
+      "seoDescription": "Premium Lotus Petal Floral Carved — handcrafted Wash Basin from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "lotus petal floral carved",
+        "wash basin",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:28:23.567Z"
+    },
+    {
+      "productId": "makrana-white-lotus-ribbed-petals",
+      "name": "Makrana White Lotus Ribbed Petals",
+      "category": "furniture",
+      "subcategory": "Wash Basin",
+      "subcategorySlug": "wash-basin",
+      "catFolder": "Wash Basins",
+      "cloudinaryDir": "hs-global/furniture/wash-basin/makrana-white-lotus-ribbed-petals",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729048/hs-global/furniture/wash-basin/makrana-white-lotus-ribbed-petals/Gemini_Generated_Image_6jzz8g6jzz8g6jzz.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729050/hs-global/furniture/wash-basin/makrana-white-lotus-ribbed-petals/Gemini_Generated_Image_a4qy1a4qy1a4qy1a.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729052/hs-global/furniture/wash-basin/makrana-white-lotus-ribbed-petals/Gemini_Generated_Image_cp3jtjcp3jtjcp3j.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729054/hs-global/furniture/wash-basin/makrana-white-lotus-ribbed-petals/Gemini_Generated_Image_ojgsjiojgsjiojgs.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729056/hs-global/furniture/wash-basin/makrana-white-lotus-ribbed-petals/Gemini_Generated_Image_ywwrefywwrefywwr.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729048/hs-global/furniture/wash-basin/makrana-white-lotus-ribbed-petals/Gemini_Generated_Image_6jzz8g6jzz8g6jzz.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Wash Basins/Countertop/Makrana White Lotus Ribbed-petals/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Makrana White Marble",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India",
+        "product": "Wash Basin"
+      },
+      "seoTitle": "Makrana White Lotus Ribbed Petals - Wash Basin | HS Global Export",
+      "seoDescription": "Premium Makrana White Lotus Ribbed Petals — handcrafted Wash Basin from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "makrana white lotus ribbed petals",
+        "wash basin",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:28:30.081Z"
+    },
+    {
+      "productId": "multi-color-rectangular-flutted",
+      "name": "Multi Color Rectangular Flutted",
+      "category": "furniture",
+      "subcategory": "Wash Basin",
+      "subcategorySlug": "wash-basin",
+      "catFolder": "Wash Basins",
+      "cloudinaryDir": "hs-global/furniture/wash-basin/multi-color-rectangular-flutted",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729058/hs-global/furniture/wash-basin/multi-color-rectangular-flutted/Gemini_Generated_Image_5a8835a8835a8835.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729060/hs-global/furniture/wash-basin/multi-color-rectangular-flutted/Gemini_Generated_Image_73pux673pux673pu.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729062/hs-global/furniture/wash-basin/multi-color-rectangular-flutted/Gemini_Generated_Image_q9er55q9er55q9er.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729065/hs-global/furniture/wash-basin/multi-color-rectangular-flutted/Gemini_Generated_Image_s9b644s9b644s9b6.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729067/hs-global/furniture/wash-basin/multi-color-rectangular-flutted/Gemini_Generated_Image_yvpthyvpthyvpthy.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729058/hs-global/furniture/wash-basin/multi-color-rectangular-flutted/Gemini_Generated_Image_5a8835a8835a8835.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Wash Basins/Countertop/Multi-color Rectangular Flutted/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Natural Stone",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India",
+        "product": "Wash Basin"
+      },
+      "seoTitle": "Multi Color Rectangular Flutted - Wash Basin | HS Global Export",
+      "seoDescription": "Premium Multi Color Rectangular Flutted — handcrafted Wash Basin from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "multi color rectangular flutted",
+        "wash basin",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:28:36.940Z"
+    },
+    {
+      "productId": "nautilus-marble-sink",
+      "name": "Nautilus Marble Sink",
+      "category": "furniture",
+      "subcategory": "Wash Basin",
+      "subcategorySlug": "wash-basin",
+      "catFolder": "Wash Basins",
+      "cloudinaryDir": "hs-global/furniture/wash-basin/nautilus-marble-sink",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729069/hs-global/furniture/wash-basin/nautilus-marble-sink/Gemini_Generated_Image_5obo785obo785obo.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729071/hs-global/furniture/wash-basin/nautilus-marble-sink/Gemini_Generated_Image_96n31o96n31o96n3.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729073/hs-global/furniture/wash-basin/nautilus-marble-sink/Gemini_Generated_Image_h9vpx7h9vpx7h9vp.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729076/hs-global/furniture/wash-basin/nautilus-marble-sink/Gemini_Generated_Image_hvkjumhvkjumhvkj.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729078/hs-global/furniture/wash-basin/nautilus-marble-sink/Gemini_Generated_Image_s8adl1s8adl1s8ad.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729069/hs-global/furniture/wash-basin/nautilus-marble-sink/Gemini_Generated_Image_5obo785obo785obo.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Wash Basins/Countertop/Nautilus Marble Sink/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Natural Stone",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India",
+        "product": "Wash Basin"
+      },
+      "seoTitle": "Nautilus Marble Sink - Wash Basin | HS Global Export",
+      "seoDescription": "Premium Nautilus Marble Sink — handcrafted Wash Basin from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "nautilus marble sink",
+        "wash basin",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:28:43.472Z"
+    },
+    {
+      "productId": "panda-white-marble-countertop",
+      "name": "Panda White Marble Countertop",
+      "category": "furniture",
+      "subcategory": "Wash Basin",
+      "subcategorySlug": "wash-basin",
+      "catFolder": "Wash Basins",
+      "cloudinaryDir": "hs-global/furniture/wash-basin/panda-white-marble-countertop",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729080/hs-global/furniture/wash-basin/panda-white-marble-countertop/Gemini_Generated_Image_19pic119pic119pi.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729082/hs-global/furniture/wash-basin/panda-white-marble-countertop/Gemini_Generated_Image_7yl3ha7yl3ha7yl3.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729084/hs-global/furniture/wash-basin/panda-white-marble-countertop/Gemini_Generated_Image_spba48spba48spba.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729086/hs-global/furniture/wash-basin/panda-white-marble-countertop/Gemini_Generated_Image_ujl1w6ujl1w6ujl1.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729088/hs-global/furniture/wash-basin/panda-white-marble-countertop/Gemini_Generated_Image_zdm1lqzdm1lqzdm1.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729080/hs-global/furniture/wash-basin/panda-white-marble-countertop/Gemini_Generated_Image_19pic119pic119pi.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Wash Basins/Countertop/Panda White Marble Countertop/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Panda White Marble",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India",
+        "product": "Wash Basin"
+      },
+      "seoTitle": "Panda White Marble Countertop - Wash Basin | HS Global Export",
+      "seoDescription": "Premium Panda White Marble Countertop — handcrafted Wash Basin from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "panda white marble countertop",
+        "wash basin",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:28:50.114Z"
+    },
+    {
+      "productId": "rosso-levanto-oval",
+      "name": "Rosso Levanto Oval",
+      "category": "furniture",
+      "subcategory": "Wash Basin",
+      "subcategorySlug": "wash-basin",
+      "catFolder": "Wash Basins",
+      "cloudinaryDir": "hs-global/furniture/wash-basin/rosso-levanto-oval",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729090/hs-global/furniture/wash-basin/rosso-levanto-oval/Gemini_Generated_Image_ikea9vikea9vikea.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729092/hs-global/furniture/wash-basin/rosso-levanto-oval/Gemini_Generated_Image_iv9047iv9047iv90.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729096/hs-global/furniture/wash-basin/rosso-levanto-oval/Gemini_Generated_Image_ndcudandcudandcu.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729098/hs-global/furniture/wash-basin/rosso-levanto-oval/Gemini_Generated_Image_wps6y3wps6y3wps6.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729100/hs-global/furniture/wash-basin/rosso-levanto-oval/Gemini_Generated_Image_xau7zcxau7zcxau7.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729090/hs-global/furniture/wash-basin/rosso-levanto-oval/Gemini_Generated_Image_ikea9vikea9vikea.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Wash Basins/Countertop/Rosso Levanto Oval/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Rosso Levanto Marble",
+        "colorName": "Red",
+        "surfaceFinish": "Polished",
+        "location": "India",
+        "product": "Wash Basin"
+      },
+      "seoTitle": "Rosso Levanto Oval - Wash Basin | HS Global Export",
+      "seoDescription": "Premium Rosso Levanto Oval — handcrafted Wash Basin from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "rosso levanto oval",
+        "wash basin",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:28:57.029Z"
+    },
+    {
+      "productId": "satvario-rounded-table-top",
+      "name": "Satvario Rounded Table Top",
+      "category": "furniture",
+      "subcategory": "Wash Basin",
+      "subcategorySlug": "wash-basin",
+      "catFolder": "Wash Basins",
+      "cloudinaryDir": "hs-global/furniture/wash-basin/satvario-rounded-table-top",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729102/hs-global/furniture/wash-basin/satvario-rounded-table-top/Gemini_Generated_Image_8ufa6x8ufa6x8ufa.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729104/hs-global/furniture/wash-basin/satvario-rounded-table-top/Gemini_Generated_Image_9tvsk9tvsk9tvsk9.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729106/hs-global/furniture/wash-basin/satvario-rounded-table-top/Gemini_Generated_Image_tijej2tijej2tije.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729108/hs-global/furniture/wash-basin/satvario-rounded-table-top/Gemini_Generated_Image_ue586gue586gue58.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729110/hs-global/furniture/wash-basin/satvario-rounded-table-top/Gemini_Generated_Image_xa457exa457exa45.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729102/hs-global/furniture/wash-basin/satvario-rounded-table-top/Gemini_Generated_Image_8ufa6x8ufa6x8ufa.jpg",
+      "hasVideo": false,
+      "videoUrl": null,
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Satvario Marble",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India",
+        "product": "Wash Basin"
+      },
+      "seoTitle": "Satvario Rounded Table Top - Wash Basin | HS Global Export",
+      "seoDescription": "Premium Satvario Rounded Table Top — handcrafted Wash Basin from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "satvario rounded table top",
+        "wash basin",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:29:03.488Z"
+    },
+    {
+      "productId": "satvario-white-marble-countertop-sink",
+      "name": "Satvario White Marble Countertop Sink",
+      "category": "furniture",
+      "subcategory": "Wash Basin",
+      "subcategorySlug": "wash-basin",
+      "catFolder": "Wash Basins",
+      "cloudinaryDir": "hs-global/furniture/wash-basin/satvario-white-marble-countertop-sink",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729112/hs-global/furniture/wash-basin/satvario-white-marble-countertop-sink/Gemini_Generated_Image_eesw5heesw5heesw.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729114/hs-global/furniture/wash-basin/satvario-white-marble-countertop-sink/Gemini_Generated_Image_m6q1nnm6q1nnm6q1.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729116/hs-global/furniture/wash-basin/satvario-white-marble-countertop-sink/Gemini_Generated_Image_my4ap9my4ap9my4a.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729118/hs-global/furniture/wash-basin/satvario-white-marble-countertop-sink/Gemini_Generated_Image_tautehtautehtaut.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729120/hs-global/furniture/wash-basin/satvario-white-marble-countertop-sink/Gemini_Generated_Image_z6grbhz6grbhz6gr.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729112/hs-global/furniture/wash-basin/satvario-white-marble-countertop-sink/Gemini_Generated_Image_eesw5heesw5heesw.jpg",
+      "hasVideo": false,
+      "videoUrl": null,
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "White Marble",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India",
+        "product": "Wash Basin"
+      },
+      "seoTitle": "Satvario White Marble Countertop Sink - Wash Basin | HS Global Export",
+      "seoDescription": "Premium Satvario White Marble Countertop Sink — handcrafted Wash Basin from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "satvario white marble countertop sink",
+        "wash basin",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:29:10.615Z"
+    },
+    {
+      "productId": "white-marble-faceted-countertop",
+      "name": "White Marble Faceted Countertop",
+      "category": "furniture",
+      "subcategory": "Wash Basin",
+      "subcategorySlug": "wash-basin",
+      "catFolder": "Wash Basins",
+      "cloudinaryDir": "hs-global/furniture/wash-basin/white-marble-faceted-countertop",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729123/hs-global/furniture/wash-basin/white-marble-faceted-countertop/Gemini_Generated_Image_6nipqd6nipqd6nip.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729125/hs-global/furniture/wash-basin/white-marble-faceted-countertop/Gemini_Generated_Image_hrt07dhrt07dhrt0.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729127/hs-global/furniture/wash-basin/white-marble-faceted-countertop/Gemini_Generated_Image_mchl4qmchl4qmchl.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729130/hs-global/furniture/wash-basin/white-marble-faceted-countertop/Gemini_Generated_Image_n4sb6sn4sb6sn4sb.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729132/hs-global/furniture/wash-basin/white-marble-faceted-countertop/Gemini_Generated_Image_ydcs9gydcs9gydcs.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729123/hs-global/furniture/wash-basin/white-marble-faceted-countertop/Gemini_Generated_Image_6nipqd6nipqd6nip.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Wash Basins/Countertop/White Marble Faceted Countertop/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "White Marble",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India",
+        "product": "Wash Basin"
+      },
+      "seoTitle": "White Marble Faceted Countertop - Wash Basin | HS Global Export",
+      "seoDescription": "Premium White Marble Faceted Countertop — handcrafted Wash Basin from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "white marble faceted countertop",
+        "wash basin",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:29:17.539Z"
+    },
+    {
+      "productId": "white-textured-marble-basin",
+      "name": "White Textured Marble Basin",
+      "category": "furniture",
+      "subcategory": "Wash Basin",
+      "subcategorySlug": "wash-basin",
+      "catFolder": "Wash Basins",
+      "cloudinaryDir": "hs-global/furniture/wash-basin/white-textured-marble-basin",
+      "images": [
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729134/hs-global/furniture/wash-basin/white-textured-marble-basin/Gemini_Generated_Image_71znf071znf071zn.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729136/hs-global/furniture/wash-basin/white-textured-marble-basin/Gemini_Generated_Image_9ivpgj9ivpgj9ivp.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729138/hs-global/furniture/wash-basin/white-textured-marble-basin/Gemini_Generated_Image_c9fz9ac9fz9ac9fz.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729140/hs-global/furniture/wash-basin/white-textured-marble-basin/Gemini_Generated_Image_e4wjm7e4wjm7e4wj.jpg",
+        "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729142/hs-global/furniture/wash-basin/white-textured-marble-basin/Gemini_Generated_Image_t1fhl2t1fhl2t1fh.jpg"
+      ],
+      "image": "https://res.cloudinary.com/dynd1aan0/image/upload/v1774729134/hs-global/furniture/wash-basin/white-textured-marble-basin/Gemini_Generated_Image_71znf071znf071zn.jpg",
+      "hasVideo": true,
+      "videoUrl": "/videos/Wash Basins/Countertop/White Textured Marble Basin/video.mp4",
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Natural Stone",
+        "colorName": "White",
+        "surfaceFinish": "Polished",
+        "location": "India",
+        "product": "Wash Basin"
+      },
+      "seoTitle": "White Textured Marble Basin - Wash Basin | HS Global Export",
+      "seoDescription": "Premium White Textured Marble Basin — handcrafted Wash Basin from natural stone by HS Global Export, India.",
+      "seoKeywords": [
+        "white textured marble basin",
+        "wash basin",
+        "furniture",
+        "marble",
+        "natural stone",
+        "india",
+        "handcrafted",
+        "export",
+        "hs global"
+      ],
+      "uploadedAt": "2026-03-29T06:29:24.143Z"
+    }
+  ]
+}

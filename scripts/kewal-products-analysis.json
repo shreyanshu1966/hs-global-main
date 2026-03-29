@@ -1,0 +1,603 @@
+{
+  "meta": {
+    "generatedAt": "2026-03-29T01:01:00+05:30",
+    "sourceFolder": "Kewal 19-03-2026",
+    "scope": "Center Table and Console Table categories only (Furniture)",
+    "totalCenterTableProducts": 9,
+    "totalConsoleTableProducts": 13,
+    "videosBaseDir": "frontend/public/videos",
+    "cloudinaryFolder": "hs-global/furniture"
+  },
+  "categories": {
+    "furniture": {
+      "categoryId": "furniture",
+      "categoryName": "Furniture",
+      "subcategories": [
+        {
+          "id": "center-table",
+          "name": "Center Table",
+          "isCustom": true
+        },
+        {
+          "id": "console-table",
+          "name": "Console Table",
+          "isCustom": true
+        }
+      ]
+    }
+  },
+  "products": [
+    {
+      "name": "Beige Travertine Centre-Dinning Table",
+      "category": "furniture",
+      "subcategory": "Center Table",
+      "localImageFolder": "Kewal 19-03-2026/Center Table/Beige Travertine Centre-Dinning Table",
+      "images": [
+        "Gemini_Generated_Image_1ppqow1ppqow1ppq.png",
+        "Gemini_Generated_Image_37nrs137nrs137nr.png",
+        "Gemini_Generated_Image_4g7gid4g7gid4g7g.png",
+        "Gemini_Generated_Image_77k4h377k4h377k4.png",
+        "Gemini_Generated_Image_agrajuagrajuagra.png",
+        "Gemini_Generated_Image_c4k3ztc4k3ztc4k3.png",
+        "Gemini_Generated_Image_g521exg521exg521.png",
+        "Gemini_Generated_Image_hg0aahg0aahg0aah.png",
+        "Gemini_Generated_Image_us6ud9us6ud9us6u.png",
+        "Gemini_Generated_Image_yuheoyyuheoyyuhe.png"
+      ],
+      "cloudinaryFolder": "hs-global/furniture/center-table/beige-travertine-centre-dinning-table",
+      "videoLocalPath": "frontend/public/videos/Tables/Coffee Table/Beige Travertine Coffee Table/video.mp4",
+      "hasVideo": true,
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Beige Travertine",
+        "surfaceFinish": "Polished",
+        "colorName": "Beige",
+        "location": "India"
+      }
+    },
+    {
+      "name": "Black Marble Block",
+      "category": "furniture",
+      "subcategory": "Center Table",
+      "localImageFolder": "Kewal 19-03-2026/Center Table/Black Marble Block",
+      "images": [
+        "Gemini_Generated_Image_2bp02z2bp02z2bp0.png",
+        "Gemini_Generated_Image_72wxl372wxl372wx.png",
+        "Gemini_Generated_Image_ccwlzjccwlzjccwl.png",
+        "Gemini_Generated_Image_r1l49sr1l49sr1l4.png",
+        "Screenshot 2026-03-19 115903.png",
+        "Screenshot 2026-03-19 115953.png"
+      ],
+      "cloudinaryFolder": "hs-global/furniture/center-table/black-marble-block",
+      "videoLocalPath": null,
+      "hasVideo": false,
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Black Marble",
+        "surfaceFinish": "Polished",
+        "colorName": "Black",
+        "location": "India"
+      }
+    },
+    {
+      "name": "Green Emerald Marble Block",
+      "category": "furniture",
+      "subcategory": "Center Table",
+      "localImageFolder": "Kewal 19-03-2026/Center Table/Green Emerald Marble Block",
+      "images": [
+        "Gemini_Generated_Image_22u73u22u73u22u7.png",
+        "Gemini_Generated_Image_l95g81l95g81l95g.png",
+        "Screenshot 2026-03-19 122100.png",
+        "Screenshot 2026-03-19 122213.png",
+        "Screenshot 2026-03-19 122314.png"
+      ],
+      "cloudinaryFolder": "hs-global/furniture/center-table/green-emerald-marble-block",
+      "videoLocalPath": null,
+      "hasVideo": false,
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Green Emerald Marble",
+        "surfaceFinish": "Polished",
+        "colorName": "Green",
+        "location": "India"
+      }
+    },
+    {
+      "name": "Green Marble Coffee Table",
+      "category": "furniture",
+      "subcategory": "Center Table",
+      "localImageFolder": "Kewal 19-03-2026/Center Table/Green Marble Coffee Table",
+      "images": [
+        "Gemini_Generated_Image_8jpgg18jpgg18jpg.png",
+        "Gemini_Generated_Image_9do0799do0799do0.png",
+        "Gemini_Generated_Image_l1vmbpl1vmbpl1vm.png",
+        "Gemini_Generated_Image_njfe9xnjfe9xnjfe.png",
+        "Screenshot 2026-03-19 160101.png",
+        "Screenshot 2026-03-19 160237.png",
+        "Screenshot 2026-03-19 160357.png"
+      ],
+      "cloudinaryFolder": "hs-global/furniture/center-table/green-marble-coffee-table",
+      "videoLocalPath": "frontend/public/videos/Tables/Coffee Table/Green Marble Coffee Table/video.mp4",
+      "hasVideo": true,
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Green Marble",
+        "surfaceFinish": "Polished",
+        "colorName": "Green",
+        "location": "India"
+      }
+    },
+    {
+      "name": "Marble Nesting Coffee Table Set",
+      "category": "furniture",
+      "subcategory": "Center Table",
+      "localImageFolder": "Kewal 19-03-2026/Center Table/Marble Nesting Coffee Table Set",
+      "images": [
+        "Gemini_Generated_Image_bxxvtsbxxvtsbxxv.png",
+        "Gemini_Generated_Image_dfb2mndfb2mndfb2.png",
+        "Gemini_Generated_Image_dkywo9dkywo9dkyw.png",
+        "Gemini_Generated_Image_ivrezrivrezrivre.png",
+        "Gemini_Generated_Image_zcmyhczcmyhczcmy.png",
+        "Screenshot 2026-03-19 173647.png",
+        "Screenshot 2026-03-19 173907.png",
+        "Screenshot 2026-03-19 174102.png"
+      ],
+      "cloudinaryFolder": "hs-global/furniture/center-table/marble-nesting-coffee-table-set",
+      "videoLocalPath": "frontend/public/videos/Tables/Coffee Table/Marble Nesting Coffee Table Set/video.mp4",
+      "hasVideo": true,
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Mixed Marble",
+        "surfaceFinish": "Polished",
+        "colorName": "Multi",
+        "location": "India"
+      }
+    },
+    {
+      "name": "Natural Marble Pebble Cluster",
+      "category": "furniture",
+      "subcategory": "Center Table",
+      "localImageFolder": "Kewal 19-03-2026/Center Table/Natural Marble Pebble Cluster",
+      "images": [
+        "Gemini_Generated_Image_3e3bjs3e3bjs3e3b.png",
+        "Gemini_Generated_Image_k139ggk139ggk139.png",
+        "Gemini_Generated_Image_kanbsukanbsukanb.png",
+        "Gemini_Generated_Image_wwe591wwe591wwe5.png",
+        "HS1TC0011.webp",
+        "Screenshot 2026-03-19 170834.png"
+      ],
+      "cloudinaryFolder": "hs-global/furniture/center-table/natural-marble-pebble-cluster",
+      "videoLocalPath": "frontend/public/videos/Tables/Coffee Table/Natural Marble Pebble Cluster/video.mp4",
+      "hasVideo": true,
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Natural Marble",
+        "surfaceFinish": "Natural",
+        "colorName": "White",
+        "location": "India"
+      }
+    },
+    {
+      "name": "Polished Travertine Coffee Table With Planter",
+      "category": "furniture",
+      "subcategory": "Center Table",
+      "localImageFolder": "Kewal 19-03-2026/Center Table/Polished Travertine Coffee Table With Planter",
+      "images": [
+        "Gemini_Generated_Image_8slmp18slmp18slm.png",
+        "Gemini_Generated_Image_b1pzlb1pzlb1pzlb.png",
+        "Gemini_Generated_Image_d8mppad8mppad8mp.png",
+        "Gemini_Generated_Image_fy2dcofy2dcofy2d.png",
+        "Gemini_Generated_Image_jyzw8bjyzw8bjyzw.png"
+      ],
+      "cloudinaryFolder": "hs-global/furniture/center-table/polished-travertine-coffee-table-with-planter",
+      "videoLocalPath": "frontend/public/videos/Tables/Coffee Table/Polished Travertine Coffee Table with Planter/video.mp4",
+      "hasVideo": true,
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "Travertine",
+        "surfaceFinish": "Polished",
+        "colorName": "Beige",
+        "location": "India"
+      }
+    },
+    {
+      "name": "Statuario Oval Shaped",
+      "category": "furniture",
+      "subcategory": "Center Table",
+      "localImageFolder": "Kewal 19-03-2026/Center Table/Statuario Oval Shaped",
+      "images": [
+        "Gemini_Generated_Image_5ny9h95ny9h95ny9.png",
+        "Gemini_Generated_Image_vovdf2vovdf2vovd.png",
+        "HS1TCO025.webp",
+        "Screenshot 2026-03-19 130926.png",
+        "Screenshot 2026-03-19 131333.png"
+      ],
+      "cloudinaryFolder": "hs-global/furniture/center-table/statuario-oval-shaped",
+      "videoLocalPath": "frontend/public/videos/Tables/Center Table/Statuario Oval-Shaped/video.mp4",
+      "hasVideo": true,
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "shape": "Oval",
+        "material": "Statuario Marble",
+        "surfaceFinish": "Polished",
+        "colorName": "White with Grey Veins",
+        "location": "India"
+      }
+    },
+    {
+      "name": "White Marble Coffee Table",
+      "category": "furniture",
+      "subcategory": "Center Table",
+      "localImageFolder": "Kewal 19-03-2026/Center Table/White Marble Coffee Table",
+      "images": [
+        "Gemini_Generated_Image_2h62ug2h62ug2h62.png",
+        "Gemini_Generated_Image_vaxodrvaxodrvaxo.png",
+        "Gemini_Generated_Image_veoa50veoa50veoa.png",
+        "Gemini_Generated_Image_xatxnexatxnexatx.png",
+        "Gemini_Generated_Image_z45ul7z45ul7z45u.png"
+      ],
+      "cloudinaryFolder": "hs-global/furniture/center-table/white-marble-coffee-table",
+      "videoLocalPath": "frontend/public/videos/Tables/Coffee Table/White Marble Coffee Table/video.mp4",
+      "hasVideo": true,
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "material": "White Marble",
+        "surfaceFinish": "Polished",
+        "colorName": "White",
+        "location": "India"
+      }
+    },
+    {
+      "name": "Banswara White Marble Console Table",
+      "category": "furniture",
+      "subcategory": "Console Table",
+      "localImageFolder": "Kewal 19-03-2026/Console Tables/Banswara White Marble Console Table",
+      "images": [
+        "Gemini_Generated_Image_3l0zrj3l0zrj3l0z.png",
+        "Gemini_Generated_Image_7gki5y7gki5y7gki.png",
+        "Gemini_Generated_Image_fs8kmjfs8kmjfs8k.png",
+        "Gemini_Generated_Image_m1c1xfm1c1xfm1c1.png",
+        "Gemini_Generated_Image_wadn6ewadn6ewadn.png"
+      ],
+      "cloudinaryFolder": "hs-global/furniture/console-table/banswara-white-marble-console-table",
+      "videoLocalPath": "frontend/public/videos/Tables/Console Table/Banswara White Marble Console Table/video.mp4",
+      "hasVideo": true,
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "shape": "Rectangular",
+        "material": "Banswara White Marble",
+        "surfaceFinish": "Polished",
+        "colorName": "White",
+        "location": "India"
+      }
+    },
+    {
+      "name": "Cappuccino Brown Marble Console Table",
+      "category": "furniture",
+      "subcategory": "Console Table",
+      "localImageFolder": "Kewal 19-03-2026/Console Tables/Cappuccino Brown Marble Console Table",
+      "images": [
+        "Gemini_Generated_Image_1chpoh1chpoh1chp.png",
+        "Gemini_Generated_Image_2icqkh2icqkh2icq.png",
+        "Gemini_Generated_Image_5y0d8d5y0d8d5y0d.png",
+        "Gemini_Generated_Image_c1hpm9c1hpm9c1hp.png",
+        "Gemini_Generated_Image_fxmgm6fxmgm6fxmg.png",
+        "Gemini_Generated_Image_odq8stodq8stodq8.png"
+      ],
+      "cloudinaryFolder": "hs-global/furniture/console-table/cappuccino-brown-marble-console-table",
+      "videoLocalPath": "frontend/public/videos/Tables/Console Table/Cappuccino Brown Marble Console Table/video.mp4",
+      "hasVideo": true,
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "shape": "Rectangular",
+        "material": "Cappuccino Brown Marble",
+        "surfaceFinish": "Polished",
+        "colorName": "Brown",
+        "location": "India"
+      }
+    },
+    {
+      "name": "Exotic White Marble Arch Console Table",
+      "category": "furniture",
+      "subcategory": "Console Table",
+      "localImageFolder": "Kewal 19-03-2026/Console Tables/Exotic White Marble Arch Console Table",
+      "images": [
+        "Gemini_Generated_Image_2mrxze2mrxze2mrx.png",
+        "Gemini_Generated_Image_592e33592e33592e.png",
+        "Gemini_Generated_Image_78jmz778jmz778jm.png",
+        "Gemini_Generated_Image_cq782acq782acq78.png",
+        "Gemini_Generated_Image_mnnvwmmnnvwmmnnv.png"
+      ],
+      "cloudinaryFolder": "hs-global/furniture/console-table/exotic-white-marble-arch-console-table",
+      "videoLocalPath": "frontend/public/videos/Tables/Console Table/Exotic White Marble Arch Console Table/video.mp4",
+      "hasVideo": true,
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "shape": "Arch",
+        "material": "Exotic White Marble",
+        "surfaceFinish": "Polished",
+        "colorName": "White",
+        "location": "India"
+      }
+    },
+    {
+      "name": "Green Marble Console Table",
+      "category": "furniture",
+      "subcategory": "Console Table",
+      "localImageFolder": "Kewal 19-03-2026/Console Tables/Green Marble Console Table",
+      "images": [
+        "Gemini_Generated_Image_1y2xhw1y2xhw1y2x.png",
+        "Gemini_Generated_Image_7qvvcx7qvvcx7qvv.png",
+        "Gemini_Generated_Image_hpfq6shpfq6shpfq.png",
+        "Gemini_Generated_Image_mgnoyymgnoyymgno.png",
+        "Gemini_Generated_Image_z0cxjwz0cxjwz0cx.png"
+      ],
+      "cloudinaryFolder": "hs-global/furniture/console-table/green-marble-console-table",
+      "videoLocalPath": "frontend/public/videos/Tables/Console Table/Green Marble Console Table/video.mp4",
+      "hasVideo": true,
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "shape": "Rectangular",
+        "material": "Green Marble",
+        "surfaceFinish": "Polished",
+        "colorName": "Green",
+        "location": "India"
+      }
+    },
+    {
+      "name": "Green Marble Entryway Console Table",
+      "category": "furniture",
+      "subcategory": "Console Table",
+      "localImageFolder": "Kewal 19-03-2026/Console Tables/Green Marble Entryway Console Table",
+      "images": [
+        "Gemini_Generated_Image_3jmel43jmel43jme.png",
+        "Gemini_Generated_Image_4qiw324qiw324qiw.png",
+        "Gemini_Generated_Image_a2ih16a2ih16a2ih.png",
+        "Gemini_Generated_Image_lnfshflnfshflnfs.png",
+        "Gemini_Generated_Image_w61cusw61cusw61c.png"
+      ],
+      "cloudinaryFolder": "hs-global/furniture/console-table/green-marble-entryway-console-table",
+      "videoLocalPath": "frontend/public/videos/Tables/Console Table/Green Marble Entryway Console Table/video.mp4",
+      "hasVideo": true,
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "shape": "Rectangular",
+        "material": "Green Marble",
+        "surfaceFinish": "Polished",
+        "colorName": "Green",
+        "location": "India"
+      }
+    },
+    {
+      "name": "Green Marble Polished Console Table",
+      "category": "furniture",
+      "subcategory": "Console Table",
+      "localImageFolder": "Kewal 19-03-2026/Console Tables/Green Marble Polished Console Table",
+      "images": [
+        "Gemini_Generated_Image_188ss1188ss1188s.png",
+        "Gemini_Generated_Image_1encq31encq31enc.png",
+        "Gemini_Generated_Image_elz0y4elz0y4elz0.png",
+        "Gemini_Generated_Image_k3wz5pk3wz5pk3wz.png",
+        "Gemini_Generated_Image_rlilb7rlilb7rlil.png"
+      ],
+      "cloudinaryFolder": "hs-global/furniture/console-table/green-marble-polished-console-table",
+      "videoLocalPath": "frontend/public/videos/Tables/Console Table/Green Marble Polished Console Table/video.mp4",
+      "hasVideo": true,
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "shape": "Rectangular",
+        "material": "Green Marble",
+        "surfaceFinish": "Polished",
+        "colorName": "Green",
+        "location": "India"
+      }
+    },
+    {
+      "name": "Handcrafted Banswara White Marble Console Table",
+      "category": "furniture",
+      "subcategory": "Console Table",
+      "localImageFolder": "Kewal 19-03-2026/Console Tables/Handcrafted Banswara White Marble Console Table",
+      "images": [
+        "Gemini_Generated_Image_4cn96m4cn96m4cn9.png",
+        "Gemini_Generated_Image_5klhwc5klhwc5klh.png",
+        "Gemini_Generated_Image_qab80pqab80pqab8.png",
+        "Gemini_Generated_Image_u6lbx5u6lbx5u6lb.png",
+        "Gemini_Generated_Image_vz7opvz7opvz7opv.png"
+      ],
+      "cloudinaryFolder": "hs-global/furniture/console-table/handcrafted-banswara-white-marble-console-table",
+      "videoLocalPath": "frontend/public/videos/Tables/Console Table/Handcrafted Banswara White Marble Console Table/video.mp4",
+      "hasVideo": true,
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "shape": "Rectangular",
+        "material": "Banswara White Marble",
+        "surfaceFinish": "Hand Carved",
+        "colorName": "White",
+        "location": "India"
+      }
+    },
+    {
+      "name": "Handcrafted Exotic White Marble Console Table",
+      "category": "furniture",
+      "subcategory": "Console Table",
+      "localImageFolder": "Kewal 19-03-2026/Console Tables/Handcrafted Exotic White Marble Console Table",
+      "images": [
+        "Gemini_Generated_Image_5z6ngr5z6ngr5z6n.png",
+        "Gemini_Generated_Image_al7oagal7oagal7o.png",
+        "Gemini_Generated_Image_bukyyebukyyebuky.png",
+        "Gemini_Generated_Image_cj9pqtcj9pqtcj9p.png",
+        "Gemini_Generated_Image_jnmzd9jnmzd9jnmz.png"
+      ],
+      "cloudinaryFolder": "hs-global/furniture/console-table/handcrafted-exotic-white-marble-console-table",
+      "videoLocalPath": "frontend/public/videos/Tables/Console Table/Handcrafted Exotic White Marble Console Table/video.mp4",
+      "hasVideo": true,
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "shape": "Rectangular",
+        "material": "Exotic White Marble",
+        "surfaceFinish": "Hand Carved",
+        "colorName": "White",
+        "location": "India"
+      }
+    },
+    {
+      "name": "Handcrafted Marine Black Marble Console Table",
+      "category": "furniture",
+      "subcategory": "Console Table",
+      "localImageFolder": "Kewal 19-03-2026/Console Tables/Handcrafted Marine Black Marble Console Table",
+      "images": [
+        "Gemini_Generated_Image_5o1myd5o1myd5o1m.png",
+        "Gemini_Generated_Image_7fdig47fdig47fdi.png",
+        "Gemini_Generated_Image_86ntmv86ntmv86nt.png",
+        "Gemini_Generated_Image_ccljyxccljyxcclj.png",
+        "Gemini_Generated_Image_x212r7x212r7x212.png"
+      ],
+      "cloudinaryFolder": "hs-global/furniture/console-table/handcrafted-marine-black-marble-console-table",
+      "videoLocalPath": "frontend/public/videos/Tables/Console Table/Handcrafted Marine Black Marble Console Table/video.mp4",
+      "hasVideo": true,
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "shape": "Rectangular",
+        "material": "Marine Black Marble",
+        "surfaceFinish": "Hand Carved",
+        "colorName": "Black",
+        "location": "India"
+      }
+    },
+    {
+      "name": "Modern Sculptural Marble Console Table",
+      "category": "furniture",
+      "subcategory": "Console Table",
+      "localImageFolder": "Kewal 19-03-2026/Console Tables/Modern Sculptural Marble Console Table",
+      "images": [
+        "Gemini_Generated_Image_1eezs51eezs51eez.png",
+        "Gemini_Generated_Image_5b0rni5b0rni5b0r.png",
+        "Gemini_Generated_Image_kvd3wjkvd3wjkvd3.png",
+        "Gemini_Generated_Image_n2isrnn2isrnn2is.png",
+        "Gemini_Generated_Image_r0r1xnr0r1xnr0r1.png",
+        "Gemini_Generated_Image_wlhfgbwlhfgbwlhf.png"
+      ],
+      "cloudinaryFolder": "hs-global/furniture/console-table/modern-sculptural-marble-console-table",
+      "videoLocalPath": "frontend/public/videos/Tables/Console Table/Modern Sculptural Marble Console Table/video.mp4",
+      "hasVideo": true,
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "shape": "Sculptural",
+        "material": "Marble",
+        "surfaceFinish": "Polished",
+        "colorName": "Mixed",
+        "location": "India"
+      }
+    },
+    {
+      "name": "Travertine Stone Arch Console Table",
+      "category": "furniture",
+      "subcategory": "Console Table",
+      "localImageFolder": "Kewal 19-03-2026/Console Tables/Travertine Stone Arch Console Table",
+      "images": [
+        "Gemini_Generated_Image_fti680fti680fti6.png",
+        "Gemini_Generated_Image_med6l8med6l8med6.png",
+        "Gemini_Generated_Image_or85suor85suor85.png",
+        "Gemini_Generated_Image_ozmfl1ozmfl1ozmf.png",
+        "Gemini_Generated_Image_spkrmpspkrmpspkr.png"
+      ],
+      "cloudinaryFolder": "hs-global/furniture/console-table/travertine-stone-arch-console-table",
+      "videoLocalPath": "frontend/public/videos/Tables/Console Table/Travertine Stone Arch Console Table/video.mp4",
+      "hasVideo": true,
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "shape": "Arch",
+        "material": "Travertine Stone",
+        "surfaceFinish": "Polished",
+        "colorName": "Beige",
+        "location": "India"
+      }
+    },
+    {
+      "name": "Travertine Stone Console Table",
+      "category": "furniture",
+      "subcategory": "Console Table",
+      "localImageFolder": "Kewal 19-03-2026/Console Tables/Travertine Stone Console Table",
+      "images": [
+        "Gemini_Generated_Image_a3csu2a3csu2a3cs.png",
+        "Gemini_Generated_Image_dfdlrydfdlrydfdl.png",
+        "Gemini_Generated_Image_fzrh9cfzrh9cfzrh.png",
+        "Gemini_Generated_Image_iwax0oiwax0oiwax.png",
+        "Gemini_Generated_Image_z9qs64z9qs64z9qs.png"
+      ],
+      "cloudinaryFolder": "hs-global/furniture/console-table/travertine-stone-console-table",
+      "videoLocalPath": "frontend/public/videos/Tables/Console Table/Travertine Stone Console Table/video.mp4",
+      "hasVideo": true,
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "shape": "Rectangular",
+        "material": "Travertine Stone",
+        "surfaceFinish": "Polished",
+        "colorName": "Beige",
+        "location": "India"
+      }
+    },
+    {
+      "name": "White Marble Console Table With Metal Legs",
+      "category": "furniture",
+      "subcategory": "Console Table",
+      "localImageFolder": "Kewal 19-03-2026/Console Tables/White Marble Console Table With Metal Legs",
+      "images": [
+        "Gemini_Generated_Image_131jgc131jgc131j.png",
+        "Gemini_Generated_Image_cof57ncof57ncof5.png",
+        "Gemini_Generated_Image_h31g9zh31g9zh31g.png",
+        "Gemini_Generated_Image_m0mwo6m0mwo6m0mw.png",
+        "Gemini_Generated_Image_r5n43ur5n43ur5n4.png"
+      ],
+      "cloudinaryFolder": "hs-global/furniture/console-table/white-marble-console-table-with-metal-legs",
+      "videoLocalPath": "frontend/public/videos/Tables/Console Table/White Marble Console Table with Metal Legs/video.mp4",
+      "hasVideo": true,
+      "furnitureSpecs": {
+        "type": "Indoor",
+        "shape": "Rectangular",
+        "material": "White Marble",
+        "surfaceFinish": "Polished",
+        "colorName": "White",
+        "location": "India"
+      }
+    }
+  ],
+  "summary": {
+    "centerTable": {
+      "total": 9,
+      "withVideo": 7,
+      "withoutVideo": 2,
+      "products": [
+        "Beige Travertine Centre-Dinning Table",
+        "Black Marble Block",
+        "Green Emerald Marble Block",
+        "Green Marble Coffee Table",
+        "Marble Nesting Coffee Table Set",
+        "Natural Marble Pebble Cluster",
+        "Polished Travertine Coffee Table With Planter",
+        "Statuario Oval Shaped",
+        "White Marble Coffee Table"
+      ]
+    },
+    "consoleTable": {
+      "total": 13,
+      "withVideo": 13,
+      "withoutVideo": 0,
+      "products": [
+        "Banswara White Marble Console Table",
+        "Cappuccino Brown Marble Console Table",
+        "Exotic White Marble Arch Console Table",
+        "Green Marble Console Table",
+        "Green Marble Entryway Console Table",
+        "Green Marble Polished Console Table",
+        "Handcrafted Banswara White Marble Console Table",
+        "Handcrafted Exotic White Marble Console Table",
+        "Handcrafted Marine Black Marble Console Table",
+        "Modern Sculptural Marble Console Table",
+        "Travertine Stone Arch Console Table",
+        "Travertine Stone Console Table",
+        "White Marble Console Table With Metal Legs"
+      ]
+    }
+  }
+}
