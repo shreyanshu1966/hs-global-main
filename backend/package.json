@@ -20,7 +20,11 @@
         "fix-discounts": "node ensure-discount-indexes.js",
         "migrate-furniture:dry": "node scripts/migrate-furniture-db.js --dry-run",
         "migrate-furniture:apply": "node scripts/migrate-furniture-db.js --apply",
-        "migrate:bootstrap": "node migrate-bootstrap.js"
+        "migrate:bootstrap"       : "node migrate-bootstrap.js",
+        "migrate:kewal-step1"     : "node migrate-kewal-products.js --step=1",
+        "migrate:kewal-step1-dry" : "node migrate-kewal-products.js --step=1 --dry-run",
+        "migrate:kewal-step2"     : "node migrate-kewal-products.js --step=2",
+        "migrate:kewal-step2-dry" : "node migrate-kewal-products.js --step=2 --dry-run"
     },
     "dependencies": {
         "axios": "^1.13.4",
