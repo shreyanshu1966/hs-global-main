@@ -1,12 +1,7 @@
 const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 const SUBCATEGORY_ALIAS_MAP = {
-    others: 'other',
-    'center-table': 'dining-table',
-    'center-tables': 'dining-table',
-    center: 'dining-table',
-    'wash-basin': 'wash-basins',
-    'wash basin': 'wash-basins'
+    others: 'other'
 };
 
 const normalizeSubcategory = (subcategory) => {
