@@ -1553,6 +1553,7 @@
 
   .itsbits-home .itsbits-carousel-row {
     gap: 8px;
+    width: 100%;
   }
 
   .itsbits-home .itsbits-highlight-cta {

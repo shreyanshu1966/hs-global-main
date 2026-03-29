@@ -102,8 +102,8 @@ const NewArrivalsCarousel = ({
         </div>
 
         {/* Carousel Area */}
-        <div className="flex-1 min-w-0 flex items-center itsbits-carousel-row">
-          <div className="relative flex-1 min-w-0">
+        <div className="flex-1 min-w-0 flex items-center itsbits-carousel-row w-full">
+          <div className="relative flex-1 min-w-0 w-full">
             <button
               onClick={scrollPrev}
               disabled={!canScrollPrev}
