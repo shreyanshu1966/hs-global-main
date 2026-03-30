@@ -17,6 +17,9 @@ const Login: React.FC = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [showPhonePrompt, setShowPhonePrompt] = useState(false);
+    const [pendingCredential, setPendingCredential] = useState('');
+    const [googlePhone, setGooglePhone] = useState('');
 
     const containerRef = useRef<HTMLDivElement>(null);
     const formRef = useRef<HTMLDivElement>(null);
@@ -74,6 +77,33 @@ const Login: React.FC = () => {
             navigate(from);
         } catch (err: any) {
             console.error('Google login error:', err);
+            if (err.requiresPhone) {
+                setPendingCredential(credential);
+                setShowPhonePrompt(true);
+            } else {
+                setError(err.message || 'Google login failed.');
+            }
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleGooglePhoneSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        const phoneRegex = /^\+?[\d\s-]{10,15}$/;
+        if (!phoneRegex.test(googlePhone)) {
+            setError('Please enter a valid phone number');
+            return;
+        }
+        
+        setError('');
+        setIsLoading(true);
+        try {
+            await googleLogin(pendingCredential, googlePhone);
+            const from = (location.state as any)?.from || '/profile';
+            navigate(from);
+        } catch (err: any) {
+            console.error('Google login with phone error:', err);
             setError(err.message || 'Google login failed.');
         } finally {
             setIsLoading(false);
@@ -111,116 +141,172 @@ const Login: React.FC = () => {
                         </Link>
                     </div>
 
-                    <div className="mb-10">
-                        <h1 className="text-3xl font-bold text-gray-900 mb-3 tracking-tight font-sans">Log in</h1>
-                        <p className="text-gray-500 text-sm">
-                            Don't have an account?{' '}
-                            <Link to="/signup" className="text-black font-semibold hover:underline decoration-1 underline-offset-4">
-                                Sign up
-                            </Link>
-                        </p>
-                    </div>
-
-                    {error && (
-                        <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 text-sm">
-                            {error}
-                        </div>
-                    )}
-
-                    <form onSubmit={handleSubmit} className="space-y-5">
-                        <div>
-                            <label className="block text-sm font-semibold text-gray-900 mb-2">
-                                Email
-                            </label>
-                            <input
-                                type="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md focus:ring-1 focus:ring-black focus:border-black outline-none transition-colors text-sm"
-                                placeholder="name@example.com"
-                                required
-                            />
-                        </div>
-
-                        <div>
-                            <div className="flex justify-between items-center mb-2">
-                                <label className="block text-sm font-semibold text-gray-900">
-                                    Password
-                                </label>
+                    {showPhonePrompt ? (
+                        <div className="text-left space-y-6">
+                            <div>
+                                <h2 className="text-3xl font-bold text-gray-900 mb-4 tracking-tight">One last step</h2>
+                                <p className="text-gray-600 mb-6 text-sm leading-relaxed">
+                                    Please provide your mobile number to continue.
+                                </p>
                             </div>
-                            <div className="relative">
-                                <input
-                                    type={showPassword ? 'text' : 'password'}
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full pl-4 pr-12 py-3 bg-white border border-gray-300 rounded-md focus:ring-1 focus:ring-black focus:border-black outline-none transition-colors text-sm"
-                                    placeholder="••••••••"
-                                    required
-                                />
+                            
+                            {error && (
+                                <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 text-sm">
+                                    {error}
+                                </div>
+                            )}
+
+                            <form onSubmit={handleGooglePhoneSubmit} className="space-y-5">
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-900 mb-2">
+                                        Phone Number
+                                    </label>
+                                    <input
+                                        type="tel"
+                                        value={googlePhone}
+                                        onChange={(e) => setGooglePhone(e.target.value)}
+                                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md focus:ring-1 focus:ring-black focus:border-black outline-none transition-colors text-sm"
+                                        placeholder="+1 (555) 000-0000"
+                                        required
+                                    />
+                                </div>
+                                <button
+                                    type="submit"
+                                    disabled={isLoading}
+                                    className={`w-full py-3 mt-4 bg-black text-white text-sm font-semibold rounded-md transition-colors flex items-center justify-center gap-2 ${isLoading || !googlePhone ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-800'}`}
+                                >
+                                    {isLoading ? (
+                                        <>
+                                            <Loader2 className="w-4 h-4 animate-spin" />
+                                            Continuing...
+                                        </>
+                                    ) : (
+                                        'Continue'
+                                    )}
+                                </button>
                                 <button
                                     type="button"
-                                    onClick={() => setShowPassword(!showPassword)}
-                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors p-1"
-                                    tabIndex={-1}
+                                    onClick={() => setShowPhonePrompt(false)}
+                                    className="w-full py-3 mt-2 bg-white text-black border border-gray-300 text-sm font-semibold rounded-md hover:bg-gray-50 transition-colors"
                                 >
-                                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                                    Cancel
                                 </button>
+                            </form>
+                        </div>
+                    ) : (
+                        <>
+                            <div className="mb-10">
+                                <h1 className="text-3xl font-bold text-gray-900 mb-3 tracking-tight font-sans">Log in</h1>
+                                <p className="text-gray-500 text-sm">
+                                    Don't have an account?{' '}
+                                    <Link to="/signup" className="text-black font-semibold hover:underline decoration-1 underline-offset-4">
+                                        Sign up
+                                    </Link>
+                                </p>
                             </div>
-                            <div className="mt-2 text-right">
-                                <Link to="/forgot-password" className="text-xs font-medium text-gray-500 hover:text-black transition-colors underline-offset-2 hover:underline">
-                                    Forgot password?
+
+                            {error && (
+                                <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 text-sm">
+                                    {error}
+                                </div>
+                            )}
+
+                            <form onSubmit={handleSubmit} className="space-y-5">
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-900 mb-2">
+                                        Email
+                                    </label>
+                                    <input
+                                        type="email"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md focus:ring-1 focus:ring-black focus:border-black outline-none transition-colors text-sm"
+                                        placeholder="name@example.com"
+                                        required
+                                    />
+                                </div>
+
+                                <div>
+                                    <div className="flex justify-between items-center mb-2">
+                                        <label className="block text-sm font-semibold text-gray-900">
+                                            Password
+                                        </label>
+                                    </div>
+                                    <div className="relative">
+                                        <input
+                                            type={showPassword ? 'text' : 'password'}
+                                            value={password}
+                                            onChange={(e) => setPassword(e.target.value)}
+                                            className="w-full pl-4 pr-12 py-3 bg-white border border-gray-300 rounded-md focus:ring-1 focus:ring-black focus:border-black outline-none transition-colors text-sm"
+                                            placeholder="••••••••"
+                                            required
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowPassword(!showPassword)}
+                                            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors p-1"
+                                            tabIndex={-1}
+                                        >
+                                            {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                                        </button>
+                                    </div>
+                                    <div className="mt-2 text-right">
+                                        <Link to="/forgot-password" className="text-xs font-medium text-gray-500 hover:text-black transition-colors underline-offset-2 hover:underline">
+                                            Forgot password?
+                                        </Link>
+                                    </div>
+                                </div>
+
+                                <button
+                                    type="submit"
+                                    disabled={isLoading}
+                                    className="w-full py-3 mt-4 bg-black text-white text-sm font-semibold rounded-md hover:bg-gray-800 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    {isLoading ? (
+                                        <>
+                                            <Loader2 className="w-4 h-4 animate-spin" />
+                                            Logging in...
+                                        </>
+                                    ) : (
+                                        'Log in'
+                                    )}
+                                </button>
+                            </form>
+
+                            <div className="mt-8 mb-8 relative">
+                                <div className="absolute inset-0 flex items-center">
+                                    <div className="w-full border-t border-gray-200"></div>
+                                </div>
+                                <div className="relative flex justify-center text-sm">
+                                    <span className="px-4 bg-white text-gray-400 text-xs uppercase tracking-wider">Or continue with</span>
+                                </div>
+                            </div>
+
+                            <div className="flex flex-col gap-3">
+                                <div className="flex justify-center w-full [&>div]:w-full">
+                                    <GoogleLogin
+                                        onSuccess={credentialResponse => {
+                                            if (credentialResponse.credential) {
+                                                handleGoogleSuccess(credentialResponse.credential);
+                                            }
+                                        }}
+                                        onError={() => {
+                                            setError('Google authentication failed');
+                                        }}
+                                        useOneTap
+                                    />
+                                </div>
+
+                                <Link
+                                    to="/login-otp"
+                                    className="w-full py-3 border border-gray-300 text-gray-900 text-sm font-semibold rounded-md hover:bg-gray-50 transition-colors text-center flex items-center justify-center gap-2"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-smartphone"><rect width="14" height="20" x="5" y="2" rx="2" ry="2" /><path d="M12 18h.01" /></svg>
+                                    Log in with OTP
                                 </Link>
                             </div>
-                        </div>
-
-                        <button
-                            type="submit"
-                            disabled={isLoading}
-                            className="w-full py-3 mt-4 bg-black text-white text-sm font-semibold rounded-md hover:bg-gray-800 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                            {isLoading ? (
-                                <>
-                                    <Loader2 className="w-4 h-4 animate-spin" />
-                                    Logging in...
-                                </>
-                            ) : (
-                                'Log in'
-                            )}
-                        </button>
-                    </form>
-
-                    <div className="mt-8 mb-8 relative">
-                        <div className="absolute inset-0 flex items-center">
-                            <div className="w-full border-t border-gray-200"></div>
-                        </div>
-                        <div className="relative flex justify-center text-sm">
-                            <span className="px-4 bg-white text-gray-400 text-xs uppercase tracking-wider">Or continue with</span>
-                        </div>
-                    </div>
-
-                    <div className="flex flex-col gap-3">
-                        <div className="flex justify-center w-full [&>div]:w-full">
-                            <GoogleLogin
-                                onSuccess={credentialResponse => {
-                                    if (credentialResponse.credential) {
-                                        handleGoogleSuccess(credentialResponse.credential);
-                                    }
-                                }}
-                                onError={() => {
-                                    setError('Google authentication failed');
-                                }}
-                                useOneTap
-                            />
-                        </div>
-
-                        <Link
-                            to="/login-otp"
-                            className="w-full py-3 border border-gray-300 text-gray-900 text-sm font-semibold rounded-md hover:bg-gray-50 transition-colors text-center flex items-center justify-center gap-2"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-smartphone"><rect width="14" height="20" x="5" y="2" rx="2" ry="2" /><path d="M12 18h.01" /></svg>
-                            Log in with OTP
-                        </Link>
-                    </div>
+                        </>
+                    )}
                 </div>
             </div>
         </div>

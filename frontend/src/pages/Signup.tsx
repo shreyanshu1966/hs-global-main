@@ -20,6 +20,9 @@ const Signup: React.FC = () => {
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [registrationSuccess, setRegistrationSuccess] = useState(false);
+    const [showPhonePrompt, setShowPhonePrompt] = useState(false);
+    const [pendingCredential, setPendingCredential] = useState('');
+    const [googlePhone, setGooglePhone] = useState('');
 
     const [touched, setTouched] = useState({
         name: false,
@@ -120,6 +123,31 @@ const Signup: React.FC = () => {
             navigate('/profile');
         } catch (err: any) {
             console.error('Google signup error:', err);
+            if (err.requiresPhone) {
+                setPendingCredential(credential);
+                setShowPhonePrompt(true);
+            } else {
+                setError(err.message || 'Google authentication failed.');
+            }
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleGooglePhoneSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!validatePhone(googlePhone)) {
+            setError('Please enter a valid phone number');
+            return;
+        }
+        
+        setError('');
+        setIsLoading(true);
+        try {
+            await googleLogin(pendingCredential, googlePhone);
+            navigate('/profile');
+        } catch (err: any) {
+            console.error('Google signup with phone error:', err);
             setError(err.message || 'Google authentication failed.');
         } finally {
             setIsLoading(false);
@@ -163,7 +191,52 @@ const Signup: React.FC = () => {
                         </div>
                     )}
 
-                    {registrationSuccess ? (
+                    {showPhonePrompt ? (
+                        <div className="text-left space-y-6">
+                            <div>
+                                <h2 className="text-3xl font-bold text-gray-900 mb-4 tracking-tight">One last step</h2>
+                                <p className="text-gray-600 mb-6 text-sm leading-relaxed">
+                                    Please provide your mobile number to complete your registration.
+                                </p>
+                            </div>
+                            <form onSubmit={handleGooglePhoneSubmit} className="space-y-5">
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-900 mb-2">
+                                        Phone Number
+                                    </label>
+                                    <input
+                                        type="tel"
+                                        value={googlePhone}
+                                        onChange={(e) => setGooglePhone(e.target.value)}
+                                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md focus:ring-1 focus:ring-black focus:border-black outline-none transition-colors text-sm"
+                                        placeholder="+1 (555) 000-0000"
+                                        required
+                                    />
+                                </div>
+                                <button
+                                    type="submit"
+                                    disabled={isLoading}
+                                    className={`w-full py-3 mt-4 bg-black text-white text-sm font-semibold rounded-md transition-colors flex items-center justify-center gap-2 ${isLoading || !googlePhone ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-800'}`}
+                                >
+                                    {isLoading ? (
+                                        <>
+                                            <Loader2 className="w-4 h-4 animate-spin" />
+                                            Completing...
+                                        </>
+                                    ) : (
+                                        'Complete Registration'
+                                    )}
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPhonePrompt(false)}
+                                    className="w-full py-3 mt-2 bg-white text-black border border-gray-300 text-sm font-semibold rounded-md hover:bg-gray-50 transition-colors"
+                                >
+                                    Cancel
+                                </button>
+                            </form>
+                        </div>
+                    ) : registrationSuccess ? (
                         <div className="text-left space-y-6">
                             <div className="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mb-6">
                                 <CheckCircle className="w-8 h-8 text-green-600" />

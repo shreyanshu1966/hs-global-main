@@ -26,7 +26,7 @@ interface AuthContextType {
     isAuthenticated: boolean;
     isLoading: boolean;
     login: (email: string, password: string) => Promise<void>;
-    googleLogin: (credential: string) => Promise<void>;
+    googleLogin: (credential: string, phone?: string) => Promise<void>;
     register: (name: string, email: string, password: string, phone: string) => Promise<void>;
     logout: () => void;
     updateProfile: (data: Partial<User>) => Promise<void>;
@@ -143,19 +143,29 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
     };
 
-    const googleLogin = async (credential: string) => {
+    const googleLogin = async (credential: string, phone?: string) => {
         try {
+            const body: any = { token: credential };
+            if (phone) {
+                body.phone = phone;
+            }
+
             const response = await fetch(`${API_URL}/auth/google`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ token: credential })
+                body: JSON.stringify(body)
             });
 
             const data = await response.json();
 
             if (!response.ok || !data.ok) {
+                if (data.requiresPhone) {
+                    // Throw a specific object to be caught by the UI
+                    // eslint-disable-next-line no-throw-literal
+                    throw { requiresPhone: true, message: data.error || 'Phone number required' };
+                }
                 throw new Error(data.error || 'Google login failed');
             }
 
@@ -164,6 +174,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             localStorage.setItem('authToken', data.token);
             localStorage.setItem('authUser', JSON.stringify(data.user));
         } catch (error: any) {
+            if (error.requiresPhone) {
+                throw error;
+            }
             throw new Error(error.message || 'Google login failed');
         }
     };
