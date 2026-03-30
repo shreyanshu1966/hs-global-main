@@ -674,7 +674,7 @@ exports.loginWithOTP = async (req, res) => {
 // @access  Public
 exports.googleAuth = async (req, res) => {
     try {
-        const { token } = req.body;
+        const { token, phone } = req.body;
         
         if (!token) {
             return res.status(400).json({ ok: false, error: 'Token is required' });
@@ -696,15 +696,55 @@ exports.googleAuth = async (req, res) => {
         let user = await User.findOne({ email: email.toLowerCase() });
 
         if (!user) {
+            // New user, check if phone is provided
+            if (!phone) {
+                return res.status(400).json({ 
+                    ok: false, 
+                    requiresPhone: true, 
+                    error: 'Please provide a mobile number to complete registration' 
+                });
+            }
+
+            // Phone validation
+            const phoneRegex = /^\+?[\d\s-]{10,15}$/;
+            if (!phoneRegex.test(phone)) {
+                return res.status(400).json({ 
+                    ok: false, 
+                    error: 'Please provide a valid phone number' 
+                });
+            }
+
             // Create user
             user = await User.create({
                 name,
                 email: email.toLowerCase(),
                 googleId: sub,
+                phone,
                 emailVerified: email_verified,
                 avatar: picture
             });
         } else {
+            // User exists, but doesn't have a phone number yet
+            if (!user.phone) {
+                if (!phone) {
+                    return res.status(400).json({ 
+                        ok: false, 
+                        requiresPhone: true, 
+                        error: 'Please provide a mobile number to continue' 
+                    });
+                }
+                
+                // Phone validation
+                const phoneRegex = /^\+?[\d\s-]{10,15}$/;
+                if (!phoneRegex.test(phone)) {
+                    return res.status(400).json({ 
+                        ok: false, 
+                        error: 'Please provide a valid phone number' 
+                    });
+                }
+                user.phone = phone;
+            }
+
             // If user exists but doesn't have googleId or avatar, update it
             if (!user.googleId || !user.avatar) {
                 user.googleId = sub;
@@ -712,9 +752,10 @@ exports.googleAuth = async (req, res) => {
                 if (!user.avatar) {
                     user.avatar = picture;
                 }
-                user.emailVerified = user.emailVerified || email_verified;
-                await user.save({ validateBeforeSave: false });
             }
+            
+            user.emailVerified = user.emailVerified || email_verified;
+            await user.save({ validateBeforeSave: false });
         }
 
         const jwtToken = generateToken(user._id);
