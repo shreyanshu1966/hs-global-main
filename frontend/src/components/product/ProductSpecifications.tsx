@@ -154,9 +154,7 @@ export function ProductSpecifications({ product, selectedFinish, selectedThickne
                     </div>
                 </div>
             )}
-            <p className="text-[11px] uppercase tracking-[0.1em] text-[#64748b] border-t border-[#e2e8f0] pt-3">
-                Matches 1stDibs-style item taxonomy and transactional detail presentation.
-            </p>
+
         </div>
     );
 }
