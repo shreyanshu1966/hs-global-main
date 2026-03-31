@@ -224,7 +224,7 @@ export function ProductInfo({
                             className="h-14 flex items-center justify-center border border-[#2B2B2B] text-[#2B2B2B] hover:bg-[#2B2B2B] hover:text-[#f8f2e8] transition-colors duration-300 font-semibold tracking-[0.08em] uppercase font-sans gap-2 bg-white"
                         >
                             <FileText className="w-4 h-4" />
-                            Suggest A Price
+                            Contact seller
                         </a>
                     ) : (
                         <a
@@ -234,7 +234,7 @@ export function ProductInfo({
                             className="h-14 flex items-center justify-center border border-[#1f6b55] text-[#1f6b55] hover:bg-[#1f6b55] hover:text-[#f5efe2] transition-colors duration-300 font-semibold tracking-[0.08em] uppercase font-sans gap-2 bg-white"
                         >
                             <MessageCircle className="w-4 h-4" />
-                            Suggest A Price
+                            Contact seller
                         </a>
                     )}
                 </div>
