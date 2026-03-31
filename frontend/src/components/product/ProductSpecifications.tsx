@@ -32,24 +32,14 @@ export function ProductSpecifications({ product, selectedFinish, selectedThickne
                 >
                     Item Details
                 </button>
-                <button
-                    onClick={() => setActiveTab('designer')}
-                    className={`px-3 py-2 text-[11px] uppercase tracking-[0.1em] border transition-colors ${activeTab === 'designer' ? 'bg-[#111827] text-white border-[#111827]' : 'bg-white text-[#334155] border-[#cbd5e1] hover:border-[#94a3b8]'}`}
-                >
-                    Designer / Maker
-                </button>
+
                 <button
                     onClick={() => setActiveTab('custom')}
                     className={`px-3 py-2 text-[11px] uppercase tracking-[0.1em] border transition-colors ${activeTab === 'custom' ? 'bg-[#111827] text-white border-[#111827]' : 'bg-white text-[#334155] border-[#cbd5e1] hover:border-[#94a3b8]'}`}
                 >
                     Customization
                 </button>
-                <button
-                    onClick={() => setActiveTab('seller')}
-                    className={`px-3 py-2 text-[11px] uppercase tracking-[0.1em] border transition-colors ${activeTab === 'seller' ? 'bg-[#111827] text-white border-[#111827]' : 'bg-white text-[#334155] border-[#cbd5e1] hover:border-[#94a3b8]'}`}
-                >
-                    Seller Information
-                </button>
+
                 <button
                     onClick={() => setActiveTab('shipping')}
                     className={`px-3 py-2 text-[11px] uppercase tracking-[0.1em] border transition-colors ${activeTab === 'shipping' ? 'bg-[#111827] text-white border-[#111827]' : 'bg-white text-[#334155] border-[#cbd5e1] hover:border-[#94a3b8]'}`}
@@ -74,26 +64,7 @@ export function ProductSpecifications({ product, selectedFinish, selectedThickne
                 </div>
             )}
 
-            {activeTab === 'designer' && (
-                <div className="grid md:grid-cols-2 gap-x-8">
-                    <div className="flex justify-between items-center py-3 border-b border-[#e2e8f0] gap-6">
-                        <span className="font-sans font-semibold text-[#1f2937] uppercase tracking-[0.1em] text-[11px]">Designer</span>
-                        <span className="font-sans text-[#475569] text-sm text-right">HS Global Curated</span>
-                    </div>
-                    <div className="flex justify-between items-center py-3 border-b border-[#e2e8f0] gap-6">
-                        <span className="font-sans font-semibold text-[#1f2937] uppercase tracking-[0.1em] text-[11px]">Style</span>
-                        <span className="font-sans text-[#475569] text-sm text-right capitalize">{product.subcategory || product.category}</span>
-                    </div>
-                    <div className="flex justify-between items-center py-3 border-b border-[#e2e8f0] gap-6">
-                        <span className="font-sans font-semibold text-[#1f2937] uppercase tracking-[0.1em] text-[11px]">Period</span>
-                        <span className="font-sans text-[#475569] text-sm text-right">Contemporary</span>
-                    </div>
-                    <div className="flex justify-between items-center py-3 border-b border-[#e2e8f0] gap-6">
-                        <span className="font-sans font-semibold text-[#1f2937] uppercase tracking-[0.1em] text-[11px]">Production Type</span>
-                        <span className="font-sans text-[#475569] text-sm text-right">New & Custom</span>
-                    </div>
-                </div>
-            )}
+
 
             {activeTab === 'custom' && (
                 <div className="space-y-4">
@@ -113,26 +84,7 @@ export function ProductSpecifications({ product, selectedFinish, selectedThickne
                 </div>
             )}
 
-            {activeTab === 'seller' && (
-                <div className="grid md:grid-cols-2 gap-x-8">
-                    <div className="flex justify-between items-center py-3 border-b border-[#e2e8f0] gap-6">
-                        <span className="font-sans font-semibold text-[#1f2937] uppercase tracking-[0.1em] text-[11px]">Seller</span>
-                        <span className="font-sans text-[#475569] text-sm text-right">HS Global Export</span>
-                    </div>
-                    <div className="flex justify-between items-center py-3 border-b border-[#e2e8f0] gap-6">
-                        <span className="font-sans font-semibold text-[#1f2937] uppercase tracking-[0.1em] text-[11px]">Seller Location</span>
-                        <span className="font-sans text-[#475569] text-sm text-right">India</span>
-                    </div>
-                    <div className="flex justify-between items-center py-3 border-b border-[#e2e8f0] gap-6">
-                        <span className="font-sans font-semibold text-[#1f2937] uppercase tracking-[0.1em] text-[11px]">Seller Type</span>
-                        <span className="font-sans text-[#475569] text-sm text-right">Vetted Professional Seller</span>
-                    </div>
-                    <div className="flex justify-between items-center py-3 border-b border-[#e2e8f0] gap-6">
-                        <span className="font-sans font-semibold text-[#1f2937] uppercase tracking-[0.1em] text-[11px]">Response</span>
-                        <span className="font-sans text-[#475569] text-sm text-right">Typically within 24 hours</span>
-                    </div>
-                </div>
-            )}
+
 
             {activeTab === 'shipping' && (
                 <div className="grid md:grid-cols-2 gap-x-8">
