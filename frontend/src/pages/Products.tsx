@@ -163,23 +163,8 @@ const Products = () => {
 
       {/* Main Page Layout */}
       <div className="min-h-screen bg-gray-50 pb-16">
-        {/* Header / Hero Section */}
-        <div className="bg-white border-b border-gray-200 py-12 px-4 shadow-sm mb-8">
-          <div className="container mx-auto text-center max-w-3xl">
-            <h1 className="text-4xl md:text-5xl font-serif text-gray-900 mb-4 capitalize">
-              {activeSubcategory
-                ? activeSubcategory.replace(/-/g, ' ')
-                : activeCategory
-                  ? activeCategory.replace(/-/g, ' ')
-                  : 'All Collection'}
-            </h1>
-            <p className="text-gray-500 text-lg">
-              Discover unparalleled luxury in our curated selection of premium stone surfaces and bespoke furniture.
-            </p>
-          </div>
-        </div>
 
-        <div className="w-full max-w-[1680px] mx-auto px-4 sm:px-6 xl:px-8">
+        <div className="w-full max-w-[1680px] mx-auto px-4 sm:px-6 xl:px-8 py-12">
           <div className="flex flex-col lg:flex-row gap-6 xl:gap-8">
 
             {/* Desktop Sidebar Filter */}
