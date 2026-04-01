@@ -1,15 +1,14 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { Helmet } from "react-helmet-async";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Filter, ChevronLeft, ChevronRight } from "lucide-react";
-import { motion } from "framer-motion";
+import { Filter, ChevronLeft, ChevronRight, ArrowUpDown, Check } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 import { useProducts, useCategories } from "../hooks/useProducts";
 import { ProductCard } from "../components/cards/ProductCard";
 import { ProductCardSkeleton } from "../components/cards/ProductCardSkeleton";
 import { FilterSidebar } from "../components/filters/FilterSidebar";
-import { FilterDrawer } from "../components/filters/FilterDrawer";
-import { SortDropdown } from "../components/filters/SortDropdown";
+import { SortDropdown, SORT_OPTIONS, getSortOptionLabel } from "../components/filters/SortDropdown";
 
 const normalizeFilterValue = (value: string) => value.toLowerCase().trim().replace(/\s+/g, "-");
 
@@ -26,7 +25,7 @@ const Products = () => {
   const locationState = location.state as { target?: string } | null;
   const hashTarget = location.hash ? location.hash.substring(1) : "";
 
-  const initialCategory = queryParams.get("category") || "";
+  const initialCategory = queryParams.get("category") || "furniture";
   const rawInitialSubcategory = queryParams.get("subcategory") || locationState?.target || hashTarget || "";
   const initialSubcategory = toCanonicalSubcategory(rawInitialSubcategory);
   const initialMinPrice = queryParams.get("minPrice") ? Number(queryParams.get("minPrice")) : undefined;
@@ -44,7 +43,8 @@ const Products = () => {
   const limit = 12; // Items per page
 
   // UI State
-  const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false);
+  const [isMobilePriceFilterOpen, setIsMobilePriceFilterOpen] = useState(false);
+  const [isSortSheetOpen, setIsSortSheetOpen] = useState(false);
   const filterSidebarRef = useRef<HTMLDivElement>(null);
 
   // Trap scroll inside the sidebar so it doesn't propagate to the page
@@ -68,6 +68,9 @@ const Products = () => {
     ...cat,
     subcategories: Array.from(new Set(cat.subcategories.map(sub => toCanonicalSubcategory(sub)).filter(Boolean))).sort((a, b) => a.localeCompare(b))
   })).sort((a, b) => a.category.localeCompare(b.category));
+
+  const furnitureCategoryData = filteredCategories.find((cat) => cat.category === "furniture") || filteredCategories[0];
+  const mobileSubcategoryChips = ["", ...(furnitureCategoryData?.subcategories || [])];
 
   // Fetch Products
   const { products, loading, error, pagination } = useProducts({
@@ -128,6 +131,8 @@ const Products = () => {
 
   const totalItems = pagination?.totalItems || 0;
   const totalPages = pagination?.total || 1;
+  const sortLabel = getSortOptionLabel(sortBy, sortOrder);
+  const activeFilterCount = [activeCategory, activeSubcategory, minPrice, maxPrice].filter(Boolean).length;
 
   return (
     <>
@@ -198,50 +203,152 @@ const Products = () => {
               </div>
             </div>
 
-            {/* Mobile Filter Drawer */}
-            <FilterDrawer
-              isOpen={isFilterDrawerOpen}
-              onClose={() => setIsFilterDrawerOpen(false)}
-              categories={filteredCategories}
-              activeCategory={activeCategory}
-              activeSubcategory={activeSubcategory}
-              minPrice={minPrice}
-              maxPrice={maxPrice}
-              onCategoryChange={handleCategoryChange}
-              onSubcategoryChange={handleSubcategoryChange}
-              onPriceChange={handlePriceChange}
-              onClearFilters={clearFilters}
-            />
-
             {/* Main Product Grid Area */}
             <div className="flex-1">
 
-              {/* Toolbar: Filter Button (Mobile) & Sort Dropdown */}
-              <div className="sticky top-32 lg:top-40 z-30 flex flex-col sm:flex-row items-center justify-between bg-white/90 backdrop-blur-md p-4 rounded-xl shadow-md border border-gray-100 mb-6 gap-4">
-                <div className="flex items-center justify-between w-full sm:w-auto">
-                  <button
-                    onClick={() => setIsFilterDrawerOpen(true)}
-                    className="lg:hidden flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-50"
-                  >
-                    <Filter className="w-4 h-4" />
-                    <span>Filters {activeCategory || minPrice || maxPrice ? '(Active)' : ''}</span>
-                  </button>
-                  <span className="text-sm text-gray-500 block sm:hidden">
-                    {totalItems} Results
-                  </span>
-                </div>
-
-                <div className="flex items-center justify-between w-full sm:w-auto gap-4">
-                  <span className="text-sm text-gray-500 hidden sm:block">
-                    Showing <span className="font-medium text-gray-900">{products.length}</span> of <span className="font-medium text-gray-900">{totalItems}</span>
-                  </span>
-                  <SortDropdown
-                    currentSortBy={sortBy}
-                    currentSortOrder={sortOrder}
-                    onSortChange={handleSortChange}
-                  />
+              {/* Mobile Sticky Subcategory Chips */}
+              <div className="lg:hidden sticky top-[calc(var(--itsbits-header-offset)+8px)] z-30 bg-white/95 backdrop-blur-md rounded-xl shadow-md border border-gray-100 mb-3">
+                <div
+                  className="px-3 pt-3 pb-2 overflow-x-auto [&::-webkit-scrollbar]:hidden"
+                  style={{ msOverflowStyle: "none", scrollbarWidth: "none" }}
+                >
+                  <div className="flex items-center gap-2 min-w-max">
+                    {mobileSubcategoryChips.map((subcategory) => (
+                      <button
+                        key={subcategory || "all-subcategories"}
+                        onClick={() => {
+                          setActiveCategory(furnitureCategoryData?.category || "furniture");
+                          if (!subcategory) {
+                            setActiveSubcategory("");
+                          } else {
+                            setActiveSubcategory((prev) => (prev === subcategory ? "" : subcategory));
+                          }
+                          setPage(1);
+                        }}
+                        className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap border transition-colors ${
+                          (!subcategory && !activeSubcategory) || activeSubcategory === subcategory
+                            ? "bg-amber-600 border-amber-600 text-white"
+                            : "bg-white border-gray-200 text-gray-700"
+                        }`}
+                        aria-label={subcategory ? `Switch to ${subcategory.replace(/-/g, " ")} subcategory` : "Show all subcategories"}
+                      >
+                        {subcategory ? subcategory.replace(/-/g, ' ') : 'All'}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
+
+              {/* Mobile Filter/Sort Actions */}
+              <div className="lg:hidden bg-white/95 backdrop-blur-md rounded-xl shadow-md border border-gray-100 mb-6">
+                <div className="grid grid-cols-2 gap-2 p-3 pt-1 border-t border-gray-100">
+                  <button
+                    onClick={() => setIsMobilePriceFilterOpen((prev) => !prev)}
+                    className="flex items-center justify-center gap-2 h-11 border border-gray-200 rounded-lg text-gray-700 bg-white"
+                  >
+                    <Filter className="w-4 h-4" />
+                    <span>Filter{activeFilterCount > 0 ? ` (${activeFilterCount})` : ""}</span>
+                  </button>
+                  <button
+                    onClick={() => setIsSortSheetOpen(true)}
+                    className="flex items-center justify-center gap-2 h-11 border border-gray-200 rounded-lg text-gray-700 bg-white"
+                  >
+                    <ArrowUpDown className="w-4 h-4" />
+                    <span className="truncate max-w-[140px]">{sortLabel}</span>
+                  </button>
+                </div>
+                <div className="px-3 pb-3 text-xs text-gray-500">{totalItems} results</div>
+
+                <AnimatePresence>
+                  {isMobilePriceFilterOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -8 }}
+                      className="px-3 pb-3"
+                    >
+                      <div className="bg-white border border-gray-200 rounded-xl shadow-lg p-4">
+                        <FilterSidebar
+                          categories={filteredCategories}
+                          activeCategory={activeCategory}
+                          activeSubcategory={activeSubcategory}
+                          hideCategorySelection
+                          minPrice={minPrice}
+                          maxPrice={maxPrice}
+                          onCategoryChange={handleCategoryChange}
+                          onSubcategoryChange={handleSubcategoryChange}
+                          onPriceChange={handlePriceChange}
+                          onClearFilters={clearFilters}
+                        />
+                        <button
+                          onClick={() => setIsMobilePriceFilterOpen(false)}
+                          className="w-full mt-3 h-10 rounded-lg bg-amber-600 text-white text-sm font-medium"
+                        >
+                          Apply Price Filter
+                        </button>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Desktop Toolbar */}
+              <div className="hidden lg:flex sticky top-40 z-30 items-center justify-between bg-white/90 backdrop-blur-md p-4 rounded-xl shadow-md border border-gray-100 mb-6 gap-4">
+                <span className="text-sm text-gray-500">
+                  Showing <span className="font-medium text-gray-900">{products.length}</span> of <span className="font-medium text-gray-900">{totalItems}</span>
+                </span>
+                <SortDropdown
+                  currentSortBy={sortBy}
+                  currentSortOrder={sortOrder}
+                  onSortChange={handleSortChange}
+                />
+              </div>
+
+              {/* Mobile Sort Bottom Sheet */}
+              <AnimatePresence>
+                {isSortSheetOpen && (
+                  <>
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      onClick={() => setIsSortSheetOpen(false)}
+                      className="fixed inset-0 bg-black/40 z-40 lg:hidden"
+                    />
+                    <motion.div
+                      initial={{ y: "100%" }}
+                      animate={{ y: 0 }}
+                      exit={{ y: "100%" }}
+                      transition={{ type: "spring", damping: 25, stiffness: 220 }}
+                      className="fixed inset-x-0 bottom-0 z-50 bg-white rounded-t-2xl shadow-2xl p-5 lg:hidden"
+                    >
+                      <h3 className="text-base font-semibold text-gray-900 mb-4">Sort by</h3>
+                      <div className="space-y-2 max-h-[60vh] overflow-y-auto pb-2">
+                        {SORT_OPTIONS.map((option) => {
+                          const selected = option.sortBy === sortBy && option.sortOrder === sortOrder;
+                          return (
+                            <button
+                              key={`${option.sortBy}-${option.sortOrder}`}
+                              onClick={() => {
+                                handleSortChange(option.sortBy, option.sortOrder);
+                                setIsSortSheetOpen(false);
+                              }}
+                              className={`w-full h-12 px-4 rounded-lg flex items-center justify-between text-sm border ${
+                                selected
+                                  ? "border-amber-500 bg-amber-50 text-amber-700 font-medium"
+                                  : "border-gray-200 text-gray-700"
+                              }`}
+                            >
+                              <span>{option.label}</span>
+                              {selected && <Check className="w-4 h-4" />}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </motion.div>
+                  </>
+                )}
+              </AnimatePresence>
 
               {/* Error State */}
               {error && (

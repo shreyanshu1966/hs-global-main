@@ -65,8 +65,6 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
         !!minPrice ||
         !!maxPrice;
 
-    const currentCategoryData = categories.find(c => c.category === activeCategory);
-
     return (
         <aside className="w-full">
             <div className="flex items-center justify-between mb-6">
@@ -82,44 +80,23 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
                 )}
             </div>
 
-            <Accordion.Root type="multiple" defaultValue={['categories', 'price']} className="space-y-6">
-                {/* Categories Section */}
-                <Accordion.Item value="categories" className="border-b border-gray-200 pb-6">
-                    <Accordion.Header>
-                        <Accordion.Trigger className="flex w-full items-center justify-between text-gray-900 mb-4 group">
-                            <span className="font-medium">Category</span>
-                            <ChevronDown className="w-4 h-4 transition-transform duration-200 group-data-[state=open]:rotate-180" />
-                        </Accordion.Trigger>
-                    </Accordion.Header>
-                    <Accordion.Content className="overflow-hidden data-[state=closed]:animate-slideUp data-[state=open]:animate-slideDown">
-                        <div className="space-y-3 pt-1">
-                            {hideCategorySelection ? (
-                                currentCategoryData && currentCategoryData.subcategories && currentCategoryData.subcategories.length > 0 ? (
-                                    <div className="pl-4 space-y-2 mt-2 border-l border-gray-100">
-                                        <button
-                                            onClick={() => onSubcategoryChange("")}
-                                            className={`block w-full text-left text-sm capitalize ${!activeSubcategory ? "text-amber-600 font-medium" : "text-gray-500 hover:text-black"}`}
-                                        >
-                                            All in {currentCategoryData.category.replace(/-/g, ' ')}
-                                        </button>
-                                        {currentCategoryData.subcategories.map(sub => (
-                                            <button
-                                                key={sub}
-                                                onClick={() => onSubcategoryChange(sub)}
-                                                className={`block w-full text-left text-sm capitalize ${activeSubcategory === sub ? "text-amber-600 font-medium" : "text-gray-500 hover:text-black"}`}
-                                            >
-                                                {sub.replace(/-/g, ' ')}
-                                            </button>
-                                        ))}
-                                    </div>
-                                ) : null
-                            ) : (
+            <Accordion.Root type="multiple" defaultValue={hideCategorySelection ? ['price'] : ['categories', 'price']} className="space-y-6">
+                {!hideCategorySelection && (
+                    <Accordion.Item value="categories" className="border-b border-gray-200 pb-6">
+                        <Accordion.Header>
+                            <Accordion.Trigger className="flex w-full items-center justify-between text-gray-900 mb-4 group">
+                                <span className="font-medium">Category</span>
+                                <ChevronDown className="w-4 h-4 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+                            </Accordion.Trigger>
+                        </Accordion.Header>
+                        <Accordion.Content className="overflow-hidden data-[state=closed]:animate-slideUp data-[state=open]:animate-slideDown">
+                            <div className="space-y-3 pt-1">
                                 <div className="space-y-4">
                                     <button
                                         key="all"
-                                        onClick={() => { 
-                                            onCategoryChange(""); 
-                                            onSubcategoryChange(""); 
+                                        onClick={() => {
+                                            onCategoryChange("");
+                                            onSubcategoryChange("");
                                         }}
                                         className={`block w-full text-left text-sm ${!activeCategory ? "text-amber-600 font-medium" : "text-gray-600 hover:text-black"}`}
                                     >
@@ -162,10 +139,10 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
                                         </div>
                                     ))}
                                 </div>
-                            )}
-                        </div>
-                    </Accordion.Content>
-                </Accordion.Item>
+                            </div>
+                        </Accordion.Content>
+                    </Accordion.Item>
+                )}
 
                 {/* Price Section */}
                 <Accordion.Item value="price" className="border-b border-gray-200 pb-6">
