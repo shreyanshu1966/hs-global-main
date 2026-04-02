@@ -52,10 +52,15 @@ const STORAGE_KEY = 'hs-global-currency';
 const AUTO_DETECT_KEY = 'hs-global-currency-auto-detect';
 const API_URL = `${import.meta.env.VITE_API_URL || '/api'}/currency/rates`;
 
+// Business rule: India keeps geo-location IN, but pricing currency must be USD.
+const COUNTRY_CURRENCY_OVERRIDES: Record<string, string> = {
+    IN: 'USD',
+};
+
 // Country code to currency mapping (Fallback if API doesn't provide it)
 const COUNTRY_TO_CURRENCY: Record<string, string> = {
     US: 'USD', CA: 'CAD', GB: 'GBP', AU: 'AUD', NZ: 'NZD',
-    IN: 'INR', PK: 'PKR', BD: 'BDT', LK: 'LKR', NP: 'NPR',
+    IN: 'USD', PK: 'PKR', BD: 'BDT', LK: 'LKR', NP: 'NPR',
     AE: 'AED', SA: 'SAR', QA: 'QAR', KW: 'KWD', OM: 'OMR', BH: 'BHD',
     SG: 'SGD', MY: 'MYR', TH: 'THB', ID: 'IDR', PH: 'PHP', VN: 'VND',
     JP: 'JPY', KR: 'KRW', CN: 'CNY', HK: 'HKD', TW: 'TWD',
@@ -72,10 +77,16 @@ const CurrencyContext = createContext<CurrencyContextType | undefined>(undefined
 
 export const CurrencyProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const { location, loading: locationLoading } = useLocalization();
-    const [currency, setCurrencyState] = useState<string>('INR');
+    const [currency, setCurrencyState] = useState<string>('USD');
     const [exchangeRates, setExchangeRates] = useState<ExchangeRates>(DEFAULT_RATES);
     const [loading, setLoading] = useState(true);
     const [isAutoDetectEnabled, setIsAutoDetectEnabled] = useState(true);
+    const [countryOverrides, setCountryOverrides] = useState<Record<string, string>>(COUNTRY_CURRENCY_OVERRIDES);
+
+    const normalizeCurrency = useCallback((code?: string | null): string => {
+        if (!code) return 'USD';
+        return code === 'INR' ? 'USD' : code;
+    }, []);
 
     // ==================== 1. LOAD SAVED PREFERENCES ====================
     useEffect(() => {
@@ -83,11 +94,15 @@ export const CurrencyProvider: React.FC<{ children: ReactNode }> = ({ children }
         const autoDetect = localStorage.getItem(AUTO_DETECT_KEY);
 
         if (autoDetect === 'false' && savedCurrency) {
-            setCurrencyState(savedCurrency);
+            const normalized = normalizeCurrency(savedCurrency);
+            setCurrencyState(normalized);
+            if (normalized !== savedCurrency) {
+                localStorage.setItem(STORAGE_KEY, normalized);
+            }
             setIsAutoDetectEnabled(false);
-            console.log(`💱 [Currency] Using saved currency: ${savedCurrency}`);
+            console.log(`💱 [Currency] Using saved currency: ${normalized}`);
         }
-    }, []);
+    }, [normalizeCurrency]);
 
     // ==================== 2. LISTEN TO LOCATION CHANGES ====================
     useEffect(() => {
@@ -96,11 +111,17 @@ export const CurrencyProvider: React.FC<{ children: ReactNode }> = ({ children }
         console.log('🌍 [Currency] Adapting to location:', location.country);
 
         // Use currency from location API if available, else map country code
-        let detectedCurrency = location.currency;
+        let detectedCurrency = location.country ? countryOverrides[location.country] : undefined;
+
+        if (!detectedCurrency) {
+            detectedCurrency = location.currency;
+        }
 
         if (!detectedCurrency && location.country) {
             detectedCurrency = COUNTRY_TO_CURRENCY[location.country];
         }
+
+        detectedCurrency = normalizeCurrency(detectedCurrency);
 
         if (detectedCurrency) {
             // Only auto-switch if no valid saved preference overrides it (handled by check above)
@@ -110,7 +131,7 @@ export const CurrencyProvider: React.FC<{ children: ReactNode }> = ({ children }
             console.log('⚠️ [Currency] Could not map location to currency, keeping default.');
         }
 
-    }, [location, locationLoading, isAutoDetectEnabled]);
+    }, [location, locationLoading, isAutoDetectEnabled, countryOverrides, normalizeCurrency]);
 
     // ==================== 3. FETCH EXCHANGE RATES ====================
     useEffect(() => {
@@ -121,6 +142,11 @@ export const CurrencyProvider: React.FC<{ children: ReactNode }> = ({ children }
 
                 if (data.ok && data.rates) {
                     setExchangeRates(data.rates);
+
+                    if (data.countryCurrencyOverrides && typeof data.countryCurrencyOverrides === 'object') {
+                        setCountryOverrides((prev) => ({ ...prev, ...data.countryCurrencyOverrides }));
+                    }
+
                     console.log(`✅ [Currency] Rates loaded from ${data.source}`);
 
                     if (data.nextUpdate) {
@@ -145,12 +171,13 @@ export const CurrencyProvider: React.FC<{ children: ReactNode }> = ({ children }
 
     // ==================== SET CURRENCY ====================
     const setCurrency = useCallback((code: string) => {
-        setCurrencyState(code);
-        localStorage.setItem(STORAGE_KEY, code);
+        const normalized = normalizeCurrency(code);
+        setCurrencyState(normalized);
+        localStorage.setItem(STORAGE_KEY, normalized);
         localStorage.setItem(AUTO_DETECT_KEY, 'false'); // Disable auto-detect on manual selection
         setIsAutoDetectEnabled(false);
-        console.log(`💱 [Currency] Manually changed to ${code} (auto-detect disabled)`);
-    }, []);
+        console.log(`💱 [Currency] Manually changed to ${normalized} (auto-detect disabled)`);
+    }, [normalizeCurrency]);
 
     // ==================== CONVERT FROM INR ====================
     const convertFromINR = useCallback((amountINR: number): number => {

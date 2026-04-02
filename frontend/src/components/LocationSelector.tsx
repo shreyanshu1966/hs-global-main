@@ -4,7 +4,6 @@ import { useCurrency } from '../contexts/CurrencyContext';
 
 const CURRENCIES = [
   { code: 'USD', symbol: '$', name: 'US Dollar', flag: '🇺🇸' },
-  { code: 'INR', symbol: '₹', name: 'Indian Rupee', flag: '🇮🇳' },
   { code: 'EUR', symbol: '€', name: 'Euro', flag: '🇪🇺' },
   { code: 'GBP', symbol: '£', name: 'British Pound', flag: '🇬🇧' },
   { code: 'AED', symbol: 'د.إ', name: 'UAE Dirham', flag: '🇦🇪' },
@@ -174,7 +173,7 @@ export const LocationSelector: React.FC = () => {
       {/* Info */}
       <div className="text-xs text-gray-500 bg-amber-50 border border-amber-200 rounded-lg p-2.5 flex items-start gap-2">
         <span className="text-lg leading-none">💱</span>
-        <span className="pt-0.5">Prices displayed in selected currency. Payments in INR.</span>
+        <span className="pt-0.5">Prices displayed in selected currency. Payments in USD.</span>
       </div>
     </>
   );
