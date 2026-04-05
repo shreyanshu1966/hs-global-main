@@ -1,0 +1,48 @@
+{
+  "timestamp": "2026-04-05T12:21:09.180Z",
+  "mode": "dry-run",
+  "csvPath": "new products/Latest Etsy All Product Title Desc   - Sheet1 (1).csv",
+  "photosPath": "new products/Etsy All Product Photos",
+  "totals": {
+    "csvRows": 132,
+    "photoFolders": 130,
+    "productsPrepared": 126,
+    "issues": 6
+  },
+  "issues": [
+    {
+      "type": "missing-images",
+      "serial": 12,
+      "title": "Round Travertine Dining Table with Sculptural Stone Base | Handmade Natural Stone Table | Organic Modern Stone Furniture by Design For Ages"
+    },
+    {
+      "type": "missing-images",
+      "serial": 18,
+      "title": "Custom Round Multicolor Marble Coffee Table with Sculptural Stone Base | Travertine Coffee Table | Handmade Natural Stone Furniture Design for Living Room by Design For Ages"
+    },
+    {
+      "type": "missing-images",
+      "serial": 37,
+      "title": "Handcrafted Pink Marble Vessel Sink: Round Stone Bathroom Basin | Circular Stone Basin | Custom Sizes Available by Design For Ages"
+    },
+    {
+      "type": "missing-images",
+      "serial": 89,
+      "title": "Dark Marble Pedestal Sink Luxury Stone Basin | DesignForAges"
+    },
+    {
+      "type": "missing-images",
+      "serial": 118,
+      "title": "Marble Flower Vessel Sink Hand Carved Stone Basin | DesignForAges"
+    },
+    {
+      "type": "missing-images",
+      "serial": 122,
+      "title": "Fluted Marble Vessel Sink Round Stone Bathroom Basin | DesignForAges"
+    }
+  ],
+  "database": {
+    "skipped": true,
+    "message": "Dry run only. Use --apply to delete old products and insert new ones."
+  }
+}
