@@ -1,0 +1,530 @@
+{
+  "meta": {
+    "generatedAt": "2026-04-05T10:23:05.657Z",
+    "mode": "prepare",
+    "csvPath": "D:\\hs-global-main\\Kewal 19-03-2026\\Latest Etsy All Product Title Desc   - Sheet1.csv",
+    "dbHost": "localhost",
+    "dbName": "hs_global_export",
+    "totalDbProducts": 73
+  },
+  "summary": {
+    "rows": 132,
+    "noPrice": 9,
+    "matched": 73,
+    "unmatched": 0,
+    "duplicateMatches": 50
+  },
+  "updates": [
+    {
+      "productId": "black-marble-side-table",
+      "name": "Black Marble Side Table",
+      "priceINR": 172500,
+      "strategy": "fuzzy:0.93:4t",
+      "score": 0.93
+    },
+    {
+      "productId": "green-marble-coffee-table",
+      "name": "Green Marble Coffee Table",
+      "priceINR": 225000,
+      "strategy": "fuzzy:0.93:4t",
+      "score": 0.93
+    },
+    {
+      "productId": "green-marble-console-table",
+      "name": "Green Marble Console Table",
+      "priceINR": 442500,
+      "strategy": "fuzzy:0.93:4t",
+      "score": 0.93
+    },
+    {
+      "productId": "green-marble-side-table",
+      "name": "Green Marble Side Table",
+      "priceINR": 150000,
+      "strategy": "fuzzy:0.93:4t",
+      "score": 0.93
+    },
+    {
+      "productId": "green-marble-vessel-sink",
+      "name": "Green Marble Vessel Sink",
+      "priceINR": 146250,
+      "strategy": "fuzzy:0.93:4t",
+      "score": 0.93
+    },
+    {
+      "productId": "travertine-stone-side-table",
+      "name": "Travertine Stone Side Table",
+      "priceINR": 187500,
+      "strategy": "fuzzy:0.93:4t",
+      "score": 0.93
+    },
+    {
+      "productId": "white-marble-coffee-table",
+      "name": "White Marble Coffee Table",
+      "priceINR": 300000,
+      "strategy": "fuzzy:0.93:4t",
+      "score": 0.93
+    },
+    {
+      "productId": "white-marble-side-table",
+      "name": "White Marble Side Table",
+      "priceINR": 150000,
+      "strategy": "fuzzy:0.93:4t",
+      "score": 0.93
+    },
+    {
+      "productId": "green-marble-entryway-console-table",
+      "name": "Green Marble Entryway Console Table",
+      "priceINR": 450000,
+      "strategy": "fuzzy:0.90:5t",
+      "score": 0.9
+    },
+    {
+      "productId": "modern-sculptural-marble-console-table",
+      "name": "Modern Sculptural Marble Console Table",
+      "priceINR": 465000,
+      "strategy": "fuzzy:0.90:5t",
+      "score": 0.9
+    },
+    {
+      "productId": "white-textured-marble-basin",
+      "name": "White Textured Marble Basin",
+      "priceINR": 210000,
+      "strategy": "fuzzy:0.85:4t",
+      "score": 0.85
+    },
+    {
+      "productId": "white-marble-console-table-with-metal-legs",
+      "name": "White Marble Console Table With Metal Legs",
+      "priceINR": 487500,
+      "strategy": "fuzzy:0.82:6t",
+      "score": 0.8196
+    },
+    {
+      "productId": "banswara-white-marble-console-table",
+      "name": "Banswara White Marble Console Table",
+      "priceINR": 435000,
+      "strategy": "fuzzy:0.80:4t",
+      "score": 0.8
+    },
+    {
+      "productId": "banswara-white-marble-side-table",
+      "name": "Banswara White Marble Side Table",
+      "priceINR": 168750,
+      "strategy": "fuzzy:0.80:4t",
+      "score": 0.8
+    },
+    {
+      "productId": "black-marble-block",
+      "name": "Black Marble Block",
+      "priceINR": 191250,
+      "strategy": "fuzzy:0.80:3t",
+      "score": 0.8
+    },
+    {
+      "productId": "marine-black-marble-side-table",
+      "name": "Marine Black Marble Side Table",
+      "priceINR": 168750,
+      "strategy": "fuzzy:0.80:4t",
+      "score": 0.8
+    },
+    {
+      "productId": "emerald-green-marble-coffee-table",
+      "name": "Emerald Green Marble Coffee Table",
+      "priceINR": 262500,
+      "strategy": "fuzzy:0.75:4t",
+      "score": 0.7533
+    },
+    {
+      "productId": "green-marble-polished-console-table",
+      "name": "Green Marble Polished Console Table",
+      "priceINR": 487500,
+      "strategy": "fuzzy:0.75:4t",
+      "score": 0.7533
+    },
+    {
+      "productId": "hand-carved-marble-lotus-flower",
+      "name": "Hand Carved Marble Lotus Flower",
+      "priceINR": 142500,
+      "strategy": "fuzzy:0.75:4t",
+      "score": 0.7533
+    },
+    {
+      "productId": "marble-nesting-coffee-table-set",
+      "name": "Marble Nesting Coffee Table Set",
+      "priceINR": 243750,
+      "strategy": "fuzzy:0.75:4t",
+      "score": 0.7533
+    },
+    {
+      "productId": "panda-white-marble-side-table",
+      "name": "Panda White Marble Side Table",
+      "priceINR": 120000,
+      "strategy": "fuzzy:0.75:4t",
+      "score": 0.7533
+    },
+    {
+      "productId": "striped-white-marble-pedestal-sink",
+      "name": "Striped White Marble Pedestal Sink",
+      "priceINR": 206250,
+      "strategy": "fuzzy:0.75:4t",
+      "score": 0.7533
+    },
+    {
+      "productId": "travertine-stone-arch-console-table",
+      "name": "Travertine Stone Arch Console Table",
+      "priceINR": 581250,
+      "strategy": "fuzzy:0.75:4t",
+      "score": 0.7533
+    },
+    {
+      "productId": "aurora-marble-table-lamp",
+      "name": "Aurora Marble Table Lamp",
+      "priceINR": 160000,
+      "strategy": "fuzzy:0.75:3t",
+      "score": 0.75
+    },
+    {
+      "productId": "decorative-carved-stone",
+      "name": "Decorative Carved Stone",
+      "priceINR": 15000,
+      "strategy": "fuzzy:0.72:3t",
+      "score": 0.7156
+    },
+    {
+      "productId": "exotic-white-marble-arch-console-table",
+      "name": "Exotic White Marble Arch Console Table",
+      "priceINR": 487500,
+      "strategy": "fuzzy:0.71:4t",
+      "score": 0.7133
+    },
+    {
+      "productId": "luxury-polished-black-marble-side-table",
+      "name": "Luxury Polished Black Marble Side Table",
+      "priceINR": 150000,
+      "strategy": "fuzzy:0.71:4t",
+      "score": 0.7133
+    },
+    {
+      "productId": "polished-travertine-coffee-table-with-planter",
+      "name": "Polished Travertine Coffee Table With Planter",
+      "priceINR": 300000,
+      "strategy": "fuzzy:0.71:4t",
+      "score": 0.7133
+    },
+    {
+      "productId": "travertine-stone-console-table",
+      "name": "Travertine Stone Console Table",
+      "priceINR": 161250,
+      "strategy": "fuzzy:0.70:3t",
+      "score": 0.6975
+    },
+    {
+      "productId": "marine-black-stone-side-table",
+      "name": "Marine Black Stone Side Table",
+      "priceINR": 157500,
+      "strategy": "fuzzy:0.70:4t",
+      "score": 0.695
+    },
+    {
+      "productId": "polished-modern-luxury-stone-side-table",
+      "name": "Polished Modern Luxury Stone Side Table",
+      "priceINR": 300000,
+      "strategy": "fuzzy:0.67:5t",
+      "score": 0.6667
+    },
+    {
+      "productId": "black-and-white-marble-cube-table",
+      "name": "Black And White Marble Cube Table",
+      "priceINR": 281250,
+      "strategy": "fuzzy:0.67:4t",
+      "score": 0.6667
+    },
+    {
+      "productId": "luxury-katni-pink-marble-coffee-table",
+      "name": "Luxury Katni Pink Marble Coffee Table",
+      "priceINR": 247500,
+      "strategy": "fuzzy:0.67:4t",
+      "score": 0.6667
+    },
+    {
+      "productId": "ashby-round-side-table",
+      "name": "Ashby Round Side Table",
+      "priceINR": 135000,
+      "strategy": "fuzzy:0.66:3t",
+      "score": 0.6625
+    },
+    {
+      "productId": "green-emerald-marble-block",
+      "name": "Green Emerald Marble Block",
+      "priceINR": 232500,
+      "strategy": "fuzzy:0.66:3t",
+      "score": 0.6625
+    },
+    {
+      "productId": "fantasy-brown-marble-side-table",
+      "name": "Fantasy Brown Marble Side Table",
+      "priceINR": 165000,
+      "strategy": "fuzzy:0.65:3t",
+      "score": 0.6525
+    },
+    {
+      "productId": "nautilus-marble-sink",
+      "name": "Nautilus Marble Sink",
+      "priceINR": 172500,
+      "strategy": "fuzzy:0.61:2t",
+      "score": 0.6083
+    },
+    {
+      "productId": "cappuccino-brown-marble-console-table",
+      "name": "Cappuccino Brown Marble Console Table",
+      "priceINR": 600000,
+      "strategy": "fuzzy:0.60:3t",
+      "score": 0.6
+    },
+    {
+      "productId": "satvario-white-marble-countertop-sink",
+      "name": "Satvario White Marble Countertop Sink",
+      "priceINR": 78750,
+      "strategy": "fuzzy:0.60:3t",
+      "score": 0.6
+    },
+    {
+      "productId": "vondel-side-table",
+      "name": "Vondel Side Table",
+      "priceINR": 135000,
+      "strategy": "fuzzy:0.57:2t",
+      "score": 0.5733
+    },
+    {
+      "productId": "ivory-natural-marble-countertop-sink",
+      "name": "Ivory Natural Marble Countertop Sink",
+      "priceINR": 82500,
+      "strategy": "fuzzy:0.56:3t",
+      "score": 0.565
+    },
+    {
+      "productId": "kumari-grey-natural-stone-sink",
+      "name": "Kumari Grey Natural Stone Sink",
+      "priceINR": 135000,
+      "strategy": "fuzzy:0.56:3t",
+      "score": 0.565
+    },
+    {
+      "productId": "handcrafted-makrana-white-marble-fluted-countertop",
+      "name": "Handcrafted Makrana White Marble Fluted Countertop",
+      "priceINR": 12000,
+      "strategy": "fuzzy:0.54:3t",
+      "score": 0.535
+    },
+    {
+      "productId": "handcrafted-marine-black-marble-console-table",
+      "name": "Handcrafted Marine Black Marble Console Table",
+      "priceINR": 217500,
+      "strategy": "fuzzy:0.54:3t",
+      "score": 0.535
+    },
+    {
+      "productId": "handcrafted-banswara-white-marble-console-table",
+      "name": "Handcrafted Banswara White Marble Console Table",
+      "priceINR": 120000,
+      "strategy": "fuzzy:0.50:3t",
+      "score": 0.5
+    },
+    {
+      "productId": "handcrafted-exotic-white-marble-console-table",
+      "name": "Handcrafted Exotic White Marble Console Table",
+      "priceINR": 99000,
+      "strategy": "fuzzy:0.50:3t",
+      "score": 0.5
+    },
+    {
+      "productId": "beige-travertine-centre-dinning-table",
+      "name": "Beige Travertine Centre-Dinning Table",
+      "priceINR": 525000,
+      "strategy": "fuzzy:0.46:2t",
+      "score": 0.465
+    },
+    {
+      "productId": "mint-sandstone-side-table",
+      "name": "Mint Sandstone Side Table",
+      "priceINR": 135000,
+      "strategy": "fuzzy:0.46:2t",
+      "score": 0.465
+    },
+    {
+      "productId": "natural-marble-pebble-cluster",
+      "name": "Natural Marble Pebble Cluster",
+      "priceINR": 337500,
+      "strategy": "fuzzy:0.46:2t",
+      "score": 0.465
+    },
+    {
+      "productId": "panda-white-marble-countertop",
+      "name": "Panda White Marble Countertop",
+      "priceINR": 900000,
+      "strategy": "fuzzy:0.46:2t",
+      "score": 0.465
+    },
+    {
+      "productId": "white-marble-faceted-countertop",
+      "name": "White Marble Faceted Countertop",
+      "priceINR": 1350000,
+      "strategy": "fuzzy:0.46:2t",
+      "score": 0.465
+    },
+    {
+      "productId": "beige-travertine-curved-round",
+      "name": "Beige Travertine Curved Round",
+      "priceINR": 146250,
+      "strategy": "fuzzy:0.44:2t",
+      "score": 0.4417
+    },
+    {
+      "productId": "forest-green-marble-countertop",
+      "name": "Forest Green Marble Countertop",
+      "priceINR": 460000,
+      "strategy": "fuzzy:0.44:2t",
+      "score": 0.4417
+    },
+    {
+      "productId": "wide-bowl-forest-green-marble",
+      "name": "Wide Bowl Forest Green Marble",
+      "priceINR": 14000,
+      "strategy": "fuzzy:0.40:2t",
+      "score": 0.4
+    },
+    {
+      "productId": "albeta-marble",
+      "name": "Albeta Marble",
+      "priceINR": 225000,
+      "strategy": "fuzzy:0.40:1t",
+      "score": 0.395
+    },
+    {
+      "productId": "bidasar-beige",
+      "name": "Bidasar Beige",
+      "priceINR": 240000,
+      "strategy": "fuzzy:0.40:1t",
+      "score": 0.395
+    },
+    {
+      "productId": "panda-white",
+      "name": "Panda White",
+      "priceINR": 980000,
+      "strategy": "fuzzy:0.40:1t",
+      "score": 0.395
+    },
+    {
+      "productId": "amazon-green",
+      "name": "Amazon Green",
+      "priceINR": 225000,
+      "strategy": "fuzzy:0.38:1t",
+      "score": 0.3833
+    },
+    {
+      "productId": "makrana-white-square-carved",
+      "name": "Makrana White Square Carved",
+      "priceINR": 210000,
+      "strategy": "fuzzy:0.38:2t",
+      "score": 0.3833
+    },
+    {
+      "productId": "lava-oro-spherical-base-table",
+      "name": "Lava Oro Spherical Base Table",
+      "priceINR": 412500,
+      "strategy": "fuzzy:0.38:2t",
+      "score": 0.3767
+    },
+    {
+      "productId": "osaka-beige-travertine",
+      "name": "Osaka Beige Travertine",
+      "priceINR": 225000,
+      "strategy": "fuzzy:0.29:1t",
+      "score": 0.2867
+    },
+    {
+      "productId": "rosso-levanto-oval",
+      "name": "Rosso Levanto Oval",
+      "priceINR": 315000,
+      "strategy": "fuzzy:0.29:1t",
+      "score": 0.2867
+    },
+    {
+      "productId": "white-cluster-bullet",
+      "name": "White Cluster Bullet",
+      "priceINR": 168750,
+      "strategy": "fuzzy:0.29:1t",
+      "score": 0.2867
+    },
+    {
+      "productId": "white-cylindrical-cluster",
+      "name": "White Cylindrical Cluster",
+      "priceINR": 150000,
+      "strategy": "fuzzy:0.28:1t",
+      "score": 0.275
+    },
+    {
+      "productId": "statuario-oval-shaped",
+      "name": "Statuario Oval Shaped",
+      "priceINR": 1000000,
+      "strategy": "fuzzy:0.26:1t",
+      "score": 0.2556
+    },
+    {
+      "productId": "satvario-rounded-table-top",
+      "name": "Satvario Rounded Table Top",
+      "priceINR": 375000,
+      "strategy": "fuzzy:0.25:1t",
+      "score": 0.25
+    },
+    {
+      "productId": "cylindrical-gear-cut-marble",
+      "name": "Cylindrical Gear Cut Marble",
+      "priceINR": 300000,
+      "strategy": "fuzzy:0.23:1t",
+      "score": 0.2325
+    },
+    {
+      "productId": "lotus-petal-floral-carved",
+      "name": "Lotus Petal Floral Carved",
+      "priceINR": 146250,
+      "strategy": "fuzzy:0.23:1t",
+      "score": 0.2325
+    },
+    {
+      "productId": "multi-color-rectangular-flutted",
+      "name": "Multi Color Rectangular Flutted",
+      "priceINR": 135000,
+      "strategy": "fuzzy:0.23:1t",
+      "score": 0.2325
+    },
+    {
+      "productId": "spider-green-beige-designer",
+      "name": "Spider Green Beige Designer",
+      "priceINR": 1000000,
+      "strategy": "fuzzy:0.23:1t",
+      "score": 0.2325
+    },
+    {
+      "productId": "italic-brown-cylindrical-shaped",
+      "name": "Italic Brown Cylindrical Shaped",
+      "priceINR": 240000,
+      "strategy": "fuzzy:0.22:1t",
+      "score": 0.2208
+    },
+    {
+      "productId": "makrana-white-lotus-ribbed-petals",
+      "name": "Makrana White Lotus Ribbed Petals",
+      "priceINR": 142500,
+      "strategy": "fuzzy:0.19:1t",
+      "score": 0.1883
+    },
+    {
+      "productId": "statuario-block-leg-rounded",
+      "name": "Statuario Block Leg Rounded",
+      "priceINR": 300000,
+      "strategy": "fallback:fuzzy:0.00:0t",
+      "score": 0
+    }
+  ]
+}

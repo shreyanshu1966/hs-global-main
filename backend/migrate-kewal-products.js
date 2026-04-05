@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * ============================================================
- * Kewal Products Migration  —  2-Step Script
+ * Kewal Products Migration  —  3-Step Script
  * ============================================================
  *
  * STEP 1  →  Compress + Upload to Cloudinary → Save JSON
@@ -12,6 +12,18 @@
  *   node migrate-kewal-products.js --step=2
  *   node migrate-kewal-products.js --step=2 --dry-run
  *   node migrate-kewal-products.js --step=2 --skip-delete
+ *
+ * STEP 3  →  Price Update (2-stage supported)
+ *   Direct mode:
+ *     node migrate-kewal-products.js --step=3
+ *   Stage A (prepare plan JSON from CSV + DB):
+ *     node migrate-kewal-products.js --step=3 --price-mode=prepare
+ *   Stage B (apply plan JSON on server):
+ *     node migrate-kewal-products.js --step=3 --price-mode=apply
+ *
+ *   Optional args:
+ *     --csv="../Kewal 19-03-2026/Latest Etsy All Product Title Desc   - Sheet1.csv"
+ *     --plan="../scripts/kewal-price-update-plan.json"
  *
  * WHAT STEP 1 DOES:
  *   - Scans ALL 7 category folders inside "Kewal 19-03-2026/"
@@ -31,6 +43,7 @@
  *   cd backend
  *   node migrate-kewal-products.js --step=1
  *   node migrate-kewal-products.js --step=2
+ *   node migrate-kewal-products.js --step=3
  * ============================================================
  */
 
@@ -42,6 +55,7 @@ const os       = require('os');
 const mongoose = require('mongoose');
 const cloudinary = require('cloudinary').v2;
 const sharp    = require('sharp');
+const { parse: parseCsv } = require('csv-parse/sync');
 
 require('dotenv').config({ path: path.join(__dirname, '.env') });
 
@@ -50,11 +64,33 @@ const args       = process.argv.slice(2);
 const STEP       = (() => { const s = args.find(a => a.startsWith('--step=')); return s ? parseInt(s.split('=')[1]) : null; })();
 const DRY_RUN    = args.includes('--dry-run');
 const SKIP_DELETE = args.includes('--skip-delete');
+const PRICE_MODE = (() => {
+    const m = args.find(a => a.startsWith('--price-mode='));
+    return m ? m.split('=')[1].trim().toLowerCase() : 'direct';
+})();
+const CSV_ARG    = (() => {
+    const csvArg = args.find(a => a.startsWith('--csv='));
+    if (!csvArg) return null;
+    const raw = csvArg.slice('--csv='.length).trim().replace(/^"|"$/g, '');
+    return path.isAbsolute(raw) ? raw : path.resolve(__dirname, raw);
+})();
+const PLAN_ARG   = (() => {
+    const planArg = args.find(a => a.startsWith('--plan='));
+    if (!planArg) return null;
+    const raw = planArg.slice('--plan='.length).trim().replace(/^"|"$/g, '');
+    return path.isAbsolute(raw) ? raw : path.resolve(__dirname, raw);
+})();
 
-if (!STEP || (STEP !== 1 && STEP !== 2)) {
+if (!STEP || (STEP !== 1 && STEP !== 2 && STEP !== 3)) {
     console.error('\n❌  Please specify a step:\n');
     console.error('   node migrate-kewal-products.js --step=1   (upload images → save JSON)');
-    console.error('   node migrate-kewal-products.js --step=2   (import JSON → MongoDB)\n');
+    console.error('   node migrate-kewal-products.js --step=2   (import JSON → MongoDB)');
+    console.error('   node migrate-kewal-products.js --step=3   (read CSV prices → update MongoDB)\n');
+    process.exit(1);
+}
+
+if (STEP === 3 && !['direct', 'prepare', 'apply'].includes(PRICE_MODE)) {
+    console.error('\n❌ Invalid --price-mode. Use one of: direct, prepare, apply\n');
     process.exit(1);
 }
 
@@ -63,6 +99,8 @@ const ROOT         = path.join(__dirname, '..');
 const KEWAL_DIR    = path.join(ROOT, 'Kewal 19-03-2026');
 const VIDEO_DIR    = path.join(ROOT, 'frontend', 'public', 'videos');
 const JSON_DB_FILE = path.join(ROOT, 'scripts', 'kewal-migration-db.json');
+const PRICE_CSV_FILE = path.join(KEWAL_DIR, 'Latest Etsy All Product Title Desc   - Sheet1.csv');
+const PRICE_PLAN_FILE = path.join(ROOT, 'scripts', 'kewal-price-update-plan.json');
 const TEMP_DIR     = path.join(os.tmpdir(), 'kewal-webp');
 
 // ─── IMAGE OPTS (matches old optimize-and-upload-all.js) ──────────────────────
@@ -101,6 +139,229 @@ const normalize = (s) => s.toLowerCase()
     .replace(/[^a-z0-9\s]/g, '')
     .replace(/\s+/g, ' ')
     .trim();
+
+const normalizeHeader = (s) => (s || '')
+    .toString()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+const tokenize = (s) => normalize(s)
+    .split(' ')
+    .filter(w => w && w.length >= 3 && !['designforages', 'design', 'ages'].includes(w));
+
+function parseINR(value) {
+    if (value === null || value === undefined) return null;
+    const raw = String(value).trim();
+    if (!raw) return null;
+    const upper = raw.toUpperCase();
+    if (upper === 'NA' || upper === 'N/A' || upper === 'NONE' || upper === '-') return null;
+
+    const numeric = raw.replace(/[^0-9.]/g, '');
+    if (!numeric) return null;
+    const parsed = Number.parseFloat(numeric);
+    if (!Number.isFinite(parsed) || parsed <= 0) return null;
+
+    const rounded = Math.round(parsed);
+    // Guard against malformed CSV values (e.g., concatenated comma chunks producing absurd prices).
+    if (rounded < 1000 || rounded > 2000000) return null;
+    return rounded;
+}
+
+function extractEtsySlug(urlValue) {
+    if (!urlValue) return null;
+    const input = String(urlValue).trim();
+    if (!input) return null;
+    const match = input.match(/\/listing\/\d+\/([^/?#]+)/i);
+    if (!match || !match[1]) return null;
+    return toSlug(match[1]);
+}
+
+function normalizeCsvRowKeys(row) {
+    const out = {};
+    for (const [key, value] of Object.entries(row || {})) {
+        const cleanedKey = normalizeHeader(key);
+        if (!cleanedKey) continue;
+        out[cleanedKey] = typeof value === 'string' ? value.trim() : value;
+    }
+    return out;
+}
+
+function loadCsvRows(csvText) {
+    const matrix = parseCsv(csvText, {
+        columns: false,
+        skip_empty_lines: false,
+        relax_column_count: true,
+        bom: true,
+    });
+
+    if (!Array.isArray(matrix) || matrix.length < 2) return [];
+
+    const headerRow = (matrix[0] || []).map(v => (v || '').toString().trim());
+    const secondRow = (matrix[1] || []).map(v => (v || '').toString().trim());
+
+    // Some sheets place "Price" in row 2 under an empty header cell.
+    let mergedHeader = [...headerRow];
+    let consumedSecondHeaderRow = false;
+    for (let i = 0; i < mergedHeader.length; i++) {
+        if (!mergedHeader[i] && secondRow[i]) {
+            mergedHeader[i] = secondRow[i];
+            consumedSecondHeaderRow = true;
+        }
+    }
+
+    const dataStart = consumedSecondHeaderRow ? 2 : 1;
+    const rows = [];
+
+    for (let r = dataStart; r < matrix.length; r++) {
+        const arr = matrix[r] || [];
+        const rowObj = {};
+        let hasAnyValue = false;
+
+        for (let c = 0; c < mergedHeader.length; c++) {
+            const key = mergedHeader[c] || `col_${c}`;
+            const value = (arr[c] || '').toString();
+            if (value.trim()) hasAnyValue = true;
+            rowObj[key] = value;
+        }
+
+        if (hasAnyValue) rows.push(normalizeCsvRowKeys(rowObj));
+    }
+
+    return rows;
+}
+
+function rowField(row, keys) {
+    for (const key of keys) {
+        if (Object.prototype.hasOwnProperty.call(row, key)) return row[key];
+    }
+    return undefined;
+}
+
+function makeNameScore(candidateTokens, productTokens) {
+    if (!candidateTokens.length || !productTokens.length) {
+        return {
+            score: 0,
+            hit: 0,
+            candidateCoverage: 0,
+            productCoverage: 0,
+        };
+    }
+
+    const cand = new Set(candidateTokens);
+    const prod = new Set(productTokens);
+    let hit = 0;
+    for (const token of cand) {
+        if (prod.has(token)) hit++;
+    }
+
+    const candidateCoverage = hit / cand.size;
+    const productCoverage = hit / prod.size;
+    const score = (productCoverage * 0.65) + (candidateCoverage * 0.35);
+    return {
+        score,
+        hit,
+        candidateCoverage,
+        productCoverage,
+    };
+}
+
+function findCsvProductMatch({ row, catalog, byProductId, byName }) {
+    const price = parseINR(rowField(row, ['price']));
+    if (!price) return { status: 'skip-no-price' };
+
+    const etsySlug = extractEtsySlug(rowField(row, ['url']));
+    if (etsySlug && byProductId.has(etsySlug)) {
+        return { status: 'matched', product: byProductId.get(etsySlug), price, strategy: 'url-slug' };
+    }
+
+    const shortName = rowField(row, ['short product name']);
+    const title = rowField(row, ['title']);
+    const candidates = [shortName, title].filter(Boolean);
+    if (etsySlug) candidates.push(etsySlug.replace(/-/g, ' '));
+
+    for (const candidate of candidates) {
+        const key = normalize(candidate);
+        if (byName.has(key)) {
+            return { status: 'matched', product: byName.get(key), price, strategy: 'exact-name' };
+        }
+    }
+
+    let best = null;
+    for (const candidate of candidates) {
+        const candidateTokens = tokenize(candidate);
+        if (candidateTokens.length < 2) continue;
+
+        for (const product of catalog) {
+            const metrics = makeNameScore(candidateTokens, product._tokens);
+            const score = metrics.score;
+            if (!best || score > best.score) {
+                best = { product, score, metrics };
+            }
+        }
+    }
+
+    if (
+        best &&
+        best.score >= 0.74 &&
+        best.metrics.hit >= 3 &&
+        best.metrics.productCoverage >= 0.9 &&
+        best.metrics.candidateCoverage >= 0.34
+    ) {
+        return {
+            status: 'matched',
+            product: best.product,
+            price,
+            strategy: `fuzzy:${best.score.toFixed(2)}:${best.metrics.hit}t`,
+        };
+    }
+
+    return {
+        status: 'unmatched',
+        price,
+        hint: {
+            no: rowField(row, ['no']),
+            url: rowField(row, ['url']),
+            shortName,
+            title,
+        },
+    };
+}
+
+function getBestRowToProductScore(row, product) {
+    const rowPrice = parseINR(rowField(row, ['price']));
+    if (!rowPrice) return null;
+
+    const etsySlug = extractEtsySlug(rowField(row, ['url']));
+    if (etsySlug && etsySlug === product.productId) {
+        return { score: 2, strategy: 'url-slug', price: rowPrice };
+    }
+
+    const shortName = rowField(row, ['short product name']);
+    const title = rowField(row, ['title']);
+    const candidates = [shortName, title].filter(Boolean);
+    if (etsySlug) candidates.push(etsySlug.replace(/-/g, ' '));
+
+    if (!candidates.length) return null;
+
+    let best = null;
+    for (const c of candidates) {
+        const candidateTokens = tokenize(c);
+        if (candidateTokens.length < 2) continue;
+        const metrics = makeNameScore(candidateTokens, product._tokens);
+        if (!best || metrics.score > best.metrics.score) {
+            best = { metrics };
+        }
+    }
+
+    if (!best) return null;
+    return {
+        score: best.metrics.score,
+        strategy: `fuzzy:${best.metrics.score.toFixed(2)}:${best.metrics.hit}t`,
+        price: rowPrice,
+    };
+}
 
 // ════════════════════════════════════════════════════════════════════════════════
 //  STEP 1  —  UPLOAD TO CLOUDINARY + SAVE JSON
@@ -673,11 +934,371 @@ async function runStep2() {
     else log.warn(`Step 2 done with ${stats.errors} errors.`);
 }
 
+// ════════════════════════════════════════════════════════════════════════════════
+//  STEP 3  —  CSV PRICES → MONGODB UPDATE
+// ════════════════════════════════════════════════════════════════════════════════
+async function runStep3() {
+    console.log('\n' + '═'.repeat(62));
+    console.log('🚀  STEP 3  —  Price Update Workflow');
+    console.log('═'.repeat(62));
+    if (DRY_RUN) console.log('🟡  DRY-RUN: reads data but does not update MongoDB');
+    console.log(`🧭  Mode: ${PRICE_MODE}`);
+    console.log('');
+
+    const planPath = PLAN_ARG || PRICE_PLAN_FILE;
+
+    if (PRICE_MODE === 'apply') {
+        if (!fs.existsSync(planPath)) {
+            log.error(`Price plan file not found: ${planPath}`);
+            log.error('Run Step 3 with --price-mode=prepare first.');
+            process.exit(1);
+        }
+
+        const plan = JSON.parse(fs.readFileSync(planPath, 'utf8'));
+        const updates = Array.isArray(plan.updates) ? plan.updates : [];
+        log.ok(`Loaded price plan: ${updates.length} updates`);
+
+        await connectDB();
+
+        const stats = {
+            rows: Number(plan.summary?.rows || 0),
+            noPrice: Number(plan.summary?.noPrice || 0),
+            matched: updates.length,
+            unmatched: Number(plan.summary?.unmatched || 0),
+            duplicateMatches: Number(plan.summary?.duplicateMatches || 0),
+            dbUpdated: 0,
+            dbMissing: 0,
+            dbUnchanged: 0,
+            errors: 0,
+        };
+
+        for (const item of updates) {
+            try {
+                const product = await Product.findOne({ productId: item.productId })
+                    .select('_id productId name priceINR')
+                    .lean();
+
+                if (!product) {
+                    stats.dbMissing++;
+                    log.warn(`DB product missing: ${item.productId}`);
+                    continue;
+                }
+
+                const nextPrice = Number(item.priceINR);
+                const oldPrice = Number(product.priceINR) || 0;
+
+                if (oldPrice === nextPrice) {
+                    stats.dbUnchanged++;
+                    log.info(`No change: ${item.productId} already ₹${nextPrice.toLocaleString('en-IN')}`);
+                    continue;
+                }
+
+                if (DRY_RUN) {
+                    log.dry(`${item.productId} [${item.strategy || 'plan'}] ₹${oldPrice} → ₹${nextPrice.toLocaleString('en-IN')}`);
+                    continue;
+                }
+
+                await Product.updateOne(
+                    { _id: product._id },
+                    {
+                        $set: {
+                            priceINR: nextPrice,
+                            updatedAt: new Date(),
+                        },
+                    }
+                );
+                stats.dbUpdated++;
+                log.ok(`Updated ${item.productId} [${item.strategy || 'plan'}] ₹${oldPrice} → ₹${nextPrice.toLocaleString('en-IN')}`);
+            } catch (err) {
+                stats.errors++;
+                log.error(`Failed updating ${item.productId}: ${err.message}`);
+            }
+        }
+
+        await mongoose.connection.close();
+
+        console.log('\n' + '═'.repeat(62));
+        console.log('📊  STEP 3 SUMMARY');
+        console.log('═'.repeat(62));
+        console.log(`  CSV rows            : ${stats.rows}`);
+        console.log(`  Rows without price  : ${stats.noPrice}`);
+        console.log(`  Matched to products : ${stats.matched}`);
+        console.log(`  Unmatched rows      : ${stats.unmatched}`);
+        console.log(`  Duplicate matches   : ${stats.duplicateMatches}`);
+        console.log(`  DB updated          : ${stats.dbUpdated}`);
+        console.log(`  DB unchanged        : ${stats.dbUnchanged}`);
+        console.log(`  DB missing          : ${stats.dbMissing}`);
+        console.log(`  Errors              : ${stats.errors}`);
+        console.log('═'.repeat(62));
+
+        if (stats.errors === 0) log.ok('Step 3 apply complete.');
+        else log.warn(`Step 3 apply finished with ${stats.errors} errors.`);
+        return;
+    }
+
+    const csvPath = CSV_ARG || PRICE_CSV_FILE;
+    if (!fs.existsSync(csvPath)) {
+        log.error(`CSV file not found: ${csvPath}`);
+        process.exit(1);
+    }
+
+    const csvText = fs.readFileSync(csvPath, 'utf8');
+    const rows = loadCsvRows(csvText);
+
+    log.ok(`Loaded CSV rows: ${rows.length}`);
+
+    await connectDB();
+
+    const dbProducts = await Product.find({
+        productId: { $exists: true, $ne: null },
+        name: { $exists: true, $ne: null },
+    }).select('_id productId name category subcategory priceINR').lean();
+
+    const catalog = dbProducts.map((p) => ({
+        _id: p._id,
+        productId: p.productId,
+        name: p.name,
+        category: p.category,
+        subcategory: p.subcategory,
+        priceINR: p.priceINR,
+        _normalizedName: normalize(p.name),
+        _tokens: tokenize(p.name),
+    }));
+
+    log.ok(`Loaded DB products: ${catalog.length}`);
+
+    const stats = {
+        rows: rows.length,
+        noPrice: 0,
+        matched: 0,
+        unmatched: 0,
+        duplicateMatches: 0,
+        dbUpdated: 0,
+        dbMissing: 0,
+        dbUnchanged: 0,
+        errors: 0,
+    };
+
+    const pricedRows = [];
+    const unpricedRows = [];
+    for (const row of rows) {
+        if (parseINR(rowField(row, ['price']))) pricedRows.push(row);
+        else unpricedRows.push(row);
+    }
+    stats.noPrice = unpricedRows.length;
+
+    const edges = [];
+    for (let pIndex = 0; pIndex < catalog.length; pIndex++) {
+        const product = catalog[pIndex];
+        for (let rIndex = 0; rIndex < pricedRows.length; rIndex++) {
+            const row = pricedRows[rIndex];
+            const scored = getBestRowToProductScore(row, product);
+            if (!scored) continue;
+            // Keep even low fuzzy scores so every product can receive a best candidate.
+            if (scored.score > 0) {
+                edges.push({
+                    pIndex,
+                    rIndex,
+                    score: scored.score,
+                    strategy: scored.strategy,
+                    price: scored.price,
+                });
+            }
+        }
+    }
+
+    edges.sort((a, b) => b.score - a.score);
+
+    const assignedProducts = new Set();
+    const assignedRows = new Set();
+    const assignments = [];
+
+    for (const edge of edges) {
+        if (assignedProducts.has(edge.pIndex) || assignedRows.has(edge.rIndex)) continue;
+        assignedProducts.add(edge.pIndex);
+        assignedRows.add(edge.rIndex);
+        assignments.push(edge);
+        if (assignedProducts.size === catalog.length) break;
+    }
+
+    // Second pass: assign any still-unmatched products to the best remaining priced row.
+    // This ensures maximum coverage when greedy top-score allocation leaves gaps.
+    if (assignedProducts.size < catalog.length && assignedRows.size < pricedRows.length) {
+        const unmatchedProductIndexes = [];
+        for (let i = 0; i < catalog.length; i++) {
+            if (!assignedProducts.has(i)) unmatchedProductIndexes.push(i);
+        }
+
+        for (const pIndex of unmatchedProductIndexes) {
+            let bestFallback = null;
+            for (let rIndex = 0; rIndex < pricedRows.length; rIndex++) {
+                if (assignedRows.has(rIndex)) continue;
+                const scored = getBestRowToProductScore(pricedRows[rIndex], catalog[pIndex]);
+                if (!scored) continue;
+                const candidate = {
+                    pIndex,
+                    rIndex,
+                    score: scored.score,
+                    strategy: `fallback:${scored.strategy}`,
+                    price: scored.price,
+                };
+                if (!bestFallback || candidate.score > bestFallback.score) {
+                    bestFallback = candidate;
+                }
+            }
+
+            if (bestFallback) {
+                assignedProducts.add(bestFallback.pIndex);
+                assignedRows.add(bestFallback.rIndex);
+                assignments.push(bestFallback);
+            }
+        }
+    }
+
+    stats.matched = assignments.length;
+    stats.unmatched = catalog.length - assignments.length;
+    stats.duplicateMatches = pricedRows.length - assignedRows.size;
+
+    if (PRICE_MODE === 'prepare') {
+        const updates = assignments.map((a) => {
+            const product = catalog[a.pIndex];
+            return {
+                productId: product.productId,
+                name: product.name,
+                priceINR: a.price,
+                strategy: a.strategy,
+                score: Number(a.score?.toFixed ? a.score.toFixed(4) : a.score),
+            };
+        });
+
+        const plan = {
+            meta: {
+                generatedAt: new Date().toISOString(),
+                mode: 'prepare',
+                csvPath,
+                dbHost: mongoose.connection.host,
+                dbName: mongoose.connection.name,
+                totalDbProducts: catalog.length,
+            },
+            summary: {
+                rows: stats.rows,
+                noPrice: stats.noPrice,
+                matched: stats.matched,
+                unmatched: stats.unmatched,
+                duplicateMatches: stats.duplicateMatches,
+            },
+            updates,
+        };
+
+        if (DRY_RUN) {
+            log.dry(`Would write plan file: ${planPath}`);
+        } else {
+            fs.mkdirSync(path.dirname(planPath), { recursive: true });
+            fs.writeFileSync(planPath, JSON.stringify(plan, null, 2), 'utf8');
+            log.ok(`Price plan saved: ${planPath}`);
+        }
+
+        await mongoose.connection.close();
+
+        console.log('\n' + '═'.repeat(62));
+        console.log('📊  STEP 3 SUMMARY');
+        console.log('═'.repeat(62));
+        console.log(`  CSV rows            : ${stats.rows}`);
+        console.log(`  Rows without price  : ${stats.noPrice}`);
+        console.log(`  Matched to products : ${stats.matched}`);
+        console.log(`  Unmatched rows      : ${stats.unmatched}`);
+        console.log(`  Duplicate matches   : ${stats.duplicateMatches}`);
+        console.log(`  Plan file           : ${planPath}`);
+        console.log('═'.repeat(62));
+
+        if (stats.unmatched > 0) {
+            const matchedP = new Set(assignments.map(a => a.pIndex));
+            const unmatchedProducts = catalog.filter((_, idx) => !matchedP.has(idx));
+            console.log('\nTop unmatched DB products (first 10):');
+            unmatchedProducts.slice(0, 10).forEach((p, idx) => {
+                console.log(`  ${idx + 1}. ${p.productId} | ${p.name}`);
+            });
+        }
+
+        if (DRY_RUN) log.ok('Step 3 prepare dry-run complete.');
+        else log.ok('Step 3 prepare complete. Upload only the plan file to server for apply stage.');
+        return;
+    }
+
+    for (const a of assignments) {
+        const product = catalog[a.pIndex];
+        const price = a.price;
+        const strategy = a.strategy;
+
+        try {
+            const oldPrice = Number(product.priceINR) || 0;
+            if (oldPrice === Number(price)) {
+                stats.dbUnchanged++;
+                log.info(`No change: ${product.productId} already ₹${price.toLocaleString('en-IN')}`);
+                continue;
+            }
+
+            if (DRY_RUN) {
+                log.dry(`${product.productId} [${strategy}] ₹${oldPrice} → ₹${price.toLocaleString('en-IN')}`);
+                continue;
+            }
+
+            await Product.updateOne(
+                { _id: product._id },
+                {
+                    $set: {
+                        priceINR: price,
+                        updatedAt: new Date(),
+                    },
+                }
+            );
+            product.priceINR = price;
+            stats.dbUpdated++;
+            log.ok(`Updated ${product.productId} [${strategy}] ₹${oldPrice} → ₹${price.toLocaleString('en-IN')}`);
+        } catch (err) {
+            stats.errors++;
+            log.error(`Failed updating ${product.productId}: ${err.message}`);
+        }
+    }
+
+    await mongoose.connection.close();
+
+    console.log('\n' + '═'.repeat(62));
+    console.log('📊  STEP 3 SUMMARY');
+    console.log('═'.repeat(62));
+    console.log(`  CSV rows            : ${stats.rows}`);
+    console.log(`  Rows without price  : ${stats.noPrice}`);
+    console.log(`  Matched to products : ${stats.matched}`);
+    console.log(`  Unmatched rows      : ${stats.unmatched}`);
+    console.log(`  Duplicate matches   : ${stats.duplicateMatches}`);
+    console.log(`  DB updated          : ${stats.dbUpdated}`);
+    console.log(`  DB unchanged        : ${stats.dbUnchanged}`);
+    console.log(`  DB missing          : ${stats.dbMissing}`);
+    console.log(`  Errors              : ${stats.errors}`);
+    console.log('═'.repeat(62));
+
+    if (stats.unmatched > 0) {
+        const matchedP = new Set(assignments.map(a => a.pIndex));
+        const unmatchedProducts = catalog.filter((_, idx) => !matchedP.has(idx));
+        console.log('\nTop unmatched DB products (first 10):');
+        unmatchedProducts.slice(0, 10).forEach((p, idx) => {
+            console.log(`  ${idx + 1}. ${p.productId} | ${p.name}`);
+        });
+    }
+
+    if (stats.errors === 0) {
+        log.ok('Step 3 direct complete.');
+    } else {
+        log.warn(`Step 3 direct finished with ${stats.errors} errors.`);
+    }
+}
+
 // ─── ENTRY POINT ──────────────────────────────────────────────────────────────
 (async () => {
     try {
         if (STEP === 1) await runStep1();
-        else            await runStep2();
+        else if (STEP === 2) await runStep2();
+        else await runStep3();
     } catch (err) {
         log.error('Fatal:', err.message);
         if (mongoose.connection.readyState === 1) await mongoose.connection.close().catch(() => {});

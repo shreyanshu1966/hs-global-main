@@ -3,6 +3,9 @@ const Currency = require('../models/Currency');
 // Cache duration: 24 hours in milliseconds
 const CACHE_DURATION = 24 * 60 * 60 * 1000;
 const EXTERNAL_API_URL = 'https://api.currencyapi.com/v3/latest';
+const COUNTRY_CURRENCY_OVERRIDES = {
+    IN: 'USD',
+};
 
 exports.getRates = async (req, res) => {
     try {
@@ -18,7 +21,8 @@ exports.getRates = async (req, res) => {
                 source: 'cache',
                 rates: currencyDoc.rates,
                 base: 'INR',
-                lastUpdated: currencyDoc.lastUpdated
+                lastUpdated: currencyDoc.lastUpdated,
+                countryCurrencyOverrides: COUNTRY_CURRENCY_OVERRIDES
             });
         }
 
@@ -35,7 +39,8 @@ exports.getRates = async (req, res) => {
                     source: 'stale_cache_fallback',
                     rates: currencyDoc.rates,
                     base: 'INR',
-                    lastUpdated: currencyDoc.lastUpdated
+                    lastUpdated: currencyDoc.lastUpdated,
+                    countryCurrencyOverrides: COUNTRY_CURRENCY_OVERRIDES
                 });
             }
             // Final fallback to hardcoded rates
@@ -43,7 +48,8 @@ exports.getRates = async (req, res) => {
                 ok: true,
                 source: 'hardcoded_fallback',
                 rates: getHardcodedRates(),
-                base: 'INR'
+                base: 'INR',
+                countryCurrencyOverrides: COUNTRY_CURRENCY_OVERRIDES
             });
         }
 
@@ -84,7 +90,8 @@ exports.getRates = async (req, res) => {
             source: 'api',
             rates: rates,
             base: 'INR',
-            lastUpdated: new Date(now)
+            lastUpdated: new Date(now),
+            countryCurrencyOverrides: COUNTRY_CURRENCY_OVERRIDES
         });
 
     } catch (error) {
@@ -99,7 +106,8 @@ exports.getRates = async (req, res) => {
                 source: 'stale_error_fallback',
                 rates: fallback.rates,
                 base: 'INR',
-                lastUpdated: fallback.lastUpdated
+                lastUpdated: fallback.lastUpdated,
+                countryCurrencyOverrides: COUNTRY_CURRENCY_OVERRIDES
             });
         }
 
@@ -109,7 +117,8 @@ exports.getRates = async (req, res) => {
             ok: true,
             source: 'hardcoded_fallback',
             rates: getHardcodedRates(),
-            base: 'INR'
+            base: 'INR',
+            countryCurrencyOverrides: COUNTRY_CURRENCY_OVERRIDES
         });
     }
 };
