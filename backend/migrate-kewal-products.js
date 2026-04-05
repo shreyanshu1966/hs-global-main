@@ -13,10 +13,17 @@
  *   node migrate-kewal-products.js --step=2 --dry-run
  *   node migrate-kewal-products.js --step=2 --skip-delete
  *
- * STEP 3  →  Read CSV prices → Update migrated products in DB
- *   node migrate-kewal-products.js --step=3
- *   node migrate-kewal-products.js --step=3 --dry-run
- *   node migrate-kewal-products.js --step=3 --csv="../Kewal 19-03-2026/Latest Etsy All Product Title Desc   - Sheet1.csv"
+ * STEP 3  →  Price Update (2-stage supported)
+ *   Direct mode:
+ *     node migrate-kewal-products.js --step=3
+ *   Stage A (prepare plan JSON from CSV + DB):
+ *     node migrate-kewal-products.js --step=3 --price-mode=prepare
+ *   Stage B (apply plan JSON on server):
+ *     node migrate-kewal-products.js --step=3 --price-mode=apply
+ *
+ *   Optional args:
+ *     --csv="../Kewal 19-03-2026/Latest Etsy All Product Title Desc   - Sheet1.csv"
+ *     --plan="../scripts/kewal-price-update-plan.json"
  *
  * WHAT STEP 1 DOES:
  *   - Scans ALL 7 category folders inside "Kewal 19-03-2026/"
@@ -57,10 +64,20 @@ const args       = process.argv.slice(2);
 const STEP       = (() => { const s = args.find(a => a.startsWith('--step=')); return s ? parseInt(s.split('=')[1]) : null; })();
 const DRY_RUN    = args.includes('--dry-run');
 const SKIP_DELETE = args.includes('--skip-delete');
+const PRICE_MODE = (() => {
+    const m = args.find(a => a.startsWith('--price-mode='));
+    return m ? m.split('=')[1].trim().toLowerCase() : 'direct';
+})();
 const CSV_ARG    = (() => {
     const csvArg = args.find(a => a.startsWith('--csv='));
     if (!csvArg) return null;
     const raw = csvArg.slice('--csv='.length).trim().replace(/^"|"$/g, '');
+    return path.isAbsolute(raw) ? raw : path.resolve(__dirname, raw);
+})();
+const PLAN_ARG   = (() => {
+    const planArg = args.find(a => a.startsWith('--plan='));
+    if (!planArg) return null;
+    const raw = planArg.slice('--plan='.length).trim().replace(/^"|"$/g, '');
     return path.isAbsolute(raw) ? raw : path.resolve(__dirname, raw);
 })();
 
@@ -72,12 +89,18 @@ if (!STEP || (STEP !== 1 && STEP !== 2 && STEP !== 3)) {
     process.exit(1);
 }
 
+if (STEP === 3 && !['direct', 'prepare', 'apply'].includes(PRICE_MODE)) {
+    console.error('\n❌ Invalid --price-mode. Use one of: direct, prepare, apply\n');
+    process.exit(1);
+}
+
 // ─── PATHS ────────────────────────────────────────────────────────────────────
 const ROOT         = path.join(__dirname, '..');
 const KEWAL_DIR    = path.join(ROOT, 'Kewal 19-03-2026');
 const VIDEO_DIR    = path.join(ROOT, 'frontend', 'public', 'videos');
 const JSON_DB_FILE = path.join(ROOT, 'scripts', 'kewal-migration-db.json');
 const PRICE_CSV_FILE = path.join(KEWAL_DIR, 'Latest Etsy All Product Title Desc   - Sheet1.csv');
+const PRICE_PLAN_FILE = path.join(ROOT, 'scripts', 'kewal-price-update-plan.json');
 const TEMP_DIR     = path.join(os.tmpdir(), 'kewal-webp');
 
 // ─── IMAGE OPTS (matches old optimize-and-upload-all.js) ──────────────────────
@@ -916,10 +939,102 @@ async function runStep2() {
 // ════════════════════════════════════════════════════════════════════════════════
 async function runStep3() {
     console.log('\n' + '═'.repeat(62));
-    console.log('🚀  STEP 3  —  Read CSV Prices → Update MongoDB');
+    console.log('🚀  STEP 3  —  Price Update Workflow');
     console.log('═'.repeat(62));
     if (DRY_RUN) console.log('🟡  DRY-RUN: reads data but does not update MongoDB');
+    console.log(`🧭  Mode: ${PRICE_MODE}`);
     console.log('');
+
+    const planPath = PLAN_ARG || PRICE_PLAN_FILE;
+
+    if (PRICE_MODE === 'apply') {
+        if (!fs.existsSync(planPath)) {
+            log.error(`Price plan file not found: ${planPath}`);
+            log.error('Run Step 3 with --price-mode=prepare first.');
+            process.exit(1);
+        }
+
+        const plan = JSON.parse(fs.readFileSync(planPath, 'utf8'));
+        const updates = Array.isArray(plan.updates) ? plan.updates : [];
+        log.ok(`Loaded price plan: ${updates.length} updates`);
+
+        await connectDB();
+
+        const stats = {
+            rows: Number(plan.summary?.rows || 0),
+            noPrice: Number(plan.summary?.noPrice || 0),
+            matched: updates.length,
+            unmatched: Number(plan.summary?.unmatched || 0),
+            duplicateMatches: Number(plan.summary?.duplicateMatches || 0),
+            dbUpdated: 0,
+            dbMissing: 0,
+            dbUnchanged: 0,
+            errors: 0,
+        };
+
+        for (const item of updates) {
+            try {
+                const product = await Product.findOne({ productId: item.productId })
+                    .select('_id productId name priceINR')
+                    .lean();
+
+                if (!product) {
+                    stats.dbMissing++;
+                    log.warn(`DB product missing: ${item.productId}`);
+                    continue;
+                }
+
+                const nextPrice = Number(item.priceINR);
+                const oldPrice = Number(product.priceINR) || 0;
+
+                if (oldPrice === nextPrice) {
+                    stats.dbUnchanged++;
+                    log.info(`No change: ${item.productId} already ₹${nextPrice.toLocaleString('en-IN')}`);
+                    continue;
+                }
+
+                if (DRY_RUN) {
+                    log.dry(`${item.productId} [${item.strategy || 'plan'}] ₹${oldPrice} → ₹${nextPrice.toLocaleString('en-IN')}`);
+                    continue;
+                }
+
+                await Product.updateOne(
+                    { _id: product._id },
+                    {
+                        $set: {
+                            priceINR: nextPrice,
+                            updatedAt: new Date(),
+                        },
+                    }
+                );
+                stats.dbUpdated++;
+                log.ok(`Updated ${item.productId} [${item.strategy || 'plan'}] ₹${oldPrice} → ₹${nextPrice.toLocaleString('en-IN')}`);
+            } catch (err) {
+                stats.errors++;
+                log.error(`Failed updating ${item.productId}: ${err.message}`);
+            }
+        }
+
+        await mongoose.connection.close();
+
+        console.log('\n' + '═'.repeat(62));
+        console.log('📊  STEP 3 SUMMARY');
+        console.log('═'.repeat(62));
+        console.log(`  CSV rows            : ${stats.rows}`);
+        console.log(`  Rows without price  : ${stats.noPrice}`);
+        console.log(`  Matched to products : ${stats.matched}`);
+        console.log(`  Unmatched rows      : ${stats.unmatched}`);
+        console.log(`  Duplicate matches   : ${stats.duplicateMatches}`);
+        console.log(`  DB updated          : ${stats.dbUpdated}`);
+        console.log(`  DB unchanged        : ${stats.dbUnchanged}`);
+        console.log(`  DB missing          : ${stats.dbMissing}`);
+        console.log(`  Errors              : ${stats.errors}`);
+        console.log('═'.repeat(62));
+
+        if (stats.errors === 0) log.ok('Step 3 apply complete.');
+        else log.warn(`Step 3 apply finished with ${stats.errors} errors.`);
+        return;
+    }
 
     const csvPath = CSV_ARG || PRICE_CSV_FILE;
     if (!fs.existsSync(csvPath)) {
@@ -1044,6 +1159,72 @@ async function runStep3() {
     stats.unmatched = catalog.length - assignments.length;
     stats.duplicateMatches = pricedRows.length - assignedRows.size;
 
+    if (PRICE_MODE === 'prepare') {
+        const updates = assignments.map((a) => {
+            const product = catalog[a.pIndex];
+            return {
+                productId: product.productId,
+                name: product.name,
+                priceINR: a.price,
+                strategy: a.strategy,
+                score: Number(a.score?.toFixed ? a.score.toFixed(4) : a.score),
+            };
+        });
+
+        const plan = {
+            meta: {
+                generatedAt: new Date().toISOString(),
+                mode: 'prepare',
+                csvPath,
+                dbHost: mongoose.connection.host,
+                dbName: mongoose.connection.name,
+                totalDbProducts: catalog.length,
+            },
+            summary: {
+                rows: stats.rows,
+                noPrice: stats.noPrice,
+                matched: stats.matched,
+                unmatched: stats.unmatched,
+                duplicateMatches: stats.duplicateMatches,
+            },
+            updates,
+        };
+
+        if (DRY_RUN) {
+            log.dry(`Would write plan file: ${planPath}`);
+        } else {
+            fs.mkdirSync(path.dirname(planPath), { recursive: true });
+            fs.writeFileSync(planPath, JSON.stringify(plan, null, 2), 'utf8');
+            log.ok(`Price plan saved: ${planPath}`);
+        }
+
+        await mongoose.connection.close();
+
+        console.log('\n' + '═'.repeat(62));
+        console.log('📊  STEP 3 SUMMARY');
+        console.log('═'.repeat(62));
+        console.log(`  CSV rows            : ${stats.rows}`);
+        console.log(`  Rows without price  : ${stats.noPrice}`);
+        console.log(`  Matched to products : ${stats.matched}`);
+        console.log(`  Unmatched rows      : ${stats.unmatched}`);
+        console.log(`  Duplicate matches   : ${stats.duplicateMatches}`);
+        console.log(`  Plan file           : ${planPath}`);
+        console.log('═'.repeat(62));
+
+        if (stats.unmatched > 0) {
+            const matchedP = new Set(assignments.map(a => a.pIndex));
+            const unmatchedProducts = catalog.filter((_, idx) => !matchedP.has(idx));
+            console.log('\nTop unmatched DB products (first 10):');
+            unmatchedProducts.slice(0, 10).forEach((p, idx) => {
+                console.log(`  ${idx + 1}. ${p.productId} | ${p.name}`);
+            });
+        }
+
+        if (DRY_RUN) log.ok('Step 3 prepare dry-run complete.');
+        else log.ok('Step 3 prepare complete. Upload only the plan file to server for apply stage.');
+        return;
+    }
+
     for (const a of assignments) {
         const product = catalog[a.pIndex];
         const price = a.price;
@@ -1106,9 +1287,9 @@ async function runStep3() {
     }
 
     if (stats.errors === 0) {
-        log.ok('Step 3 complete.');
+        log.ok('Step 3 direct complete.');
     } else {
-        log.warn(`Step 3 finished with ${stats.errors} errors.`);
+        log.warn(`Step 3 direct finished with ${stats.errors} errors.`);
     }
 }
 
