@@ -332,9 +332,9 @@ async function runStep3() {
         Product = mongoose.model('Product', productSchema);
         Category = mongoose.model('Category', categorySchema);
 
-        log.warn('Cleaning old Etsy products and Furniture custom subcategories...');
-        const deletedProducts = await Product.deleteMany({ tags: 'etsy' });
-        log.ok(`Deleted old Etsy products: ${deletedProducts.deletedCount || 0}`);
+        log.warn('Cleaning old products and Furniture custom subcategories...');
+        const deletedProducts = await Product.deleteMany({});
+        log.ok(`Deleted old products: ${deletedProducts.deletedCount || 0}`);
     }
 
     // Ensure Custom Subcategories
