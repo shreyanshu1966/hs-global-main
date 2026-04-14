@@ -49,12 +49,67 @@ let Product, Category;
 
 const toSlug = (str) => str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
-function cleanProductName(name) {
-    if (!name) return '';
-    return name
-        .replace(/\s*-{3,}\s*\n?\s*\|\s*DesignForAges\s*$/i, '')
-        .replace(/\s*\|\s*DesignForAges\s*$/i, '')
+function stripDesignForAgesBranding(text) {
+    if (!text) return '';
+    return String(text)
+        .replace(/\r\n/g, '\n')
+        .replace(/\n?\s*-{3,}\s*\n\s*\|\s*design\s*for\s*ages\b/gi, '')
+        .replace(/\s*\|\s*design\s*for\s*ages\b/gi, '')
+        .replace(/\bdesign\s*for\s*ages\b/gi, '')
+        .replace(/\bdesignforages\b/gi, '')
+        .replace(/\s{2,}/g, ' ')
         .trim();
+}
+
+function cleanTags(tags) {
+    if (!Array.isArray(tags)) return [];
+    return tags
+        .map(t => stripDesignForAgesBranding(t).trim())
+        .filter(Boolean)
+        .filter(t => !/^design\s*for\s*ages$/i.test(t) && !/^designforages$/i.test(t));
+}
+
+function buildPhotoFolderMap() {
+    if (!fs.existsSync(PHOTOS_DIR)) return {};
+
+    const folders = fs.readdirSync(PHOTOS_DIR).filter(f => {
+        const fullPath = path.join(PHOTOS_DIR, f);
+        return fs.existsSync(fullPath) && fs.statSync(fullPath).isDirectory();
+    });
+
+    const folderMap = {};
+    for (const f of folders) {
+        const match = f.match(/^(\d+)\./);
+        if (match) folderMap[match[1]] = f;
+    }
+    return folderMap;
+}
+
+function resolveVideoSourcePath(localVideoPath, productNo, folderMap) {
+    if (localVideoPath && fs.existsSync(localVideoPath)) return localVideoPath;
+
+    if (localVideoPath) {
+        const normalized = localVideoPath.replace(/\\/g, '/');
+        const marker = '/Etsy All Product Photos/';
+        const markerIndex = normalized.indexOf(marker);
+
+        if (markerIndex >= 0) {
+            const relPart = normalized.substring(markerIndex + marker.length);
+            const mappedPath = path.join(PHOTOS_DIR, ...relPart.split('/'));
+            if (fs.existsSync(mappedPath)) return mappedPath;
+        }
+    }
+
+    const folderName = folderMap[productNo];
+    if (!folderName) return null;
+
+    const folderPath = path.join(PHOTOS_DIR, folderName);
+    if (!fs.existsSync(folderPath)) return null;
+
+    const videoFiles = fs.readdirSync(folderPath).filter(f => /\.(mp4|mov)$/i.test(f));
+    if (videoFiles.length === 0) return null;
+
+    return path.join(folderPath, videoFiles[0]);
 }
 
 const log = {
@@ -152,12 +207,7 @@ async function runStep1() {
     const rows = parseCSV(csvContent);
 
     // Map photo folders
-    const folders = fs.readdirSync(PHOTOS_DIR).filter(f => fs.statSync(path.join(PHOTOS_DIR, f)).isDirectory());
-    const folderMap = {};
-    for (const f of folders) {
-        const match = f.match(/^(\d+)\./);
-        if (match) folderMap[match[1]] = f;
-    }
+    const folderMap = buildPhotoFolderMap();
 
     const productsData = [];
 
@@ -273,6 +323,7 @@ async function runStep3() {
 
     if (!fs.existsSync(STEP2_FILE)) return log.error(`Step 2 JSON not found. Run --step=2 first.`);
     const productsData = JSON.parse(fs.readFileSync(STEP2_FILE, 'utf-8'));
+    const folderMap = buildPhotoFolderMap();
 
     if (!DRY_RUN) {
         const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017/hs_global_export';
@@ -309,31 +360,52 @@ async function runStep3() {
     for (const prod of productsData) {
         log.info(`[No: ${prod.no}] Inserting Database Record: ${prod.slug}`);
 
-        const cleanedName = cleanProductName(prod.shortName);
+        const cleanedName = stripDesignForAgesBranding(prod.shortName);
+        const cleanedTitle = stripDesignForAgesBranding(prod.title || prod.shortName);
+        const cleanedDesc = stripDesignForAgesBranding(prod.desc || '');
+        const cleanedTags = cleanTags(prod.tags);
 
         let videoWebUrl = null;
         let videoFilename = null;
 
         // Copy video physically if it exists
-        if (prod.hasVideo && prod.localVideo) {
+        if (prod.hasVideo) {
+            const sourceVideoPath = resolveVideoSourcePath(prod.localVideo, prod.no, folderMap);
+
+            if (!sourceVideoPath) {
+                log.warn(`Video not found for ${prod.slug}. Skipping video copy.`);
+                prod.hasVideo = false;
+            }
+
             const destFolder = path.join(FRONTEND_VIDEOS_DIR, prod.slug);
             const destPath = path.join(destFolder, 'video.mp4');
             videoWebUrl = `/videos/etsy/${prod.slug}/video.mp4`;
             videoFilename = 'video.mp4';
 
-            if (!DRY_RUN) {
-                if (!fs.existsSync(destFolder)) fs.mkdirSync(destFolder, { recursive: true });
-                fs.copyFileSync(prod.localVideo, destPath);
-                log.ok(`-> Copied local video to ${videoWebUrl}`);
+            if (!DRY_RUN && sourceVideoPath) {
+                try {
+                    if (!fs.existsSync(destFolder)) fs.mkdirSync(destFolder, { recursive: true });
+                    fs.copyFileSync(sourceVideoPath, destPath);
+                    log.ok(`-> Copied local video to ${videoWebUrl}`);
+                } catch (copyErr) {
+                    log.warn(`Video copy failed for ${prod.slug}: ${copyErr.message}`);
+                    prod.hasVideo = false;
+                }
+            }
+
+            if (!prod.hasVideo) {
+                videoWebUrl = null;
+                videoFilename = null;
             }
         }
 
         const pDoc = {
             productId: prod.slug,
             name: cleanedName,
+            title: cleanedTitle,
             category: 'furniture',
             subcategory: prod.subCategoryName,
-            description: prod.desc,
+            description: cleanedDesc,
             image: prod.cloudinaryUrls[0] || '',
             images: prod.cloudinaryUrls,
             sortedImages: prod.cloudinaryUrls,
@@ -343,17 +415,17 @@ async function runStep3() {
             videoUrl: videoWebUrl,
             videoFilename: videoFilename,
             status: 'active',
-            tags: prod.tags,
+            tags: cleanedTags,
             seoTitle: `${cleanedName} | HS Global Export`,
-            seoDescription: prod.desc ? prod.desc.substring(0, 160) : '',
-            seoKeywords: prod.tags,
+            seoDescription: cleanedDesc ? cleanedDesc.substring(0, 160) : '',
+            seoKeywords: cleanedTags,
             shipping: { requiresShipping: true, shippingClass: 'fragile', handlingTime: '15-20 business days' },
             manufacturing: { isCustomMade: true, countryOfOrigin: 'India' }
         };
 
         if (!DRY_RUN) {
             await Product.updateOne({ productId: prod.slug }, { $set: pDoc }, { upsert: true });
-            log.ok(`-> Saved DB Record: ${prod.shortName}`);
+            log.ok(`-> Saved DB Record: ${cleanedName}`);
         } else {
             log.dry(`Would Insert/Update DB record for ${prod.slug}`);
         }
