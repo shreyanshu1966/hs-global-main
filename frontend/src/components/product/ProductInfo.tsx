@@ -46,9 +46,9 @@ export function ProductInfo({
             )}
 
             {/* Title */}
-            <Heading level={1} serif className="text-[#23201a] leading-[1.07]">
+            <h1 className="font-serif font-bold text-2xl md:text-3xl lg:text-4xl text-[#23201a] leading-[1.07]">
                 {product.name}
-            </Heading>
+            </h1>
 
             {/* Rating */}
             <div className="flex items-center gap-3 border-b border-[#e2e8f0] pb-4">
@@ -221,20 +221,20 @@ export function ProductInfo({
                     {product.category === 'slabs' ? (
                         <a
                             href="/quotation"
-                            className="h-14 flex items-center justify-center border border-[#2B2B2B] text-[#2B2B2B] hover:bg-[#2B2B2B] hover:text-[#f8f2e8] transition-colors duration-300 font-semibold tracking-[0.08em] uppercase font-sans gap-2 bg-white"
+                            className="h-14 flex items-center justify-center border border-[#2B2B2B] text-[#2B2B2B] hover:bg-[#2B2B2B] hover:text-[#f8f2e8] transition-colors duration-300 font-semibold text-[11px] sm:text-xs tracking-[0.04em] sm:tracking-[0.08em] normal-case sm:uppercase font-sans gap-2 bg-white px-2 text-center leading-tight"
                         >
                             <FileText className="w-4 h-4" />
-                            Contact seller
+                            Contact Seller
                         </a>
                     ) : (
                         <a
                             href={`https://wa.me/918107115116?text=${encodeURIComponent('Hi! I am interested in ' + product.name + '. Can you share more details?')}`}
                             target="_blank"
                             rel="noreferrer"
-                            className="h-14 flex items-center justify-center border border-[#1f6b55] text-[#1f6b55] hover:bg-[#1f6b55] hover:text-[#f5efe2] transition-colors duration-300 font-semibold tracking-[0.08em] uppercase font-sans gap-2 bg-white"
+                            className="h-14 flex items-center justify-center border border-[#1f6b55] text-[#1f6b55] hover:bg-[#1f6b55] hover:text-[#f5efe2] transition-colors duration-300 font-semibold text-[11px] sm:text-xs tracking-[0.04em] sm:tracking-[0.08em] normal-case sm:uppercase font-sans gap-2 bg-white px-2 text-center leading-tight"
                         >
                             <MessageCircle className="w-4 h-4" />
-                            Contact seller
+                            Contact Seller
                         </a>
                     )}
                 </div>

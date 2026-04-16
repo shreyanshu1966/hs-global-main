@@ -1439,7 +1439,7 @@
   .itsbits-home .itsbits-mobile-menu-trigger {
     display: inline-flex;
     position: absolute;
-    left: 0;
+    left: 4px;
     top: 50%;
     transform: translateY(-50%);
     z-index: 6;
@@ -1456,6 +1456,7 @@
     justify-content: center;
     align-items: center;
     position: relative;
+    padding-left: 44px;
   }
 
   .itsbits-home .itsbits-top-inner {

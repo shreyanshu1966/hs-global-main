@@ -355,7 +355,7 @@ const Header = () => {
               ) : (
                 <Link
                   to="/login"
-                  className="block px-5 py-4 text-[17px] font-light text-[#111]"
+                  className="mx-5 my-4 block rounded-md bg-[#111827] px-5 py-3 text-center text-[15px] font-semibold uppercase tracking-[0.08em] text-white hover:bg-[#1f2937] transition-colors"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Login
