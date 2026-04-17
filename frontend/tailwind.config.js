@@ -29,7 +29,7 @@ export default {
       },
       fontFamily: {
         sans: ["Inter", "sans-serif"],
-        serif: ["Playfair Display", "serif"],
+        serif: ["Inter", "sans-serif"],
       },
       animation: {
         float: "float 6s ease-in-out infinite",

@@ -25,7 +25,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
     // Check if we're on special pages
     const isItsbitsHome = location.pathname === '/';
-    const isProductsPage = location.pathname === '/products';
     const needsHeaderOffset = !isItsbitsHome && !isAdminPage;
 
     useGSAP(() => {
@@ -51,7 +50,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             {!isAdminPage && <CartDrawer />}
             {!isAdminPage && !isItsbitsHome && <PhoneVerifyModal />}
             {!isAdminPage && !isItsbitsHome && <AddedToCartNotification />}
-            {!isAdminPage && !isProductsPage && !isItsbitsHome && <FloatingWhatsApp />}
+            {!isAdminPage && <FloatingWhatsApp />}
             <NoiseOverlay />
         </div>
     );

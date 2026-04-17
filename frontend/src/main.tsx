@@ -2,10 +2,10 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
-import "@fontsource/playfair-display"; // Defaults to weight 400
-import "@fontsource/playfair-display/400-italic.css";
-import "@fontsource/playfair-display/700.css";
 import "@fontsource/inter";
+import "@fontsource/inter/500.css";
+import "@fontsource/inter/600.css";
+import "@fontsource/inter/700.css";
 import './i18n';
 
 // Unregister any existing service workers to fix caching issues

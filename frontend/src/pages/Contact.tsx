@@ -3,6 +3,8 @@ import { Mail, Phone, MapPin, ArrowRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Helmet } from "react-helmet-async";
 import { motion, useScroll, useTransform } from "framer-motion";
+import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 import { getResponsiveImage, getSrcSet } from '../utils/responsive-image-helper';
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -44,7 +46,7 @@ const Contact = () => {
     }
     if (!phone.trim()) {
       e.phone = "Phone is required";
-    } else if (!/^\+?[\d\s-]{10,}$/.test(phone)) {
+    } else if (!isValidPhoneNumber(phone)) {
       e.phone = "Enter a valid phone number";
     }
     if (!subject.trim()) e.subject = "Subject is required";
@@ -324,12 +326,17 @@ const Contact = () => {
 
                   <div className="grid md:grid-cols-2 gap-8">
                     <div className="relative">
-                      <input
-                        type="tel"
+                      <PhoneInput
+                        defaultCountry="IN"
+                        international
+                        countryCallingCodeEditable={false}
                         placeholder="Phone Number"
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                        className={`w-full px-0 py-4 text-lg bg-transparent border-0 border-b-2 focus:ring-0 placeholder-gray-400 transition-all duration-300 text-gray-900 focus:outline-none ${errors.phone ? 'border-red-500 focus:border-red-500' : 'border-gray-300 focus:border-gray-300'}`}
+                        value={phone || undefined}
+                        onChange={(value) => setPhone(value || "")}
+                        numberInputProps={{
+                          className: 'w-full px-0 py-4 text-lg bg-transparent border-0 focus:ring-0 placeholder-gray-400 transition-all duration-300 text-gray-900 focus:outline-none'
+                        }}
+                        className={`w-full border-0 border-b-2 transition-all duration-300 ${errors.phone ? 'border-red-500 focus-within:border-red-500' : 'border-gray-300 focus-within:border-gray-300'}`}
                       />
                       <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gray-900 transition-all duration-300 focus-within:w-full"></div>
                       {errors.phone && <p className="text-red-600 text-sm mt-1">{errors.phone}</p>}

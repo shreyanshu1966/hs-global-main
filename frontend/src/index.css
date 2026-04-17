@@ -2,9 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --app-font-family: "Inter", sans-serif;
+}
+
 /* Performance optimizations */
 * {
   box-sizing: border-box;
+  font-family: var(--app-font-family) !important;
+}
+
+*::before,
+*::after {
+  font-family: var(--app-font-family) !important;
 }
 
 html {
@@ -159,6 +169,7 @@ html {
 body {
   overflow-x: hidden;
   @apply bg-background text-text-primary;
+  font-family: var(--app-font-family) !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -322,7 +333,7 @@ body {
 
 /* Unified cart popup/drawer styles */
 .cart-panel-title {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--app-font-family);
   font-size: 1.28rem;
   line-height: 1.05;
   letter-spacing: 0.01em;
