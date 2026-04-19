@@ -59,7 +59,7 @@ export function ProductInfo({
                                 <Star
                                     key={star}
                                     className={`w-5 h-5 ${star <= Math.round(reviewStats.averageRating)
-                                        ? 'fill-[#B8944A] text-[#B8944A]'
+                                        ? 'fill-[#334155] text-[#334155]'
                                         : 'text-[#E8E3DC]'
                                         }`}
                                 />

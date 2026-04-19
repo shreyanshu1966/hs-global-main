@@ -212,7 +212,7 @@ const Products = () => {
                         }}
                         className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap border transition-colors ${
                           (!subcategory && !activeSubcategory) || activeSubcategory === subcategory
-                            ? "bg-amber-600 border-amber-600 text-white"
+                            ? "bg-gray-900 border-gray-900 text-white"
                             : "bg-white border-gray-200 text-gray-700"
                         }`}
                         aria-label={subcategory ? `Switch to ${subcategory.replace(/-/g, " ")} subcategory` : "Show all subcategories"}
@@ -267,7 +267,7 @@ const Products = () => {
                         />
                         <button
                           onClick={() => setIsMobilePriceFilterOpen(false)}
-                          className="w-full mt-3 h-10 rounded-lg bg-amber-600 text-white text-sm font-medium"
+                          className="w-full mt-3 h-10 rounded-lg bg-gray-900 text-white text-sm font-medium hover:bg-black transition-colors"
                         >
                           Apply Price Filter
                         </button>
@@ -320,7 +320,7 @@ const Products = () => {
                               }}
                               className={`w-full h-12 px-4 rounded-lg flex items-center justify-between text-sm border ${
                                 selected
-                                  ? "border-amber-500 bg-amber-50 text-amber-700 font-medium"
+                                  ? "border-gray-400 bg-gray-100 text-gray-900 font-medium"
                                   : "border-gray-200 text-gray-700"
                               }`}
                             >
@@ -375,7 +375,7 @@ const Products = () => {
                   </p>
                   <button
                     onClick={clearFilters}
-                    className="px-6 py-2.5 bg-amber-600 text-white rounded-lg hover:bg-amber-700 font-medium transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-amber-500"
+                    className="px-6 py-2.5 bg-gray-900 text-white rounded-lg hover:bg-black font-medium transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
                     aria-label="Clear all filters"
                   >
                     Clear All Filters
@@ -411,7 +411,7 @@ const Products = () => {
                         aria-label="Previous page"
                         disabled={page === 1}
                         onClick={() => { setPage(p => Math.max(1, p - 1)); window.scrollTo(0, 400); }}
-                        className="p-2 border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus:ring-2 focus:ring-amber-500"
+                        className="p-2 border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus:ring-2 focus:ring-gray-500"
                       >
                         <ChevronLeft className="w-5 h-5" />
                       </button>
@@ -422,7 +422,7 @@ const Products = () => {
                         aria-label="Next page"
                         disabled={page === totalPages}
                         onClick={() => { setPage(p => Math.min(totalPages, p + 1)); window.scrollTo(0, 400); }}
-                        className="p-2 border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus:ring-2 focus:ring-amber-500"
+                        className="p-2 border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus:ring-2 focus:ring-gray-500"
                       >
                         <ChevronRight className="w-5 h-5" />
                       </button>

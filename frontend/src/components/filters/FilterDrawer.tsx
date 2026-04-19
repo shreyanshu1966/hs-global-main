@@ -74,7 +74,7 @@ export const FilterDrawer: React.FC<FilterDrawerProps> = ({
                             <div className="mt-8 pt-6 border-t border-gray-100 mb-6">
                                 <button
                                     onClick={onClose}
-                                    className="w-full py-3 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded-lg transition-colors shadow-sm"
+                                    className="w-full py-3 bg-gray-900 hover:bg-black text-white font-medium rounded-lg transition-colors shadow-sm"
                                 >
                                     Show Results
                                 </button>

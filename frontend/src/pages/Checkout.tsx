@@ -668,7 +668,7 @@ const Checkout: React.FC = () => {
                 </div>
                 <div className="flex justify-between text-sm text-gray-600">
                   <span>Shipping</span>
-                  <span className="text-orange-600 font-medium">Not Included</span>
+                  <span className="text-gray-700 font-medium">Not Included</span>
                 </div>
                 <div className="text-xs text-gray-500 -mt-2 text-right">
                   Shipping charges will be sent separately

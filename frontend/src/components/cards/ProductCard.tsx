@@ -251,7 +251,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
 
                 {/* ---- Info ---- */}
                 <div className="space-y-2 mt-4">
-                    <h3 className="font-serif text-xl text-[#2B2B2B] group-hover:text-[#B8944A] transition-colors truncate">
+                    <h3 className="font-serif text-xl text-[#2B2B2B] group-hover:text-[#111827] transition-colors truncate">
                         {product.name}
                     </h3>
                     <p className="text-sm text-[#6B6B6B] uppercase tracking-wider truncate">

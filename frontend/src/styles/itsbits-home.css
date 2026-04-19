@@ -817,15 +817,15 @@
 
 .itsbits-home .itsbits-personalized-wrap {
   background: #f4f3ec;
-  width: 100%;
-  margin: 0;
+  width: auto;
+  margin: 0 var(--itsbits-page-gutter);
   padding: 36px 0;
 }
 
 .itsbits-home .itsbits-personalized-inner {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 0 var(--itsbits-page-gutter);
+  padding: 0;
 }
 
 .itsbits-home .itsbits-personalized-header {
@@ -886,7 +886,7 @@
 
 .itsbits-home .itsbits-featured-wrap {
   display: flex;
-  width: 100%;
+  width: auto;
   height: 100%;
   position: relative;
   flex-direction: row-reverse;
@@ -899,7 +899,7 @@
 }
 
 .itsbits-home .itsbits-featured-section {
-  margin: 36px 0;
+  margin: 36px var(--itsbits-page-gutter);
 }
 
 .itsbits-home .itsbits-featured-image-wrap {

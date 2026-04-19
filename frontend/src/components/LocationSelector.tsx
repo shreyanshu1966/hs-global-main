@@ -171,7 +171,7 @@ export const LocationSelector: React.FC = () => {
       </div>
 
       {/* Info */}
-      <div className="text-xs text-gray-500 bg-amber-50 border border-amber-200 rounded-lg p-2.5 flex items-start gap-2">
+      <div className="text-xs text-gray-500 bg-gray-100 border border-gray-200 rounded-lg p-2.5 flex items-start gap-2">
         <span className="text-lg leading-none">💱</span>
         <span className="pt-0.5">Prices displayed in selected currency. Payments in USD.</span>
       </div>

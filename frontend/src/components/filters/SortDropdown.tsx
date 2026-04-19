@@ -55,7 +55,7 @@ export const SortDropdown: React.FC<SortDropdownProps> = ({
         <div className="relative inline-block text-left z-20" ref={dropdownRef}>
             <button
                 type="button"
-                className="flex items-center justify-between w-full md:w-56 px-4 py-2.5 bg-white border border-gray-200 rounded-lg shadow-sm text-sm text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-amber-500 transition-colors"
+                className="flex items-center justify-between w-full md:w-56 px-4 py-2.5 bg-white border border-gray-200 rounded-lg shadow-sm text-sm text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-colors"
                 onClick={() => setIsOpen(!isOpen)}
                 aria-haspopup="true"
                 aria-expanded={isOpen}
@@ -78,14 +78,14 @@ export const SortDropdown: React.FC<SortDropdownProps> = ({
                                     setIsOpen(false);
                                 }}
                                 className={`flex items-center justify-between w-full px-4 py-2.5 text-sm text-left ${currentOption.sortBy === option.sortBy && currentOption.sortOrder === option.sortOrder
-                                        ? 'bg-amber-50 text-amber-700 font-medium'
+                                        ? 'bg-gray-100 text-gray-900 font-medium'
                                         : 'text-gray-700 hover:bg-gray-100'
                                     }`}
                                 role="menuitem"
                             >
                                 {option.label}
                                 {currentOption.sortBy === option.sortBy && currentOption.sortOrder === option.sortOrder && (
-                                    <Check className="w-4 h-4 text-amber-600" />
+                                    <Check className="w-4 h-4 text-gray-800" />
                                 )}
                             </button>
                         ))}

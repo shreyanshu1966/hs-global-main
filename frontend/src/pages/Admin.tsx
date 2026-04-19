@@ -1379,8 +1379,8 @@ const Admin = () => {
                                 {/* Recent Activity Card */}
                                 <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
                                     <div className="flex items-center justify-between mb-4">
-                                        <div className="p-3 bg-orange-100 rounded-lg">
-                                            <TrendingUp className="w-6 h-6 text-orange-600" />
+                                        <div className="p-3 bg-blue-100 rounded-lg">
+                                            <TrendingUp className="w-6 h-6 text-blue-600" />
                                         </div>
                                     </div>
                                     <h3 className="text-sm font-medium text-gray-600 mb-1">Recent Orders</h3>
@@ -2857,13 +2857,13 @@ const Admin = () => {
                                                                 return (
                                                                     <div>
                                                                         <span className={`px-2 py-1 text-xs font-medium rounded-full ${daysRemaining && daysRemaining <= 3
-                                                                            ? 'bg-orange-100 text-orange-800'
+                                                                            ? 'bg-red-100 text-red-800'
                                                                             : 'bg-green-100 text-green-800'
                                                                             }`}>
                                                                             {product.discount.percentage}% OFF
                                                                         </span>
                                                                         {daysRemaining && (
-                                                                            <div className={`text-xs mt-1 ${daysRemaining <= 3 ? 'text-orange-600 font-medium' : 'text-gray-500'
+                                                                            <div className={`text-xs mt-1 ${daysRemaining <= 3 ? 'text-red-600 font-medium' : 'text-gray-500'
                                                                                 }`}>
                                                                                 {daysRemaining}d left
                                                                             </div>

@@ -19,7 +19,7 @@ export function Button({
     const baseStyles = 'inline-flex items-center justify-center transition-colors duration-300 font-medium disabled:opacity-50 disabled:cursor-not-allowed';
 
     const variants = {
-        primary: 'bg-[#B8944A] text-white hover:bg-[#A07D3C]',
+        primary: 'bg-[#334155] text-white hover:bg-[#1f2937]',
         secondary: 'border-2 border-[#2B2B2B] text-[#2B2B2B] hover:bg-[#2B2B2B] hover:text-white',
         text: 'text-[#2B2B2B] underline-offset-4 hover:underline !p-0',
     };

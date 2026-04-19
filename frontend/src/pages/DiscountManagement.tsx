@@ -357,23 +357,23 @@ const DiscountManagement: React.FC = () => {
 
                 {/* Expiring Soon Alert */}
                 {analytics && analytics.expiringSoon && analytics.expiringSoon.length > 0 && (
-                    <div className="bg-orange-50 border border-orange-200 rounded-lg p-6 mb-8">
+                    <div className="bg-red-50 border border-red-200 rounded-lg p-6 mb-8">
                         <div className="flex items-start gap-3">
-                            <AlertCircle className="w-5 h-5 text-orange-600 mt-0.5" />
+                            <AlertCircle className="w-5 h-5 text-red-600 mt-0.5" />
                             <div className="flex-1">
-                                <h3 className="text-sm font-semibold text-orange-900 mb-2">
+                                <h3 className="text-sm font-semibold text-red-900 mb-2">
                                     ⚠️ {analytics.expiringSoon.length} Discount(s) Expiring Soon
                                 </h3>
                                 <div className="space-y-1">
                                     {analytics.expiringSoon.slice(0, 5).map((item) => (
-                                        <p key={item.productId} className="text-sm text-orange-800">
+                                        <p key={item.productId} className="text-sm text-red-800">
                                             • {item.name} ({item.discount.percentage}% off) - 
                                             <span className="font-medium"> {item.daysRemaining} day(s) left</span>
                                         </p>
                                     ))}
                                 </div>
                                 {analytics.expiringSoon.length > 5 && (
-                                    <p className="text-xs text-orange-700 mt-2">
+                                    <p className="text-xs text-red-700 mt-2">
                                         ...and {analytics.expiringSoon.length - 5} more
                                     </p>
                                 )}
@@ -649,7 +649,7 @@ const DiscountManagement: React.FC = () => {
                                                         <div>
                                                             <span className={`px-2 py-1 text-xs font-medium rounded-full ${
                                                                 product.discountStatus.status === 'active' && product.discountStatus.isExpiringSoon
-                                                                    ? 'bg-orange-100 text-orange-800'
+                                                                    ? 'bg-red-100 text-red-800'
                                                                     : product.discountStatus.status === 'active'
                                                                     ? 'bg-green-100 text-green-800'
                                                                     : product.discountStatus.status === 'scheduled'

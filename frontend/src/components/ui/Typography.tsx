@@ -58,7 +58,7 @@ export function Body({
     const colors = {
         primary: 'text-[#2B2B2B]',
         secondary: 'text-[#6B6B6B]',
-        accent: 'text-[#B8944A]',
+        accent: 'text-[#334155]',
         white: 'text-white',
     };
 

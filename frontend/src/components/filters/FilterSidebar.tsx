@@ -98,7 +98,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
                                             onCategoryChange("");
                                             onSubcategoryChange("");
                                         }}
-                                        className={`block w-full text-left text-sm ${!activeCategory ? "text-amber-600 font-medium" : "text-gray-600 hover:text-black"}`}
+                                        className={`block w-full text-left text-sm ${!activeCategory ? "text-gray-900 font-medium" : "text-gray-600 hover:text-black"}`}
                                     >
                                         All Categories
                                     </button>
@@ -111,7 +111,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
                                                         onSubcategoryChange("");
                                                     }
                                                 }}
-                                                className={`block w-full text-left text-sm capitalize ${activeCategory === cat.category ? "text-amber-600 font-medium" : "text-gray-600 hover:text-black"}`}
+                                                className={`block w-full text-left text-sm capitalize ${activeCategory === cat.category ? "text-gray-900 font-medium" : "text-gray-600 hover:text-black"}`}
                                             >
                                                 {cat.category.replace(/-/g, ' ')}
                                             </button>
@@ -121,7 +121,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
                                                 <div className="pl-4 space-y-2 mt-2 border-l border-gray-100">
                                                     <button
                                                         onClick={() => onSubcategoryChange("")}
-                                                        className={`block w-full text-left text-sm capitalize ${!activeSubcategory ? "text-amber-600 font-medium" : "text-gray-500 hover:text-black"}`}
+                                                        className={`block w-full text-left text-sm capitalize ${!activeSubcategory ? "text-gray-900 font-medium" : "text-gray-500 hover:text-black"}`}
                                                     >
                                                         All in {cat.category.replace(/-/g, ' ')}
                                                     </button>
@@ -129,7 +129,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
                                                         <button
                                                             key={sub}
                                                             onClick={() => onSubcategoryChange(sub)}
-                                                            className={`block w-full text-left text-sm capitalize ${activeSubcategory === sub ? "text-amber-600 font-medium" : "text-gray-500 hover:text-black"}`}
+                                                            className={`block w-full text-left text-sm capitalize ${activeSubcategory === sub ? "text-gray-900 font-medium" : "text-gray-500 hover:text-black"}`}
                                                         >
                                                             {sub.replace(/-/g, ' ')}
                                                         </button>
@@ -163,10 +163,10 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
                                 onValueCommit={handlePriceCommit}
                             >
                                 <Slider.Track className="bg-gray-200 relative grow rounded-full h-[3px]">
-                                    <Slider.Range className="absolute bg-amber-600 rounded-full h-full" />
+                                    <Slider.Range className="absolute bg-gray-900 rounded-full h-full" />
                                 </Slider.Track>
-                                <Slider.Thumb className="block w-5 h-5 bg-white border-2 border-amber-600 shadow-md rounded-full hover:bg-amber-50 focus:outline-none focus:ring-2 focus:ring-amber-500 transition-colors cursor-grab active:cursor-grabbing" aria-label="Min price" />
-                                <Slider.Thumb className="block w-5 h-5 bg-white border-2 border-amber-600 shadow-md rounded-full hover:bg-amber-50 focus:outline-none focus:ring-2 focus:ring-amber-500 transition-colors cursor-grab active:cursor-grabbing" aria-label="Max price" />
+                                <Slider.Thumb className="block w-5 h-5 bg-white border-2 border-gray-900 shadow-md rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-colors cursor-grab active:cursor-grabbing" aria-label="Min price" />
+                                <Slider.Thumb className="block w-5 h-5 bg-white border-2 border-gray-900 shadow-md rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-colors cursor-grab active:cursor-grabbing" aria-label="Max price" />
                             </Slider.Root>
                             
                             <div className="flex items-center justify-between mt-6">

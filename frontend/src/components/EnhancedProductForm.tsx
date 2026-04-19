@@ -706,7 +706,7 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
                           const hoursRemaining = Math.ceil((endDate.getTime() - now.getTime()) / (1000 * 60 * 60));
 
                           return (
-                            <p className={`text-sm ${daysRemaining <= 3 ? 'text-orange-700' : 'text-green-700'}`}>
+                            <p className={`text-sm ${daysRemaining <= 3 ? 'text-red-700' : 'text-green-700'}`}>
                               🟢 <strong>Active:</strong> {daysRemaining <= 3
                                 ? `Ending soon! ${hoursRemaining} hour(s) remaining`
                                 : `${daysRemaining} day(s) remaining`}
