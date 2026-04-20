@@ -149,7 +149,7 @@ const Header = () => {
     { label: 'Gallery', mobileLabel: 'Gallery', href: '/gallery' },
     { label: 'Services', mobileLabel: 'Services', href: '/services' },
     { label: 'Journal', mobileLabel: 'Journal', href: '/blog' },
-    { label: 'About HS Global', mobileLabel: 'About', href: '/about' },
+    { label: 'About', mobileLabel: 'About', href: '/about' },
     { label: 'Get Quote', mobileLabel: 'Get Quote', href: '/contact', isSale: true },
   ];
 
@@ -279,7 +279,7 @@ const Header = () => {
             ) : (
               <Link
                 to="/login"
-                className="itsbits-top-action itsbits-top-action-text hidden md:inline-flex items-center justify-center text-[11px] uppercase tracking-[0.14em] font-semibold text-black no-underline transition-colors duration-200 hover:text-[#444]"
+                className="itsbits-top-action ml-2 hidden md:inline-flex items-center justify-center rounded-md bg-[#111827] px-3 py-2 text-[11px] uppercase tracking-[0.1em] font-semibold text-white no-underline transition-colors duration-200 hover:bg-[#1f2937]"
               >
                 Login
               </Link>
@@ -319,46 +319,79 @@ const Header = () => {
             onClick={(event) => event.stopPropagation()}
           >
             <div className="h-[84px] border-b border-[#e5e7eb] px-4 flex items-center justify-between bg-white">
-              <span className="text-[13px] uppercase tracking-[0.12em] text-[#222]">Menu</span>
-              <button
-                type="button"
-                aria-label="Close menu"
+              <a
+                href="/"
+                className="itsbits-logo inline-block text-black no-underline transition-all duration-300 hover:text-black"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="itsbits-top-action inline-flex items-center justify-center text-black"
+                aria-label="HS Global Logo"
               >
-                <X width="19" height="19" />
-              </button>
+                <span className="block text-[11px] font-semibold uppercase tracking-[0.11em] leading-[1.2] text-[#111]">
+                  HS GLOBAL EXPORT
+                </span>
+              </a>
+
+              <div className="flex items-center gap-2">
+                {isAuthenticated ? (
+                  <Link
+                    to="/profile"
+                    className="inline-flex items-center justify-center rounded-md bg-[#111827] px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-white no-underline transition-colors duration-200 hover:bg-[#1f2937]"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    My Account
+                  </Link>
+                ) : (
+                  <Link
+                    to="/login"
+                    className="inline-flex items-center justify-center rounded-md bg-[#111827] px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-white no-underline transition-colors duration-200 hover:bg-[#1f2937]"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Login
+                  </Link>
+                )}
+
+                <button
+                  type="button"
+                  aria-label="Close menu"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="itsbits-top-action inline-flex items-center justify-center text-black"
+                >
+                  <X width="19" height="19" />
+                </button>
+              </div>
             </div>
 
             <nav className="py-1">
               {navItems.map((item) => (
-                <a
-                  key={`mobile-menu-${item.label}`}
-                  href={item.href}
-                  className={`block border-b border-[#ececec] px-5 py-4 text-[17px] leading-[1.25] ${item.isSale ? 'text-[#d26a00] font-semibold' : 'text-[#111] font-light'}`}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  {item.label}
-                </a>
+                item.href === '/contact' ? (
+                  <Link
+                    key="mobile-menu-contact-us"
+                    to="/contact"
+                    className="mx-5 my-4 block rounded-md bg-[#111827] px-5 py-3 text-center text-[15px] font-semibold uppercase tracking-[0.08em] text-white no-underline transition-colors hover:bg-[#1f2937]"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Contact Us
+                  </Link>
+                ) : (
+                  <a
+                    key={`mobile-menu-${item.label}`}
+                    href={item.href}
+                    className="block border-b border-[#ececec] px-5 py-4 text-[17px] leading-[1.25] text-[#111] font-light"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {item.label}
+                  </a>
+                )
               ))}
             </nav>
 
             <div className="border-t border-[#ececec] pt-2">
-              {isAuthenticated ? (
+              {isAuthenticated && (
                 <Link
                   to="/profile"
                   className="block px-5 py-4 text-[17px] font-light text-[#111]"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   My Account
-                </Link>
-              ) : (
-                <Link
-                  to="/login"
-                  className="mx-5 my-4 block rounded-md bg-[#111827] px-5 py-3 text-center text-[15px] font-semibold uppercase tracking-[0.08em] text-white hover:bg-[#1f2937] transition-colors"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Login
                 </Link>
               )}
 

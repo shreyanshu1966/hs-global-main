@@ -73,7 +73,44 @@ const Footer = () => {
             <h3 className="itsbits-footer-heading">Connect With Us</h3>
             <div className="itsbits-footer-link-list">
               <a href="/blog" className="itsbits-footer-link hover:underline"><span className="itsbits-footer-strong">HS Global</span> Journal</a>
-              <a href="https://www.instagram.com/hsglobalexport116/" className="itsbits-footer-link itsbits-footer-strong hover:underline">Instagram</a>
+
+              <div className="flex items-center gap-3 pt-1">
+                <a
+                  href="https://www.facebook.com/hsglobalexport"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Facebook"
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#d9d2c7] text-[#1f2937] transition-colors duration-200 hover:border-[#111] hover:text-[#111]"
+                >
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+                    <path d="M13.5 22v-8h2.7l.4-3h-3.1V9.1c0-.9.3-1.5 1.6-1.5h1.7V4.9c-.8-.1-1.5-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H8v3h2.6v8h2.9Z" />
+                  </svg>
+                </a>
+
+                <a
+                  href="https://www.instagram.com/hsglobalexport116/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Instagram"
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#d9d2c7] text-[#1f2937] transition-colors duration-200 hover:border-[#111] hover:text-[#111]"
+                >
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+                    <path d="M7.8 2h8.4A5.8 5.8 0 0 1 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8A5.8 5.8 0 0 1 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2Zm0 1.9A3.9 3.9 0 0 0 3.9 7.8v8.4a3.9 3.9 0 0 0 3.9 3.9h8.4a3.9 3.9 0 0 0 3.9-3.9V7.8a3.9 3.9 0 0 0-3.9-3.9H7.8Zm8.9 1.5a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.9a3.1 3.1 0 1 0 0 6.2 3.1 3.1 0 0 0 0-6.2Z" />
+                  </svg>
+                </a>
+
+                <a
+                  href="https://www.linkedin.com/company/hsglobalexport"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="LinkedIn"
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#d9d2c7] text-[#1f2937] transition-colors duration-200 hover:border-[#111] hover:text-[#111]"
+                >
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+                    <path d="M6.5 8.8V22H2.7V8.8h3.8ZM4.6 2A2.2 2.2 0 1 1 4.6 6.4 2.2 2.2 0 0 1 4.6 2ZM22 13.9V22h-3.8v-7.5c0-1.8-.7-3-2.3-3-1.3 0-2 .9-2.4 1.7-.1.3-.2.8-.2 1.2V22H9.5s.1-12.1 0-13.2h3.8v1.9c.5-.8 1.5-1.9 3.7-1.9 2.7 0 5 1.8 5 5.8Z" />
+                  </svg>
+                </a>
+              </div>
             </div>
           </div>
 

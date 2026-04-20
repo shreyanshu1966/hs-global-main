@@ -3,6 +3,8 @@ import { Mail, Phone, MapPin, ArrowRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
@@ -35,7 +37,7 @@ const ContactUs = () => {
     }
     if (!phone.trim()) {
       e.phone = "Phone is required";
-    } else if (!/^\+?[\d\s-]{10,}$/.test(phone)) {
+    } else if (!isValidPhoneNumber(phone)) {
       e.phone = "Enter a valid phone number";
     }
     if (!subject.trim()) e.subject = "Subject is required";
@@ -202,12 +204,17 @@ const ContactUs = () => {
                   <div className="grid md:grid-cols-2 gap-5">
                     <div>
                       <label className="block text-xs font-semibold uppercase tracking-[0.1em] text-[#475569] mb-2">Phone Number</label>
-                      <input
-                        type="tel"
-                        placeholder="+91 00000 00000"
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                        className={`${fieldBase} ${errors.phone ? 'border-red-500 focus:border-red-500' : 'border-[#cbd5e1] focus:border-[#111827]'}`}
+                      <PhoneInput
+                        defaultCountry="IN"
+                        international
+                        countryCallingCodeEditable={false}
+                        placeholder="Phone Number"
+                        value={phone || undefined}
+                        onChange={(value) => setPhone(value || "")}
+                        numberInputProps={{
+                          className: `${fieldBase} border-0`
+                        }}
+                        className={`w-full border transition-all duration-300 ${errors.phone ? 'border-red-500 focus-within:border-red-500' : 'border-[#cbd5e1] focus-within:border-[#111827]'}`}
                       />
                       {errors.phone && <p className="text-red-600 text-sm mt-1">{errors.phone}</p>}
                     </div>

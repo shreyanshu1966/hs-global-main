@@ -1,6 +1,9 @@
 import React from 'react';
 import { Star, Package, Share2, MessageCircle, FileText } from 'lucide-react';
 import { useCurrency } from '../../contexts/CurrencyContext';
+import { useNavigate } from 'react-router-dom';
+import { useCart } from '../../contexts/CartContext';
+import { useTrackAddToCart } from '../../hooks/useProducts';
 import { AddToCartButton } from '../AddToCartButton';
 import { QuantityHandler } from '../QuantityHandler';
 import { Heading, Body, Caption } from '../ui/Typography';
@@ -30,11 +33,47 @@ export function ProductInfo({
     handleShare,
     reviewsRef,
 }: ProductInfoProps) {
+    const navigate = useNavigate();
+    const { addItem } = useCart();
+    const trackAddToCart = useTrackAddToCart();
     const { formatPrice } = useCurrency();
     const hasDiscount = hasActiveDiscount(product);
     const basePriceINR = getBasePriceINR(product);
     const effectivePriceINR = getEffectivePriceINR(product);
     const sellerRating = reviewStats.totalReviews > 0 ? reviewStats.averageRating.toFixed(1) : '5.0';
+
+    const getProductId = (): string => {
+        return product.productId || product._id || product.id || '';
+    };
+
+    const getProductImage = (): string => {
+        return product.image || (product.images && product.images[0]) || '/demo2.webp';
+    };
+
+    const handleBuyNow = () => {
+        const resolvedId = getProductId();
+
+        if (!resolvedId) {
+            navigate('/checkout');
+            return;
+        }
+
+        if (!isInCart) {
+            addItem({
+                id: resolvedId,
+                productId: product.productId || resolvedId,
+                name: product.name,
+                image: getProductImage(),
+                priceINR: product.priceINR || basePriceINR || 0,
+                category: product.category,
+                subcategory: product.subcategory || '',
+                discount: product.discount,
+            });
+            trackAddToCart(resolvedId);
+        }
+
+        navigate('/checkout');
+    };
 
     return (
         <div className="flex flex-col space-y-5 bg-white border border-[#e2e8f0] px-6 md:px-7 py-7">
@@ -187,16 +226,20 @@ export function ProductInfo({
                             }}
                             className="w-full h-14 bg-[#1f1c18] text-[#f8f3ea] hover:bg-[#35302a] transition-colors duration-300 font-semibold tracking-[0.08em] uppercase flex items-center justify-center"
                         />
-                    ) : isInCart ? (
-                        <AddToCartButton
-                            product={product}
-                            className="w-full h-14 bg-[#1f1c18] text-[#f8f3ea] hover:bg-[#35302a] transition-colors duration-300 font-semibold tracking-[0.08em] uppercase flex items-center justify-center"
-                        />
                     ) : (
-                        <AddToCartButton
-                            product={product}
-                            className="w-full h-14 bg-[#1f1c18] text-[#f8f3ea] hover:bg-[#35302a] transition-colors duration-300 font-semibold tracking-[0.08em] uppercase flex items-center justify-center"
-                        />
+                        <div className="grid grid-cols-2 gap-3">
+                            <button
+                                type="button"
+                                onClick={handleBuyNow}
+                                className="h-14 bg-[#0f766e] text-[#f0fdfa] hover:bg-[#115e59] transition-colors duration-300 font-semibold tracking-[0.08em] uppercase flex items-center justify-center"
+                            >
+                                Buy Now
+                            </button>
+                            <AddToCartButton
+                                product={product}
+                                className="w-full h-14 bg-[#1f1c18] text-[#f8f3ea] hover:bg-[#35302a] transition-colors duration-300 font-semibold tracking-[0.08em] uppercase flex items-center justify-center"
+                            />
+                        </div>
                     )
                 ) : (
                     <a

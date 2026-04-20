@@ -24,6 +24,11 @@ const ProductCard = ({ id, image, title, designer, price, originalPrice, priceIN
 
   const resolvedPrice = priceLabel || (typeof priceINR === 'number' ? formatPrice(priceINR) : (price || 'Request Quote'));
   const resolvedOriginalPrice = typeof originalPriceINR === 'number' ? formatPrice(originalPriceINR) : originalPrice;
+  const isDiscountActive = Boolean(
+    (typeof originalPriceINR === 'number' && typeof priceINR === 'number' && originalPriceINR > priceINR) ||
+    (resolvedOriginalPrice && resolvedOriginalPrice !== resolvedPrice)
+  );
+
   const navigateToProduct = () => {
     if (productLink) {
       window.location.href = productLink;
@@ -62,6 +67,13 @@ const ProductCard = ({ id, image, title, designer, price, originalPrice, priceIN
             e.currentTarget.src = `https://placehold.co/400x500/f0efe8/aaa?text=${encodeURIComponent(title)}`;
           }}
         />
+
+        {isDiscountActive && (
+          <span className="absolute top-[9px] left-[9px] z-10 bg-[#166534] text-white text-[10px] font-semibold uppercase tracking-[0.08em] px-2 py-1 rounded-sm">
+            Sale
+          </span>
+        )}
+
         {/* Favorite Button Overlay */}
         <button
           className={`absolute top-[9px] right-[9px] w-[32px] h-[32px] rounded-full flex items-center justify-center transition-colors shadow-sm z-10 ${isWishlisted ? 'bg-[#8b3a3a] text-white' : 'bg-white text-[#1f2937] hover:bg-gray-50'}`}
@@ -98,7 +110,7 @@ const ProductCard = ({ id, image, title, designer, price, originalPrice, priceIN
             {resolvedOriginalPrice && (
               <span className="itsbits-price-old text-[14px] text-[#222] line-through decoration-1">{resolvedOriginalPrice}</span>
             )}
-            <span className={`itsbits-price-new text-[14px] ${resolvedOriginalPrice ? 'text-[#d60000] itsbits-price-new-discount' : 'text-[#222]'}`}>
+            <span className={`itsbits-price-new text-[14px] ${isDiscountActive ? 'text-[#15803d] itsbits-price-new-discount' : 'text-[#222]'}`}>
               {resolvedPrice}
             </span>
           </div>

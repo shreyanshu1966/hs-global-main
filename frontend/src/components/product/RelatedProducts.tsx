@@ -11,6 +11,73 @@ interface RelatedProductsProps {
 }
 
 export function RelatedProducts({ relatedProducts, scrollRelated, relatedRef }: RelatedProductsProps) {
+    React.useEffect(() => {
+        const container = relatedRef.current;
+        if (!container || relatedProducts.length <= 1) return;
+
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (prefersReducedMotion) return;
+
+        let intervalId: ReturnType<typeof setInterval> | null = null;
+        let isUserInteracting = false;
+        let resumeTimer: ReturnType<typeof setTimeout> | null = null;
+
+        const clearResumeTimer = () => {
+            if (resumeTimer) {
+                clearTimeout(resumeTimer);
+                resumeTimer = null;
+            }
+        };
+
+        const pauseForInteraction = () => {
+            isUserInteracting = true;
+            clearResumeTimer();
+            resumeTimer = setTimeout(() => {
+                isUserInteracting = false;
+            }, 1600);
+        };
+
+        const autoStep = () => {
+            if (isUserInteracting) return;
+
+            const maxScroll = container.scrollWidth - container.clientWidth;
+            if (maxScroll <= 0) return;
+
+            const card = container.firstElementChild as HTMLElement | null;
+            const cardWidth = card ? card.offsetWidth : 300;
+            const nextGap = 24;
+            const stepAmount = cardWidth + nextGap;
+
+            const nextLeft = container.scrollLeft + stepAmount;
+            if (nextLeft >= maxScroll - 8) {
+                container.scrollTo({ left: 0, behavior: 'smooth' });
+                return;
+            }
+
+            container.scrollTo({ left: nextLeft, behavior: 'smooth' });
+        };
+
+        const handleWheel = () => pauseForInteraction();
+        const handlePointerDown = () => pauseForInteraction();
+        const handleTouchStart = () => pauseForInteraction();
+
+        container.addEventListener('wheel', handleWheel, { passive: true });
+        container.addEventListener('pointerdown', handlePointerDown, { passive: true });
+        container.addEventListener('touchstart', handleTouchStart, { passive: true });
+
+        intervalId = setInterval(autoStep, 2400);
+
+        return () => {
+            if (intervalId) {
+                clearInterval(intervalId);
+            }
+            clearResumeTimer();
+            container.removeEventListener('wheel', handleWheel);
+            container.removeEventListener('pointerdown', handlePointerDown);
+            container.removeEventListener('touchstart', handleTouchStart);
+        };
+    }, [relatedProducts.length, relatedRef]);
+
     if (!relatedProducts || relatedProducts.length === 0) return null;
 
     return (
