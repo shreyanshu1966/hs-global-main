@@ -37,6 +37,7 @@
   --itsbits-personalized-item-width: 20%;
   --itsbits-highlight-gap: 27px;
   --itsbits-carousel-row-gap: 12px;
+  --itsbits-content-max-width: 1440px;
   overflow-x: hidden;
 }
 
@@ -713,6 +714,10 @@
 }
 
 .itsbits-home .itsbits-section-rail {
+  width: 100%;
+  max-width: calc(var(--itsbits-content-max-width) + (var(--itsbits-page-gutter) * 2));
+  margin-left: auto;
+  margin-right: auto;
   padding-left: var(--itsbits-page-gutter);
   padding-right: var(--itsbits-page-gutter);
   overflow-x: hidden;
@@ -817,8 +822,9 @@
 
 .itsbits-home .itsbits-personalized-wrap {
   background: #f4f3ec;
-  width: auto;
-  margin: 0 var(--itsbits-page-gutter);
+  width: calc(100% - (var(--itsbits-page-gutter) * 2));
+  max-width: var(--itsbits-content-max-width);
+  margin: 0 auto;
   padding: 36px 0;
 }
 
@@ -899,7 +905,9 @@
 }
 
 .itsbits-home .itsbits-featured-section {
-  margin: 36px var(--itsbits-page-gutter);
+  width: calc(100% - (var(--itsbits-page-gutter) * 2));
+  max-width: var(--itsbits-content-max-width);
+  margin: 36px auto;
 }
 
 .itsbits-home .itsbits-featured-image-wrap {
@@ -1078,7 +1086,9 @@
 
 .itsbits-home .itsbits-promise-wrap {
   background-color: #f4f2e3;
-  margin: 36px 36px 0;
+  width: calc(100% - (var(--itsbits-page-gutter) * 2));
+  max-width: var(--itsbits-content-max-width);
+  margin: 36px auto 0;
   padding: 45px 36px;
   display: flex;
   justify-content: space-between;
