@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { Helmet } from "react-helmet-async";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Filter, ChevronLeft, ChevronRight, ArrowUpDown, Check } from "lucide-react";
+import { Filter, ArrowUpDown, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
+import type { Product } from "../services/productService";
 import { useProducts, useCategories } from "../hooks/useProducts";
 import { ProductCard } from "../components/cards/ProductCard";
 import { ProductCardSkeleton } from "../components/cards/ProductCardSkeleton";
@@ -40,6 +41,7 @@ const Products = () => {
   const [sortBy, setSortBy] = useState<string>("createdAt");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [page, setPage] = useState(1);
+  const [visibleProducts, setVisibleProducts] = useState<Product[]>([]);
   const limit = 12; // Items per page
 
   // UI State
@@ -131,8 +133,30 @@ const Products = () => {
 
   const totalItems = pagination?.totalItems || 0;
   const totalPages = pagination?.total || 1;
+  const hasMore = page < totalPages;
+  const isLoadingMore = loading && page > 1;
   const sortLabel = getSortOptionLabel(sortBy, sortOrder);
   const activeFilterCount = [activeCategory, activeSubcategory, minPrice, maxPrice].filter(Boolean).length;
+
+  useEffect(() => {
+    if (loading || error) {
+      return;
+    }
+
+    if (page === 1) {
+      setVisibleProducts(products);
+      return;
+    }
+
+    setVisibleProducts((prev) => {
+      const seen = new Set(prev.map((item) => item.productId || item._id || item.name));
+      const nextItems = products.filter((item) => {
+        const key = item.productId || item._id || item.name;
+        return key && !seen.has(key);
+      });
+      return [...prev, ...nextItems];
+    });
+  }, [products, page, loading, error]);
 
   return (
     <>
@@ -280,7 +304,7 @@ const Products = () => {
               {/* Desktop Toolbar */}
               <div className="hidden lg:flex sticky top-40 z-30 items-center justify-between bg-white/90 backdrop-blur-md p-4 rounded-xl shadow-md border border-gray-100 mb-6 gap-4">
                 <span className="text-sm text-gray-500">
-                  Showing <span className="font-medium text-gray-900">{products.length}</span> of <span className="font-medium text-gray-900">{totalItems}</span>
+                  Showing <span className="font-medium text-gray-900">{visibleProducts.length}</span> of <span className="font-medium text-gray-900">{totalItems}</span>
                 </span>
                 <SortDropdown
                   currentSortBy={sortBy}
@@ -346,12 +370,12 @@ const Products = () => {
               )}
 
               {/* Loading Skeleton */}
-              {loading && !error && (
+              {loading && !error && page === 1 && visibleProducts.length === 0 && (
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6"
+                  className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 sm:gap-6"
                 >
                   {Array.from({ length: limit }).map((_, i) => (
                     <ProductCardSkeleton key={i} />
@@ -360,7 +384,7 @@ const Products = () => {
               )}
 
               {/* Empty State */}
-              {!loading && !error && products.length === 0 && (
+              {!loading && !error && visibleProducts.length === 0 && (
                 <motion.div
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -384,15 +408,15 @@ const Products = () => {
               )}
 
               {/* Products Grid */}
-              {!loading && !error && products.length > 0 && (
+              {!error && visibleProducts.length > 0 && (
                 <>
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ staggerChildren: 0.1 }}
-                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6"
+                    className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 sm:gap-6"
                   >
-                    {products.map((product, index) => (
+                    {visibleProducts.map((product, index) => (
                       <motion.div
                         key={product._id}
                         initial={{ opacity: 0, y: 20 }}
@@ -404,28 +428,21 @@ const Products = () => {
                     ))}
                   </motion.div>
 
-                  {/* Pagination */}
-                  {totalPages > 1 && (
-                    <div className="flex justify-center items-center mt-12 gap-2" role="navigation" aria-label="Pagination Navigation">
+                  {/* Load More */}
+                  {hasMore && (
+                    <div className="flex flex-col items-center mt-10 sm:mt-12">
                       <button
-                        aria-label="Previous page"
-                        disabled={page === 1}
-                        onClick={() => { setPage(p => Math.max(1, p - 1)); window.scrollTo(0, 400); }}
-                        className="p-2 border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus:ring-2 focus:ring-gray-500"
+                        type="button"
+                        onClick={() => setPage((prev) => prev + 1)}
+                        disabled={isLoadingMore}
+                        className="min-w-[180px] h-12 px-6 rounded-full border border-gray-300 bg-white text-gray-800 font-medium tracking-[0.02em] hover:bg-gray-50 transition-colors disabled:opacity-60 disabled:cursor-not-allowed focus:ring-2 focus:ring-offset-2 focus:ring-gray-400"
+                        aria-label="Load more products"
                       >
-                        <ChevronLeft className="w-5 h-5" />
+                        {isLoadingMore ? "Loading..." : "Load More"}
                       </button>
-                      <span className="px-4 py-2 text-sm font-medium text-gray-700" aria-live="polite">
-                        Page {page} of {totalPages}
-                      </span>
-                      <button
-                        aria-label="Next page"
-                        disabled={page === totalPages}
-                        onClick={() => { setPage(p => Math.min(totalPages, p + 1)); window.scrollTo(0, 400); }}
-                        className="p-2 border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus:ring-2 focus:ring-gray-500"
-                      >
-                        <ChevronRight className="w-5 h-5" />
-                      </button>
+                      <p className="mt-3 text-xs sm:text-sm text-gray-500" aria-live="polite">
+                        {visibleProducts.length} of {totalItems} products shown
+                      </p>
                     </div>
                   )}
                 </>

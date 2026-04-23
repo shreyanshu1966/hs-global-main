@@ -24,10 +24,21 @@ const ProductCard = ({ id, image, title, designer, price, originalPrice, priceIN
 
   const resolvedPrice = priceLabel || (typeof priceINR === 'number' ? formatPrice(priceINR) : (price || 'Request Quote'));
   const resolvedOriginalPrice = typeof originalPriceINR === 'number' ? formatPrice(originalPriceINR) : originalPrice;
+  const hasValidPrice =
+    (typeof priceINR === 'number' && priceINR > 0) ||
+    (typeof originalPriceINR === 'number' && originalPriceINR > 0);
   const isDiscountActive = Boolean(
     (typeof originalPriceINR === 'number' && typeof priceINR === 'number' && originalPriceINR > priceINR) ||
     (resolvedOriginalPrice && resolvedOriginalPrice !== resolvedPrice)
   );
+  const showDiscount = isDiscountActive && hasValidPrice;
+  const discountPercentage =
+    typeof originalPriceINR === 'number' &&
+    typeof priceINR === 'number' &&
+    originalPriceINR > priceINR &&
+    originalPriceINR > 0
+      ? Math.round(((originalPriceINR - priceINR) / originalPriceINR) * 100)
+      : null;
 
   const navigateToProduct = () => {
     if (productLink) {
@@ -68,9 +79,9 @@ const ProductCard = ({ id, image, title, designer, price, originalPrice, priceIN
           }}
         />
 
-        {isDiscountActive && (
-          <span className="absolute top-[9px] left-[9px] z-10 bg-[#166534] text-white text-[10px] font-semibold uppercase tracking-[0.08em] px-2 py-1 rounded-sm">
-            Sale
+        {showDiscount && (
+          <span className="absolute top-[8px] left-[8px] z-10 bg-[#b91c1c] text-white text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.05em] px-2 sm:px-[10px] py-1 sm:py-[5px] rounded-full shadow-sm">
+            {discountPercentage ? `${discountPercentage}% Off` : 'On Sale'}
           </span>
         )}
 
@@ -106,14 +117,31 @@ const ProductCard = ({ id, image, title, designer, price, originalPrice, priceIN
           {designer}
         </div>
         {showPrice && (
-          <div className="flex items-center gap-[6px] mt-auto">
-            {resolvedOriginalPrice && (
-              <span className="itsbits-price-old text-[14px] text-[#222] line-through decoration-1">{resolvedOriginalPrice}</span>
-            )}
-            <span className={`itsbits-price-new text-[14px] ${isDiscountActive ? 'text-[#15803d] itsbits-price-new-discount' : 'text-[#222]'}`}>
-              {resolvedPrice}
-            </span>
-          </div>
+          showDiscount ? (
+            <div className="mt-auto space-y-1.5">
+              <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                <span className="itsbits-price-new text-[14px] sm:text-[15px] text-[#b91c1c] itsbits-price-new-discount font-semibold leading-none">
+                  {resolvedPrice}
+                </span>
+                {discountPercentage && (
+                  <span className="inline-flex items-center rounded-full border border-[#fecaca] bg-[#fef2f2] px-1.5 sm:px-2 py-[2px] text-[10px] sm:text-[11px] font-semibold tracking-[0.01em] sm:tracking-[0.02em] text-[#b91c1c] leading-none">
+                    Save {discountPercentage}%
+                  </span>
+                )}
+              </div>
+              {resolvedOriginalPrice && (
+                <span className="itsbits-price-old text-[12px] sm:text-[13px] text-[#6b7280] line-through decoration-1 leading-none block">
+                  {resolvedOriginalPrice}
+                </span>
+              )}
+            </div>
+          ) : (
+            <div className="mt-auto">
+              <span className="itsbits-price-new text-[14px] sm:text-[15px] text-[#222] leading-none">
+                {resolvedPrice}
+              </span>
+            </div>
+          )
         )}
       </div>
     </div>

@@ -7,6 +7,7 @@ import { getProductCloudinaryUrl } from '../../utils/productCloudinary';
 import {
     hasActiveDiscount,
     getBasePriceINR,
+    getDiscountPercentage,
     getEffectivePriceINR,
 } from '../../modules/product/pricing';
 import { getProductDisplayImages } from '../../modules/product/selectors';
@@ -34,8 +35,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
     const hasDiscount = useMemo(() => hasActiveDiscount(product), [product]);
     const finalPrice = useMemo(() => getEffectivePriceINR(product), [product]);
     const originalPrice = useMemo(() => getBasePriceINR(product), [product]);
+    const discountPercentage = useMemo(() => Math.round(getDiscountPercentage(product)), [product]);
+    const hasValidPrice = useMemo(() => originalPrice > 0, [originalPrice]);
+    const showDiscount = hasDiscount && hasValidPrice;
 
-    const displayPrice = product.priceINR ? formatPrice(finalPrice) : 'Price on Request';
+    const displayPrice = hasValidPrice ? formatPrice(finalPrice) : 'Price on Request';
     const wishlistId = String(product.productId || product._id || product.name);
     const isWishlisted = isInWishlist(wishlistId);
 
@@ -242,9 +246,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
                     )}
 
                     {/* Discount badge */}
-                    {hasDiscount && (
-                        <div className="absolute top-4 left-4 bg-[#8B3A3A] text-white text-xs font-bold px-2 py-1 uppercase tracking-wider z-20">
-                            Sale
+                    {showDiscount && (
+                        <div className="absolute top-2 left-2 sm:top-4 sm:left-4 bg-[#b91c1c] text-white text-[9px] sm:text-xs font-bold px-2 sm:px-3 py-1 sm:py-1.5 uppercase tracking-[0.05em] sm:tracking-[0.06em] rounded-full shadow-sm z-20">
+                            {discountPercentage > 0 ? `${discountPercentage}% Off` : 'On Sale'}
                         </div>
                     )}
                 </div>
@@ -257,12 +261,19 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
                     <p className="text-sm text-[#6B6B6B] uppercase tracking-wider truncate">
                         {product.category}{product.subcategory ? ` · ${product.subcategory}` : ''}
                     </p>
-                    <div className="flex items-baseline gap-2">
-                        <p className="text-lg font-medium text-[#2B2B2B]">{displayPrice}</p>
-                        {hasDiscount && (
-                            <p className="text-sm text-[#6B6B6B] line-through">{formatPrice(originalPrice)}</p>
-                        )}
-                    </div>
+                    {showDiscount ? (
+                        <div className="space-y-1.5">
+                            <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                                <p className="text-[16px] sm:text-lg font-semibold text-[#b91c1c] leading-none">{displayPrice}</p>
+                                {discountPercentage > 0 && (
+                                    <p className="inline-flex items-center rounded-full border border-[#fecaca] bg-[#fef2f2] px-1.5 sm:px-2 py-[2px] text-[10px] sm:text-[11px] font-semibold tracking-[0.01em] sm:tracking-[0.02em] text-[#b91c1c] leading-none">Save {discountPercentage}%</p>
+                                )}
+                            </div>
+                            <p className="text-[12px] sm:text-sm text-[#6B7280] line-through leading-none">{formatPrice(originalPrice)}</p>
+                        </div>
+                    ) : (
+                        <p className="text-[16px] sm:text-lg font-medium text-[#2B2B2B] leading-none">{displayPrice}</p>
+                    )}
                 </div>
             </Link>
         </div>

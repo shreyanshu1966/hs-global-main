@@ -150,7 +150,7 @@ const Header = () => {
     { label: 'Services', mobileLabel: 'Services', href: '/services' },
     { label: 'Journal', mobileLabel: 'Journal', href: '/blog' },
     { label: 'About', mobileLabel: 'About', href: '/about' },
-    { label: 'Get Quote', mobileLabel: 'Get Quote', href: '/contact', isSale: true },
+    { label: 'Bulk Order', mobileLabel: 'Bulk Order', href: '/contact', isSale: true },
   ];
 
   return (

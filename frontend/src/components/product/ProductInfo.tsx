@@ -5,10 +5,10 @@ import { useNavigate } from 'react-router-dom';
 import { useCart } from '../../contexts/CartContext';
 import { useTrackAddToCart } from '../../hooks/useProducts';
 import { AddToCartButton } from '../AddToCartButton';
-import { QuantityHandler } from '../QuantityHandler';
+
 import { Heading, Body, Caption } from '../ui/Typography';
 import { Button } from '../ui/Button';
-import { getBasePriceINR, getEffectivePriceINR, hasActiveDiscount } from '../../modules/product/pricing';
+import { getBasePriceINR, getDiscountPercentage, getEffectivePriceINR, hasActiveDiscount } from '../../modules/product/pricing';
 
 interface ProductInfoProps {
     product: any;
@@ -37,8 +37,9 @@ export function ProductInfo({
     const { addItem } = useCart();
     const trackAddToCart = useTrackAddToCart();
     const { formatPrice } = useCurrency();
-    const hasDiscount = hasActiveDiscount(product);
     const basePriceINR = getBasePriceINR(product);
+    const hasDiscount = hasActiveDiscount(product) && basePriceINR > 0;
+    const discountPercentage = Math.round(getDiscountPercentage(product));
     const effectivePriceINR = getEffectivePriceINR(product);
     const sellerRating = reviewStats.totalReviews > 0 ? reviewStats.averageRating.toFixed(1) : '5.0';
 
@@ -138,6 +139,11 @@ export function ProductInfo({
                                     <span className="text-lg text-[#766d5f] line-through mb-1">
                                         {formatPrice(basePriceINR)}
                                     </span>
+                                    {discountPercentage > 0 && (
+                                        <span className="inline-flex items-center rounded-full border border-[#fecaca] bg-[#fef2f2] px-3 py-1 text-xs font-semibold tracking-[0.04em] text-[#b91c1c] mb-1">
+                                            Save {discountPercentage}%
+                                        </span>
+                                    )}
                                 </div>
                                 {product.discount?.description && (
                                     <p className="text-sm text-[#6b5a36] italic leading-relaxed mt-2 p-3 bg-white border border-[#e2e8f0]">
@@ -166,16 +172,7 @@ export function ProductInfo({
                     </div>
                 )}
 
-                <div className="flex items-center justify-between border-t border-[#e2e8f0] pt-3">
-                    <Caption className="uppercase tracking-[0.1em]">Quantity</Caption>
-                    {isInCart ? (
-                        <div className="scale-90 origin-right">
-                            <QuantityHandler product={product} />
-                        </div>
-                    ) : (
-                        <span className="text-sm text-[#334155]">1</span>
-                    )}
-                </div>
+
             </div>
 
             <div className="w-full h-px bg-[#e2e8f0]" />

@@ -27,7 +27,7 @@ export function ProductGallery({ product }: ProductGalleryProps) {
 
     const galleryImages = getProductDisplayImages(product as any);
     const images = galleryImages.length > 0 ? galleryImages : product.images;
-    const hasDiscount = hasActiveDiscount(product as any);
+    const hasDiscount = hasActiveDiscount(product as any) && Boolean(product.priceINR && product.priceINR > 0);
     const discountPercentage = getDiscountPercentage(product as any);
 
     const prev = () => setSelectedImage(i => (i - 1 + images.length) % images.length);
