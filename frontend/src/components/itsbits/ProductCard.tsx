@@ -1,6 +1,7 @@
-import type { KeyboardEventHandler } from 'react';
+import { useState, type KeyboardEventHandler } from 'react';
 import { useCurrency } from '../../contexts/CurrencyContext';
 import { useWishlist } from '../../contexts/WishlistContext';
+import { useCart } from '../../contexts/CartContext';
 
 interface ProductCardProps {
   id?: string;
@@ -19,6 +20,8 @@ interface ProductCardProps {
 const ProductCard = ({ id, image, title, designer, price, originalPrice, priceINR, originalPriceINR, priceLabel, productLink, showPrice = true }: ProductCardProps) => {
   const { formatPrice } = useCurrency();
   const { isInWishlist, toggleWishlist } = useWishlist();
+  const { addItem } = useCart();
+  const [isAdded, setIsAdded] = useState(false);
   const wishlistId = id || productLink || title;
   const isWishlisted = isInWishlist(wishlistId);
 
@@ -44,6 +47,27 @@ const ProductCard = ({ id, image, title, designer, price, originalPrice, priceIN
     if (productLink) {
       window.location.href = productLink;
     }
+  };
+
+  const handleAddToCart = () => {
+    if (!(typeof priceINR === 'number' && priceINR > 0)) {
+      return;
+    }
+
+    const resolvedId = id || productLink || title;
+
+    addItem({
+      id: resolvedId,
+      productId: resolvedId,
+      name: title,
+      image,
+      priceINR,
+      category: 'furniture',
+      subcategory: designer,
+    });
+
+    setIsAdded(true);
+    window.setTimeout(() => setIsAdded(false), 1500);
   };
 
   const handleKeyDown: KeyboardEventHandler<HTMLDivElement> = (event) => {
@@ -105,6 +129,38 @@ const ProductCard = ({ id, image, title, designer, price, originalPrice, priceIN
            <svg width="18" height="18" viewBox="0 0 24 24" fill={isWishlisted ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="1.5">
              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
            </svg>
+        </button>
+
+        <button
+          type="button"
+          className="absolute top-[47px] right-[9px] w-[32px] h-[32px] rounded-full flex items-center justify-center transition-all shadow-sm z-10 border border-white/70 bg-white/95 text-[#111827] hover:bg-white disabled:bg-white/80 disabled:text-[#9ca3af] disabled:cursor-not-allowed"
+          disabled={!(typeof priceINR === 'number' && priceINR > 0)}
+          onClick={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            handleAddToCart();
+          }}
+          aria-label={typeof priceINR === 'number' && priceINR > 0 ? `Add ${title} to cart` : `${title} is available on request`}
+          title={typeof priceINR === 'number' && priceINR > 0 ? (isAdded ? 'Added to cart' : 'Add to cart') : 'Price on request'}
+        >
+          {typeof priceINR === 'number' && priceINR > 0 ? (
+            isAdded ? (
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            ) : (
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <circle cx="9" cy="21" r="1" />
+                <circle cx="20" cy="21" r="1" />
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+              </svg>
+            )
+          ) : (
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+            </svg>
+          )}
         </button>
       </div>
 

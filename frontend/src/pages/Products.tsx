@@ -26,7 +26,7 @@ const Products = () => {
   const locationState = location.state as { target?: string } | null;
   const hashTarget = location.hash ? location.hash.substring(1) : "";
 
-  const initialCategory = queryParams.get("category") || "furniture";
+  const initialCategory = queryParams.get("category") || queryParams.get("cat") || "furniture";
   const rawInitialSubcategory = queryParams.get("subcategory") || locationState?.target || hashTarget || "";
   const initialSubcategory = toCanonicalSubcategory(rawInitialSubcategory);
   const initialMinPrice = queryParams.get("minPrice") ? Number(queryParams.get("minPrice")) : undefined;
@@ -430,12 +430,12 @@ const Products = () => {
 
                   {/* Load More */}
                   {hasMore && (
-                    <div className="flex flex-col items-center mt-10 sm:mt-12">
+                    <div className="w-full flex flex-col items-center justify-center mt-10 sm:mt-12">
                       <button
                         type="button"
                         onClick={() => setPage((prev) => prev + 1)}
                         disabled={isLoadingMore}
-                        className="min-w-[180px] h-12 px-6 rounded-full border border-gray-300 bg-white text-gray-800 font-medium tracking-[0.02em] hover:bg-gray-50 transition-colors disabled:opacity-60 disabled:cursor-not-allowed focus:ring-2 focus:ring-offset-2 focus:ring-gray-400"
+                        className="inline-flex items-center justify-center min-w-[210px] h-12 px-7 rounded-lg border border-[#0f172a] bg-[#0f172a] text-white font-semibold uppercase tracking-[0.08em] shadow-sm hover:bg-[#1e293b] hover:border-[#1e293b] transition-colors disabled:opacity-60 disabled:cursor-not-allowed focus:ring-2 focus:ring-offset-2 focus:ring-slate-500"
                         aria-label="Load more products"
                       >
                         {isLoadingMore ? "Loading..." : "Load More"}

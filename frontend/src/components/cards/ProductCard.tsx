@@ -4,6 +4,7 @@ import { Product } from '../../services/productService';
 import { useCurrency } from '../../contexts/CurrencyContext';
 import { useWishlist } from '../../contexts/WishlistContext';
 import { getProductCloudinaryUrl } from '../../utils/productCloudinary';
+import { AddToCartButton } from '../AddToCartButton';
 import {
     hasActiveDiscount,
     getBasePriceINR,
@@ -194,6 +195,21 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
                         </svg>
                     </button>
 
+                    <div
+                        className="absolute top-[3.25rem] right-3 z-30"
+                        onClick={(event) => {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }}
+                    >
+                        <AddToCartButton
+                            product={product}
+                            variant="compact"
+                            iconOnly
+                            className="w-9 h-9 p-0 rounded-full border border-white/70 bg-white/95 text-[#111827] shadow-sm backdrop-blur-[2px] hover:bg-white"
+                        />
+                    </div>
+
                     {/* Primary image */}
                     <img
                         src={primaryImage}
@@ -276,6 +292,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
                     )}
                 </div>
             </Link>
+
         </div>
     );
 };

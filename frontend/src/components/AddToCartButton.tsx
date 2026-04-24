@@ -11,6 +11,7 @@ interface AddToCartButtonProps {
   product: Product;
   variant?: 'default' | 'compact';
   className?: string;
+  iconOnly?: boolean;
   preselectedCustomization?: {
     finish?: string;
     thickness?: string;
@@ -21,6 +22,7 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
   product,
   variant = 'default',
   className = '',
+  iconOnly = false,
   preselectedCustomization,
 }) => {
   const { state, addItem, toggleCart } = useCart();
@@ -152,10 +154,12 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
       return (
         <button
           onClick={handleClick}
+          aria-label="Request quote"
+          title="Request quote"
           className={`px-3 py-2 text-xs md:text-sm font-semibold transition-all duration-300 flex items-center justify-center gap-1 ${className}`}
         >
-          <FileText className="w-3 h-3" />
-          <span>Request Quote</span>
+          <FileText className="w-3.5 h-3.5" />
+          {!iconOnly && <span>Request Quote</span>}
         </button>
       );
     }
@@ -181,15 +185,21 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
     return (
       <button
         onClick={handleClick}
+        aria-label={isAdded ? 'Added to cart' : 'Add to cart'}
+        title={isAdded ? 'Added to cart' : 'Add to cart'}
         className={`px-3 py-2 text-xs md:text-sm font-semibold transition-all duration-300 ${className}`}
       >
-        {isAdded ? (
-          <div className="flex items-center gap-1">
-            <Check className="w-3 h-3" />
-            Added
-          </div>
+        {iconOnly ? (
+          isAdded ? <Check className="w-3.5 h-3.5" /> : <ShoppingCart className="w-3.5 h-3.5" />
         ) : (
-          'Add to Cart'
+          isAdded ? (
+            <div className="flex items-center gap-1">
+              <Check className="w-3 h-3" />
+              Added
+            </div>
+          ) : (
+            'Add to Cart'
+          )
         )}
       </button>
     );

@@ -9,8 +9,15 @@ interface ProductSpecificationsProps {
 
 export function ProductSpecifications({ product, selectedFinish, selectedThickness }: ProductSpecificationsProps) {
     const [activeTab, setActiveTab] = React.useState<'details' | 'designer' | 'custom' | 'seller' | 'shipping'>('details');
+    const [isDescriptionExpanded, setIsDescriptionExpanded] = React.useState(false);
+    const DESCRIPTION_PREVIEW_CHARS = 520;
 
     const specEntries = Object.entries(product.specs || {});
+    const descriptionText = (product.description || '').trim();
+    const shouldShowDescriptionToggle = descriptionText.length > DESCRIPTION_PREVIEW_CHARS;
+    const visibleDescription = shouldShowDescriptionToggle && !isDescriptionExpanded
+        ? `${descriptionText.slice(0, DESCRIPTION_PREVIEW_CHARS).trimEnd()}...`
+        : descriptionText;
 
     const detailsRows = [
         ...specEntries.map(([key, value]) => [key, String(value)] as const),
@@ -51,8 +58,18 @@ export function ProductSpecifications({ product, selectedFinish, selectedThickne
             {activeTab === 'details' && (
                 <div className="space-y-4">
                     <Body color="secondary" className="text-[#334155] leading-relaxed">
-                        {product.description}
+                        {visibleDescription}
                     </Body>
+                    {shouldShowDescriptionToggle && (
+                        <button
+                            type="button"
+                            onClick={() => setIsDescriptionExpanded((prev) => !prev)}
+                            className="inline-flex items-center text-xs sm:text-sm font-semibold uppercase tracking-[0.08em] text-[#0f172a] hover:text-[#334155] transition-colors"
+                            aria-label={isDescriptionExpanded ? 'Show less description' : 'Load more description'}
+                        >
+                            {isDescriptionExpanded ? 'Show Less' : 'Load More'}
+                        </button>
+                    )}
                     <div className="grid md:grid-cols-2 gap-x-8">
                         {detailsRows.map(([key, value], index) => (
                             <div key={`${key}-${index}`} className="flex justify-between items-center py-3 border-b border-[#e2e8f0] gap-6">

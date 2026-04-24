@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Heart, Menu, Search, X } from "lucide-react";
+import { ChevronDown, Heart, Mail, Menu, Phone, Search, X } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
 import { CartMenu } from "../CartMenu";
 import { LocationSelector } from "../LocationSelector";
@@ -16,7 +16,12 @@ const Header = () => {
   const [isDesktopDropdownOpen, setIsDesktopDropdownOpen] = useState(false);
   const [isMobileDropdownOpen, setIsMobileDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileFurnitureOpen, setIsMobileFurnitureOpen] = useState(false);
+  const [isFurnitureMegaOpen, setIsFurnitureMegaOpen] = useState(false);
+  const [isFurnitureMegaHovered, setIsFurnitureMegaHovered] = useState(false);
   const lastScrollYRef = useRef(0);
+  const furnitureMegaOpenTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const furnitureMegaCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const desktopSearchRef = useRef<HTMLDivElement>(null);
   const mobileSearchRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
@@ -26,6 +31,7 @@ const Header = () => {
 
   useEffect(() => {
     setIsMobileMenuOpen(false);
+    setIsMobileFurnitureOpen(false);
   }, [location.pathname]);
 
   useEffect(() => {
@@ -71,6 +77,7 @@ const Header = () => {
         setIsDesktopDropdownOpen(false);
         setIsMobileDropdownOpen(false);
         setIsMobileMenuOpen(false);
+        setIsFurnitureMegaOpen(false);
       }
     };
 
@@ -78,6 +85,17 @@ const Header = () => {
 
     return () => {
       window.removeEventListener("keydown", onKeyDown);
+    };
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (furnitureMegaOpenTimerRef.current) {
+        clearTimeout(furnitureMegaOpenTimerRef.current);
+      }
+      if (furnitureMegaCloseTimerRef.current) {
+        clearTimeout(furnitureMegaCloseTimerRef.current);
+      }
     };
   }, []);
 
@@ -143,15 +161,74 @@ const Header = () => {
 
   const navItems = [
     { label: 'New Arrivals', mobileLabel: 'New', href: '/products?cat=furniture&sort=newest', active: true },
-    { label: 'All Furniture', mobileLabel: 'Furniture', href: '/products?cat=furniture' },
-    { label: 'Coffee Tables', mobileLabel: 'Coffee', href: '/products?cat=furniture#coffee-table' },
-    { label: 'Console Tables', mobileLabel: 'Console', href: '/products?cat=furniture#console-table' },
+    { label: 'All Furniture', mobileLabel: 'Furniture', href: '/products?category=furniture', hasMegaMenu: true },
     { label: 'Gallery', mobileLabel: 'Gallery', href: '/gallery' },
     { label: 'Services', mobileLabel: 'Services', href: '/services' },
     { label: 'Journal', mobileLabel: 'Journal', href: '/blog' },
     { label: 'About', mobileLabel: 'About', href: '/about' },
     { label: 'Bulk Order', mobileLabel: 'Bulk Order', href: '/contact', isSale: true },
   ];
+
+  const furnitureMegaItems = [
+    { label: 'All in Furniture', href: '/products?category=furniture' },
+    { label: '3 sphere balls table', href: '/products?category=furniture&subcategory=3-sphere-balls-table' },
+    { label: 'bathtub', href: '/products?category=furniture&subcategory=bathtub' },
+    { label: 'center table', href: '/products?category=furniture&subcategory=center-table' },
+    { label: 'console table', href: '/products?category=furniture&subcategory=console-table' },
+    { label: 'decor', href: '/products?category=furniture&subcategory=decor' },
+    { label: 'dining table', href: '/products?category=furniture&subcategory=dining-table' },
+    { label: 'lamp', href: '/products?category=furniture&subcategory=lamp' },
+    { label: 'lamps', href: '/products?category=furniture&subcategory=lamps' },
+    { label: 'other furniture', href: '/products?category=furniture&subcategory=other-furniture' },
+    { label: 'pedestal wash basin', href: '/products?category=furniture&subcategory=pedestal-wash-basin' },
+    { label: 'side table', href: '/products?category=furniture&subcategory=side-table' },
+    { label: 'wash basin', href: '/products?category=furniture&subcategory=wash-basin' },
+  ];
+
+  const furnitureMegaGroups = [
+    {
+      title: 'Tables',
+      items: furnitureMegaItems.filter((item) => ['3 sphere balls table', 'center table', 'console table', 'dining table', 'side table'].includes(item.label)),
+    },
+    {
+      title: 'Bath & Basins',
+      items: furnitureMegaItems.filter((item) => ['bathtub', 'pedestal wash basin', 'wash basin'].includes(item.label)),
+    },
+    {
+      title: 'Decor & Lighting',
+      items: furnitureMegaItems.filter((item) => ['decor', 'lamp', 'lamps', 'other furniture'].includes(item.label)),
+    },
+  ];
+
+  const openFurnitureMega = () => {
+    if (furnitureMegaCloseTimerRef.current) {
+      clearTimeout(furnitureMegaCloseTimerRef.current);
+      furnitureMegaCloseTimerRef.current = null;
+    }
+    if (furnitureMegaOpenTimerRef.current) {
+      clearTimeout(furnitureMegaOpenTimerRef.current);
+    }
+    furnitureMegaOpenTimerRef.current = setTimeout(() => {
+      setIsFurnitureMegaOpen(true);
+      furnitureMegaOpenTimerRef.current = null;
+    }, 80);
+  };
+
+  const closeFurnitureMega = () => {
+    if (furnitureMegaOpenTimerRef.current) {
+      clearTimeout(furnitureMegaOpenTimerRef.current);
+      furnitureMegaOpenTimerRef.current = null;
+    }
+    if (furnitureMegaCloseTimerRef.current) {
+      clearTimeout(furnitureMegaCloseTimerRef.current);
+    }
+    furnitureMegaCloseTimerRef.current = setTimeout(() => {
+      if (!isFurnitureMegaHovered) {
+        setIsFurnitureMegaOpen(false);
+      }
+      furnitureMegaCloseTimerRef.current = null;
+    }, 280);
+  };
 
   return (
     <>
@@ -222,7 +299,10 @@ const Header = () => {
             </div>
 
             {isDesktopDropdownOpen && searchQuery.trim().length >= 2 && (
-              <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-[#e5e7eb] rounded-2xl shadow-[0_12px_32px_rgba(0,0,0,0.12)] max-h-[380px] overflow-y-auto z-[80]">
+              <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-[#e5e7eb] rounded-2xl shadow-[0_14px_36px_rgba(0,0,0,0.14)] max-h-[420px] overflow-y-auto z-[80]">
+                <div className="px-4 py-2.5 border-b border-[#eef2f7] text-[11px] uppercase tracking-[0.12em] text-[#64748b]">
+                  Search Results
+                </div>
                 {isSearching && (
                   <div className="px-4 py-3 text-sm text-[#6b7280]">Searching...</div>
                 )}
@@ -232,7 +312,7 @@ const Header = () => {
                     key={product.productId || product._id}
                     type="button"
                     onClick={() => handleSelectProduct(product)}
-                    className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-[#f8f8f8] transition-colors"
+                    className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-[#f8fafc] transition-colors"
                   >
                     <div className="w-12 h-12 rounded-md overflow-hidden bg-[#f3f4f6] shrink-0">
                       {product.image ? (
@@ -371,6 +451,59 @@ const Header = () => {
                   >
                     Contact Us
                   </Link>
+                ) : item.hasMegaMenu ? (
+                  <div key="mobile-menu-furniture" className="border-b border-[#ececec]">
+                    <button
+                      type="button"
+                      className="w-full px-5 py-4 text-[17px] leading-[1.25] text-[#111] font-light flex items-center justify-between"
+                      aria-expanded={isMobileFurnitureOpen}
+                      aria-controls="mobile-furniture-submenu"
+                      onClick={() => setIsMobileFurnitureOpen((prev) => !prev)}
+                    >
+                      <span>{item.label}</span>
+                      <ChevronDown
+                        width="18"
+                        height="18"
+                        className={`transition-transform duration-200 ${isMobileFurnitureOpen ? 'rotate-180' : ''}`}
+                      />
+                    </button>
+
+                    {isMobileFurnitureOpen && (
+                      <div id="mobile-furniture-submenu" className="px-5 pb-4 space-y-4 bg-[#fafafa] border-t border-[#f1f1f1]">
+                        <a
+                          href="/products?category=furniture"
+                          className="inline-block mt-1 rounded-md border border-[#111827] bg-[#111827] px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-white no-underline"
+                          onClick={() => {
+                            setIsMobileFurnitureOpen(false);
+                            setIsMobileMenuOpen(false);
+                          }}
+                        >
+                          View All Furniture
+                        </a>
+
+                        {furnitureMegaGroups.map((group) => (
+                          <div key={`mobile-group-${group.title}`} className="space-y-1.5">
+                            <p className="text-[10px] uppercase tracking-[0.12em] text-[#64748b]">{group.title}</p>
+                            <div className="space-y-0.5">
+                              {group.items.map((megaItem) => (
+                                <a
+                                  key={`mobile-${megaItem.label}`}
+                                  href={megaItem.href}
+                                  className="block rounded-md px-2 py-2 text-[14px] leading-[1.35] text-[#1f2937] no-underline"
+                                  onClick={() => {
+                                    setIsMobileFurnitureOpen(false);
+                                    setIsMobileMenuOpen(false);
+                                  }}
+                                >
+                                  {megaItem.label}
+                                </a>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 ) : (
                   <a
                     key={`mobile-menu-${item.label}`}
@@ -385,15 +518,27 @@ const Header = () => {
             </nav>
 
             <div className="border-t border-[#ececec] pt-2">
-              {isAuthenticated && (
-                <Link
-                  to="/profile"
-                  className="block px-5 py-4 text-[17px] font-light text-[#111]"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  My Account
-                </Link>
-              )}
+              <div className="px-5 py-4 border-b border-[#ececec] bg-[#fafafa]">
+                <p className="text-[10px] uppercase tracking-[0.12em] text-[#64748b] mb-3">Quick Contact</p>
+                <div className="space-y-2.5">
+                  <a
+                    href="tel:+918107115116"
+                    className="inline-flex items-center gap-2 text-[14px] text-[#1f2937] no-underline"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    <Phone width="15" height="15" className="text-[#475569]" />
+                    <span>+91 81071 15116</span>
+                  </a>
+                  <a
+                    href="mailto:inquiry@hsglobalexport.com"
+                    className="inline-flex items-center gap-2 text-[14px] text-[#1f2937] no-underline"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    <Mail width="15" height="15" className="text-[#475569]" />
+                    <span>inquiry@hsglobalexport.com</span>
+                  </a>
+                </div>
+              </div>
 
               {isAuthenticated && user?.role === "admin" && (
                 <Link
@@ -470,17 +615,47 @@ const Header = () => {
 
       {/* ===== Bottom Nav Bar — height: 50px ===== */}
       <div
-        className={`itsbits-bottom-nav bg-white hidden md:flex justify-center relative ${isBottomNavVisible ? 'is-visible' : 'is-hidden'}`}
+        className={`itsbits-bottom-nav bg-white hidden md:flex justify-center relative overflow-visible ${isBottomNavVisible ? 'is-visible' : 'is-hidden'}`}
+        style={{ overflow: 'visible' }}
       >
         <nav
-          className="flex items-center itsbits-header-inner itsbits-nav-inner"
+          className="flex items-center itsbits-header-inner itsbits-nav-inner relative overflow-visible"
+          style={{ overflow: 'visible' }}
+          onMouseLeave={closeFurnitureMega}
         >
-          <ul className="flex m-0 p-0 list-none justify-center w-full itsbits-nav-list">
+          <ul className="flex m-0 p-0 list-none justify-center w-full itsbits-nav-list overflow-visible">
             {navItems.map((item) => (
-              <li key={item.label}>
+              <li
+                key={item.label}
+                className="relative"
+                onMouseEnter={() => {
+                  if (item.hasMegaMenu) {
+                    openFurnitureMega();
+                  }
+                }}
+                onMouseLeave={() => {
+                  if (item.hasMegaMenu) {
+                    closeFurnitureMega();
+                  }
+                }}
+              >
                 <a
                   href={item.href}
                   className={`itsbits-nav-link inline-block relative no-underline cursor-pointer ${item.active ? 'is-active' : ''} ${item.isSale ? 'itsbits-nav-link-cta' : ''}`}
+                  onClick={(event) => {
+                    if (!item.hasMegaMenu) {
+                      return;
+                    }
+                    event.preventDefault();
+                    event.stopPropagation();
+                    setIsFurnitureMegaHovered(true);
+                    setIsFurnitureMegaOpen((prev) => !prev);
+                  }}
+                  onFocus={() => {
+                    if (item.hasMegaMenu) {
+                      setIsFurnitureMegaOpen(true);
+                    }
+                  }}
                   style={{
                     color: item.isSale ? '#fff' : '#000',
                     fontWeight: item.active || item.isSale ? 600 : 300,
@@ -488,10 +663,57 @@ const Header = () => {
                 >
                   <span className="itsbits-nav-label-desktop">{item.label}</span>
                   <span className="itsbits-nav-label-mobile">{item.mobileLabel || item.label}</span>
+                  {item.hasMegaMenu && (
+                    <span className={`ml-1 inline-block text-[10px] transition-transform ${isFurnitureMegaOpen ? 'rotate-180' : ''}`} aria-hidden="true">▼</span>
+                  )}
                 </a>
               </li>
             ))}
           </ul>
+
+          {isFurnitureMegaOpen && (
+            <div
+              className="absolute left-1/2 -translate-x-1/2 top-full pt-1 z-[120]"
+              onMouseEnter={() => {
+                setIsFurnitureMegaHovered(true);
+                setIsFurnitureMegaOpen(true);
+              }}
+              onMouseLeave={() => {
+                setIsFurnitureMegaHovered(false);
+                closeFurnitureMega();
+              }}
+            >
+              <div className="w-[760px] bg-white border border-[#e5e7eb] shadow-[0_18px_46px_rgba(0,0,0,0.14)] rounded-2xl p-5">
+                <div className="flex items-center justify-between border-b border-[#eef2f7] pb-3 mb-4">
+                  <p className="text-[11px] uppercase tracking-[0.14em] text-[#64748b]">Furniture Collections</p>
+                  <a
+                    href="/products?category=furniture"
+                    className="text-[12px] font-semibold uppercase tracking-[0.08em] text-[#0f172a] hover:text-black"
+                    onClick={() => setIsFurnitureMegaOpen(false)}
+                  >
+                    View All
+                  </a>
+                </div>
+                <div className="grid grid-cols-3 gap-5">
+                  {furnitureMegaGroups.map((group) => (
+                    <div key={group.title} className="space-y-1.5">
+                      <p className="text-[10px] uppercase tracking-[0.12em] text-[#94a3b8] px-2 pb-1">{group.title}</p>
+                      {group.items.map((megaItem) => (
+                        <a
+                          key={megaItem.label}
+                          href={megaItem.href}
+                          className="block text-[13px] text-[#1f2937] hover:text-black hover:bg-[#f8fafc] rounded-md px-2 py-2 transition-colors capitalize"
+                          onClick={() => setIsFurnitureMegaOpen(false)}
+                        >
+                          {megaItem.label}
+                        </a>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
         </nav>
       </div>
       </header>
