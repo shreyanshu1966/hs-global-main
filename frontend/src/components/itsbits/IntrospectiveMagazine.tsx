@@ -14,26 +14,9 @@ interface IntrospectiveMagazineProps {
 }
 
 const IntrospectiveMagazine = ({
-  titlePrefix = 'HS Global',
-  titleSuffix = 'Journal',
-  articles = [
-    {
-      title: 'Inside HS Global: How Our Craft and Sourcing Teams Deliver Premium Natural Stone Worldwide',
-      image: '/about-hero.webp',
-      link: '/about',
-      ctaText: 'Read Story',
-      imageAlt: 'About HS Global',
-      layout: 'landscape',
-    },
-    {
-      title: 'End-to-End Services: Quarry Selection, Precision Fabrication, QA, and Export Logistics',
-      image: '/services-hero.webp',
-      link: '/services',
-      ctaText: 'Explore Services',
-      imageAlt: 'HS Global Services',
-      layout: 'portrait',
-    },
-  ],
+  titlePrefix = '',
+  titleSuffix = '',
+  articles = [],
 }: IntrospectiveMagazineProps) => {
   const first = articles[0];
   const second = articles[1];

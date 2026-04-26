@@ -10,22 +10,14 @@ interface CollectionJustForYouProps {
   viewMoreLink?: string;
 }
 
-const fallbackPicks: ItsbitsCardItem[] = [
-  { id: 'fallback-pick-1', image: '/marble-solutions.webp', title: 'Bookmatched Calacatta Marble Sets', designer: 'Marble Collection', price: 'Tailored Quote', href: '/products' },
-  { id: 'fallback-pick-2', image: '/granite-solutions.webp', title: 'Statement Granite for Modern Kitchens', designer: 'Granite Collection', price: 'Project Pricing', href: '/products' },
-  { id: 'fallback-pick-3', image: '/service.webp', title: 'Bespoke Stone Tables & Consoles', designer: 'Furniture Collection', price: 'Custom Build', href: '/products' },
-  { id: 'fallback-pick-4', image: '/export.webp', title: 'Export-Grade Crating & Shipping', designer: 'Export Services', price: 'Worldwide Dispatch', href: '/products' },
-  { id: 'fallback-pick-5', image: '/products-hero.webp', title: 'Premium Slab Collection', designer: 'Stone Collection', price: 'Bulk & Retail Options', href: '/products' },
-];
-
 const CollectionJustForYou = ({
-  title = 'Collection Just For You',
-  subtitle = 'Get Inspired by this collection of items picked just for you',
-  viewMoreText = 'View More',
-  viewMoreLink = '/products',
+  title = '',
+  subtitle = '',
+  viewMoreText = '',
+  viewMoreLink = '',
 }: CollectionJustForYouProps) => {
   const { trackRef, canScrollPrev, canScrollNext, scrollPrev, scrollNext } = useHorizontalCarousel(0.88);
-  const [picks, setPicks] = useState<ItsbitsCardItem[]>(fallbackPicks);
+  const [picks, setPicks] = useState<ItsbitsCardItem[]>([]);
 
   useEffect(() => {
     let isActive = true;
@@ -53,11 +45,11 @@ const CollectionJustForYou = ({
           return;
         }
 
-        setPicks(items.length > 0 ? items : fallbackPicks);
+        setPicks(items);
       } catch (error) {
         console.error('Failed to load personalized picks:', error);
         if (isActive) {
-          setPicks(fallbackPicks);
+          setPicks([]);
         }
       }
     };

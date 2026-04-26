@@ -17,14 +17,6 @@ interface ProductCarouselProps {
   sortOrder?: 'asc' | 'desc';
 }
 
-const fallbackProducts: ItsbitsCardItem[] = [
-  { id: 'fallback-carousel-1', image: '/products-hero.webp', title: 'Calacatta Marble Selection', designer: 'Marble Collection', price: 'Project Quote', href: '/products' },
-  { id: 'fallback-carousel-2', image: '/marble-solutions.webp', title: 'Bespoke Marble Furniture', designer: 'Furniture Collection', price: 'Custom Build', href: '/products' },
-  { id: 'fallback-carousel-3', image: '/granite-solutions.webp', title: 'Granite Surfaces', designer: 'Granite Collection', price: 'Export Ready', href: '/products' },
-  { id: 'fallback-carousel-4', image: '/service.webp', title: 'Precision Fabrication', designer: 'In-house Team', price: 'End-to-End Service', href: '/products' },
-  { id: 'fallback-carousel-5', image: '/export.webp', title: 'International Delivery', designer: 'Export Logistics', price: 'Worldwide Shipping', href: '/products' },
-];
-
 const ProductCarousel = ({
   title,
   viewAllLink,
@@ -32,13 +24,13 @@ const ProductCarousel = ({
   manualProductIds = [],
   sourceCategory,
   sourceTag,
-  limit = 10,
-  sortBy = 'createdAt',
+  limit = 0,
+  sortBy = '',
   sortOrder = 'desc',
 }: ProductCarouselProps) => {
   const { trackRef, canScrollPrev, canScrollNext, scrollPrev, scrollNext } = useHorizontalCarousel(0.88);
   const [isLoading, setIsLoading] = useState(true);
-  const [products, setProducts] = useState<ItsbitsCardItem[]>(fallbackProducts);
+  const [products, setProducts] = useState<ItsbitsCardItem[]>([]);
   const manualIdsKey = manualProductIds.join('|');
 
   useEffect(() => {
@@ -74,11 +66,11 @@ const ProductCarousel = ({
           return;
         }
 
-        setProducts(items.length > 0 ? items : fallbackProducts);
+        setProducts(items);
       } catch (error) {
         console.error(`Failed to load product carousel for ${title}:`, error);
         if (isActive) {
-          setProducts(fallbackProducts);
+          setProducts([]);
         }
       } finally {
         if (isActive) {

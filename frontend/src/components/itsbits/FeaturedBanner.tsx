@@ -9,13 +9,13 @@ interface FeaturedBannerProps {
 }
 
 const FeaturedBanner = ({
-  title = 'Build Your Signature Stone Collection',
-  body = 'From concept and cutting to export logistics, HS Global delivers premium marble and granite solutions for architects, designers, and global buyers.',
-  ctaText = 'Start Your Project',
-  link = '/contact',
-  image = '/banner4.webp',
-  fallbackImage = '/banner.webp',
-  imageAlt = 'HS Global Export Services',
+  title = '',
+  body = '',
+  ctaText = '',
+  link = '',
+  image = '',
+  fallbackImage = '',
+  imageAlt = '',
 }: FeaturedBannerProps) => {
   return (
     <a href={link} className="itsbits-featured-link">

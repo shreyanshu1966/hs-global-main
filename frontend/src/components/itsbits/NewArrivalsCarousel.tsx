@@ -18,28 +18,19 @@ interface NewArrivalsCarouselProps {
   marbleFurnitureOnly?: boolean;
 }
 
-const fallbackArrivals: ItsbitsCardItem[] = [
-  { id: 'fallback-1', image: '/products-hero.webp', title: 'Premium Italian Marble Slabs', designer: 'Marble Collection', price: 'Request Quote', href: '/products' },
-  { id: 'fallback-2', image: '/marble-solutions.webp', title: 'Custom Marble Vanities', designer: 'Bespoke Studio', price: 'Made to Order', href: '/products' },
-  { id: 'fallback-3', image: '/granite-solutions.webp', title: 'Granite Countertop Solutions', designer: 'Granite Collection', price: 'Bulk Pricing', href: '/products' },
-  { id: 'fallback-4', image: '/service.webp', title: 'Handcrafted Stone Furniture', designer: 'Furniture Collection', price: 'From Project Spec', href: '/products' },
-  { id: 'fallback-5', image: '/export.webp', title: 'Worldwide Export Packaging', designer: 'Export Services', price: 'Global Dispatch', href: '/products' },
-  { id: 'fallback-6', image: '/about-hero.webp', title: 'Architectural Stone Projects', designer: 'Project Solutions', price: 'Consultation', href: '/products' },
-];
-
 const NewArrivalsCarousel = ({
-  headingTitle = 'HS Global Highlights',
-  ctaText = 'Explore All Products',
-  ctaLink = '/products',
+  headingTitle = '',
+  ctaText = '',
+  ctaLink = '',
   sourceType = 'category',
   manualProductIds = [],
   tag = '',
-  limit = 12,
-  category = 'furniture',
+  limit = 0,
+  category = '',
   featured = false,
-  sortBy = 'createdAt',
+  sortBy = '',
   sortOrder = 'desc',
-  marbleFurnitureOnly = true,
+  marbleFurnitureOnly = false,
 }: NewArrivalsCarouselProps) => {
   const { trackRef, canScrollPrev, canScrollNext, scrollPrev, scrollNext } = useHorizontalCarousel(0.82);
   const [newArrivals, setNewArrivals] = useState<ItsbitsCardItem[]>([]);
@@ -67,11 +58,11 @@ const NewArrivalsCarousel = ({
           return;
         }
 
-        setNewArrivals(products.length > 0 ? products : fallbackArrivals);
+        setNewArrivals(products);
       } catch (error) {
         console.error('Failed to load HS Global highlights:', error);
         if (isActive) {
-          setNewArrivals(fallbackArrivals);
+          setNewArrivals([]);
         }
       } finally {
         if (isActive) {

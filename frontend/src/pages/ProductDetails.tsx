@@ -160,91 +160,6 @@ const ProductDetails = () => {
     }
   };
 
-  // ── JS-based sticky gallery (works regardless of grid/flex constraints) ──
-  useEffect(() => {
-    if (!product) return;
-
-    const STICKY_TOP = 112; // px  (≈ top-28 = 7rem)
-    const MIN_WIDTH  = 1024; // only on desktop (lg)
-
-    const col   = galleryColRef.current;
-    const inner = galleryInnerRef.current;
-    const stop  = trustStripRef.current;
-    if (!col || !inner || !stop) return;
-
-    // Cache initial measurements (re-read on resize)
-    let colTop   = 0;
-    let colLeft  = 0;
-    let colWidth = 0;
-    let innerH   = 0;
-
-    const measure = () => {
-      // Reset any inline styles first so we get the natural position
-      inner.style.cssText = '';
-      col.style.minHeight = '';
-
-      const rect = col.getBoundingClientRect();
-      colTop   = rect.top + window.scrollY;
-      colLeft  = rect.left;
-      colWidth = rect.width;
-      innerH   = inner.offsetHeight;
-
-      // Give the wrapper a min-height so layout doesn't collapse when inner goes fixed
-      col.style.minHeight = `${innerH}px`;
-    };
-
-    const onScroll = () => {
-      if (window.innerWidth < MIN_WIDTH) {
-        inner.style.cssText = '';
-        col.style.minHeight = '';
-        return;
-      }
-
-      const scrollY   = window.scrollY;
-      const stopTop   = stop.getBoundingClientRect().top + scrollY; // abs top of trust strip
-      const stickyEnd = stopTop - innerH - STICKY_TOP;              // scroll pos where image should freeze
-
-      if (scrollY < colTop - STICKY_TOP) {
-        // ① Above sticky zone — natural position
-        inner.style.cssText = '';
-      } else if (scrollY <= stickyEnd) {
-        // ② In sticky zone — pin to viewport
-        inner.style.position = 'fixed';
-        inner.style.top      = `${STICKY_TOP}px`;
-        inner.style.left     = `${colLeft}px`;
-        inner.style.width    = `${colWidth}px`;
-        inner.style.zIndex   = '20';
-      } else {
-        // ③ Past trust strip — freeze at final position (absolute inside col)
-        inner.style.position = 'absolute';
-        inner.style.top      = `${stickyEnd - colTop + STICKY_TOP}px`;
-        inner.style.left     = '0';
-        inner.style.width    = '100%';
-        inner.style.zIndex   = '';
-      }
-    };
-
-    const onResize = () => {
-      measure();
-      onScroll();
-    };
-
-    // Small delay so DOM is fully painted before measuring
-    const timer = setTimeout(() => {
-      measure();
-      onScroll();
-      window.addEventListener('scroll', onScroll, { passive: true });
-      window.addEventListener('resize', onResize, { passive: true });
-    }, 100);
-
-    return () => {
-      clearTimeout(timer);
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onResize);
-      if (inner) inner.style.cssText = '';
-      if (col)   col.style.minHeight = '';
-    };
-  }, [product]);
   // ─────────────────────────────────────────────────────────────────────────
 
   // Browser Share API
@@ -437,17 +352,15 @@ const ProductDetails = () => {
 
         {/* Hero + Trust Strip: unified sticky container */}
         <div className="container mx-auto px-6 py-10 lg:py-14">
-          <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 items-start">
+          <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 items-start relative">
 
-            {/* LEFT: Gallery — JS sticky (col = placeholder, inner = moving element) */}
-            <div ref={galleryColRef} className="w-full lg:w-[58%] flex-shrink-0 relative">
-              <div ref={galleryInnerRef}>
-                <ProductGallery product={product} />
-              </div>
+            {/* LEFT: Gallery — Vertical scroller */}
+            <div className="w-full lg:w-[58%] flex-shrink-0">
+              <ProductGallery product={product} />
             </div>
 
-            {/* RIGHT: Info + Trust Strip stacked — makes container taller than gallery */}
-            <div className="w-full lg:w-[42%] flex-shrink-0">
+            {/* RIGHT: Info + Trust Strip stacked — Pinned to top */}
+            <div className="w-full lg:w-[42%] flex-shrink-0 lg:sticky lg:top-28 h-fit">
               <ProductInfo
                 product={product}
                 reviewStats={reviewStats}
@@ -460,8 +373,8 @@ const ProductDetails = () => {
                 reviewsRef={reviewsRef}
               />
 
-              {/* Trust Strip — inline in right column; gallery releases here */}
-              <div ref={trustStripRef} className="mt-10 border border-[#e2e8f0] bg-[#f1f5f9] rounded-xl px-6 py-7">
+              {/* Trust Strip */}
+              <div className="mt-10 border border-[#e2e8f0] bg-[#f1f5f9] rounded-xl px-6 py-7">
                 <div className="grid grid-cols-2 gap-5">
                   <div className="flex items-start gap-3">
                     <ShieldCheck className="w-5 h-5 text-[#475569] mt-0.5 flex-shrink-0" />

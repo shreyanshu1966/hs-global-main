@@ -13,18 +13,11 @@ interface SpotlightSectionProps {
   cards?: SpotlightCard[];
 }
 
-const SpotlightSection = ({ sectionTitle = 'HS Global Spotlight', cards: cardsProp = [] }: SpotlightSectionProps) => {
+const SpotlightSection = ({ sectionTitle = '', cards: cardsProp = [] }: SpotlightSectionProps) => {
   const { trackRef, canScrollPrev, canScrollNext, scrollPrev, scrollNext } = useHorizontalCarousel(0.9);
   const [isCenteredLayout, setIsCenteredLayout] = useState(false);
 
-  const cards = cardsProp.length > 0 ? cardsProp : [
-    { title: 'Italian Marble Excellence', sub: 'Browse Slab Collections', img: '/marble-solutions.webp' },
-    { title: 'Premium Granite Program', sub: 'Explore Granite Range', img: '/granite-solutions.webp' },
-    { title: 'Luxury Furniture Craft', sub: 'View Furniture Pieces', img: '/service.webp' },
-    { title: 'Global Export Network', sub: 'See Delivery Capability', img: '/export.webp' },
-    { title: 'Tailored Fabrication', sub: 'Review Custom Services', img: '/services-custom-fabrication.png' },
-    { title: 'Project Gallery', sub: 'Discover Completed Works', img: '/gallery-hero.webp' },
-  ].map((card) => ({ title: card.title, subtitle: card.sub, image: card.img, link: '/products' }));
+  const cards = cardsProp;
 
   useEffect(() => {
     const el = trackRef.current;
@@ -76,7 +69,7 @@ const SpotlightSection = ({ sectionTitle = 'HS Global Spotlight', cards: cardsPr
               {cards.map((item, i) => (
                 <a
                   key={i}
-                  href={item.link || '/products'}
+                  href={item.link || ''}
                   className="itsbits-track-item-no-shrink cursor-pointer group itsbits-spotlight-item"
                 >
                   <div className="itsbits-spotlight-image-wrap">
@@ -84,10 +77,6 @@ const SpotlightSection = ({ sectionTitle = 'HS Global Spotlight', cards: cardsPr
                       src={item.image}
                       alt={item.title}
                       className="w-full group-hover:opacity-90 transition-opacity duration-200"
-                      onError={(e) => {
-                        // Fallback to placeholder if local image is missing
-                        e.currentTarget.src = `https://placehold.co/400x400/e8e6dd/888?text=Spotlight+${i+1}`;
-                      }}
                     />
                   </div>
                   <div className="dibs-header-medium text-[#222] itsbits-spotlight-item-title">

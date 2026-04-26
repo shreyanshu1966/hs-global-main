@@ -93,27 +93,16 @@ const hasTag = (product: Product, tag: string): boolean => {
   return (product.tags || []).some((item) => String(item || '').trim().toLowerCase() === expected);
 };
 
-const fallbackVideos: VideoItem[] = [
-  {
-    id: 'fallback-video-1',
-    title: 'Featured Product Videos',
-    videoUrl: '/videos/Tables/Coffee%20Table/Panda%20White/video.mp4',
-    image: '/products-hero.webp',
-    href: '/products',
-    category: 'Stone Furniture',
-  },
-];
-
 const VideoProductCarousel = ({
   title,
-  ctaText = 'View All Products',
-  ctaLink = '/products',
+  ctaText = '',
+  ctaLink = '',
   sourceType = 'category',
   manualProductIds = [],
-  sourceCategory = 'furniture',
+  sourceCategory = '',
   sourceTag = '',
-  limit = 8,
-  sortBy = 'createdAt',
+  limit = 0,
+  sortBy = '',
   sortOrder = 'desc',
 }: VideoProductCarouselProps) => {
   const { trackRef, canScrollPrev, canScrollNext, scrollPrev, scrollNext } = useHorizontalCarousel(0.9);
@@ -196,7 +185,7 @@ const VideoProductCarousel = ({
     };
   }, [sourceType, manualIdsKey, sourceCategory, sourceTag, limit, sortBy, sortOrder, manualProductIds]);
 
-  const items = videos.length > 0 ? videos : fallbackVideos;
+  const items = videos;
 
   return (
     <section>

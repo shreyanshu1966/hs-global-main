@@ -72,30 +72,6 @@ const buildGalleryItems = (): GalleryItem[] => {
     });
 };
 
-const fallbackItems: GalleryItem[] = [
-  {
-    id: 'fallback-gallery-1',
-    title: 'Project Gallery',
-    category: 'Gallery',
-    code: 'HSGA001',
-    image: '/gallery-hero.webp',
-  },
-  {
-    id: 'fallback-gallery-2',
-    title: 'Stone Craft Showcase',
-    category: 'Gallery',
-    code: 'HSGA002',
-    image: '/marble-solutions.webp',
-  },
-  {
-    id: 'fallback-gallery-3',
-    title: 'Furniture Gallery',
-    category: 'Gallery',
-    code: 'HSGA003',
-    image: '/service.webp',
-  },
-];
-
 const getAbsoluteImageUrl = (imageUrl: string): string => {
   if (/^https?:\/\//i.test(imageUrl)) {
     return imageUrl;
@@ -120,7 +96,7 @@ const GalleryImageCarousel = () => {
 
   const items = useMemo(() => {
     const galleryItems = buildGalleryItems();
-    return galleryItems.length > 0 ? galleryItems.slice(0, 18) : fallbackItems;
+    return galleryItems.slice(0, 18);
   }, []);
 
   return (
