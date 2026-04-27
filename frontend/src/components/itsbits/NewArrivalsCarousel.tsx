@@ -134,6 +134,8 @@ const NewArrivalsCarousel = ({
                         priceLabel={item.priceLabel}
                         productLink={item.href}
                         showPrice={false}
+                        averageRating={item.averageRating}
+                        totalReviews={item.totalReviews}
                       />
                     </div>
                   ))}

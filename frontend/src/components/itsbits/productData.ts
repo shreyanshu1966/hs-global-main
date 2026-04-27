@@ -13,6 +13,8 @@ export interface ItsbitsCardItem {
   priceLabel?: string;
   href: string;
   createdAt?: string;
+  averageRating?: number;
+  totalReviews?: number;
 }
 
 const toTitleCase = (value: string) =>
@@ -71,6 +73,8 @@ export const mapProductToItsbitsCard = (product: Product): ItsbitsCardItem => {
     priceLabel,
     href: `/products/${product.productId || product._id}`,
     createdAt: product.createdAt,
+    averageRating: product.averageRating,
+    totalReviews: product.totalReviews,
   };
 };
 

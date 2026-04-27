@@ -99,6 +99,8 @@ const CollectionJustForYou = ({
                     originalPriceINR={item.originalPriceINR}
                     priceLabel={item.priceLabel}
                     productLink={item.href}
+                    averageRating={item.averageRating}
+                    totalReviews={item.totalReviews}
                   />
                 </div>
               ))}

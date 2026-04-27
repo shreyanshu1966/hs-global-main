@@ -142,6 +142,8 @@ const ProductCarousel = ({
                         originalPriceINR={p.originalPriceINR}
                         priceLabel={p.priceLabel}
                         productLink={p.href}
+                        averageRating={p.averageRating}
+                        totalReviews={p.totalReviews}
                       />
                     </div>
                   ))}

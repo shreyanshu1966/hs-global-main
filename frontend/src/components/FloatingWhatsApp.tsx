@@ -55,10 +55,10 @@ const FloatingWhatsApp: React.FC = () => {
                 <button
                     ref={closeRef}
                     onClick={handleClose}
-                    className="absolute -top-3 -right-3 z-50 bg-white text-gray-500 hover:text-red-500 rounded-full p-1 shadow-md border border-gray-100 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                    className="absolute -top-2 -left-2 z-50 bg-white text-gray-500 hover:text-red-500 rounded-full p-1 shadow-md border border-gray-200 opacity-100 transition-colors duration-200"
                     aria-label="Close WhatsApp"
                 >
-                    <X className="w-3 h-3" />
+                    <X className="w-4 h-4" />
                 </button>
 
                 <a

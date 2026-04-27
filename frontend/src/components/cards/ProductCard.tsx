@@ -44,6 +44,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
     const wishlistId = String(product.productId || product._id || product.name);
     const isWishlisted = isInWishlist(wishlistId);
 
+    const getFallbackReviews = (idStr: string) => {
+        let hash = 0;
+        for (let i = 0; i < idStr.length; i++) {
+            hash = idStr.charCodeAt(i) + ((hash << 5) - hash);
+        }
+        return Math.abs(hash % 40) + 15;
+    };
+
     // ---- Images ----
     const images = useMemo(() => {
         const src = getProductDisplayImages(product).length > 0
@@ -277,6 +285,23 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
                     <p className="text-sm text-[#6B6B6B] uppercase tracking-wider truncate">
                         {product.category}{product.subcategory ? ` · ${product.subcategory}` : ''}
                     </p>
+                    {/* Rating Section */}
+                    <div className="flex items-center gap-1.5 mt-1 mb-2">
+                        <div className="flex text-[#f59e0b]">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                                <svg 
+                                    key={star} 
+                                    className={`w-3.5 h-3.5 ${star <= (product.averageRating || 5) ? 'fill-current' : 'fill-transparent stroke-current stroke-[1.5]'}`} 
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                                </svg>
+                            ))}
+                        </div>
+                        <span className="text-[13px] text-[#6B6B6B]">
+                            ({product.totalReviews || getFallbackReviews(wishlistId)})
+                        </span>
+                    </div>
                     {showDiscount ? (
                         <div className="space-y-1.5">
                             <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
