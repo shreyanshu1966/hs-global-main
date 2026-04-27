@@ -1,29 +1,26 @@
 import { useEffect, useMemo, useState, useCallback, memo, useRef } from "react";
-import { Search, SlidersHorizontal, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { Search, SlidersHorizontal, X, ChevronLeft, ChevronRight, CheckCircle2, Circle, LayoutGrid, CheckSquare } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Helmet } from "react-helmet-async";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { getResponsiveImage, getSrcSet } from '../utils/responsive-image-helper';
+import { getResponsiveImage } from '../utils/responsive-image-helper';
+import { GalleryItem, GalleryModal } from '../components/GalleryModal';
 
 gsap.registerPlugin(ScrollTrigger);
 
 // Dynamically import all images from public/gallery to get the file structure
-// Note: In Vite, public assets are served at root, so we reference without /public/ prefix
-// Dynamically import all images from public/gallery to get the file structure
-// Note: In Vite, public assets are served at root, so we reference without /public/ prefix
 const galleryFiles = import.meta.glob('../../public/gallery/**/*.{webp,jpg,jpeg,png}', { query: '?url', import: 'default', eager: true }) as Record<string, string>;
 
-const toTitle = (s: string) => decodeURIComponent(s.replace(/\+/g, ' ')).replace(/[\/_-]+/g, ' ').trim().replace(/\s+/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+const toTitle = (s: string) => decodeURIComponent(s.replace(/\+/g, ' ')).replace(/[/_-]+/g, ' ').trim().replace(/\s+/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
 const toSlug = (s: string) => decodeURIComponent(s.replace(/\+/g, ' ')).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 
 const buildGallery = () => {
   type Item = { id: string; title: string; category: string; image: string; code: string };
   const interim: { path: string; title: string; category: string; image: string }[] = [];
   Object.entries(galleryFiles).forEach(([absPath, url]) => {
-    // Remove relative path prefix to get path starting from gallery
     const rel = absPath.replace(/^..\/..\/public\//, '').replace(/^\//, '');
     const parts = rel.split('/').filter(Boolean); // [gallery, Category, ...path, file]
     const idx = parts.indexOf('gallery');
@@ -31,14 +28,9 @@ const buildGallery = () => {
     const category = toTitle(parts[idx + 1]);
     const file = parts[parts.length - 1];
     const base = toTitle(file.replace(/\.(webp|jpg|jpeg|png)$/i, ''));
-    const id = toSlug(rel);
-
-    // Use responsive image helper to get Cloudinary URL, fallback to local path
     const responsiveUrl = getResponsiveImage(rel, 'mobile') || url as string;
-
     interim.push({ path: rel, title: base, category, image: responsiveUrl });
   });
-  // Assign stable codes per category: HS + first two letters of category + 3-digit index
   const byCat = new Map<string, { idx: number; list: Item[] }>();
   interim.sort((a, b) => a.category.localeCompare(b.category) || a.title.localeCompare(b.title));
   const items: Item[] = interim.map(({ path, title, category, image }) => {
@@ -53,20 +45,12 @@ const buildGallery = () => {
     entry.list.push(item);
     return item;
   });
-  // Categories set
   const cats = Array.from(new Set(items.map(i => i.category))).sort();
   return { items, cats: ['All', ...cats] };
 };
 
-type GalleryItem = { id: string; title: string; category: string; image: string; code: string };
 
 const Gallery = memo(() => {
-  // Preload hero image and ensure fixed background CSS exists (align with other pages)
-  // Parallax for Hero
-  const { scrollY } = useScroll();
-  const y1 = useTransform(scrollY, [0, 500], [0, 200]);
-  const opacityHero = useTransform(scrollY, [0, 400], [1, 0]);
-
   useEffect(() => {
     const heroUrl = getResponsiveImage('gallery-hero.webp', 'large');
     if (heroUrl) {
@@ -78,33 +62,23 @@ const Gallery = memo(() => {
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [showFilters, setShowFilters] = useState(true);
+  
+  // Mobile Gallery Features State
+  const [isSelectionMode, setIsSelectionMode] = useState(false);
+  const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
+  const [gridLayout, setGridLayout] = useState<'bento' | 'square'>('bento');
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentItem, setCurrentItem] = useState<GalleryItem | null>(null);
   const [modalList, setModalList] = useState<GalleryItem[]>([]);
   const [modalIndex, setModalIndex] = useState<number>(-1);
-  const [swiperRef, setSwiperRef] = useState<any>(null);
-  const [canPrev, setCanPrev] = useState(false);
-  const [canNext, setCanNext] = useState(true);
   const [visibleCount, setVisibleCount] = useState(16);
   const [sentinelRef, setSentinelRef] = useState<HTMLDivElement | null>(null);
-  const [SwiperComponents, setSwiperComponents] = useState<{ Swiper: any; SwiperSlide: any } | null>(null);
   const { t } = useTranslation();
 
-  // Animation Refs
   const containerRef = useRef<HTMLDivElement>(null);
-  const heroTitleRef = useRef<HTMLHeadingElement>(null);
-  const heroSubtitleRef = useRef<HTMLParagraphElement>(null);
   const filterContainerRef = useRef<HTMLDivElement>(null);
-  const modalContainerRef = useRef<HTMLDivElement>(null);
-  const modalBackdropRef = useRef<HTMLDivElement>(null);
-  const modalContentRef = useRef<HTMLDivElement>(null);
 
-  // GSAP Animations
-  useGSAP(() => {
-    // Hero Animation handled by Framer Motion now
-  }, { scope: containerRef });
-
-  // Filter Animation
   useGSAP(() => {
     if (showFilters && filterContainerRef.current) {
       gsap.fromTo(filterContainerRef.current,
@@ -117,31 +91,6 @@ const Gallery = memo(() => {
       );
     }
   }, [showFilters]);
-
-  // Modal Animation Logic
-  const [isModalRendered, setIsModalRendered] = useState(false);
-
-  useEffect(() => {
-    if (isModalOpen) setIsModalRendered(true);
-  }, [isModalOpen]);
-
-  useGSAP(() => {
-    if (isModalOpen && isModalRendered && modalContentRef.current && modalBackdropRef.current) {
-      gsap.fromTo(modalBackdropRef.current, { opacity: 0 }, { opacity: 1, duration: 0.3 });
-      gsap.fromTo(modalContentRef.current, { opacity: 0, scale: 0.98, y: 10 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "power2.out" });
-    } else if (!isModalOpen && isModalRendered && modalContentRef.current && modalBackdropRef.current) {
-      gsap.to(modalBackdropRef.current, { opacity: 0, duration: 0.2 });
-      gsap.to(modalContentRef.current, {
-        opacity: 0,
-        scale: 0.98,
-        y: 10,
-        duration: 0.2,
-        ease: "power2.in",
-        onComplete: () => setIsModalRendered(false)
-      });
-    }
-  }, [isModalOpen, isModalRendered]);
-
 
   const relatedItems = useMemo(() => {
     if (!currentItem) return [] as GalleryItem[];
@@ -165,12 +114,25 @@ const Gallery = memo(() => {
     });
   }, [allItems, activeCategory, searchQuery]);
 
-  // Reset list window when filters/search change
+  // Group items if we're in "All" view to show sticky headers
+  const groupedItems = useMemo(() => {
+    if (activeCategory !== "All" || searchQuery.trim() !== "") {
+      return [{ category: activeCategory, items: filteredItems }];
+    }
+    const map = new Map<string, GalleryItem[]>();
+    cats.forEach(c => { if(c !== 'All') map.set(c, []) });
+    filteredItems.forEach(item => {
+      map.get(item.category)?.push(item);
+    });
+    return Array.from(map.entries())
+      .filter(([_, items]) => items.length > 0)
+      .map(([category, items]) => ({ category, items }));
+  }, [filteredItems, activeCategory, cats, searchQuery]);
+
   useEffect(() => {
     setVisibleCount(16);
   }, [activeCategory, searchQuery]);
 
-  // Infinite scroll via intersection observer on a sentinel
   useEffect(() => {
     if (!sentinelRef) return;
     const obs = new IntersectionObserver((entries) => {
@@ -183,6 +145,15 @@ const Gallery = memo(() => {
   }, [sentinelRef, filteredItems.length]);
 
   const handleItemClick = (id: string) => {
+    if (isSelectionMode) {
+      setSelectedItems(prev => {
+        const next = new Set(prev);
+        if (next.has(id)) next.delete(id);
+        else next.add(id);
+        return next;
+      });
+      return;
+    }
     const item = allItems.find(i => i.id === id) || null;
     if (!item) return;
     const list = allItems.filter(i => i.category === item.category);
@@ -195,236 +166,35 @@ const Gallery = memo(() => {
 
   const closeModal = useCallback(() => {
     setIsModalOpen(false);
-    // delay clearing to allow exit animation if needed
-    setTimeout(() => setCurrentItem(null), 300); // Increased slightly for GSAP out duration
+    setTimeout(() => setCurrentItem(null), 300);
   }, []);
 
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") closeModal();
-    };
-    if (isModalOpen) window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [isModalOpen, closeModal]);
 
-  // Lock body scroll when modal is open
-  useEffect(() => {
-    if (isModalOpen) {
-      // Store original styles
-      const originalStyle = window.getComputedStyle(document.body).overflow;
-      const originalPaddingRight = window.getComputedStyle(document.body).paddingRight;
 
-      // Get scrollbar width
-      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+  // Removed custom observer in favor of Framer Motion
 
-      // Apply styles to prevent body scroll
-      document.body.style.overflow = 'hidden';
-      document.body.style.paddingRight = `${scrollbarWidth}px`;
+  const toggleSelectionMode = () => {
+    setIsSelectionMode(!isSelectionMode);
+    if (isSelectionMode) setSelectedItems(new Set()); // Clear on exit
+  };
 
-      return () => {
-        document.body.style.overflow = originalStyle;
-        document.body.style.paddingRight = originalPaddingRight;
-      };
-    }
-  }, [isModalOpen]);
+  const handleBulkWhatsApp = () => {
+    if (selectedItems.size === 0) return;
+    const codes = Array.from(selectedItems).map(id => allItems.find(i => i.id === id)?.code).filter(Boolean);
+    const text = `Hi, I'm interested in the following products:\n${codes.join(', ')}`;
+    window.open(`https://wa.me/918107115116?text=${encodeURIComponent(text)}`, '_blank');
+  };
 
-  // Lazy-load Swiper only when modal opens
-  useEffect(() => {
-    if (!isModalOpen || SwiperComponents) return;
-    (async () => {
-      await import("swiper/css");
-      const mod = await import("swiper/react");
-      setSwiperComponents({ Swiper: mod.Swiper, SwiperSlide: mod.SwiperSlide });
-    })();
-  }, [isModalOpen, SwiperComponents]);
-
-  // Arrow key navigation through related items inside modal
-  useEffect(() => {
-    if (!isModalOpen || !currentItem) return;
-    const handler = (e: KeyboardEvent) => {
-      if (!currentItem || modalList.length === 0) return;
-      if (e.key === 'ArrowRight') {
-        const nextIndex = (modalIndex + 1) % modalList.length;
-        setModalIndex(nextIndex);
-        setCurrentItem(modalList[nextIndex]);
-      } else if (e.key === 'ArrowLeft') {
-        const prevIndex = (modalIndex - 1 + modalList.length) % modalList.length;
-        setModalIndex(prevIndex);
-        setCurrentItem(modalList[prevIndex]);
-      }
-    };
-    window.addEventListener('keydown', handler);
-    return () => window.removeEventListener('keydown', handler);
-  }, [isModalOpen, currentItem, modalList, modalIndex]);
-
-  // Optimized: Use IntersectionObserver instead of GSAP ScrollTrigger for gallery items
-  // This is much more efficient for large grids
-  const observerRef = useRef<IntersectionObserver | null>(null);
-
-  useEffect(() => {
-    // Create a single observer for all gallery items
-    observerRef.current = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const target = entry.target as HTMLElement;
-            const delay = (parseInt(target.dataset.index || '0') % 16) * 0.03; // Reduced delay
-
-            setTimeout(() => {
-              gsap.to(target, {
-                opacity: 1,
-                y: 0,
-                duration: 0.25,
-                ease: "power2.out",
-              });
-            }, delay * 1000);
-
-            // Disconnect after animating
-            observerRef.current?.unobserve(target);
-          }
-        });
-      },
-      {
-        threshold: 0.1,
-        rootMargin: "100px", // Start animation earlier
-      }
-    );
-
-    return () => {
-      observerRef.current?.disconnect();
-    };
-  }, []);
-
-  const attachObserver = useCallback((el: HTMLElement | null, index: number) => {
-    if (el && observerRef.current) {
-      el.dataset.index = String(index);
-      observerRef.current.observe(el);
-    }
-  }, []);
 
 
   return (
     <div ref={containerRef} className="min-h-screen bg-[radial-gradient(circle_at_5%_0%,#f5f5f4_0%,#ffffff_50%)]">
-
       <Helmet>
-        {/* Basic SEO */}
-        <title>Best Luxury & Imported Marble Stones Galarry - Hs Global Export</title>
-        <meta name="description" content="HS Global Export presents a premium gallery of luxury and imported marble stones, offering high-quality natural stone collections crafted for elegant residential and commercial applications worldwide." />
-        <meta name="keywords" content="Best Luxury Marble Stones, Imported Marble Gallery, Luxury Marble Gallery, Premium Marble Stones, Italian Marble Supplier, Imported Marble Exporter, Marble Stone Gallery, High-End Marble Collection, Natural Stone Gallery, Marble Showroom Exporter, Luxury Stone Supplier, Marble Slabs Gallery, Premium Imported Marble, HS Global Export, Global Marble Exporter, Luxury Italian Marble, Marble Exporter Worldwide, Granite & Tiles Supplier, Imported Marble Exporter, Marble Tiles Manufacturer, Premium Granite Supplier, Marble Export USA, Marble Export UK, Natural Stone Exporter, Luxury Marble Supplier, Italian Marble Export, Global Marble & Granite Supply, HS Global Export" />
-        <meta name="author" content="HS Global Export" />
-        <meta name="robots" content="index, follow" />
-
-        {/* Canonical URL */}
-        <link rel="canonical" href="https://www.hsglobalexport.com/gallery" />
-
-        {/* Open Graph */}
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://www.hsglobalexport.com/gallery" />
-        <meta property="og:site_name" content="HS Global Export" />
-        <meta property="og:title" content="Best Luxury & Imported Marble Stones Galarry - Hs Global Export" />
-        <meta property="og:description" content="HS Global Export presents a premium gallery of luxury and imported marble stones, offering high-quality natural stone collections crafted for elegant residential and commercial applications worldwide." />
-        <meta property="og:image" content="https://www.hsglobalexport.com/og-image.jpg" />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-        <meta property="og:image:alt" content="HS Global Export - Gallery" />
-        <meta property="og:locale" content="en_US" />
-
-        {/* Twitter Card */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content="https://www.hsglobalexport.com/gallery" />
-        <meta name="twitter:title" content="Best Luxury & Imported Marble Stones Galarry - Hs Global Export" />
-        <meta name="twitter:description" content="HS Global Export presents a premium gallery of luxury and imported marble stones, offering high-quality natural stone collections crafted for elegant residential and commercial applications worldwide." />
-        <meta name="twitter:image" content="https://www.hsglobalexport.com/og-image.jpg" />
-        <meta name="twitter:image:alt" content="HS Global Export - Gallery" />
-
-        {/* Schema.org ImageGallery */}
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "ImageGallery",
-            "name": "HS Global Export Stone Gallery",
-            "description": "Gallery showcasing premium granite and marble installations and projects",
-            "url": "https://hsglobalexport.com/gallery",
-            "provider": {
-              "@type": "Organization",
-              "name": "HS Global Export",
-              "url": "https://hsglobalexport.com"
-            },
-            "about": {
-              "@type": "Thing",
-              "name": "Natural Stone Installations",
-              "description": "Premium granite, marble, and natural stone applications"
-            }
-          })}
-        </script>
+        <title>Best Luxury & Imported Marble Stones Gallery - Hs Global Export</title>
       </Helmet>
 
-      {/* Hero matching Products/About/Services style */}
-      {/* Hero matching Products/About/Services style */}
-      <section className="relative min-h-[100svh] flex flex-col justify-center px-[clamp(1.5rem,4vw,6rem)] overflow-hidden">
-        <div className="pointer-events-none absolute -left-24 top-[15%] h-64 w-64 rounded-full bg-black/5 blur-3xl" />
-        <div className="pointer-events-none absolute right-0 top-0 h-[45vh] w-[32vw] bg-gradient-to-b from-black/10 to-transparent" />
-        <motion.div
-          style={{ y: y1, opacity: opacityHero }}
-          className="absolute top-0 right-0 w-[80vw] h-full opacity-10 pointer-events-none"
-        >
-          <img
-            src={getResponsiveImage('gallery-hero.webp', 'large') || '/gallery-hero.webp'}
-            srcSet={getSrcSet('gallery-hero.webp')}
-            sizes="80vw"
-            className="w-full h-full object-cover filter grayscale contrast-125"
-            alt="HS Global Gallery"
-            loading="lazy"
-          />
-        </motion.div>
-
-        <div className="relative z-10 max-w-[90vw]">
-          <motion.div
-            initial={{ opacity: 0, y: 100 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <span className="block text-[clamp(0.625rem,1.2vw,0.875rem)] tracking-[0.3em] uppercase mb-[clamp(1rem,2vw,1.5rem)] text-zinc-500">
-              {t('gallery.hero_subtitle') || "Visual Journey"}
-            </span>
-            <h1 className="text-[clamp(3.5rem,13vw,14vw)] leading-[0.85] font-serif tracking-tighter text-black drop-shadow-[0_8px_24px_rgba(0,0,0,0.06)]">
-              Artistry <br />
-              <span className="ml-[8vw] italic font-light text-zinc-400">In</span> <br />
-              <span className="text-secondary-foreground">Detail</span>.
-            </h1>
-            <p className="mt-6 max-w-2xl text-sm md:text-base text-zinc-600 leading-relaxed">
-              Discover handcrafted stone compositions and architectural details from our curated global portfolio.
-            </p>
-          </motion.div>
-        </div>
-
-        <motion.div
-          className="absolute bottom-[clamp(2rem,4vw,3rem)] left-[clamp(1.5rem,4vw,6rem)] flex items-center gap-[clamp(0.75rem,2vw,1rem)]"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 1 }}
-        >
-          <div className="h-[1px] w-[clamp(3rem,8vw,6rem)] bg-gray-300"></div>
-          <p className="text-[clamp(0.625rem,1vw,0.75rem)] uppercase tracking-widest text-zinc-500">Scroll to Explore</p>
-        </motion.div>
-      </section>
-
-      <section className="pb-14 md:pb-20">
+      <section className="pt-28 md:pt-36 pb-14 md:pb-20">
         <div className="max-w-[1400px] mx-auto px-4 md:px-6">
-          <div className="mb-8 md:mb-10 grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
-            <div className="rounded-2xl border border-black/10 bg-white/75 backdrop-blur-sm px-4 py-3">
-              <div className="text-xs uppercase tracking-[0.2em] text-zinc-500">Total Works</div>
-              <div className="mt-1 text-2xl font-semibold text-black">{allItems.length}</div>
-            </div>
-            <div className="rounded-2xl border border-black/10 bg-white/75 backdrop-blur-sm px-4 py-3">
-              <div className="text-xs uppercase tracking-[0.2em] text-zinc-500">Categories</div>
-              <div className="mt-1 text-2xl font-semibold text-black">{Math.max(cats.length - 1, 0)}</div>
-            </div>
-            <div className="rounded-2xl border border-black/10 bg-white/75 backdrop-blur-sm px-4 py-3">
-              <div className="text-xs uppercase tracking-[0.2em] text-zinc-500">Visible Now</div>
-              <div className="mt-1 text-2xl font-semibold text-black">{filteredItems.length}</div>
-            </div>
-          </div>
 
           {/* Search and Filters */}
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-6">
@@ -438,12 +208,31 @@ const Gallery = memo(() => {
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
-            <button
-              onClick={() => setShowFilters((s) => !s)}
-              className="inline-flex items-center gap-2 px-4 py-3 rounded-xl border border-black/20 bg-white/85 backdrop-blur-sm text-black hover:bg-black hover:text-white transition-colors"
-            >
-              <SlidersHorizontal className="w-4 h-4" /> {t('gallery.filters')}
-            </button>
+            
+            <div className="flex gap-2 w-full md:w-auto">
+              <button
+                onClick={() => setGridLayout(prev => prev === 'bento' ? 'square' : 'bento')}
+                className="flex items-center justify-center w-12 h-12 rounded-xl border border-black/20 bg-white/85 backdrop-blur-sm text-black hover:bg-black hover:text-white transition-colors"
+                title="Toggle Grid Layout"
+              >
+                <LayoutGrid className="w-5 h-5" />
+              </button>
+              <button
+                onClick={toggleSelectionMode}
+                className={`flex-1 md:flex-none inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl border transition-colors ${
+                  isSelectionMode ? 'bg-black text-white border-black' : 'border-black/20 bg-white/85 backdrop-blur-sm text-black hover:bg-black hover:text-white'
+                }`}
+              >
+                <CheckSquare className="w-4 h-4" /> 
+                {isSelectionMode ? 'Cancel Selection' : 'Select'}
+              </button>
+              <button
+                onClick={() => setShowFilters((s) => !s)}
+                className="flex items-center justify-center w-12 h-12 rounded-xl border border-black/20 bg-white/85 backdrop-blur-sm text-black hover:bg-black hover:text-white transition-colors"
+              >
+                <SlidersHorizontal className="w-5 h-5" />
+              </button>
+            </div>
           </div>
 
           <div
@@ -464,65 +253,106 @@ const Gallery = memo(() => {
             </div>
           </div>
 
-          {/* Bento-Style Gallery Grid - Dense, No Gaps */}
+          {/* Bulk Action Bar */}
+          <AnimatePresence>
+            {isSelectionMode && selectedItems.size > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 20 }}
+                className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-4 px-6 py-4 bg-black text-white rounded-full shadow-2xl"
+              >
+                <span className="font-medium whitespace-nowrap">{selectedItems.size} Selected</span>
+                <div className="w-[1px] h-6 bg-white/20"></div>
+                <button 
+                  onClick={handleBulkWhatsApp}
+                  className="font-semibold text-green-400 hover:text-green-300 transition-colors whitespace-nowrap"
+                >
+                  Inquire via WhatsApp
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Grouped / Bento Gallery Grid */}
           {filteredItems.length > 0 ? (
-            <div
-              className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 auto-rows-[180px] gap-2 md:gap-3"
-              style={{ gridAutoFlow: 'dense' }}
-            >
-              {filteredItems.slice(0, visibleCount).map((item, index) => {
-                // Create varied bento sizes with more randomness
-                const getBentoClass = (idx: number) => {
-                  // Use multiple factors to create less predictable patterns
-                  const hash = (idx * 7 + 3) % 17;
-
-                  if (hash === 0 || hash === 8) return 'col-span-2 row-span-2'; // Large square
-                  if (hash === 1 || hash === 9 || hash === 13) return 'col-span-1 row-span-2'; // Tall
-                  if (hash === 2 || hash === 10 || hash === 14) return 'col-span-2 row-span-1'; // Wide
-                  if (hash === 3 || hash === 11) return 'md:col-span-2 col-span-1 row-span-2'; // Large on desktop
-                  if (hash === 4 || hash === 12) return 'md:col-span-3 col-span-2 row-span-1'; // Extra wide on desktop
-                  return 'col-span-1 row-span-1'; // Small (most common)
-                };
-
+            <div className="space-y-8">
+              {groupedItems.map((group) => {
+                let itemsRendered = 0;
+                
                 return (
-                  <div
-                    key={item.id}
-                    className={`group relative overflow-hidden rounded-2xl border border-black/15 bg-white/90 shadow-[0_4px_24px_rgba(0,0,0,0.05)] cursor-pointer ${getBentoClass(index)}`}
-                    onClick={() => handleItemClick(item.id)}
-                    ref={(el) => attachObserver(el, index)}
-                    style={{ opacity: 0, transform: 'translateY(20px)' }}
-                  >
-                    <div className="w-full h-full bg-white relative">
-                      {/* Category tag */}
-                      <div className="absolute top-2 left-2 z-[1]">
-                        <span className="px-2 py-1 rounded-full text-[11px] font-semibold bg-black text-white border border-black group-hover:bg-white group-hover:text-black transition-colors">
-                          {item.category}
-                        </span>
+                  <div key={group.category} className="relative">
+                    {activeCategory === "All" && !searchQuery && (
+                      <div className="sticky top-20 z-10 mb-4 bg-white/80 backdrop-blur-xl px-4 py-2 rounded-lg border border-black/10 inline-block shadow-sm">
+                        <h2 className="text-lg font-bold text-black uppercase tracking-widest">{group.category}</h2>
                       </div>
-                      <div className="absolute top-2 right-2 z-[1]">
-                        <span className="px-2 py-1 rounded-full text-[11px] font-semibold bg-white/90 text-black border border-black/20">
-                          {item.code}
-                        </span>
-                      </div>
-                      {/* Overlay gradient on hover */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-[1]" />
-                      <div className="absolute inset-x-0 bottom-0 z-[2] p-3 translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-                        <div className="text-white text-sm font-semibold line-clamp-2">{item.title}</div>
-                      </div>
+                    )}
+                    <div
+                      className={`grid ${gridLayout === 'square' ? 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 auto-rows-auto gap-4' : 'grid-cols-2 md:grid-cols-4 lg:grid-cols-6 auto-rows-[180px] gap-2 md:gap-3'}`}
+                      style={{ gridAutoFlow: gridLayout === 'bento' ? 'dense' : 'row' }}
+                    >
+                      {group.items.map((item, index) => {
+                        itemsRendered++;
+                        if (itemsRendered > visibleCount && activeCategory === "All") return null;
 
-                      <img
-                        src={item.image}
-                        alt={item.title}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
-                        loading="lazy"
-                      />
+                        const getBentoClass = (idx: number) => {
+                          if (gridLayout === 'square') return 'col-span-1 aspect-square';
+                          const hash = (idx * 7 + 3) % 17;
+                          if (hash === 0 || hash === 8) return 'col-span-2 row-span-2';
+                          if (hash === 1 || hash === 9 || hash === 13) return 'col-span-1 row-span-2';
+                          if (hash === 2 || hash === 10 || hash === 14) return 'col-span-2 row-span-1';
+                          if (hash === 3 || hash === 11) return 'md:col-span-2 col-span-1 row-span-2';
+                          if (hash === 4 || hash === 12) return 'md:col-span-3 col-span-2 row-span-1';
+                          return 'col-span-1 row-span-1';
+                        };
+
+                        const isSelected = selectedItems.has(item.id);
+
+                        return (
+                          <motion.div
+                            layoutId={`gallery-item-${item.id}`}
+                            key={item.id}
+                            className={`group relative overflow-hidden rounded-2xl border ${isSelected ? 'border-blue-500 shadow-[0_0_0_2px_rgba(59,130,246,0.5)]' : 'border-black/15'} bg-white/90 shadow-[0_4px_24px_rgba(0,0,0,0.05)] cursor-pointer ${getBentoClass(index)}`}
+                            onClick={() => handleItemClick(item.id)}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true, margin: "100px" }}
+                            transition={{ duration: 0.4, delay: (index % 16) * 0.03 }}
+                          >
+                            <div className="w-full h-full bg-white relative">
+                              {isSelectionMode && (
+                                <div className="absolute top-2 left-2 z-[3]">
+                                  {isSelected ? (
+                                    <CheckCircle2 className="w-6 h-6 text-blue-500 fill-white" />
+                                  ) : (
+                                    <Circle className="w-6 h-6 text-white/80 fill-black/20" />
+                                  )}
+                                </div>
+                              )}
+                              {!isSelectionMode && (
+                                <div className="absolute top-2 left-2 z-[1]">
+                                  <span className="px-2 py-1 rounded-full text-[11px] font-semibold bg-black text-white border border-black group-hover:bg-white group-hover:text-black transition-colors">
+                                    {item.category}
+                                  </span>
+                                </div>
+                              )}
+
+                              <img
+                                src={item.image}
+                                alt={item.title}
+                                className={`w-full h-full object-cover transition-transform duration-700 ease-out ${!isSelectionMode && 'group-hover:scale-110'} ${isSelected && 'scale-95 rounded-xl opacity-90'}`}
+                                loading="lazy"
+                              />
+                            </div>
+                          </motion.div>
+                        );
+                      })}
                     </div>
                   </div>
                 );
               })}
-              {/* Sentinel to trigger loading more */}
               {visibleCount < filteredItems.length && (
-                <div ref={setSentinelRef} className="col-span-full h-2" aria-hidden />
+                <div ref={setSentinelRef} className="h-2" aria-hidden />
               )}
             </div>
           ) : (
@@ -539,143 +369,16 @@ const Gallery = memo(() => {
         </div>
       </section>
 
-      {/* Modal */}
-      {isModalRendered && currentItem && (
-        <div
-          className="fixed inset-0 z-[2147483000]"
-          ref={modalContainerRef}
-        >
-          <div
-            ref={modalBackdropRef}
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-            onClick={closeModal}
-            style={{ opacity: 0 }}
-            onWheel={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-            }}
-            onTouchMove={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-            }}
-          />
-          <div className="absolute inset-0 flex items-center justify-center p-3 md:p-4">
-            <div
-              ref={modalContentRef}
-              className="relative w-[96vw] max-w-5xl max-h-[90vh] mx-auto bg-white/70 backdrop-blur-xl rounded-2xl border-2 border-black shadow-[0_20px_50px_rgba(0,0,0,0.4)] overflow-hidden flex flex-col"
-              style={{ opacity: 0, transform: 'scale(0.98) translateY(10px)', overscrollBehavior: 'contain' }}
-              onClick={(e) => e.stopPropagation()}
-              onWheel={(e) => e.stopPropagation()}
-              onTouchMove={(e) => e.stopPropagation()}
-            >
-              {/* Close */}
-              <button
-                onClick={closeModal}
-                className="absolute right-3 top-3 z-10 inline-flex items-center justify-center w-9 h-9 rounded-full border-2 border-black bg-white/80 backdrop-blur-md text-black hover:bg-black hover:text-white transition-colors"
-                aria-label="Close"
-              >
-                <X className="w-5 h-5" />
-              </button>
-              {/* WhatsApp */}
-              {currentItem && (
-                <a
-                  href={`https://wa.me/918107115116?text=${encodeURIComponent(
-                    `Hi, I'm interested in code ${currentItem.code} from the ${currentItem.category} gallery. Image: ${currentItem.image}`
-                  )}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="absolute right-14 top-3 z-10 inline-flex items-center justify-center w-9 h-9 rounded-full bg-[#25D366] text-white hover:bg-white hover:text-[#25D366] transition-colors shadow"
-                  aria-label="WhatsApp Inquiry"
-                  title="WhatsApp Inquiry"
-                >
-                  {/* Simple WhatsApp glyph */}
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor" aria-hidden="true">
-                    <path d="M20.52 3.48A11.94 11.94 0 0012.06 0C5.55 0 .29 5.27.29 11.78c0 2.08.54 4.11 1.58 5.91L0 24l6.47-1.83a11.6 11.6 0 005.59 1.49h.01c6.51 0 11.78-5.26 11.78-11.77 0-3.15-1.23-6.11-3.33-8.41zM12.07 21.3h-.01a9.5 9.5 0 01-4.84-1.32l-.35-.2-3.84 1.09 1.03-3.74-.23-.38a9.5 9.5 0 01-1.46-5.11c0-5.25 4.28-9.53 9.54-9.53 2.55 0 4.95.99 6.75 2.79a9.45 9.45 0 012.79 6.74c0 5.25-4.28 9.53-9.54 9.53zm5.5-7.1c-.3-.15-1.77-.87-2.05-.97-.27-.1-.47-.15-.67.15-.2.3-.77.96-.95 1.16-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.47-.89-.79-1.49-1.77-1.67-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.5l-.57-.01c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.5 0 1.47 1.06 2.9 1.2 3.1.15.2 2.08 3.17 5.04 4.45.7.3 1.24.48 1.66.62.7.22 1.34.19 1.85.12.56-.08 1.77-.72 2.02-1.41.25-.7.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35z" />
-                  </svg>
-                </a>
-              )}
-
-              {/* Main image + code */}
-              <div className="w-full flex-1 min-h-0 p-2 md:p-3">
-                {/* Ensure a stable viewport-based height so image can fully fit without cropping */}
-                <div className="w-full h-[62vh] md:h-[70vh]">
-                  <div className="mt-0 text-center text-sm font-semibold text-black">Code: {currentItem.code}</div>
-                  <img
-                    src={currentItem.image}
-                    alt={currentItem.title}
-                    className="w-full h-full object-contain"
-                  />
-                </div>
-              </div>
-
-              {/* Related slider */}
-              <div className="p-2 md:p-3 border-t-2 border-black bg-white/80 backdrop-blur-md shrink-0 relative">
-                <div className="mb-2 md:mb-3 text-sm font-semibold text-black">{t('gallery.more_from')} {currentItem.category}</div>
-                {SwiperComponents ? (
-                  <SwiperComponents.Swiper
-                    spaceBetween={12}
-                    slidesPerView={2.2}
-                    breakpoints={{
-                      640: { slidesPerView: 3.2, spaceBetween: 14 },
-                      768: { slidesPerView: 4.2, spaceBetween: 16 },
-                      1024: { slidesPerView: 5.2, spaceBetween: 16 },
-                    }}
-                    onSwiper={(sw: any) => {
-                      setSwiperRef(sw);
-                      setCanPrev(!sw.isBeginning);
-                      setCanNext(!sw.isEnd);
-                    }}
-                    onSlideChange={(sw: any) => {
-                      setCanPrev(!sw.isBeginning);
-                      setCanNext(!sw.isEnd);
-                    }}
-                    onReachBeginning={() => setCanPrev(false)}
-                    onReachEnd={() => setCanNext(false)}
-                  >
-                    {relatedItems.map((rel) => (
-                      <SwiperComponents.SwiperSlide key={rel.id}>
-                        <button
-                          onClick={() => setCurrentItem(rel)}
-                          className="block w-full overflow-hidden rounded-xl border-2 border-black bg-white hover:opacity-90 transition"
-                        >
-                          <div className="w-full" style={{ aspectRatio: "4 / 3" }}>
-                            <img
-                              src={rel.image}
-                              alt={rel.title}
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                        </button>
-                      </SwiperComponents.SwiperSlide>
-                    ))}
-                  </SwiperComponents.Swiper>
-                ) : (
-                  <div className="text-sm text-gray-600">{t('gallery.loading')}</div>
-                )}
-                {/* Side slider buttons */}
-                {canPrev && (
-                  <button
-                    onClick={() => swiperRef && swiperRef.slidePrev()}
-                    className="hidden sm:flex absolute left-2 top-1/2 -translate-y-1/2 z-10 items-center justify-center w-10 h-10 rounded-full border-2 border-black bg-white/80 backdrop-blur-md text-black hover:bg-black hover:text-white transition-colors"
-                    aria-label="Previous"
-                  >
-                    <ChevronLeft className="w-5 h-5" />
-                  </button>
-                )}
-                {canNext && (
-                  <button
-                    onClick={() => swiperRef && swiperRef.slideNext()}
-                    className="hidden sm:flex absolute right-2 top-1/2 -translate-y-1/2 z-10 items-center justify-center w-10 h-10 rounded-full border-2 border-black bg-white/80 backdrop-blur-md text-black hover:bg-black hover:text-white transition-colors"
-                    aria-label="Next"
-                  >
-                    <ChevronRight className="w-5 h-5" />
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Full Screen Modal */}
+      <GalleryModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        currentItem={currentItem}
+        modalList={modalList}
+        modalIndex={modalIndex}
+        setModalIndex={setModalIndex}
+        setCurrentItem={setCurrentItem}
+      />
     </div>
   );
 });
