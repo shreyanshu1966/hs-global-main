@@ -163,11 +163,11 @@ img {
 }
 
 html {
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 body {
-  overflow-x: hidden;
+  overflow-x: clip;
   @apply bg-background text-text-primary;
   font-family: var(--app-font-family) !important;
   -webkit-font-smoothing: antialiased;

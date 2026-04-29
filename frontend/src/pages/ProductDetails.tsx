@@ -25,9 +25,8 @@ const ProductDetails = () => {
   const { state: cartState } = useCart();
   const relatedRef = useRef<HTMLDivElement | null>(null);
   const reviewsRef = useRef<HTMLDivElement>(null);
-  const galleryColRef = useRef<HTMLDivElement>(null);   // wrapper — keeps layout placeholder
-  const galleryInnerRef = useRef<HTMLDivElement>(null); // the actual gallery — gets fixed/absolute
-  const trustStripRef = useRef<HTMLDivElement>(null);  // stop sentinel
+  // Tall scroll-space wrapper — drives image transitions inside
+  const heroWrapperRef = useRef<HTMLDivElement>(null);
 
   // Fetch product from database
   const { product: dbProduct, relatedProducts: dbRelatedProducts, loading, error, refetch } = useProduct(id);
@@ -267,7 +266,7 @@ const ProductDetails = () => {
 
   // Render UI
   return (
-    <div className="min-h-screen bg-[#f8fafc]">
+    <div className="min-h-screen bg-white">
       <Helmet>
         {/* ========== COMPREHENSIVE SEO META TAGS ========== */}
 
@@ -337,79 +336,139 @@ const ProductDetails = () => {
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        className="min-h-screen bg-[#f8fafc] pb-20"
+        className="bg-white"
       >
-        {/* Breadcrumbs - Minimal */}
-        <div className="container mx-auto px-6 mt-5 md:mt-0 py-5 md:py-7 border-b border-[#e2e8f0] bg-white">
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[11px] uppercase tracking-[0.11em] text-[#64748b]">
-            <Link to="/" className="hover:text-[#111827] transition-colors focus:ring-2 focus:ring-slate-400 rounded px-1">Home</Link>
-            <span aria-hidden="true" className="text-[#cbd5e1]">/</span>
-            <Link to="/products" className="hover:text-[#111827] transition-colors capitalize focus:ring-2 focus:ring-slate-400 rounded px-1">{product.category}</Link>
-            <span aria-hidden="true" className="text-[#cbd5e1]">/</span>
-            <span aria-current="page" className="text-[#111827] font-semibold truncate max-w-[200px] md:max-w-none px-1 tracking-[0.07em]">{product.name}</span>
-          </nav>
-        </div>
+        {/* Breadcrumbs moved to ProductInfo for cleaner layout */}
 
-        {/* Hero + Trust Strip: unified sticky container */}
-        <div className="container mx-auto px-6 py-10 lg:py-14">
-          <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 items-start relative">
+        {/*
+          ── SCROLL-HIJACK HERO ──────────────────────────────────────────
+          Outer wrapper is tall (images.length × 100vh) — creates scroll space.
+          Inner pd-sticky section is position:sticky, height:100vh — pins to viewport.
+          Window scroll progress through wrapper → drives image crossfade in gallery.
+          After all images shown, the page scrolls normally to specs/reviews.
+          ───────────────────────────────────────────────────────────────
+        */}
+        <div
+          ref={heroWrapperRef}
+          className="pd-hero-wrapper"
+          style={{ height: `${Math.max(2, product.images.length) * 100}vh` }}
+        >
+          {/* Sticky panel — stays pinned while outer wrapper scrolls */}
+          <div className="pd-sticky">
 
-            {/* LEFT: Gallery — Vertical scroller */}
-            <div className="w-full lg:w-[58%] flex-shrink-0">
-              <ProductGallery product={product} />
+            {/* LEFT: gallery (images transition based on scroll) */}
+            <div className="pd-gallery-col">
+              <ProductGallery product={product} scrollWrapperRef={heroWrapperRef} />
             </div>
 
-            {/* RIGHT: Info + Trust Strip stacked — Pinned to top */}
-            <div className="w-full lg:w-[42%] flex-shrink-0 lg:sticky lg:top-28 h-fit">
-              <ProductInfo
-                product={product}
-                reviewStats={reviewStats}
-                isInCart={isInCart}
-                selectedFinish={selectedFinish}
-                setSelectedFinish={setSelectedFinish}
-                selectedThickness={selectedThickness}
-                setSelectedThickness={setSelectedThickness}
-                handleShare={handleShare}
-                reviewsRef={reviewsRef}
-              />
-
-              {/* Trust Strip */}
-              <div className="mt-10 border border-[#e2e8f0] bg-[#f1f5f9] rounded-xl px-6 py-7">
-                <div className="grid grid-cols-2 gap-5">
-                  <div className="flex items-start gap-3">
-                    <ShieldCheck className="w-5 h-5 text-[#475569] mt-0.5 flex-shrink-0" />
-                    <div>
-                      <p className="text-[11px] uppercase tracking-[0.1em] text-[#64748b]">Guarantee</p>
-                      <p className="text-sm text-[#111827]">Authenticity Assured</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <BadgeCheck className="w-5 h-5 text-[#475569] mt-0.5 flex-shrink-0" />
-                    <div>
-                      <p className="text-[11px] uppercase tracking-[0.1em] text-[#64748b]">Promise</p>
-                      <p className="text-sm text-[#111827]">Vetted Seller Network</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <Truck className="w-5 h-5 text-[#475569] mt-0.5 flex-shrink-0" />
-                    <div>
-                      <p className="text-[11px] uppercase tracking-[0.1em] text-[#64748b]">Delivery</p>
-                      <p className="text-sm text-[#111827]">Trusted Global Shipping</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <Scale className="w-5 h-5 text-[#475569] mt-0.5 flex-shrink-0" />
-                    <div>
-                      <p className="text-[11px] uppercase tracking-[0.1em] text-[#64748b]">Price Match</p>
-                      <p className="text-sm text-[#111827]">Best Value Commitment</p>
-                    </div>
-                  </div>
-                </div>
+            {/* RIGHT: product info — completely frozen */}
+            <div className="pd-info-col">
+              <div className="pd-info-scroll">
+                <ProductInfo
+                  product={product}
+                  reviewStats={reviewStats}
+                  isInCart={isInCart}
+                  selectedFinish={selectedFinish}
+                  setSelectedFinish={setSelectedFinish}
+                  selectedThickness={selectedThickness}
+                  setSelectedThickness={setSelectedThickness}
+                  handleShare={handleShare}
+                  reviewsRef={reviewsRef}
+                />
               </div>
             </div>
 
-          </div>
-        </div>
+          </div>{/* /pd-sticky */}
+        </div>{/* /pd-hero-wrapper */}
+
+        {/* Layout styles */}
+        <style>{`
+          /*
+           * OUTER WRAPPER: tall div creates scroll space.
+           * Its height = images.length * 100vh so there's room to
+           * scroll through all images before the page continues.
+           */
+          .pd-hero-wrapper {
+            position: relative;
+          }
+
+          /*
+           * STICKY INNER: pins to top of viewport (below header).
+           * Both columns live here.
+           */
+          .pd-sticky {
+            position: sticky;
+            top: var(--itsbits-header-offset, 134px);
+            height: calc(100vh - var(--itsbits-header-offset, 134px));
+            display: flex;
+            flex-direction: row;
+            background: #ffffff;
+            z-index: 1;
+            overflow: hidden;
+          }
+
+          /* LEFT: gallery fills height, images crossfade inside */
+          .pd-gallery-col {
+            width: 58%;
+            flex-shrink: 0;
+            height: 100%;
+            overflow: hidden;
+            border-right: 1px solid #f3f4f6;
+            padding: 28px 28px 28px 32px;
+            box-sizing: border-box;
+          }
+
+          /* RIGHT: frozen info — no scroll */
+          .pd-info-col {
+            flex: 1;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
+          }
+
+          /* Thin scrollable inner so info doesn't get clipped on short screens */
+          .pd-info-scroll {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 32px 32px 32px 28px;
+            scrollbar-width: thin;
+            scrollbar-color: #e2e8f0 transparent;
+            box-sizing: border-box;
+          }
+          .pd-info-scroll::-webkit-scrollbar { width: 4px; }
+          .pd-info-scroll::-webkit-scrollbar-track { background: transparent; }
+          .pd-info-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+
+          /* Mobile: disable scroll-hijack, normal stacked layout */
+          @media (max-width: 1023px) {
+            .pd-hero-wrapper { height: auto !important; }
+            .pd-sticky {
+              position: static;
+              height: auto;
+              flex-direction: column;
+              overflow: visible;
+            }
+            .pd-gallery-col {
+              width: 100%;
+              height: auto;
+              overflow: visible;
+              border-right: none;
+              border-bottom: 1px solid #e2e8f0;
+              padding: 20px 16px;
+            }
+            .pd-info-col {
+              height: auto;
+              overflow: visible;
+            }
+            .pd-info-scroll {
+              overflow: visible;
+              padding: 24px 16px;
+            }
+          }
+        `}</style>
 
         {/* Item Details */}
         <section className="bg-white py-14 lg:py-16 border-b border-[#e2e8f0]">

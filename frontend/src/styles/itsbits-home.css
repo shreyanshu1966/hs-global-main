@@ -38,7 +38,7 @@
   --itsbits-highlight-gap: 27px;
   --itsbits-carousel-row-gap: 12px;
   --itsbits-content-max-width: 1440px;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 .itsbits-home > main#mainContent {
