@@ -68,6 +68,12 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
   const [availableSubcategories, setAvailableSubcategories] = useState<string[]>([]);
   const [video, setVideo] = useState<VideoFile | null>(null);
   const [videoUploading, setVideoUploading] = useState(false);
+
+  // Similar products picker state
+  const [similarProductIds, setSimilarProductIds] = useState<string[]>([]);
+  const [simSearch, setSimSearch] = useState('');
+  const [simResults, setSimResults] = useState<any[]>([]);
+  const [simSearching, setSimSearching] = useState(false);
   
   // Loading states for form submission
   const [validationLoading, setValidationLoading] = useState(false);
@@ -143,6 +149,11 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
         setCustomSubcategory(editingProduct.subcategory);
       }
 
+      // Set similar products
+      if (editingProduct.similarProducts && editingProduct.similarProducts.length > 0) {
+        setSimilarProductIds(editingProduct.similarProducts);
+      }
+
       // Set existing video
       if (editingProduct.hasVideo && editingProduct.videoUrl) {
         const existingVideoFile = new File([], editingProduct.videoFilename || 'video.mp4', {
@@ -167,6 +178,56 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
       setCustomSubcategory(editingProduct.subcategory);
     }
   }, [editingProduct, availableSubcategories]);
+
+  // Search for products to add as similar
+  useEffect(() => {
+    if (!simSearch.trim()) {
+      setSimResults([]);
+      return;
+    }
+    let cancelled = false;
+    const run = async () => {
+      setSimSearching(true);
+      try {
+        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+        const token = localStorage.getItem('authToken');
+        const res = await fetch(
+          `${API_URL}/admin/products?search=${encodeURIComponent(simSearch.trim())}&limit=10`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        if (!cancelled && res.ok) {
+          const data = await res.json();
+          const results = (data.data || []).filter(
+            (p: any) =>
+              p.productId !== formData.productId &&
+              !similarProductIds.includes(p.productId)
+          );
+          setSimResults(results);
+        }
+      } catch {
+        if (!cancelled) setSimResults([]);
+      } finally {
+        if (!cancelled) setSimSearching(false);
+      }
+    };
+    const timer = setTimeout(run, 300);
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
+  }, [simSearch, formData.productId, similarProductIds]);
+
+  const addSimilarProduct = (p: any) => {
+    if (!similarProductIds.includes(p.productId)) {
+      setSimilarProductIds(prev => [...prev, p.productId]);
+    }
+    setSimSearch('');
+    setSimResults([]);
+  };
+
+  const removeSimilarProduct = (pid: string) => {
+    setSimilarProductIds(prev => prev.filter(id => id !== pid));
+  };
 
   const handleInputChange = (field: string, value: any) => {
     if (field.includes('.')) {
@@ -230,7 +291,8 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
         featured: formData.featured,
         furnitureSpecs: formData.furnitureSpecs,
         discount: formData.discount,
-        hasVideo: !!video
+        hasVideo: !!video,
+        similarProducts: similarProductIds
       };
 
       // Extract video file (only if it's new, not existing)
@@ -277,7 +339,8 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
         featured: formData.featured,
         furnitureSpecs: formData.furnitureSpecs,
         discount: formData.discount,
-        hasVideo: !!video
+        hasVideo: !!video,
+        similarProducts: similarProductIds
       };
 
       // Extract video file (only if it's new, not existing)
@@ -736,6 +799,66 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
               customSpecs={customSpecs}
               onSpecsChange={handleSpecsChange}
             />
+          </div>
+
+          {/* Similar Products Section */}
+          <div className="space-y-4 border-t pt-4">
+            <h3 className="text-lg font-semibold text-gray-900">Similar Products</h3>
+            <p className="text-sm text-gray-500">These will appear as a curated strip at the top of this product's page.</p>
+
+            {/* Selected chips */}
+            {similarProductIds.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {similarProductIds.map(pid => (
+                  <span key={pid} className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 text-gray-800 text-sm rounded-full">
+                    {pid}
+                    <button
+                      type="button"
+                      onClick={() => removeSimilarProduct(pid)}
+                      className="text-gray-400 hover:text-red-500 transition-colors ml-0.5"
+                    >
+                      ×
+                    </button>
+                  </span>
+                ))}
+              </div>
+            )}
+
+            {/* Search */}
+            <div className="relative">
+              <input
+                type="text"
+                value={simSearch}
+                onChange={e => setSimSearch(e.target.value)}
+                placeholder="Search product by name or ID..."
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm"
+              />
+              {simSearching && (
+                <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                  <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+                </div>
+              )}
+              {simResults.length > 0 && (
+                <div className="absolute z-50 left-0 right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-52 overflow-y-auto">
+                  {simResults.map((p: any) => (
+                    <button
+                      key={p.productId}
+                      type="button"
+                      onClick={() => addSimilarProduct(p)}
+                      className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-gray-50 text-left text-sm"
+                    >
+                      {p.image && (
+                        <img src={p.image} alt={p.name} className="w-8 h-8 object-cover rounded flex-shrink-0" />
+                      )}
+                      <div className="min-w-0">
+                        <p className="font-medium text-gray-900 truncate">{p.name}</p>
+                        <p className="text-xs text-gray-500">{p.productId}</p>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Images Section */}

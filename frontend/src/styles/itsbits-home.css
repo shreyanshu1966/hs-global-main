@@ -41,6 +41,12 @@
   overflow-x: clip;
 }
 
+@media (max-width: 767px) {
+  .itsbits-home {
+    --itsbits-header-offset: 146px;
+  }
+}
+
 .itsbits-home > main#mainContent {
   margin-top: max(0px, calc(var(--itsbits-header-offset) - var(--itsbits-content-top-trim))) !important;
 }

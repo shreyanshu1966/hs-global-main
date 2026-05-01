@@ -144,6 +144,7 @@ export const useProducts = (options: UseProductsOptions = {}): UseProductsReturn
 export interface UseProductReturn {
   product: Product | null;
   relatedProducts: Product[];
+  similarProducts: Product[];
   loading: boolean;
   error: string | null;
   fetchProduct: () => Promise<void>;
@@ -153,6 +154,7 @@ export interface UseProductReturn {
 export const useProduct = (productId: string | undefined): UseProductReturn => {
   const [product, setProduct] = useState<Product | null>(null);
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
+  const [similarProducts, setSimilarProducts] = useState<Product[]>([]);
   // Initialize loading as true to show skeleton immediately
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -161,6 +163,7 @@ export const useProduct = (productId: string | undefined): UseProductReturn => {
     if (!productId) {
       setProduct(null);
       setRelatedProducts([]);
+      setSimilarProducts([]);
       return;
     }
 
@@ -173,15 +176,18 @@ export const useProduct = (productId: string | undefined): UseProductReturn => {
       if (response.success && response.data) {
         setProduct(response.data.product);
         setRelatedProducts(response.data.relatedProducts);
+        setSimilarProducts(response.data.similarProducts || []);
       } else {
         setError('Product not found');
         setProduct(null);
         setRelatedProducts([]);
+        setSimilarProducts([]);
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
       setProduct(null);
       setRelatedProducts([]);
+      setSimilarProducts([]);
     } finally {
       setLoading(false);
     }
@@ -194,6 +200,7 @@ export const useProduct = (productId: string | undefined): UseProductReturn => {
   return {
     product,
     relatedProducts,
+    similarProducts,
     loading,
     error,
     fetchProduct,

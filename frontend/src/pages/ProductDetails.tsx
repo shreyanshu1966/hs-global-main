@@ -13,6 +13,7 @@ import { ProductInfo } from "../components/product/ProductInfo";
 import { ProductSpecifications } from "../components/product/ProductSpecifications";
 import { ProductReviews } from "../components/product/ProductReviews";
 import { RelatedProducts } from "../components/product/RelatedProducts";
+import { SimilarProducts } from "../components/product/SimilarProducts";
 
 const ProductDetails = () => {
   const { id }: { id?: string } = useParams<{ id?: string }>();
@@ -29,7 +30,7 @@ const ProductDetails = () => {
   const heroWrapperRef = useRef<HTMLDivElement>(null);
 
   // Fetch product from database
-  const { product: dbProduct, relatedProducts: dbRelatedProducts, loading, error, refetch } = useProduct(id);
+  const { product: dbProduct, relatedProducts: dbRelatedProducts, similarProducts: dbSimilarProducts, loading, error, refetch } = useProduct(id);
 
   // Build product object from database data - MUST be before early returns
   const product = useMemo(() => {
@@ -47,6 +48,7 @@ const ProductDetails = () => {
 
     // Related products from API (pass through normalized product shape)
     const relatedPick = dbRelatedProducts.slice(0, 10);
+    const similarPick = dbSimilarProducts.slice(0, 20);
 
     // Build specs section
     let specs: Record<string, string> = {};
@@ -93,12 +95,13 @@ const ProductDetails = () => {
       specs,
       description: dbProduct.description || "Premium natural stone slab ideal for countertops, vanities, flooring and wall cladding with strict quality selection.",
       relatedProducts: relatedPick,
+      similarProducts: similarPick,
       available: isAvailable,
       averageRating: dbProduct.averageRating,
       totalReviews: dbProduct.totalReviews,
       discount: dbProduct.discount,
     };
-  }, [dbProduct, dbRelatedProducts, selectedFinish, selectedThickness]);
+  }, [dbProduct, dbRelatedProducts, dbSimilarProducts, selectedFinish, selectedThickness]);
 
   // Generate comprehensive SEO metadata using the hook
   const seoMeta = useProductSEO(product);
@@ -339,6 +342,9 @@ const ProductDetails = () => {
         className="bg-white"
       >
         {/* Breadcrumbs moved to ProductInfo for cleaner layout */}
+
+        {/* Similar Products — manually curated, shown at very top */}
+        <SimilarProducts similarProducts={product.similarProducts} />
 
         {/*
           ── SCROLL-HIJACK HERO ──────────────────────────────────────────

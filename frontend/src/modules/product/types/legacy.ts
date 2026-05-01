@@ -91,6 +91,7 @@ export interface LegacySingleProductResponse {
   data: {
     product: LegacyProduct;
     relatedProducts: LegacyProduct[];
+    similarProducts: LegacyProduct[];
   };
   message?: string;
 }

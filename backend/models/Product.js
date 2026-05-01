@@ -181,6 +181,10 @@ const productSchema = new mongoose.Schema({
         type: Boolean,
         default: true
     },
+    similarProducts: [{
+        type: String,
+        trim: true
+    }],
     hasVideo: {
         type: Boolean,
         default: false

@@ -15,6 +15,12 @@ const findByProductIdActive = (productId) => Product.findOne({
     status: 'active'
 });
 
+const findSimilarProductsByProductIds = (productIds) => Product.find({
+    productId: { $in: productIds },
+    status: 'active',
+    available: true
+});
+
 const findRelatedProducts = ({ product, limit = 10 }) => Product.find({
     _id: { $ne: product._id },
     category: product.category,
@@ -96,6 +102,7 @@ module.exports = {
     findProducts,
     countProducts,
     findByProductIdActive,
+    findSimilarProductsByProductIds,
     findRelatedProducts,
     findByCategory,
     findFeatured,

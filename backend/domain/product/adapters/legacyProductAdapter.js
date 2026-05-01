@@ -39,11 +39,12 @@ const toLegacyListResponse = ({ items, pagination }) => ({
     pagination
 });
 
-const toLegacySingleResponse = ({ item, relatedItems }) => ({
+const toLegacySingleResponse = ({ item, relatedItems, similarItems = [] }) => ({
     success: true,
     data: {
         product: toLegacyProduct(item),
-        relatedProducts: relatedItems.map(toLegacyProduct)
+        relatedProducts: relatedItems.map(toLegacyProduct),
+        similarProducts: similarItems.map(toLegacyProduct)
     }
 });
 
@@ -69,11 +70,12 @@ const toV2ListResponse = ({ items, pagination }) => ({
     schemaVersion: 'v2'
 });
 
-const toV2SingleResponse = ({ item, relatedItems }) => ({
+const toV2SingleResponse = ({ item, relatedItems, similarItems = [] }) => ({
     success: true,
     data: {
         product: item,
-        relatedProducts: relatedItems
+        relatedProducts: relatedItems,
+        similarProducts: similarItems
     },
     schemaVersion: 'v2'
 });

@@ -62,6 +62,7 @@ export const toLegacySingleResponse = (response: ProductSingleV2Response): Legac
   data: {
     product: toLegacyProduct(response.data.product),
     relatedProducts: response.data.relatedProducts.map(toLegacyProduct),
+    similarProducts: (response.data.similarProducts || []).map(toLegacyProduct),
   },
 });
 

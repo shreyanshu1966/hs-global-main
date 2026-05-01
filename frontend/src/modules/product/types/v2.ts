@@ -87,6 +87,7 @@ export interface ProductSingleV2Response {
   data: {
     product: ProductV2;
     relatedProducts: ProductV2[];
+    similarProducts: ProductV2[];
   };
 }
 

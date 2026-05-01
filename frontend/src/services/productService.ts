@@ -96,6 +96,7 @@ export interface SingleProductResponse {
   data: {
     product: Product;
     relatedProducts: Product[];
+    similarProducts: Product[];
   };
   message?: string;
 }
