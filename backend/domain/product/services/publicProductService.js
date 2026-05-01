@@ -98,14 +98,19 @@ const getProductById = async (productId) => {
 
     await product.incrementView();
 
-    const relatedProducts = await repository.findRelatedProducts({
-        product,
-        limit: 10
-    });
+    const hasSimilar = Array.isArray(product.similarProducts) && product.similarProducts.length > 0;
+
+    const [relatedProducts, similarProducts] = await Promise.all([
+        repository.findRelatedProducts({ product, limit: 10 }),
+        hasSimilar
+            ? repository.findSimilarProductsByProductIds(product.similarProducts)
+            : Promise.resolve([])
+    ]);
 
     return {
         item: toProductDto(product),
-        relatedItems: relatedProducts.map(toProductDto)
+        relatedItems: relatedProducts.map(toProductDto),
+        similarItems: similarProducts.map(toProductDto)
     };
 };
 
