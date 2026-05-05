@@ -234,38 +234,7 @@ export function ProductInfo({
                 )}
             </div>
 
-            {/* Delivery/Trust Info (Minimalist) */}
-            <div className="border border-[#e5e7eb] p-5 mb-8 bg-[#fafafa]">
-                <div className="flex items-start gap-3 mb-4">
-                    <Package className="w-5 h-5 text-[#555] shrink-0" strokeWidth={1.5} />
-                    <div>
-                        <p className="text-[13px] font-medium text-[#111]">100% Authentic Products</p>
-                        <p className="text-[12px] text-[#666] mt-0.5">Sourced directly from trusted manufacturers.</p>
-                    </div>
-                </div>
-                <div className="flex items-start gap-3">
-                    <Truck className="w-5 h-5 text-[#555] shrink-0" strokeWidth={1.5} />
-                    <div>
-                        <p className="text-[13px] font-medium text-[#111]">Global Shipping Available</p>
-                        <p className="text-[12px] text-[#666] mt-0.5">Contact us for precise delivery estimates to your region.</p>
-                    </div>
-                </div>
-            </div>
 
-            {/* Description accordion / block */}
-            <div className="border-t border-[#e5e7eb] pt-5">
-                <h3 className="text-[14px] font-semibold text-[#111] uppercase tracking-wide mb-3">
-                    Product Details
-                </h3>
-                <p className="text-[14px] text-[#444] leading-[1.6] font-light">
-                    {product.description}
-                </p>
-                {product.moq && product.category === 'slabs' && (
-                    <p className="text-[13px] text-[#666] mt-3 font-medium">
-                        Minimum Order Quantity: {product.moq.replace('MOQ: ', '')}
-                    </p>
-                )}
-            </div>
             
             {/* Seller Contact */}
             <div className="border-t border-[#e5e7eb] pt-5 mt-5">

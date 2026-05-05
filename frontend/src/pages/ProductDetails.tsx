@@ -487,6 +487,36 @@ const ProductDetails = () => {
           </div>
         </section>
 
+        {/* Trust / Delivery Info */}
+        <section className="bg-[#fafafa] py-8 sm:py-10 border-b border-[#e2e8f0]">
+          <div className="container mx-auto px-6 max-w-4xl">
+            <div className="flex flex-row justify-center items-stretch gap-0">
+              {/* Item 1 */}
+              <div className="flex-1 flex flex-col sm:flex-row items-center sm:items-start gap-3 sm:gap-4 text-center sm:text-left px-4 sm:px-8">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white flex items-center justify-center shadow-sm shrink-0">
+                  <Package className="w-5 h-5 sm:w-6 sm:h-6 text-[#111]" strokeWidth={1.5} />
+                </div>
+                <div>
+                  <h4 className="text-[13px] sm:text-[15px] font-semibold text-[#111] mb-1">100% Authentic Products</h4>
+                  <p className="text-[11px] sm:text-[13px] text-[#666] leading-relaxed">Sourced directly from trusted manufacturers.</p>
+                </div>
+              </div>
+              {/* Divider */}
+              <div className="w-px bg-[#e2e8f0] self-stretch shrink-0"></div>
+              {/* Item 2 */}
+              <div className="flex-1 flex flex-col sm:flex-row items-center sm:items-start gap-3 sm:gap-4 text-center sm:text-left px-4 sm:px-8">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white flex items-center justify-center shadow-sm shrink-0">
+                  <Truck className="w-5 h-5 sm:w-6 sm:h-6 text-[#111]" strokeWidth={1.5} />
+                </div>
+                <div>
+                  <h4 className="text-[13px] sm:text-[15px] font-semibold text-[#111] mb-1">Global Shipping Available</h4>
+                  <p className="text-[11px] sm:text-[13px] text-[#666] leading-relaxed">Contact us for precise delivery estimates to your region.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Related Products */}
         {product.relatedProducts && product.relatedProducts.length > 0 && (
           <section className="py-14 lg:py-16 bg-[#f8fafc] border-b border-[#e2e8f0]">

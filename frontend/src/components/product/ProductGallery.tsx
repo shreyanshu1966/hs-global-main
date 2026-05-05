@@ -43,16 +43,67 @@ export function ProductGallery({ product, scrollWrapperRef }: ProductGalleryProp
     const [isImageZoomed, setIsImageZoomed] = useState(false);
     const [zoomedImageIndex, setZoomedImageIndex] = useState(0);
     const [isFavorite, setIsFavorite] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
+
+    // Touch swipe state
+    const touchStartX = useRef<number | null>(null);
+    const touchStartY = useRef<number | null>(null);
 
     const galleryImages = getProductDisplayImages(product as any);
     const images = galleryImages.length > 0 ? galleryImages : product.images;
     const hasDiscountFlag = hasActiveDiscount(product as any) && Boolean(product.priceINR && product.priceINR > 0);
     const discountPercentage = getDiscountPercentage(product as any);
 
+    // ─── MOBILE DETECTION ────────────────────────────────────
+    useEffect(() => {
+        const mq = window.matchMedia('(max-width: 1023px)');
+        setIsMobile(mq.matches);
+        const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+        mq.addEventListener('change', handler);
+        return () => mq.removeEventListener('change', handler);
+    }, []);
+
+    // ─── MOBILE SWIPE HANDLERS ───────────────────────────────
+    const handleTouchStart = useCallback((e: React.TouchEvent) => {
+        touchStartX.current = e.touches[0].clientX;
+        touchStartY.current = e.touches[0].clientY;
+    }, []);
+
+    const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+        if (touchStartX.current === null || touchStartY.current === null) return;
+        const dx = e.changedTouches[0].clientX - touchStartX.current;
+        const dy = e.changedTouches[0].clientY - touchStartY.current;
+        // Only swipe if mostly horizontal (not a scroll)
+        if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) {
+            if (dx < 0) {
+                setDirection(1);
+                setActiveIndex(i => Math.min(i + 1, images.length - 1));
+            } else {
+                setDirection(-1);
+                setActiveIndex(i => Math.max(i - 1, 0));
+            }
+        }
+        touchStartX.current = null;
+        touchStartY.current = null;
+    }, [images.length]);
+
+    // ─── MOBILE PREV/NEXT ────────────────────────────────────
+    const prevImage = useCallback(() => {
+        setDirection(-1);
+        setActiveIndex(i => Math.max(i - 1, 0));
+    }, []);
+
+    const nextImage = useCallback(() => {
+        setDirection(1);
+        setActiveIndex(i => Math.min(i + 1, images.length - 1));
+    }, [images.length]);
+
     // ─── SCROLL → IMAGE INDEX ─────────────────────────────────
     // Uses requestAnimationFrame for smooth reading.
     // Compatible with Lenis (reads actual scroll position).
+    // Disabled on mobile — image nav is handled by swipe/buttons instead.
     useEffect(() => {
+        if (isMobile) return;
         if (images.length <= 1) return;
 
         let rafId: number;
@@ -87,7 +138,7 @@ export function ProductGallery({ product, scrollWrapperRef }: ProductGalleryProp
 
         rafId = requestAnimationFrame(tick);
         return () => cancelAnimationFrame(rafId);
-    }, [images.length, scrollWrapperRef]);
+    }, [isMobile, images.length, scrollWrapperRef]);
 
     // ─── DOT CLICK → SCROLL PAGE ─────────────────────────────
     const scrollToImage = useCallback((idx: number) => {
@@ -131,12 +182,6 @@ export function ProductGallery({ product, scrollWrapperRef }: ProductGalleryProp
                 {/* ── Dot nav ── */}
                 {images.length > 1 && (
                     <div className="pg-dotnav">
-                        <div className="pg-dotnav-track">
-                            <div
-                                className="pg-dotnav-fill"
-                                style={{ height: `${((activeIndex + 1) / images.length) * 100}%` }}
-                            />
-                        </div>
                         {images.map((_, i) => (
                             <button
                                 key={i}
@@ -149,15 +194,19 @@ export function ProductGallery({ product, scrollWrapperRef }: ProductGalleryProp
                 )}
 
                 {/* ── Image stage ── */}
-                <div className="pg-stage">
+                <div
+                    className="pg-stage"
+                    onTouchStart={isMobile ? handleTouchStart : undefined}
+                    onTouchEnd={isMobile ? handleTouchEnd : undefined}
+                >
                     <AnimatePresence mode="popLayout" initial={false}>
                         <motion.div
                             key={activeIndex}
                             className="pg-frame"
-                            initial={{ opacity: 0, y: direction * 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -direction * 30 }}
-                            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                            initial={{ opacity: 0, x: isMobile ? direction * 60 : 0, y: isMobile ? 0 : direction * 30 }}
+                            animate={{ opacity: 1, x: 0, y: 0 }}
+                            exit={{ opacity: 0, x: isMobile ? -direction * 60 : 0, y: isMobile ? 0 : -direction * 30 }}
+                            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                         >
                             <img
                                 src={images[activeIndex]}
@@ -184,30 +233,46 @@ export function ProductGallery({ product, scrollWrapperRef }: ProductGalleryProp
                         </button>
                     </div>
 
+                    {/* Mobile prev/next arrows */}
+                    {isMobile && images.length > 1 && (
+                        <>
+                            <button
+                                className="pg-mob-arrow pg-mob-arrow-left"
+                                onClick={prevImage}
+                                aria-label="Previous image"
+                                style={{ opacity: activeIndex === 0 ? 0.3 : 1 }}
+                            >
+                                <ChevronLeft className="w-5 h-5" />
+                            </button>
+                            <button
+                                className="pg-mob-arrow pg-mob-arrow-right"
+                                onClick={nextImage}
+                                aria-label="Next image"
+                                style={{ opacity: activeIndex === images.length - 1 ? 0.3 : 1 }}
+                            >
+                                <ChevronRight className="w-5 h-5" />
+                            </button>
+                        </>
+                    )}
+
                     {/* Discount badge */}
                     {hasDiscountFlag && discountPercentage > 0 && (
                         <div className="pg-badge">Sale −{discountPercentage}%</div>
                     )}
 
-                    {/* Bottom bar: counter + progress */}
-                    {images.length > 1 && (
+                    {/* Desktop: counter + progress bar */}
+                    {!isMobile && images.length > 1 && (
                         <>
                             <div className="pg-counter">
                                 {String(activeIndex + 1).padStart(2, '0')}
                                 <span style={{ opacity: 0.45, margin: '0 4px' }}>/</span>
                                 <span style={{ opacity: 0.55 }}>{String(images.length).padStart(2, '0')}</span>
                             </div>
-                            <div className="pg-progress-bar">
-                                <div
-                                    className="pg-progress-fill"
-                                    style={{ width: `${((activeIndex + 1) / images.length) * 100}%` }}
-                                />
-                            </div>
                         </>
                     )}
 
-                    {/* Scroll hint on first image */}
-                    {activeIndex === 0 && images.length > 1 && (
+                    {/* Desktop: scroll hint on first image */}
+                    {!isMobile && activeIndex === 0 && images.length > 1 && (
                         <motion.div
                             className="pg-scroll-hint"
                             initial={{ opacity: 0, y: 6 }}
@@ -226,6 +291,20 @@ export function ProductGallery({ product, scrollWrapperRef }: ProductGalleryProp
                         </motion.div>
                     )}
                 </div>
+
+                {/* Mobile: horizontal dot nav below image */}
+                {isMobile && images.length > 1 && (
+                    <div className="pg-mob-dots">
+                        {images.map((_, i) => (
+                            <button
+                                key={i}
+                                className={`pg-mob-dot${i === activeIndex ? ' is-active' : ''}`}
+                                onClick={() => { setDirection(i > activeIndex ? 1 : -1); setActiveIndex(i); }}
+                                aria-label={`Image ${i + 1}`}
+                            />
+                        ))}
+                    </div>
+                )}
             </div>
 
             {/* ── Zoom Modal ── */}
@@ -497,7 +576,68 @@ export function ProductGallery({ product, scrollWrapperRef }: ProductGalleryProp
                 .pg-zoom-thumb.is-active { border-color: white; transform: scale(1.05); }
 
                 @media (max-width: 1023px) {
+                    .pg-root {
+                        height: auto;
+                        flex-direction: column;
+                    }
+                    .pg-stage {
+                        height: auto;
+                        aspect-ratio: 1 / 1;
+                    }
                     .pg-dotnav { display: none; }
+
+                    /* Always show overlay buttons on touch (no hover) */
+                    .pg-icon-btn {
+                        opacity: 1 !important;
+                        transform: translateY(0) !important;
+                    }
+
+                    /* Mobile prev/next arrow buttons */
+                    .pg-mob-arrow {
+                        position: absolute;
+                        top: 50%; transform: translateY(-50%);
+                        background: rgba(255,255,255,0.88);
+                        border: 1px solid rgba(226,232,240,0.9);
+                        border-radius: 50%;
+                        width: 36px; height: 36px;
+                        display: flex; align-items: center; justify-content: center;
+                        cursor: pointer; z-index: 3;
+                        color: #1f2937;
+                        backdrop-filter: blur(4px);
+                        transition: background 0.18s, opacity 0.2s;
+                    }
+                    .pg-mob-arrow-left  { left: 10px; }
+                    .pg-mob-arrow-right { right: 10px; }
+                    .pg-mob-arrow:active { background: rgba(255,255,255,1); }
+
+                    /* Mobile horizontal dot nav */
+                    .pg-mob-dots {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        gap: 8px;
+                        padding: 12px 0 4px;
+                    }
+                    .pg-mob-dot {
+                        width: 7px; height: 7px;
+                        border-radius: 50%;
+                        background: #cbd5e1;
+                        border: none; cursor: pointer;
+                        padding: 0;
+                        flex-shrink: 0;
+                        transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+                    }
+                    .pg-mob-dot.is-active {
+                        width: 20px;
+                        border-radius: 4px;
+                        background: #111827;
+                    }
+                }
+
+                /* Desktop: hide mobile-only elements */
+                @media (min-width: 1024px) {
+                    .pg-mob-arrow { display: none; }
+                    .pg-mob-dots  { display: none; }
                 }
             `}</style>
         </>
