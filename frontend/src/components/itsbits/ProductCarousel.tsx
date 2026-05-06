@@ -11,6 +11,7 @@ interface ProductCarouselProps {
   sourceType?: CarouselSourceType;
   manualProductIds?: string[];
   sourceCategory?: string;
+  sourceSubcategory?: string;
   sourceTag?: string;
   limit?: number;
   sortBy?: string;
@@ -23,6 +24,7 @@ const ProductCarousel = ({
   sourceType = 'category',
   manualProductIds = [],
   sourceCategory,
+  sourceSubcategory,
   sourceTag,
   limit = 0,
   sortBy = '',
@@ -45,20 +47,20 @@ const ProductCarousel = ({
         let items = await fetchItsbitsProducts({
           limit,
           category: sourceType === 'category' ? category : undefined,
+          subcategory: sourceType === 'category' ? sourceSubcategory : undefined,
           tag: sourceType === 'tag' ? sourceTag : undefined,
           productIds: sourceType === 'manual' ? manualProductIds : undefined,
           featured: shouldPreferFeatured,
           sortBy: shouldPreferFeatured ? 'viewCount' : sortBy,
           sortOrder,
-          marbleFurnitureOnly: true,
         });
 
         if (items.length === 0 && category) {
           items = await fetchItsbitsProducts({
             limit,
+            category,
             sortBy: 'createdAt',
             sortOrder: 'desc',
-            marbleFurnitureOnly: true,
           });
         }
 
@@ -84,7 +86,7 @@ const ProductCarousel = ({
     return () => {
       isActive = false;
     };
-  }, [title, viewAllLink, sourceType, manualIdsKey, sourceCategory, sourceTag, limit, sortBy, sortOrder]);
+  }, [title, viewAllLink, sourceType, manualIdsKey, sourceCategory, sourceSubcategory, sourceTag, limit, sortBy, sortOrder]);
 
   return (
     <section>

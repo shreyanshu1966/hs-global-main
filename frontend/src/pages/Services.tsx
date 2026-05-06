@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 import {
   ArrowRight,
   Factory,
@@ -24,11 +24,6 @@ import ScrollReveal from '../components/ScrollReveal';
 const Services: React.FC = () => {
   const { t } = useTranslation();
   const containerRef = useRef<HTMLDivElement>(null);
-
-  // Parallax for Hero
-  const { scrollY } = useScroll();
-  const y1 = useTransform(scrollY, [0, 500], [0, 150]);
-  const opacityHero = useTransform(scrollY, [0, 400], [1, 0]);
 
   return (
     <div ref={containerRef} className="bg-white text-gray-900 selection:bg-black selection:text-white overflow-x-hidden">
@@ -121,61 +116,7 @@ const Services: React.FC = () => {
         </script>
       </Helmet>
 
-
-      {/* 1. HERO SECTION - Minimal & Typography Focused */}
-      <section className="relative min-h-[100svh] flex flex-col justify-center px-[clamp(1.5rem,4vw,6rem)] overflow-hidden bg-gradient-to-br from-gray-50 to-white">
-        <motion.div
-          style={{ y: y1, opacity: opacityHero }}
-          className="absolute top-0 right-0 w-[70vw] h-full opacity-5 pointer-events-none"
-        >
-          <img
-            src={getResponsiveImage('services-hero.webp', 'large') || '/services-hero.webp'}
-            srcSet={getSrcSet('services-hero.webp')}
-            sizes="70vw"
-            className="w-full h-full object-cover filter grayscale"
-            alt="Services Background"
-            loading="lazy"
-          />
-        </motion.div>
-
-        <div className="relative z-10 max-w-[90vw]">
-          <motion.div
-            initial={{ opacity: 0, y: 100 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <span className="block text-[clamp(0.625rem,1.2vw,0.875rem)] tracking-[0.3em] uppercase mb-[clamp(1rem,2vw,1.5rem)] text-gray-400">
-              {t('services.hero_subtitle') || 'Comprehensive Solutions'}
-            </span>
-            <h1 className="text-[clamp(3.5rem,13vw,14vw)] leading-[0.85] font-serif tracking-tighter text-black">
-              Stone <br />
-              <span className="ml-[8vw] italic font-light text-gray-400">Services</span> <br />
-              <span className="text-accent">Redefined</span>.
-            </h1>
-          </motion.div>
-
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5, duration: 1 }}
-            className="mt-[clamp(2rem,4vw,3rem)] text-[clamp(1rem,2vw,1.25rem)] text-gray-600 max-w-2xl leading-relaxed"
-          >
-            From quarry to installation, we deliver excellence at every stage of your stone journey.
-          </motion.p>
-        </div>
-
-        <motion.div
-          className="absolute bottom-[clamp(2rem,4vw,3rem)] left-[clamp(1.5rem,4vw,6rem)] flex items-center gap-[clamp(0.75rem,2vw,1rem)]"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 1 }}
-        >
-          <div className="h-[1px] w-[clamp(3rem,8vw,6rem)] bg-gray-300"></div>
-          <p className="text-[clamp(0.625rem,1vw,0.75rem)] uppercase tracking-widest text-gray-400">Scroll to Explore</p>
-        </motion.div>
-      </section>
-
-      {/* 2. MARQUEE SEPARATOR */}
+      {/* 1. MARQUEE SEPARATOR */}
       <div className="py-[clamp(2rem,4vw,3rem)] border-y border-gray-100 bg-black text-white">
         <VelocityScroll
           items={['Manufacturing', 'Export', 'Quality', 'Precision', 'Global', 'Excellence']}

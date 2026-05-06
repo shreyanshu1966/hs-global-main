@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Helmet } from "react-helmet-async";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { Globe, Award, Target, Users } from "lucide-react";
 import { getResponsiveImage, getSrcSet } from "../utils/responsive-image-helper";
 import VelocityScroll from "../components/VelocityScroll";
@@ -12,11 +12,6 @@ import ScrollReveal from "../components/ScrollReveal";
 const About = () => {
   const { t } = useTranslation();
   const containerRef = useRef<HTMLDivElement>(null);
-
-  // Parallax for Hero
-  const { scrollY } = useScroll();
-  const y1 = useTransform(scrollY, [0, 500], [0, 200]);
-  const opacityHero = useTransform(scrollY, [0, 400], [1, 0]);
 
   return (
     <div ref={containerRef} className="bg-[#FFFFFF] text-gray-900 selection:bg-black selection:text-white overflow-x-hidden">
@@ -79,52 +74,7 @@ const About = () => {
         </script>
       </Helmet>
 
-
-      {/* 1. HERO SECTION: Typography Centric - Scaled Version */}
-      <section className="relative min-h-[100svh] flex flex-col justify-center px-[clamp(1.5rem,4vw,6rem)] overflow-hidden">
-        <motion.div
-          style={{ y: y1, opacity: opacityHero }}
-          className="absolute top-0 right-0 w-[60vw] h-[80vh] opacity-5 pointer-events-none"
-        >
-          <img
-            src={getResponsiveImage("about-hero.webp", "large") || "/about-hero.webp"}
-            srcSet={getSrcSet("about-hero.webp")}
-            sizes="60vw"
-            className="w-full h-full object-cover filter grayscale contrast-125"
-            alt="HS Global Texture"
-            loading="lazy"
-          />
-        </motion.div>
-
-        <div className="relative z-10 max-w-[90vw]">
-          <motion.div
-            initial={{ opacity: 0, y: 100 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <span className="block text-[clamp(0.625rem,1.2vw,0.875rem)] tracking-[0.3em] uppercase mb-[clamp(1rem,2vw,1.5rem)] text-gray-400">
-              {t("about.hero_subtitle") || "Est. 1985 • Ahmedabad, India"}
-            </span>
-            <h1 className="text-[clamp(3.5rem,13vw,14vw)] leading-[0.85] font-serif tracking-tighter text-black">
-              Heritage <br />
-              <span className="ml-[8vw] italic font-light text-gray-400">Handcrafted</span> <br />
-              In <span className="text-secondary-foreground">Stone</span>.
-            </h1>
-          </motion.div>
-        </div>
-
-        <motion.div
-          className="absolute bottom-[clamp(2rem,4vw,3rem)] left-[clamp(1.5rem,4vw,6rem)] flex items-center gap-[clamp(0.75rem,2vw,1rem)]"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 1 }}
-        >
-          <div className="h-[1px] w-[clamp(3rem,8vw,6rem)] bg-gray-300"></div>
-          <p className="text-[clamp(0.625rem,1vw,0.75rem)] uppercase tracking-widest text-gray-400">Scroll to Explore</p>
-        </motion.div>
-      </section>
-
-      {/* 2. SCROLLYTELLING: Origin Story - Unified Scaled Layout */}
+      {/* 1. SCROLLYTELLING: Origin Story - Unified Scaled Layout */}
       <StickyStorySection />
 
       {/* 3. MARQUEE SEPARATOR */}

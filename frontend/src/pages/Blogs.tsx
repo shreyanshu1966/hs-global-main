@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Calendar, Clock, ArrowRight, Search, Tag, Filter } from 'lucide-react';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { getResponsiveImage, getSrcSet } from '../utils/responsive-image-helper';
 import blogService, { Blog } from '../services/blogService';
 
 const Blogs = () => {
@@ -15,11 +13,6 @@ const Blogs = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [categories, setCategories] = useState<Array<{ _id: string; count: number }>>([]);
     const [showFilters, setShowFilters] = useState(false);
-
-    // Parallax for Hero
-    const { scrollY } = useScroll();
-    const y1 = useTransform(scrollY, [0, 500], [0, 200]);
-    const opacityHero = useTransform(scrollY, [0, 400], [1, 0]);
 
     useEffect(() => {
         fetchBlogs();
@@ -79,52 +72,7 @@ const Blogs = () => {
             </Helmet>
 
             <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
-                {/* Hero Section */}
-                {/* Hero Section */}
-                <section className="relative min-h-[100svh] flex flex-col justify-center px-[clamp(1.5rem,4vw,6rem)] overflow-hidden bg-white">
-                    <motion.div
-                        style={{ y: y1, opacity: opacityHero }}
-                        className="absolute top-0 right-0 w-[80vw] h-full opacity-10 pointer-events-none"
-                    >
-                        <img
-                            src={getResponsiveImage('granite-solutions.webp', 'large') || '/granite-solutions.webp'}
-                            srcSet={getSrcSet('granite-solutions.webp')}
-                            sizes="80vw"
-                            className="w-full h-full object-cover filter grayscale contrast-125"
-                            alt="HS Global Blog"
-                            loading="lazy"
-                        />
-                    </motion.div>
-
-                    <div className="relative z-10 max-w-[90vw]">
-                        <motion.div
-                            initial={{ opacity: 0, y: 100 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                        >
-                            <span className="block text-[clamp(0.625rem,1.2vw,0.875rem)] tracking-[0.3em] uppercase mb-[clamp(1rem,2vw,1.5rem)] text-gray-400">
-                                Industry Insights
-                            </span>
-                            <h1 className="text-[clamp(3.5rem,13vw,14vw)] leading-[0.85] font-serif tracking-tighter text-black">
-                                Stories <br />
-                                <span className="ml-[8vw] italic font-light text-gray-400">Fixed</span> <br />
-                                <span className="text-amber-900/80">In Stone</span>.
-                            </h1>
-                        </motion.div>
-                    </div>
-
-                    <motion.div
-                        className="absolute bottom-[clamp(2rem,4vw,3rem)] left-[clamp(1.5rem,4vw,6rem)] flex items-center gap-[clamp(0.75rem,2vw,1rem)]"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 1, duration: 1 }}
-                    >
-                        <div className="h-[1px] w-[clamp(3rem,8vw,6rem)] bg-gray-300"></div>
-                        <p className="text-[clamp(0.625rem,1vw,0.75rem)] uppercase tracking-widest text-gray-400">Scroll for Articles</p>
-                    </motion.div>
-                </section>
-
-                {/* Search & Filter Bar (Moved down) */}
+                {/* Search & Filter Bar */}
                 <div className="bg-white py-12 px-[clamp(1.5rem,4vw,6rem)] border-b border-gray-100">
                     <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-6 items-center justify-between">
                         <form onSubmit={handleSearch} className="w-full md:w-1/2 max-w-xl">

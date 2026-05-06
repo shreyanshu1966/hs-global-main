@@ -192,6 +192,7 @@ const HomePageManagement = () => {
           sourceType: 'category',
           manualProductIds: [],
           sourceCategory: 'furniture',
+          sourceSubcategory: '',
           sourceTag: '',
           limit: 10,
           sortBy: 'createdAt',
@@ -550,19 +551,71 @@ const HomePageManagement = () => {
                 <option value="manual">Manual IDs</option>
               </select>
               {(carousel.sourceType || 'category') === 'category' && (
-                <input
-                  value={carousel.sourceCategory || ''}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    setConfig((prev) => {
-                      const next = [...prev.productCarousels];
-                      next[index] = { ...next[index], sourceCategory: value };
-                      return { ...prev, productCarousels: next };
-                    });
-                  }}
-                  placeholder="Source category"
-                  className="md:col-span-2 w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm"
-                />
+                <>
+                  <select
+                    value={carousel.sourceCategory || ''}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      setConfig((prev) => {
+                        const next = [...prev.productCarousels];
+                        next[index] = { ...next[index], sourceCategory: value, sourceSubcategory: '' };
+                        return { ...prev, productCarousels: next };
+                      });
+                    }}
+                    className="md:col-span-2 w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm"
+                  >
+                    <option value="">-- Category --</option>
+                    <option value="furniture">Furniture</option>
+                    <option value="slabs">Slabs</option>
+                    <option value="tiles">Tiles</option>
+                    <option value="artifacts">Artifacts</option>
+                  </select>
+                  <select
+                    value={carousel.sourceSubcategory || ''}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      setConfig((prev) => {
+                        const next = [...prev.productCarousels];
+                        next[index] = { ...next[index], sourceSubcategory: value };
+                        return { ...prev, productCarousels: next };
+                      });
+                    }}
+                    className="md:col-span-2 w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm"
+                  >
+                    <option value="">-- All subcategories --</option>
+                    {carousel.sourceCategory === 'furniture' && (
+                      <>
+                        <option value="coffee-table">Coffee Table</option>
+                        <option value="console-table">Console Table</option>
+                        <option value="dining-table">Dining Table</option>
+                        <option value="side-table">Side Table</option>
+                        <option value="tables">Tables</option>
+                        <option value="wash-basins">Wash Basins</option>
+                        <option value="pedestal">Pedestal</option>
+                        <option value="countertop">Countertop</option>
+                        <option value="sculptures">Sculptures</option>
+                        <option value="benches">Benches</option>
+                        <option value="planters">Planters</option>
+                        <option value="fountains">Fountains</option>
+                        <option value="fireplace">Fireplace</option>
+                        <option value="columns">Columns</option>
+                        <option value="urns">Urns</option>
+                      </>
+                    )}
+                    {carousel.sourceCategory === 'slabs' && (
+                      <>
+                        <option value="granite">Granite</option>
+                        <option value="marble">Marble</option>
+                        <option value="quartzite">Quartzite</option>
+                        <option value="onyx">Onyx</option>
+                        <option value="limestone">Limestone</option>
+                        <option value="travertine">Travertine</option>
+                        <option value="sandstone">Sandstone</option>
+                        <option value="slate">Slate</option>
+                      </>
+                    )}
+                  </select>
+                </>
               )}
               {(carousel.sourceType || 'category') === 'tag' && (
                 <input

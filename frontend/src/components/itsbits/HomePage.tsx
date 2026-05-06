@@ -145,6 +145,7 @@ const HomePage = () => {
               sourceType={item.sourceType}
               manualProductIds={item.manualProductIds}
               sourceCategory={item.sourceCategory}
+              sourceSubcategory={item.sourceSubcategory}
               sourceTag={item.sourceTag}
               limit={item.limit}
               sortBy={item.sortBy}

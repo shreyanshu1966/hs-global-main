@@ -14,6 +14,7 @@ export interface HomePageProductCarousel {
   sourceType: 'category' | 'tag' | 'manual';
   manualProductIds: string[];
   sourceCategory: string;
+  sourceSubcategory: string;
   sourceTag: string;
   limit: number;
   sortBy: string;

@@ -116,6 +116,7 @@ const isMarbleFurniture = (product: Product): boolean => {
 export const fetchItsbitsProducts = async (options: {
   limit?: number;
   category?: string;
+  subcategory?: string;
   tag?: string;
   productIds?: string[];
   featured?: boolean;
@@ -126,6 +127,7 @@ export const fetchItsbitsProducts = async (options: {
   const {
     limit = 10,
     category,
+    subcategory,
     tag,
     productIds,
     featured = false,
@@ -165,6 +167,7 @@ export const fetchItsbitsProducts = async (options: {
   if (requiredCategory) {
     const response = await productService.getProductsByCategory(requiredCategory, {
       limit,
+      subcategory: subcategory || undefined,
       sortBy,
       sortOrder,
     });
