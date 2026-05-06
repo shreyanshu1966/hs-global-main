@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, useCallback, memo, useRef } from "react";
-import { Search, SlidersHorizontal, X, ChevronLeft, ChevronRight, CheckCircle2, Circle, LayoutGrid, CheckSquare } from "lucide-react";
+import { SlidersHorizontal, X, ChevronLeft, ChevronRight, CheckCircle2, Circle, LayoutGrid, CheckSquare } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Helmet } from "react-helmet-async";
 import { motion, AnimatePresence } from "framer-motion";
@@ -60,7 +60,6 @@ const Gallery = memo(() => {
   }, []);
   const { items: allItems, cats } = useMemo(() => buildGallery(), []);
   const [activeCategory, setActiveCategory] = useState("All");
-  const [searchQuery, setSearchQuery] = useState("");
   const [showFilters, setShowFilters] = useState(true);
   
   // Mobile Gallery Features State
@@ -106,17 +105,14 @@ const Gallery = memo(() => {
   }, [allItems]);
 
   const filteredItems = useMemo(() => {
-    const q = searchQuery.trim().toLowerCase();
     return allItems.filter((item) => {
-      const matchesCategory = activeCategory === "All" || item.category === activeCategory;
-      const matchesSearch = !q || item.title.toLowerCase().includes(q) || item.category.toLowerCase().includes(q);
-      return matchesCategory && matchesSearch;
+      return activeCategory === "All" || item.category === activeCategory;
     });
-  }, [allItems, activeCategory, searchQuery]);
+  }, [allItems, activeCategory]);
 
   // Group items if we're in "All" view to show sticky headers
   const groupedItems = useMemo(() => {
-    if (activeCategory !== "All" || searchQuery.trim() !== "") {
+    if (activeCategory !== "All") {
       return [{ category: activeCategory, items: filteredItems }];
     }
     const map = new Map<string, GalleryItem[]>();
@@ -127,11 +123,11 @@ const Gallery = memo(() => {
     return Array.from(map.entries())
       .filter(([_, items]) => items.length > 0)
       .map(([category, items]) => ({ category, items }));
-  }, [filteredItems, activeCategory, cats, searchQuery]);
+  }, [filteredItems, activeCategory, cats]);
 
   useEffect(() => {
     setVisibleCount(16);
-  }, [activeCategory, searchQuery]);
+  }, [activeCategory]);
 
   useEffect(() => {
     if (!sentinelRef) return;
@@ -193,22 +189,11 @@ const Gallery = memo(() => {
         <title>Best Luxury & Imported Marble Stones Gallery - Hs Global Export</title>
       </Helmet>
 
-      <section className="pt-28 md:pt-36 pb-14 md:pb-20">
+      <section className="pt-16 md:pt-20 pb-14 md:pb-20">
         <div className="max-w-[1400px] mx-auto px-4 md:px-6">
 
-          {/* Search and Filters */}
+          {/* Filters */}
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-6">
-            <div className="relative w-full md:w-[22rem]">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" />
-              <input
-                type="text"
-                placeholder="Search photos..."
-                className="pl-10 pr-4 py-3 w-full rounded-xl border border-black/20 bg-white/85 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-black/20 focus:border-black/30 transition"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </div>
-            
             <div className="flex gap-2 w-full md:w-auto">
               <button
                 onClick={() => setGridLayout(prev => prev === 'bento' ? 'square' : 'bento')}
@@ -282,7 +267,7 @@ const Gallery = memo(() => {
                 
                 return (
                   <div key={group.category} className="relative">
-                    {activeCategory === "All" && !searchQuery && (
+                    {activeCategory === "All" && (
                       <div className="sticky top-20 z-10 mb-4 bg-white/80 backdrop-blur-xl px-4 py-2 rounded-lg border border-black/10 inline-block shadow-sm">
                         <h2 className="text-lg font-bold text-black uppercase tracking-widest">{group.category}</h2>
                       </div>
