@@ -94,6 +94,7 @@ const sanitizeConfigPayload = (payload) => {
         sourceType: sanitizeSourceType(item?.sourceType),
         manualProductIds: sanitizeManualIds(item?.manualProductIds),
         sourceCategory: String(item?.sourceCategory || '').trim(),
+        sourceSubcategory: String(item?.sourceSubcategory || '').trim(),
         sourceTag: String(item?.sourceTag || '').trim(),
         limit: Math.min(24, Math.max(1, Number(item?.limit || 10))),
         sortBy: String(item?.sortBy || 'createdAt').trim() || 'createdAt',
