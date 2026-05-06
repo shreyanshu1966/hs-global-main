@@ -59,6 +59,7 @@ const homePageConfigSchema = new mongoose.Schema(
         sourceType: { type: String, enum: ['category', 'tag', 'manual'], default: 'category' },
         manualProductIds: { type: [String], default: [] },
         sourceCategory: { type: String, default: '', trim: true },
+        sourceSubcategory: { type: String, default: '', trim: true },
         sourceTag: { type: String, default: '', trim: true },
         limit: { type: Number, default: 10, min: 1, max: 24 },
         sortBy: { type: String, default: 'createdAt', trim: true },
@@ -172,10 +173,10 @@ homePageConfigSchema.statics.getDefaultConfig = function getDefaultConfig() {
       viewMoreLink: '/products',
     },
     productCarousels: [
-      { title: 'Signature Marble Furniture', viewAllLink: '/products?cat=furniture', enabled: true, sourceType: 'category', manualProductIds: [], sourceCategory: 'furniture', sourceTag: '', limit: 10, sortBy: 'createdAt', sortOrder: 'desc' },
-      { title: 'Luxury Marble Furniture Series', viewAllLink: '/products?cat=furniture', enabled: true, sourceType: 'category', manualProductIds: [], sourceCategory: 'furniture', sourceTag: '', limit: 10, sortBy: 'createdAt', sortOrder: 'desc' },
-      { title: 'Marble Furniture Favorites', viewAllLink: '/products?cat=furniture', enabled: true, sourceType: 'category', manualProductIds: [], sourceCategory: 'furniture', sourceTag: '', limit: 10, sortBy: 'createdAt', sortOrder: 'desc' },
-      { title: 'Export-Ready Marble Furniture', viewAllLink: '/products?cat=furniture', enabled: true, sourceType: 'category', manualProductIds: [], sourceCategory: 'furniture', sourceTag: '', limit: 10, sortBy: 'createdAt', sortOrder: 'desc' },
+      { title: 'Signature Marble Furniture', viewAllLink: '/products?cat=furniture', enabled: true, sourceType: 'category', manualProductIds: [], sourceCategory: 'furniture', sourceSubcategory: '', sourceTag: '', limit: 10, sortBy: 'createdAt', sortOrder: 'desc' },
+      { title: 'Luxury Marble Furniture Series', viewAllLink: '/products?cat=furniture', enabled: true, sourceType: 'category', manualProductIds: [], sourceCategory: 'furniture', sourceSubcategory: '', sourceTag: '', limit: 10, sortBy: 'createdAt', sortOrder: 'desc' },
+      { title: 'Marble Furniture Favorites', viewAllLink: '/products?cat=furniture', enabled: true, sourceType: 'category', manualProductIds: [], sourceCategory: 'furniture', sourceSubcategory: '', sourceTag: '', limit: 10, sortBy: 'createdAt', sortOrder: 'desc' },
+      { title: 'Export-Ready Marble Furniture', viewAllLink: '/products?cat=furniture', enabled: true, sourceType: 'category', manualProductIds: [], sourceCategory: 'furniture', sourceSubcategory: '', sourceTag: '', limit: 10, sortBy: 'createdAt', sortOrder: 'desc' },
     ],
     spotlight: {
       title: 'HS Global Spotlight',
