@@ -100,7 +100,7 @@ function App() {
                       <Route path="/gallery" element={<Gallery />} />
                       <Route path="/gallery/:id" element={<GalleryDetails />} />
                       <Route path="/contact" element={<Contact />} />
-                      <Route path="/services" element={<Services />} />
+                      <Route path="/shipping" element={<Services />} />
                       <Route path="/blog" element={<Blogs />} />
                       <Route path="/blog/:slug" element={<BlogDetail />} />
                       <Route path="/wishlist" element={<Wishlist />} />

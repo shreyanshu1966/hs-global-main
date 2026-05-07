@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -33,10 +33,11 @@ export const GalleryModal = ({
 }: GalleryModalProps) => {
   const { t } = useTranslation();
   const [SwiperComponents, setSwiperComponents] = useState<{ Swiper: any; SwiperSlide: any } | null>(null);
+  const swiperRef = useRef<any>(null);
 
-  const relatedItems = useMemo(() => {
+  const allCategoryItems = useMemo(() => {
     if (!currentItem) return [];
-    return modalList.filter((i) => i.category === currentItem.category && i.id !== currentItem.id);
+    return modalList.filter((i) => i.category === currentItem.category);
   }, [modalList, currentItem]);
 
   useEffect(() => {
@@ -69,6 +70,12 @@ export const GalleryModal = ({
       setSwiperComponents({ Swiper: mod.Swiper, SwiperSlide: mod.SwiperSlide });
     })();
   }, [isOpen, SwiperComponents]);
+
+  useEffect(() => {
+    if (!swiperRef.current || !currentItem) return;
+    const idx = allCategoryItems.findIndex((i) => i.id === currentItem.id);
+    if (idx >= 0) swiperRef.current.slideTo(idx, 280);
+  }, [currentItem, allCategoryItems]);
 
   useEffect(() => {
     if (!isOpen || !currentItem) return;
@@ -201,13 +208,14 @@ export const GalleryModal = ({
               </div>
             </div>
 
-            {/* Related slider */}
+            {/* Thumbnail slider */}
             <div className="p-3 md:p-4 bg-[#111] border-t border-white/10 shrink-0 relative">
               <div className="mb-2 md:mb-3 text-sm font-medium text-white/70">
                 {t('gallery.more_from')} <span className="text-white">{currentItem.category}</span>
               </div>
               {SwiperComponents ? (
                 <SwiperComponents.Swiper
+                  onSwiper={(swiper: any) => { swiperRef.current = swiper; }}
                   spaceBetween={12}
                   slidesPerView={3.5}
                   breakpoints={{
@@ -216,22 +224,34 @@ export const GalleryModal = ({
                     1024: { slidesPerView: 7.5, spaceBetween: 16 },
                   }}
                 >
-                  {relatedItems.map((rel) => (
-                    <SwiperComponents.SwiperSlide key={rel.id}>
-                      <button
-                        onClick={() => setCurrentItem(rel)}
-                        className="block w-full overflow-hidden rounded-lg border border-white/10 hover:border-white/50 transition bg-black"
-                      >
-                        <div className="w-full" style={{ aspectRatio: '1 / 1' }}>
-                          <img
-                            src={rel.image}
-                            alt={rel.title}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                      </button>
-                    </SwiperComponents.SwiperSlide>
-                  ))}
+                  {allCategoryItems.map((rel) => {
+                    const isActive = rel.id === currentItem.id;
+                    return (
+                      <SwiperComponents.SwiperSlide key={rel.id}>
+                        <button
+                          onClick={() => {
+                            const idx = modalList.findIndex((i) => i.id === rel.id);
+                            if (idx >= 0) setModalIndex(idx);
+                            setCurrentItem(rel);
+                          }}
+                          className={`block w-full overflow-hidden rounded-lg border-2 transition bg-black ${
+                            isActive
+                              ? 'border-white ring-2 ring-white/60'
+                              : 'border-white/10 hover:border-white/50'
+                          }`}
+                          aria-current={isActive ? 'true' : undefined}
+                        >
+                          <div className="w-full" style={{ aspectRatio: '1 / 1' }}>
+                            <img
+                              src={rel.image}
+                              alt={rel.title}
+                              className={`w-full h-full object-cover transition-opacity ${isActive ? 'opacity-100' : 'opacity-60 hover:opacity-100'}`}
+                            />
+                          </div>
+                        </button>
+                      </SwiperComponents.SwiperSlide>
+                    );
+                  })}
                 </SwiperComponents.Swiper>
               ) : (
                 <div className="text-sm text-white/30">{t('gallery.loading')}</div>

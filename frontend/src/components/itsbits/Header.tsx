@@ -18,7 +18,7 @@ const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileFurnitureOpen, setIsMobileFurnitureOpen] = useState(false);
   const [isFurnitureMegaOpen, setIsFurnitureMegaOpen] = useState(false);
-  const [isFurnitureMegaHovered, setIsFurnitureMegaHovered] = useState(false);
+  const isFurnitureMegaHoveredRef = useRef(false);
   const lastScrollYRef = useRef(0);
   const furnitureMegaOpenTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const furnitureMegaCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -160,17 +160,17 @@ const Header = () => {
   };
 
   const navItems = [
-    { label: 'New Arrivals', mobileLabel: 'New', href: '/products?cat=furniture&sort=newest', active: true },
-    { label: 'All Furniture', mobileLabel: 'Furniture', href: '/products?category=furniture', hasMegaMenu: true },
+    { label: 'Home', mobileLabel: 'Home', href: '/', active: true },
+    { label: 'Marble Furniture', mobileLabel: 'Marble Furniture', href: '/products?category=furniture', hasMegaMenu: true },
     { label: 'Gallery', mobileLabel: 'Gallery', href: '/gallery' },
-    { label: 'Services', mobileLabel: 'Services', href: '/services' },
+    { label: 'Shipping', mobileLabel: 'Shipping', href: '/shipping' },
     { label: 'Journal', mobileLabel: 'Journal', href: '/blog' },
     { label: 'About', mobileLabel: 'About', href: '/about' },
     { label: 'Bulk Order', mobileLabel: 'Bulk Order', href: '/contact', isSale: true },
   ];
 
   const furnitureMegaItems = [
-    { label: 'All in Furniture', href: '/products?category=furniture' },
+    { label: 'All in Marble Furniture', href: '/products?category=furniture' },
     { label: '3 sphere balls table', href: '/products?category=furniture&subcategory=3-sphere-balls-table' },
     { label: 'bathtub', href: '/products?category=furniture&subcategory=bathtub' },
     { label: 'center table', href: '/products?category=furniture&subcategory=center-table' },
@@ -179,7 +179,7 @@ const Header = () => {
     { label: 'dining table', href: '/products?category=furniture&subcategory=dining-table' },
     { label: 'lamp', href: '/products?category=furniture&subcategory=lamp' },
     { label: 'lamps', href: '/products?category=furniture&subcategory=lamps' },
-    { label: 'other furniture', href: '/products?category=furniture&subcategory=other-furniture' },
+    { label: 'other marble furniture', href: '/products?category=furniture&subcategory=other-furniture' },
     { label: 'pedestal wash basin', href: '/products?category=furniture&subcategory=pedestal-wash-basin' },
     { label: 'side table', href: '/products?category=furniture&subcategory=side-table' },
     { label: 'wash basin', href: '/products?category=furniture&subcategory=wash-basin' },
@@ -223,7 +223,7 @@ const Header = () => {
       clearTimeout(furnitureMegaCloseTimerRef.current);
     }
     furnitureMegaCloseTimerRef.current = setTimeout(() => {
-      if (!isFurnitureMegaHovered) {
+      if (!isFurnitureMegaHoveredRef.current) {
         setIsFurnitureMegaOpen(false);
       }
       furnitureMegaCloseTimerRef.current = null;
@@ -478,7 +478,7 @@ const Header = () => {
                             setIsMobileMenuOpen(false);
                           }}
                         >
-                          View All Furniture
+                          View All Marble Furniture
                         </a>
 
                         {furnitureMegaGroups.map((group) => (
@@ -648,7 +648,6 @@ const Header = () => {
                     }
                     event.preventDefault();
                     event.stopPropagation();
-                    setIsFurnitureMegaHovered(true);
                     setIsFurnitureMegaOpen((prev) => !prev);
                   }}
                   onFocus={() => {
@@ -675,17 +674,20 @@ const Header = () => {
             <div
               className="absolute left-1/2 -translate-x-1/2 top-full pt-1 z-[120]"
               onMouseEnter={() => {
-                setIsFurnitureMegaHovered(true);
-                setIsFurnitureMegaOpen(true);
+                isFurnitureMegaHoveredRef.current = true;
+                if (furnitureMegaCloseTimerRef.current) {
+                  clearTimeout(furnitureMegaCloseTimerRef.current);
+                  furnitureMegaCloseTimerRef.current = null;
+                }
               }}
               onMouseLeave={() => {
-                setIsFurnitureMegaHovered(false);
+                isFurnitureMegaHoveredRef.current = false;
                 closeFurnitureMega();
               }}
             >
               <div className="w-[760px] bg-white border border-[#e5e7eb] shadow-[0_18px_46px_rgba(0,0,0,0.14)] rounded-2xl p-5">
                 <div className="flex items-center justify-between border-b border-[#eef2f7] pb-3 mb-4">
-                  <p className="text-[11px] uppercase tracking-[0.14em] text-[#64748b]">Furniture Collections</p>
+                  <p className="text-[11px] uppercase tracking-[0.14em] text-[#64748b]">Marble Furniture Collections</p>
                   <a
                     href="/products?category=furniture"
                     className="text-[12px] font-semibold uppercase tracking-[0.08em] text-[#0f172a] hover:text-black"

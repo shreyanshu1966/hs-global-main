@@ -30,41 +30,41 @@ const Services: React.FC = () => {
 
       <Helmet>
         {/* Basic SEO */}
-        <title>Our Services - Premium Stone Solutions | HS Global Export</title>
-        <meta name="description" content="From quarry to installation, HS Global Export offers comprehensive stone services: manufacturing, fabrication, global export, and quality assurance for granite and marble." />
-        <meta name="keywords" content="granite manufacturing, marble fabrication, stone export services, global stone logistics, quality stone processing, custom stone cutting, stone installation services" />
+        <title>Shipping - Global Stone Logistics | HS Global Export</title>
+        <meta name="description" content="Worldwide shipping for granite and marble: export logistics, secure packaging, customs support, and reliable delivery for stone products." />
+        <meta name="keywords" content="stone shipping, export logistics, global freight, stone packaging, customs clearance, international delivery" />
         <meta name="author" content="HS Global Export" />
         <meta name="robots" content="index, follow" />
 
         {/* Canonical URL */}
-        <link rel="canonical" href="https://hsglobalexport.com/services" />
+        <link rel="canonical" href="https://hsglobalexport.com/shipping" />
 
         {/* Open Graph */}
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://hsglobalexport.com/services" />
+        <meta property="og:url" content="https://hsglobalexport.com/shipping" />
         <meta property="og:site_name" content="HS Global Export" />
-        <meta property="og:title" content="Our Services - Premium Stone Solutions | HS Global Export" />
-        <meta property="og:description" content="From quarry to installation, we deliver excellence at every stage of your stone journey. Manufacturing, fabrication, export & quality assurance." />
+        <meta property="og:title" content="Shipping - Global Stone Logistics | HS Global Export" />
+        <meta property="og:description" content="Export logistics, secure packaging, and reliable delivery for stone products worldwide." />
         <meta property="og:image" content="https://hsglobalexport.com/og-image.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
-        <meta property="og:image:alt" content="HS Global Export - Stone Services" />
+        <meta property="og:image:alt" content="HS Global Export - Shipping" />
         <meta property="og:locale" content="en_US" />
 
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content="https://hsglobalexport.com/services" />
-        <meta name="twitter:title" content="Our Services - Premium Stone Solutions | HS Global Export" />
-        <meta name="twitter:description" content="From quarry to installation, we deliver excellence at every stage of your stone journey." />
+        <meta name="twitter:url" content="https://hsglobalexport.com/shipping" />
+        <meta name="twitter:title" content="Shipping - Global Stone Logistics | HS Global Export" />
+        <meta name="twitter:description" content="Export logistics, secure packaging, and reliable delivery for stone products worldwide." />
         <meta name="twitter:image" content="https://hsglobalexport.com/og-image.jpg" />
-        <meta name="twitter:image:alt" content="HS Global Export - Stone Services" />
+        <meta name="twitter:image:alt" content="HS Global Export - Shipping" />
 
         {/* Schema.org Service */}
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Service",
-            "serviceType": "Stone Manufacturing and Export Services",
+            "serviceType": "International Shipping and Export Logistics",
             "provider": {
               "@type": "Organization",
               "name": "HS Global Export",
@@ -76,38 +76,38 @@ const Services: React.FC = () => {
             },
             "hasOfferCatalog": {
               "@type": "OfferCatalog",
-              "name": "Stone Services",
+              "name": "Shipping Services",
               "itemListElement": [
                 {
                   "@type": "Offer",
                   "itemOffered": {
                     "@type": "Service",
-                    "name": "Manufacturing",
-                    "description": "State-of-the-art stone manufacturing facilities"
+                    "name": "Export Packaging",
+                    "description": "Secure crating and packaging for international transit"
                   }
                 },
                 {
                   "@type": "Offer",
                   "itemOffered": {
                     "@type": "Service",
-                    "name": "Fabrication",
-                    "description": "Expert stone fabrication and custom cutting"
+                    "name": "Freight Coordination",
+                    "description": "Sea and air freight coordination with trusted partners"
                   }
                 },
                 {
                   "@type": "Offer",
                   "itemOffered": {
                     "@type": "Service",
-                    "name": "Global Export",
-                    "description": "Worldwide shipping and logistics for stone products"
+                    "name": "Customs Support",
+                    "description": "Documentation and clearance assistance for exports"
                   }
                 },
                 {
                   "@type": "Offer",
                   "itemOffered": {
                     "@type": "Service",
-                    "name": "Quality Assurance",
-                    "description": "Rigorous testing and ISO certification"
+                    "name": "Delivery Assurance",
+                    "description": "Tracking, insurance, and delivery updates"
                   }
                 }
               ]
