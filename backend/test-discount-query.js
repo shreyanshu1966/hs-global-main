@@ -36,7 +36,7 @@ async function testDiscountQuery() {
         // Test status='all'
         const allQuery = {};
         const allProducts = await Product.find(allQuery)
-            .select('productId name category subcategory priceINR discount')
+            .select('productId name category subcategory priceUSD discount')
             .limit(5);
         console.log(`\n[status=all] Query: ${JSON.stringify(allQuery)}`);
         console.log(`[status=all] Found: ${allProducts.length} products`);

@@ -3,14 +3,11 @@ const Currency = require('../models/Currency');
 // Cache duration: 24 hours in milliseconds
 const CACHE_DURATION = 24 * 60 * 60 * 1000;
 const EXTERNAL_API_URL = 'https://api.currencyapi.com/v3/latest';
-const COUNTRY_CURRENCY_OVERRIDES = {
-    IN: 'USD',
-};
 
 exports.getRates = async (req, res) => {
     try {
         // 1. Check DB for existing rates
-        let currencyDoc = await Currency.findOne({ base: 'INR' });
+        let currencyDoc = await Currency.findOne({ base: 'USD' });
         const now = Date.now();
 
         // 2. Check if cache is valid (exists and is fresh - less than 24 hours old)
@@ -20,9 +17,8 @@ exports.getRates = async (req, res) => {
                 ok: true,
                 source: 'cache',
                 rates: currencyDoc.rates,
-                base: 'INR',
-                lastUpdated: currencyDoc.lastUpdated,
-                countryCurrencyOverrides: COUNTRY_CURRENCY_OVERRIDES
+                base: 'USD',
+                lastUpdated: currencyDoc.lastUpdated
             });
         }
 
@@ -38,9 +34,8 @@ exports.getRates = async (req, res) => {
                     ok: true,
                     source: 'stale_cache_fallback',
                     rates: currencyDoc.rates,
-                    base: 'INR',
-                    lastUpdated: currencyDoc.lastUpdated,
-                    countryCurrencyOverrides: COUNTRY_CURRENCY_OVERRIDES
+                    base: 'USD',
+                    lastUpdated: currencyDoc.lastUpdated
                 });
             }
             // Final fallback to hardcoded rates
@@ -48,27 +43,26 @@ exports.getRates = async (req, res) => {
                 ok: true,
                 source: 'hardcoded_fallback',
                 rates: getHardcodedRates(),
-                base: 'INR',
-                countryCurrencyOverrides: COUNTRY_CURRENCY_OVERRIDES
+                base: 'USD'
             });
         }
 
-        // Fetch from external API with INR as base
-        const response = await fetch(`${EXTERNAL_API_URL}?apikey=${apiKey}&base_currency=INR`);
+        // Fetch from external API with USD as base
+        const response = await fetch(`${EXTERNAL_API_URL}?apikey=${apiKey}&base_currency=USD`);
         const data = await response.json();
 
         if (!data || !data.data) {
             throw new Error('Invalid response from Currency API');
         }
 
-        // 4. Normalize data - convert to our format (1 INR = X currency)
+        // 4. Normalize data - convert to our format (1 USD = X currency)
         const rates = {};
         Object.entries(data.data).forEach(([code, info]) => {
             rates[code] = info.value;
         });
 
-        // Ensure INR is always 1 (base currency)
-        rates.INR = 1;
+        // Ensure USD is always 1 (base currency)
+        rates.USD = 1;
 
         // 5. Update or Create in DB
         if (currencyDoc) {
@@ -78,7 +72,7 @@ exports.getRates = async (req, res) => {
             console.log('✅ [Currency] Updated existing rates in DB');
         } else {
             currencyDoc = await Currency.create({
-                base: 'INR',
+                base: 'USD',
                 rates: rates,
                 lastUpdated: now
             });
@@ -89,25 +83,23 @@ exports.getRates = async (req, res) => {
             ok: true,
             source: 'api',
             rates: rates,
-            base: 'INR',
-            lastUpdated: new Date(now),
-            countryCurrencyOverrides: COUNTRY_CURRENCY_OVERRIDES
+            base: 'USD',
+            lastUpdated: new Date(now)
         });
 
     } catch (error) {
         console.error('❌ [Currency] Failed to fetch rates:', error);
 
         // Fallback to stale cache if available
-        const fallback = await Currency.findOne({ base: 'INR' });
+        const fallback = await Currency.findOne({ base: 'USD' });
         if (fallback) {
             console.log('⚠️ [Currency] Using stale cache due to error');
             return res.json({
                 ok: true,
                 source: 'stale_error_fallback',
                 rates: fallback.rates,
-                base: 'INR',
-                lastUpdated: fallback.lastUpdated,
-                countryCurrencyOverrides: COUNTRY_CURRENCY_OVERRIDES
+                base: 'USD',
+                lastUpdated: fallback.lastUpdated
             });
         }
 
@@ -117,24 +109,23 @@ exports.getRates = async (req, res) => {
             ok: true,
             source: 'hardcoded_fallback',
             rates: getHardcodedRates(),
-            base: 'INR',
-            countryCurrencyOverrides: COUNTRY_CURRENCY_OVERRIDES
+            base: 'USD'
         });
     }
 };
 
-// Hardcoded fallback rates (1 INR = X currency)
+// Hardcoded fallback rates (1 USD = X currency)
 function getHardcodedRates() {
     return {
-        USD: 0.012,    // 1 INR = 0.012 USD (~83 INR per USD)
-        INR: 1,        // Base currency
-        EUR: 0.011,    // 1 INR = 0.011 EUR
-        GBP: 0.0095,   // 1 INR = 0.0095 GBP
-        AED: 0.044,    // 1 INR = 0.044 AED
-        SAR: 0.045,    // 1 INR = 0.045 SAR
-        AUD: 0.018,    // 1 INR = 0.018 AUD
-        CAD: 0.016,    // 1 INR = 0.016 CAD
-        SGD: 0.016,    // 1 INR = 0.016 SGD
-        JPY: 1.8,      // 1 INR = 1.8 JPY
+        USD: 1,        // Base currency
+        INR: 83.5,     // 1 USD = 83.5 INR
+        EUR: 0.92,     // 1 USD = 0.92 EUR
+        GBP: 0.79,     // 1 USD = 0.79 GBP
+        AED: 3.67,     // 1 USD = 3.67 AED
+        SAR: 3.75,     // 1 USD = 3.75 SAR
+        AUD: 1.53,     // 1 USD = 1.53 AUD
+        CAD: 1.36,     // 1 USD = 1.36 CAD
+        SGD: 1.34,     // 1 USD = 1.34 SGD
+        JPY: 149.5,    // 1 USD = 149.5 JPY
     };
 }

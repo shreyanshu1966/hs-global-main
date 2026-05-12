@@ -32,7 +32,7 @@ const SAMPLE_FURNITURE_PRODUCTS = [
             'https://res.cloudinary.com/dti5vep0b/image/upload/furnitures/tables/coffee-table/black-galaxy-1.webp',
             'https://res.cloudinary.com/dti5vep0b/image/upload/furnitures/tables/coffee-table/black-galaxy-2.webp'
         ],
-        priceINR: 45000,
+        priceUSD: 45000,
         furnitureSpecs: {
             product: 'Coffee Table',
             type: 'Indoor',
@@ -54,7 +54,7 @@ const SAMPLE_FURNITURE_PRODUCTS = [
             'https://res.cloudinary.com/dti5vep0b/image/upload/furnitures/tables/console-table/statuario-1.webp',
             'https://res.cloudinary.com/dti5vep0b/image/upload/furnitures/tables/console-table/statuario-2.webp'
         ],
-        priceINR: 89000,
+        priceUSD: 89000,
         furnitureSpecs: {
             product: 'Console Table',
             type: 'Indoor',
@@ -76,7 +76,7 @@ const SAMPLE_FURNITURE_PRODUCTS = [
             'https://res.cloudinary.com/dti5vep0b/image/upload/furnitures/tables/dining-table/calacatta-1.webp',
             'https://res.cloudinary.com/dti5vep0b/image/upload/furnitures/tables/dining-table/calacatta-2.webp'
         ],
-        priceINR: 125000,
+        priceUSD: 125000,
         furnitureSpecs: {
             product: 'Dining Table',
             type: 'Indoor',
@@ -100,7 +100,7 @@ const SAMPLE_FURNITURE_PRODUCTS = [
             'https://res.cloudinary.com/dti5vep0b/image/upload/furnitures/wash-basins/pedestal/black-granite-1.webp',
             'https://res.cloudinary.com/dti5vep0b/image/upload/furnitures/wash-basins/pedestal/black-granite-2.webp'
         ],
-        priceINR: 35000,
+        priceUSD: 35000,
         furnitureSpecs: {
             product: 'Wash Basin',
             type: 'Indoor',
@@ -122,7 +122,7 @@ const SAMPLE_FURNITURE_PRODUCTS = [
             'https://res.cloudinary.com/dti5vep0b/image/upload/furnitures/wash-basins/countertop/marble-1.webp',
             'https://res.cloudinary.com/dti5vep0b/image/upload/furnitures/wash-basins/countertop/marble-2.webp'
         ],
-        priceINR: 28000,
+        priceUSD: 28000,
         furnitureSpecs: {
             product: 'Wash Basin',
             type: 'Indoor',
@@ -146,7 +146,7 @@ const SAMPLE_FURNITURE_PRODUCTS = [
             'https://res.cloudinary.com/dti5vep0b/image/upload/furnitures/sculptures/buddha-1.webp',
             'https://res.cloudinary.com/dti5vep0b/image/upload/furnitures/sculptures/buddha-2.webp'
         ],
-        priceINR: 65000,
+        priceUSD: 65000,
         furnitureSpecs: {
             product: 'Sculpture',
             type: 'Indoor/Outdoor',
@@ -170,7 +170,7 @@ const SAMPLE_FURNITURE_PRODUCTS = [
             'https://res.cloudinary.com/dti5vep0b/image/upload/furnitures/benches/garden-granite-1.webp',
             'https://res.cloudinary.com/dti5vep0b/image/upload/furnitures/benches/garden-granite-2.webp'
         ],
-        priceINR: 42000,
+        priceUSD: 42000,
         furnitureSpecs: {
             product: 'Bench',
             type: 'Outdoor',
@@ -198,7 +198,7 @@ const SAMPLE_SLAB_PRODUCTS = [
             'https://res.cloudinary.com/dti5vep0b/image/upload/slabs/granite/black-galaxy-1.webp',
             'https://res.cloudinary.com/dti5vep0b/image/upload/slabs/granite/black-galaxy-2.webp'
         ],
-        priceINR: 2500,
+        priceUSD: 2500,
         slabSpecs: {
             finish: 'Polished',
             thickness: '20mm',
@@ -215,7 +215,7 @@ const SAMPLE_SLAB_PRODUCTS = [
             'https://res.cloudinary.com/dti5vep0b/image/upload/slabs/granite/alaska-pink-1.webp',
             'https://res.cloudinary.com/dti5vep0b/image/upload/slabs/granite/alaska-pink-2.webp'
         ],
-        priceINR: 2200,
+        priceUSD: 2200,
         slabSpecs: {
             finish: 'Polished',
             thickness: '20mm',
@@ -234,7 +234,7 @@ const SAMPLE_SLAB_PRODUCTS = [
             'https://res.cloudinary.com/dti5vep0b/image/upload/slabs/marble/statuario-1.webp',
             'https://res.cloudinary.com/dti5vep0b/image/upload/slabs/marble/statuario-2.webp'
         ],
-        priceINR: 4500,
+        priceUSD: 4500,
         slabSpecs: {
             finish: 'Polished',
             thickness: '20mm',
@@ -251,7 +251,7 @@ const SAMPLE_SLAB_PRODUCTS = [
             'https://res.cloudinary.com/dti5vep0b/image/upload/slabs/marble/carrara-1.webp',
             'https://res.cloudinary.com/dti5vep0b/image/upload/slabs/marble/carrara-2.webp'
         ],
-        priceINR: 3800,
+        priceUSD: 3800,
         slabSpecs: {
             finish: 'Polished',
             thickness: '20mm',
@@ -268,7 +268,7 @@ const SAMPLE_SLAB_PRODUCTS = [
             'https://res.cloudinary.com/dti5vep0b/image/upload/slabs/marble/calacatta-gold-1.webp',
             'https://res.cloudinary.com/dti5vep0b/image/upload/slabs/marble/calacatta-gold-2.webp'
         ],
-        priceINR: 6500,
+        priceUSD: 6500,
         slabSpecs: {
             finish: 'Polished',
             thickness: '20mm',
@@ -298,7 +298,7 @@ const migrateProduct = async (productData, category) => {
         image: productData.images[0],
         images: productData.images,
         sortedImages: productData.images,
-        priceINR: productData.priceINR,
+        priceUSD: productData.priceUSD,
         available: true,
         hasVideo: false,
         furnitureSpecs: productData.furnitureSpecs || undefined,

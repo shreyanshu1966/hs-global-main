@@ -115,7 +115,7 @@ const orderSchema = new mongoose.Schema({
             type: Number,
             required: true
         }, // Final price (after discount if applicable)
-        priceINR: Number, // Original price in INR for audit trail
+        priceUSD: Number, // Original base price in USD for audit trail
         originalPrice: Number, // Original price before discount
         discountPercentage: Number, // Discount percentage applied
         discountAmount: Number, // Actual discount amount

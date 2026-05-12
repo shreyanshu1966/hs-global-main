@@ -99,7 +99,7 @@ const productSchema = new mongoose.Schema({
     sortedImages: [{
         type: String
     }],
-    priceINR: {
+    priceUSD: {
         type: Number,
         min: 0
     },
@@ -401,7 +401,7 @@ productSchema.index({ category: 1, subcategory: 1 });
 productSchema.index({ status: 1 });
 productSchema.index({ featured: -1, createdAt: -1 });
 productSchema.index({ name: 'text', description: 'text' }); // Text search
-productSchema.index({ priceINR: 1 });
+productSchema.index({ priceUSD: 1 });
 productSchema.index({ available: 1 });
 // Discount indexes for analytics and queries
 productSchema.index({ 'discount.enabled': 1, 'discount.endDate': 1 });
@@ -409,8 +409,8 @@ productSchema.index({ 'discount.enabled': 1, 'discount.startDate': 1 });
 
 // Virtual for formatted price
 productSchema.virtual('formattedPrice').get(function () {
-    if (!this.priceINR) return 'Price on Request';
-    return `₹${this.priceINR.toLocaleString('en-IN')}`;
+    if (!this.priceUSD) return 'Price on Request';
+    return `$${this.priceUSD.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 });
 
 // Instance method to increment view count
@@ -519,16 +519,16 @@ productSchema.methods.checkAndDisableExpiredDiscount = async function () {
 
 // Instance method to get the final price (with discount if active)
 productSchema.methods.getFinalPrice = function () {
-    if (!this.priceINR) {
+    if (!this.priceUSD) {
         return null;
     }
 
     if (this.isDiscountActive()) {
-        const discountAmount = (this.priceINR * this.discount.percentage) / 100;
-        return Math.round(this.priceINR - discountAmount);
+        const discountAmount = (this.priceUSD * this.discount.percentage) / 100;
+        return Math.round((this.priceUSD - discountAmount) * 100) / 100;
     }
 
-    return this.priceINR;
+    return this.priceUSD;
 };
 
 // Virtual for discounted price
@@ -538,10 +538,10 @@ productSchema.virtual('discountedPrice').get(function () {
 
 // Virtual for discount amount
 productSchema.virtual('discountAmount').get(function () {
-    if (!this.priceINR || !this.isDiscountActive()) {
+    if (!this.priceUSD || !this.isDiscountActive()) {
         return 0;
     }
-    return Math.round((this.priceINR * this.discount.percentage) / 100);
+    return Math.round((this.priceUSD * this.discount.percentage) * 100) / 10000;
 });
 
 // Static method to get active discounted products
@@ -655,7 +655,7 @@ productSchema.statics.getExpiringSoonDiscounts = function (days = 3) {
             $gte: now,
             $lte: futureDate
         }
-    }).select('productId name discount priceINR');
+    }).select('productId name discount priceUSD');
 };
 
 // Static method for search

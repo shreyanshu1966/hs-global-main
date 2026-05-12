@@ -29,12 +29,12 @@ const SKIP_UPLOAD = args.includes('--skip-upload') || DRY_RUN;
 const STEP = args.find(a => a.startsWith('--step='))?.split('=')[1] || '1';
 
 const ROOT = path.join(__dirname, '../..');
-const CSV_PATH = path.join(ROOT, 'new products', 'Latest Etsy & HS All Product Title Desc  April -May 2026 -  marble  Listing  (2).csv');
-const PHOTOS_DIR = path.join(ROOT, 'new products', 'Etsy All Product Photos');
-const FRONTEND_VIDEOS_DIR = path.join(ROOT, 'frontend', 'public', 'videos', 'etsy');
+const CSV_PATH = path.join(ROOT, 'new products', 'Latest Etsy & HS All Product Title Desc  April -May 2026 - handicraft product listing.csv');
+const PHOTOS_DIR = path.join(ROOT, 'new products', 'HANDICRAFT PRODUCTS');
+const FRONTEND_VIDEOS_DIR = path.join(ROOT, 'frontend', 'public', 'videos', 'handicraft');
 
-const STEP1_FILE = path.join(__dirname, 'etsy-products-data-step1.json');
-const STEP2_FILE = path.join(__dirname, 'etsy-products-data-step2.json');
+const STEP1_FILE = path.join(__dirname, 'etsy-handicraft-data-step1.json');
+const STEP2_FILE = path.join(__dirname, 'etsy-handicraft-data-step2.json');
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -119,8 +119,8 @@ function buildPhotoFolderMap() {
 
     const folderMap = {};
     for (const f of folders) {
-        // Match: "{no}. {PRODUCTCODE}-{rest}" — code is all caps+digits before the dash
-        const match = f.match(/^\d+\.\s*([A-Z0-9]+)-/);
+        // Match: "{no}. {PRODUCTCODE} {rest}" — code is all caps+digits before space/dash
+        const match = f.match(/^\d+\.\s*([A-Z0-9]+)[\s-]/);
         if (match) {
             folderMap[match[1]] = f; // key = product code e.g. "HSMSTGR1"
         }
@@ -205,15 +205,14 @@ async function runStep1() {
         if (!row || row.length < 11) continue;
 
         const no = row[0]?.trim();
-        const categoryRaw = row[1]?.trim();
-        const productCode = row[2]?.trim();
-        const hsPrice = row[5]?.trim();
-        const etsyPrice = row[6]?.trim();
-        const uploaderName = row[12]?.trim(); // Product Upload Name ("Kewal", "ADITI")
-        const title = row[9]?.trim();      // Title
-        const desc = row[10]?.trim();      // Desc
-        const tagsRaw = row[11]?.trim();   // Tag
-        const hsTitle = row[15]?.trim();   // temporary / HS title
+        const categoryRaw = row[2]?.trim();
+        const productCode = row[3]?.trim();
+        const hsPrice = row[7]?.trim();
+        const etsyPrice = row[8]?.trim();
+        const title = row[12]?.trim();      
+        const desc = row[13]?.trim();      
+        const tagsRaw = row[14]?.trim();   
+        const hsTitle = row[15]?.trim();
         
         // Use hsTitle or title as the shortName for slugs and display name
         const shortName = hsTitle || title;
@@ -311,7 +310,7 @@ async function runStep2() {
 
         for (const imgPath of prod.localImages) {
             const fileBase = path.basename(imgPath, path.extname(imgPath));
-            const publicId = `hs-global/furniture/etsy/${prod.productCode}/${fileBase}`;
+            const publicId = `hs-global/handicraft/etsy/${prod.productCode}/${fileBase}`;
 
             if (SKIP_UPLOAD) {
                 cloudinaryUrls.push(`https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME || 'cloud_name'}/image/upload/${publicId}.webp`);
@@ -350,23 +349,21 @@ async function runStep3() {
         Product = mongoose.model('Product', productSchema);
         Category = mongoose.model('Category', categorySchema);
 
-        log.warn('Deleting existing furniture products...');
-        const deleted = await Product.deleteMany({ category: 'furniture' });
-        log.ok(`Deleted ${deleted.deletedCount || 0} old furniture products.`);
+        log.warn('Deleting existing handicraft products...');
+        const deleted = await Product.deleteMany({ category: 'handicraft' });
+        log.ok(`Deleted ${deleted.deletedCount || 0} old handicraft products.`);
     }
 
-    // Upsert subcategories into the furniture category doc
+    // Upsert subcategories into the handicraft category doc
     const subcategoriesToCreate = new Set(
         productsData.map(p => {
             let sub = p.subcategoryName;
-            if (sub === 'Dinning Table' || sub === 'Dinning Atble') return 'Dining Table';
-            if (sub === 'Tree Sclupture') return 'Tree Sculpture';
             return sub;
         })
     );
     if (!DRY_RUN) {
-        let cat = await Category.findOne({ categoryId: 'furniture' });
-        if (!cat) cat = new Category({ categoryId: 'furniture', categoryName: 'Furniture', customSubcategories: [] });
+        let cat = await Category.findOne({ categoryId: 'handicraft' });
+        if (!cat) cat = new Category({ categoryId: 'handicraft', categoryName: 'Handicraft', customSubcategories: [] });
 
         const oldCount = Array.isArray(cat.customSubcategories) ? cat.customSubcategories.length : 0;
         cat.customSubcategories = [];
@@ -400,7 +397,7 @@ async function runStep3() {
             } else {
                 const destFolder = path.join(FRONTEND_VIDEOS_DIR, prod.productCode);
                 const destPath = path.join(destFolder, 'video.mp4');
-                videoWebUrl = `/videos/etsy/${prod.productCode}/video.mp4`;
+                videoWebUrl = `/videos/handicraft/${prod.productCode}/video.mp4`;
                 videoFilename = 'video.mp4';
 
                 if (!DRY_RUN) {
@@ -418,14 +415,12 @@ async function runStep3() {
         }
 
         let fixedSubcategory = prod.subcategoryName;
-        if (fixedSubcategory === 'Dinning Table' || fixedSubcategory === 'Dinning Atble') fixedSubcategory = 'Dining Table';
-        if (fixedSubcategory === 'Tree Sclupture') fixedSubcategory = 'Tree Sculpture';
 
         const pDoc = {
             productId: prod.slug,
             name: cleanName,
             title: cleanTitle,
-            category: 'furniture',
+            category: 'handicraft',
             subcategory: fixedSubcategory,
             description: cleanDesc,
             image: prod.cloudinaryUrls[0] || '',

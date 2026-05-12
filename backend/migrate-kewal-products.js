@@ -832,7 +832,7 @@ async function insertProduct(entry) {
         image          : entry.image,
         images         : entry.images,
         sortedImages   : entry.images,
-        priceINR       : null,
+        priceUSD       : null,
         available      : true,
         hasVideo       : entry.hasVideo,
         videoUrl       : entry.videoUrl,
@@ -975,7 +975,7 @@ async function runStep3() {
         for (const item of updates) {
             try {
                 const product = await Product.findOne({ productId: item.productId })
-                    .select('_id productId name priceINR')
+                    .select('_id productId name priceUSD')
                     .lean();
 
                 if (!product) {
@@ -984,8 +984,8 @@ async function runStep3() {
                     continue;
                 }
 
-                const nextPrice = Number(item.priceINR);
-                const oldPrice = Number(product.priceINR) || 0;
+                const nextPrice = Number(item.priceUSD);
+                const oldPrice = Number(product.priceUSD) || 0;
 
                 if (oldPrice === nextPrice) {
                     stats.dbUnchanged++;
@@ -1002,7 +1002,7 @@ async function runStep3() {
                     { _id: product._id },
                     {
                         $set: {
-                            priceINR: nextPrice,
+                            priceUSD: nextPrice,
                             updatedAt: new Date(),
                         },
                     }
@@ -1052,7 +1052,7 @@ async function runStep3() {
     const dbProducts = await Product.find({
         productId: { $exists: true, $ne: null },
         name: { $exists: true, $ne: null },
-    }).select('_id productId name category subcategory priceINR').lean();
+    }).select('_id productId name category subcategory priceUSD').lean();
 
     const catalog = dbProducts.map((p) => ({
         _id: p._id,
@@ -1060,7 +1060,7 @@ async function runStep3() {
         name: p.name,
         category: p.category,
         subcategory: p.subcategory,
-        priceINR: p.priceINR,
+        priceUSD: p.priceUSD,
         _normalizedName: normalize(p.name),
         _tokens: tokenize(p.name),
     }));
@@ -1165,7 +1165,7 @@ async function runStep3() {
             return {
                 productId: product.productId,
                 name: product.name,
-                priceINR: a.price,
+                priceUSD: a.price,
                 strategy: a.strategy,
                 score: Number(a.score?.toFixed ? a.score.toFixed(4) : a.score),
             };
@@ -1231,7 +1231,7 @@ async function runStep3() {
         const strategy = a.strategy;
 
         try {
-            const oldPrice = Number(product.priceINR) || 0;
+            const oldPrice = Number(product.priceUSD) || 0;
             if (oldPrice === Number(price)) {
                 stats.dbUnchanged++;
                 log.info(`No change: ${product.productId} already ₹${price.toLocaleString('en-IN')}`);
@@ -1247,12 +1247,12 @@ async function runStep3() {
                 { _id: product._id },
                 {
                     $set: {
-                        priceINR: price,
+                        priceUSD: price,
                         updatedAt: new Date(),
                     },
                 }
             );
-            product.priceINR = price;
+            product.priceUSD = price;
             stats.dbUpdated++;
             log.ok(`Updated ${product.productId} [${strategy}] ₹${oldPrice} → ₹${price.toLocaleString('en-IN')}`);
         } catch (err) {
