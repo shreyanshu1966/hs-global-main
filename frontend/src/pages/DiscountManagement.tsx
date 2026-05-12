@@ -622,15 +622,15 @@ const DiscountManagement: React.FC = () => {
                                                                 {formatPrice(product.finalPrice)}
                                                             </p>
                                                             <p className="text-sm text-gray-500 line-through">
-                                                                {formatPrice(product.priceINR)}
+                                                                {formatPrice(product.priceUSD)}
                                                             </p>
                                                             <p className="text-xs text-green-600 font-medium">
-                                                                Save {formatPrice(product.priceINR - product.finalPrice)}
+                                                                Save {formatPrice(product.priceUSD - product.finalPrice)}
                                                             </p>
                                                         </div>
                                                     ) : (
                                                         <p className="font-semibold text-gray-900">
-                                                            {formatPrice(product.priceINR)}
+                                                            {formatPrice(product.priceUSD)}
                                                         </p>
                                                     )}
                                                 </td>

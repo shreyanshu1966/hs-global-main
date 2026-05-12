@@ -47,7 +47,7 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
     name: '',
     subcategory: '',
     description: '',
-    priceINR: '',
+    priceUSD: '',
     status: 'active',
     available: true,
     featured: false,
@@ -114,7 +114,7 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
         name: editingProduct.name || '',
         subcategory: editingProduct.subcategory || '',
         description: editingProduct.description || '',
-        priceINR: editingProduct.priceINR || '',
+        priceUSD: editingProduct.priceUSD || '',
         status: editingProduct.status || 'active',
         available: editingProduct.available !== false,
         featured: editingProduct.featured || false,
@@ -285,7 +285,7 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
         category: 'furniture',
         subcategory: finalSubcategory,
         description: formData.description,
-        priceINR: formData.priceINR ? parseFloat(formData.priceINR.toString()) : undefined,
+        priceUSD: formData.priceUSD ? parseFloat(formData.priceUSD.toString()) : undefined,
         status: formData.status,
         available: formData.available,
         featured: formData.featured,
@@ -333,7 +333,7 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
         category: 'furniture',
         subcategory: finalSubcategory,
         description: formData.description,
-        priceINR: formData.priceINR ? parseFloat(formData.priceINR.toString()) : undefined,
+        priceUSD: formData.priceUSD ? parseFloat(formData.priceUSD.toString()) : undefined,
         status: formData.status,
         available: formData.available,
         featured: formData.featured,
@@ -538,13 +538,13 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Price (INR)
+                  Price (USD)
                 </label>
                 <input
                   type="number"
                   min="0"
-                  value={formData.priceINR}
-                  onChange={(e) => handleInputChange('priceINR', e.target.value)}
+                  value={formData.priceUSD}
+                  onChange={(e) => handleInputChange('priceUSD', e.target.value)}
                   disabled={isFormDisabled}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
                   placeholder="Leave empty for 'Price on Request'"
@@ -718,13 +718,13 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
                   )}
 
                 {/* Discount Preview */}
-                {formData.discount.percentage > 0 && formData.priceINR && (
+                {formData.discount.percentage > 0 && formData.priceUSD && (
                   <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                     <h4 className="text-sm font-semibold text-gray-900 mb-2">💰 Discount Preview</h4>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
                       <div>
                         <p className="text-gray-600">Original Price</p>
-                        <p className="font-semibold text-gray-900">₹{parseInt(formData.priceINR).toLocaleString('en-IN')}</p>
+                        <p className="font-semibold text-gray-900">${parseFloat(formData.priceUSD).toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
                       </div>
                       <div>
                         <p className="text-gray-600">Discount</p>
@@ -733,13 +733,13 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
                       <div>
                         <p className="text-gray-600">Final Price</p>
                         <p className="font-semibold text-green-600">
-                          ₹{Math.round(parseInt(formData.priceINR) * (1 - formData.discount.percentage / 100)).toLocaleString('en-IN')}
+                          ${(Math.round(parseFloat(formData.priceUSD) * (1 - formData.discount.percentage / 100) * 100) / 100).toLocaleString('en-US', { minimumFractionDigits: 2 })}
                         </p>
                       </div>
                       <div>
                         <p className="text-gray-600">You Save</p>
                         <p className="font-semibold text-green-600">
-                          ₹{Math.round(parseInt(formData.priceINR) * formData.discount.percentage / 100).toLocaleString('en-IN')}
+                          ${(Math.round(parseFloat(formData.priceUSD) * formData.discount.percentage / 100 * 100) / 100).toLocaleString('en-US', { minimumFractionDigits: 2 })}
                         </p>
                       </div>
                     </div>

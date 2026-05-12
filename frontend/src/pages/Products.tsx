@@ -133,6 +133,9 @@ export default function Products() {
   const [showMobileNav, setShowMobileNav] = useState(true);
   const lastScrollYRef = useRef(0);
   const sentinelRef = useRef<HTMLDivElement>(null);
+  const tabScrollRef = useRef<HTMLDivElement>(null);
+  const [tabCanScrollLeft, setTabCanScrollLeft] = useState(false);
+  const [tabCanScrollRight, setTabCanScrollRight] = useState(false);
 
   useEffect(() => {
     let ticking = false;
@@ -188,6 +191,26 @@ export default function Products() {
 
   const activeCatData = normalizedCats.find((c) => c.category === activeCategory);
   const subcategories = activeCatData?.subcategories || [];
+
+  const checkTabScroll = useCallback(() => {
+    const el = tabScrollRef.current;
+    if (!el) return;
+    setTabCanScrollLeft(el.scrollLeft > 1);
+    setTabCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 1);
+  }, []);
+
+  useEffect(() => {
+    checkTabScroll();
+    const el = tabScrollRef.current;
+    if (!el) return;
+    el.addEventListener("scroll", checkTabScroll, { passive: true });
+    const ro = new ResizeObserver(checkTabScroll);
+    ro.observe(el);
+    return () => {
+      el.removeEventListener("scroll", checkTabScroll);
+      ro.disconnect();
+    };
+  }, [checkTabScroll, normalizedCats]);
 
   // Sync URL
   useEffect(() => {
@@ -336,25 +359,26 @@ export default function Products() {
   return (
     <>
       <Helmet>
-        <title>
-          Best Luxury &amp; Imported Marble Stones at Marble, Granite Centre International
-        </title>
-        <meta
-          name="description"
-          content="Best Marble & Granite Company at USA, UK and Across world wide - Hs Global Export"
-        />
-        <meta
-          name="keywords"
-          content="Premium Granite Stones, Marble Tiles Supplier, Imported Marble, Marble Slabs Manufacturer, Granite Tiles Exporter, High Quality Marble, Natural Stone Supplier"
-        />
+        <title>Best Marble &amp; Granite Company at USA, UK and Across wold wide - Hs Global Export</title>
+        <meta name="description" content="Explore our range of premium granite stones, tiles, marble & slabs at Marble Centre. Discover high-quality imported marble, crafted to perfection for various application needs. Custom Order." />
+        <meta name="keywords" content="Premium Granite Stones, Marble Tiles Supplier, Imported Marble, Marble Slabs Manufacturer, Granite Tiles Exporter, High Quality Marble, Natural Stone Supplier, Custom Marble Orders, Granite Slabs Supplier, Luxury Marble Stones, Marble Centre, Stone Tiles Manufacturer, Marble Flooring Tiles, Granite & Marble Slabs, Premium Natural Stone, Marble for Interior & Exterior, Customized Stone Solutions" />
+        <meta name="author" content="HS Global Export" />
         <meta name="robots" content="index, follow" />
         <link rel="canonical" href="https://www.hsglobalexport.com/products" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.hsglobalexport.com/products" />
-        <meta
-          property="og:title"
-          content="Best Luxury & Imported Marble Stones at Marble, Granite Centre International"
-        />
+        <meta property="og:site_name" content="HS Global Export" />
+        <meta property="og:title" content="Best Marble & Granite Company at USA, UK and Across wold wide - Hs Global Export" />
+        <meta property="og:description" content="Explore our range of premium granite stones, tiles, marble & slabs at Marble Centre. Discover high-quality imported marble, crafted to perfection for various application needs. Custom Order." />
+        <meta property="og:image" content="https://www.hsglobalexport.com/og-image.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:locale" content="en_US" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://www.hsglobalexport.com/products" />
+        <meta name="twitter:title" content="Best Marble & Granite Company at USA, UK and Across wold wide - Hs Global Export" />
+        <meta name="twitter:description" content="Explore our range of premium granite stones, tiles, marble & slabs at Marble Centre. Discover high-quality imported marble, crafted to perfection for various application needs. Custom Order." />
+        <meta name="twitter:image" content="https://www.hsglobalexport.com/og-image.jpg" />
       </Helmet>
 
       <div className="min-h-screen bg-[#FAF8F5]">
@@ -370,28 +394,41 @@ export default function Products() {
             </p>
           </div>
 
-          {/* Desktop category tab bar */}
+          {/* Desktop category pill bar */}
           <nav
             aria-label="Product categories"
             className="hidden md:block max-w-[1680px] mx-auto px-4 sm:px-6 xl:px-8"
           >
-            <div
-              className="flex items-end overflow-x-auto border-t border-gray-100"
-              style={{ scrollbarWidth: "none" }}
-            >
-              {[{ category: "" }, ...normalizedCats].map((cat) => (
-                <button
-                  key={cat.category || "all"}
-                  onClick={() => handleCategory(cat.category)}
-                  className={`relative px-5 py-4 text-sm font-medium whitespace-nowrap border-b-2 transition-colors capitalize shrink-0 ${
-                    activeCategory === cat.category
-                      ? "border-gray-900 text-gray-900"
-                      : "border-transparent text-gray-500 hover:text-gray-800 hover:border-gray-300"
-                  }`}
-                >
-                  {cat.category ? cat.category.replace(/-/g, " ") : "All Products"}
-                </button>
-              ))}
+            <div className="relative border-t border-gray-100 py-3">
+              {/* Left fade */}
+              <div
+                className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"
+                style={{ opacity: tabCanScrollLeft ? 1 : 0, transition: "opacity 0.2s" }}
+              />
+              <div
+                ref={tabScrollRef}
+                className="flex items-center gap-1.5 overflow-x-auto px-1"
+                style={{ scrollbarWidth: "none" }}
+              >
+                {[{ category: "" }, ...normalizedCats].map((cat) => (
+                  <button
+                    key={cat.category || "all"}
+                    onClick={() => handleCategory(cat.category)}
+                    className={`px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap capitalize shrink-0 transition-all duration-150 ${
+                      activeCategory === cat.category
+                        ? "bg-gray-900 text-white shadow-sm"
+                        : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                    }`}
+                  >
+                    {cat.category ? cat.category.replace(/-/g, " ") : "All"}
+                  </button>
+                ))}
+              </div>
+              {/* Right fade */}
+              <div
+                className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"
+                style={{ opacity: tabCanScrollRight ? 1 : 0, transition: "opacity 0.2s" }}
+              />
             </div>
           </nav>
         </div>
@@ -495,34 +532,52 @@ export default function Products() {
 
             {/* ── Desktop sidebar ── */}
             <aside
-              className="hidden md:flex flex-col w-56 xl:w-64 shrink-0 sticky"
-              style={{ top: "calc(var(--itsbits-header-offset, 0px) + 24px)" }}
+              className="hidden md:flex flex-col w-52 xl:w-60 shrink-0 sticky overflow-y-auto"
+              style={{
+                top: "calc(var(--itsbits-header-offset, 0px) + 24px)",
+                maxHeight: "calc(100vh - var(--itsbits-header-offset, 0px) - 48px)",
+                scrollbarWidth: "none",
+              }}
             >
-              {/* Subcategory list — shown when a category is active */}
+              {/* Header row */}
+              <div className="flex items-center justify-between mb-5">
+                <span className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Filters</span>
+                {hasFilters && (
+                  <button
+                    onClick={clearFilters}
+                    className="text-xs text-gray-400 hover:text-gray-700 transition-colors flex items-center gap-1"
+                  >
+                    <X className="w-3 h-3" />
+                    Clear all
+                  </button>
+                )}
+              </div>
+
+              {/* Subcategories — shown when a category is active */}
               {subcategories.length > 0 && (
-                <div className="mb-6">
-                  <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-widest mb-3 px-1">
+                <div className="mb-5 pb-5 border-b border-gray-100">
+                  <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-widest mb-2.5">
                     {activeCategory.replace(/-/g, " ")}
                   </p>
                   <nav className="space-y-0.5">
                     <button
                       onClick={() => handleSubcategory("")}
-                      className={`w-full text-left px-3 py-2 rounded-lg text-sm capitalize transition-colors ${
+                      className={`w-full text-left px-2.5 py-1.5 rounded-lg text-sm capitalize transition-colors ${
                         !activeSubcategory
-                          ? "bg-gray-100 text-gray-900 font-semibold"
-                          : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                          ? "bg-gray-100 text-gray-900 font-medium"
+                          : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"
                       }`}
                     >
-                      All {activeCategory.replace(/-/g, " ")}
+                      All
                     </button>
                     {subcategories.map((sub) => (
                       <button
                         key={sub}
                         onClick={() => handleSubcategory(sub)}
-                        className={`w-full text-left px-3 py-2 rounded-lg text-sm capitalize transition-colors ${
+                        className={`w-full text-left px-2.5 py-1.5 rounded-lg text-sm capitalize transition-colors ${
                           activeSubcategory === sub
                             ? "bg-gray-900 text-white font-medium"
-                            : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                            : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"
                         }`}
                       >
                         {sub.replace(/-/g, " ")}
@@ -532,21 +587,23 @@ export default function Products() {
                 </div>
               )}
 
-              {/* Category overview — shown when no category selected */}
+              {/* Category list — shown when nothing is selected */}
               {!activeCategory && normalizedCats.length > 0 && (
-                <div className="mb-6">
-                  <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-widest mb-3 px-1">
-                    Categories
+                <div className="mb-5 pb-5 border-b border-gray-100">
+                  <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-widest mb-2.5">
+                    Browse
                   </p>
                   <nav className="space-y-0.5">
                     {normalizedCats.map((cat) => (
                       <button
                         key={cat.category}
                         onClick={() => handleCategory(cat.category)}
-                        className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm capitalize text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors"
+                        className="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-sm capitalize text-gray-500 hover:bg-gray-50 hover:text-gray-900 transition-colors group"
                       >
                         <span>{cat.category.replace(/-/g, " ")}</span>
-                        <span className="text-xs text-gray-400">{cat.count}</span>
+                        <span className="text-xs text-gray-300 group-hover:text-gray-400 transition-colors tabular-nums">
+                          {cat.count}
+                        </span>
                       </button>
                     ))}
                   </nav>
@@ -554,15 +611,15 @@ export default function Products() {
               )}
 
               {/* Price filter */}
-              <div className="mb-6">
-                <div className="flex items-center justify-between mb-3 px-1">
+              <div>
+                <div className="flex items-center justify-between mb-3">
                   <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-widest">
-                    Price ({currency})
+                    Price <span className="normal-case font-normal">({currency})</span>
                   </p>
                   {(minPrice != null || maxPrice != null) && (
                     <button
                       onClick={clearPriceFilter}
-                      className="text-gray-400 hover:text-gray-700 transition-colors"
+                      className="text-gray-300 hover:text-gray-600 transition-colors"
                       aria-label="Clear price filter"
                     >
                       <X className="w-3 h-3" />
@@ -571,17 +628,6 @@ export default function Products() {
                 </div>
                 <PriceSlider />
               </div>
-
-              {/* Clear all */}
-              {hasFilters && (
-                <button
-                  onClick={clearFilters}
-                  className="flex items-center justify-center gap-1.5 w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-600 hover:bg-gray-50 transition-colors"
-                >
-                  <X className="w-3.5 h-3.5" />
-                  Clear all filters
-                </button>
-              )}
             </aside>
 
             {/* ── Product grid area ── */}

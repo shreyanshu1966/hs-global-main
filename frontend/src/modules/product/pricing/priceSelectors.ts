@@ -1,6 +1,6 @@
 import { LegacyProduct } from '../types';
 
-type PriceLike = Pick<LegacyProduct, 'priceINR' | 'discount'>;
+type PriceLike = Pick<LegacyProduct, 'priceUSD' | 'discount'>;
 
 const isDiscountActive = (item: PriceLike): boolean => {
   const discount = item.discount;
@@ -23,7 +23,7 @@ const isDiscountActive = (item: PriceLike): boolean => {
   return true;
 };
 
-export const getBasePriceINR = (item: PriceLike): number => item.priceINR || 0;
+export const getbasePriceUSD = (item: PriceLike): number => item.priceUSD || 0;
 
 export const getDiscountPercentage = (item: PriceLike): number => {
   if (!isDiscountActive(item)) {
@@ -32,13 +32,13 @@ export const getDiscountPercentage = (item: PriceLike): number => {
   return item.discount?.percentage || 0;
 };
 
-export const getEffectivePriceINR = (item: PriceLike): number => {
-  const base = getBasePriceINR(item);
+export const geteffectivePriceUSD = (item: PriceLike): number => {
+  const base = getbasePriceUSD(item);
   const discount = getDiscountPercentage(item);
   if (!base || !discount) {
     return base;
   }
-  return Math.max(0, Math.round(base * (1 - discount / 100)));
+  return Math.max(0, Math.round(base * (1 - discount / 100) * 100) / 100);
 };
 
 export const hasActiveDiscount = (item: PriceLike): boolean => getDiscountPercentage(item) > 0;

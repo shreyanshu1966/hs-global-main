@@ -20,7 +20,7 @@ export const toLegacyProduct = (product: ProductV2): LegacyProduct => ({
   image: product.media.primaryImage || '',
   images: product.media.galleryImages,
   sortedImages: product.media.sortedImages,
-  priceINR: product.pricing.basePriceINR || undefined,
+  priceUSD: product.pricing.basePriceUSD || undefined,
   available: product.availability.available,
   discount: {
     enabled: product.pricing.discount.enabled,

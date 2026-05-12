@@ -8,7 +8,7 @@ import { AddToCartButton } from '../AddToCartButton';
 
 import { Heading, Body, Caption } from '../ui/Typography';
 import { Button } from '../ui/Button';
-import { getBasePriceINR, getDiscountPercentage, getEffectivePriceINR, hasActiveDiscount } from '../../modules/product/pricing';
+import { getbasePriceUSD, getDiscountPercentage, geteffectivePriceUSD, hasActiveDiscount } from '../../modules/product/pricing';
 
 interface ProductInfoProps {
     product: any;
@@ -39,10 +39,10 @@ export function ProductInfo({
     const { formatPrice } = useCurrency();
     const [isFavorite, setIsFavorite] = useState(false);
     
-    const basePriceINR = getBasePriceINR(product);
-    const hasDiscount = hasActiveDiscount(product) && basePriceINR > 0;
+    const basePriceUSD = getbasePriceUSD(product);
+    const hasDiscount = hasActiveDiscount(product) && basePriceUSD > 0;
     const discountPercentage = Math.round(getDiscountPercentage(product));
-    const effectivePriceINR = getEffectivePriceINR(product);
+    const effectivePriceUSD = geteffectivePriceUSD(product);
     const sellerRating = reviewStats.totalReviews > 0 ? reviewStats.averageRating.toFixed(1) : '5.0';
 
     const getProductId = (): string => {
@@ -67,7 +67,7 @@ export function ProductInfo({
                 productId: product.productId || resolvedId,
                 name: product.name,
                 image: getProductImage(),
-                priceINR: product.priceINR || basePriceINR || 0,
+                priceUSD: product.priceUSD || basePriceUSD || 0,
                 category: product.category,
                 subcategory: product.subcategory || '',
                 discount: product.discount,
@@ -127,16 +127,16 @@ export function ProductInfo({
 
             {/* Price Area */}
             <div className="mb-8">
-                {basePriceINR ? (
+                {basePriceUSD ? (
                     <div className="flex flex-col gap-1">
                         <div className="flex items-end gap-3 flex-wrap">
                             <span className="text-[28px] md:text-[34px] font-medium text-[#111827] leading-none">
-                                {formatPrice(effectivePriceINR)}
+                                {formatPrice(effectivePriceUSD)}
                             </span>
                             {hasDiscount && (
                                 <>
                                     <span className="text-[16px] text-[#757575] line-through mb-[4px]">
-                                        MRP: {formatPrice(basePriceINR)}
+                                        MRP: {formatPrice(basePriceUSD)}
                                     </span>
                                     {discountPercentage > 0 && (
                                         <span className="text-[14px] font-semibold text-[#b82121] mb-[4px]">

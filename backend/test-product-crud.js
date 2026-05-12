@@ -133,7 +133,7 @@ async function testCreateFurnitureProduct() {
             image: 'https://res.cloudinary.com/test/image/upload/test-product.jpg',
             images: ['https://res.cloudinary.com/test/image/upload/test-product.jpg'],
             sortedImages: ['https://res.cloudinary.com/test/image/upload/test-product.jpg'],
-            priceINR: 45000,
+            priceUSD: 45000,
             status: 'active',
             available: true,
             featured: true,
@@ -188,7 +188,7 @@ async function testCreateFurnitureProduct() {
                 { field: 'name', expected: productData.name, actual: product.name },
                 { field: 'category', expected: 'furniture', actual: product.category },
                 { field: 'subcategory', expected: 'coffee-table', actual: product.subcategory },
-                { field: 'priceINR', expected: 45000, actual: product.priceINR },
+                { field: 'priceUSD', expected: 45000, actual: product.priceUSD },
                 { field: 'status', expected: 'active', actual: product.status },
                 { field: 'available', expected: true, actual: product.available },
                 { field: 'featured', expected: true, actual: product.featured },
@@ -242,7 +242,7 @@ async function testCreateSlabProduct() {
             image: 'https://res.cloudinary.com/test/image/upload/test-slab.jpg',
             images: ['https://res.cloudinary.com/test/image/upload/test-slab.jpg'],
             sortedImages: ['https://res.cloudinary.com/test/image/upload/test-slab.jpg'],
-            priceINR: 8500,
+            priceUSD: 8500,
             status: 'active',
             available: true,
             featured: false,
@@ -297,7 +297,7 @@ async function testGetProductById() {
             logSuccess(`Product fetched: ${product.name}`);
             logSuccess(`Product ID: ${product.productId}`);
             logSuccess(`Category: ${product.category}`);
-            logSuccess(`Price: ₹${product.priceINR}`);
+            logSuccess(`Price: ₹${product.priceUSD}`);
             
             // Validate it's the same product
             if (product.productId === testProductId) {
@@ -356,7 +356,7 @@ async function testUpdateProduct() {
         
         const updateData = {
             name: 'Updated Marble Coffee Table - Premium Edition',
-            priceINR: 52000,
+            priceUSD: 52000,
             description: 'Updated description with more details about the craftsmanship and quality.',
             featured: false,
             discount: {
@@ -397,7 +397,7 @@ async function testUpdateProduct() {
             // Validate updates
             const validations = [
                 { field: 'name', expected: updateData.name, actual: product.name },
-                { field: 'priceINR', expected: 52000, actual: product.priceINR },
+                { field: 'priceUSD', expected: 52000, actual: product.priceUSD },
                 { field: 'featured', expected: false, actual: product.featured },
                 { field: 'discount.percentage', expected: 20, actual: product.discount?.percentage }
             ];

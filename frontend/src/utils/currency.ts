@@ -7,7 +7,7 @@
  * Extract numeric price from a string or number
  * Handles various currency symbols and formats
  */
-export const extractPriceInINR = (priceString: string | number): number => {
+export const extractPriceInUSD = (priceString: string | number): number => {
     if (typeof priceString === 'number') return priceString;
 
     // Remove all currency symbols and non-numeric characters except dots
@@ -21,13 +21,13 @@ export const extractPriceInINR = (priceString: string | number): number => {
  * Format price with proper currency symbol and locale
  */
 export const formatPriceWithCurrency = (
-    amountINR: number,
+    amountUSD: number,
     currency: string,
     exchangeRates: Record<string, number>,
     currencySymbols: Record<string, string>
 ): string => {
     const rate = exchangeRates[currency] || 1;
-    const converted = Math.round(amountINR * rate * 100) / 100;
+    const converted = Math.round(amountUSD * rate * 100) / 100;
     const symbol = currencySymbols[currency] || currency;
 
     const formatted = converted.toLocaleString('en-US', {
@@ -39,15 +39,15 @@ export const formatPriceWithCurrency = (
 };
 
 /**
- * Convert amount from INR to target currency
+ * Convert amount from USD to target currency
  */
 export const convertCurrency = (
-    amountINR: number,
+    amountUSD: number,
     targetCurrency: string,
     exchangeRates: Record<string, number>
 ): number => {
     const rate = exchangeRates[targetCurrency] || 1;
-    return Math.round(amountINR * rate * 100) / 100;
+    return Math.round(amountUSD * rate * 100) / 100;
 };
 
 /**

@@ -13,7 +13,7 @@ export interface FurnitureSpec {
   colorName?: string;
   packagingDetails?: string;
   location?: string;
-  priceINR?: number;
+  priceUSD?: number;
 }
 
 // CSV data mapped by product name (normalized)
@@ -30,7 +30,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     height: '1 ft',
     colorName: 'Green',
     packagingDetails: 'As per your requirement',
-    priceINR: 279999,
+    priceUSD: 279999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399209778/emerald-green-marble-coffee-table',
   },
 
@@ -45,7 +45,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     height: '1 ft',
     colorName: 'White & Black',
     packagingDetails: 'As per your requirement',
-    priceINR: 299999,
+    priceUSD: 299999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4403535993/marble-nesting-coffee-table-set-modern',
   },
 
@@ -60,7 +60,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     height: '1 ft',
     colorName: 'Beige',
     packagingDetails: 'As per your requirement',
-    priceINR: 749999,
+    priceUSD: 749999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4402759334/beige-travertine-coffee-table-oval',
   },
 
@@ -75,7 +75,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     height: '1 ft',
     colorName: 'Green',
     packagingDetails: 'As per your requirement',
-    priceINR: 311999,
+    priceUSD: 311999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4403536832/green-marble-coffee-table-furniture',
   },
   'makrana white': {
@@ -90,7 +90,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White (Can be made in any color)',
     packagingDetails: 'As per your requirement',
     location: 'India',
-    priceINR: 30000,
+    priceUSD: 30000,
   },
 
   'natural marble pebble cluster': {
@@ -104,7 +104,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     height: '1 ft',
     colorName: 'White',
     packagingDetails: 'As per your requirement',
-    priceINR: 455999,
+    priceUSD: 455999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399238436/white-statuario-marble-pebble-table-set',
 
   },
@@ -120,7 +120,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     height: '1 ft',
     colorName: 'Sand & Black',
     packagingDetails: 'As per your requirement',
-    priceINR: 323999,
+    priceUSD: 323999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4403525530/sandstone-marine-black-coffee-table',
 
   },
@@ -136,7 +136,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     height: '1 ft',
     colorName: 'White',
     packagingDetails: 'As per your requirement',
-    priceINR: 371999,
+    priceUSD: 371999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4403521246/white-marble-coffee-table-polished-round',
 
   },
@@ -152,7 +152,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     height: '1 ft',
     colorName: 'Beige',
     packagingDetails: 'As per your requirement',
-    priceINR: 385199,
+    priceUSD: 385199,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4403510340/polished-travertine-coffee-table-with',
 
   },
@@ -168,7 +168,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     height: '1 ft',
     colorName: 'Green',
     packagingDetails: 'As per your requirement',
-    priceINR: 395999,
+    priceUSD: 395999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4405229601/green-marble-coffee-table-furntiture',
 
   },
@@ -184,7 +184,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     height: '1 ft',
     colorName: 'White and Black',
     packagingDetails: 'As per your requirement',
-    priceINR: 305999,
+    priceUSD: 305999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399232768/panda-white-marble-coffee-table',
 
   },
@@ -200,7 +200,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Beige',
     packagingDetails: 'As per your requirement',
     location: 'India',
-    priceINR: 287999,
+    priceUSD: 287999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399256525/beige-travertine-side-table-sculptural',
 
   },
@@ -217,7 +217,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Pink',
     packagingDetails: 'As per your requirement',
     location: 'India',
-    priceINR: 38000,
+    priceUSD: 38000,
   },
   'rounded white marble': {
     product: 'Table',
@@ -231,7 +231,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per your requirement',
     location: 'India',
-    priceINR: 50000,
+    priceUSD: 50000,
   },
   'white cluster bullet': {
     product: 'Table',
@@ -245,7 +245,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per your requirement',
     location: 'India',
-    priceINR: 167999,
+    priceUSD: 167999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399277263/handcrafted-white-marble-cluster-table',
   },
 
@@ -262,7 +262,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Beige',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 179999,
+    priceUSD: 179999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399271425/handcrafted-beige-travertine-marble-side',
   },
 
@@ -278,7 +278,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Black',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 56000,
+    priceUSD: 56000,
   },
 
   'osaka makrana pink': {
@@ -293,7 +293,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Pink and Black',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 36000,
+    priceUSD: 36000,
   },
   'osaka rain forest green': {
     product: 'Table',
@@ -307,7 +307,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Green',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 40000,
+    priceUSD: 40000,
   },
 
   'ashby round side table': {
@@ -322,7 +322,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Green',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 102239,
+    priceUSD: 102239,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4402722542/green-marble-side-table-handcrafted',
   },
 
@@ -338,7 +338,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White & Brown',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 197999,
+    priceUSD: 197999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4402156223/fantasy-brown-marble-side-table-polished',
   },
 
@@ -354,7 +354,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Black & White Veins',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 203999,
+    priceUSD: 203999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4402188990/marine-black-stone-side-table-luxury',
   },
 
@@ -370,7 +370,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Black & White Veins',
     packagingDetails: 'As per requir',
     location: 'India',
-    priceINR: 143999,
+    priceUSD: 143999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399272174/handcrafted-white-marble-cylindrical',
   },
 
@@ -386,7 +386,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Black & White Veins',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 109199,
+    priceUSD: 109199,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4402180690/marine-black-stone-side-table-luxury',
   },
 
@@ -402,7 +402,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Beige',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 253199,
+    priceUSD: 253199,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4402195477/travertine-stone-side-table-polished',
   },
 
@@ -418,7 +418,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 109199,
+    priceUSD: 109199,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4402150822/banswara-white-marble-side-table-modern',
   },
 
@@ -434,7 +434,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Green',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 107999,
+    priceUSD: 107999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4402163799/green-marble-side-table-modern-polished',
   },
 
@@ -450,7 +450,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 113999,
+    priceUSD: 113999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4402162778/mint-sandstone-side-table-handcrafted',
   },
 
@@ -466,7 +466,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Black',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 113999,
+    priceUSD: 113999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4402168180/black-marble-side-table-hand-carved',
   },
 
@@ -482,7 +482,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Beige',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 193199,
+    priceUSD: 193199,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4402171848/travertine-stone-side-table-polished',
   },
 
@@ -498,7 +498,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White & Black',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 131999,
+    priceUSD: 131999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4402205153/black-and-white-marble-cube-table',
   },
 
@@ -514,7 +514,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Black & White Veins',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 107999,
+    priceUSD: 107999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4402716935/panda-white-marble-side-table',
   },
 
@@ -530,7 +530,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Black & White Veins',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 112799,
+    priceUSD: 112799,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4402713770/marine-black-marble-side-table-luxury',
   },
 
@@ -546,7 +546,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 143999,
+    priceUSD: 143999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4402717342/white-marble-side-table-polished',
   },
 
@@ -562,7 +562,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Green',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 131999,
+    priceUSD: 131999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4402734715/green-marble-side-table-handcrafted',
   },
   // Tables - Dining Table
@@ -577,7 +577,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Black with White veins',
     packagingDetails: 'As per your requirement',
     location: 'India',
-    priceINR: 110000,
+    priceUSD: 110000,
   },
 
   // Tables - Center Table
@@ -593,7 +593,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Black',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 341999,
+    priceUSD: 341999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399292262/black-green-marble-block-coffee-tables?sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_2&pro=1&frs=1&logging_key=4c770c06513f0117caa8c714c8e5bc424a58fb46%3A4399292262&variation0=6027985136',
   },
   'forest green rectangular block': {
@@ -608,7 +608,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Green',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 311999,
+    priceUSD: 311999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399292262/black-green-marble-block-coffee-tables?sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_2&pro=1&frs=1&logging_key=4c770c06513f0117caa8c714c8e5bc424a58fb46%3A4399292262&variation0=6015423983',
   },
   'green marble console table': {
@@ -623,7 +623,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Green',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 541199,
+    priceUSD: 541199,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4403496234/green-marble-console-table-polished',
   },
 
@@ -640,7 +640,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 467999,
+    priceUSD: 467999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4403485123/exotic-white-marble-arch-console-table',
   },
 
@@ -656,7 +656,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Green',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 529199,
+    priceUSD: 529199,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4403502089/handcrafted-marine-black-marble-console',
   },
 
@@ -672,7 +672,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 385199,
+    priceUSD: 385199,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4403474850/handcrafted-exotic-white-marble-console',
   },
 
@@ -688,7 +688,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Beige',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 487199,
+    priceUSD: 487199,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4403478665/travertine-stone-arch-console-table',
   },
 
@@ -704,7 +704,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Beige',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 673199,
+    priceUSD: 673199,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4403475731/travertine-stone-console-table-polished',
   },
 
@@ -720,7 +720,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Brown',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 467999,
+    priceUSD: 467999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4403470999/cappuccino-brown-marble-console-table',
   },
 
@@ -736,7 +736,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 589199,
+    priceUSD: 589199,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4403411683/handcrafted-banswara-white-marble',
   },
 
@@ -752,7 +752,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 659999,
+    priceUSD: 659999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4403397937/green-marble-console-table-polished',
   },
 
@@ -768,7 +768,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 239999,
+    priceUSD: 239999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4403394601/white-marble-console-table-with-metal',
   },
 
@@ -784,7 +784,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Green',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 455999,
+    priceUSD: 455999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4402861535/green-marble-console-table-polished',
   },
 
@@ -800,7 +800,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 391199,
+    priceUSD: 391199,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4403472412/banswara-white-marble-console-table',
   },
 
@@ -816,7 +816,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White & Black',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 335999,
+    priceUSD: 335999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4403505937/modern-sculptural-marble-console-table',
   },
   'lava oro spherical base table': {
@@ -831,7 +831,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Blackish orange',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 373199,
+    priceUSD: 373199,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399222988/lava-oro-marble-coffee-table-sculptural',
 
   },
@@ -847,7 +847,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Pink',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 289999,
+    priceUSD: 289999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399770173/luxury-katni-onyx-marble-coffee-table',
   },
   'spider green beige designer': {
@@ -861,7 +861,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Black',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 191999,
+    priceUSD: 191999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399775095/luxury-dual-stone-side-table-dark-green',
   },
   'statuario block leg rounded': {
@@ -875,7 +875,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Black',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 155999,
+    priceUSD: 155999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399778769/handcrafted-white-marble-round-side',
   },
 
@@ -891,7 +891,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White (Grey Veined)',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 199799,
+    priceUSD: 199799,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399266901/grey-veined-white-marble-coffee-table',
   },
 
@@ -909,7 +909,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 227999,
+    priceUSD: 227999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4405284564/striped-white-marble-pedestal-sink',
   },
 
@@ -925,7 +925,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Green',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 157199,
+    priceUSD: 157199,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399895782/green-marble-pedestal-wash-basin',
   },
 
@@ -941,7 +941,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Black',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 38000,
+    priceUSD: 38000,
   },
 
   'brown grey marble pedestal sink': {
@@ -956,7 +956,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Brown & Grey',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 195999,
+    priceUSD: 195999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4405289844/brown-grey-marble-pedestal-sink-hand',
   },
 
@@ -972,7 +972,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Black',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 305999,
+    priceUSD: 305999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399779836/handcrafted-grey-gold-veined-marble',
   },
 
@@ -988,7 +988,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 215999,
+    priceUSD: 215999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399893236/fluted-white-marble-pedestal-basin',
   },
 
@@ -1004,7 +1004,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 215999,
+    priceUSD: 215999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399789350/handcrafted-makrana-white-marble-mosaic',
   },
   'white marble fluted shaped': {
@@ -1019,7 +1019,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 215999,
+    priceUSD: 215999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399893236/fluted-white-marble-pedestal-basin',
   },
 
@@ -1037,7 +1037,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Black',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 171599,
+    priceUSD: 171599,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399794214/handcrafted-absolute-black-marble-fluted',
   },
 
@@ -1053,7 +1053,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Green',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 159999,
+    priceUSD: 159999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399879712/forest-green-marble-countertop-basin',
   },
 
@@ -1069,7 +1069,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Green',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 71999,
+    priceUSD: 71999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4405280976/green-marble-vessel-sink-handcrafted',
   },
 
@@ -1085,7 +1085,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Ivory',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 107999,
+    priceUSD: 107999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4405287010/ivory-natural-marble-countertop-sink',
   },
 
@@ -1101,7 +1101,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White/Black',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 95999,
+    priceUSD: 95999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4405295856/satvario-white-marble-countertop-sink?sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_6&pro=1&frs=1&logging_key=f4c12d97e6e35d2f4b28f1bf655650db3fe9fe36%3A4405295856&variation0=6015360341',
   },
 
@@ -1117,7 +1117,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 89999,
+    priceUSD: 89999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4405295856/satvario-white-marble-countertop-sink?sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_6&pro=1&frs=1&logging_key=f4c12d97e6e35d2f4b28f1bf655650db3fe9fe36%3A4405295856&variation0=6015360337',
   },
   'kumari grey natural stone sink': {
@@ -1132,7 +1132,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Grey',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 119999,
+    priceUSD: 119999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4405313442/kumari-grey-natural-stone-sink-hand',
   },
 
@@ -1147,7 +1147,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 179999,
+    priceUSD: 179999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399809163/handcrafted-layered-white-marble-basin',
   },
   'amazon green': {
@@ -1162,7 +1162,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White & Brown',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 191999,
+    priceUSD: 191999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399835069/handcrafted-forest-brown-marble',
   },
 
@@ -1178,7 +1178,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White & Black',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 239999,
+    priceUSD: 239999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399885343/panda-white-marble-countertop-basin',
   },
 
@@ -1194,7 +1194,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 77999,
+    priceUSD: 77999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399838367/handcrafted-makrana-white-marble-fluted',
   },
   'bidasar beige': {
@@ -1209,7 +1209,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Beige',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 167999,
+    priceUSD: 167999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4406388229/bidasar-beige-marble-sink-rectangular',
   },
 
@@ -1224,7 +1224,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Beige',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 64999,
+    priceUSD: 64999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399850627/lotus-flower-stone-sink-hand-carved?sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_16&pro=1&frs=1&logging_key=b47e27f5b2e3770f33592730195b6f5ffb2fbb1e%3A4399850627&variation0=6015564997',
   },
   'hand carved marble lotus flower': {
@@ -1238,7 +1238,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 63999,
+    priceUSD: 63999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399850627/lotus-flower-stone-sink-hand-carved?sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_16&pro=1&frs=1&logging_key=b47e27f5b2e3770f33592730195b6f5ffb2fbb1e%3A4399850627&variation0=6015564999',
   },
   'decorative carved stone': {
@@ -1252,7 +1252,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 119999,
+    priceUSD: 119999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4406393669/decorated-carved-marble-sink-sculpted',
   },
 
@@ -1269,7 +1269,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 143999,
+    priceUSD: 143999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399845267/white-textured-marble-basin-handcrafted',
   },
 
@@ -1285,7 +1285,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 76799,
+    priceUSD: 76799,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399871591/white-marble-faceted-countertop-basin',
   },
 
@@ -1301,7 +1301,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Pink',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 155999,
+    priceUSD: 155999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399865691/makrana-pink-marble-fluted-countertop',
   },
 
@@ -1317,7 +1317,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 239999,
+    priceUSD: 239999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399874331/makrana-white-marble-peacock-carved',
   },
   'nautilus marble sink': {
@@ -1331,7 +1331,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White/Black',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 95999,
+    priceUSD: 95999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4405322125/nautilus-marble-sink-hand-carved-spiral',
   },
 
@@ -1347,7 +1347,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 84999,
+    priceUSD: 84999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399871268/white-makrana-marble-lotus-basin',
   },
   'multi color rectangular flutted': {
@@ -1361,7 +1361,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Multicolor',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 215999,
+    priceUSD: 215999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4399872934/green-veined-marble-fluted-countertop',
   },
 
@@ -1376,7 +1376,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Wine red',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 179999,
+    priceUSD: 179999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4406455243/rosso-levanto-marble-washbasin',
   },
 
@@ -1396,7 +1396,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 107999,
+    priceUSD: 107999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4401124145/paw-lished-stone-luxury-marine-black',
   },
 
@@ -1412,7 +1412,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Brown',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 205199,
+    priceUSD: 205199,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4402752774/hand-carved-brown-marble-showpiece',
   },
 
@@ -1428,7 +1428,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Black',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 59999,
+    priceUSD: 59999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4402758869/black-marble-anubis-sculpture-modern',
   },
 
@@ -1444,7 +1444,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 101999,
+    priceUSD: 101999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4402844632/the-touch-white-marble-sculpture',
   },
 
@@ -1460,7 +1460,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 139999,
+    priceUSD: 139999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4402842546/the-highs-and-lows-white-marble',
   },
 
@@ -1476,7 +1476,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Black',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 73199,
+    priceUSD: 73199,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4402827940/black-stone-showpiece-shaped-by-time',
   },
 
@@ -1492,7 +1492,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Black',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 104999,
+    priceUSD: 104999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4402786449/black-marble-sculpture-abstract-modern',
   },
 
@@ -1508,7 +1508,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 113999,
+    priceUSD: 113999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4402111916/bloom-and-behold-african-white-marble',
   },
 
@@ -1524,7 +1524,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 65999,
+    priceUSD: 65999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4402141933/circle-of-life-white-marble-sculpture-o',
   },
 
@@ -1540,7 +1540,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 94999,
+    priceUSD: 94999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4402114215/loop-of-karma-luxury-statuario-white',
   },
 
@@ -1556,7 +1556,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 62399,
+    priceUSD: 62399,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4402114232/stone-cold-stare-exotic-white-marble',
   },
 
@@ -1572,7 +1572,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 105599,
+    priceUSD: 105599,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4402135376/swan-exotic-white-marble-sculpture-o-hs',
   },
 
@@ -1588,7 +1588,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White Textured',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 120999,
+    priceUSD: 120999,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4401121984/the-fox-handcrafted-exotic-white-marble',
   },
 
@@ -1605,7 +1605,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'Calacatta',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 168000,
+    priceUSD: 168000,
     etsyUrl: 'https://www.etsy.com/in-en/listing/4401134600/aurora-marble-table-lamp-handcrafted',
   },
 
@@ -1622,7 +1622,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 10000,
+    priceUSD: 10000,
   },
   'statuario cylindrical vase': {
     product: 'Flower Pot',
@@ -1636,7 +1636,7 @@ const furnitureSpecsData: Record<string, FurnitureSpec> = {
     colorName: 'White',
     packagingDetails: 'As per requirement',
     location: 'India',
-    priceINR: 12000,
+    priceUSD: 12000,
   },
 };
 

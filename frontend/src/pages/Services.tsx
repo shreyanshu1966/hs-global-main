@@ -37,15 +37,15 @@ const Services: React.FC = () => {
         <meta name="robots" content="index, follow" />
 
         {/* Canonical URL */}
-        <link rel="canonical" href="https://hsglobalexport.com/shipping" />
+        <link rel="canonical" href="https://www.hsglobalexport.com/services" />
 
         {/* Open Graph */}
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://hsglobalexport.com/shipping" />
+        <meta property="og:url" content="https://www.hsglobalexport.com/services" />
         <meta property="og:site_name" content="HS Global Export" />
         <meta property="og:title" content="Shipping - Global Stone Logistics | HS Global Export" />
         <meta property="og:description" content="Export logistics, secure packaging, and reliable delivery for stone products worldwide." />
-        <meta property="og:image" content="https://hsglobalexport.com/og-image.jpg" />
+        <meta property="og:image" content="https://www.hsglobalexport.com/og-image.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:image:alt" content="HS Global Export - Shipping" />
@@ -53,10 +53,10 @@ const Services: React.FC = () => {
 
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content="https://hsglobalexport.com/shipping" />
+        <meta name="twitter:url" content="https://www.hsglobalexport.com/services" />
         <meta name="twitter:title" content="Shipping - Global Stone Logistics | HS Global Export" />
         <meta name="twitter:description" content="Export logistics, secure packaging, and reliable delivery for stone products worldwide." />
-        <meta name="twitter:image" content="https://hsglobalexport.com/og-image.jpg" />
+        <meta name="twitter:image" content="https://www.hsglobalexport.com/og-image.jpg" />
         <meta name="twitter:image:alt" content="HS Global Export - Shipping" />
 
         {/* Schema.org Service */}

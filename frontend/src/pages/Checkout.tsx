@@ -10,7 +10,7 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
 const Checkout: React.FC = () => {
   const { state, removeItem, updateQuantity } = useCart();
-  const { formatPrice, getCurrencySymbol, convertFromINR, currency } = useCurrency();
+  const { formatPrice, getCurrencySymbol, convertFromUSD, currency } = useCurrency();
   const { user } = useAuth();
 
   // Form State
@@ -80,7 +80,7 @@ const Checkout: React.FC = () => {
           setBackendPrices(data);
 
           // Emit telemetry when local cart math diverges from backend authoritative totals.
-          const localTotalINR = state.items.reduce((sum, item) => sum + (item.priceINR * item.quantity), 0);
+          const localTotalINR = state.items.reduce((sum, item) => sum + (item.priceUSD * item.quantity), 0);
           const backendTotalINR = Number(data?.totals?.INR || 0);
           const deltaINR = Number((backendTotalINR - localTotalINR).toFixed(2));
 
@@ -94,12 +94,12 @@ const Checkout: React.FC = () => {
                 return {
                   productId: backendItem.productId,
                   reason: 'missing-local-item',
-                  backendFinalPriceINR: backendItem.finalPriceINR
+                  backendFinalPriceUSD: backendItem.finalPriceUSD
                 };
               }
 
-              const localUnitPrice = Number(localItem.priceINR || 0);
-              const backendUnitPrice = Number(backendItem.finalPriceINR || 0);
+              const localUnitPrice = Number(localItem.priceUSD || 0);
+              const backendUnitPrice = Number(backendItem.finalPriceUSD || 0);
               const unitDelta = Number((backendUnitPrice - localUnitPrice).toFixed(2));
 
               if (Math.abs(unitDelta) <= 0.01) {
@@ -108,8 +108,8 @@ const Checkout: React.FC = () => {
 
               return {
                 productId: backendItem.productId,
-                localUnitPriceINR: localUnitPrice,
-                backendUnitPriceINR: backendUnitPrice,
+                localUnitPriceUSD: localUnitPrice,
+                backendUnitPriceUSD: backendUnitPrice,
                 unitDeltaINR: unitDelta
               };
             })
@@ -228,7 +228,7 @@ const Checkout: React.FC = () => {
   }, [backendPrices, hasAuthoritativePricing]);
 
   // Convert to user's selected currency for display
-  const subtotal = useMemo(() => convertFromINR(subtotalINR), [subtotalINR, convertFromINR]);
+  const subtotal = useMemo(() => convertFromUSD(subtotalINR), [subtotalINR, convertFromUSD]);
   const totalAmount = subtotal;
 
   // Get standardized payment currency details from Context
@@ -269,7 +269,7 @@ const Checkout: React.FC = () => {
           name: item.name,
           quantity: item.quantity,
           price: Number(backendItem.finalPriceUSD).toFixed(2),
-          priceINR: Number(backendItem.priceINR),
+          priceUSD: Number(backendItem.priceUSD),
           image: item.image,
           category: item.category || 'Natural Stone',
           discount: backendItem.discount || null
@@ -610,15 +610,15 @@ const Checkout: React.FC = () => {
                         {backendItemMap.get(getCheckoutItemId(item))?.discountPercentage > 0 ? (
                           <div className="space-y-0.5">
                             <div className="flex items-center gap-2">
-                              <p className="text-sm font-bold text-green-600">{formatPrice(Number(backendItemMap.get(getCheckoutItemId(item))?.finalPriceINR || 0))}</p>
+                              <p className="text-sm font-bold text-green-600">{formatPrice(Number(backendItemMap.get(getCheckoutItemId(item))?.finalPriceUSD || 0))}</p>
                               <span className="px-1.5 py-0.5 bg-red-500 text-white rounded text-xs font-bold">
                                 {backendItemMap.get(getCheckoutItemId(item))?.discountPercentage || 0}% OFF
                               </span>
                             </div>
-                            <p className="text-xs text-gray-500 line-through">{formatPrice(Number(backendItemMap.get(getCheckoutItemId(item))?.priceINR || 0))}</p>
+                            <p className="text-xs text-gray-500 line-through">{formatPrice(Number(backendItemMap.get(getCheckoutItemId(item))?.priceUSD || 0))}</p>
                           </div>
                         ) : (
-                          <p className="text-sm text-gray-500">{formatPrice(Number(backendItemMap.get(getCheckoutItemId(item))?.priceINR || 0))}</p>
+                          <p className="text-sm text-gray-500">{formatPrice(Number(backendItemMap.get(getCheckoutItemId(item))?.priceUSD || 0))}</p>
                         )}
                       </div>
                       <div className="flex items-center gap-3">
@@ -641,7 +641,7 @@ const Checkout: React.FC = () => {
                     </div>
                     <div className="text-right">
                       <p className="text-sm font-semibold text-black">
-                        {formatPrice(Number(backendItemMap.get(getCheckoutItemId(item))?.finalPriceINR || 0) * item.quantity)}
+                        {formatPrice(Number(backendItemMap.get(getCheckoutItemId(item))?.finalPriceUSD || 0) * item.quantity)}
                       </p>
                     </div>
                   </div>

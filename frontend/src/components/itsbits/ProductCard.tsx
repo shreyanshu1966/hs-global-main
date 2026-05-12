@@ -10,8 +10,8 @@ interface ProductCardProps {
   designer: string;
   price?: string;
   originalPrice?: string;
-  priceINR?: number;
-  originalPriceINR?: number;
+  priceUSD?: number;
+  originalPriceUSD?: number;
   priceLabel?: string;
   productLink?: string;
   showPrice?: boolean;
@@ -19,7 +19,7 @@ interface ProductCardProps {
   totalReviews?: number;
 }
 
-const ProductCard = ({ id, image, title, designer, price, originalPrice, priceINR, originalPriceINR, priceLabel, productLink, showPrice = true, averageRating, totalReviews }: ProductCardProps) => {
+const ProductCard = ({ id, image, title, designer, price, originalPrice, priceUSD, originalPriceUSD, priceLabel, productLink, showPrice = true, averageRating, totalReviews }: ProductCardProps) => {
   const { formatPrice } = useCurrency();
   const { isInWishlist, toggleWishlist } = useWishlist();
   const { addItem } = useCart();
@@ -35,22 +35,22 @@ const ProductCard = ({ id, image, title, designer, price, originalPrice, priceIN
     return Math.abs(hash % 40) + 15;
   };
 
-  const resolvedPrice = priceLabel || (typeof priceINR === 'number' ? formatPrice(priceINR) : (price || 'Request Quote'));
-  const resolvedOriginalPrice = typeof originalPriceINR === 'number' ? formatPrice(originalPriceINR) : originalPrice;
+  const resolvedPrice = priceLabel || (typeof priceUSD === 'number' ? formatPrice(priceUSD) : (price || 'Request Quote'));
+  const resolvedOriginalPrice = typeof originalPriceUSD === 'number' ? formatPrice(originalPriceUSD) : originalPrice;
   const hasValidPrice =
-    (typeof priceINR === 'number' && priceINR > 0) ||
-    (typeof originalPriceINR === 'number' && originalPriceINR > 0);
+    (typeof priceUSD === 'number' && priceUSD > 0) ||
+    (typeof originalPriceUSD === 'number' && originalPriceUSD > 0);
   const isDiscountActive = Boolean(
-    (typeof originalPriceINR === 'number' && typeof priceINR === 'number' && originalPriceINR > priceINR) ||
+    (typeof originalPriceUSD === 'number' && typeof priceUSD === 'number' && originalPriceUSD > priceUSD) ||
     (resolvedOriginalPrice && resolvedOriginalPrice !== resolvedPrice)
   );
   const showDiscount = isDiscountActive && hasValidPrice;
   const discountPercentage =
-    typeof originalPriceINR === 'number' &&
-    typeof priceINR === 'number' &&
-    originalPriceINR > priceINR &&
-    originalPriceINR > 0
-      ? Math.round(((originalPriceINR - priceINR) / originalPriceINR) * 100)
+    typeof originalPriceUSD === 'number' &&
+    typeof priceUSD === 'number' &&
+    originalPriceUSD > priceUSD &&
+    originalPriceUSD > 0
+      ? Math.round(((originalPriceUSD - priceUSD) / originalPriceUSD) * 100)
       : null;
 
   const navigateToProduct = () => {
@@ -60,7 +60,7 @@ const ProductCard = ({ id, image, title, designer, price, originalPrice, priceIN
   };
 
   const handleAddToCart = () => {
-    if (!(typeof priceINR === 'number' && priceINR > 0)) {
+    if (!(typeof priceUSD === 'number' && priceUSD > 0)) {
       return;
     }
 
@@ -71,7 +71,7 @@ const ProductCard = ({ id, image, title, designer, price, originalPrice, priceIN
       productId: resolvedId,
       name: title,
       image,
-      priceINR,
+      priceUSD,
       category: 'furniture',
       subcategory: designer,
     });
@@ -144,16 +144,16 @@ const ProductCard = ({ id, image, title, designer, price, originalPrice, priceIN
         <button
           type="button"
           className="absolute top-[47px] right-[9px] w-[32px] h-[32px] rounded-full flex items-center justify-center transition-all shadow-sm z-10 border border-white/70 bg-white/95 text-[#111827] hover:bg-white disabled:bg-white/80 disabled:text-[#9ca3af] disabled:cursor-not-allowed"
-          disabled={!(typeof priceINR === 'number' && priceINR > 0)}
+          disabled={!(typeof priceUSD === 'number' && priceUSD > 0)}
           onClick={(event) => {
             event.preventDefault();
             event.stopPropagation();
             handleAddToCart();
           }}
-          aria-label={typeof priceINR === 'number' && priceINR > 0 ? `Add ${title} to cart` : `${title} is available on request`}
-          title={typeof priceINR === 'number' && priceINR > 0 ? (isAdded ? 'Added to cart' : 'Add to cart') : 'Price on request'}
+          aria-label={typeof priceUSD === 'number' && priceUSD > 0 ? `Add ${title} to cart` : `${title} is available on request`}
+          title={typeof priceUSD === 'number' && priceUSD > 0 ? (isAdded ? 'Added to cart' : 'Add to cart') : 'Price on request'}
         >
-          {typeof priceINR === 'number' && priceINR > 0 ? (
+          {typeof priceUSD === 'number' && priceUSD > 0 ? (
             isAdded ? (
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <polyline points="20 6 9 17 4 12" />

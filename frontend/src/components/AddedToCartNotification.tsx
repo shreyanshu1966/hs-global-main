@@ -7,7 +7,7 @@ import { useGSAP } from '@gsap/react';
 
 export const AddedToCartNotification: React.FC = () => {
   const { state, hideAddedToCart } = useCart();
-  const { formatPrice, convertFromINR } = useCurrency();
+  const { formatPrice, convertFromUSD } = useCurrency();
   const notificationRef = useRef<HTMLDivElement>(null);
 
   const { contextSafe } = useGSAP({ scope: notificationRef });
@@ -95,10 +95,10 @@ export const AddedToCartNotification: React.FC = () => {
                 <span>Qty: {state.lastAddedItem.quantity}</span>
                 <span>•</span>
                 <span className="font-semibold">
-                  {formatPrice(convertFromINR(
+                  {formatPrice(convertFromUSD(
                     (state.lastAddedItem.discount?.enabled && state.lastAddedItem.discount.percentage > 0)
-                      ? state.lastAddedItem.priceINR * (1 - (state.lastAddedItem.discount.percentage ?? 0) / 100)
-                      : state.lastAddedItem.priceINR
+                      ? state.lastAddedItem.priceUSD * (1 - (state.lastAddedItem.discount.percentage ?? 0) / 100)
+                      : state.lastAddedItem.priceUSD
                   ))}
                 </span>
               </div>
@@ -121,10 +121,10 @@ export const AddedToCartNotification: React.FC = () => {
           <span>Cart Total: {formatPrice(
             state.items.reduce((sum, item) => {
               const hasDiscount = item.discount?.enabled && item.discount.percentage > 0;
-              const effectivePriceINR = hasDiscount
-                ? item.priceINR * (1 - (item.discount?.percentage ?? 0) / 100)
-                : item.priceINR;
-              return sum + convertFromINR(effectivePriceINR) * item.quantity;
+              const effectivePriceUSD = hasDiscount
+                ? item.priceUSD * (1 - (item.discount?.percentage ?? 0) / 100)
+                : item.priceUSD;
+              return sum + convertFromUSD(effectivePriceUSD) * item.quantity;
             }, 0)
           )}</span>
           <span>{state.items.reduce((total, item) => total + item.quantity, 0)} items</span>

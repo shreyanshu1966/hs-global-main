@@ -245,7 +245,7 @@ function buildProductsFromSerialMap(csvRows, photosBySerial) {
       image: images[0],
       images,
       sortedImages: images,
-      priceINR: price,
+      priceUSD: price,
       available: true,
       hasVideo: false,
       videoUrl: null,

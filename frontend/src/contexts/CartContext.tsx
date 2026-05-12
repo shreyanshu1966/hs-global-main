@@ -1,12 +1,12 @@
 import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
-import { getEffectivePriceINR } from '../modules/product/pricing';
+import { geteffectivePriceUSD } from '../modules/product/pricing';
 
 export interface CartItem {
   id: string;
   productId?: string;
   name: string;
   image: string;
-  priceINR: number; // Always store in INR (base currency)
+  priceUSD: number; // Always store in USD (base currency)
   quantity: number;
   category: string;
   subcategory: string;
@@ -216,7 +216,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const getTotalPriceNumeric = (): number => {
     return state.items.reduce((sum, item) => {
-      return sum + (getEffectivePriceINR(item) * item.quantity);
+      return sum + (geteffectivePriceUSD(item) * item.quantity);
     }, 0);
   };
 

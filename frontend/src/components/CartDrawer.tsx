@@ -8,7 +8,7 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 
 export const CartDrawer: React.FC = () => {
-  const { formatPrice, getCurrencySymbol, convertFromINR } = useCurrency();
+  const { formatPrice, getCurrencySymbol, convertFromUSD } = useCurrency();
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
   const { state, updateQuantity, removeItem, closeCart, getTotalItems } = useCart();
@@ -56,12 +56,12 @@ export const CartDrawer: React.FC = () => {
   const subtotal = useMemo(() => {
     return state.items.reduce((sum, item) => {
       const hasDiscount = item.discount?.enabled && item.discount.percentage > 0;
-      const effectivePriceINR = hasDiscount
-        ? item.priceINR * (1 - (item.discount?.percentage ?? 0) / 100)
-        : item.priceINR;
-      return sum + convertFromINR(effectivePriceINR) * item.quantity;
+      const effectivePriceUSD = hasDiscount
+        ? item.priceUSD * (1 - (item.discount?.percentage ?? 0) / 100)
+        : item.priceUSD;
+      return sum + convertFromUSD(effectivePriceUSD) * item.quantity;
     }, 0);
-  }, [state.items, convertFromINR]);
+  }, [state.items, convertFromUSD]);
 
   const totalAmount = subtotal;
 
@@ -155,9 +155,9 @@ export const CartDrawer: React.FC = () => {
                 <div className="space-y-0">
                   {state.items.map((item) => {
                     const hasDiscount = item.discount?.enabled && item.discount.percentage > 0;
-                    const effectivePriceINR = hasDiscount
-                      ? item.priceINR * (1 - (item.discount?.percentage ?? 0) / 100)
-                      : item.priceINR;
+                    const effectivePriceUSD = hasDiscount
+                      ? item.priceUSD * (1 - (item.discount?.percentage ?? 0) / 100)
+                      : item.priceUSD;
 
                     return (
                       <div key={item.id} className="px-6 py-4 border-b border-[#eceff1]">
@@ -189,10 +189,10 @@ export const CartDrawer: React.FC = () => {
                             </div>
 
                             <div className="mt-1 flex items-center gap-2 flex-wrap">
-                              <span className="text-sm font-bold text-gray-900">{formatPrice(effectivePriceINR)}</span>
+                              <span className="text-sm font-bold text-gray-900">{formatPrice(effectivePriceUSD)}</span>
                               {hasDiscount && (
                                 <>
-                                  <span className="text-xs text-gray-500 line-through">{formatPrice(item.priceINR)}</span>
+                                  <span className="text-xs text-gray-500 line-through">{formatPrice(item.priceUSD)}</span>
                                 </>
                               )}
                             </div>

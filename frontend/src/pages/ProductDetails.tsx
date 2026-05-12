@@ -90,7 +90,7 @@ const ProductDetails = () => {
       subcategory,
       image: baseImages[0],
       images: baseImages,
-      priceINR: dbProduct.priceINR,
+      priceUSD: dbProduct.priceUSD,
       moq,
       specs,
       description: dbProduct.description || "Premium natural stone slab ideal for countertops, vanities, flooring and wall cladding with strict quality selection.",
@@ -317,7 +317,7 @@ const ProductDetails = () => {
             },
             "offers": {
               "@type": "Offer",
-              "price": product.priceINR || 0,
+              "price": product.priceUSD || 0,
               "priceCurrency": "INR",
               "availability": product.available ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
               "url": seoMeta.canonicalUrl

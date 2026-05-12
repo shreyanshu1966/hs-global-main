@@ -8,7 +8,7 @@ export interface LegacyProduct {
   image: string;
   images: string[];
   sortedImages?: string[];
-  priceINR?: number;
+  priceUSD?: number;
   available: boolean;
   discount?: {
     enabled: boolean;

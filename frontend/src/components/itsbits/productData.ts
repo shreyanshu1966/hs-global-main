@@ -8,8 +8,8 @@ export interface ItsbitsCardItem {
   designer: string;
   price?: string;
   originalPrice?: string;
-  priceINR?: number;
-  originalPriceINR?: number;
+  priceUSD?: number;
+  originalPriceUSD?: number;
   priceLabel?: string;
   href: string;
   createdAt?: string;
@@ -37,11 +37,11 @@ export const getItsbitsProductImage = (product: Product): string => {
 };
 
 const getPriceLabels = (product: Product): {
-  priceINR?: number;
-  originalPriceINR?: number;
+  priceUSD?: number;
+  originalPriceUSD?: number;
   priceLabel?: string;
 } => {
-  const basePrice = product.priceINR || 0;
+  const basePrice = product.priceUSD || 0;
   const hasDiscount = Boolean(product.discount?.enabled && product.discount.percentage > 0 && basePrice > 0);
 
   if (basePrice <= 0) {
@@ -49,27 +49,27 @@ const getPriceLabels = (product: Product): {
   }
 
   if (!hasDiscount) {
-    return { priceINR: basePrice };
+    return { priceUSD: basePrice };
   }
 
   const finalPrice = basePrice - (basePrice * product.discount!.percentage) / 100;
   return {
-    priceINR: finalPrice,
-    originalPriceINR: basePrice,
+    priceUSD: finalPrice,
+    originalPriceUSD: basePrice,
   };
 };
 
 export const mapProductToItsbitsCard = (product: Product): ItsbitsCardItem => {
   const categoryLabel = toTitleCase(product.subcategory || product.category || 'HS Global Collection');
-  const { priceINR, originalPriceINR, priceLabel } = getPriceLabels(product);
+  const { priceUSD, originalPriceUSD, priceLabel } = getPriceLabels(product);
 
   return {
     id: product.productId || product._id,
     image: getItsbitsProductImage(product),
     title: product.name,
     designer: categoryLabel,
-    priceINR,
-    originalPriceINR,
+    priceUSD,
+    originalPriceUSD,
     priceLabel,
     href: `/products/${product.productId || product._id}`,
     createdAt: product.createdAt,

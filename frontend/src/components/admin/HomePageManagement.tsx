@@ -392,7 +392,7 @@ const HomePageManagement = () => {
           <input
             value={config.newArrivals.sortBy}
             onChange={(e) => setConfig((prev) => ({ ...prev, newArrivals: { ...prev.newArrivals, sortBy: e.target.value } }))}
-            placeholder="Sort by (createdAt/priceINR/name)"
+            placeholder="Sort by (createdAt/priceUSD/name)"
             className={inputClass}
           />
           <select
@@ -867,7 +867,7 @@ const HomePageManagement = () => {
           <input
             value={config.videoCarousel.sortBy}
             onChange={(e) => setConfig((prev) => ({ ...prev, videoCarousel: { ...prev.videoCarousel, sortBy: e.target.value } }))}
-            placeholder="Sort by (createdAt/priceINR/name)"
+            placeholder="Sort by (createdAt/priceUSD/name)"
             className={inputClass}
           />
           <select

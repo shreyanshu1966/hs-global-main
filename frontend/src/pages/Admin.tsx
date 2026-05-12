@@ -630,7 +630,7 @@ const Admin = () => {
                 category: product.category,
                 subcategory: product.subcategory,
                 description: product.description,
-                priceINR: product.priceINR,
+                priceUSD: product.priceUSD,
                 available: product.available,
                 featured: product.featured || false,
                 hasVideo: product.hasVideo,
@@ -969,7 +969,7 @@ const Admin = () => {
                     category: categoryId,
                     subcategory,
                     description: product.description,
-                    priceINR: product.priceINR,
+                    priceUSD: product.priceUSD,
                     available: product.available,
                     status: product.status,
                     featured: product.featured,
@@ -1013,7 +1013,7 @@ const Admin = () => {
                     category: 'uncategorized',
                     subcategory: 'general',
                     description: product.description,
-                    priceINR: product.priceINR,
+                    priceUSD: product.priceUSD,
                     available: product.available,
                     status: product.status,
                     featured: product.featured,
@@ -1074,7 +1074,7 @@ const Admin = () => {
                     category: product.category,
                     subcategory: product.subcategory,
                     description: product.description,
-                    priceINR: product.priceINR,
+                    priceUSD: product.priceUSD,
                     available: product.available,
                     status: product.status,
                     featured: product.featured,
@@ -2799,20 +2799,20 @@ const Admin = () => {
                                                     </td>
                                                     <td className="px-6 py-4">
                                                         <div>
-                                                            {product.priceINR ? (
+                                                            {product.priceUSD ? (
                                                                 <>
                                                                     {product.discount?.enabled && product.discount.percentage > 0 ? (
                                                                         <div>
                                                                             <div className="text-sm font-medium text-green-600">
-                                                                                {formatCurrency(Math.round(product.priceINR * (1 - product.discount.percentage / 100)))}
+                                                                                {formatCurrency(Math.round(product.priceUSD * (1 - product.discount.percentage / 100)))}
                                                                             </div>
                                                                             <div className="text-xs text-gray-500 line-through">
-                                                                                {formatCurrency(product.priceINR)}
+                                                                                {formatCurrency(product.priceUSD)}
                                                                             </div>
                                                                         </div>
                                                                     ) : (
                                                                         <div className="text-sm font-medium text-gray-900">
-                                                                            {formatCurrency(product.priceINR)}
+                                                                            {formatCurrency(product.priceUSD)}
                                                                         </div>
                                                                     )}
                                                                 </>
@@ -3449,18 +3449,18 @@ const Admin = () => {
                                                         <span className="text-sm text-gray-900 capitalize">{previewProduct.subcategory}</span>
                                                     </div>
 
-                                                    {previewProduct.priceINR && (
+                                                    {previewProduct.priceUSD && (
                                                         <div className="flex items-center justify-between">
                                                             <span className="text-sm font-medium text-gray-500">Price:</span>
                                                             <div className="text-right">
                                                                 {previewProduct.discount?.enabled && previewProduct.discount?.percentage ? (
                                                                     <>
                                                                         <span className="text-lg font-bold text-gray-900">
-                                                                            ₹{Math.round(previewProduct.priceINR * (1 - (previewProduct.discount.percentage / 100))).toLocaleString('en-IN')}
+                                                                            ${Math.round(previewProduct.priceUSD * (1 - (previewProduct.discount.percentage / 100)) * 100) / 100}
                                                                         </span>
                                                                         <br />
                                                                         <span className="text-sm text-gray-500 line-through">
-                                                                            ₹{previewProduct.priceINR.toLocaleString('en-IN')}
+                                                                            ${previewProduct.priceUSD.toLocaleString('en-US', { minimumFractionDigits: 2 })}
                                                                         </span>
                                                                         <span className="ml-2 px-2 py-1 bg-red-100 text-red-700 text-xs rounded-full">
                                                                             {previewProduct.discount.percentage}% OFF
@@ -3468,7 +3468,7 @@ const Admin = () => {
                                                                     </>
                                                                 ) : (
                                                                     <span className="text-lg font-bold text-gray-900">
-                                                                        ₹{previewProduct.priceINR.toLocaleString('en-IN')}
+                                                                        ${previewProduct.priceUSD.toLocaleString('en-US', { minimumFractionDigits: 2 })}
                                                                     </span>
                                                                 )}
                                                             </div>

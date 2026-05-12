@@ -46,9 +46,9 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
 
   // Helper to get raw INR price as number
   const getRawINRPrice = (): number => {
-    // 1. Check if priceINR is directly available (preferred)
-    if (product.priceINR) {
-      return product.priceINR;
+    // 1. Check if priceUSD is directly available (preferred)
+    if (product.priceUSD) {
+      return product.priceUSD;
     }
     return 0; // Default fallback if no price
   };
@@ -66,7 +66,7 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
           productId: (product as any).productId || resolvedId,
           name: product.name,
           image: getProductImage(),
-          priceINR: getRawINRPrice(),
+          priceUSD: getRawINRPrice(),
           category: product.category,
           subcategory: product.subcategory,
           discount: product.discount,
@@ -106,7 +106,7 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
       productId: (product as any).productId || resolvedId,
       name: product.name,
       image: getProductImage(),
-      priceINR: getRawINRPrice(),
+      priceUSD: getRawINRPrice(),
       category: product.category,
       subcategory: product.subcategory,
       discount: product.discount,

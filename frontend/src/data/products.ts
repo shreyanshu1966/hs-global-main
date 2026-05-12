@@ -7,7 +7,7 @@ export interface Product {
   subcategory: string;
   image: string;
   description: string;
-  priceINR?: number;        // <-- INR only
+  priceUSD?: number;        // <-- INR only
   images?: string[];
   available?: boolean;
   hasVideo?: boolean;       // Pre-computed video availability
@@ -90,30 +90,30 @@ const SUBCATEGORY_TO_PRODUCT_TYPE: Record<string, string> = {
 };
 
 // Extract INR pricing from furnitureSpecs
-const getFurniturePriceINR = (
+const getFurniturePriceUSD = (
   productName: string,
   subcategory: string
-): { priceINR: number | undefined; available: boolean } => {
+): { priceUSD: number | undefined; available: boolean } => {
 
   const specs = getFurnitureSpecs(productName);
 
-  if (!specs?.priceINR) {
-    return { priceINR: undefined, available: false };
+  if (!specs?.priceUSD) {
+    return { priceUSD: undefined, available: false };
   }
 
   const expected = SUBCATEGORY_TO_PRODUCT_TYPE[normalize(subcategory)];
   if (expected && specs.product !== expected) {
-    return { priceINR: undefined, available: false };
+    return { priceUSD: undefined, available: false };
   }
 
   return {
-    priceINR: specs.priceINR,
+    priceUSD: specs.priceUSD,
     available: true,
   };
 };
 
 export const isProductAvailable = (productName: string, subcategory: string) => {
-  return getFurniturePriceINR(productName, subcategory).available;
+  return getFurniturePriceUSD(productName, subcategory).available;
 };
 
 // Pre-sort images at build time to avoid runtime regex operations
@@ -217,7 +217,7 @@ const buildFurnitureCategories = (): Subcategory[] => {
         const prodMap = subMap.get(toTitle(child)) || new Map();
 
         const products = [...prodMap.values()].map<Product>((p) => {
-          const { priceINR, available } = getFurniturePriceINR(p.name, child);
+          const { priceUSD, available } = getFurniturePriceUSD(p.name, child);
           const sortedImages = sortImagesByPriority(p.images, "furniture");
 
           return {
@@ -229,7 +229,7 @@ const buildFurnitureCategories = (): Subcategory[] => {
             images: p.images,
             sortedImages,
             description: `${p.name} - ${child}`,
-            priceINR,
+            priceUSD,
             available,
             hasVideo: true, // Assume all furniture has video, handle 404 gracefully
           };
@@ -246,7 +246,7 @@ const buildFurnitureCategories = (): Subcategory[] => {
       const prodMap = subMap.get(null) || new Map();
 
       const products = [...prodMap.values()].map<Product>((p) => {
-        const { priceINR, available } = getFurniturePriceINR(p.name, main);
+        const { priceUSD, available } = getFurniturePriceUSD(p.name, main);
         const sortedImages = sortImagesByPriority(p.images, "furniture");
 
         return {
@@ -258,7 +258,7 @@ const buildFurnitureCategories = (): Subcategory[] => {
           images: p.images,
           sortedImages,
           description: `${p.name} - ${main}`,
-          priceINR,
+          priceUSD,
           available,
           hasVideo: true,
         };

@@ -63,11 +63,11 @@ const getAllProducts = async (query) => {
     const maxPrice = parsePrice(query.maxPrice);
 
     if (minPrice !== undefined) {
-        filters.priceINR = { ...filters.priceINR, $gte: minPrice };
+        filters.priceUSD = { ...filters.priceUSD, $gte: minPrice };
     }
 
     if (maxPrice !== undefined) {
-        filters.priceINR = { ...filters.priceINR, $lte: maxPrice };
+        filters.priceUSD = { ...filters.priceUSD, $lte: maxPrice };
     }
 
     const sort = { [sortBy]: sortOrder === 'desc' ? -1 : 1 };

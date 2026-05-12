@@ -12,19 +12,19 @@ export const CartMenu: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { state, toggleCart, updateQuantity, removeItem, getTotalItems } = useCart();
-  const { convertFromINR, getCurrencySymbol, formatPrice } = useCurrency();
+  const { convertFromUSD, getCurrencySymbol, formatPrice } = useCurrency();
   const { isAuthenticated } = useAuth();
   const totalItems = getTotalItems();
 
   const subtotal = useMemo(() => {
     return state.items.reduce((sum, item) => {
       const hasDiscount = item.discount?.enabled && item.discount.percentage > 0;
-      const effectivePriceINR = hasDiscount
-        ? item.priceINR * (1 - (item.discount?.percentage ?? 0) / 100)
-        : item.priceINR;
-      return sum + convertFromINR(effectivePriceINR) * item.quantity;
+      const effectivePriceUSD = hasDiscount
+        ? item.priceUSD * (1 - (item.discount?.percentage ?? 0) / 100)
+        : item.priceUSD;
+      return sum + convertFromUSD(effectivePriceUSD) * item.quantity;
     }, 0);
-  }, [state.items, convertFromINR]);
+  }, [state.items, convertFromUSD]);
 
   useEffect(() => {
     setIsOpen(false);
@@ -107,9 +107,9 @@ export const CartMenu: React.FC = () => {
                 >
                   {state.items.map((item) => {
                     const hasDiscount = item.discount?.enabled && item.discount.percentage > 0;
-                    const effectivePriceINR = hasDiscount
-                      ? item.priceINR * (1 - (item.discount?.percentage ?? 0) / 100)
-                      : item.priceINR;
+                    const effectivePriceUSD = hasDiscount
+                      ? item.priceUSD * (1 - (item.discount?.percentage ?? 0) / 100)
+                      : item.priceUSD;
 
                     return (
                       <div key={item.id} className="px-6 py-4 border-b border-[#eceff1]">
@@ -142,11 +142,11 @@ export const CartMenu: React.FC = () => {
 
                             <div className="mt-1 flex items-center gap-2 flex-wrap">
                               <span className="text-sm font-bold text-gray-900">
-                                {formatPrice(effectivePriceINR)}
+                                {formatPrice(effectivePriceUSD)}
                               </span>
                               {hasDiscount && (
                                 <span className="text-xs text-gray-500 line-through">
-                                  {formatPrice(item.priceINR)}
+                                  {formatPrice(item.priceUSD)}
                                 </span>
                               )}
                             </div>

@@ -172,15 +172,15 @@ const Contact = () => {
         <meta name="robots" content="index, follow" />
 
         {/* Canonical URL */}
-        <link rel="canonical" href="https://hsglobalexport.com/contact" />
+        <link rel="canonical" href="https://www.hsglobalexport.com/contact" />
 
         {/* Open Graph */}
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://hsglobalexport.com/contact" />
+        <meta property="og:url" content="https://www.hsglobalexport.com/contact" />
         <meta property="og:site_name" content="HS Global Export" />
         <meta property="og:title" content="Contact Us - Get in Touch | HS Global Export" />
         <meta property="og:description" content="Contact HS Global Export for premium granite and marble solutions. Corporate office in Ahmedabad, factory in Rajasthan." />
-        <meta property="og:image" content="https://hsglobalexport.com/og-image.jpg" />
+        <meta property="og:image" content="https://www.hsglobalexport.com/og-image.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:image:alt" content="HS Global Export - Contact Us" />
@@ -188,10 +188,10 @@ const Contact = () => {
 
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content="https://hsglobalexport.com/contact" />
+        <meta name="twitter:url" content="https://www.hsglobalexport.com/contact" />
         <meta name="twitter:title" content="Contact Us - Get in Touch | HS Global Export" />
         <meta name="twitter:description" content="Contact HS Global Export for premium granite and marble solutions." />
-        <meta name="twitter:image" content="https://hsglobalexport.com/og-image.jpg" />
+        <meta name="twitter:image" content="https://www.hsglobalexport.com/og-image.jpg" />
         <meta name="twitter:image:alt" content="HS Global Export - Contact Us" />
 
         {/* Schema.org LocalBusiness */}

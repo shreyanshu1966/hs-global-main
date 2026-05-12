@@ -264,7 +264,7 @@ const buildFurnitureProducts = ({ specsByName, cloudinaryUrls, videoMap }) => {
         }
       : undefined;
 
-    const priceINR = Number.isFinite(specs?.priceINR) ? Number(specs.priceINR) : undefined;
+    const priceUSD = Number.isFinite(specs?.priceUSD) ? Number(specs.priceUSD) : undefined;
 
     products.push({
       productId,
@@ -275,8 +275,8 @@ const buildFurnitureProducts = ({ specsByName, cloudinaryUrls, videoMap }) => {
       image,
       images: sortedImages,
       sortedImages,
-      priceINR,
-      available: Boolean(priceINR),
+      priceUSD,
+      available: Boolean(priceUSD),
       hasVideo: Boolean(video),
       videoUrl: video?.url || null,
       videoFilename: video?.filename || null,
@@ -324,7 +324,7 @@ const run = async () => {
   const subcategories = Array.from(new Set(products.map((p) => p.subcategory))).sort((a, b) => a.localeCompare(b));
 
   const withVideo = products.filter((p) => p.hasVideo).length;
-  const withPrice = products.filter((p) => Number.isFinite(p.priceINR)).length;
+  const withPrice = products.filter((p) => Number.isFinite(p.priceUSD)).length;
 
   console.log('Furniture migration preview:');
   console.log(`- Products prepared: ${products.length}`);

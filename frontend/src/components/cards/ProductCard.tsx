@@ -7,9 +7,9 @@ import { getProductCloudinaryUrl } from '../../utils/productCloudinary';
 import { AddToCartButton } from '../AddToCartButton';
 import {
     hasActiveDiscount,
-    getBasePriceINR,
+    getbasePriceUSD,
     getDiscountPercentage,
-    getEffectivePriceINR,
+    geteffectivePriceUSD,
 } from '../../modules/product/pricing';
 import { getProductDisplayImages } from '../../modules/product/selectors';
 
@@ -34,8 +34,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
 
     // ---- Pricing ----
     const hasDiscount = useMemo(() => hasActiveDiscount(product), [product]);
-    const finalPrice = useMemo(() => getEffectivePriceINR(product), [product]);
-    const originalPrice = useMemo(() => getBasePriceINR(product), [product]);
+    const finalPrice = useMemo(() => geteffectivePriceUSD(product), [product]);
+    const originalPrice = useMemo(() => getbasePriceUSD(product), [product]);
     const discountPercentage = useMemo(() => Math.round(getDiscountPercentage(product)), [product]);
     const hasValidPrice = useMemo(() => originalPrice > 0, [originalPrice]);
     const showDiscount = hasDiscount && hasValidPrice;

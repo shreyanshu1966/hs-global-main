@@ -12,8 +12,8 @@ interface CurrencyContextType {
     exchangeRates: ExchangeRates;
     loading: boolean;
     setCurrency: (code: string) => void;
-    convertFromINR: (amountINR: number) => number;
-    formatPrice: (amountINR: number) => string;
+    convertFromUSD: (amountUSD: number) => number;
+    formatPrice: (amountUSD: number) => string;
     getCurrencySymbol: () => string;
     getPaymentCurrency: () => { currency: string; rate: number };
 }
@@ -36,28 +36,23 @@ export const CURRENCY_SYMBOLS: Record<string, string> = {
 export const PAYPAL_SUPPORTED_CURRENCIES = ['USD', 'EUR', 'GBP', 'AUD', 'CAD', 'JPY', 'SGD'];
 
 export const DEFAULT_RATES: ExchangeRates = {
-    USD: 0.012,    // 1 INR = 0.012 USD (1 USD = ~83 INR)
-    INR: 1,        // Base currency
-    EUR: 0.011,    // 1 INR = 0.011 EUR
-    GBP: 0.0095,   // 1 INR = 0.0095 GBP
-    AED: 0.044,    // 1 INR = 0.044 AED
-    SAR: 0.045,    // 1 INR = 0.045 SAR
-    AUD: 0.018,    // 1 INR = 0.018 AUD
-    CAD: 0.016,    // 1 INR = 0.016 CAD
-    SGD: 0.016,    // 1 INR = 0.016 SGD
-    JPY: 1.8,      // 1 INR = 1.8 JPY
+    USD: 1,        // Base currency
+    INR: 83.5,     // 1 USD = 83.5 INR
+    EUR: 0.92,     // 1 USD = 0.92 EUR
+    GBP: 0.79,     // 1 USD = 0.79 GBP
+    AED: 3.67,     // 1 USD = 3.67 AED
+    SAR: 3.75,     // 1 USD = 3.75 SAR
+    AUD: 1.53,     // 1 USD = 1.53 AUD
+    CAD: 1.36,     // 1 USD = 1.36 CAD
+    SGD: 1.34,     // 1 USD = 1.34 SGD
+    JPY: 149.5,    // 1 USD = 149.5 JPY
 };
 
 const STORAGE_KEY = 'hs-global-currency';
 const AUTO_DETECT_KEY = 'hs-global-currency-auto-detect';
 const API_URL = `${import.meta.env.VITE_API_URL || '/api'}/currency/rates`;
 
-// Business rule: India keeps geo-location IN, but pricing currency must be USD.
-const COUNTRY_CURRENCY_OVERRIDES: Record<string, string> = {
-    IN: 'USD',
-};
-
-// Country code to currency mapping (Fallback if API doesn't provide it)
+// Country code to currency mapping
 const COUNTRY_TO_CURRENCY: Record<string, string> = {
     US: 'USD', CA: 'CAD', GB: 'GBP', AU: 'AUD', NZ: 'NZD',
     IN: 'USD', PK: 'PKR', BD: 'BDT', LK: 'LKR', NP: 'NPR',
@@ -81,12 +76,6 @@ export const CurrencyProvider: React.FC<{ children: ReactNode }> = ({ children }
     const [exchangeRates, setExchangeRates] = useState<ExchangeRates>(DEFAULT_RATES);
     const [loading, setLoading] = useState(true);
     const [isAutoDetectEnabled, setIsAutoDetectEnabled] = useState(true);
-    const [countryOverrides, setCountryOverrides] = useState<Record<string, string>>(COUNTRY_CURRENCY_OVERRIDES);
-
-    const normalizeCurrency = useCallback((code?: string | null): string => {
-        if (!code) return 'USD';
-        return code === 'INR' ? 'USD' : code;
-    }, []);
 
     // ==================== 1. LOAD SAVED PREFERENCES ====================
     useEffect(() => {
@@ -94,15 +83,11 @@ export const CurrencyProvider: React.FC<{ children: ReactNode }> = ({ children }
         const autoDetect = localStorage.getItem(AUTO_DETECT_KEY);
 
         if (autoDetect === 'false' && savedCurrency) {
-            const normalized = normalizeCurrency(savedCurrency);
-            setCurrencyState(normalized);
-            if (normalized !== savedCurrency) {
-                localStorage.setItem(STORAGE_KEY, normalized);
-            }
+            setCurrencyState(savedCurrency);
             setIsAutoDetectEnabled(false);
-            console.log(`💱 [Currency] Using saved currency: ${normalized}`);
+            console.log(`💱 [Currency] Using saved currency: ${savedCurrency}`);
         }
-    }, [normalizeCurrency]);
+    }, []);
 
     // ==================== 2. LISTEN TO LOCATION CHANGES ====================
     useEffect(() => {
@@ -111,27 +96,20 @@ export const CurrencyProvider: React.FC<{ children: ReactNode }> = ({ children }
         console.log('🌍 [Currency] Adapting to location:', location.country);
 
         // Use currency from location API if available, else map country code
-        let detectedCurrency = location.country ? countryOverrides[location.country] : undefined;
-
-        if (!detectedCurrency) {
-            detectedCurrency = location.currency;
-        }
+        let detectedCurrency = location.currency;
 
         if (!detectedCurrency && location.country) {
             detectedCurrency = COUNTRY_TO_CURRENCY[location.country];
         }
 
-        detectedCurrency = normalizeCurrency(detectedCurrency);
-
-        if (detectedCurrency) {
-            // Only auto-switch if no valid saved preference overrides it (handled by check above)
-            setCurrencyState(detectedCurrency);
-            console.log(`✅ [Currency] Auto-detected: ${location.countryName} → ${detectedCurrency}`);
-        } else {
-            console.log('⚠️ [Currency] Could not map location to currency, keeping default.');
+        if (!detectedCurrency) {
+            detectedCurrency = 'USD';
         }
 
-    }, [location, locationLoading, isAutoDetectEnabled, countryOverrides, normalizeCurrency]);
+        setCurrencyState(detectedCurrency);
+        console.log(`✅ [Currency] Auto-detected: ${location.countryName} → ${detectedCurrency}`);
+
+    }, [location, locationLoading, isAutoDetectEnabled]);
 
     // ==================== 3. FETCH EXCHANGE RATES ====================
     useEffect(() => {
@@ -142,11 +120,6 @@ export const CurrencyProvider: React.FC<{ children: ReactNode }> = ({ children }
 
                 if (data.ok && data.rates) {
                     setExchangeRates(data.rates);
-
-                    if (data.countryCurrencyOverrides && typeof data.countryCurrencyOverrides === 'object') {
-                        setCountryOverrides((prev) => ({ ...prev, ...data.countryCurrencyOverrides }));
-                    }
-
                     console.log(`✅ [Currency] Rates loaded from ${data.source}`);
 
                     if (data.nextUpdate) {
@@ -171,28 +144,27 @@ export const CurrencyProvider: React.FC<{ children: ReactNode }> = ({ children }
 
     // ==================== SET CURRENCY ====================
     const setCurrency = useCallback((code: string) => {
-        const normalized = normalizeCurrency(code);
-        setCurrencyState(normalized);
-        localStorage.setItem(STORAGE_KEY, normalized);
+        setCurrencyState(code);
+        localStorage.setItem(STORAGE_KEY, code);
         localStorage.setItem(AUTO_DETECT_KEY, 'false'); // Disable auto-detect on manual selection
         setIsAutoDetectEnabled(false);
-        console.log(`💱 [Currency] Manually changed to ${normalized} (auto-detect disabled)`);
-    }, [normalizeCurrency]);
+        console.log(`💱 [Currency] Manually changed to ${code} (auto-detect disabled)`);
+    }, []);
 
-    // ==================== CONVERT FROM INR ====================
-    const convertFromINR = useCallback((amountINR: number): number => {
-        if (!amountINR || amountINR <= 0) return 0;
+    // ==================== CONVERT FROM USD ====================
+    const convertFromUSD = useCallback((amountUSD: number): number => {
+        if (!amountUSD || amountUSD <= 0) return 0;
 
-        const rate = exchangeRates[currency] || exchangeRates.INR || 1;
-        const converted = amountINR * rate;
+        const rate = exchangeRates[currency] || 1;
+        const converted = amountUSD * rate;
 
         // Round to 2 decimal places
         return Math.round(converted * 100) / 100;
     }, [currency, exchangeRates]);
 
     // ==================== FORMAT PRICE ====================
-    const formatPrice = useCallback((amountINR: number): string => {
-        const converted = convertFromINR(amountINR);
+    const formatPrice = useCallback((amountUSD: number): string => {
+        const converted = convertFromUSD(amountUSD);
         const symbol = getCurrencySymbol();
 
         // Format with proper decimal places
@@ -202,7 +174,7 @@ export const CurrencyProvider: React.FC<{ children: ReactNode }> = ({ children }
         });
 
         return `${symbol}${formatted}`;
-    }, [currency, convertFromINR]);
+    }, [currency, convertFromUSD]);
 
     // ==================== GET CURRENCY SYMBOL ====================
     const getCurrencySymbol = useCallback((): string => {
@@ -214,9 +186,9 @@ export const CurrencyProvider: React.FC<{ children: ReactNode }> = ({ children }
     // Always returns USD to avoid PayPal currency acceptance issues
     const getPaymentCurrency = useCallback(() => {
         const code = 'USD'; // Always use USD for PayPal payments
-        const rate = exchangeRates.USD || DEFAULT_RATES.USD;
+        const rate = 1; // Base currency is USD now, so rate is always 1
         return { currency: code, rate };
-    }, [exchangeRates]);
+    }, []);
 
     // ==================== PROVIDER ====================
     return (
@@ -226,7 +198,7 @@ export const CurrencyProvider: React.FC<{ children: ReactNode }> = ({ children }
                 exchangeRates,
                 loading,
                 setCurrency,
-                convertFromINR,
+                convertFromUSD,
                 formatPrice,
                 getCurrencySymbol,
                 getPaymentCurrency

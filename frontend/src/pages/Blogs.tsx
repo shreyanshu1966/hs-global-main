@@ -64,11 +64,24 @@ const Blogs = () => {
     return (
         <>
             <Helmet>
-                <title>Blog - HS Global Export | Industry Insights & Updates</title>
-                <meta
-                    name="description"
-                    content="Stay updated with the latest industry news, design trends, and product updates from HS Global Export."
-                />
+                <title>Blog - HS Global Export | Industry Insights &amp; Updates</title>
+                <meta name="description" content="Stay updated with the latest industry news, design trends, and product updates from HS Global Export." />
+                <meta name="keywords" content="HS Global Export Blog, marble industry news, granite design trends, natural stone updates, marble furniture insights, stone export news" />
+                <meta name="author" content="HS Global Export" />
+                <meta name="robots" content="index, follow" />
+                <link rel="canonical" href="https://www.hsglobalexport.com/blog" />
+                <meta property="og:type" content="website" />
+                <meta property="og:url" content="https://www.hsglobalexport.com/blog" />
+                <meta property="og:site_name" content="HS Global Export" />
+                <meta property="og:title" content="Blog - HS Global Export | Industry Insights & Updates" />
+                <meta property="og:description" content="Stay updated with the latest industry news, design trends, and product updates from HS Global Export." />
+                <meta property="og:image" content="https://www.hsglobalexport.com/og-image.jpg" />
+                <meta property="og:locale" content="en_US" />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:url" content="https://www.hsglobalexport.com/blog" />
+                <meta name="twitter:title" content="Blog - HS Global Export | Industry Insights & Updates" />
+                <meta name="twitter:description" content="Stay updated with the latest industry news, design trends, and product updates from HS Global Export." />
+                <meta name="twitter:image" content="https://www.hsglobalexport.com/og-image.jpg" />
             </Helmet>
 
             <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">

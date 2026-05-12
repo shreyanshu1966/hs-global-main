@@ -8,7 +8,7 @@ export interface AdminProduct {
   image: string;
   images: string[];
   sortedImages: string[];
-  priceINR?: number;
+  priceUSD?: number;
   available: boolean;
   discount?: {
     enabled: boolean;
@@ -57,7 +57,7 @@ export interface AdminProductFormData {
   category: string;
   subcategory: string;
   description: string;
-  priceINR?: number;
+  priceUSD?: number;
   available?: boolean;
   discount?: {
     enabled?: boolean;
@@ -103,7 +103,7 @@ export interface DiscountedProduct {
   name: string;
   category: string;
   subcategory: string;
-  priceINR: number;
+  priceUSD: number;
   discount: {
     enabled: boolean;
     percentage: number;

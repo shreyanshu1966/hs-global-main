@@ -565,8 +565,8 @@ const previewProduct = async (req, res) => {
             isPreview: true,
             previewTimestamp: new Date().toISOString(),
             // Calculate discount price if applicable
-            discountedPrice: productData.discount?.enabled && productData.priceINR 
-                ? Math.round(productData.priceINR * (1 - productData.discount.percentage / 100))
+            discountedPrice: productData.discount?.enabled && productData.priceUSD 
+                ? Math.round(productData.priceUSD * (1 - productData.discount.percentage / 100))
                 : null
         };
 
@@ -923,7 +923,7 @@ const getDiscountedProducts = async (req, res) => {
         
         const [products, total] = await Promise.all([
             Product.find(query)
-                .select('productId name category subcategory priceINR discount image')
+                .select('productId name category subcategory priceUSD discount image')
                 .skip(skip)
                 .limit(parseInt(limit))
                 .sort({ 'discount.endDate': 1 }),

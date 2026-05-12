@@ -1,5 +1,5 @@
 import { LegacyProduct } from '../types';
-import { getEffectivePriceINR } from '../pricing/priceSelectors';
+import { geteffectivePriceUSD } from '../pricing/priceSelectors';
 
 export const getProductPrimaryImage = (product: LegacyProduct): string => {
   if (product.image) {
@@ -19,4 +19,4 @@ export const getProductDisplayImages = (product: LegacyProduct): string[] => {
 };
 
 export const isProductDiscounted = (product: LegacyProduct): boolean =>
-  getEffectivePriceINR(product) < (product.priceINR || 0);
+  geteffectivePriceUSD(product) < (product.priceUSD || 0);

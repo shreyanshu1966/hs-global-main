@@ -1,7 +1,7 @@
 export interface ProductPricingV2 {
-  currency: 'INR';
-  basePriceINR: number;
-  effectivePriceINR: number;
+  currency: 'USD';
+  basePriceUSD: number;
+  effectivePriceUSD: number;
   discountStatus: 'none' | 'scheduled' | 'active' | 'expired';
   discount: {
     enabled: boolean;
