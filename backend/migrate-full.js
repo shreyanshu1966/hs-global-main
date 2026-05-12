@@ -259,7 +259,7 @@ async function migrate() {
                      if (foundKey) finalSpec = specsData[foundKey];
                 }
                 
-                const priceINR = finalSpec?.priceINR;
+                const priceUSD = finalSpec?.priceUSD;
                 // If not available in specs, mark unavailable? Frontend does this.
                 // But let's migrate everything, just maybe mark unavailable if no price.
                 
@@ -272,8 +272,8 @@ async function migrate() {
                     image: p.images[0], // Need better sorting logic, but first found is okay for now
                     images: p.images,
                     sortedImages: p.images, // TODO: Sort
-                    priceINR: priceINR || 0,
-                    available: !!priceINR,
+                    priceUSD: priceUSD || 0,
+                    available: !!priceUSD,
                     hasVideo: true,
                     furnitureSpecs: finalSpec || {},
                     status: 'active'
@@ -362,9 +362,9 @@ async function migrate() {
                     image: mainImage,
                     images: allImages,
                     sortedImages: allImages,
-                    // Slabs usually don't have priceINR in the static file? 
+                    // Slabs usually don't have priceUSD in the static file? 
                     // migrate-products.js from before didn't have prices for slabs.
-                    priceINR: 0, 
+                    priceUSD: 0, 
                     available: true, 
                     slabSpecs: {
                         material: s.type,

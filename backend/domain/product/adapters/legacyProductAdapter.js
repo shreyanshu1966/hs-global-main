@@ -8,7 +8,7 @@ const toLegacyProduct = (dto) => ({
     image: dto.media.primaryImage || '',
     images: dto.media.galleryImages,
     sortedImages: dto.media.sortedImages,
-    priceINR: dto.pricing.basePriceINR || undefined,
+    priceUSD: dto.pricing.basePriceUSD || undefined,
     available: dto.availability.available,
     discount: dto.pricing.discount,
     hasVideo: dto.media.video.hasVideo,

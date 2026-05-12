@@ -20,18 +20,18 @@ async function deleteAllPrices() {
     await mongoose.connect(mongoUri);
     console.log('Connected.');
 
-    const filter = { priceINR: { $exists: true } };
+    const filter = { priceUSD: { $exists: true } };
     const productsWithPrice = await Product.countDocuments(filter);
 
     if (!isApply) {
       console.log('\nDry run only. No data changed.');
-      console.log(`Products that currently have priceINR: ${productsWithPrice}`);
-      console.log('Run with --apply to remove all priceINR fields.');
+      console.log(`Products that currently have priceUSD: ${productsWithPrice}`);
+      console.log('Run with --apply to remove all priceUSD fields.');
       return;
     }
 
     const result = await Product.updateMany(filter, {
-      $unset: { priceINR: '' },
+      $unset: { priceUSD: '' },
     });
 
     console.log('\nPrice cleanup completed.');

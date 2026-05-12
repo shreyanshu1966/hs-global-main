@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const currencySchema = new mongoose.Schema({
     base: {
         type: String,
-        default: 'INR',
+        default: 'USD',
         unique: true
     },
     rates: {

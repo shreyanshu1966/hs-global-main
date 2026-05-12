@@ -22,8 +22,8 @@ const getDiscountStatus = (product) => {
     return { state: 'active', isActive: true, startDate, endDate };
 };
 
-const getEffectivePriceINR = (product, discountStatus) => {
-    const base = Number(product.priceINR || 0);
+const getEffectivePriceUSD = (product, discountStatus) => {
+    const base = Number(product.priceUSD || 0);
     if (!base) {
         return 0;
     }
@@ -33,14 +33,14 @@ const getEffectivePriceINR = (product, discountStatus) => {
     }
 
     const percentage = Number(product.discount?.percentage || 0);
-    const discountAmount = Math.round((base * percentage) / 100);
-    return Math.max(0, base - discountAmount);
+    const discountAmount = Math.round((base * percentage) / 100 * 100) / 100;
+    return Math.max(0, Math.round((base - discountAmount) * 100) / 100);
 };
 
 const toProductDto = (product) => {
     const discountStatus = getDiscountStatus(product);
-    const basePriceINR = Number(product.priceINR || 0);
-    const effectivePriceINR = getEffectivePriceINR(product, discountStatus);
+    const basePriceUSD = Number(product.priceUSD || 0);
+    const effectivePriceUSD = getEffectivePriceUSD(product, discountStatus);
 
     const galleryImages = Array.isArray(product.images) ? product.images.filter(Boolean) : [];
     const sortedImages = Array.isArray(product.sortedImages) ? product.sortedImages.filter(Boolean) : [];
@@ -64,9 +64,9 @@ const toProductDto = (product) => {
             tags: Array.isArray(product.tags) ? product.tags : []
         },
         pricing: {
-            currency: 'INR',
-            basePriceINR,
-            effectivePriceINR,
+            currency: 'USD',
+            basePriceUSD,
+            effectivePriceUSD,
             discountStatus: discountStatus.state,
             discount: {
                 enabled: Boolean(product.discount?.enabled),

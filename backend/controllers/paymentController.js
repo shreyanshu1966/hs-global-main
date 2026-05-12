@@ -55,9 +55,7 @@ exports.calculateCartTotal = async (req, res) => {
 
         const Product = require('../models/Product');
         const validatedItems = [];
-        let totalINR = 0;
         let totalUSD = 0;
-        const INR_TO_USD_RATE = parseFloat(process.env.INR_TO_USD_RATE || '0.012');
 
         for (const item of items) {
             const requestedId = String(item.productId || item.id || '').trim();
@@ -85,31 +83,25 @@ exports.calculateCartTotal = async (req, res) => {
                 });
             }
 
-            // Get actual price from database (in INR)
-            const actualPriceINR = product.priceINR;
+            // Get actual price from database (in USD)
+            const actualPriceUSD = product.priceUSD;
 
             // Check if discount is actually active (server-side validation)
             const isDiscountActive = product.isDiscountActive();
             const discountPercentage = isDiscountActive ? product.discount.percentage : 0;
-            const discountAmount = isDiscountActive ? Math.round((actualPriceINR * discountPercentage) / 100) : 0;
-            const finalPriceINR = actualPriceINR - discountAmount;
-
-            // Convert to USD
-            const finalPriceUSD = parseFloat((finalPriceINR * INR_TO_USD_RATE).toFixed(2));
+            const discountAmount = isDiscountActive ? Math.round((actualPriceUSD * discountPercentage) / 100 * 100) / 100 : 0;
+            const finalPriceUSD = parseFloat((actualPriceUSD - discountAmount).toFixed(2));
 
             const quantity = item.quantity || 1;
-            const itemTotalINR = finalPriceINR * quantity;
             const itemTotalUSD = finalPriceUSD * quantity;
 
-            totalINR += itemTotalINR;
             totalUSD += itemTotalUSD;
 
             validatedItems.push({
                 requestedId,
                 productId: product.productId,
                 name: product.name,
-                priceINR: actualPriceINR,
-                finalPriceINR: finalPriceINR,
+                priceUSD: actualPriceUSD,
                 finalPriceUSD: finalPriceUSD,
                 quantity: quantity,
                 discountPercentage: discountPercentage,
@@ -124,10 +116,8 @@ exports.calculateCartTotal = async (req, res) => {
             ok: true,
             items: validatedItems,
             totals: {
-                INR: parseFloat(totalINR.toFixed(2)),
                 USD: parseFloat(totalUSD.toFixed(2))
-            },
-            exchangeRate: INR_TO_USD_RATE
+            }
         });
     } catch (error) {
         console.error('❌ Calculate cart total failed:', error.message);
@@ -219,10 +209,10 @@ exports.createOrder = async (req, res) => {
                     });
                 }
 
-                // Get actual price from database (in INR)
-                const actualPriceINR = product.priceINR;
+                // Get actual price from database (in USD)
+                const actualPriceUSD = product.priceUSD;
 
-                if (!actualPriceINR) {
+                if (!actualPriceUSD) {
                     return res.status(400).json({
                         ok: false,
                         error: `Product ${item.name} does not have a price`,
@@ -233,13 +223,8 @@ exports.createOrder = async (req, res) => {
                 // Check if discount is actually active (server-side validation)
                 const isDiscountActive = product.isDiscountActive();
                 const discountPercentage = isDiscountActive ? product.discount.percentage : 0;
-                const discountAmount = isDiscountActive ? Math.round((actualPriceINR * discountPercentage) / 100) : 0;
-                const finalPriceINR = actualPriceINR - discountAmount;
-
-                // Convert to payment currency (USD)
-                // Get exchange rate from environment or use default
-                const INR_TO_USD_RATE = parseFloat(process.env.INR_TO_USD_RATE || '0.012');
-                const finalPriceUSD = (finalPriceINR * INR_TO_USD_RATE);
+                const discountAmount = isDiscountActive ? Math.round((actualPriceUSD * discountPercentage) / 100 * 100) / 100 : 0;
+                const finalPriceUSD = parseFloat((actualPriceUSD - discountAmount).toFixed(2));
 
                 // Validate quantity
                 if (!item.quantity || item.quantity < 1) {
@@ -257,12 +242,11 @@ exports.createOrder = async (req, res) => {
                     productId: product.productId,
                     name: product.name,
                     quantity: item.quantity,
-                    priceINR: actualPriceINR,
-                    originalPrice: actualPriceINR,
+                    priceUSD: actualPriceUSD,
+                    originalPrice: actualPriceUSD,
                     discountPercentage: discountPercentage,
                     discountAmount: discountAmount,
-                    finalPriceINR: finalPriceINR,
-                    finalPriceUSD: parseFloat(finalPriceUSD.toFixed(2)),
+                    finalPriceUSD: finalPriceUSD,
                     image: product.image,
                     category: product.category,
                     discount: isDiscountActive ? {
@@ -274,16 +258,14 @@ exports.createOrder = async (req, res) => {
                     } : undefined
                 });
 
-                console.log(`✅ Validated: ${product.name} - Original: ₹${actualPriceINR}, Discount: ${discountPercentage}%, Final: ₹${finalPriceINR} ($${finalPriceUSD.toFixed(2)})`);
+                console.log(`✅ Validated: ${product.name} - Base: $${actualPriceUSD}, Discount: ${discountPercentage}%, Final: $${finalPriceUSD}`);
             }
 
             // Round to 2 decimal places
             serverCalculatedTotal = parseFloat(serverCalculatedTotal.toFixed(2));
 
             // Compare with frontend amount for logging/monitoring only (don't reject)
-            const frontendAmountUSD = currency === 'USD' 
-                ? parseFloat(amount) 
-                : parseFloat(amount) * parseFloat(process.env.INR_TO_USD_RATE || '0.012');
+            const frontendAmountUSD = parseFloat(amount);
             
             const amountDifference = Math.abs(serverCalculatedTotal - frontendAmountUSD);
             
@@ -429,7 +411,7 @@ exports.createOrder = async (req, res) => {
                         name: item.name,
                         quantity: item.quantity,
                         price: item.finalPriceUSD, // Server-validated final price in USD
-                        priceINR: item.priceINR,
+                        priceUSD: item.priceUSD,
                         originalPrice: item.originalPrice,
                         discountPercentage: item.discountPercentage,
                         discountAmount: item.discountAmount,

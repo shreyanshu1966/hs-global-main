@@ -58,7 +58,7 @@ async function testDiscountSystem() {
 
         if (discountedProduct) {
             console.log(`✓ Found product: ${discountedProduct.name}`);
-            console.log(`  Original Price: ₹${discountedProduct.priceINR}`);
+            console.log(`  Original Price: ₹${discountedProduct.priceUSD}`);
             console.log(`  Discount: ${discountedProduct.discount.percentage}%`);
             
             const isActive = discountedProduct.isDiscountActive();
@@ -70,7 +70,7 @@ async function testDiscountSystem() {
             
             const finalPrice = discountedProduct.getFinalPrice();
             console.log(`  Final Price: ₹${finalPrice}`);
-            console.log(`  Savings: ₹${discountedProduct.priceINR - finalPrice}`);
+            console.log(`  Savings: ₹${discountedProduct.priceUSD - finalPrice}`);
         } else {
             console.log('⚠️  No products with discounts found');
         }
