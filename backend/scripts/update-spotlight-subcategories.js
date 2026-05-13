@@ -13,7 +13,7 @@ async function updateSpotlightSubcategories() {
 
         // Step 1: Find all subcategories and pick one product image for each
         const subcatsWithImages = await Product.aggregate([
-            { $match: { status: 'active', available: true } },
+            { $match: { status: 'active', available: true, image: { $exists: true, $ne: '' } } },
             {
                 $group: {
                     _id: { category: '$category', subcategory: '$subcategory' },
@@ -31,7 +31,7 @@ async function updateSpotlightSubcategories() {
 
         // Step 2: Format them into the linkCardSchema structure used by Spotlight
         const newCards = subcatsWithImages
-            .filter(item => item._id.subcategory) // Ignore empty subcategories
+            .filter(item => item._id.subcategory && item.image) // Ignore empty subcategories or missing images
             .map(item => {
                 const catId = item._id.category || 'furniture';
                 const subId = item._id.subcategory.trim();
