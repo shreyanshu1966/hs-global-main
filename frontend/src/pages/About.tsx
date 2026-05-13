@@ -18,7 +18,7 @@ const About = () => {
 
       <Helmet>
         {/* Basic SEO */}
-        <title>Best Marble Sink, Marble Decor, Granite Sink, Tiles - USA, UK and Across wold wide</title>
+        <title>Best Marble Sink, Marble Decor, Granite Sink, Tiles - USA, UK and Across Worldwide</title>
         <meta name="description" content="HS Global Export offers premium marble sinks, granite sinks, tiles, and marble décor, supplying high-quality natural stone products across the USA, UK, and worldwide." />
         <meta name="keywords" content="About Us, Best Marble Sink, Marble Decor, Granite Sink, Marble Tiles Exporter, Granite Tiles Supplier, Marble Sink Manufacturer, Luxury Marble Decor, Natural Stone Sinks, Premium Granite Sink, Marble Tiles USA, Marble Tiles UK, Granite & Marble Tiles Worldwide, Marble Products Exporter, Global Marble Supplier, Marble & Granite Export Worldwide, High-Quality Marble Tiles, Custom Marble Sink, Stone Decor Manufacturer, International Marble Exporter" />
         <meta name="author" content="HS Global Export" />
@@ -31,7 +31,7 @@ const About = () => {
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.hsglobalexport.com/about" />
         <meta property="og:site_name" content="HS Global Export" />
-        <meta property="og:title" content="Best Marble Sink, Marble Decor, Granite Sink, Tiles - USA, UK and Across wold wide" />
+        <meta property="og:title" content="Best Marble Sink, Marble Decor, Granite Sink, Tiles - USA, UK and Across Worldwide" />
         <meta property="og:description" content="HS Global Export offers premium marble sinks, granite sinks, tiles, and marble décor, supplying high-quality natural stone products across the USA, UK, and worldwide." />
         <meta property="og:image" content="https://www.hsglobalexport.com/og-image.jpg" />
         <meta property="og:image:width" content="1200" />
@@ -42,7 +42,7 @@ const About = () => {
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:url" content="https://www.hsglobalexport.com/about" />
-        <meta name="twitter:title" content="Best Marble Sink, Marble Decor, Granite Sink, Tiles - USA, UK and Across wold wide" />
+        <meta name="twitter:title" content="Best Marble Sink, Marble Decor, Granite Sink, Tiles - USA, UK and Across Worldwide" />
         <meta name="twitter:description" content="HS Global Export offers premium marble sinks, granite sinks, tiles, and marble décor, supplying high-quality natural stone products across the USA, UK, and worldwide." />
         <meta name="twitter:image" content="https://www.hsglobalexport.com/og-image.jpg" />
         <meta name="twitter:image:alt" content="HS Global Export - About Our Company" />
