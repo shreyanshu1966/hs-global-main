@@ -423,6 +423,7 @@ async function runStep3() {
 
         const pDoc = {
             productId: prod.slug,
+            productCode: prod.productCode || '',
             name: cleanName,
             title: cleanTitle,
             category: 'furniture',

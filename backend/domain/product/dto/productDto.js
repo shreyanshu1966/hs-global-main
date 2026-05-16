@@ -52,6 +52,8 @@ const toProductDto = (product) => {
         slug: product?.seo?.slug || product.productId,
         name: product.name,
         description: product.description,
+        subDescription: product.subDescription || '',
+        productCode: product.productCode || '',
         status: product.status,
         featured: Boolean(product.featured),
         availability: {
