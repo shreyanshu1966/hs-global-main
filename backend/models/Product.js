@@ -426,14 +426,11 @@ productSchema.virtual('formattedPrice').get(function () {
 
 // Instance method to increment view count
 productSchema.methods.incrementView = function () {
-    this.viewCount = (this.viewCount || 0) + 1;
-    return this.save();
+    return this.constructor.updateOne({ _id: this._id }, { $inc: { viewCount: 1 } });
 };
 
-// Instance method to increment add to cart count
 productSchema.methods.incrementAddToCart = function () {
-    this.addToCartCount = (this.addToCartCount || 0) + 1;
-    return this.save();
+    return this.constructor.updateOne({ _id: this._id }, { $inc: { addToCartCount: 1 } });
 };
 
 // Instance method to check if discount is currently active

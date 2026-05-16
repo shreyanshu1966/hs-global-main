@@ -14,8 +14,11 @@
  *     featuredBanner, journal, promise
  *
  * Usage:
- *   node backend/scripts/auto-generate-carousels.js           # write to DB
- *   node backend/scripts/auto-generate-carousels.js --dry-run # preview only
+ *   node backend/scripts/auto-generate-carousels.js                        # local DB only
+ *   node backend/scripts/auto-generate-carousels.js --also-live            # local + live DB
+ *   node backend/scripts/auto-generate-carousels.js --dry-run              # preview, no writes
+ *
+ * Set LIVE_MONGODB_URI in backend/.env for --also-live to work.
  */
 
 require('dotenv').config({ path: require('path').resolve(__dirname, '../.env') });
@@ -26,8 +29,72 @@ const Product = require('../models/Product');
 const Category = require('../models/Category');
 
 const DRY_RUN = process.argv.includes('--dry-run');
+const ALSO_LIVE = process.argv.includes('--also-live');
 const MIN_PRODUCTS = 5;    // only include subcategories with at least this many active products
 const CAROUSEL_LIMIT = 12; // products shown per carousel
+
+// ---------------------------------------------------------------------------
+// Hardcoded picks for merged (cross-category) carousels.
+// Edit this object to change which products appear in each combined carousel.
+// Key = subcategory name (lowercase), Value = ordered productId array.
+// ---------------------------------------------------------------------------
+const HARDCODED_PICKS = {
+    'coffee table': [
+        'modern-marble-wave-coffee-table-sculptural-center-table',
+        'wooden-coffee-table-brass-inlay-rustic-center-table',
+        'brass-inlay-wooden-coffee-table-vintage-accent-table',
+        'floral-marble-coffee-table-luxury-stone-center-table',
+        'modern-glass-coffee-table-sculptural-wood-base',
+        'white-marble-coffee-table-round-stone-ball-base-table',
+        'sculptural-travertine-coffee-table-modern-wave-stone-table',
+        'travertine-coffee-table-modern-sculptural-stone-table',
+        'travertine-coffee-table-organic-stone-living-room-table',
+        'modern-marble-glass-coffee-table-sculptural-living-room-table',
+        'marble-nesting-coffee-tables-modern-stone-table-set',
+        'red-marble-coffee-table-modern-round-stone-center-table',
+    ],
+    'console table': [
+        'black-marble-console-table-modern-entryway-table',
+        'red-travertine-console-table-modern-stone-entryway-table',
+        'brass-inlay-console-table-wooden-entryway-desk-4-drawer',
+        'elephant-brass-inlay-wooden-sideboard-cabinet-large-storage',
+        'brass-inlay-console-table-wooden-entryway-table-3-drawer',
+        'travertine-console-table-minimalist-stone-entryway-table',
+        'travertine-console-table-fluted-stone-entryway-table',
+        'scalloped-marble-console-table-modern-stone-entryway-table',
+        'modern-marble-console-table-black-stone-entryway-table',
+        'black-marble-console-table-luxury-entryway-furniture',
+        'modern-marble-console-table-minimal-entryway-furniture',
+        'burgundy-marble-console-table-sculptural-entryway-decor',
+    ],
+    'dining table': [
+        'modern-marble-dining-table-white-stone-with-black-veining-luxury-pedaaaestal-base',
+        'large-wooden-dining-table-set-brass-inlay-6-chairs',
+        'round-wooden-dining-table-set-brass-inlay-4-chairs',
+        'travertine-dining-table-oval-stone-pedestal-table',
+        'round-travertine-dining-table-modern-stone-pedestal-table',
+        'modern-marble-dining-table-luxury-stone-dining-table',
+        'pink-marble-dining-table-modern-oval-stone-table',
+        'oval-marble-dining-table-luxury-stone-dining-table',
+        'travertine-oval-coffee-table-for-living-room-dining-fluted-base-table-japandi-table-wooden-low-table-minimalist-furniture',
+        'natural-travertine-dining-table-sculptural-fluted-pedestal-base-modern-stone-furniture-handmade-natural-stone-table',
+        'round-travertine-dining-table-sculptural-stone-base-organic-modern-furniture-handmade-natural-stone-table',
+    ],
+    'side table': [
+        'green-marble-side-table-fluted-stone-accent-table',
+        'round-wooden-coffee-table-brass-inlay-accent-table',
+        'brass-inlay-wooden-side-table-vintage-accent-nightstand',
+        'brass-inlay-wooden-bedside-table-3-drawer-nightstand',
+        'brass-inlay-5-drawer-bedside-chest-wooden-storage-table',
+        'brass-inlay-curved-chest-of-drawers-vintage-accent-table',
+        'brass-embossed-bedside-cabinet-vintage-storage-table',
+        'vintage-brass-inlay-wooden-chest-of-drawers-table',
+        'marble-brass-side-table-modern-accent-end-table',
+        'clover-marble-side-table-luxury-stone-accent-table',
+        'red-marble-side-table-modern-pedestal-accent-table',
+        'red-marble-side-table-modern-stone-accent-table',
+    ],
+};
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -58,6 +125,23 @@ function buildViewAllLink(category, subcategory) {
 // ---------------------------------------------------------------------------
 // Main
 // ---------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------
+// DB write helper — works with any mongoose connection
+// ---------------------------------------------------------------------------
+
+async function writeCarouselsToDb(conn, carousels, label) {
+    const HPC = conn.model('HomePageConfig', HomePageConfig.schema);
+    let config = await HPC.findOne({ key: 'main' });
+    if (!config) {
+        console.log(`\n⚠️  [${label}] No "main" HomePageConfig found. Creating from defaults...`);
+        config = new HPC(HomePageConfig.getDefaultConfig ? HomePageConfig.getDefaultConfig() : { key: 'main' });
+    }
+    config.productCarousels = carousels;
+    await config.save();
+    console.log(`\n✅ [${label}] Saved ${carousels.length} carousels to HomePageConfig.productCarousels`);
+    console.log(`ℹ️  [${label}] newArrivals (HS Global Highlights) was NOT modified.`);
+}
 
 async function run() {
     const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/hs_global_export';
@@ -135,29 +219,8 @@ async function run() {
         }
 
         if (isShared) {
-            // Pick the best 12 products across all categories for this subcategory.
-            // Priority: featured first → most viewed → highest rated → newest.
-            const picked = await Product.find({
-                subcategory: sub,
-                status: 'active',
-                available: true,
-            })
-                .sort({ featured: -1, viewCount: -1, averageRating: -1, createdAt: -1 })
-                .limit(CAROUSEL_LIMIT)
-                .select('productId name viewCount averageRating featured')
-                .lean();
-
-            const manualProductIds = picked.map((p) => p.productId);
-
-            console.log(`  ✅ [merged: ${cats.join('+')}] "${sub}" — ${count} total, picked ${manualProductIds.length}:`);
-            picked.forEach((p) => {
-                const flags = [
-                    p.featured ? '⭐featured' : '',
-                    p.viewCount ? `👁 ${p.viewCount}` : '',
-                    p.averageRating ? `★${Number(p.averageRating).toFixed(1)}` : '',
-                ].filter(Boolean).join(' ');
-                console.log(`       • ${p.name}${flags ? '  [' + flags + ']' : ''}`);
-            });
+            const manualProductIds = HARDCODED_PICKS[sub.toLowerCase()] || [];
+            console.log(`  ✅ [merged: ${cats.join('+')}] "${sub}" — ${count} total, ${manualProductIds.length} hardcoded picks`);
 
             carousels.push({
                 title: buildCarouselTitle(sub),
@@ -212,23 +275,26 @@ async function run() {
         return;
     }
 
-    // 8. Write ONLY productCarousels — everything else is left untouched
+    // 8. Write to local DB
+    await writeCarouselsToDb(mongoose.connection, carousels, 'local');
 
-    let config = await HomePageConfig.findOne({ key: 'main' });
-
-    if (!config) {
-        console.log('\n⚠️  No "main" HomePageConfig found. Creating one from defaults...');
-        config = new HomePageConfig(HomePageConfig.getDefaultConfig());
+    // 9. Optionally write the same picks to the live DB
+    if (ALSO_LIVE) {
+        const liveUri = process.env.LIVE_MONGODB_URI;
+        if (!liveUri) {
+            console.error('\n❌ --also-live flag set but LIVE_MONGODB_URI is not defined in .env');
+            process.exit(1);
+        }
+        console.log('\n🌐 Connecting to live database...');
+        const liveConn = await mongoose.createConnection(liveUri).asPromise();
+        console.log('✅ Connected to live database');
+        await writeCarouselsToDb(liveConn, carousels, 'live');
+        await liveConn.close();
+        console.log('✅ Live database connection closed.');
     }
 
-    config.productCarousels = carousels;
-    await config.save();
-
-    console.log(`\n✅ Saved ${carousels.length} carousels to HomePageConfig.productCarousels`);
-    console.log('ℹ️  newArrivals (HS Global Highlights) was NOT modified.\n');
-
     await mongoose.disconnect();
-    console.log('✅ Database connection closed.');
+    console.log('✅ Local database connection closed.');
 }
 
 run().catch((err) => {
