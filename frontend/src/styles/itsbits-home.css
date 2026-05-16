@@ -185,6 +185,7 @@
 }
 
 .itsbits-home .itsbits-header-root {
+  font-family: var(--dibs-font-sans);
   -webkit-transform: translateZ(0);
 }
 

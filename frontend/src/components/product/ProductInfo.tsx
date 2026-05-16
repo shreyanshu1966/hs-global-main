@@ -89,25 +89,34 @@ export function ProductInfo({
                 <span aria-current="page" className="text-[#111] font-medium truncate max-w-[150px]">{product.name}</span>
             </nav>
 
-            {/* Brand / Top Label */}
-            <div className="flex justify-between items-start mb-3">
-                <h2 className="text-[13px] font-semibold tracking-[0.15em] uppercase text-[#111827]">
-                    HS Global Export
-                </h2>
-                <div className="flex gap-3">
-                    <button onClick={handleShare} className="text-[#111827] hover:opacity-70 transition-opacity">
-                        <Share2 className="w-5 h-5" strokeWidth={1.5} />
-                    </button>
-                    <button onClick={() => setIsFavorite(!isFavorite)} className="text-[#111827] hover:opacity-70 transition-opacity">
-                        <Heart className={`w-5 h-5 ${isFavorite ? 'fill-[#111827]' : ''}`} strokeWidth={1.5} />
-                    </button>
-                </div>
+            {/* Share / Favourite */}
+            <div className="flex justify-end items-center gap-3 mb-4">
+                <button onClick={handleShare} className="text-[#111827] hover:opacity-70 transition-opacity">
+                    <Share2 className="w-5 h-5" strokeWidth={1.5} />
+                </button>
+                <button onClick={() => setIsFavorite(!isFavorite)} className="text-[#111827] hover:opacity-70 transition-opacity">
+                    <Heart className={`w-5 h-5 ${isFavorite ? 'fill-[#111827]' : ''}`} strokeWidth={1.5} />
+                </button>
             </div>
 
             {/* Title */}
-            <h1 className="font-serif text-[26px] md:text-[32px] text-[#222222] leading-[1.2] mb-3">
+            <h1 className="font-serif text-[26px] md:text-[32px] text-[#222222] leading-[1.2] mb-1">
                 {product.name}
             </h1>
+
+            {/* SKU */}
+            {product.productCode && (
+                <p className="text-[11px] tracking-[0.12em] text-[#aaa] uppercase mb-3">
+                    SKU · {product.productCode}
+                </p>
+            )}
+
+            {/* Sub Description */}
+            {product.subDescription && (
+                <p className="text-[13.5px] text-[#6b7280] leading-relaxed mb-4" style={{ fontWeight: 300 }}>
+                    {product.subDescription}
+                </p>
+            )}
 
             {/* Rating */}
             {reviewStats.totalReviews > 0 && (
@@ -248,6 +257,7 @@ export function ProductInfo({
                     Contact Seller for Bulk Pricing
                 </a>
             </div>
+
 
         </div>
     );

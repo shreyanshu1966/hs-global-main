@@ -113,6 +113,15 @@ const isMarbleFurniture = (product: Product): boolean => {
   return searchable.includes('marble');
 };
 
+function shuffled<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 export const fetchItsbitsProducts = async (options: {
   limit?: number;
   category?: string;
@@ -135,6 +144,10 @@ export const fetchItsbitsProducts = async (options: {
     sortOrder = 'desc',
     marbleFurnitureOnly = false,
   } = options;
+
+  const isRandom = sortBy === 'random';
+  const effectiveSortBy = isRandom ? 'createdAt' : sortBy;
+  const displayLimit = 12;
 
   if (Array.isArray(productIds) && productIds.length > 0) {
     const results = await Promise.all(
@@ -168,7 +181,7 @@ export const fetchItsbitsProducts = async (options: {
     const response = await productService.getProductsByCategory(requiredCategory, {
       limit,
       subcategory: subcategory || undefined,
-      sortBy,
+      sortBy: effectiveSortBy,
       sortOrder,
     });
 
@@ -176,7 +189,8 @@ export const fetchItsbitsProducts = async (options: {
       return [];
     }
 
-    return applyFilters(response.data.products).map(mapProductToItsbitsCard);
+    const items = applyFilters(response.data.products).map(mapProductToItsbitsCard);
+    return isRandom ? shuffled(items).slice(0, displayLimit) : items;
   }
 
   const response = featured
@@ -184,8 +198,9 @@ export const fetchItsbitsProducts = async (options: {
     : await productService.getAllProducts({
         limit,
         ...(category ? { category } : {}),
+        ...(subcategory ? { subcategory } : {}),
         ...(tag ? { tag } : {}),
-        sortBy,
+        sortBy: effectiveSortBy,
         sortOrder,
       });
 
@@ -193,5 +208,6 @@ export const fetchItsbitsProducts = async (options: {
     return [];
   }
 
-  return applyFilters(response.data).map(mapProductToItsbitsCard);
+  const items = applyFilters(response.data).map(mapProductToItsbitsCard);
+  return isRandom ? shuffled(items).slice(0, displayLimit) : items;
 };

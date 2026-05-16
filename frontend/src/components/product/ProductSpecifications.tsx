@@ -26,7 +26,7 @@ export function ProductSpecifications({ product, selectedFinish, selectedThickne
     ];
 
     return (
-        <div className="max-w-6xl mx-auto space-y-6 bg-white border border-[#e2e8f0] p-5 lg:p-6">
+        <div className="max-w-6xl mx-auto space-y-6">
             <div className="space-y-3">
                 <Heading level={2} serif className="text-[#26221c]">Item Details</Heading>
                 <div className="h-px w-20 bg-[#94a3b8]"></div>
@@ -61,14 +61,16 @@ export function ProductSpecifications({ product, selectedFinish, selectedThickne
                         {visibleDescription}
                     </Body>
                     {shouldShowDescriptionToggle && (
-                        <button
-                            type="button"
-                            onClick={() => setIsDescriptionExpanded((prev) => !prev)}
-                            className="inline-flex items-center text-xs sm:text-sm font-semibold uppercase tracking-[0.08em] text-[#0f172a] hover:text-[#334155] transition-colors"
-                            aria-label={isDescriptionExpanded ? 'Show less description' : 'Load more description'}
-                        >
-                            {isDescriptionExpanded ? 'Show Less' : 'Load More'}
-                        </button>
+                        <div className="flex justify-center pt-1">
+                            <button
+                                type="button"
+                                onClick={() => setIsDescriptionExpanded((prev) => !prev)}
+                                className="inline-flex items-center text-xs sm:text-sm font-semibold uppercase tracking-[0.08em] text-[#0f172a] hover:text-[#334155] transition-colors"
+                                aria-label={isDescriptionExpanded ? 'Show less description' : 'Load more description'}
+                            >
+                                {isDescriptionExpanded ? 'Show Less' : 'Load More'}
+                            </button>
+                        </div>
                     )}
                     <div className="grid md:grid-cols-2 gap-x-8">
                         {detailsRows.map(([key, value], index) => (

@@ -541,10 +541,14 @@ const Header = () => {
                     </button>
 
                     {(item.megaMenuType === 'furniture' ? isMobileFurnitureOpen : isMobileHandicraftOpen) && (
-                      <div id={`mobile-${item.megaMenuType}-submenu`} className="px-5 pb-4 space-y-4 bg-[#fafafa] border-t border-[#f1f1f1]">
+                      <div
+                        id={`mobile-${item.megaMenuType}-submenu`}
+                        className="px-5 pb-4 space-y-4 bg-[#fafafa] border-t border-[#f1f1f1]"
+                      >
                         <a
                           href={item.href}
-                          className="inline-block mt-1 rounded-md border border-[#111827] bg-[#111827] px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-white no-underline"
+                          style={{ fontSize: '11px', letterSpacing: '0.1em', fontWeight: 500 }}
+                          className="inline-block mt-1 rounded-md border border-[#111827] bg-[#111827] px-3 py-2 uppercase text-white no-underline"
                           onClick={() => {
                             if (item.megaMenuType === 'furniture') setIsMobileFurnitureOpen(false);
                             else setIsMobileHandicraftOpen(false);
@@ -556,13 +560,14 @@ const Header = () => {
 
                         {(item.megaMenuType === 'furniture' ? furnitureMegaGroups : handicraftMegaGroups).map((group) => (
                           <div key={`mobile-group-${group.title}`} className="space-y-1.5">
-                            <p className="text-[10px] uppercase tracking-[0.12em] text-[#64748b]">{group.title}</p>
+                            <p style={{ fontSize: '9px', letterSpacing: '0.2em', fontWeight: 400 }} className="uppercase text-[#b4c0cc]">{group.title}</p>
                             <div className="space-y-0.5">
                               {group.items.map((megaItem) => (
                                 <a
                                   key={`mobile-${megaItem.label}`}
                                   href={megaItem.href}
-                                  className="block rounded-md px-2 py-2 text-[14px] leading-[1.35] text-[#1f2937] no-underline capitalize"
+                                  style={{ fontSize: '14px', fontWeight: 300, letterSpacing: '0.01em' }}
+                                  className="block rounded-md px-2 py-2 leading-[1.35] text-[#1f2937] no-underline capitalize"
                                   onClick={() => {
                                     if (item.megaMenuType === 'furniture') setIsMobileFurnitureOpen(false);
                                     else setIsMobileHandicraftOpen(false);
@@ -757,24 +762,26 @@ const Header = () => {
             >
               <div className="w-[760px] bg-white border border-[#e5e7eb] shadow-[0_18px_46px_rgba(0,0,0,0.14)] rounded-2xl p-5">
                 <div className="flex items-center justify-between border-b border-[#eef2f7] pb-3 mb-4">
-                  <p className="text-[11px] uppercase tracking-[0.14em] text-[#64748b]">Marble Furniture Collections</p>
+                  <p style={{ fontSize: '10px', letterSpacing: '0.18em', fontWeight: 400 }} className="uppercase text-[#94a3b8]">Marble Furniture Collections</p>
                   <a
                     href="/products?category=furniture"
-                    className="text-[12px] font-semibold uppercase tracking-[0.08em] text-[#0f172a] hover:text-black"
+                    style={{ fontSize: '11px', letterSpacing: '0.1em', fontWeight: 500 }}
+                    className="uppercase text-[#0f172a] hover:text-black no-underline transition-colors"
                     onClick={() => setIsFurnitureMegaOpen(false)}
                   >
-                    View All
+                    View All →
                   </a>
                 </div>
                 <div className="grid grid-cols-3 gap-5">
                   {furnitureMegaGroups.map((group) => (
-                    <div key={group.title} className="space-y-1.5">
-                      <p className="text-[10px] uppercase tracking-[0.12em] text-[#94a3b8] px-2 pb-1">{group.title}</p>
+                    <div key={group.title} className="space-y-0.5">
+                      <p style={{ fontSize: '9px', letterSpacing: '0.2em', fontWeight: 400 }} className="uppercase text-[#b4c0cc] px-2 pb-2">{group.title}</p>
                       {group.items.map((megaItem) => (
                         <a
                           key={megaItem.label}
                           href={megaItem.href}
-                          className="block text-[13px] text-[#1f2937] hover:text-black hover:bg-[#f8fafc] rounded-md px-2 py-2 transition-colors capitalize"
+                          style={{ fontSize: '13.5px', fontWeight: 300, letterSpacing: '0.01em' }}
+                          className="block text-[#1f2937] hover:text-black hover:bg-[#f8fafc] rounded-md px-2 py-[7px] transition-colors capitalize no-underline leading-snug"
                           onClick={() => setIsFurnitureMegaOpen(false)}
                         >
                           {megaItem.label}
@@ -804,24 +811,26 @@ const Header = () => {
             >
               <div className="w-[760px] bg-white border border-[#e5e7eb] shadow-[0_18px_46px_rgba(0,0,0,0.14)] rounded-2xl p-5">
                 <div className="flex items-center justify-between border-b border-[#eef2f7] pb-3 mb-4">
-                  <p className="text-[11px] uppercase tracking-[0.14em] text-[#64748b]">Handicraft Collections</p>
+                  <p style={{ fontSize: '10px', letterSpacing: '0.18em', fontWeight: 400 }} className="uppercase text-[#94a3b8]">Handicraft Collections</p>
                   <a
                     href="/products?category=handicraft"
-                    className="text-[12px] font-semibold uppercase tracking-[0.08em] text-[#0f172a] hover:text-black"
+                    style={{ fontSize: '11px', letterSpacing: '0.1em', fontWeight: 500 }}
+                    className="uppercase text-[#0f172a] hover:text-black no-underline transition-colors"
                     onClick={() => setIsHandicraftMegaOpen(false)}
                   >
-                    View All
+                    View All →
                   </a>
                 </div>
                 <div className="grid grid-cols-3 gap-5">
                   {handicraftMegaGroups.map((group) => (
-                    <div key={group.title} className="space-y-1.5">
-                      <p className="text-[10px] uppercase tracking-[0.12em] text-[#94a3b8] px-2 pb-1">{group.title}</p>
+                    <div key={group.title} className="space-y-0.5">
+                      <p style={{ fontSize: '9px', letterSpacing: '0.2em', fontWeight: 400 }} className="uppercase text-[#b4c0cc] px-2 pb-2">{group.title}</p>
                       {group.items.map((megaItem) => (
                         <a
                           key={megaItem.label}
                           href={megaItem.href}
-                          className="block text-[13px] text-[#1f2937] hover:text-black hover:bg-[#f8fafc] rounded-md px-2 py-2 transition-colors capitalize"
+                          style={{ fontSize: '13.5px', fontWeight: 300, letterSpacing: '0.01em' }}
+                          className="block text-[#1f2937] hover:text-black hover:bg-[#f8fafc] rounded-md px-2 py-[7px] transition-colors capitalize no-underline leading-snug"
                           onClick={() => setIsHandicraftMegaOpen(false)}
                         >
                           {megaItem.label}

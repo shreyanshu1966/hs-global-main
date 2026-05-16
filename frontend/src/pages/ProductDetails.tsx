@@ -85,6 +85,7 @@ const ProductDetails = () => {
     return {
       id: dbProduct.productId || dbProduct._id,
       productId: dbProduct.productId,
+      _id: dbProduct._id,
       name: dbProduct.name,
       category,
       subcategory,
@@ -94,6 +95,8 @@ const ProductDetails = () => {
       moq,
       specs,
       description: dbProduct.description || "Premium natural stone slab ideal for countertops, vanities, flooring and wall cladding with strict quality selection.",
+      subDescription: dbProduct.subDescription || '',
+      productCode: dbProduct.productCode || '',
       relatedProducts: relatedPick,
       similarProducts: similarPick,
       available: isAvailable,

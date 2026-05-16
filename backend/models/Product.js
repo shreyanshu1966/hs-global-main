@@ -76,7 +76,7 @@ const productSchema = new mongoose.Schema({
     category: {
         type: String,
         required: true,
-        enum: ['furniture', 'slabs'],
+        enum: ['furniture', 'slabs', 'handicraft'],
         trim: true
     },
     subcategory: {
@@ -88,6 +88,17 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: true,
         trim: true
+    },
+    subDescription: {
+        type: String,
+        trim: true,
+        maxlength: [160, 'Sub description cannot exceed 160 characters'],
+        default: ''
+    },
+    productCode: {
+        type: String,
+        trim: true,
+        default: ''
     },
     image: {
         type: String,

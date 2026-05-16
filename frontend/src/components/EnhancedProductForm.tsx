@@ -47,6 +47,7 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
     name: '',
     subcategory: '',
     description: '',
+    subDescription: '',
     priceUSD: '',
     status: 'active',
     available: true,
@@ -114,6 +115,7 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
         name: editingProduct.name || '',
         subcategory: editingProduct.subcategory || '',
         description: editingProduct.description || '',
+        subDescription: editingProduct.subDescription || '',
         priceUSD: editingProduct.priceUSD || '',
         status: editingProduct.status || 'active',
         available: editingProduct.available !== false,
@@ -285,6 +287,7 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
         category: 'furniture',
         subcategory: finalSubcategory,
         description: formData.description,
+        subDescription: formData.subDescription || '',
         priceUSD: formData.priceUSD ? parseFloat(formData.priceUSD.toString()) : undefined,
         status: formData.status,
         available: formData.available,
@@ -333,6 +336,7 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
         category: 'furniture',
         subcategory: finalSubcategory,
         description: formData.description,
+        subDescription: formData.subDescription || '',
         priceUSD: formData.priceUSD ? parseFloat(formData.priceUSD.toString()) : undefined,
         status: formData.status,
         available: formData.available,
@@ -579,6 +583,26 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
                 disabled={isFormDisabled}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
                 placeholder="Enter product description..."
+              />
+            </div>
+
+            <div>
+              <div className="flex justify-between items-center mb-1">
+                <label className="block text-sm font-medium text-gray-700">
+                  Sub Description <span className="text-gray-400 font-normal text-xs">(optional · shown below product title)</span>
+                </label>
+                <span className={`text-xs ${formData.subDescription.length > 160 ? 'text-red-500 font-semibold' : 'text-gray-400'}`}>
+                  {formData.subDescription.length}/160
+                </span>
+              </div>
+              <input
+                type="text"
+                maxLength={160}
+                value={formData.subDescription}
+                onChange={(e) => handleInputChange('subDescription', e.target.value)}
+                disabled={isFormDisabled}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed text-sm"
+                placeholder="Short subtitle shown under the product name (max 160 chars)…"
               />
             </div>
 

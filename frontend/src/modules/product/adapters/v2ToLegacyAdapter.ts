@@ -47,6 +47,8 @@ export const toLegacyProduct = (product: ProductV2): LegacyProduct => ({
   seoDescription: product.seo.seoDescription || undefined,
   seoKeywords: product.seo.seoKeywords,
   seo: product.seo.enhanced as LegacyProduct['seo'],
+  productCode: (product as any).productCode || '',
+  subDescription: (product as any).subDescription || '',
   createdAt: product.createdAt,
   updatedAt: product.updatedAt,
 });

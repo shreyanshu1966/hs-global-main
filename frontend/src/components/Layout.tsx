@@ -10,6 +10,7 @@ import { PhoneVerifyModal } from './PhoneVerifyModal';
 import { AddedToCartNotification } from './AddedToCartNotification';
 import NoiseOverlay from './NoiseOverlay';
 import FloatingWhatsApp from './FloatingWhatsApp';
+import FloatingScrollButton from './FloatingScrollButton';
 import '../styles/itsbits-home.css';
 
 interface LayoutProps {
@@ -51,6 +52,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             {!isAdminPage && !isItsbitsHome && <PhoneVerifyModal />}
             {!isAdminPage && !isItsbitsHome && <AddedToCartNotification />}
             {!isAdminPage && <FloatingWhatsApp />}
+            {!isAdminPage && <FloatingScrollButton />}
             <NoiseOverlay />
         </div>
     );

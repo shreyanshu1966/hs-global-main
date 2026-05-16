@@ -199,18 +199,6 @@ const HomePage = () => {
         />
       </DeferredSection>
 
-      {/* ===== SECTION 12: Collections ===== */}
-      <DeferredSection minHeight={580}>
-        <InteriorDesigners
-          sectionTitle={config.collections.title}
-          cards={config.collections.cards.map((card) => ({
-            title: card.title,
-            image: card.image,
-            link: card.link,
-          }))}
-        />
-      </DeferredSection>
-
       {/* ===== SECTION 13: HS Global Promise ===== */}
       <DeferredSection minHeight={520}>
         <PromiseBanner

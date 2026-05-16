@@ -64,6 +64,8 @@ export interface LegacyProduct {
     canonicalUrl?: string;
     slug?: string;
   };
+  productCode?: string;
+  subDescription?: string;
   createdAt: string;
   updatedAt: string;
 }
