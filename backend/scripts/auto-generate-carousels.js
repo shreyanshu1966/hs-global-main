@@ -26,7 +26,8 @@ const Product = require('../models/Product');
 const Category = require('../models/Category');
 
 const DRY_RUN = process.argv.includes('--dry-run');
-const MIN_PRODUCTS = 5; // only include subcategories with at least this many active products
+const MIN_PRODUCTS = 5;    // only include subcategories with at least this many active products
+const CAROUSEL_LIMIT = 12; // products shown per carousel
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -134,18 +135,41 @@ async function run() {
         }
 
         if (isShared) {
-            console.log(`  ✅ [merged: ${cats.join('+')}] "${sub}" — ${count} product(s), included`);
+            // Pick the best 12 products across all categories for this subcategory.
+            // Priority: featured first → most viewed → highest rated → newest.
+            const picked = await Product.find({
+                subcategory: sub,
+                status: 'active',
+                available: true,
+            })
+                .sort({ featured: -1, viewCount: -1, averageRating: -1, createdAt: -1 })
+                .limit(CAROUSEL_LIMIT)
+                .select('productId name viewCount averageRating featured')
+                .lean();
+
+            const manualProductIds = picked.map((p) => p.productId);
+
+            console.log(`  ✅ [merged: ${cats.join('+')}] "${sub}" — ${count} total, picked ${manualProductIds.length}:`);
+            picked.forEach((p) => {
+                const flags = [
+                    p.featured ? '⭐featured' : '',
+                    p.viewCount ? `👁 ${p.viewCount}` : '',
+                    p.averageRating ? `★${Number(p.averageRating).toFixed(1)}` : '',
+                ].filter(Boolean).join(' ');
+                console.log(`       • ${p.name}${flags ? '  [' + flags + ']' : ''}`);
+            });
+
             carousels.push({
                 title: buildCarouselTitle(sub),
                 viewAllLink: buildViewAllLink('', sub),
                 enabled: true,
-                sourceType: 'category',
-                manualProductIds: [],
-                sourceCategory: '',        // empty = no category filter → cross-category query
+                sourceType: 'manual',
+                manualProductIds,
+                sourceCategory: '',
                 sourceSubcategory: sub,
                 sourceTag: '',
-                limit: 24,                 // fetch more so shuffle has variety
-                sortBy: 'random',
+                limit: CAROUSEL_LIMIT,
+                sortBy: 'createdAt',
                 sortOrder: 'desc',
             });
         } else {
@@ -160,7 +184,7 @@ async function run() {
                 sourceCategory: cat,
                 sourceSubcategory: sub,
                 sourceTag: '',
-                limit: 12,
+                limit: CAROUSEL_LIMIT,
                 sortBy: 'createdAt',
                 sortOrder: 'desc',
             });
@@ -175,7 +199,7 @@ async function run() {
         return;
     }
 
-    // 6. Preview
+    // 7. Preview
     console.log('\nCarousel list:');
     carousels.forEach((c, i) => {
         const src = c.sourceCategory ? `[${c.sourceCategory}]` : '[all categories]';
@@ -188,7 +212,8 @@ async function run() {
         return;
     }
 
-    // 7. Write ONLY productCarousels — everything else is left untouched
+    // 8. Write ONLY productCarousels — everything else is left untouched
+
     let config = await HomePageConfig.findOne({ key: 'main' });
 
     if (!config) {
