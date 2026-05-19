@@ -1,6 +1,7 @@
 import ProductCard from './ProductCard';
 import { useHorizontalCarousel } from './useHorizontalCarousel';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { fetchItsbitsProducts, ItsbitsCardItem } from './productData';
 
 interface NewArrivalsCarouselProps {
@@ -87,9 +88,9 @@ const NewArrivalsCarousel = ({
           <h2 className="itsbits-highlight-title">
             {headingTitle}
           </h2>
-          <a href={ctaLink} className="itsbits-highlight-cta hover:opacity-70 transition-opacity">
+          <Link to={ctaLink || '/'} className="itsbits-highlight-cta hover:opacity-70 transition-opacity">
             {ctaText}
-          </a>
+          </Link>
         </div>
 
         {/* Carousel Area */}

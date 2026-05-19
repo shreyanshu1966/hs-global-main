@@ -11,6 +11,12 @@ import { AddedToCartNotification } from './AddedToCartNotification';
 import NoiseOverlay from './NoiseOverlay';
 import FloatingWhatsApp from './FloatingWhatsApp';
 import FloatingScrollButton from './FloatingScrollButton';
+import LeadCapturePopup from './LeadCapturePopup';
+import ExitIntentPopup from './ExitIntentPopup';
+import PageToastPopup from './PageToastPopup';
+import { useLeadCapturePopup } from '../hooks/useLeadCapturePopup';
+import { useExitIntentPopup } from '../hooks/useExitIntentPopup';
+import { usePageToastPopup } from '../hooks/usePageToastPopup';
 import '../styles/itsbits-home.css';
 
 interface LayoutProps {
@@ -20,6 +26,10 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
     const location = useLocation();
     const mainRef = useRef<HTMLDivElement>(null);
+
+    const { isOpen: isLeadOpen, closePopup: closeLeadPopup } = useLeadCapturePopup();
+    const { isOpen: isExitOpen, closeExitIntent } = useExitIntentPopup();
+    const { isOpen: isToastOpen, closeToast } = usePageToastPopup();
 
     // Check if we're on the admin page
     const isAdminPage = location.pathname.startsWith('/admin');
@@ -54,6 +64,15 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             {!isAdminPage && <FloatingWhatsApp />}
             {!isAdminPage && <FloatingScrollButton />}
             <NoiseOverlay />
+            {!isAdminPage && (
+              <LeadCapturePopup isOpen={isLeadOpen} onClose={closeLeadPopup} />
+            )}
+            {!isAdminPage && (
+              <ExitIntentPopup isOpen={isExitOpen} onClose={closeExitIntent} />
+            )}
+            {!isAdminPage && (
+              <PageToastPopup isOpen={isToastOpen} onClose={closeToast} />
+            )}
         </div>
     );
 };

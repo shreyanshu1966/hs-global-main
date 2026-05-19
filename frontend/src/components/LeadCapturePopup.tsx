@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef, useMemo, memo } from 'react';
-import { X, User, Mail, Phone, MessageSquare, Building, Home, CheckCircle } from 'lucide-react';
-import { countries as allCountries, Country } from '../data/countries';
-import { useTranslation } from 'react-i18next';
+import { X, User, Mail, Phone, MapPin, CheckCircle, Copy, Check, Clock } from 'lucide-react';
+import { countries as allCountries } from '../data/countries';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
+import { popupConfigService } from '../services/popupConfigService';
+import { usePopupConfig } from '../hooks/usePopupConfig';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
@@ -12,528 +13,400 @@ interface LeadCapturePopupProps {
   onClose: () => void;
 }
 
-// Memoized country button to prevent re-renders
-const CountryButton = memo(({ country, onSelect }: { country: Country; onSelect: (code: string) => void }) => (
-  <button
-    type="button"
-    onMouseDown={(e) => e.preventDefault()}
-    onClick={() => onSelect(country.dialCode)}
-    className="w-full text-left px-3 py-2 hover:bg-gray-100 text-sm flex items-center gap-2"
-    role="option"
-  >
-    <span className="text-base">{country.flag}</span>
-    <span className="font-medium">{country.dialCode}</span>
-    <span className="text-gray-500 text-xs">{country.name}</span>
-  </button>
-));
-
-CountryButton.displayName = 'CountryButton';
-
 const LeadCapturePopup: React.FC<LeadCapturePopupProps> = ({ isOpen, onClose }) => {
+  const config = usePopupConfig();
+
   const [formData, setFormData] = useState({
     name: '',
-    email: '',
+    mobile: '',
     countryCode: '+91',
-    phone: '',
-    clientType: '',
-    services: [] as string[],
-    message: ''
+    email: '',
+    country: '',
+    pincode: '',
   });
-
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
-  const [countryQuery, setCountryQuery] = useState('');
-  const [showCountryDropdown, setShowCountryDropdown] = useState(false);
-  const countryWrapRef = useRef<HTMLDivElement | null>(null);
-  const { t } = useTranslation();
+  const [couponCode, setCouponCode] = useState('');
+  const [expiryLabel, setExpiryLabel] = useState('');
+  const [copied, setCopied] = useState(false);
+  const [showCountryDial, setShowCountryDial] = useState(false);
+  const [dialQuery, setDialQuery] = useState('');
 
-  // Animation Refs & State
   const [isRendered, setIsRendered] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
   const backdropRef = useRef<HTMLDivElement>(null);
+  const countryDialRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (isOpen) setIsRendered(true);
-  }, [isOpen]);
+  useEffect(() => { if (isOpen) setIsRendered(true); }, [isOpen]);
 
   useGSAP(() => {
     if (isOpen && isRendered && modalRef.current && backdropRef.current) {
-      gsap.fromTo(backdropRef.current, { opacity: 0 }, { opacity: 1, duration: 0.2 });
-      gsap.fromTo(modalRef.current, { opacity: 0, scale: 0.95 }, { opacity: 1, scale: 1, duration: 0.2, ease: "power2.out" });
+      gsap.fromTo(backdropRef.current, { opacity: 0 }, { opacity: 1, duration: 0.25 });
+      gsap.fromTo(modalRef.current,
+        { opacity: 0, scale: 0.96, y: 16 },
+        { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: 'power3.out' }
+      );
     } else if (!isOpen && isRendered && modalRef.current && backdropRef.current) {
       gsap.to(backdropRef.current, { opacity: 0, duration: 0.2 });
       gsap.to(modalRef.current, {
-        opacity: 0,
-        scale: 0.95,
-        duration: 0.2,
-        ease: "power2.in",
+        opacity: 0, scale: 0.96, y: 8, duration: 0.2, ease: 'power2.in',
         onComplete: () => setIsRendered(false)
       });
     }
   }, [isOpen, isRendered]);
 
-
-  // Memoize countries list to prevent recalculation
-  const countriesList = useMemo(() => [...allCountries], []);
-
-  const serviceOptions = useMemo(() => [
-    t('lead_popup.marble'),
-    t('lead_popup.granite'),
-    t('lead_popup.furniture'),
-    t('lead_popup.marble_engraving')
-  ], [t]);
-
-  // Memoize filtered countries to avoid recalculation on every render
-  const filteredCountries = useMemo(() => {
-    if (!countryQuery) return countriesList;
-
-    const raw = countryQuery.toLowerCase().trim();
-    const aliasMap: Record<string, string> = {
-      'usa': 'united states',
-      'uk': 'united kingdom',
-      'uae': 'united arab emirates'
-    };
-    const query = aliasMap[raw] || raw;
-
-    return countriesList.filter((c) =>
-      c.dialCode.toLowerCase().includes(query) ||
-      c.name.toLowerCase().includes(query)
-    );
-  }, [countryQuery, countriesList]);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    if (name === 'phone') {
-      const digitsOnly = value.replace(/\D/g, '').slice(0, 10);
-      setFormData(prev => ({ ...prev, phone: digitsOnly }));
-    } else {
-      setFormData(prev => ({ ...prev, [name]: value }));
-    }
-
-    if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: '' }));
-    }
-  };
-
-  const handlePickCountry = (code: string) => {
-    setFormData(prev => ({ ...prev, countryCode: code }));
-    setCountryQuery('');
-    setShowCountryDropdown(false);
-  };
-
-  const handleServiceChange = (service: string) => {
-    setFormData(prev => ({
-      ...prev,
-      services: prev.services.includes(service)
-        ? prev.services.filter(s => s !== service)
-        : [...prev.services, service]
-    }));
-  };
-
-  const validateForm = () => {
-    const newErrors: Record<string, string> = {};
-
-    if (!formData.name.trim()) {
-      newErrors.name = t('lead_popup.name_req');
-    }
-
-    if (!formData.email.trim() && !formData.phone.trim()) {
-      newErrors.contact = t('lead_popup.email_req');
-    }
-
-    if (formData.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = t('lead_popup.valid_email');
-    }
-
-    if (formData.phone.trim() && formData.phone.replace(/\D/g, '').length !== 10) {
-      newErrors.phone = t('lead_popup.valid_phone');
-    }
-
-    if (!formData.clientType) {
-      newErrors.clientType = t('lead_popup.client_select');
-    }
-
-    if (formData.services.length === 0) {
-      newErrors.services = t('lead_popup.service_select');
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!validateForm()) return;
-
-    setIsSubmitting(true);
-
-    try {
-      // Submit to backend API
-      const response = await fetch(`${API_URL}/leads/submit`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          countryCode: formData.countryCode,
-          phone: formData.phone,
-          clientType: formData.clientType,
-          services: formData.services,
-          message: formData.message
-        })
-      });
-
-      const data = await response.json();
-
-      if (!response.ok || !data.ok) {
-        throw new Error(data.error || 'Failed to submit form');
-      }
-
-      // Show success message
-      setShowSuccess(true);
-
-      // Reset form and close after 3 seconds
-      setTimeout(() => {
-        setShowSuccess(false);
-        setFormData({
-          name: '',
-          email: '',
-          countryCode: '+91',
-          phone: '',
-          clientType: '',
-          services: [],
-          message: ''
-        });
-        onClose();
-      }, 3000);
-
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      alert(error instanceof Error ? error.message : 'There was an error submitting your information. Please try again.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const handleClose = () => {
-    setFormData({
-      name: '',
-      email: '',
-      countryCode: '+91',
-      phone: '',
-      clientType: '',
-      services: [],
-      message: ''
-    });
-    setErrors({});
-    setShowSuccess(false);
-    onClose();
-  };
-
   useEffect(() => {
     if (isOpen) {
-      // Store original styles
-      const originalStyle = window.getComputedStyle(document.body).overflow;
-      const originalPaddingRight = window.getComputedStyle(document.body).paddingRight;
-
-      // Get scrollbar width
       const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-
-      // Apply styles to prevent body scroll
       document.body.style.overflow = 'hidden';
       document.body.style.paddingRight = `${scrollbarWidth}px`;
-
       return () => {
-        document.body.style.overflow = originalStyle;
-        document.body.style.paddingRight = originalPaddingRight;
+        document.body.style.overflow = '';
+        document.body.style.paddingRight = '';
       };
     }
   }, [isOpen]);
 
+  const countriesList = useMemo(() => [...allCountries], []);
+
+  const filteredDial = useMemo(() => {
+    if (!dialQuery) return countriesList;
+    const q = dialQuery.toLowerCase();
+    return countriesList.filter(c => c.dialCode.includes(q) || c.name.toLowerCase().includes(q));
+  }, [dialQuery, countriesList]);
+
+  const countryNames = useMemo(() => {
+    const seen = new Set<string>();
+    return countriesList.reduce<string[]>((acc, c) => {
+      if (!seen.has(c.name)) { seen.add(c.name); acc.push(c.name); }
+      return acc;
+    }, []).sort();
+  }, [countriesList]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    if (name === 'mobile') {
+      setFormData(prev => ({ ...prev, mobile: value.replace(/\D/g, '').slice(0, 10) }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
+    if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
+  };
+
+  const validate = () => {
+    const errs: Record<string, string> = {};
+    if (!formData.name.trim()) errs.name = 'Name is required';
+    if (!formData.mobile.trim()) errs.mobile = 'Mobile is required';
+    else if (formData.mobile.replace(/\D/g, '').length < 6) errs.mobile = 'Enter a valid mobile number';
+    if (!formData.email.trim()) errs.email = 'Email is required';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) errs.email = 'Enter a valid email';
+    if (!formData.country) errs.country = 'Please select your country';
+    setErrors(errs);
+    return Object.keys(errs).length === 0;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validate()) return;
+    setIsSubmitting(true);
+    try {
+      await fetch(`${API_URL}/leads/submit`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          countryCode: formData.countryCode,
+          phone: formData.mobile,
+          country: formData.country,
+          pincode: formData.pincode,
+        })
+      });
+    } catch { /* silent — show coupon regardless */ }
+
+    const cfg = config.entryPopup;
+    setCouponCode(cfg.couponCode || 'HS10');
+    setExpiryLabel(config.exitIntent.expiryDate ? popupConfigService.getExpiryLabel(config.exitIntent.expiryDate) : '');
+    setIsSubmitting(false);
+  };
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(couponCode).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
+
+  const handleClose = () => {
+    setFormData({ name: '', mobile: '', countryCode: '+91', email: '', country: '', pincode: '' });
+    setErrors({});
+    setCouponCode('');
+    setCopied(false);
+    onClose();
+  };
+
   if (!isRendered) return null;
 
+  const showSuccess = !!couponCode;
+
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-2 sm:p-4">
-      {/* Backdrop */}
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6">
       <div
         ref={backdropRef}
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/75 backdrop-blur-sm"
         onClick={handleClose}
         style={{ opacity: 0 }}
-        onWheel={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-        }}
-        onTouchMove={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-        }}
+        onWheel={(e) => { e.preventDefault(); e.stopPropagation(); }}
       />
 
-      {/* Modal */}
       <div
         ref={modalRef}
-        className="bg-white rounded-3xl shadow-2xl w-full max-w-md sm:max-w-lg max-h-[90vh] overflow-hidden border-2 border-gray-100 relative z-10"
+        className="relative z-10 w-full max-w-[640px] flex rounded-2xl shadow-[0_32px_80px_rgba(0,0,0,0.32)] overflow-hidden"
+        style={{ opacity: 0 }}
         onClick={(e) => e.stopPropagation()}
-        style={{ opacity: 0, transform: 'scale(0.95)', overscrollBehavior: 'contain' }}
-        onWheel={(e) => e.stopPropagation()}
-        onTouchMove={(e) => e.stopPropagation()}
       >
-        {/* Header */}
-        <div className="sticky top-0 bg-gradient-to-r from-white to-gray-50 border-b-2 border-gray-200 px-4 py-3 rounded-t-3xl z-10">
-          <div className="flex items-center justify-between">
+        {/* ── Left branding panel ── */}
+        <div
+          className="hidden sm:flex flex-col justify-between text-white px-8 py-9 w-[210px] flex-shrink-0 relative overflow-hidden"
+          style={{
+            background: config.entryPopup.backgroundImage
+              ? `linear-gradient(rgba(17,24,39,0.82),rgba(17,24,39,0.82)) center/cover, url(${config.entryPopup.backgroundImage})`
+              : '#111827'
+          }}
+        >
+          <div className="absolute -bottom-16 -right-16 w-48 h-48 rounded-full border border-white/10" />
+          <div className="absolute -bottom-8 -right-8 w-32 h-32 rounded-full border border-white/5" />
+          <div className="relative z-10">
+            <p className="text-[9px] uppercase tracking-[0.35em] text-gray-500 mb-7">Enquiry Form</p>
+            <h2 className="text-[20px] font-light leading-[1.3] tracking-wide">
+              {config.entryPopup.heading || 'Premium Stone & Marble'}
+            </h2>
+            <div className="w-6 h-px bg-white/25 my-5" />
+            <p className="text-[11px] text-gray-400 leading-relaxed font-light">
+              {config.entryPopup.subheading || 'Custom bulk orders, marble furniture & exclusive stone collections.'}
+            </p>
+          </div>
+          <div className="relative z-10 space-y-3">
             <div>
-              <h2 className="text-lg sm:text-xl font-bold text-gray-900">{t('lead_popup.title')}</h2>
-              <p className="text-gray-600 mt-1 text-xs sm:text-sm">{t('lead_popup.subtitle')}</p>
+              <p className="text-[8px] uppercase tracking-[0.3em] text-gray-600 mb-1">Response within</p>
+              <p className="text-sm font-light text-white">24 hours</p>
             </div>
-            <button
-              onClick={handleClose}
-              className="p-1.5 hover:bg-gray-100 rounded-full transition-colors border-2 border-transparent hover:border-gray-200"
-              aria-label="Close"
-            >
-              <X className="w-4 h-4 text-gray-500" />
-            </button>
           </div>
         </div>
 
-        {/* Success Message */}
-        {showSuccess && (
-          <div className="p-6 text-center">
-            <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-              <CheckCircle className="w-6 h-6 text-green-600" />
+        {/* ── Right panel ── */}
+        <div className="flex-1 bg-white flex flex-col max-h-[88vh] sm:max-h-[560px]">
+          {/* Discount highlight strip */}
+          {!showSuccess && config.entryPopup.discountPercentage > 0 && (
+            <div className="flex items-center justify-center gap-2.5 px-5 py-2.5 bg-[#111827] flex-shrink-0">
+              <span className="text-[10px] text-gray-500 uppercase tracking-[0.3em]">Exclusive Offer</span>
+              <span className="text-white font-bold text-base tracking-wide">
+                {config.entryPopup.discountPercentage}% OFF
+              </span>
+              <span className="text-[10px] text-gray-500 uppercase tracking-[0.3em]">Your Order</span>
             </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">{t('lead_popup.thanks')}</h3>
-            <p className="text-gray-600 mb-3 text-sm">{t('lead_popup.success_msg')}</p>
-            <p className="text-xs text-gray-500">{t('lead_popup.close_popup')}</p>
+          )}
+
+          {/* Header */}
+          <div className="flex items-center justify-between px-5 sm:px-6 py-4 border-b border-gray-100 flex-shrink-0">
+            <div>
+              <h3 className="text-sm font-semibold text-[#111827] uppercase tracking-[0.12em]">
+                {showSuccess ? 'Your Exclusive Code' : 'Get Your Discount'}
+              </h3>
+              <p className="text-xs text-gray-400 mt-0.5 font-light">
+                {showSuccess ? 'Copy and apply at checkout' : 'Fill in your details to unlock your code'}
+              </p>
+            </div>
+            <button onClick={handleClose} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors flex-shrink-0 ml-3">
+              <X className="w-4 h-4 text-gray-400" />
+            </button>
           </div>
-        )}
 
-        {/* Form */}
-        {!showSuccess && (
-          <div 
-            className="overflow-y-auto max-h-[calc(90vh-100px)]"
-            style={{ overscrollBehavior: 'contain' }}
-            onWheel={(e) => {
-              e.stopPropagation();
-              const element = e.currentTarget;
-              const { scrollTop, scrollHeight, clientHeight } = element;
-              const isAtTop = scrollTop === 0;
-              const isAtBottom = scrollTop + clientHeight >= scrollHeight;
-              if ((isAtTop && e.deltaY < 0) || (isAtBottom && e.deltaY > 0)) {
-                e.preventDefault();
-              }
-            }}
-            onTouchMove={(e) => e.stopPropagation()}
-          >
-            <form onSubmit={handleSubmit} className="p-4 space-y-3">
-              {/* Name Field */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                  <User className="w-3.5 h-3.5 inline mr-1.5" />
-                  {t('lead_popup.full_name')}
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  className={`w-full px-3 py-2.5 border-2 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all text-sm ${errors.name ? 'border-red-500' : 'border-gray-300'
-                    }`}
-                  placeholder="Enter your full name"
-                />
-                {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
+          {/* ── Success: show coupon ── */}
+          {showSuccess && (
+            <div className="flex-1 flex flex-col items-center justify-center px-6 py-8 text-center">
+              <div className="w-12 h-12 bg-[#111827] rounded-full flex items-center justify-center mb-4">
+                <CheckCircle className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-lg font-semibold text-[#111827] uppercase tracking-[0.1em] mb-1">Thank You!</h3>
+              <p className="text-sm text-gray-500 font-light mb-6">Here is your exclusive discount code</p>
+
+              <div className="w-full max-w-[280px] bg-gray-50 border border-dashed border-gray-300 rounded-2xl px-5 py-5 mb-4">
+                <p className="text-[9px] uppercase tracking-[0.3em] text-gray-400 mb-1">Your Code</p>
+                <p className="text-3xl font-bold tracking-[0.4em] text-[#111827] mb-1">{couponCode}</p>
+                {expiryLabel && (
+                  <p className="text-[11px] text-amber-600 flex items-center justify-center gap-1 mt-1">
+                    <Clock className="w-3 h-3" />
+                    {expiryLabel}
+                  </p>
+                )}
               </div>
 
-              {/* Email */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                  <Mail className="w-3.5 h-3.5 inline mr-1.5" />
-                  {t('lead_popup.email')}
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  className={`w-full px-3 py-2.5 border-2 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all text-sm ${errors.email ? 'border-red-500' : 'border-gray-300'
-                    }`}
-                  placeholder="your@email.com"
-                />
-                {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
-              </div>
+              <button
+                onClick={handleCopy}
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all mb-3 ${copied ? 'bg-green-600 text-white' : 'bg-[#111827] text-white hover:bg-[#1f2937]'}`}
+              >
+                {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                {copied ? 'Copied to clipboard!' : 'Copy Code'}
+              </button>
 
-              {/* Phone */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                  <Phone className="w-3.5 h-3.5 inline mr-1.5" />
-                  {t('lead_popup.phone')}
-                </label>
-                <div className="flex w-full relative">
-                  <div
-                    className="relative"
-                    tabIndex={0}
-                    ref={countryWrapRef}
-                    onBlur={() => {
-                      setTimeout(() => {
-                        const wrap = countryWrapRef.current;
-                        const active = document.activeElement as HTMLElement | null;
-                        if (wrap && active && wrap.contains(active)) return;
-                        setShowCountryDropdown(false);
-                      }, 0);
-                    }}
-                  >
-                    <button
-                      type="button"
-                      onClick={() => setShowCountryDropdown(v => !v)}
-                      className="px-2 py-2.5 border-2 border-gray-300 border-r-0 rounded-l-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all bg-white min-w-0 flex-shrink-0 text-sm w-[110px] flex items-center gap-1 justify-center"
-                      aria-haspopup="listbox"
-                      aria-expanded={showCountryDropdown}
-                    >
-                      <span className="text-base">
-                        {(countriesList.find(c => c.dialCode === formData.countryCode) || { flag: '🌐' as any }).flag}
-                      </span>
-                      <span className="font-medium">{formData.countryCode}</span>
-                      <svg className="w-3.5 h-3.5 ml-1" viewBox="0 0 20 20" fill="currentColor">
-                        <path d="M5.23 7.21a.75.75 0 011.06.02L10 11.188l3.71-3.957a.75.75 0 111.08 1.04l-4.24 4.52a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" />
-                      </svg>
-                    </button>
-                    {showCountryDropdown && (
-                      <div className="absolute left-0 top-full mt-1 w-56 max-h-64 overflow-auto bg-white border-2 border-gray-200 rounded-lg shadow-lg z-20">
-                        <div className="p-2 border-b border-gray-200">
-                          <input
-                            type="text"
-                            value={countryQuery}
-                            onChange={(e) => setCountryQuery(e.target.value)}
-                            placeholder="Search country/code"
-                            className="w-full px-2 py-1.5 border-2 border-gray-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
-                          />
-                        </div>
-                        {filteredCountries.length === 0 && (
-                          <div className="px-3 py-2 text-xs text-gray-500">{t('lead_popup.no_match')}</div>
-                        )}
-                        {filteredCountries.map((c) => (
-                          <CountryButton
-                            key={`${c.code}-${c.dialCode}`}
-                            country={c}
-                            onSelect={handlePickCountry}
-                          />
-                        ))}
-                      </div>
-                    )}
+              <p className="text-[10px] text-gray-400 font-light">
+                Apply this code at checkout to claim your discount
+              </p>
+            </div>
+          )}
+
+          {/* ── Form ── */}
+          {!showSuccess && (
+            <div className="overflow-y-auto flex-1" style={{ overscrollBehavior: 'contain' }}>
+              <form onSubmit={handleSubmit} className="px-5 sm:px-6 py-5 space-y-4">
+
+                {/* Name */}
+                <div>
+                  <label className="block text-[10px] uppercase tracking-[0.18em] font-medium text-gray-500 mb-1.5">Full Name</label>
+                  <div className="relative">
+                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
+                    <input
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      placeholder="Your full name"
+                      className={`w-full pl-9 pr-3 py-2.5 border rounded-lg text-sm font-light placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-[#111827] transition-all ${errors.name ? 'border-red-400' : 'border-gray-200 bg-gray-50/50'}`}
+                    />
                   </div>
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                    inputMode="numeric"
-                    maxLength={10}
-                    autoComplete="tel"
-                    className={`flex-1 px-3 py-2.5 border-2 rounded-r-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all min-w-0 text-sm ${errors.phone ? 'border-red-500' : 'border-gray-300'
-                      }`}
-                    placeholder="Phone number"
-                  />
+                  {errors.name && <p className="text-red-400 text-[11px] mt-1">{errors.name}</p>}
                 </div>
-                {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
-              </div>
 
-              {errors.contact && (
-                <p className="text-red-500 text-xs bg-red-50 p-2 rounded-lg">
-                  {errors.contact}
-                </p>
-              )}
-
-              {/* Client Type */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {t('lead_popup.client_que')}
-                </label>
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setFormData(prev => ({ ...prev, clientType: 'personal' }))}
-                    className={`p-2.5 border-2 rounded-lg flex items-center justify-center space-x-1.5 transition-all ${formData.clientType === 'personal'
-                      ? 'border-black bg-black text-white'
-                      : 'border-gray-300 hover:border-gray-400'
-                      }`}
+                {/* Mobile */}
+                <div>
+                  <label className="block text-[10px] uppercase tracking-[0.18em] font-medium text-gray-500 mb-1.5">Mobile Number</label>
+                  <div
+                    className="flex"
+                    ref={countryDialRef}
+                    tabIndex={0}
+                    onBlur={() => setTimeout(() => {
+                      if (countryDialRef.current && !countryDialRef.current.contains(document.activeElement)) {
+                        setShowCountryDial(false);
+                      }
+                    }, 0)}
                   >
-                    <Home className="w-3.5 h-3.5" />
-                    <span className="text-xs">{t('lead_popup.for_myself')}</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setFormData(prev => ({ ...prev, clientType: 'client' }))}
-                    className={`p-2.5 border-2 rounded-lg flex items-center justify-center space-x-1.5 transition-all ${formData.clientType === 'client'
-                      ? 'border-black bg-black text-white'
-                      : 'border-gray-300 hover:border-gray-400'
-                      }`}
-                  >
-                    <Building className="w-3.5 h-3.5" />
-                    <span className="text-xs">{t('lead_popup.for_client')}</span>
-                  </button>
+                    <div className="relative">
+                      <button
+                        type="button"
+                        onClick={() => setShowCountryDial(v => !v)}
+                        className="px-2.5 py-2.5 border border-r-0 border-gray-200 rounded-l-lg bg-gray-50/50 flex items-center gap-1 text-sm flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-[#111827]"
+                        style={{ width: '88px' }}
+                      >
+                        <span>{(countriesList.find(c => c.dialCode === formData.countryCode) || { flag: '🌐' as any }).flag}</span>
+                        <span className="text-xs font-medium text-[#111827]">{formData.countryCode}</span>
+                        <svg className="w-3 h-3 text-gray-400" viewBox="0 0 20 20" fill="currentColor"><path d="M5.23 7.21a.75.75 0 011.06.02L10 11.188l3.71-3.957a.75.75 0 111.08 1.04l-4.24 4.52a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" /></svg>
+                      </button>
+                      {showCountryDial && (
+                        <div className="absolute left-0 top-full mt-1 w-56 max-h-52 overflow-auto bg-white border border-gray-200 rounded-lg shadow-xl z-20">
+                          <div className="p-2 border-b border-gray-100 sticky top-0 bg-white">
+                            <input
+                              type="text"
+                              value={dialQuery}
+                              onChange={(e) => setDialQuery(e.target.value)}
+                              placeholder="Search..."
+                              className="w-full px-2 py-1.5 border border-gray-200 rounded-md text-xs focus:outline-none focus:ring-2 focus:ring-[#111827]"
+                            />
+                          </div>
+                          {filteredDial.map(c => (
+                            <button
+                              key={`${c.code}-${c.dialCode}`}
+                              type="button"
+                              onMouseDown={(e) => e.preventDefault()}
+                              onClick={() => { setFormData(p => ({ ...p, countryCode: c.dialCode })); setShowCountryDial(false); setDialQuery(''); }}
+                              className="w-full text-left px-3 py-2 hover:bg-gray-50 text-sm flex items-center gap-2 transition-colors"
+                            >
+                              <span>{c.flag}</span>
+                              <span className="font-medium text-xs">{c.dialCode}</span>
+                              <span className="text-gray-400 text-xs truncate">{c.name}</span>
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                    <input
+                      name="mobile"
+                      type="tel"
+                      inputMode="numeric"
+                      value={formData.mobile}
+                      onChange={handleChange}
+                      placeholder="Mobile number"
+                      className={`flex-1 min-w-0 px-3 py-2.5 border rounded-r-lg text-sm font-light placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-[#111827] transition-all ${errors.mobile ? 'border-red-400' : 'border-gray-200 bg-gray-50/50'}`}
+                    />
+                  </div>
+                  {errors.mobile && <p className="text-red-400 text-[11px] mt-1">{errors.mobile}</p>}
                 </div>
-                {errors.clientType && <p className="text-red-500 text-xs mt-1">{errors.clientType}</p>}
-              </div>
 
-              {/* Services */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {t('lead_popup.services_que')}
-                </label>
-                <div className="grid grid-cols-2 gap-2">
-                  {serviceOptions.map((service) => (
-                    <button
-                      key={service}
-                      type="button"
-                      onClick={() => handleServiceChange(service)}
-                      className={`p-2.5 border-2 rounded-lg text-xs font-medium transition-all ${formData.services.includes(service)
-                        ? 'border-black bg-black text-white'
-                        : 'border-gray-300 hover:border-gray-400'
-                        }`}
+                {/* Email */}
+                <div>
+                  <label className="block text-[10px] uppercase tracking-[0.18em] font-medium text-gray-500 mb-1.5">Email Address</label>
+                  <div className="relative">
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
+                    <input
+                      name="email"
+                      type="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      placeholder="your@email.com"
+                      className={`w-full pl-9 pr-3 py-2.5 border rounded-lg text-sm font-light placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-[#111827] transition-all ${errors.email ? 'border-red-400' : 'border-gray-200 bg-gray-50/50'}`}
+                    />
+                  </div>
+                  {errors.email && <p className="text-red-400 text-[11px] mt-1">{errors.email}</p>}
+                </div>
+
+                {/* Country + Pincode */}
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-[10px] uppercase tracking-[0.18em] font-medium text-gray-500 mb-1.5">Country</label>
+                    <select
+                      name="country"
+                      value={formData.country}
+                      onChange={handleChange}
+                      className={`w-full px-3 py-2.5 border rounded-lg text-sm font-light text-[#111827] focus:outline-none focus:ring-2 focus:ring-[#111827] transition-all bg-gray-50/50 ${errors.country ? 'border-red-400' : 'border-gray-200'}`}
                     >
-                      {service}
-                    </button>
-                  ))}
+                      <option value="">Select country</option>
+                      {countryNames.map(n => <option key={n} value={n}>{n}</option>)}
+                    </select>
+                    {errors.country && <p className="text-red-400 text-[11px] mt-1">{errors.country}</p>}
+                  </div>
+                  <div>
+                    <label className="block text-[10px] uppercase tracking-[0.18em] font-medium text-gray-500 mb-1.5">
+                      Pincode <span className="normal-case tracking-normal text-gray-300">(optional)</span>
+                    </label>
+                    <div className="relative">
+                      <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
+                      <input
+                        name="pincode"
+                        value={formData.pincode}
+                        onChange={handleChange}
+                        placeholder="PIN / ZIP"
+                        className="w-full pl-9 pr-3 py-2.5 border border-gray-200 bg-gray-50/50 rounded-lg text-sm font-light placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-[#111827] transition-all"
+                      />
+                    </div>
+                  </div>
                 </div>
-                {errors.services && <p className="text-red-500 text-xs mt-1">{errors.services}</p>}
-              </div>
 
-              {/* Message */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                  <MessageSquare className="w-3.5 h-3.5 inline mr-1.5" />
-                  {t('lead_popup.additional')}
-                </label>
-                <textarea
-                  name="message"
-                  value={formData.message}
-                  onChange={handleInputChange}
-                  rows={3}
-                  className="w-full px-3 py-2.5 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all resize-none text-sm"
-                  placeholder="Tell us more about your project requirements..."
-                />
-              </div>
-
-              {/* Submit Button */}
-              <div className="pt-2">
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full bg-black text-white py-2.5 px-4 rounded-lg font-semibold text-sm hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed border-2 border-black hover:border-gray-800"
-                >
-                  {isSubmitting ? t('lead_popup.submitting') : t('lead_popup.submit_btn')}
-                </button>
-                <p className="text-xs text-gray-500 text-center mt-2">
-                  {t('lead_popup.note')}
-                </p>
-              </div>
-            </form>
-          </div>
-        )}
+                {/* Submit */}
+                <div className="pt-1">
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full bg-[#111827] text-white py-3 rounded-lg text-[11px] font-semibold uppercase tracking-[0.2em] hover:bg-[#1f2937] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isSubmitting ? 'Please wait...' : 'Get My Discount Code'}
+                  </button>
+                  <p className="text-[10px] text-gray-400 text-center mt-2 font-light">
+                    Your information is kept private and never shared.
+                  </p>
+                </div>
+              </form>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

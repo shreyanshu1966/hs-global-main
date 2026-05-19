@@ -1,6 +1,7 @@
 import ProductCard from './ProductCard';
 import { useHorizontalCarousel } from './useHorizontalCarousel';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { fetchItsbitsProducts, ItsbitsCardItem, parseCategoryFromLink } from './productData';
 
 type CarouselSourceType = 'category' | 'tag' | 'manual';
@@ -95,15 +96,15 @@ const ProductCarousel = ({
         <h2 className="dibs-section-title">
           {title}
         </h2>
-        <a 
-          href={viewAllLink} 
+        <Link
+          to={viewAllLink}
           className="itsbits-carousel-link"
         >
           <span>View More</span>
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path d="M8 5l8 7-8 7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
-        </a>
+        </Link>
       </div>
 
       {/* Product Track */}

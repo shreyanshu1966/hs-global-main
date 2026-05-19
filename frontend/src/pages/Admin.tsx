@@ -35,7 +35,8 @@ import {
     Star,
     Tag,
     Percent,
-    Play
+    Play,
+    Bell
 } from 'lucide-react';
 import {
     BarChart,
@@ -65,6 +66,7 @@ import {
 import { productService } from '../services/productService';
 import HomePageManagement from '../components/admin/HomePageManagement';
 import CategoryManagement from '../components/admin/CategoryManagement';
+import PopupManagement from '../components/admin/PopupManagement';
 
 interface Analytics {
     users: {
@@ -126,7 +128,7 @@ const COLORS = ['#10b981', '#f59e0b', '#ef4444', '#3b82f6', '#8b5cf6'];
 const Admin = () => {
     const { user, token, logout } = useAuth();
     const navigate = useNavigate();
-    const [activeTab, setActiveTab] = useState<'analytics' | 'orders' | 'users' | 'blogs' | 'contacts' | 'quotations' | 'products' | 'categories' | 'reviews' | 'homepage'>('analytics');
+    const [activeTab, setActiveTab] = useState<'analytics' | 'orders' | 'users' | 'blogs' | 'contacts' | 'quotations' | 'products' | 'categories' | 'reviews' | 'homepage' | 'popups'>('analytics');
     const [loading, setLoading] = useState(true);
     const [isMounted, setIsMounted] = useState(false);
 
@@ -1302,6 +1304,16 @@ const Admin = () => {
                             >
                                 <Play className="w-4 h-4" />
                                 <span>Home Page</span>
+                            </button>
+                            <button
+                                onClick={() => setActiveTab('popups')}
+                                className={`flex items-center justify-center gap-2 px-4 py-3 rounded-md font-medium text-sm transition-all ${activeTab === 'popups'
+                                    ? 'bg-blue-600 text-white shadow-sm'
+                                    : 'text-gray-600 hover:bg-gray-50'
+                                    }`}
+                            >
+                                <Bell className="w-4 h-4" />
+                                <span>Popups</span>
                             </button>
                             <button
                                 onClick={() => setActiveTab('contacts')}
@@ -2987,6 +2999,9 @@ const Admin = () => {
 
                     {/* Home Page Management Tab */}
                     {activeTab === 'homepage' && <HomePageManagement />}
+
+                    {/* Popup Management Tab */}
+                    {activeTab === 'popups' && <PopupManagement />}
 
                     {/* Product Modal */}
                     {showProductModal && isMounted && typeof document !== 'undefined' && document.body && createPortal(

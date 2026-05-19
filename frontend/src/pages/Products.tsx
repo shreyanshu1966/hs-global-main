@@ -18,6 +18,14 @@ const toSlug = (v: string) => v.toLowerCase().trim().replace(/\s+/g, "-");
 const LIMIT = 12;
 const MAX_INR = 1_000_000;
 
+// Subcategories that exist in both furniture AND handicraft
+const SHARED_SUBCATEGORY_SLUGS = new Set([
+  "coffee-table",
+  "console-table",
+  "dining-table",
+  "side-table",
+]);
+
 // ── Desktop sort dropdown ──────────────────────────────────────────────────────
 function DesktopSort({
   sortBy, sortOrder,
@@ -97,15 +105,18 @@ export default function Products() {
   const maxLocal = Math.ceil(MAX_INR * rate);
   const stepLocal = Math.ceil(50 * rate);
 
-  // Parse URL on mount only
+  // Parse URL on mount only — supports both long (?category, ?subcategory) and
+  // short (?cat, ?sub) param names used by home-page carousel viewAllLinks
   const initParams = useMemo(() => {
     const qp = new URLSearchParams(location.search);
     return {
-      category: qp.get("category") || "",
+      category: qp.get("category") || qp.get("cat") || "",
       subcategory: toSlug(
         qp.get("subcategory") ||
+        qp.get("sub") ||
         (location.state as { target?: string } | null)?.target || ""
       ),
+      categoryFilter: (qp.get("categoryFilter") || "") as "" | "furniture" | "handicraft",
       minPrice: qp.get("minPrice") ? Number(qp.get("minPrice")) : undefined,
       maxPrice: qp.get("maxPrice") ? Number(qp.get("maxPrice")) : undefined,
     };
@@ -115,6 +126,7 @@ export default function Products() {
   // Filter state
   const [activeCategory, setActiveCategory] = useState(initParams.category);
   const [activeSubcategory, setActiveSubcategory] = useState(initParams.subcategory);
+  const [crossCategoryFilter, setCrossCategoryFilter] = useState<"" | "furniture" | "handicraft">(initParams.categoryFilter);
   const [minPrice, setMinPrice] = useState<number | undefined>(initParams.minPrice);
   const [maxPrice, setMaxPrice] = useState<number | undefined>(initParams.maxPrice);
   const [sortBy, setSortBy] = useState("createdAt");
@@ -127,6 +139,7 @@ export default function Products() {
   ]);
   const [firstNewIndex, setFirstNewIndex] = useState(0);
 
+  // Subcategory list expand/collapse in desktop sidebar
   // Mobile sheets
   const [isSortOpen, setIsSortOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -134,6 +147,7 @@ export default function Products() {
   const lastScrollYRef = useRef(0);
   const sentinelRef = useRef<HTMLDivElement>(null);
   const tabScrollRef = useRef<HTMLDivElement>(null);
+  const sidebarRef = useRef<HTMLElement>(null);
   const [tabCanScrollLeft, setTabCanScrollLeft] = useState(false);
   const [tabCanScrollRight, setTabCanScrollRight] = useState(false);
 
@@ -163,10 +177,17 @@ export default function Products() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+
+  // True when a shared subcategory is selected with no specific category active
+  const isCrossMode = activeCategory === "" && SHARED_SUBCATEGORY_SLUGS.has(activeSubcategory);
+
+  // Effective category for the API call — must be before useProducts
+  const effectiveCategory = activeCategory || (isCrossMode ? crossCategoryFilter : "");
+
   // Data
   const { categories } = useCategories();
   const { products, loading, error, pagination } = useProducts({
-    category: activeCategory,
+    category: effectiveCategory,
     subcategory: activeSubcategory,
     sortBy,
     sortOrder,
@@ -189,8 +210,16 @@ export default function Products() {
     [categories]
   );
 
-  const activeCatData = normalizedCats.find((c) => c.category === activeCategory);
-  const subcategories = activeCatData?.subcategories || [];
+  // Subcategories to display in sidebar/mobile nav
+  const displaySubcategories = useMemo(() => {
+    if (activeCategory) {
+      const activeCatData = normalizedCats.find((c) => c.category === activeCategory);
+      return activeCatData?.subcategories || [];
+    }
+    // No category selected — show union of all subcategories from all categories
+    const all = normalizedCats.flatMap((cat) => cat.subcategories);
+    return Array.from(new Set(all)).sort();
+  }, [activeCategory, normalizedCats]);
 
   const checkTabScroll = useCallback(() => {
     const el = tabScrollRef.current;
@@ -217,10 +246,11 @@ export default function Products() {
     const params = new URLSearchParams();
     if (activeCategory) params.set("category", activeCategory);
     if (activeSubcategory) params.set("subcategory", activeSubcategory);
+    if (isCrossMode && crossCategoryFilter) params.set("categoryFilter", crossCategoryFilter);
     if (minPrice != null) params.set("minPrice", String(minPrice));
     if (maxPrice != null) params.set("maxPrice", String(maxPrice));
     navigate({ search: params.toString() }, { replace: true });
-  }, [activeCategory, activeSubcategory, minPrice, maxPrice, navigate]);
+  }, [activeCategory, activeSubcategory, crossCategoryFilter, isCrossMode, minPrice, maxPrice, navigate]);
 
   // Accumulate pages
   useEffect(() => {
@@ -242,6 +272,7 @@ export default function Products() {
   const handleCategory = useCallback((cat: string) => {
     setActiveCategory(cat);
     setActiveSubcategory("");
+    setCrossCategoryFilter("");
     setPage(1);
     setVisibleProducts([]);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -249,6 +280,13 @@ export default function Products() {
 
   const handleSubcategory = useCallback((sub: string) => {
     setActiveSubcategory((prev) => (prev === sub ? "" : sub));
+    setCrossCategoryFilter("");
+    setPage(1);
+    setVisibleProducts([]);
+  }, []);
+
+  const handleCrossFilter = useCallback((filter: "" | "furniture" | "handicraft") => {
+    setCrossCategoryFilter(filter);
     setPage(1);
     setVisibleProducts([]);
   }, []);
@@ -274,6 +312,7 @@ export default function Products() {
   const clearFilters = useCallback(() => {
     setActiveCategory("");
     setActiveSubcategory("");
+    setCrossCategoryFilter("");
     setMinPrice(undefined);
     setMaxPrice(undefined);
     setPriceRange([0, maxLocal]);
@@ -303,10 +342,11 @@ export default function Products() {
   }, [hasMore, loading]);
 
   const sortLabel = getSortOptionLabel(sortBy, sortOrder);
-  const hasFilters = !!(activeCategory || activeSubcategory || minPrice != null || maxPrice != null);
+  const hasFilters = !!(activeCategory || activeSubcategory || crossCategoryFilter || minPrice != null || maxPrice != null);
   const filterCount = [
     activeCategory,
     activeSubcategory,
+    crossCategoryFilter,
     minPrice != null ? "p" : "",
     maxPrice != null ? "p" : "",
   ].filter(Boolean).length;
@@ -460,19 +500,15 @@ export default function Products() {
             </div>
           </div>
 
-          {/* Subcategory row — only when applicable */}
-          {subcategories.length > 0 && (
+          {/* Subcategory row — when subcategories available */}
+          {displaySubcategories.length > 0 && (
             <div
               className="bg-white border-b border-gray-100 px-3 py-2 overflow-x-auto"
               style={{ scrollbarWidth: "none" }}
             >
               <div className="flex gap-2 min-w-max">
                 <button
-                  onClick={() => {
-                    setActiveSubcategory("");
-                    setPage(1);
-                    setVisibleProducts([]);
-                  }}
+                  onClick={() => handleSubcategory("")}
                   className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap transition-all ${
                     !activeSubcategory
                       ? "bg-gray-800 text-white"
@@ -481,7 +517,7 @@ export default function Products() {
                 >
                   All
                 </button>
-                {subcategories.map((sub) => (
+                {displaySubcategories.map((sub) => (
                   <button
                     key={sub}
                     onClick={() => handleSubcategory(sub)}
@@ -492,6 +528,30 @@ export default function Products() {
                     }`}
                   >
                     {sub.replace(/-/g, " ")}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Cross-category filter row — when a shared subcategory is selected */}
+          {isCrossMode && (
+            <div
+              className="bg-white border-b border-gray-100 px-3 py-2 overflow-x-auto"
+              style={{ scrollbarWidth: "none" }}
+            >
+              <div className="flex gap-2 min-w-max">
+                {(["", "furniture", "handicraft"] as const).map((cf) => (
+                  <button
+                    key={cf || "all"}
+                    onClick={() => handleCrossFilter(cf)}
+                    className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap transition-all ${
+                      crossCategoryFilter === cf
+                        ? "bg-gray-800 text-white"
+                        : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                    }`}
+                  >
+                    {cf === "" ? "All" : cf === "furniture" ? "Marble Furniture" : "Handicraft"}
                   </button>
                 ))}
               </div>
@@ -532,7 +592,17 @@ export default function Products() {
 
             {/* ── Desktop sidebar ── */}
             <aside
-              className="hidden md:flex flex-col w-52 xl:w-60 shrink-0 sticky overflow-y-auto"
+              ref={sidebarRef}
+              onMouseEnter={() => {
+                const w = window.innerWidth - document.documentElement.clientWidth;
+                document.documentElement.style.overflowY = "hidden";
+                if (w > 0) document.documentElement.style.paddingRight = `${w}px`;
+              }}
+              onMouseLeave={() => {
+                document.documentElement.style.overflowY = "";
+                document.documentElement.style.paddingRight = "";
+              }}
+              className="hidden md:flex flex-col w-52 xl:w-60 shrink-0 sticky overflow-y-auto overscroll-contain"
               style={{
                 top: "calc(var(--itsbits-header-offset, 0px) + 24px)",
                 maxHeight: "calc(100vh - var(--itsbits-header-offset, 0px) - 48px)",
@@ -553,13 +623,21 @@ export default function Products() {
                 )}
               </div>
 
-              {/* Subcategories — shown when a category is active */}
-              {subcategories.length > 0 && (
+              {/* Subcategories — scrollable within a fixed-height container */}
+              {displaySubcategories.length > 0 && (
                 <div className="mb-5 pb-5 border-b border-gray-100">
                   <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-widest mb-2.5">
-                    {activeCategory.replace(/-/g, " ")}
+                    {activeCategory ? activeCategory.replace(/-/g, " ") : "Subcategory"}
                   </p>
-                  <nav className="space-y-0.5">
+                  <nav
+                    className="space-y-0.5"
+                    style={{
+                      maxHeight: "230px",
+                      overflowY: "auto",
+                      scrollbarWidth: "thin",
+                      scrollbarColor: "#e2e8f0 transparent",
+                    }}
+                  >
                     <button
                       onClick={() => handleSubcategory("")}
                       className={`w-full text-left px-2.5 py-1.5 rounded-lg text-sm capitalize transition-colors ${
@@ -570,7 +648,7 @@ export default function Products() {
                     >
                       All
                     </button>
-                    {subcategories.map((sub) => (
+                    {displaySubcategories.map((sub) => (
                       <button
                         key={sub}
                         onClick={() => handleSubcategory(sub)}
@@ -581,6 +659,30 @@ export default function Products() {
                         }`}
                       >
                         {sub.replace(/-/g, " ")}
+                      </button>
+                    ))}
+                  </nav>
+                </div>
+              )}
+
+              {/* Cross-category filter — shown when a shared subcategory is active */}
+              {isCrossMode && (
+                <div className="mb-5 pb-5 border-b border-gray-100">
+                  <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-widest mb-2.5">
+                    Category
+                  </p>
+                  <nav className="space-y-0.5">
+                    {(["", "furniture", "handicraft"] as const).map((cf) => (
+                      <button
+                        key={cf || "all"}
+                        onClick={() => handleCrossFilter(cf)}
+                        className={`w-full text-left px-2.5 py-1.5 rounded-lg text-sm transition-colors ${
+                          crossCategoryFilter === cf
+                            ? "bg-gray-900 text-white font-medium"
+                            : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"
+                        }`}
+                      >
+                        {cf === "" ? "All" : cf === "furniture" ? "Marble Furniture" : "Handicraft"}
                       </button>
                     ))}
                   </nav>
@@ -639,7 +741,7 @@ export default function Products() {
                 <p className="text-sm text-gray-500 flex items-center gap-1 flex-wrap">
                   <button
                     onClick={() => handleCategory("")}
-                    className={`transition-colors ${!activeCategory ? "text-gray-900 font-semibold" : "hover:text-gray-900"}`}
+                    className={`transition-colors ${!activeCategory && !activeSubcategory ? "text-gray-900 font-semibold" : "hover:text-gray-900"}`}
                   >
                     All Products
                   </button>
@@ -647,7 +749,7 @@ export default function Products() {
                     <>
                       <span className="text-gray-300">/</span>
                       <button
-                        onClick={() => { setActiveSubcategory(""); setPage(1); setVisibleProducts([]); }}
+                        onClick={() => { setActiveSubcategory(""); setCrossCategoryFilter(""); setPage(1); setVisibleProducts([]); }}
                         className={`capitalize transition-colors ${
                           activeSubcategory ? "hover:text-gray-900" : "text-gray-900 font-semibold"
                         }`}
@@ -659,8 +761,18 @@ export default function Products() {
                   {activeSubcategory && (
                     <>
                       <span className="text-gray-300">/</span>
-                      <span className="text-gray-900 font-semibold capitalize">
+                      <span className={`capitalize transition-colors ${isCrossMode && crossCategoryFilter ? "hover:text-gray-900 cursor-pointer" : "text-gray-900 font-semibold"}`}
+                        onClick={isCrossMode && crossCategoryFilter ? () => handleCrossFilter("") : undefined}
+                      >
                         {activeSubcategory.replace(/-/g, " ")}
+                      </span>
+                    </>
+                  )}
+                  {isCrossMode && crossCategoryFilter && (
+                    <>
+                      <span className="text-gray-300">/</span>
+                      <span className="text-gray-900 font-semibold capitalize">
+                        {crossCategoryFilter === "furniture" ? "Marble Furniture" : "Handicraft"}
                       </span>
                     </>
                   )}

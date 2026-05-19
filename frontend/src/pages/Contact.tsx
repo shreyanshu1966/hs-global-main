@@ -2,10 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import { Mail, Phone, MapPin, ArrowRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Helmet } from "react-helmet-async";
-import { motion, useScroll, useTransform } from "framer-motion";
 import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
 import "react-phone-number-input/style.css";
-import { getResponsiveImage, getSrcSet } from '../utils/responsive-image-helper';
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
@@ -16,17 +14,11 @@ const Contact = () => {
 
   // Refs for animations
   const containerRef = useRef<HTMLDivElement>(null);
-  const heroTextRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLDivElement>(null);
   const infoRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
   const submitBtnRef = useRef<HTMLButtonElement>(null);
-
-  // Parallax for Hero
-  const { scrollY } = useScroll();
-  const y1 = useTransform(scrollY, [0, 500], [0, 200]);
-  const opacityHero = useTransform(scrollY, [0, 400], [1, 0]);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -233,50 +225,6 @@ const Contact = () => {
           })}
         </script>
       </Helmet>
-
-      {/* Hero Banner */}
-      <section className="relative min-h-[100svh] flex flex-col justify-center px-[clamp(1.5rem,4vw,6rem)] overflow-hidden">
-        <motion.div
-          style={{ y: y1, opacity: opacityHero }}
-          className="absolute top-0 right-0 w-[80vw] h-full opacity-10 pointer-events-none"
-        >
-          <img
-            src={getResponsiveImage('export.webp', 'large') || '/export.webp'}
-            srcSet={getSrcSet('export.webp')}
-            sizes="80vw"
-            className="w-full h-full object-cover filter grayscale contrast-125"
-            alt="Contact HS Global"
-            loading="lazy"
-          />
-        </motion.div>
-
-        <div className="relative z-10 max-w-[90vw]">
-          <motion.div
-            initial={{ opacity: 0, y: 100 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <span className="block text-[clamp(0.625rem,1.2vw,0.875rem)] tracking-[0.3em] uppercase mb-[clamp(1rem,2vw,1.5rem)] text-gray-400">
-              {t('contact.hero_subtitle') || "Get in Touch"}
-            </span>
-            <h1 className="text-[clamp(3.5rem,13vw,14vw)] leading-[0.85] font-serif tracking-tighter text-black">
-              Let's <br />
-              <span className="ml-[8vw] italic font-light text-gray-400">Build</span> <br />
-              <span className="text-amber-900/80">Together</span>.
-            </h1>
-          </motion.div>
-        </div>
-
-        <motion.div
-          className="absolute bottom-[clamp(2rem,4vw,3rem)] left-[clamp(1.5rem,4vw,6rem)] flex items-center gap-[clamp(0.75rem,2vw,1rem)]"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 1 }}
-        >
-          <div className="h-[1px] w-[clamp(3rem,8vw,6rem)] bg-gray-300"></div>
-          <p className="text-[clamp(0.625rem,1vw,0.75rem)] uppercase tracking-widest text-gray-400">Scroll to Connect</p>
-        </motion.div>
-      </section>
 
       {/* Minimalist Contact Section */}
       <section className="py-24">

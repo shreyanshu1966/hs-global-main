@@ -409,6 +409,7 @@ const ProductDetails = () => {
             position: sticky;
             top: var(--itsbits-header-offset, 134px);
             height: calc(100vh - var(--itsbits-header-offset, 134px));
+            max-height: 820px;
             display: flex;
             flex-direction: row;
             background: #ffffff;

@@ -180,7 +180,7 @@ const Header = () => {
     { label: 'Shipping', mobileLabel: 'Shipping', href: '/shipping' },
     { label: 'Journal', mobileLabel: 'Journal', href: '/blog' },
     { label: 'About', mobileLabel: 'About', href: '/about' },
-    { label: 'Bulk Order', mobileLabel: 'Bulk Order', href: '/contact', isSale: true },
+    { label: 'Custom Bulk Order', mobileLabel: 'Custom Bulk Order', href: '/contact', isSale: true },
   ];
 
   const furnitureMegaItems = [
