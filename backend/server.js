@@ -105,6 +105,8 @@ app.use('/api/reviews', require('./routes/reviewRoutes')); // Product reviews
 app.use('/api/categories', require('./routes/categoryRoutes')); // Category management
 app.use('/api/admin', require('./routes/adminHomePageConfigRoutes')); // Admin home page config
 app.use('/api', require('./routes/homePageConfigRoutes')); // Public home page config
+app.use('/api/admin', require('./routes/adminPopupConfigRoutes')); // Admin popup config
+app.use('/api', require('./routes/popupConfigRoutes')); // Public popup config
 app.use('/api', require('./routes/productRoutes')); // Product routes
 
 // Health check endpoint

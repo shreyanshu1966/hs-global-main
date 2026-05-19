@@ -4,13 +4,13 @@ const { sendLeadNotificationEmail, sendLeadConfirmationEmail } = require('../ser
 // Submit lead capture request
 exports.submitLeadCapture = async (req, res) => {
     try {
-        const { name, email, countryCode, phone, clientType, services, message } = req.body;
+        const { name, email, countryCode, phone, clientType, services, country, pincode, message } = req.body;
 
         // Validation
-        if (!name || !email || !countryCode || !phone || !clientType || !services || services.length === 0) {
+        if (!name || !email || !countryCode || !phone) {
             return res.status(400).json({
                 ok: false,
-                error: 'All required fields must be provided'
+                error: 'Name, email, country code, and phone are required'
             });
         }
 
@@ -23,21 +23,17 @@ exports.submitLeadCapture = async (req, res) => {
             });
         }
 
-        // Phone validation (basic - should be 10 digits)
-        if (phone.replace(/\D/g, '').length !== 10) {
+        // Phone validation — accept 6–15 digits (international range)
+        const digitsOnly = phone.replace(/\D/g, '');
+        if (digitsOnly.length < 6 || digitsOnly.length > 15) {
             return res.status(400).json({
                 ok: false,
                 error: 'Invalid phone number'
             });
         }
 
-        // Client type validation
-        if (!['personal', 'client'].includes(clientType)) {
-            return res.status(400).json({
-                ok: false,
-                error: 'Invalid client type'
-            });
-        }
+        // Client type validation (optional, default personal)
+        const resolvedClientType = clientType && ['personal', 'client'].includes(clientType) ? clientType : 'personal';
 
         // Get IP address and user agent
         const ipAddress = req.ip || req.connection.remoteAddress;
@@ -49,8 +45,10 @@ exports.submitLeadCapture = async (req, res) => {
             email: email.trim().toLowerCase(),
             countryCode: countryCode.trim(),
             phone: phone.trim(),
-            clientType,
-            services,
+            clientType: resolvedClientType,
+            services: Array.isArray(services) ? services : [],
+            country: country ? country.trim() : '',
+            pincode: pincode ? pincode.trim() : '',
             message: message ? message.trim() : '',
             ipAddress,
             userAgent
@@ -64,6 +62,8 @@ exports.submitLeadCapture = async (req, res) => {
             phone: `${lead.countryCode} ${lead.phone}`,
             clientType: lead.clientType,
             services: lead.services,
+            country: lead.country,
+            pincode: lead.pincode,
             message: lead.message,
             submittedAt: lead.createdAt,
             leadId: lead._id
