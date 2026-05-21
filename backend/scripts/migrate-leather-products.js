@@ -1,18 +1,18 @@
 #!/usr/bin/env node
 /**
  * ============================================================
- * Etsy Products Migration Script (3-Step Process)
+ * Leather Products Migration Script (3-Step Process)
  * ============================================================
  *
  * USAGE:
  *   cd backend
- *   node scripts/migrate-etsy-products.js --step=1
- *   node scripts/migrate-etsy-products.js --step=2
- *   node scripts/migrate-etsy-products.js --step=3
+ *   node scripts/migrate-leather-products.js --step=1
+ *   node scripts/migrate-leather-products.js --step=2
+ *   node scripts/migrate-leather-products.js --step=3
  *
  * FLAGS:
- *   --dry-run       : Test the script without writing to Cloudinary/DB
- *   --skip-upload   : (Step 2) Skips actual upload, generates mock CDN urls
+ *   --dry-run       : Test without writing to Cloudinary/DB
+ *   --skip-upload   : (Step 2) Skip actual upload, generate mock CDN urls
  */
 
 const fs = require('fs');
@@ -29,12 +29,12 @@ const SKIP_UPLOAD = args.includes('--skip-upload') || DRY_RUN;
 const STEP = args.find(a => a.startsWith('--step='))?.split('=')[1] || '1';
 
 const ROOT = path.join(__dirname, '../..');
-const CSV_PATH = path.join(ROOT, 'new products', 'Latest Etsy & HS All Product Title Desc  April -May 2026 - handicraft product listing (1).csv');
-const PHOTOS_DIR = path.join(ROOT, 'new products', 'HANDICRAFT PRODUCTS');
-const FRONTEND_VIDEOS_DIR = path.join(ROOT, 'frontend', 'public', 'videos', 'handicraft');
+const CSV_PATH = path.join(ROOT, 'new products', 'Latest Etsy & HS All Product Title Desc  April -May 2026 - leather product.csv');
+const PHOTOS_DIR = path.join(ROOT, 'new products', 'Leather Products');
+const FRONTEND_VIDEOS_DIR = path.join(ROOT, 'frontend', 'public', 'videos', 'leather');
 
-const STEP1_FILE = path.join(__dirname, 'etsy-handicraft-data-step1.json');
-const STEP2_FILE = path.join(__dirname, 'etsy-handicraft-data-step2.json');
+const STEP1_FILE = path.join(__dirname, 'leather-data-step1.json');
+const STEP2_FILE = path.join(__dirname, 'leather-data-step2.json');
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -47,30 +47,6 @@ const categorySchema = new mongoose.Schema({}, { strict: false });
 let Product, Category;
 
 const toSlug = (str) => str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-
-// ─────────────────────────────────────────────────────────────
-// TEXT CLEANING
-// ─────────────────────────────────────────────────────────────
-function stripDesignForAges(text) {
-    if (!text) return '';
-    return String(text)
-        .replace(/\r\n/g, '\n')
-        .replace(/\n?\s*-{3,}\s*\n\s*\|\s*design\s*for\s*ages\b/gi, '')
-        .replace(/\s*[|]\s*design\s*for\s*ages\b/gi, '')
-        .replace(/\bby\s+design\s+for\s+ages\b/gi, '')
-        .replace(/\bdesign\s*for\s*ages\b/gi, '')
-        .replace(/\bdesignforages\b/gi, '')
-        .replace(/\s{2,}/g, ' ')
-        .trim();
-}
-
-function cleanTags(tags) {
-    if (!Array.isArray(tags)) return [];
-    return tags
-        .map(t => stripDesignForAges(t).trim())
-        .filter(Boolean)
-        .filter(t => !/^design\s*for\s*ages$/i.test(t) && !/^designforages$/i.test(t));
-}
 
 // ─────────────────────────────────────────────────────────────
 // RFC 4180 STRICT CSV PARSER
@@ -96,7 +72,7 @@ function parseCSV(str) {
 }
 
 // ─────────────────────────────────────────────────────────────
-// PRICE PARSING  (handles "$1,891.91" USD format)
+// PRICE PARSING  (handles "$1,891.91" or plain "1891.91")
 // ─────────────────────────────────────────────────────────────
 function parseUSD(raw) {
     if (!raw) return null;
@@ -106,9 +82,8 @@ function parseUSD(raw) {
 }
 
 // ─────────────────────────────────────────────────────────────
-// PHOTO FOLDER MAP  — keyed by product code (e.g. "HSMSTGR1")
-// Folders format: "{no}. {CODE}-{Name} _ DesignForAges"
-// Also handles legacy no-code folders for logging only.
+// PHOTO FOLDER MAP — keyed by row number (e.g. "1", "2", "10")
+// Leather folders format: "{no}. {Product Name}" or "{no}.{Product Name}"
 // ─────────────────────────────────────────────────────────────
 function buildPhotoFolderMap() {
     if (!fs.existsSync(PHOTOS_DIR)) return {};
@@ -119,10 +94,9 @@ function buildPhotoFolderMap() {
 
     const folderMap = {};
     for (const f of folders) {
-        // Match: "{no}. {PRODUCTCODE} {rest}" — code is all caps+digits before space/dash
-        const match = f.match(/^\d+\.\s*([A-Z0-9]+)[\s-]/);
+        const match = f.match(/^(\d+)\./);
         if (match) {
-            folderMap[match[1]] = f; // key = product code e.g. "HSMSTGR1"
+            folderMap[match[1]] = f; // key = row number e.g. "1", "10", "27"
         }
     }
     return folderMap;
@@ -168,23 +142,17 @@ const log = {
 // ─────────────────────────────────────────────────────────────
 // STEP 1: PARSE CSV → LOCAL JSON
 // ─────────────────────────────────────────────────────────────
-// CSV column layout (0-indexed, data starts at row i=3):
-//   0  = No
-//   1  = PRODUCT CATEGORY  (e.g. "SIDE TABLE")
-//   2  = product CODE       (e.g. "HSMSTGR1")
-//   3  = ETSY URL
-//   4  = HS URL
-//   5  = HS Price only $
-//   6  = Etsy Price only $
-//   7  = ETSY UPDATE flag
-//   8  = HS UPDATE flag
-//   9  = (spacer)
-//  10  = Desc
-//  11  = Tag
-//  12  = Product Upload Name (Short Name)
-//  13  = Product Img & Video Done or Not
-//  14  = (empty)
-//  15  = temporary (HS website title)
+// CSV column layout (0-indexed, single header row, data starts at row 1):
+//   0  = No.
+//   1  = Product Category  (e.g. "SOFA", "BED", "SIDE TABLE")
+//   2  = Product Code      (e.g. "HSLSOGR1")
+//   3  = etsy url
+//   4  = Title
+//   5  = Description
+//   6  = Tag
+//   7  = List update name  (skip)
+//   8  = No. of Photos     (skip)
+//   9  = price in dolles   (may be empty)
 // ─────────────────────────────────────────────────────────────
 async function runStep1() {
     log.step('STEP 1: Parsing CSV and Extracting Local Paths');
@@ -197,47 +165,40 @@ async function runStep1() {
     const folderMap = buildPhotoFolderMap();
 
     const productsData = [];
-    let skippedNoCode = 0;
+    let skipped = 0;
 
-    // Rows 0-1 are headers; data starts at index 2
-    for (let i = 2; i < rows.length; i++) {
+    // Row 0 is header; data starts at index 1
+    for (let i = 1; i < rows.length; i++) {
         const row = rows[i];
-        if (!row || row.length < 11) continue;
+        if (!row || row.length < 3) continue;
 
         const no = row[0]?.trim();
-        const categoryRaw = row[2]?.trim();
-        const productCode = row[3]?.trim();
-        const hsPrice = row[7]?.trim();
-        const etsyPrice = row[8]?.trim();
-        const title = row[12]?.trim();      
-        const desc = row[13]?.trim();      
-        const tagsRaw = row[14]?.trim();   
-        const hsTitle = row[15]?.trim();
-        
-        // Use hsTitle or title as the shortName for slugs and display name
-        const shortName = hsTitle || title;
+        const categoryRaw = row[1]?.trim();
+        const productCode = row[2]?.trim();
+        const title = row[4]?.trim();
+        const desc = row[5]?.trim();
+        const tagsRaw = row[6]?.trim();
+        const priceRaw = row[9]?.trim();
 
         if (!no || no === '-') continue;
-        if (!shortName) continue;
+        if (!title && !productCode) continue;
 
-        // Skip products without a product code
         if (!productCode) {
-            log.warn(`[No: ${no}] "${shortName}" — no product code, skipping.`);
-            skippedNoCode++;
+            log.warn(`[No: ${no}] No product code, skipping.`);
+            skipped++;
             continue;
         }
 
-        // Resolve image folder by product code
-        const folderName = folderMap[productCode];
+        // Match folder by row number (not product code)
+        const folderName = folderMap[no];
         if (!folderName) {
-            log.warn(`[${productCode}] No image folder found for "${shortName}", skipping.`);
-            skippedNoCode++;
+            log.warn(`[No: ${no}] [${productCode}] No image folder found, skipping.`);
+            skipped++;
             continue;
         }
 
         const localFolder = path.join(PHOTOS_DIR, folderName);
-        
-        // Recursive function to find all image/video files
+
         function findMediaFiles(dir, exts) {
             let results = [];
             if (!fs.existsSync(dir)) return results;
@@ -254,18 +215,15 @@ async function runStep1() {
         }
 
         const localImages = findMediaFiles(localFolder, /\.(jpg|jpeg|png|webp)$/i);
-
         const videoFiles = findMediaFiles(localFolder, /\.(mp4|mov)$/i);
-        const localVideo = videoFiles.length > 0 ? path.join(localFolder, videoFiles[0]) : null;
+        const localVideo = videoFiles.length > 0 ? videoFiles[0] : null;
 
-        // Use HS price first, fall back to Etsy price
-        const priceUSD = parseUSD(hsPrice) || parseUSD(etsyPrice);
+        const priceUSD = parseUSD(priceRaw);
 
-        // Tags: newline or comma separated
         let tags = tagsRaw ? tagsRaw.split(/[\n,]/).map(t => t.trim()).filter(Boolean) : [];
-        if (!tags.includes('etsy')) tags.push('etsy');
+        if (!tags.includes('leather')) tags.push('leather');
 
-        // Subcategory: title-case the CSV category value (e.g. "SIDE TABLE" → "Side Table")
+        // Subcategory: title-case the CSV category (e.g. "SIDE TABLE" → "Side Table")
         const subcategoryName = categoryRaw
             ? categoryRaw.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ')
             : 'Other';
@@ -273,10 +231,9 @@ async function runStep1() {
         productsData.push({
             no,
             productCode,
-            slug: toSlug(stripDesignForAges(shortName)),
-            shortName,
+            slug: toSlug(title),
+            shortName: title,
             title,
-            hsTitle: hsTitle || null,
             desc: desc || title,
             tags,
             priceUSD,
@@ -287,14 +244,14 @@ async function runStep1() {
         });
     }
 
-    log.ok(`Parsed ${productsData.length} valid products (skipped ${skippedNoCode} without product code).`);
+    log.ok(`Parsed ${productsData.length} products (skipped ${skipped}).`);
     fs.writeFileSync(STEP1_FILE, JSON.stringify(productsData, null, 2));
     log.ok(`Saved Step 1 data → ${STEP1_FILE}`);
 }
 
 // ─────────────────────────────────────────────────────────────
 // STEP 2: UPLOAD IMAGES TO CLOUDINARY
-// Cloudinary path: hs-global/furniture/etsy/{productCode}/{filename}
+// Cloudinary path: hs-global/leather/etsy/{productCode}/{filename}
 // ─────────────────────────────────────────────────────────────
 async function runStep2() {
     log.step('STEP 2: Cloudinary Upload (WebP)');
@@ -310,7 +267,7 @@ async function runStep2() {
 
         for (const imgPath of prod.localImages) {
             const fileBase = path.basename(imgPath, path.extname(imgPath));
-            const publicId = `hs-global/handicraft/etsy/${prod.productCode}/${fileBase}`;
+            const publicId = `hs-global/leather/etsy/${prod.productCode}/${fileBase}`;
 
             if (SKIP_UPLOAD) {
                 cloudinaryUrls.push(`https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME || 'cloud_name'}/image/upload/${publicId}.webp`);
@@ -333,7 +290,7 @@ async function runStep2() {
 
 // ─────────────────────────────────────────────────────────────
 // STEP 3: MIGRATE VIDEOS & INSERT TO MONGODB
-// Video path: /videos/etsy/{productCode}/video.mp4
+// Video path: /videos/leather/{productCode}/video.mp4
 // ─────────────────────────────────────────────────────────────
 async function runStep3() {
     log.step('STEP 3: Database Insertion and Local Video Linking');
@@ -349,21 +306,17 @@ async function runStep3() {
         Product = mongoose.model('Product', productSchema);
         Category = mongoose.model('Category', categorySchema);
 
-        log.warn('Deleting existing handicraft products...');
-        const deleted = await Product.deleteMany({ category: 'handicraft' });
-        log.ok(`Deleted ${deleted.deletedCount || 0} old handicraft products.`);
+        log.warn('Deleting existing leather products...');
+        const deleted = await Product.deleteMany({ category: 'leather' });
+        log.ok(`Deleted ${deleted.deletedCount || 0} old leather products.`);
     }
 
-    // Upsert subcategories into the handicraft category doc
-    const subcategoriesToCreate = new Set(
-        productsData.map(p => {
-            let sub = p.subcategoryName;
-            return sub;
-        })
-    );
+    // Upsert subcategories into the leather category doc
+    const subcategoriesToCreate = new Set(productsData.map(p => p.subcategoryName));
+
     if (!DRY_RUN) {
-        let cat = await Category.findOne({ categoryId: 'handicraft' });
-        if (!cat) cat = new Category({ categoryId: 'handicraft', categoryName: 'Handicraft', customSubcategories: [] });
+        let cat = await Category.findOne({ categoryId: 'leather' });
+        if (!cat) cat = new Category({ categoryId: 'leather', categoryName: 'Leather', customSubcategories: [] });
 
         const oldCount = Array.isArray(cat.customSubcategories) ? cat.customSubcategories.length : 0;
         cat.customSubcategories = [];
@@ -380,13 +333,6 @@ async function runStep3() {
     for (const prod of productsData) {
         log.info(`[${prod.productCode}] Inserting: ${prod.shortName}`);
 
-        const cleanName = stripDesignForAges(prod.shortName);
-        const cleanTitle = stripDesignForAges(prod.title || prod.shortName);
-        const cleanDesc = stripDesignForAges(prod.desc || '');
-        const cleanHsTitle = prod.hsTitle ? stripDesignForAges(prod.hsTitle) : null;
-        const cleanTags_ = cleanTags(prod.tags);
-
-        // Video: copy to frontend/public/videos/etsy/{productCode}/video.mp4
         let videoWebUrl = null;
         let videoFilename = null;
 
@@ -397,7 +343,7 @@ async function runStep3() {
             } else {
                 const destFolder = path.join(FRONTEND_VIDEOS_DIR, prod.productCode);
                 const destPath = path.join(destFolder, 'video.mp4');
-                videoWebUrl = `/videos/handicraft/${prod.productCode}/video.mp4`;
+                videoWebUrl = `/videos/leather/${prod.productCode}/video.mp4`;
                 videoFilename = 'video.mp4';
 
                 if (!DRY_RUN) {
@@ -414,16 +360,14 @@ async function runStep3() {
             }
         }
 
-        let fixedSubcategory = prod.subcategoryName;
-
         const pDoc = {
             productId: prod.slug,
             productCode: prod.productCode || '',
-            name: cleanName,
-            title: cleanTitle,
-            category: 'handicraft',
-            subcategory: fixedSubcategory,
-            description: cleanDesc,
+            name: prod.shortName,
+            title: prod.title,
+            category: 'leather',
+            subcategory: prod.subcategoryName,
+            description: prod.desc,
             image: prod.cloudinaryUrls[0] || '',
             images: prod.cloudinaryUrls,
             sortedImages: prod.cloudinaryUrls,
@@ -433,14 +377,13 @@ async function runStep3() {
             videoUrl: videoWebUrl,
             videoFilename,
             status: 'active',
-            tags: cleanTags_,
-            seoTitle: cleanHsTitle || `${cleanName} | HS Global Export`,
-            seoDescription: cleanDesc ? cleanDesc.substring(0, 160) : '',
-            seoKeywords: cleanTags_,
-            ...(cleanHsTitle && { 'seo.h1Tag': cleanHsTitle }),
+            tags: prod.tags,
+            seoTitle: `${prod.shortName} | HS Global Export`,
+            seoDescription: prod.desc ? prod.desc.substring(0, 160) : '',
+            seoKeywords: prod.tags,
             shipping: {
                 requiresShipping: true,
-                shippingClass: 'fragile',
+                shippingClass: 'standard',
                 handlingTime: '15-20 business days',
             },
             manufacturing: {
@@ -451,7 +394,7 @@ async function runStep3() {
 
         if (!DRY_RUN) {
             await Product.updateOne({ productId: prod.slug }, { $set: pDoc }, { upsert: true });
-            log.ok(`  Saved: ${cleanName}`);
+            log.ok(`  Saved: ${prod.shortName}`);
         } else {
             log.dry(`Would insert/update ${prod.productCode} → ${prod.slug}`);
         }

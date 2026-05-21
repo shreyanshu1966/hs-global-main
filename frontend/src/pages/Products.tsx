@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { Helmet } from "react-helmet-async";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   ArrowUpDown, Check, X, SlidersHorizontal, Package, ChevronDown,
 } from "lucide-react";
@@ -105,18 +105,26 @@ export default function Products() {
   const maxLocal = Math.ceil(MAX_INR * rate);
   const stepLocal = Math.ceil(50 * rate);
 
-  // Parse URL on mount only — supports both long (?category, ?subcategory) and
-  // short (?cat, ?sub) param names used by home-page carousel viewAllLinks
+  // Read path params from the matched route:
+  //   /products                               → {}
+  //   /products/:category                     → { category }
+  //   /products/:category/:subcategory        → { category, subcategory }
+  //   /products/all/:subcategory              → { subcategory } (category param is "all" from route)
+  //   /products/all/:subcategory/:categoryFilter → { subcategory, categoryFilter }
+  const {
+    category: paramCategory,
+    subcategory: paramSubcategory,
+    categoryFilter: paramCategoryFilter,
+  } = useParams<{ category?: string; subcategory?: string; categoryFilter?: string }>();
+
   const initParams = useMemo(() => {
     const qp = new URLSearchParams(location.search);
+    // "all" is a virtual category used in cross-category routes, not a real category
+    const rawCategory = paramCategory === "all" ? "" : (paramCategory || "");
     return {
-      category: qp.get("category") || qp.get("cat") || "",
-      subcategory: toSlug(
-        qp.get("subcategory") ||
-        qp.get("sub") ||
-        (location.state as { target?: string } | null)?.target || ""
-      ),
-      categoryFilter: (qp.get("categoryFilter") || "") as "" | "furniture" | "handicraft",
+      category: rawCategory,
+      subcategory: toSlug(paramSubcategory || ""),
+      categoryFilter: ((paramCategoryFilter || "") as "" | "furniture" | "handicraft"),
       minPrice: qp.get("minPrice") ? Number(qp.get("minPrice")) : undefined,
       maxPrice: qp.get("maxPrice") ? Number(qp.get("maxPrice")) : undefined,
     };
@@ -241,16 +249,24 @@ export default function Products() {
     };
   }, [checkTabScroll, normalizedCats]);
 
-  // Sync URL
+  // Sync URL — build clean path-based URL
   useEffect(() => {
-    const params = new URLSearchParams();
-    if (activeCategory) params.set("category", activeCategory);
-    if (activeSubcategory) params.set("subcategory", activeSubcategory);
-    if (isCrossMode && crossCategoryFilter) params.set("categoryFilter", crossCategoryFilter);
-    if (minPrice != null) params.set("minPrice", String(minPrice));
-    if (maxPrice != null) params.set("maxPrice", String(maxPrice));
-    navigate({ search: params.toString() }, { replace: true });
-  }, [activeCategory, activeSubcategory, crossCategoryFilter, isCrossMode, minPrice, maxPrice, navigate]);
+    let path = "/products";
+    if (activeCategory) {
+      path += `/${activeCategory}`;
+      if (activeSubcategory) path += `/${activeSubcategory}`;
+    } else if (activeSubcategory) {
+      // Cross-category mode: /products/all/:subcategory[/:categoryFilter]
+      path += `/all/${activeSubcategory}`;
+      if (crossCategoryFilter) path += `/${crossCategoryFilter}`;
+    }
+
+    const qp = new URLSearchParams();
+    if (minPrice != null) qp.set("minPrice", String(minPrice));
+    if (maxPrice != null) qp.set("maxPrice", String(maxPrice));
+
+    navigate({ pathname: path, search: qp.toString() }, { replace: true });
+  }, [activeCategory, activeSubcategory, crossCategoryFilter, minPrice, maxPrice, navigate]);
 
   // Accumulate pages
   useEffect(() => {
@@ -404,9 +420,9 @@ export default function Products() {
         <meta name="keywords" content="Premium Granite Stones, Marble Tiles Supplier, Imported Marble, Marble Slabs Manufacturer, Granite Tiles Exporter, High Quality Marble, Natural Stone Supplier, Custom Marble Orders, Granite Slabs Supplier, Luxury Marble Stones, Marble Centre, Stone Tiles Manufacturer, Marble Flooring Tiles, Granite & Marble Slabs, Premium Natural Stone, Marble for Interior & Exterior, Customized Stone Solutions" />
         <meta name="author" content="HS Global Export" />
         <meta name="robots" content="index, follow" />
-        <link rel="canonical" href="https://www.hsglobalexport.com/products" />
+        <link rel="canonical" href={`https://www.hsglobalexport.com${location.pathname}`} />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://www.hsglobalexport.com/products" />
+        <meta property="og:url" content={`https://www.hsglobalexport.com${location.pathname}`} />
         <meta property="og:site_name" content="HS Global Export" />
         <meta property="og:title" content="Best Marble & Granite Company at USA, UK and Across Worldwide - Hs Global Export" />
         <meta property="og:description" content="Explore our range of premium granite stones, tiles, marble & slabs at Marble Centre. Discover high-quality imported marble, crafted to perfection for various application needs. Custom Order." />
@@ -415,7 +431,7 @@ export default function Products() {
         <meta property="og:image:height" content="630" />
         <meta property="og:locale" content="en_US" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content="https://www.hsglobalexport.com/products" />
+        <meta name="twitter:url" content={`https://www.hsglobalexport.com${location.pathname}`} />
         <meta name="twitter:title" content="Best Marble & Granite Company at USA, UK and Across Worldwide - Hs Global Export" />
         <meta name="twitter:description" content="Explore our range of premium granite stones, tiles, marble & slabs at Marble Centre. Discover high-quality imported marble, crafted to perfection for various application needs. Custom Order." />
         <meta name="twitter:image" content="https://www.hsglobalexport.com/og-image.jpg" />

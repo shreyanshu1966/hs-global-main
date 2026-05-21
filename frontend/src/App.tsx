@@ -96,7 +96,11 @@ function App() {
                       <Route path="/" element={<Home />} />
                       <Route path="/about" element={<About />} />
                       <Route path="/products" element={<Products />} />
-                      <Route path="/products/:id" element={<ProductDetails />} />
+                      <Route path="/products/all/:subcategory" element={<Products />} />
+                      <Route path="/products/all/:subcategory/:categoryFilter" element={<Products />} />
+                      <Route path="/products/:category" element={<Products />} />
+                      <Route path="/products/:category/:subcategory" element={<Products />} />
+                      <Route path="/product/:id" element={<ProductDetails />} />
                       <Route path="/gallery" element={<Gallery />} />
                       <Route path="/gallery/:id" element={<GalleryDetails />} />
                       <Route path="/contact" element={<Contact />} />

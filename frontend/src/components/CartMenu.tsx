@@ -117,7 +117,7 @@ export const CartMenu: React.FC = () => {
                           <div
                             onClick={() => {
                               setIsOpen(false);
-                              navigate(`/products/${item.id}`);
+                              navigate(`/product/${item.id}`);
                             }}
                             className="flex-shrink-0 w-20 h-20 border border-[#e5e7eb] bg-[#f8fafc] overflow-hidden cursor-pointer relative"
                           >
@@ -132,7 +132,7 @@ export const CartMenu: React.FC = () => {
                             <div
                               onClick={() => {
                                 setIsOpen(false);
-                                navigate(`/products/${item.id}`);
+                                navigate(`/product/${item.id}`);
                               }}
                               className="text-left w-full text-sm font-semibold text-gray-900 cursor-pointer hover:underline line-clamp-2"
                               title={item.name}

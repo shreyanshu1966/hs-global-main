@@ -17,8 +17,6 @@ import { SimilarProducts } from "../components/product/SimilarProducts";
 
 const ProductDetails = () => {
   const { id }: { id?: string } = useParams<{ id?: string }>();
-  const [selectedFinish, setSelectedFinish] = useState("Polish");
-  const [selectedThickness, setSelectedThickness] = useState("20mm");
   const [reviews, setReviews] = useState([]);
   const [reviewStats, setReviewStats] = useState({ averageRating: 0, totalReviews: 0, ratingBreakdown: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 } });
   const [reviewsLoading, setReviewsLoading] = useState(true);
@@ -43,7 +41,7 @@ const ProductDetails = () => {
         ? [dbProduct.image]
         : ["/demo2.webp"];
 
-    const category = dbProduct.category || "slabs";
+    const category = dbProduct.category || "furniture";
     const subcategory = dbProduct.subcategory || "marble";
 
     // Related products from API (pass through normalized product shape)
@@ -54,33 +52,14 @@ const ProductDetails = () => {
     let specs: Record<string, string> = {};
 
     if (category === "furniture" && dbProduct.furnitureSpecs) {
-      // Use furniture specifications from database
       specs = Object.entries(dbProduct.furnitureSpecs)
-        .filter(([key, value]) => value && key !== 'etsyUrl') // Exclude empty values and etsyUrl
+        .filter(([key, value]) => value && key !== 'etsyUrl')
         .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
-    } else if (category === "slabs" && dbProduct.slabSpecs) {
-      // Use slab specifications from database
-      specs = {
-        finish: dbProduct.slabSpecs.finish || selectedFinish,
-        thickness: dbProduct.slabSpecs.thickness || selectedThickness,
-        origin: dbProduct.slabSpecs.origin || "India",
-        material: dbProduct.slabSpecs.material || subcategory.replace(/-/g, " "),
-        application: dbProduct.slabSpecs.application || "Indoor / Outdoor",
-      };
-    } else {
-      // Default specs for slabs without specifications
-      specs = {
-        finish: selectedFinish,
-        thickness: selectedThickness,
-        origin: "India",
-        material: subcategory.replace(/-/g, " "),
-        application: "Indoor / Outdoor",
-      };
     }
 
     const isAvailable = dbProduct.available !== false;
 
-    const moq = category === "slabs" ? "MOQ: 20 m²" : "";
+    const moq = "";
 
     return {
       id: dbProduct.productId || dbProduct._id,
@@ -104,7 +83,7 @@ const ProductDetails = () => {
       totalReviews: dbProduct.totalReviews,
       discount: dbProduct.discount,
     };
-  }, [dbProduct, dbRelatedProducts, dbSimilarProducts, selectedFinish, selectedThickness]);
+  }, [dbProduct, dbRelatedProducts, dbSimilarProducts]);
 
   // Generate comprehensive SEO metadata using the hook
   const seoMeta = useProductSEO(product);
@@ -377,10 +356,6 @@ const ProductDetails = () => {
                   product={product}
                   reviewStats={reviewStats}
                   isInCart={isInCart}
-                  selectedFinish={selectedFinish}
-                  setSelectedFinish={setSelectedFinish}
-                  selectedThickness={selectedThickness}
-                  setSelectedThickness={setSelectedThickness}
                   handleShare={handleShare}
                   reviewsRef={reviewsRef}
                 />
@@ -485,8 +460,6 @@ const ProductDetails = () => {
           <div className="container mx-auto px-6">
             <ProductSpecifications
               product={product}
-              selectedFinish={selectedFinish}
-              selectedThickness={selectedThickness}
             />
           </div>
         </section>

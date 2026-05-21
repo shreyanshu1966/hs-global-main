@@ -31,7 +31,7 @@ export function SimilarProducts({ similarProducts }: SimilarProductsProps) {
               <button
                 key={pid || `sim-${i}`}
                 className="sp-card"
-                onClick={() => navigate(`/products/${pid}`)}
+                onClick={() => navigate(`/product/${pid}`)}
                 aria-label={getName(p)}
               >
                 <div className="sp-card-img-wrap">

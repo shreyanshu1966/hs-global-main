@@ -71,7 +71,7 @@ export const mapProductToItsbitsCard = (product: Product): ItsbitsCardItem => {
     priceUSD,
     originalPriceUSD,
     priceLabel,
-    href: `/products/${product.productId || product._id}`,
+    href: `/product/${product.productId || product._id}`,
     createdAt: product.createdAt,
     averageRating: product.averageRating,
     totalReviews: product.totalReviews,
@@ -79,18 +79,23 @@ export const mapProductToItsbitsCard = (product: Product): ItsbitsCardItem => {
 };
 
 export const parseCategoryFromLink = (viewAllLink: string): string | undefined => {
-  const [path, queryString] = viewAllLink.split('?');
+  if (!viewAllLink.startsWith('/products')) return undefined;
 
-  if (!path.startsWith('/products')) {
-    return undefined;
+  // Legacy query-param format: /products?category=furniture or /products?cat=furniture
+  const qIndex = viewAllLink.indexOf('?');
+  if (qIndex !== -1) {
+    const params = new URLSearchParams(viewAllLink.slice(qIndex + 1));
+    return params.get('cat') || params.get('category') || undefined;
   }
 
-  if (!queryString) {
-    return undefined;
+  // New path-based format: /products/:category or /products/:category/:subcategory
+  // Segment 0 = "products", segment 1 = category (skip "all" — that's cross-category)
+  const segments = viewAllLink.split('/').filter(Boolean);
+  if (segments.length >= 2 && segments[1] !== 'all') {
+    return segments[1];
   }
 
-  const params = new URLSearchParams(queryString);
-  return params.get('cat') || params.get('category') || undefined;
+  return undefined;
 };
 
 const isMarbleFurniture = (product: Product): boolean => {

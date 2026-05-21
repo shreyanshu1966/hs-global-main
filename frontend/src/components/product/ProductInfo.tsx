@@ -14,10 +14,6 @@ interface ProductInfoProps {
     product: any;
     reviewStats: any;
     isInCart: boolean;
-    selectedFinish: string;
-    setSelectedFinish: (val: string) => void;
-    selectedThickness: string;
-    setSelectedThickness: (val: string) => void;
     handleShare: () => void;
     reviewsRef: React.RefObject<HTMLDivElement>;
 }
@@ -26,10 +22,6 @@ export function ProductInfo({
     product,
     reviewStats,
     isInCart,
-    selectedFinish,
-    setSelectedFinish,
-    selectedThickness,
-    setSelectedThickness,
     handleShare,
     reviewsRef,
 }: ProductInfoProps) {
@@ -84,7 +76,7 @@ export function ProductInfo({
             <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.15em] text-[#888] mb-8">
                 <Link to="/" className="hover:text-[#111] transition-colors">Home</Link>
                 <span aria-hidden="true" className="text-[#ccc] px-1">/</span>
-                <Link to={`/products?category=${product.category?.toLowerCase()}`} className="hover:text-[#111] transition-colors">{product.category}</Link>
+                <Link to={`/products/${product.category?.toLowerCase()}`} className="hover:text-[#111] transition-colors">{product.category}</Link>
                 <span aria-hidden="true" className="text-[#ccc] px-1">/</span>
                 <span aria-current="page" className="text-[#111] font-medium truncate max-w-[150px]">{product.name}</span>
             </nav>
@@ -161,74 +153,27 @@ export function ProductInfo({
                     </div>
                 ) : (
                     <div className="text-[28px] font-medium text-[#111827]">
-                        {product.category === 'slabs' ? 'Custom Quote' : product.price}
+                        {product.price}
                     </div>
                 )}
             </div>
 
-            {/* Selectors (if applicable) */}
-            {product.category === 'slabs' && product.available && (
-                <div className="space-y-5 mb-8">
-                    <div className="space-y-2">
-                        <label className="text-[12px] font-medium text-[#444] uppercase tracking-[0.08em]">
-                            Finish
-                        </label>
-                        <select
-                            value={selectedFinish}
-                            onChange={(e) => setSelectedFinish(e.target.value)}
-                            className="w-full px-4 py-3.5 bg-white border border-[#d1d5db] focus:border-[#111] focus:ring-0 text-[14px] text-[#111] outline-none transition-colors appearance-none"
-                            style={{ backgroundImage: `url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem center', backgroundSize: '1em' }}
-                        >
-                            {['Polish', 'Flaming', 'Sand Blast', 'Shot Blast', 'Bush Hammer', 'River Wash', 'Honed', 'Leather', 'Lepatora'].map((f) => (
-                                <option key={f} value={f}>{f}</option>
-                            ))}
-                        </select>
-                    </div>
-                    <div className="space-y-2">
-                        <label className="text-[12px] font-medium text-[#444] uppercase tracking-[0.08em]">
-                            Thickness
-                        </label>
-                        <select
-                            value={selectedThickness}
-                            onChange={(e) => setSelectedThickness(e.target.value)}
-                            className="w-full px-4 py-3.5 bg-white border border-[#d1d5db] focus:border-[#111] focus:ring-0 text-[14px] text-[#111] outline-none transition-colors appearance-none"
-                            style={{ backgroundImage: `url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem center', backgroundSize: '1em' }}
-                        >
-                            {['12mm', '15mm', '18mm', '20mm', '25mm', '30mm'].map((t) => (
-                                <option key={t} value={t}>{t}</option>
-                            ))}
-                        </select>
-                    </div>
-                </div>
-            )}
-
             {/* CTA Buttons */}
             <div className="space-y-4 mb-8">
                 {product.available ? (
-                    product.category === 'slabs' ? (
+                    <div className="flex flex-col gap-3">
+                        <button
+                            type="button"
+                            onClick={handleBuyNow}
+                            className="w-full h-[52px] bg-[#111827] text-white hover:bg-black transition-colors duration-300 font-semibold tracking-[0.1em] text-[13px] uppercase flex items-center justify-center"
+                        >
+                            Buy Now
+                        </button>
                         <AddToCartButton
                             product={product}
-                            preselectedCustomization={{
-                                finish: selectedFinish,
-                                thickness: selectedThickness,
-                            }}
-                            className="w-full h-[52px] bg-[#111827] text-white hover:bg-black transition-colors duration-300 font-semibold tracking-[0.1em] text-[13px] uppercase flex items-center justify-center"
+                            className="w-full h-[52px] bg-white border border-[#111827] text-[#111827] hover:bg-[#f9fafb] transition-colors duration-300 font-semibold tracking-[0.1em] text-[13px] uppercase flex items-center justify-center"
                         />
-                    ) : (
-                        <div className="flex flex-col gap-3">
-                            <button
-                                type="button"
-                                onClick={handleBuyNow}
-                                className="w-full h-[52px] bg-[#111827] text-white hover:bg-black transition-colors duration-300 font-semibold tracking-[0.1em] text-[13px] uppercase flex items-center justify-center"
-                            >
-                                Buy Now
-                            </button>
-                            <AddToCartButton
-                                product={product}
-                                className="w-full h-[52px] bg-white border border-[#111827] text-[#111827] hover:bg-[#f9fafb] transition-colors duration-300 font-semibold tracking-[0.1em] text-[13px] uppercase flex items-center justify-center"
-                            />
-                        </div>
-                    )
+                    </div>
                 ) : (
                     <a
                         href={`https://wa.me/918107115116?text=${encodeURIComponent(

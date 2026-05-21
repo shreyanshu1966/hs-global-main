@@ -1,0 +1,55 @@
+;;
+;; Domain:     hsglobalexport.com.
+;; Exported:   2026-05-21 16:18:20
+;;
+;; This file is intended for use for informational and archival
+;; purposes ONLY and MUST be edited before use on a production
+;; DNS server.  In particular, you must:
+;;   -- update the SOA record with the correct authoritative name server
+;;   -- update the SOA record with the contact e-mail address information
+;;   -- update the NS record(s) with the authoritative name servers for this domain.
+;;
+;; For further information, please consult the BIND documentation
+;; located on the following website:
+;;
+;; http://www.isc.org/
+;;
+;; And RFC 1035:
+;;
+;; http://www.ietf.org/rfc/rfc1035.txt
+;;
+;; Please note that we do NOT offer technical support for any use
+;; of this zone data, the BIND name server, or any other third-party
+;; DNS software.
+;;
+;; Use at your own risk.
+;; SOA Record
+hsglobalexport.com	3600	IN	SOA	aria.ns.cloudflare.com. dns.cloudflare.com. 2053104690 10000 2400 604800 3600
+
+;; NS Records
+hsglobalexport.com.	86400	IN	NS	aria.ns.cloudflare.com.
+hsglobalexport.com.	86400	IN	NS	arnold.ns.cloudflare.com.
+
+;; A Records
+api.hsglobalexport.com.	1	IN	A	129.121.78.185 ; cf_tags=cf-proxied:true
+hsglobalexport.com.	1	IN	A	118.139.177.180 ; cf_tags=cf-proxied:true
+
+;; CNAME Records
+_domainconnect.hsglobalexport.com.	1	IN	CNAME	_domainconnect.gd.domaincontrol.com. ; cf_tags=cf-proxied:true
+email.hsglobalexport.com.	1	IN	CNAME	email.secureserver.net. ; cf_tags=cf-proxied:false
+secureserver1._domainkey.hsglobalexport.com.	1	IN	CNAME	s1.dkim.hsglobalexport_com.911.onsecureserver.net. ; cf_tags=cf-proxied:false
+secureserver2._domainkey.hsglobalexport.com.	1	IN	CNAME	s2.dkim.hsglobalexport_com.911.onsecureserver.net. ; cf_tags=cf-proxied:false
+www.hsglobalexport.com.	1	IN	CNAME	hsglobalexport.com. ; cf_tags=cf-proxied:true
+
+;; MX Records
+hsglobalexport.com.	1	IN	MX	0 smtp.secureserver.net.
+hsglobalexport.com.	1	IN	MX	10 mailstore1.secureserver.net.
+
+;; SRV Records
+hsglobalexport.com.	1	IN	SRV	100 1 443 autodiscover.secureserver.net.
+
+;; TXT Records
+_dmarc.hsglobalexport.com.	1	IN	TXT	"v=DMARC1; p=none; adkim=r; aspf=r; rua=mailto:dmarc_rua@onsecureserver.net;"
+hsglobalexport.com.	1	IN	TXT	"v=spf1 include:secureserver.net -all"
+hsglobalexport.com.	3600	IN	TXT	"google-site-verification=Pd1qqxFBsns4mPK383Hki9ybc0_05Hvg7ADpubgNTtI"
+hsglobalexport.com.	1	IN	TXT	"T1799403"

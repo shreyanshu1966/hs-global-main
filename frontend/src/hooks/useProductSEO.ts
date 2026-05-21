@@ -133,7 +133,7 @@ export const useProductSEO = (product: Product | null): ProductSEOMetadata => {
   const productDescription = product.description || 'High-quality marble and granite product from HS Global Export';
   
   // Build product URL (using slug in future, productId for now)
-  const productUrl = product.seo?.canonicalUrl || `${SITE_URL}/products/${productId}`;
+  const productUrl = product.seo?.canonicalUrl || `${SITE_URL}/product/${productId}`;
   
   // Get product image
   const productImage = product.seo?.ogImage || 

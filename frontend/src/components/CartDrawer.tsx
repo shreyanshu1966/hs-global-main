@@ -165,7 +165,7 @@ export const CartDrawer: React.FC = () => {
                           <div
                             onClick={() => {
                               handleClose();
-                              navigate(`/products/${item.id}`);
+                              navigate(`/product/${item.id}`);
                             }}
                             className="flex-shrink-0 w-20 h-20 bg-[#f8fafc] overflow-hidden border border-[#e5e7eb] block cursor-pointer relative"
                           >
@@ -180,7 +180,7 @@ export const CartDrawer: React.FC = () => {
                             <div
                               onClick={() => {
                                 handleClose();
-                                navigate(`/products/${item.id}`);
+                                navigate(`/product/${item.id}`);
                               }}
                               className="text-left w-full text-sm font-semibold text-gray-900 cursor-pointer hover:underline line-clamp-2"
                               title={item.name}

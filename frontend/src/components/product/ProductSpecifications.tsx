@@ -3,11 +3,9 @@ import { Heading, Body } from '../ui/Typography';
 
 interface ProductSpecificationsProps {
     product: any;
-    selectedFinish: string;
-    selectedThickness: string;
 }
 
-export function ProductSpecifications({ product, selectedFinish, selectedThickness }: ProductSpecificationsProps) {
+export function ProductSpecifications({ product }: ProductSpecificationsProps) {
     const [activeTab, setActiveTab] = React.useState<'details' | 'designer' | 'custom' | 'seller' | 'shipping'>('details');
     const [isDescriptionExpanded, setIsDescriptionExpanded] = React.useState(false);
     const DESCRIPTION_PREVIEW_CHARS = 520;
@@ -88,18 +86,8 @@ export function ProductSpecifications({ product, selectedFinish, selectedThickne
             {activeTab === 'custom' && (
                 <div className="space-y-4">
                     <Body color="secondary" className="text-[#334155] leading-relaxed">
-                        We support product customization for dimension, finish, and edge profile requirements.
+                        We support custom bulk orders with tailored dimensions, materials, and finishes. Contact us to discuss your requirements and get a personalised quote.
                     </Body>
-                    <div className="grid md:grid-cols-2 gap-x-8">
-                        <div className="flex justify-between items-center py-3 border-b border-[#e2e8f0] gap-6">
-                            <span className="font-sans font-semibold text-[#1f2937] uppercase tracking-[0.1em] text-[11px]">Finish</span>
-                            <span className="font-sans text-[#475569] text-sm text-right">{selectedFinish}</span>
-                        </div>
-                        <div className="flex justify-between items-center py-3 border-b border-[#e2e8f0] gap-6">
-                            <span className="font-sans font-semibold text-[#1f2937] uppercase tracking-[0.1em] text-[11px]">Thickness</span>
-                            <span className="font-sans text-[#475569] text-sm text-right">{selectedThickness}</span>
-                        </div>
-                    </div>
                 </div>
             )}
 

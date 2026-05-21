@@ -67,9 +67,9 @@ const Footer = () => {
             <div className="itsbits-footer-group">
               <h3 className="itsbits-footer-heading">Categories</h3>
               <div className="itsbits-footer-link-list">
-                <a href="/products?cat=furniture" className="itsbits-footer-link hover:underline">Marble Furniture</a>
-                <a href="/products?cat=furniture#coffee-table" className="itsbits-footer-link hover:underline">Marble Coffee Tables</a>
-                <a href="/products?cat=furniture#console-table" className="itsbits-footer-link hover:underline">Marble Console Tables</a>
+                <a href="/products/furniture" className="itsbits-footer-link hover:underline">Marble Furniture</a>
+                <a href="/products/furniture/coffee-table" className="itsbits-footer-link hover:underline">Marble Coffee Tables</a>
+                <a href="/products/furniture/console-table" className="itsbits-footer-link hover:underline">Marble Console Tables</a>
                 <a href="/shipping" className="itsbits-footer-link hover:underline">Custom Shipping</a>
                 <a href="/gallery" className="itsbits-footer-link hover:underline">Project Gallery</a>
                 <a href="/contact" className="itsbits-footer-link hover:underline">Request Quote</a>

@@ -177,7 +177,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
             onMouseEnter={handleEnter}
             onMouseLeave={handleLeave}
         >
-            <Link to={`/products/${product.productId || product._id}`} className="block">
+            <Link to={`/product/${product.productId || product._id}`} className="block">
                 {/* ---- Image / Video container ---- */}
                 <div className="aspect-[4/3] bg-[#FAF8F5] overflow-hidden relative">
 
@@ -192,7 +192,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
                                 id: wishlistId,
                                 title: product.name,
                                 image: primaryImage,
-                                href: `/products/${product.productId || product._id}`,
+                                href: `/product/${product.productId || product._id}`,
                                 designer: product.category,
                                 price: displayPrice,
                             });

@@ -27,7 +27,6 @@ export interface Subcategory {
   subcategories?: Subcategory[];
 }
 
-import generateSlabCategories from "./slabs.loader";
 import { getFurnitureSpecs } from "./furnitureSpecs";
 import { getProductCloudinaryUrl } from '../utils/productCloudinary';
 
@@ -292,11 +291,6 @@ export const categories: Category[] = [
     id: "furniture",
     name: "Furniture",
     subcategories: buildFurnitureCategories(),
-  },
-  {
-    id: "slabs",
-    name: "Slabs",
-    subcategories: generateSlabCategories(),
   },
 ];
 

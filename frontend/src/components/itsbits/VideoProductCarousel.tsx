@@ -80,7 +80,7 @@ const toVideoItem = (product: Product): VideoItem | null => {
     title: product.name,
     videoUrl: product.videoUrl,
     image: getItsbitsProductImage(product),
-    href: `/products/${id}`,
+    href: `/product/${id}`,
     category: product.subcategory || product.category || 'Product Video',
   };
 };

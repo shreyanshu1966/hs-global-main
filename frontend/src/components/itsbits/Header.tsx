@@ -18,15 +18,20 @@ const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileFurnitureOpen, setIsMobileFurnitureOpen] = useState(false);
   const [isMobileHandicraftOpen, setIsMobileHandicraftOpen] = useState(false);
+  const [isMobileLeatherOpen, setIsMobileLeatherOpen] = useState(false);
   const [isFurnitureMegaOpen, setIsFurnitureMegaOpen] = useState(false);
   const [isHandicraftMegaOpen, setIsHandicraftMegaOpen] = useState(false);
+  const [isLeatherMegaOpen, setIsLeatherMegaOpen] = useState(false);
   const isFurnitureMegaHoveredRef = useRef(false);
   const isHandicraftMegaHoveredRef = useRef(false);
+  const isLeatherMegaHoveredRef = useRef(false);
   const lastScrollYRef = useRef(0);
   const furnitureMegaOpenTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const furnitureMegaCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const handicraftMegaOpenTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const handicraftMegaCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const leatherMegaOpenTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const leatherMegaCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const desktopSearchRef = useRef<HTMLDivElement>(null);
   const mobileSearchRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
@@ -38,6 +43,7 @@ const Header = () => {
     setIsMobileMenuOpen(false);
     setIsMobileFurnitureOpen(false);
     setIsMobileHandicraftOpen(false);
+    setIsMobileLeatherOpen(false);
   }, [location.pathname]);
 
   useEffect(() => {
@@ -85,6 +91,7 @@ const Header = () => {
         setIsMobileMenuOpen(false);
         setIsFurnitureMegaOpen(false);
         setIsHandicraftMegaOpen(false);
+        setIsLeatherMegaOpen(false);
       }
     };
 
@@ -108,6 +115,12 @@ const Header = () => {
       }
       if (handicraftMegaCloseTimerRef.current) {
         clearTimeout(handicraftMegaCloseTimerRef.current);
+      }
+      if (leatherMegaOpenTimerRef.current) {
+        clearTimeout(leatherMegaOpenTimerRef.current);
+      }
+      if (leatherMegaCloseTimerRef.current) {
+        clearTimeout(leatherMegaCloseTimerRef.current);
       }
     };
   }, []);
@@ -169,13 +182,14 @@ const Header = () => {
     setHasSearched(false);
     setIsDesktopDropdownOpen(false);
     setIsMobileDropdownOpen(false);
-    navigate(`/products/${id}`);
+    navigate(`/product/${id}`);
   };
 
   const navItems = [
     { label: 'Home', mobileLabel: 'Home', href: '/', active: true },
-    { label: 'Marble Furniture', mobileLabel: 'Marble Furniture', href: '/products?category=furniture', megaMenuType: 'furniture' },
-    { label: 'Handicraft', mobileLabel: 'Handicraft', href: '/products?category=handicraft', megaMenuType: 'handicraft' },
+    { label: 'Marble Furniture', mobileLabel: 'Marble Furniture', href: '/products/furniture', megaMenuType: 'furniture' },
+    { label: 'Handicraft', mobileLabel: 'Handicraft', href: '/products/handicraft', megaMenuType: 'handicraft' },
+    { label: 'Leather', mobileLabel: 'Leather', href: '/products/leather', megaMenuType: 'leather' },
     { label: 'Gallery', mobileLabel: 'Gallery', href: '/gallery' },
     { label: 'Shipping', mobileLabel: 'Shipping', href: '/shipping' },
     { label: 'Journal', mobileLabel: 'Journal', href: '/blog' },
@@ -184,22 +198,22 @@ const Header = () => {
   ];
 
   const furnitureMegaItems = [
-    { label: 'All in Marble Furniture', href: '/products?category=furniture' },
-    { label: 'bathtub', href: '/products?category=furniture&subcategory=bathtub' },
-    { label: 'bowl', href: '/products?category=furniture&subcategory=bowl' },
-    { label: 'center table', href: '/products?category=furniture&subcategory=center-table' },
-    { label: 'chaise chair', href: '/products?category=furniture&subcategory=chaise-chair' },
-    { label: 'clock', href: '/products?category=furniture&subcategory=clock' },
-    { label: 'coffee table', href: '/products?category=furniture&subcategory=coffee-table' },
-    { label: 'console table', href: '/products?category=furniture&subcategory=console-table' },
-    { label: 'dining table', href: '/products?category=furniture&subcategory=dining-table' },
-    { label: 'lamp', href: '/products?category=furniture&subcategory=lamp' },
-    { label: 'mirror frame', href: '/products?category=furniture&subcategory=mirror-frame' },
-    { label: 'pedestal sink', href: '/products?category=furniture&subcategory=pedestal-sink' },
-    { label: 'side table', href: '/products?category=furniture&subcategory=side-table' },
-    { label: 'sink', href: '/products?category=furniture&subcategory=sink' },
-    { label: 'tree sculpture', href: '/products?category=furniture&subcategory=tree-sculpture' },
-    { label: 'vase', href: '/products?category=furniture&subcategory=vase' },
+    { label: 'All in Marble Furniture', href: '/products/furniture' },
+    { label: 'bathtub', href: '/products/furniture/bathtub' },
+    { label: 'bowl', href: '/products/furniture/bowl' },
+    { label: 'center table', href: '/products/furniture/center-table' },
+    { label: 'chaise chair', href: '/products/furniture/chaise-chair' },
+    { label: 'clock', href: '/products/furniture/clock' },
+    { label: 'coffee table', href: '/products/furniture/coffee-table' },
+    { label: 'console table', href: '/products/furniture/console-table' },
+    { label: 'dining table', href: '/products/furniture/dining-table' },
+    { label: 'lamp', href: '/products/furniture/lamp' },
+    { label: 'mirror frame', href: '/products/furniture/mirror-frame' },
+    { label: 'pedestal sink', href: '/products/furniture/pedestal-sink' },
+    { label: 'side table', href: '/products/furniture/side-table' },
+    { label: 'sink', href: '/products/furniture/sink' },
+    { label: 'tree sculpture', href: '/products/furniture/tree-sculpture' },
+    { label: 'vase', href: '/products/furniture/vase' },
   ];
 
   const furnitureMegaGroups = [
@@ -218,12 +232,12 @@ const Header = () => {
   ];
 
   const handicraftMegaItems = [
-    { label: 'All Handicrafts', href: '/products?category=handicraft' },
-    { label: 'coffee table', href: '/products?category=handicraft&subcategory=coffee-table' },
-    { label: 'console table', href: '/products?category=handicraft&subcategory=console-table' },
-    { label: 'dining table', href: '/products?category=handicraft&subcategory=dining-table' },
-    { label: 'side table', href: '/products?category=handicraft&subcategory=side-table' },
-    { label: 'sofa', href: '/products?category=handicraft&subcategory=sofa' },
+    { label: 'All Handicrafts', href: '/products/handicraft' },
+    { label: 'coffee table', href: '/products/handicraft/coffee-table' },
+    { label: 'console table', href: '/products/handicraft/console-table' },
+    { label: 'dining table', href: '/products/handicraft/dining-table' },
+    { label: 'side table', href: '/products/handicraft/side-table' },
+    { label: 'sofa', href: '/products/handicraft/sofa' },
   ];
 
   const handicraftMegaGroups = [
@@ -234,6 +248,36 @@ const Header = () => {
     {
       title: 'Handicraft Seating',
       items: handicraftMegaItems.filter((item) => ['sofa'].includes(item.label)),
+    },
+  ];
+
+  const leatherMegaItems = [
+    { label: 'All Leather', href: '/products/leather' },
+    { label: 'sofa', href: '/products/leather/sofa' },
+    { label: 'armchair', href: '/products/leather/armchair' },
+    { label: 'ottoman', href: '/products/leather/ottoman' },
+    { label: 'bench', href: '/products/leather/bench' },
+    { label: 'bed', href: '/products/leather/bed' },
+    { label: 'side table', href: '/products/leather/side-table' },
+    { label: 'coffee table', href: '/products/leather/coffee-table' },
+    { label: 'console table', href: '/products/leather/console-table' },
+    { label: 'dresser', href: '/products/leather/dresser' },
+    { label: 'mirror', href: '/products/leather/mirror' },
+    { label: 'storage', href: '/products/leather/storage' },
+  ];
+
+  const leatherMegaGroups = [
+    {
+      title: 'Seating',
+      items: leatherMegaItems.filter((item) => ['sofa', 'armchair', 'ottoman', 'bench'].includes(item.label)),
+    },
+    {
+      title: 'Beds & Tables',
+      items: leatherMegaItems.filter((item) => ['bed', 'side table', 'coffee table', 'console table'].includes(item.label)),
+    },
+    {
+      title: 'Storage & Decor',
+      items: leatherMegaItems.filter((item) => ['dresser', 'mirror', 'storage'].includes(item.label)),
     },
   ];
 
@@ -248,6 +292,7 @@ const Header = () => {
     furnitureMegaOpenTimerRef.current = setTimeout(() => {
       setIsFurnitureMegaOpen(true);
       setIsHandicraftMegaOpen(false);
+      setIsLeatherMegaOpen(false);
       furnitureMegaOpenTimerRef.current = null;
     }, 80);
   };
@@ -279,6 +324,7 @@ const Header = () => {
     handicraftMegaOpenTimerRef.current = setTimeout(() => {
       setIsHandicraftMegaOpen(true);
       setIsFurnitureMegaOpen(false);
+      setIsLeatherMegaOpen(false);
       handicraftMegaOpenTimerRef.current = null;
     }, 80);
   };
@@ -296,6 +342,38 @@ const Header = () => {
         setIsHandicraftMegaOpen(false);
       }
       handicraftMegaCloseTimerRef.current = null;
+    }, 280);
+  };
+
+  const openLeatherMega = () => {
+    if (leatherMegaCloseTimerRef.current) {
+      clearTimeout(leatherMegaCloseTimerRef.current);
+      leatherMegaCloseTimerRef.current = null;
+    }
+    if (leatherMegaOpenTimerRef.current) {
+      clearTimeout(leatherMegaOpenTimerRef.current);
+    }
+    leatherMegaOpenTimerRef.current = setTimeout(() => {
+      setIsLeatherMegaOpen(true);
+      setIsFurnitureMegaOpen(false);
+      setIsHandicraftMegaOpen(false);
+      leatherMegaOpenTimerRef.current = null;
+    }, 80);
+  };
+
+  const closeLeatherMega = () => {
+    if (leatherMegaOpenTimerRef.current) {
+      clearTimeout(leatherMegaOpenTimerRef.current);
+      leatherMegaOpenTimerRef.current = null;
+    }
+    if (leatherMegaCloseTimerRef.current) {
+      clearTimeout(leatherMegaCloseTimerRef.current);
+    }
+    leatherMegaCloseTimerRef.current = setTimeout(() => {
+      if (!isLeatherMegaHoveredRef.current) {
+        setIsLeatherMegaOpen(false);
+      }
+      leatherMegaCloseTimerRef.current = null;
     }, 280);
   };
 
@@ -525,22 +603,23 @@ const Header = () => {
                     <button
                       type="button"
                       className="w-full px-5 py-4 text-[17px] leading-[1.25] text-[#111] font-light flex items-center justify-between"
-                      aria-expanded={item.megaMenuType === 'furniture' ? isMobileFurnitureOpen : isMobileHandicraftOpen}
+                      aria-expanded={item.megaMenuType === 'furniture' ? isMobileFurnitureOpen : item.megaMenuType === 'handicraft' ? isMobileHandicraftOpen : isMobileLeatherOpen}
                       aria-controls={`mobile-${item.megaMenuType}-submenu`}
                       onClick={() => {
                         if (item.megaMenuType === 'furniture') setIsMobileFurnitureOpen(prev => !prev);
-                        else setIsMobileHandicraftOpen(prev => !prev);
+                        else if (item.megaMenuType === 'handicraft') setIsMobileHandicraftOpen(prev => !prev);
+                        else if (item.megaMenuType === 'leather') setIsMobileLeatherOpen(prev => !prev);
                       }}
                     >
                       <span>{item.label}</span>
                       <ChevronDown
                         width="18"
                         height="18"
-                        className={`transition-transform duration-200 ${(item.megaMenuType === 'furniture' ? isMobileFurnitureOpen : isMobileHandicraftOpen) ? 'rotate-180' : ''}`}
+                        className={`transition-transform duration-200 ${(item.megaMenuType === 'furniture' ? isMobileFurnitureOpen : item.megaMenuType === 'handicraft' ? isMobileHandicraftOpen : isMobileLeatherOpen) ? 'rotate-180' : ''}`}
                       />
                     </button>
 
-                    {(item.megaMenuType === 'furniture' ? isMobileFurnitureOpen : isMobileHandicraftOpen) && (
+                    {(item.megaMenuType === 'furniture' ? isMobileFurnitureOpen : item.megaMenuType === 'handicraft' ? isMobileHandicraftOpen : isMobileLeatherOpen) && (
                       <div
                         id={`mobile-${item.megaMenuType}-submenu`}
                         className="px-5 pb-4 space-y-4 bg-[#fafafa] border-t border-[#f1f1f1]"
@@ -551,14 +630,15 @@ const Header = () => {
                           className="inline-block mt-1 rounded-md border border-[#111827] bg-[#111827] px-3 py-2 uppercase text-white no-underline"
                           onClick={() => {
                             if (item.megaMenuType === 'furniture') setIsMobileFurnitureOpen(false);
-                            else setIsMobileHandicraftOpen(false);
+                            else if (item.megaMenuType === 'handicraft') setIsMobileHandicraftOpen(false);
+                            else if (item.megaMenuType === 'leather') setIsMobileLeatherOpen(false);
                             setIsMobileMenuOpen(false);
                           }}
                         >
                           View All {item.label}
                         </a>
 
-                        {(item.megaMenuType === 'furniture' ? furnitureMegaGroups : handicraftMegaGroups).map((group) => (
+                        {(item.megaMenuType === 'furniture' ? furnitureMegaGroups : item.megaMenuType === 'handicraft' ? handicraftMegaGroups : leatherMegaGroups).map((group) => (
                           <div key={`mobile-group-${group.title}`} className="space-y-1.5">
                             <p style={{ fontSize: '9px', letterSpacing: '0.2em', fontWeight: 400 }} className="uppercase text-[#b4c0cc]">{group.title}</p>
                             <div className="space-y-0.5">
@@ -570,7 +650,8 @@ const Header = () => {
                                   className="block rounded-md px-2 py-2 leading-[1.35] text-[#1f2937] no-underline capitalize"
                                   onClick={() => {
                                     if (item.megaMenuType === 'furniture') setIsMobileFurnitureOpen(false);
-                                    else setIsMobileHandicraftOpen(false);
+                                    else if (item.megaMenuType === 'handicraft') setIsMobileHandicraftOpen(false);
+                                    else if (item.megaMenuType === 'leather') setIsMobileLeatherOpen(false);
                                     setIsMobileMenuOpen(false);
                                   }}
                                 >
@@ -710,10 +791,12 @@ const Header = () => {
                 onMouseEnter={() => {
                   if (item.megaMenuType === 'furniture') openFurnitureMega();
                   else if (item.megaMenuType === 'handicraft') openHandicraftMega();
+                  else if (item.megaMenuType === 'leather') openLeatherMega();
                 }}
                 onMouseLeave={() => {
                   if (item.megaMenuType === 'furniture') closeFurnitureMega();
                   else if (item.megaMenuType === 'handicraft') closeHandicraftMega();
+                  else if (item.megaMenuType === 'leather') closeLeatherMega();
                 }}
               >
                 <a
@@ -724,11 +807,13 @@ const Header = () => {
                     event.preventDefault();
                     event.stopPropagation();
                     if (item.megaMenuType === 'furniture') setIsFurnitureMegaOpen((prev) => !prev);
-                    else setIsHandicraftMegaOpen((prev) => !prev);
+                    else if (item.megaMenuType === 'handicraft') setIsHandicraftMegaOpen((prev) => !prev);
+                    else if (item.megaMenuType === 'leather') setIsLeatherMegaOpen((prev) => !prev);
                   }}
                   onFocus={() => {
                     if (item.megaMenuType === 'furniture') setIsFurnitureMegaOpen(true);
                     else if (item.megaMenuType === 'handicraft') setIsHandicraftMegaOpen(true);
+                    else if (item.megaMenuType === 'leather') setIsLeatherMegaOpen(true);
                   }}
                   style={{
                     color: item.isSale ? '#fff' : '#000',
@@ -738,7 +823,7 @@ const Header = () => {
                   <span className="itsbits-nav-label-desktop">{item.label}</span>
                   <span className="itsbits-nav-label-mobile">{item.mobileLabel || item.label}</span>
                   {item.megaMenuType && (
-                    <span className={`ml-1 inline-block text-[10px] transition-transform ${(item.megaMenuType === 'furniture' ? isFurnitureMegaOpen : isHandicraftMegaOpen) ? 'rotate-180' : ''}`} aria-hidden="true">▼</span>
+                    <span className={`ml-1 inline-block text-[10px] transition-transform ${(item.megaMenuType === 'furniture' ? isFurnitureMegaOpen : item.megaMenuType === 'handicraft' ? isHandicraftMegaOpen : isLeatherMegaOpen) ? 'rotate-180' : ''}`} aria-hidden="true">▼</span>
                   )}
                 </a>
               </li>
@@ -764,7 +849,7 @@ const Header = () => {
                 <div className="flex items-center justify-between border-b border-[#eef2f7] pb-3 mb-4">
                   <p style={{ fontSize: '10px', letterSpacing: '0.18em', fontWeight: 400 }} className="uppercase text-[#94a3b8]">Marble Furniture Collections</p>
                   <a
-                    href="/products?category=furniture"
+                    href="/products/furniture"
                     style={{ fontSize: '11px', letterSpacing: '0.1em', fontWeight: 500 }}
                     className="uppercase text-[#0f172a] hover:text-black no-underline transition-colors"
                     onClick={() => setIsFurnitureMegaOpen(false)}
@@ -813,7 +898,7 @@ const Header = () => {
                 <div className="flex items-center justify-between border-b border-[#eef2f7] pb-3 mb-4">
                   <p style={{ fontSize: '10px', letterSpacing: '0.18em', fontWeight: 400 }} className="uppercase text-[#94a3b8]">Handicraft Collections</p>
                   <a
-                    href="/products?category=handicraft"
+                    href="/products/handicraft"
                     style={{ fontSize: '11px', letterSpacing: '0.1em', fontWeight: 500 }}
                     className="uppercase text-[#0f172a] hover:text-black no-underline transition-colors"
                     onClick={() => setIsHandicraftMegaOpen(false)}
@@ -832,6 +917,55 @@ const Header = () => {
                           style={{ fontSize: '13.5px', fontWeight: 300, letterSpacing: '0.01em' }}
                           className="block text-[#1f2937] hover:text-black hover:bg-[#f8fafc] rounded-md px-2 py-[7px] transition-colors capitalize no-underline leading-snug"
                           onClick={() => setIsHandicraftMegaOpen(false)}
+                        >
+                          {megaItem.label}
+                        </a>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {isLeatherMegaOpen && (
+            <div
+              className="absolute left-1/2 -translate-x-1/2 top-full pt-1 z-[120]"
+              onMouseEnter={() => {
+                isLeatherMegaHoveredRef.current = true;
+                if (leatherMegaCloseTimerRef.current) {
+                  clearTimeout(leatherMegaCloseTimerRef.current);
+                  leatherMegaCloseTimerRef.current = null;
+                }
+              }}
+              onMouseLeave={() => {
+                isLeatherMegaHoveredRef.current = false;
+                closeLeatherMega();
+              }}
+            >
+              <div className="w-[760px] bg-white border border-[#e5e7eb] shadow-[0_18px_46px_rgba(0,0,0,0.14)] rounded-2xl p-5">
+                <div className="flex items-center justify-between border-b border-[#eef2f7] pb-3 mb-4">
+                  <p style={{ fontSize: '10px', letterSpacing: '0.18em', fontWeight: 400 }} className="uppercase text-[#94a3b8]">Leather Collections</p>
+                  <a
+                    href="/products/leather"
+                    style={{ fontSize: '11px', letterSpacing: '0.1em', fontWeight: 500 }}
+                    className="uppercase text-[#0f172a] hover:text-black no-underline transition-colors"
+                    onClick={() => setIsLeatherMegaOpen(false)}
+                  >
+                    View All →
+                  </a>
+                </div>
+                <div className="grid grid-cols-3 gap-5">
+                  {leatherMegaGroups.map((group) => (
+                    <div key={group.title} className="space-y-0.5">
+                      <p style={{ fontSize: '9px', letterSpacing: '0.2em', fontWeight: 400 }} className="uppercase text-[#b4c0cc] px-2 pb-2">{group.title}</p>
+                      {group.items.map((megaItem) => (
+                        <a
+                          key={megaItem.label}
+                          href={megaItem.href}
+                          style={{ fontSize: '13.5px', fontWeight: 300, letterSpacing: '0.01em' }}
+                          className="block text-[#1f2937] hover:text-black hover:bg-[#f8fafc] rounded-md px-2 py-[7px] transition-colors capitalize no-underline leading-snug"
+                          onClick={() => setIsLeatherMegaOpen(false)}
                         >
                           {megaItem.label}
                         </a>
