@@ -29,7 +29,7 @@ const SKIP_UPLOAD = args.includes('--skip-upload') || DRY_RUN;
 const STEP = args.find(a => a.startsWith('--step='))?.split('=')[1] || '1';
 
 const ROOT = path.join(__dirname, '../..');
-const CSV_PATH = path.join(ROOT, 'new products', 'Latest Etsy & HS All Product Title Desc  April -May 2026 -  marble  Listing  (2).csv');
+const CSV_PATH = path.join(ROOT, 'new products', 'Latest Etsy & HS All Product Title Desc  April -May 2026 -  marble  Listing .csv');
 const PHOTOS_DIR = path.join(ROOT, 'new products', 'Etsy All Product Photos');
 const FRONTEND_VIDEOS_DIR = path.join(ROOT, 'frontend', 'public', 'videos', 'etsy');
 
