@@ -29,6 +29,11 @@ const findRelatedProducts = ({ product, limit = 10 }) => Product.find({
     available: true
 }).limit(limit);
 
+const findRandomProducts = ({ product, limit = 10 }) => Product.aggregate([
+    { $match: { _id: { $ne: product._id }, status: 'active', available: true } },
+    { $sample: { size: limit } }
+]);
+
 const findByCategory = ({ filters, sort, skip, limit }) => Product.find(filters)
     .sort(sort)
     .skip(skip)
@@ -104,6 +109,7 @@ module.exports = {
     findByProductIdActive,
     findSimilarProductsByProductIds,
     findRelatedProducts,
+    findRandomProducts,
     findByCategory,
     findFeatured,
     searchProducts,

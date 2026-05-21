@@ -24,13 +24,22 @@ const leadCaptureSchema = new mongoose.Schema({
     },
     clientType: {
         type: String,
-        required: true,
-        enum: ['personal', 'client']
+        enum: ['personal', 'client'],
+        default: 'personal'
     },
     services: [{
-        type: String,
-        required: true
+        type: String
     }],
+    country: {
+        type: String,
+        trim: true,
+        default: ''
+    },
+    pincode: {
+        type: String,
+        trim: true,
+        default: ''
+    },
     message: {
         type: String,
         default: ''

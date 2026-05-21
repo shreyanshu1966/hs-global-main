@@ -47,16 +47,10 @@ const createTransporterConfig = () => {
                     pass: emailPassword
                 },
                 tls: {
-                    rejectUnauthorized: false,
-                    ciphers: 'SSLv3'
+                    rejectUnauthorized: false
                 },
-                pool: true,
-                maxConnections: 1, // CRITICAL: Only 1 connection for GoDaddy to prevent "too many connections"
-                maxMessages: 10, // Reduced to prevent connection exhaustion
-                rateDelta: 2000, // 2 seconds between batches
-                rateLimit: 2, // Max 2 emails per rateDelta
-                connectionTimeout: 10000, // 10 seconds
-                greetingTimeout: 10000,
+                connectionTimeout: 15000,
+                greetingTimeout: 15000,
                 socketTimeout: 30000
             };
         }
@@ -135,8 +129,12 @@ const initEmailService = async (retryCount = 0) => {
         isInitializing = false;
         console.error('❌ Email service initialization failed:', error.message);
 
-        // Retry with exponential backoff (max 3 attempts)
-        if (retryCount < 2 && error.responseCode === 421) {
+        // Retry transient server errors (421 = service unavailable, ECONNRESET, ETIMEDOUT)
+        const isTransient = error.responseCode === 421 ||
+            error.code === 'ECONNRESET' ||
+            error.code === 'ETIMEDOUT' ||
+            error.code === 'ECONNREFUSED';
+        if (retryCount < 2 && isTransient) {
             const backoffTime = Math.min(5000 * Math.pow(2, retryCount), 30000);
             console.log(`🔄 Retrying connection in ${backoffTime}ms... (attempt ${retryCount + 1}/3)`);
             await new Promise(resolve => setTimeout(resolve, backoffTime));
