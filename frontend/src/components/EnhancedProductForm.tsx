@@ -45,6 +45,7 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
   const [formData, setFormData] = useState({
     productId: '',
     name: '',
+    category: 'furniture',
     subcategory: '',
     description: '',
     subDescription: '',
@@ -66,6 +67,7 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
   const [customSpecs, setCustomSpecs] = useState<any[]>([]);
   const [showCustomSubcategory, setShowCustomSubcategory] = useState(false);
   const [customSubcategory, setCustomSubcategory] = useState('');
+  const [allCategories, setAllCategories] = useState<Category[]>([]);
   const [availableSubcategories, setAvailableSubcategories] = useState<string[]>([]);
   const [video, setVideo] = useState<VideoFile | null>(null);
   const [videoUploading, setVideoUploading] = useState(false);
@@ -83,36 +85,36 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
   // Computed value to disable form during any loading state
   const isFormDisabled = validationLoading || formSubmitting || loading || previewLoading || videoUploading;
 
-  // Load categories/subcategories dynamically from API (no hardcoded taxonomy).
+  // Load all categories once from API
   useEffect(() => {
     const loadDynamicCategories = async () => {
       try {
         const response = await productService.getCategories();
-        if (!response.success || !Array.isArray(response.data)) {
-          setAvailableSubcategories([]);
-          return;
-        }
-
-        const furnitureCategory = (response.data as Category[]).find(
-          (item) => String(item.category).toLowerCase() === 'furniture'
-        );
-
-        setAvailableSubcategories(furnitureCategory?.subcategories || []);
+        if (!response.success || !Array.isArray(response.data)) return;
+        setAllCategories(response.data as Category[]);
       } catch (error) {
         console.error('Failed to load categories for product form:', error);
-        setAvailableSubcategories([]);
       }
     };
-
     loadDynamicCategories();
   }, []);
+
+  // Update available subcategories whenever the selected category or loaded categories change
+  useEffect(() => {
+    const match = allCategories.find(
+      (item) => String(item.category).toLowerCase() === formData.category.toLowerCase()
+    );
+    setAvailableSubcategories(match?.subcategories || []);
+  }, [formData.category, allCategories]);
 
   // Initialize form when editing
   useEffect(() => {
     if (editingProduct) {
+      const validCategories = ['furniture', 'handicraft', 'leather'];
       setFormData({
         productId: editingProduct.productId || '',
         name: editingProduct.name || '',
+        category: validCategories.includes(editingProduct.category) ? editingProduct.category : 'furniture',
         subcategory: editingProduct.subcategory || '',
         description: editingProduct.description || '',
         subDescription: editingProduct.subDescription || '',
@@ -284,7 +286,7 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
       const finalFormData = {
         productId: formData.productId,
         name: formData.name,
-        category: 'furniture',
+        category: formData.category,
         subcategory: finalSubcategory,
         description: formData.description,
         subDescription: formData.subDescription || '',
@@ -333,7 +335,7 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
       const finalFormData = {
         productId: formData.productId,
         name: formData.name,
-        category: 'furniture',
+        category: formData.category,
         subcategory: finalSubcategory,
         description: formData.description,
         subDescription: formData.subDescription || '',
@@ -497,6 +499,26 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
                   placeholder="e.g., Marble Coffee Table"
                 />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Category <span className="text-red-500">*</span>
+                </label>
+                <select
+                  value={formData.category}
+                  disabled={isFormDisabled}
+                  onChange={(e) => {
+                    setFormData(prev => ({ ...prev, category: e.target.value, subcategory: '' }));
+                    setShowCustomSubcategory(false);
+                    setCustomSubcategory('');
+                  }}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                >
+                  <option value="furniture">Furniture</option>
+                  <option value="handicraft">Handicraft</option>
+                  <option value="leather">Leather</option>
+                </select>
               </div>
 
               <div>
@@ -817,7 +839,7 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
           {/* Product Specifications */}
           <div className="space-y-4 border-t pt-4">
             <ProductSpecsEditor
-              category={'furniture'}
+              category={formData.category}
               furnitureSpecs={formData.furnitureSpecs}
               slabSpecs={{}}
               customSpecs={customSpecs}

@@ -31,71 +31,75 @@ const ProductImageManager: React.FC<ProductImageManagerProps> = ({
   const [showCropper, setShowCropper] = useState(false);
   const [cropImage, setCropImage] = useState<{ src: string; file: File; imageId?: string } | null>(null);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
-  const [processingImages, setProcessingImages] = useState<Set<string>>(new Set());
-  const [uploadProgress, setUploadProgress] = useState<{ [key: string]: number }>({});
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
-    
-    files.forEach((file) => {
-      if (images.length >= maxImages) {
-        alert(`Maximum ${maxImages} images allowed`);
-        return;
-      }
 
-      // Validate file type
-      if (!file.type.startsWith('image/')) {
-        alert('Please select only image files');
-        return;
-      }
-
-      // Validate file size (5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        alert('Image size should be less than 5MB');
-        return;
-      }
-
-      const imageId = Date.now().toString() + '_' + Math.random().toString(36).substr(2, 9);
-      setProcessingImages(prev => new Set([...prev, imageId]));
-      setUploadProgress(prev => ({ ...prev, [imageId]: 0 }));
-
-      const reader = new FileReader();
-      reader.onprogress = (e) => {
-        if (e.lengthComputable) {
-          const progress = Math.round((e.loaded / e.total) * 100);
-          setUploadProgress(prev => ({ ...prev, [imageId]: Math.min(progress, 90) }));
-        }
-      };
-      
-      reader.onload = (e) => {
-        // Simulate final processing time
-        setTimeout(() => {
-          setUploadProgress(prev => ({ ...prev, [imageId]: 100 }));
-          addImage(file, e.target?.result as string, imageId);
-          
-          // Clean up processing state
-          setTimeout(() => {
-            setProcessingImages(prev => {
-              const newSet = new Set(prev);
-              newSet.delete(imageId);
-              return newSet;
-            });
-            setUploadProgress(prev => {
-              const newProgress = { ...prev };
-              delete newProgress[imageId];
-              return newProgress;
-            });
-          }, 500);
-        }, 300);
-      };
-      reader.readAsDataURL(file);
-    });
-
-    // Clear the input
+    // Clear input immediately so the same file can be re-selected later
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
+
+    if (files.length === 0) return;
+
+    // Validate and cap to remaining slots
+    const remaining = maxImages - images.length;
+    if (remaining <= 0) {
+      alert(`Maximum ${maxImages} images allowed`);
+      return;
+    }
+
+    const validFiles: File[] = [];
+    for (const file of files) {
+      if (validFiles.length >= remaining) {
+        alert(`Maximum ${maxImages} images allowed`);
+        break;
+      }
+      if (!file.type.startsWith('image/')) {
+        alert('Please select only image files');
+        continue;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        alert('Image size should be less than 5MB');
+        continue;
+      }
+      validFiles.push(file);
+    }
+
+    if (validFiles.length === 0) return;
+
+    // Read all files concurrently then do a single batch state update to avoid
+    // the race condition where each onload callback sees the same stale images prop.
+    Promise.all(
+      validFiles.map(
+        (file) =>
+          new Promise<{ file: File; url: string; id: string }>((resolve) => {
+            const id = `${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+            const reader = new FileReader();
+            reader.onload = (ev) =>
+              resolve({ file, url: ev.target?.result as string, id });
+            reader.readAsDataURL(file);
+          })
+      )
+    ).then((results) => {
+      const hasNoImages = images.length === 0;
+      const newImages: ProductImage[] = results.map((r, index) => ({
+        id: r.id,
+        file: r.file,
+        url: r.url,
+        isMain: hasNoImages && index === 0,
+        isNew: true,
+      }));
+
+      const updatedImages = [...images, ...newImages];
+      onImagesChange(updatedImages);
+
+      const mainImage = newImages.find((img) => img.isMain);
+      if (mainImage) {
+        onMainImageChange(mainImage.id);
+      }
+    });
   };
 
   const addImage = (file: File, url: string, id?: string) => {
@@ -103,7 +107,7 @@ const ProductImageManager: React.FC<ProductImageManagerProps> = ({
       id: id || Date.now().toString(),
       file,
       url,
-      isMain: images.length === 0, // First image is main by default
+      isMain: images.length === 0,
       isNew: true
     };
 
