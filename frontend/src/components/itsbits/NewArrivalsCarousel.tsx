@@ -137,6 +137,8 @@ const NewArrivalsCarousel = ({
                         showPrice={false}
                         averageRating={item.averageRating}
                         totalReviews={item.totalReviews}
+                        regionalPricing={item.regionalPricing}
+                        discount={item.discount}
                       />
                     </div>
                   ))}

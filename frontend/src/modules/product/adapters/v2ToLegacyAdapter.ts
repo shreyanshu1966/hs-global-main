@@ -49,6 +49,7 @@ export const toLegacyProduct = (product: ProductV2): LegacyProduct => ({
   seo: product.seo.enhanced as LegacyProduct['seo'],
   productCode: (product as any).productCode || '',
   subDescription: (product as any).subDescription || '',
+  regionalPricing: product.regionalPricing || null,
   createdAt: product.createdAt,
   updatedAt: product.updatedAt,
 });

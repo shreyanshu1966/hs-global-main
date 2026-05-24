@@ -11,20 +11,14 @@ export const CartMenu: React.FC = () => {
   const menuRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const location = useLocation();
-  const { state, toggleCart, updateQuantity, removeItem, getTotalItems } = useCart();
-  const { convertFromUSD, getCurrencySymbol, formatPrice } = useCurrency();
+  const { state, toggleCart, updateQuantity, removeItem, getTotalItems, getRegionalEffectivePriceUSD, getRegionalBasePriceUSD } = useCart();
+  const { formatPrice } = useCurrency();
   const { isAuthenticated } = useAuth();
   const totalItems = getTotalItems();
 
-  const subtotal = useMemo(() => {
-    return state.items.reduce((sum, item) => {
-      const hasDiscount = item.discount?.enabled && item.discount.percentage > 0;
-      const effectivePriceUSD = hasDiscount
-        ? item.priceUSD * (1 - (item.discount?.percentage ?? 0) / 100)
-        : item.priceUSD;
-      return sum + convertFromUSD(effectivePriceUSD) * item.quantity;
-    }, 0);
-  }, [state.items, convertFromUSD]);
+  const subtotalUSD = useMemo(() => {
+    return state.items.reduce((sum, item) => sum + getRegionalEffectivePriceUSD(item) * item.quantity, 0);
+  }, [state.items, getRegionalEffectivePriceUSD]);
 
   useEffect(() => {
     setIsOpen(false);
@@ -106,10 +100,9 @@ export const CartMenu: React.FC = () => {
                   onWheel={(e) => e.stopPropagation()}
                 >
                   {state.items.map((item) => {
-                    const hasDiscount = item.discount?.enabled && item.discount.percentage > 0;
-                    const effectivePriceUSD = hasDiscount
-                      ? item.priceUSD * (1 - (item.discount?.percentage ?? 0) / 100)
-                      : item.priceUSD;
+                    const effectivePriceUSD = getRegionalEffectivePriceUSD(item);
+                    const basePriceUSD = getRegionalBasePriceUSD(item);
+                    const hasDiscount = effectivePriceUSD < basePriceUSD;
 
                     return (
                       <div key={item.id} className="px-6 py-4 border-b border-[#eceff1]">
@@ -146,7 +139,7 @@ export const CartMenu: React.FC = () => {
                               </span>
                               {hasDiscount && (
                                 <span className="text-xs text-gray-500 line-through">
-                                  {formatPrice(item.priceUSD)}
+                                  {formatPrice(basePriceUSD)}
                                 </span>
                               )}
                             </div>
@@ -193,8 +186,7 @@ export const CartMenu: React.FC = () => {
                       Subtotal
                     </span>
                     <span className="text-xl font-['Playfair_Display'] font-bold text-[#111111]">
-                      {getCurrencySymbol()}
-                      {subtotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      {formatPrice(subtotalUSD)}
                     </span>
                   </div>
 

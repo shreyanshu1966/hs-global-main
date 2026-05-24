@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Star, Package, Share2, MessageCircle, FileText, Heart, Truck } from 'lucide-react';
-import { useCurrency } from '../../contexts/CurrencyContext';
 import { useNavigate, Link } from 'react-router-dom';
 import { useCart } from '../../contexts/CartContext';
 import { useTrackAddToCart } from '../../hooks/useProducts';
 import { AddToCartButton } from '../AddToCartButton';
+import { usePrice } from '../../hooks/usePrice';
+import { useWishlist } from '../../contexts/WishlistContext';
 
 import { Heading, Body, Caption } from '../ui/Typography';
 import { Button } from '../ui/Button';
-import { getbasePriceUSD, getDiscountPercentage, geteffectivePriceUSD, hasActiveDiscount } from '../../modules/product/pricing';
 
 interface ProductInfoProps {
     product: any;
@@ -28,13 +28,13 @@ export function ProductInfo({
     const navigate = useNavigate();
     const { addItem } = useCart();
     const trackAddToCart = useTrackAddToCart();
-    const { formatPrice } = useCurrency();
-    const [isFavorite, setIsFavorite] = useState(false);
-    
-    const basePriceUSD = getbasePriceUSD(product);
-    const hasDiscount = hasActiveDiscount(product) && basePriceUSD > 0;
-    const discountPercentage = Math.round(getDiscountPercentage(product));
-    const effectivePriceUSD = geteffectivePriceUSD(product);
+    const { isInWishlist, toggleWishlist } = useWishlist();
+    const isFavorite = isInWishlist(product.id || product._id || product.productId || '');
+
+    const price = usePrice(product);
+    const basePriceUSD = price.baseUSD;
+    const hasDiscount = price.hasDiscount;
+    const discountPercentage = Math.round(price.discountPercentage);
     const sellerRating = reviewStats.totalReviews > 0 ? reviewStats.averageRating.toFixed(1) : '5.0';
 
     const getProductId = (): string => {
@@ -60,6 +60,7 @@ export function ProductInfo({
                 name: product.name,
                 image: getProductImage(),
                 priceUSD: product.priceUSD || basePriceUSD || 0,
+                regionalPricing: product.regionalPricing,
                 category: product.category,
                 subcategory: product.subcategory || '',
                 discount: product.discount,
@@ -86,7 +87,16 @@ export function ProductInfo({
                 <button onClick={handleShare} className="text-[#111827] hover:opacity-70 transition-opacity">
                     <Share2 className="w-5 h-5" strokeWidth={1.5} />
                 </button>
-                <button onClick={() => setIsFavorite(!isFavorite)} className="text-[#111827] hover:opacity-70 transition-opacity">
+                <button
+                    onClick={() => toggleWishlist({
+                        id: product.id || product._id || product.productId || '',
+                        title: product.name,
+                        image: product.image || (product.images && product.images[0]),
+                        href: `/products/${product.id || product._id || product.productId}`,
+                    })}
+                    className="text-[#111827] hover:opacity-70 transition-opacity"
+                    aria-label={isFavorite ? 'Remove from wishlist' : 'Add to wishlist'}
+                >
                     <Heart className={`w-5 h-5 ${isFavorite ? 'fill-[#111827]' : ''}`} strokeWidth={1.5} />
                 </button>
             </div>
@@ -132,12 +142,12 @@ export function ProductInfo({
                     <div className="flex flex-col gap-1">
                         <div className="flex items-end gap-3 flex-wrap">
                             <span className="text-[28px] md:text-[34px] font-medium text-[#111827] leading-none">
-                                {formatPrice(effectivePriceUSD)}
+                                {price.formattedPrice}
                             </span>
                             {hasDiscount && (
                                 <>
                                     <span className="text-[16px] text-[#757575] line-through mb-[4px]">
-                                        MRP: {formatPrice(basePriceUSD)}
+                                        MRP: {price.originalFormattedPrice}
                                     </span>
                                     {discountPercentage > 0 && (
                                         <span className="text-[14px] font-semibold text-[#b82121] mb-[4px]">
@@ -153,7 +163,7 @@ export function ProductInfo({
                     </div>
                 ) : (
                     <div className="text-[28px] font-medium text-[#111827]">
-                        {product.price}
+                        Price on Request
                     </div>
                 )}
             </div>

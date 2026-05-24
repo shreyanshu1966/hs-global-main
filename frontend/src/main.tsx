@@ -21,10 +21,12 @@ if ('serviceWorker' in navigator) {
   });
 }
 import { CartProvider } from './contexts/CartContext';
+import { WishlistProvider } from './contexts/WishlistContext';
 import { PhoneVerificationProvider } from './contexts/PhoneVerificationContext';
 import { SlabCustomizationProvider } from './contexts/SlabCustomizationContext';
 import { SlabCustomizationModal } from './components/SlabCustomizationModal';
 import { LocalizationProvider } from './contexts/LocalizationContext';
+import { RegionProvider } from './contexts/RegionContext';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || '1047190342938-1234567890.apps.googleusercontent.com';
@@ -33,14 +35,18 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
       <LocalizationProvider>
-        <CartProvider>
-          <PhoneVerificationProvider>
-            <SlabCustomizationProvider>
-              <App />
-              <SlabCustomizationModal />
-            </SlabCustomizationProvider>
-          </PhoneVerificationProvider>
-        </CartProvider>
+        <RegionProvider>
+          <CartProvider>
+            <WishlistProvider>
+            <PhoneVerificationProvider>
+              <SlabCustomizationProvider>
+                <App />
+                <SlabCustomizationModal />
+              </SlabCustomizationProvider>
+            </PhoneVerificationProvider>
+            </WishlistProvider>
+          </CartProvider>
+        </RegionProvider>
       </LocalizationProvider>
     </GoogleOAuthProvider>
   </StrictMode>

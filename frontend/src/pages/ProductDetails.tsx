@@ -82,6 +82,7 @@ const ProductDetails = () => {
       averageRating: dbProduct.averageRating,
       totalReviews: dbProduct.totalReviews,
       discount: dbProduct.discount,
+      regionalPricing: dbProduct.regionalPricing,
     };
   }, [dbProduct, dbRelatedProducts, dbSimilarProducts]);
 

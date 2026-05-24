@@ -147,6 +147,8 @@ const ProductCarousel = ({
                         productLink={p.href}
                         averageRating={p.averageRating}
                         totalReviews={p.totalReviews}
+                        regionalPricing={p.regionalPricing}
+                        discount={p.discount}
                       />
                     </div>
                   ))}

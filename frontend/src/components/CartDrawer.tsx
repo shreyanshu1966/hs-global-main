@@ -8,10 +8,10 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 
 export const CartDrawer: React.FC = () => {
-  const { formatPrice, getCurrencySymbol, convertFromUSD } = useCurrency();
+  const { formatPrice } = useCurrency();
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
-  const { state, updateQuantity, removeItem, closeCart, getTotalItems } = useCart();
+  const { state, updateQuantity, removeItem, closeCart, getTotalItems, getRegionalEffectivePriceUSD, getRegionalBasePriceUSD } = useCart();
 
   const [isRendered, setIsRendered] = useState(false);
   const backdropRef = useRef<HTMLDivElement>(null);
@@ -53,17 +53,11 @@ export const CartDrawer: React.FC = () => {
     }
   }, [state.isCartOpen]);
 
-  const subtotal = useMemo(() => {
-    return state.items.reduce((sum, item) => {
-      const hasDiscount = item.discount?.enabled && item.discount.percentage > 0;
-      const effectivePriceUSD = hasDiscount
-        ? item.priceUSD * (1 - (item.discount?.percentage ?? 0) / 100)
-        : item.priceUSD;
-      return sum + convertFromUSD(effectivePriceUSD) * item.quantity;
-    }, 0);
-  }, [state.items, convertFromUSD]);
+  const subtotalUSD = useMemo(() => {
+    return state.items.reduce((sum, item) => sum + getRegionalEffectivePriceUSD(item) * item.quantity, 0);
+  }, [state.items, getRegionalEffectivePriceUSD]);
 
-  const totalAmount = subtotal;
+  const totalAmount = subtotalUSD;
 
   const handleClose = () => closeCart();
 
@@ -154,10 +148,9 @@ export const CartDrawer: React.FC = () => {
               ) : (
                 <div className="space-y-0">
                   {state.items.map((item) => {
-                    const hasDiscount = item.discount?.enabled && item.discount.percentage > 0;
-                    const effectivePriceUSD = hasDiscount
-                      ? item.priceUSD * (1 - (item.discount?.percentage ?? 0) / 100)
-                      : item.priceUSD;
+                    const effectivePriceUSD = getRegionalEffectivePriceUSD(item);
+                    const basePriceUSD = getRegionalBasePriceUSD(item);
+                    const hasDiscount = effectivePriceUSD < basePriceUSD;
 
                     return (
                       <div key={item.id} className="px-6 py-4 border-b border-[#eceff1]">
@@ -191,9 +184,7 @@ export const CartDrawer: React.FC = () => {
                             <div className="mt-1 flex items-center gap-2 flex-wrap">
                               <span className="text-sm font-bold text-gray-900">{formatPrice(effectivePriceUSD)}</span>
                               {hasDiscount && (
-                                <>
-                                  <span className="text-xs text-gray-500 line-through">{formatPrice(item.priceUSD)}</span>
-                                </>
+                                <span className="text-xs text-gray-500 line-through">{formatPrice(basePriceUSD)}</span>
                               )}
                             </div>
 
@@ -239,10 +230,7 @@ export const CartDrawer: React.FC = () => {
                 <div className="flex items-center justify-between border border-[#e5e7eb] bg-[#f8fafc] px-4 py-3">
                   <span className="text-xs uppercase tracking-[0.1em] font-semibold text-[#374151]">Subtotal</span>
                   <span className="text-xl font-['Playfair_Display'] font-bold text-[#111111]">
-                    {getCurrencySymbol()}{totalAmount.toLocaleString('en-US', {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2
-                    })}
+                    {formatPrice(totalAmount)}
                   </span>
                 </div>
                 <div className="flex flex-col gap-3 w-full">

@@ -107,6 +107,7 @@ const toProductDto = (product) => {
             averageRating: Number(product.averageRating || 0),
             totalReviews: Number(product.totalReviews || 0)
         },
+        regionalPricing: product.regionalPricing || null,
         createdAt: product.createdAt,
         updatedAt: product.updatedAt
     };

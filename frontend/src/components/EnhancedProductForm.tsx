@@ -32,6 +32,20 @@ interface VideoFile {
   isExisting?: boolean;
 }
 
+type AdjustmentType = 'percentage' | 'fixed';
+type RegionKey = 'UAE' | 'Europe' | 'India' | 'USA' | 'UK';
+const REGION_DISPLAY_CURRENCY: Record<RegionKey, string> = {
+  UAE: 'USD ($)', Europe: 'GBP (£)', India: 'INR (₹)', USA: 'USD ($)', UK: 'GBP (£)'
+};
+const ALL_REGIONS: RegionKey[] = ['UAE', 'Europe', 'India', 'USA', 'UK'];
+const defaultRegionalPricing = (): Record<RegionKey, { enabled: boolean; adjustmentType: AdjustmentType; adjustmentValue: number }> => ({
+  UAE: { enabled: false, adjustmentType: 'percentage', adjustmentValue: 0 },
+  Europe: { enabled: false, adjustmentType: 'percentage', adjustmentValue: 0 },
+  India: { enabled: false, adjustmentType: 'percentage', adjustmentValue: 0 },
+  USA: { enabled: false, adjustmentType: 'percentage', adjustmentValue: 0 },
+  UK: { enabled: false, adjustmentType: 'percentage', adjustmentValue: 0 },
+});
+
 const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
   editingProduct,
   onSave,
@@ -71,6 +85,8 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
   const [availableSubcategories, setAvailableSubcategories] = useState<string[]>([]);
   const [video, setVideo] = useState<VideoFile | null>(null);
   const [videoUploading, setVideoUploading] = useState(false);
+
+  const [regionalPricing, setRegionalPricing] = useState<Record<RegionKey, { enabled: boolean; adjustmentType: AdjustmentType; adjustmentValue: number }>>(defaultRegionalPricing);
 
   // Similar products picker state
   const [similarProductIds, setSimilarProductIds] = useState<string[]>([]);
@@ -156,6 +172,18 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
       // Set similar products
       if (editingProduct.similarProducts && editingProduct.similarProducts.length > 0) {
         setSimilarProductIds(editingProduct.similarProducts);
+      }
+
+      // Set regional pricing
+      if (editingProduct.regionalPricing) {
+        const def = defaultRegionalPricing();
+        setRegionalPricing({
+          UAE: editingProduct.regionalPricing.UAE || def.UAE,
+          Europe: editingProduct.regionalPricing.Europe || def.Europe,
+          India: editingProduct.regionalPricing.India || def.India,
+          USA: editingProduct.regionalPricing.USA || def.USA,
+          UK: editingProduct.regionalPricing.UK || def.UK,
+        });
       }
 
       // Set existing video
@@ -297,7 +325,8 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
         furnitureSpecs: formData.furnitureSpecs,
         discount: formData.discount,
         hasVideo: !!video,
-        similarProducts: similarProductIds
+        similarProducts: similarProductIds,
+        regionalPricing
       };
 
       // Extract video file (only if it's new, not existing)
@@ -995,6 +1024,95 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
                 </div>
               </div>
             )}
+          </div>
+
+          {/* Regional Pricing Section */}
+          <div className="space-y-4 border-t pt-4">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900">Regional Pricing</h3>
+              <p className="text-sm text-gray-500 mt-1">
+                Set price adjustments per region. Leave disabled to use base USD price.
+                Website shows: USD ($), GBP (£), INR (₹).
+              </p>
+            </div>
+            <div className="space-y-3">
+              {ALL_REGIONS.map((region) => {
+                const rp = regionalPricing[region];
+                const basePrice = parseFloat(formData.priceUSD?.toString() || '0') || 0;
+                let previewPrice = basePrice;
+                if (rp.enabled && rp.adjustmentValue) {
+                  previewPrice = rp.adjustmentType === 'percentage'
+                    ? basePrice * (1 + rp.adjustmentValue / 100)
+                    : basePrice + rp.adjustmentValue;
+                  previewPrice = Math.max(0, Math.round(previewPrice * 100) / 100);
+                }
+                return (
+                  <div key={region} className={`border rounded-lg p-4 ${rp.enabled ? 'border-blue-300 bg-blue-50' : 'border-gray-200 bg-gray-50'}`}>
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-3">
+                        <input
+                          type="checkbox"
+                          id={`rp-${region}`}
+                          checked={rp.enabled}
+                          onChange={(e) => setRegionalPricing(prev => ({
+                            ...prev,
+                            [region]: { ...prev[region], enabled: e.target.checked }
+                          }))}
+                          className="w-4 h-4 text-blue-600 rounded"
+                          disabled={isFormDisabled}
+                        />
+                        <label htmlFor={`rp-${region}`} className="font-medium text-gray-800 cursor-pointer">
+                          {region}
+                        </label>
+                        <span className="text-xs text-gray-400">({REGION_DISPLAY_CURRENCY[region]})</span>
+                      </div>
+                      {rp.enabled && basePrice > 0 && (
+                        <span className={`text-sm font-semibold ${previewPrice > basePrice ? 'text-orange-600' : previewPrice < basePrice ? 'text-green-600' : 'text-gray-500'}`}>
+                          Preview: ${previewPrice.toFixed(2)} USD
+                        </span>
+                      )}
+                    </div>
+                    {rp.enabled && (
+                      <div className="flex gap-3 items-center">
+                        <select
+                          value={rp.adjustmentType}
+                          onChange={(e) => setRegionalPricing(prev => ({
+                            ...prev,
+                            [region]: { ...prev[region], adjustmentType: e.target.value as AdjustmentType }
+                          }))}
+                          disabled={isFormDisabled}
+                          className="text-sm border border-gray-300 rounded-lg px-3 py-2 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        >
+                          <option value="percentage">Percentage (%)</option>
+                          <option value="fixed">Fixed Value ($)</option>
+                        </select>
+                        <div className="relative flex-1">
+                          <input
+                            type="number"
+                            step="0.01"
+                            value={rp.adjustmentValue}
+                            onChange={(e) => setRegionalPricing(prev => ({
+                              ...prev,
+                              [region]: { ...prev[region], adjustmentValue: parseFloat(e.target.value) || 0 }
+                            }))}
+                            placeholder={rp.adjustmentType === 'percentage' ? 'e.g. 10 or -5' : 'e.g. 50 or -20'}
+                            disabled={isFormDisabled}
+                            className="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          />
+                          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm pointer-events-none">
+                            {rp.adjustmentType === 'percentage' ? '%' : '$'}
+                          </span>
+                        </div>
+                        <span className="text-xs text-gray-400 whitespace-nowrap">
+                          {rp.adjustmentValue > 0 ? '+' : ''}{rp.adjustmentValue}
+                          {rp.adjustmentType === 'percentage' ? '% markup' : '$ added'}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
 

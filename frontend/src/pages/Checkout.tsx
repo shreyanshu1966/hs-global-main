@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useCart } from '../contexts/CartContext';
 import { useCurrency } from '../contexts/CurrencyContext';
+import { useRegion } from '../contexts/RegionContext';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { Minus, Plus, Trash2, ArrowLeft, Loader2, ChevronDown } from 'lucide-react';
@@ -9,8 +10,9 @@ import { Country, State, City } from 'country-state-city';
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
 const Checkout: React.FC = () => {
-  const { state, removeItem, updateQuantity } = useCart();
+  const { state, removeItem, updateQuantity, getRegionalEffectivePriceUSD } = useCart();
   const { formatPrice, getCurrencySymbol, convertFromUSD, currency } = useCurrency();
+  const { region: pricingRegion } = useRegion();
   const { user } = useAuth();
 
   // Form State
@@ -71,7 +73,8 @@ const Checkout: React.FC = () => {
               productId: getCheckoutItemId(item),
               quantity: item.quantity
             })),
-            currency: currency
+            currency: currency,
+            region: pricingRegion
           })
         });
 
@@ -80,9 +83,9 @@ const Checkout: React.FC = () => {
           setBackendPrices(data);
 
           // Emit telemetry when local cart math diverges from backend authoritative totals.
-          const localTotalINR = state.items.reduce((sum, item) => sum + (item.priceUSD * item.quantity), 0);
-          const backendTotalINR = Number(data?.totals?.INR || 0);
-          const deltaINR = Number((backendTotalINR - localTotalINR).toFixed(2));
+          const localTotalUSD = state.items.reduce((sum, item) => sum + (item.priceUSD * item.quantity), 0);
+          const backendTotalUSD = Number(data?.totals?.USD || 0);
+          const deltaINR = Number((backendTotalUSD - localTotalUSD).toFixed(2));
 
           const lineMismatches = (data?.items || [])
             .map((backendItem: any) => {
@@ -123,8 +126,8 @@ const Checkout: React.FC = () => {
               body: JSON.stringify({
                 severity: 'warning',
                 source: 'checkout-page',
-                localTotalINR,
-                backendTotalINR,
+                localTotalUSD,
+                backendTotalUSD,
                 deltaINR,
                 itemCount: state.items.length,
                 lineMismatches
@@ -219,16 +222,16 @@ const Checkout: React.FC = () => {
     }
   }, [state.phoneNumber, state.isPhoneVerified, phone]);
 
-  // Calculate totals from backend-authoritative pricing only.
-  const subtotalINR = useMemo(() => {
-    if (hasAuthoritativePricing && backendPrices?.totals?.INR !== undefined) {
-      return Number(backendPrices.totals.INR);
+  // Backend returns totals.USD (regional + discount applied), we convert to display currency
+  const subtotalUSD = useMemo(() => {
+    if (hasAuthoritativePricing && backendPrices?.totals?.USD !== undefined) {
+      return Number(backendPrices.totals.USD);
     }
     return 0;
   }, [backendPrices, hasAuthoritativePricing]);
 
-  // Convert to user's selected currency for display
-  const subtotal = useMemo(() => convertFromUSD(subtotalINR), [subtotalINR, convertFromUSD]);
+  // Convert to regional display currency
+  const subtotal = useMemo(() => convertFromUSD(subtotalUSD), [subtotalUSD, convertFromUSD]);
   const totalAmount = subtotal;
 
   // Get standardized payment currency details from Context
@@ -288,6 +291,7 @@ const Checkout: React.FC = () => {
           currency: paymentCurrency,
           receipt: `rcpt_${Date.now()}`,
           items: orderItems,
+          region: pricingRegion,
           shippingAddress: {
             street: address1,
             city,

@@ -1,17 +1,11 @@
 import React, { useEffect, useMemo, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Product } from '../../services/productService';
-import { useCurrency } from '../../contexts/CurrencyContext';
 import { useWishlist } from '../../contexts/WishlistContext';
 import { getProductCloudinaryUrl } from '../../utils/productCloudinary';
 import { AddToCartButton } from '../AddToCartButton';
-import {
-    hasActiveDiscount,
-    getbasePriceUSD,
-    getDiscountPercentage,
-    geteffectivePriceUSD,
-} from '../../modules/product/pricing';
 import { getProductDisplayImages } from '../../modules/product/selectors';
+import { usePrice } from '../../hooks/usePrice';
 
 interface ProductCardProps {
     product: Product;
@@ -20,7 +14,6 @@ interface ProductCardProps {
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '' }) => {
     const VIDEO_START_DELAY_MS = 1300;
-    const { formatPrice } = useCurrency();
     const { isInWishlist, toggleWishlist } = useWishlist();
     const [showVideo, setShowVideo] = useState(false);
     const [videoError, setVideoError] = useState(false);
@@ -32,15 +25,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
     const videoRef = useRef<HTMLVideoElement>(null);
     const videoStartTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-    // ---- Pricing ----
-    const hasDiscount = useMemo(() => hasActiveDiscount(product), [product]);
-    const finalPrice = useMemo(() => geteffectivePriceUSD(product), [product]);
-    const originalPrice = useMemo(() => getbasePriceUSD(product), [product]);
-    const discountPercentage = useMemo(() => Math.round(getDiscountPercentage(product)), [product]);
-    const hasValidPrice = useMemo(() => originalPrice > 0, [originalPrice]);
-    const showDiscount = hasDiscount && hasValidPrice;
-
-    const displayPrice = hasValidPrice ? formatPrice(finalPrice) : 'Price on Request';
+    // ---- Pricing (centralized engine) ----
+    const price = usePrice(product);
+    const hasValidPrice = price.baseUSD > 0;
+    const showDiscount = price.hasDiscount && hasValidPrice;
+    const displayPrice = price.formattedPrice;
+    const originalDisplayPrice = price.originalFormattedPrice;
     const wishlistId = String(product.productId || product._id || product.name);
     const isWishlisted = isInWishlist(wishlistId);
 
@@ -272,7 +262,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
                     {/* Discount badge */}
                     {showDiscount && (
                         <div className="absolute top-2 left-2 sm:top-4 sm:left-4 bg-[#b91c1c] text-white text-[9px] sm:text-xs font-bold px-2 sm:px-3 py-1 sm:py-1.5 uppercase tracking-[0.05em] sm:tracking-[0.06em] rounded-full shadow-sm z-20">
-                            {discountPercentage > 0 ? `${discountPercentage}% Off` : 'On Sale'}
+                            {price.discountPercentage > 0 ? `${Math.round(price.discountPercentage)}% Off` : 'On Sale'}
                         </div>
                     )}
                 </div>
@@ -306,11 +296,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
                         <div className="space-y-1.5">
                             <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
                                 <p className="text-[16px] sm:text-lg font-semibold text-[#b91c1c] leading-none">{displayPrice}</p>
-                                {discountPercentage > 0 && (
-                                    <p className="inline-flex items-center rounded-full border border-[#fecaca] bg-[#fef2f2] px-1.5 sm:px-2 py-[2px] text-[10px] sm:text-[11px] font-semibold tracking-[0.01em] sm:tracking-[0.02em] text-[#b91c1c] leading-none">Save {discountPercentage}%</p>
+                                {price.discountPercentage > 0 && (
+                                    <p className="inline-flex items-center rounded-full border border-[#fecaca] bg-[#fef2f2] px-1.5 sm:px-2 py-[2px] text-[10px] sm:text-[11px] font-semibold tracking-[0.01em] sm:tracking-[0.02em] text-[#b91c1c] leading-none">Save {Math.round(price.discountPercentage)}%</p>
                                 )}
                             </div>
-                            <p className="text-[12px] sm:text-sm text-[#6B7280] line-through leading-none">{formatPrice(originalPrice)}</p>
+                            <p className="text-[12px] sm:text-sm text-[#6B7280] line-through leading-none">{originalDisplayPrice}</p>
                         </div>
                     ) : (
                         <p className="text-[16px] sm:text-lg font-medium text-[#2B2B2B] leading-none">{displayPrice}</p>

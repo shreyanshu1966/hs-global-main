@@ -11,6 +11,7 @@ import {
     deleteUser
 } from '../services/adminService';
 import EnhancedProductForm from '../components/EnhancedProductForm';
+import BulkRegionalPricing from '../components/BulkRegionalPricing';
 import {
     TrendingUp,
     Users,
@@ -374,16 +375,32 @@ const Admin = () => {
                 setQuotationStats(statsData);
             } else if (activeTab === 'products') {
                 setProductsLoading(true);
-                const productsData = await adminProductApi.getAdminProducts({
-                    page: productsPage,
-                    limit: 10,
-                    search: productsSearch,
-                    category: productsCategoryFilter,
-                    status: productsStatusFilter
-                });
+                const [productsData, categoriesData] = await Promise.all([
+                    adminProductApi.getAdminProducts({
+                        page: productsPage,
+                        limit: 10,
+                        search: productsSearch,
+                        category: productsCategoryFilter,
+                        status: productsStatusFilter
+                    }),
+                    productService.getCategories(),
+                ]);
                 setProducts(productsData.data);
                 setProductsPagination(productsData.pagination);
                 setProductsLoading(false);
+
+                // Build category + subcategory maps for BulkRegionalPricing
+                if (categoriesData.success && categoriesData.data.length > 0) {
+                    const meta: Record<string, { subcategories: string[]; count: number }> = {};
+                    categoriesData.data.forEach((item: { category: string; subcategories: string[]; count: number }) => {
+                        meta[item.category] = {
+                            subcategories: (item.subcategories || []).filter(Boolean).sort((a: string, b: string) => a.localeCompare(b)),
+                            count: item.count || 0,
+                        };
+                    });
+                    setCategoryMetaMap(meta);
+                    setCategoryOptions(categoriesData.data.map((item: { category: string }) => item.category).sort((a: string, b: string) => a.localeCompare(b)));
+                }
             } else if (activeTab === 'categories') {
                 const [customData, categoriesData, adminProductsData] = await Promise.all([
                     fetchCustomCategories(),
@@ -2988,6 +3005,24 @@ const Admin = () => {
                                         </div>
                                     </div>
                                 )}
+                            </div>
+
+                            {/* Bulk Regional Pricing Section */}
+                            <div className="bg-white rounded-xl border border-gray-200 shadow-sm">
+                                <div className="p-6 border-b border-gray-200">
+                                    <h3 className="text-lg font-semibold text-gray-900">Bulk Regional Pricing</h3>
+                                    <p className="text-sm text-gray-500 mt-1">
+                                        Apply region-wise price adjustments to multiple products at once. Changes in individual products via Edit Product override these bulk settings.
+                                    </p>
+                                </div>
+                                <div className="p-6">
+                                    <BulkRegionalPricing
+                                        categories={categoryOptions.map(cat => ({
+                                            category: cat,
+                                            subcategories: categoryMetaMap[cat]?.subcategories || []
+                                        }))}
+                                    />
+                                </div>
                             </div>
                         </div>
                     )}

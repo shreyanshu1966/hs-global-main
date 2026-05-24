@@ -1,7 +1,8 @@
 import { useState, type KeyboardEventHandler } from 'react';
-import { useCurrency } from '../../contexts/CurrencyContext';
 import { useWishlist } from '../../contexts/WishlistContext';
 import { useCart } from '../../contexts/CartContext';
+import { usePrice } from '../../hooks/usePrice';
+import type { Product } from '../../services/productService';
 
 interface ProductCardProps {
   id?: string;
@@ -17,15 +18,21 @@ interface ProductCardProps {
   showPrice?: boolean;
   averageRating?: number;
   totalReviews?: number;
+  regionalPricing?: Product['regionalPricing'];
+  discount?: Product['discount'];
 }
 
-const ProductCard = ({ id, image, title, designer, price, originalPrice, priceUSD, originalPriceUSD, priceLabel, productLink, showPrice = true, averageRating, totalReviews }: ProductCardProps) => {
-  const { formatPrice } = useCurrency();
+const ProductCard = ({ id, image, title, designer, price, originalPrice, priceUSD, originalPriceUSD, priceLabel, productLink, showPrice = true, averageRating, totalReviews, regionalPricing, discount }: ProductCardProps) => {
   const { isInWishlist, toggleWishlist } = useWishlist();
   const { addItem } = useCart();
   const [isAdded, setIsAdded] = useState(false);
   const wishlistId = id || productLink || title;
   const isWishlisted = isInWishlist(wishlistId);
+
+  // Build minimal product shape so usePrice applies regional + discount logic correctly
+  const computed = usePrice(
+    priceUSD != null ? { priceUSD, regionalPricing, discount } : null
+  );
 
   const getFallbackReviews = (idStr: string) => {
     let hash = 0;
@@ -35,23 +42,11 @@ const ProductCard = ({ id, image, title, designer, price, originalPrice, priceUS
     return Math.abs(hash % 40) + 15;
   };
 
-  const resolvedPrice = priceLabel || (typeof priceUSD === 'number' ? formatPrice(priceUSD) : (price || 'Request Quote'));
-  const resolvedOriginalPrice = typeof originalPriceUSD === 'number' ? formatPrice(originalPriceUSD) : originalPrice;
-  const hasValidPrice =
-    (typeof priceUSD === 'number' && priceUSD > 0) ||
-    (typeof originalPriceUSD === 'number' && originalPriceUSD > 0);
-  const isDiscountActive = Boolean(
-    (typeof originalPriceUSD === 'number' && typeof priceUSD === 'number' && originalPriceUSD > priceUSD) ||
-    (resolvedOriginalPrice && resolvedOriginalPrice !== resolvedPrice)
-  );
-  const showDiscount = isDiscountActive && hasValidPrice;
-  const discountPercentage =
-    typeof originalPriceUSD === 'number' &&
-    typeof priceUSD === 'number' &&
-    originalPriceUSD > priceUSD &&
-    originalPriceUSD > 0
-      ? Math.round(((originalPriceUSD - priceUSD) / originalPriceUSD) * 100)
-      : null;
+  const resolvedPrice = priceLabel || (priceUSD != null ? computed.formattedPrice : (price || 'Request Quote'));
+  const resolvedOriginalPrice = (priceUSD != null && computed.hasDiscount) ? computed.originalFormattedPrice : originalPrice;
+  const hasValidPrice = (priceUSD != null && priceUSD > 0) || (typeof originalPriceUSD === 'number' && originalPriceUSD > 0);
+  const showDiscount = hasValidPrice && computed.hasDiscount;
+  const discountPercentage = computed.hasDiscount ? computed.discountPercentage : null;
 
   const navigateToProduct = () => {
     if (productLink) {
@@ -74,6 +69,8 @@ const ProductCard = ({ id, image, title, designer, price, originalPrice, priceUS
       priceUSD,
       category: 'furniture',
       subcategory: designer,
+      regionalPricing,
+      discount,
     });
 
     setIsAdded(true);

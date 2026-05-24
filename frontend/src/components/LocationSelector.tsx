@@ -1,263 +1,145 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Globe, MapPin, RefreshCw, ChevronDown, X } from 'lucide-react';
-import { useCurrency } from '../contexts/CurrencyContext';
+import { Globe, ChevronDown, X } from 'lucide-react';
+import { useRegion, REGION_CURRENCIES, REGION_LABELS, type Region } from '../contexts/RegionContext';
+import { CURRENCY_SYMBOLS } from '../utils/pricing';
 
-const CURRENCIES = [
-  { code: 'USD', symbol: '$', name: 'US Dollar', flag: '🇺🇸' },
-  { code: 'EUR', symbol: '€', name: 'Euro', flag: '🇪🇺' },
-  { code: 'GBP', symbol: '£', name: 'British Pound', flag: '🇬🇧' },
-  { code: 'AED', symbol: 'د.إ', name: 'UAE Dirham', flag: '🇦🇪' },
-  { code: 'SAR', symbol: '﷼', name: 'Saudi Riyal', flag: '🇸🇦' },
-  { code: 'AUD', symbol: 'A$', name: 'Australian Dollar', flag: '🇦🇺' },
-  { code: 'CAD', symbol: 'C$', name: 'Canadian Dollar', flag: '🇨🇦' },
-  { code: 'SGD', symbol: 'S$', name: 'Singapore Dollar', flag: '🇸🇬' },
-  { code: 'JPY', symbol: '¥', name: 'Japanese Yen', flag: '🇯🇵' },
+const REGIONS: { value: Region; label: string; flag: string; currency: string }[] = [
+  { value: 'India',  label: 'India',  flag: '🇮🇳', currency: 'INR' },
+  { value: 'USA',    label: 'USA',    flag: '🇺🇸', currency: 'USD' },
+  { value: 'UAE',    label: 'UAE',    flag: '🇦🇪', currency: 'USD' },
+  { value: 'UK',     label: 'UK',     flag: '🇬🇧', currency: 'GBP' },
+  { value: 'Europe', label: 'Europe', flag: '🇪🇺', currency: 'GBP' },
+  { value: 'default', label: 'Global', flag: '🌍', currency: 'USD' },
 ];
 
 export const LocationSelector: React.FC = () => {
-  const { currency, setCurrency, loading } = useCurrency();
-
+  const { region, setRegion, isAutoDetected } = useRegion();
   const [isOpen, setIsOpen] = useState(false);
-  const [isAutoDetect, setIsAutoDetect] = useState(() => {
-    return localStorage.getItem('hs-global-currency-auto-detect') !== 'false';
-  });
-  const popupRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const popupRef = useRef<HTMLDivElement>(null);
 
-  // Close popup when clicking outside
+  const current = REGIONS.find(r => r.value === region) || REGIONS[REGIONS.length - 1];
+  const currencySymbol = CURRENCY_SYMBOLS[REGION_CURRENCIES[region] || 'USD'] || '$';
+
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as Node;
-      const isClickOutsideContainer = containerRef.current && !containerRef.current.contains(target);
-      const isClickOutsidePopup = popupRef.current && !popupRef.current.contains(target);
-      
-      if (isClickOutsideContainer && isClickOutsidePopup) {
+    if (!isOpen) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      const t = e.target as Node;
+      if (
+        containerRef.current && !containerRef.current.contains(t) &&
+        popupRef.current && !popupRef.current.contains(t)
+      ) {
         setIsOpen(false);
       }
     };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isOpen]);
 
-    if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-
+  // Lock body scroll on mobile when open
+  useEffect(() => {
+    if (!isOpen) return;
+    const orig = document.body.style.overflow;
+    const origPad = document.body.style.paddingRight;
+    const sbw = window.innerWidth - document.documentElement.clientWidth;
+    document.body.style.overflow = 'hidden';
+    document.body.style.paddingRight = `${sbw}px`;
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.body.style.overflow = orig;
+      document.body.style.paddingRight = origPad;
     };
   }, [isOpen]);
 
-  // Lock body scroll when modal is open
-  useEffect(() => {
-    if (isOpen) {
-      // Store original styles
-      const originalStyle = window.getComputedStyle(document.body).overflow;
-      const originalPaddingRight = window.getComputedStyle(document.body).paddingRight;
-
-      // Get scrollbar width
-      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-
-      // Apply styles to prevent body scroll
-      document.body.style.overflow = 'hidden';
-      document.body.style.paddingRight = `${scrollbarWidth}px`;
-
-      return () => {
-        document.body.style.overflow = originalStyle;
-        document.body.style.paddingRight = originalPaddingRight;
-      };
-    }
-  }, [isOpen]);
-
-  // Update handler to accept code directly
-  const handleCurrencySelect = (code: string) => {
-    setCurrency(code);
-    setIsAutoDetect(false);
-    // Optionally close on selection if desired, or keep open. User didn't specify closing behavior but standard is often to stay or close. 
-    // Given the modal nature on mobile, closing feels natural.
+  const handleSelect = (r: Region) => {
+    setRegion(r);
     setIsOpen(false);
   };
 
-  const handleReEnableAutoDetect = () => {
-    localStorage.removeItem('hs-global-currency');
-    localStorage.removeItem('hs-global-currency-auto-detect');
-    setIsAutoDetect(true);
-    window.location.reload();
-  };
-
-  if (loading) {
-    return (
-      <button className="p-2 rounded-lg bg-white/90 backdrop-blur-sm shadow-sm border border-gray-200">
-        <div className="w-4 h-4 border-2 border-black/20 border-t-black rounded-full animate-spin" />
-      </button>
-    );
-  }
-
-  const getCurrentCurrency = () => CURRENCIES.find(c => c.code === currency);
-
-  const renderContent = () => (
+  const content = (
     <>
-      {/* Auto-Detect Status */}
-      {!isAutoDetect ? (
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-          <div className="flex items-start gap-2">
-            <MapPin className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
-            <div className="flex-1 min-w-0">
-              <p className="text-xs font-medium text-blue-900">Manual Mode</p>
-              <p className="text-xs text-blue-700 mt-0.5">
-                Auto-detect is off. Click to re-enable.
-              </p>
-              <button
-                onClick={handleReEnableAutoDetect}
-                className="mt-2 flex items-center gap-1 text-xs font-medium text-blue-600 hover:text-blue-800 transition-colors"
-                type="button"
-              >
-                <RefreshCw className="w-3 h-3" />
-                Re-enable Auto-Detect
-              </button>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-          <div className="flex items-start gap-2">
-            <MapPin className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-            <div className="flex-1">
-              <p className="text-xs font-medium text-green-900">Auto-Detect Active</p>
-              <p className="text-xs text-green-700 mt-0.5">
-                Currency set by your location
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Currency Selection List */}
-      <div>
-        <label className="block text-xs font-medium text-gray-700 mb-2">
-          Select Currency
-        </label>
-        <div className="grid grid-cols-1 gap-1 max-h-60 overflow-y-auto pr-1">
-          {CURRENCIES.map((curr) => {
-            const isSelected = curr.code === currency;
-            return (
-              <button
-                key={curr.code}
-                onClick={() => handleCurrencySelect(curr.code)}
-                className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-all text-left group ${isSelected
-                  ? 'bg-black text-white hover:bg-gray-800'
-                  : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200 hover:border-gray-300'
-                  }`}
-                type="button"
-              >
-                <span className="text-xl leading-none">{curr.flag}</span>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between">
-                    <span className={`text-sm font-semibold ${isSelected ? 'text-white' : 'text-gray-900'}`}>
-                      {curr.code}
-                    </span>
-                    <span className={`text-xs opacity-75 ${isSelected ? 'text-white' : 'text-gray-500'}`}>
-                      {curr.symbol}
-                    </span>
-                  </div>
-                  <p className={`text-xs truncate ${isSelected ? 'text-gray-300' : 'text-gray-500'}`}>
-                    {curr.name}
-                  </p>
-                </div>
-                {isSelected && (
-                  <div className="w-1.5 h-1.5 rounded-full bg-white shadow-sm flex-shrink-0" />
-                )}
-              </button>
-            );
-          })}
-        </div>
+      <div className="text-xs text-gray-500 bg-gray-50 border border-gray-200 rounded-lg p-2.5 mb-1">
+        {isAutoDetected
+          ? 'Region auto-detected from your location. Select manually to override.'
+          : 'Manually selected. Prices and currency update per region.'}
       </div>
-
-      {/* Info */}
-      <div className="text-xs text-gray-500 bg-gray-100 border border-gray-200 rounded-lg p-2.5 flex items-start gap-2">
-        <span className="text-lg leading-none">💱</span>
-        <span className="pt-0.5">Prices displayed in selected currency. Payments in USD.</span>
+      <div className="grid grid-cols-1 gap-1">
+        {REGIONS.map(r => {
+          const selected = r.value === region;
+          const sym = CURRENCY_SYMBOLS[r.currency] || '$';
+          return (
+            <button
+              key={r.value}
+              onClick={() => handleSelect(r.value)}
+              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all text-left ${
+                selected
+                  ? 'bg-black text-white'
+                  : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
+              }`}
+              type="button"
+            >
+              <span className="text-xl leading-none">{r.flag}</span>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between">
+                  <span className={`text-sm font-semibold ${selected ? 'text-white' : 'text-gray-900'}`}>
+                    {r.label}
+                  </span>
+                  <span className={`text-xs font-medium ${selected ? 'text-gray-300' : 'text-gray-500'}`}>
+                    {r.currency} {sym}
+                  </span>
+                </div>
+              </div>
+              {selected && <div className="w-1.5 h-1.5 rounded-full bg-white flex-shrink-0" />}
+            </button>
+          );
+        })}
       </div>
     </>
   );
 
   return (
     <div className="relative" ref={containerRef}>
-      {/* Trigger Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-1.5 px-2.5 py-1.5 md:px-3 md:py-2 rounded-lg bg-white/90 backdrop-blur-sm shadow-sm border border-gray-200 hover:shadow-md transition-all hover:border-gray-300"
-        title="Change currency"
+        title="Change region"
+        type="button"
       >
         <Globe className="w-3.5 h-3.5 md:w-4 md:h-4 text-gray-600" />
         <span className="text-xs md:text-sm font-medium text-gray-900">
-          {getCurrentCurrency()?.flag} {currency}
+          {current.flag} {currencySymbol}
         </span>
-        <ChevronDown className={`w-3 h-3 md:w-3.5 md:h-3.5 text-gray-500 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        <ChevronDown className={`w-3 h-3 text-gray-500 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
-      {/* Popup */}
       {isOpen && (
         <>
-          {/* Mobile: Centered Modal with Overlay */}
+          {/* Mobile modal */}
           <div className="md:hidden fixed inset-0 z-[100] flex items-center justify-center px-4">
-            {/* Backdrop */}
             <div
-              className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
               onClick={() => setIsOpen(false)}
-              onWheel={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-              }}
-              onTouchMove={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-              }}
             />
-
-            {/* Modal Content */}
-            <div 
+            <div
               ref={popupRef}
-              className="relative w-full max-w-sm bg-white rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200"
-              onClick={(e) => e.stopPropagation()}>
+              className="relative w-full max-w-sm bg-white rounded-2xl shadow-2xl overflow-hidden"
+              onClick={e => e.stopPropagation()}
+            >
               <div className="bg-gray-50 px-4 py-3 border-b border-gray-200 flex justify-between items-center">
-                <h3 className="text-sm font-semibold text-gray-900">Currency Settings</h3>
-                <button
-                  onClick={() => setIsOpen(false)}
-                  className="p-1.5 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
-                >
+                <h3 className="text-sm font-semibold text-gray-900">Select Region</h3>
+                <button onClick={() => setIsOpen(false)} className="p-1.5 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100">
                   <X className="w-4 h-4" />
                 </button>
               </div>
-              <div 
-                className="p-4 space-y-4 max-h-[70vh] overflow-y-auto"
-                style={{ overscrollBehavior: 'contain' }}
-                onWheel={(e) => {
-                  e.stopPropagation();
-                  const element = e.currentTarget;
-                  const { scrollTop, scrollHeight, clientHeight } = element;
-                  const isAtTop = scrollTop === 0;
-                  const isAtBottom = scrollTop + clientHeight >= scrollHeight;
-                  if ((isAtTop && e.deltaY < 0) || (isAtBottom && e.deltaY > 0)) {
-                    e.preventDefault();
-                  }
-                }}
-                onTouchMove={(e) => e.stopPropagation()}>
-                {renderContent()}
-              </div>
+              <div className="p-4 space-y-3 max-h-[70vh] overflow-y-auto">{content}</div>
             </div>
           </div>
 
-          {/* Desktop: Dropdown from button */}
-          <div className="hidden md:block absolute top-full right-0 mt-2 w-80 bg-white rounded-xl shadow-xl border border-gray-200 z-50">
+          {/* Desktop dropdown */}
+          <div className="hidden md:block absolute top-full right-0 mt-2 w-72 bg-white rounded-xl shadow-xl border border-gray-200 z-50">
             <div className="bg-gray-50 px-4 py-3 border-b border-gray-200">
-              <h3 className="text-sm font-semibold text-gray-900">Currency Settings</h3>
+              <h3 className="text-sm font-semibold text-gray-900">Select Region</h3>
             </div>
-            <div 
-              className="p-4 space-y-3 max-h-96 overflow-y-auto"
-              style={{ overscrollBehavior: 'contain' }}
-              onWheel={(e) => e.stopPropagation()}
-              onTouchMove={(e) => e.stopPropagation()}
-            >
-              {renderContent()}
-            </div>
+            <div className="p-3 space-y-2">{content}</div>
           </div>
         </>
       )}

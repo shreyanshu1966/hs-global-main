@@ -5,18 +5,15 @@ import {
   ArrowUpDown, Check, X, SlidersHorizontal, Package, ChevronDown,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import * as Slider from "@radix-ui/react-slider";
 
 import type { Product } from "../services/productService";
 import { useProducts, useCategories } from "../hooks/useProducts";
 import { ProductCard } from "../components/cards/ProductCard";
 import { ProductCardSkeleton } from "../components/cards/ProductCardSkeleton";
 import { SORT_OPTIONS, getSortOptionLabel } from "../components/filters/SortDropdown";
-import { useCurrency } from "../contexts/CurrencyContext";
 
 const toSlug = (v: string) => v.toLowerCase().trim().replace(/\s+/g, "-");
 const LIMIT = 12;
-const MAX_INR = 1_000_000;
 
 // Subcategories that exist in both furniture AND handicraft
 const SHARED_SUBCATEGORY_SLUGS = new Set([
@@ -100,11 +97,6 @@ function DesktopSort({
 export default function Products() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { getCurrencySymbol, exchangeRates, currency } = useCurrency();
-  const rate = exchangeRates[currency] || exchangeRates.INR || 1;
-  const maxLocal = Math.ceil(MAX_INR * rate);
-  const stepLocal = Math.ceil(50 * rate);
-
   // Read path params from the matched route:
   //   /products                               → {}
   //   /products/:category                     → { category }
@@ -118,15 +110,12 @@ export default function Products() {
   } = useParams<{ category?: string; subcategory?: string; categoryFilter?: string }>();
 
   const initParams = useMemo(() => {
-    const qp = new URLSearchParams(location.search);
     // "all" is a virtual category used in cross-category routes, not a real category
     const rawCategory = paramCategory === "all" ? "" : (paramCategory || "");
     return {
       category: rawCategory,
       subcategory: toSlug(paramSubcategory || ""),
       categoryFilter: ((paramCategoryFilter || "") as "" | "furniture" | "handicraft"),
-      minPrice: qp.get("minPrice") ? Number(qp.get("minPrice")) : undefined,
-      maxPrice: qp.get("maxPrice") ? Number(qp.get("maxPrice")) : undefined,
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -135,16 +124,10 @@ export default function Products() {
   const [activeCategory, setActiveCategory] = useState(initParams.category);
   const [activeSubcategory, setActiveSubcategory] = useState(initParams.subcategory);
   const [crossCategoryFilter, setCrossCategoryFilter] = useState<"" | "furniture" | "handicraft">(initParams.categoryFilter);
-  const [minPrice, setMinPrice] = useState<number | undefined>(initParams.minPrice);
-  const [maxPrice, setMaxPrice] = useState<number | undefined>(initParams.maxPrice);
   const [sortBy, setSortBy] = useState("createdAt");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [page, setPage] = useState(1);
   const [visibleProducts, setVisibleProducts] = useState<Product[]>([]);
-  const [priceRange, setPriceRange] = useState<[number, number]>([
-    initParams.minPrice != null ? Math.floor(initParams.minPrice * rate) : 0,
-    initParams.maxPrice != null ? Math.ceil(initParams.maxPrice * rate) : maxLocal,
-  ]);
   const [firstNewIndex, setFirstNewIndex] = useState(0);
 
   // Subcategory list expand/collapse in desktop sidebar
@@ -156,6 +139,7 @@ export default function Products() {
   const sentinelRef = useRef<HTMLDivElement>(null);
   const tabScrollRef = useRef<HTMLDivElement>(null);
   const sidebarRef = useRef<HTMLElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
   const [tabCanScrollLeft, setTabCanScrollLeft] = useState(false);
   const [tabCanScrollRight, setTabCanScrollRight] = useState(false);
 
@@ -201,8 +185,6 @@ export default function Products() {
     sortOrder,
     page,
     limit: LIMIT,
-    minPrice,
-    maxPrice,
   });
 
   const normalizedCats = useMemo(
@@ -261,12 +243,8 @@ export default function Products() {
       if (crossCategoryFilter) path += `/${crossCategoryFilter}`;
     }
 
-    const qp = new URLSearchParams();
-    if (minPrice != null) qp.set("minPrice", String(minPrice));
-    if (maxPrice != null) qp.set("maxPrice", String(maxPrice));
-
-    navigate({ pathname: path, search: qp.toString() }, { replace: true });
-  }, [activeCategory, activeSubcategory, crossCategoryFilter, minPrice, maxPrice, navigate]);
+    navigate({ pathname: path }, { replace: true });
+  }, [activeCategory, activeSubcategory, crossCategoryFilter, navigate]);
 
   // Accumulate pages
   useEffect(() => {
@@ -291,7 +269,12 @@ export default function Products() {
     setCrossCategoryFilter("");
     setPage(1);
     setVisibleProducts([]);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    // On desktop, scroll the grid panel; on mobile, scroll the window
+    if (gridRef.current && window.innerWidth >= 768) {
+      gridRef.current.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
   }, []);
 
   const handleSubcategory = useCallback((sub: string) => {
@@ -307,34 +290,13 @@ export default function Products() {
     setVisibleProducts([]);
   }, []);
 
-  const handlePriceCommit = useCallback(
-    (vals: number[]) => {
-      setMinPrice(vals[0] > 0 ? Math.floor(vals[0] / rate) : undefined);
-      setMaxPrice(vals[1] < maxLocal ? Math.ceil(vals[1] / rate) : undefined);
-      setPage(1);
-      setVisibleProducts([]);
-    },
-    [rate, maxLocal]
-  );
-
-  const clearPriceFilter = useCallback(() => {
-    setMinPrice(undefined);
-    setMaxPrice(undefined);
-    setPriceRange([0, maxLocal]);
-    setPage(1);
-    setVisibleProducts([]);
-  }, [maxLocal]);
-
   const clearFilters = useCallback(() => {
     setActiveCategory("");
     setActiveSubcategory("");
     setCrossCategoryFilter("");
-    setMinPrice(undefined);
-    setMaxPrice(undefined);
-    setPriceRange([0, maxLocal]);
     setPage(1);
     setVisibleProducts([]);
-  }, [maxLocal]);
+  }, []);
 
   // ── Derived ─────────────────────────────────────────────────────────────────
   const totalItems = pagination?.totalItems || 0;
@@ -345,27 +307,23 @@ export default function Products() {
   useEffect(() => {
     const el = sentinelRef.current;
     if (!el || !hasMore || loading) return;
+    // On desktop, use grid container as root so sentinel is observed within the scrollable panel
+    const isDesktop = window.innerWidth >= 768;
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
           setPage((p) => p + 1);
         }
       },
-      { rootMargin: "400px" }
+      { root: isDesktop ? gridRef.current : null, rootMargin: "400px" }
     );
     observer.observe(el);
     return () => observer.disconnect();
   }, [hasMore, loading]);
 
   const sortLabel = getSortOptionLabel(sortBy, sortOrder);
-  const hasFilters = !!(activeCategory || activeSubcategory || crossCategoryFilter || minPrice != null || maxPrice != null);
-  const filterCount = [
-    activeCategory,
-    activeSubcategory,
-    crossCategoryFilter,
-    minPrice != null ? "p" : "",
-    maxPrice != null ? "p" : "",
-  ].filter(Boolean).length;
+  const hasFilters = !!(activeCategory || activeSubcategory || crossCategoryFilter);
+  const filterCount = [activeCategory, activeSubcategory, crossCategoryFilter].filter(Boolean).length;
 
   const pageTitle = [
     activeCategory ? activeCategory.replace(/-/g, " ") : "Best Luxury & Imported Marble Stones at Marble, Granite Centre International",
@@ -373,43 +331,6 @@ export default function Products() {
   ]
     .filter(Boolean)
     .join(" — ");
-
-  // ── Reusable price slider ────────────────────────────────────────────────────
-  const PriceSlider = ({ compact = false }: { compact?: boolean }) => (
-    <div className={compact ? "" : "px-1"}>
-      <Slider.Root
-        className="relative flex items-center select-none touch-none w-full h-5"
-        value={priceRange}
-        max={maxLocal}
-        step={stepLocal}
-        onValueChange={(v) => setPriceRange([v[0], v[1]])}
-        onValueCommit={handlePriceCommit}
-      >
-        <Slider.Track className="bg-gray-200 relative grow rounded-full h-[3px]">
-          <Slider.Range className="absolute bg-gray-900 rounded-full h-full" />
-        </Slider.Track>
-        <Slider.Thumb
-          className="block w-4 h-4 bg-white border-2 border-gray-900 rounded-full shadow focus:outline-none focus:ring-2 focus:ring-gray-500 cursor-grab active:cursor-grabbing"
-          aria-label="Min price"
-        />
-        <Slider.Thumb
-          className="block w-4 h-4 bg-white border-2 border-gray-900 rounded-full shadow focus:outline-none focus:ring-2 focus:ring-gray-500 cursor-grab active:cursor-grabbing"
-          aria-label="Max price"
-        />
-      </Slider.Root>
-      <div className="flex items-center justify-between mt-3 text-xs text-gray-600">
-        <span className="px-2 py-1 bg-gray-50 rounded-md border border-gray-200">
-          {getCurrencySymbol()}{priceRange[0].toLocaleString()}
-        </span>
-        <span className="text-gray-300">—</span>
-        <span className="px-2 py-1 bg-gray-50 rounded-md border border-gray-200">
-          {priceRange[1] >= maxLocal
-            ? `${getCurrencySymbol()}${priceRange[1].toLocaleString()}+`
-            : `${getCurrencySymbol()}${priceRange[1].toLocaleString()}`}
-        </span>
-      </div>
-    </div>
-  );
 
   // ── Render ───────────────────────────────────────────────────────────────────
   return (
@@ -440,7 +361,7 @@ export default function Products() {
       <div className="min-h-screen bg-[#FAF8F5]">
 
         {/* ── Page header + desktop category tabs ── */}
-        <div className="bg-white border-b border-gray-100">
+        <div className="bg-white border-b border-gray-100 shrink-0">
           <div className="max-w-[1680px] mx-auto px-4 sm:px-6 xl:px-8 pt-8 pb-0 md:pt-10">
             <h1 className="text-2xl md:text-3xl font-semibold text-gray-900 tracking-tight capitalize pb-1">
               {pageTitle}
@@ -609,20 +530,13 @@ export default function Products() {
             {/* ── Desktop sidebar ── */}
             <aside
               ref={sidebarRef}
-              onMouseEnter={() => {
-                const w = window.innerWidth - document.documentElement.clientWidth;
-                document.documentElement.style.overflowY = "hidden";
-                if (w > 0) document.documentElement.style.paddingRight = `${w}px`;
-              }}
-              onMouseLeave={() => {
-                document.documentElement.style.overflowY = "";
-                document.documentElement.style.paddingRight = "";
-              }}
+              data-lenis-prevent
               className="hidden md:flex flex-col w-52 xl:w-60 shrink-0 sticky overflow-y-auto overscroll-contain"
               style={{
                 top: "calc(var(--itsbits-header-offset, 0px) + 24px)",
                 maxHeight: "calc(100vh - var(--itsbits-header-offset, 0px) - 48px)",
-                scrollbarWidth: "none",
+                scrollbarWidth: "thin",
+                scrollbarColor: "#e2e8f0 transparent",
               }}
             >
               {/* Header row */}
@@ -728,28 +642,14 @@ export default function Products() {
                 </div>
               )}
 
-              {/* Price filter */}
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-widest">
-                    Price <span className="normal-case font-normal">({currency})</span>
-                  </p>
-                  {(minPrice != null || maxPrice != null) && (
-                    <button
-                      onClick={clearPriceFilter}
-                      className="text-gray-300 hover:text-gray-600 transition-colors"
-                      aria-label="Clear price filter"
-                    >
-                      <X className="w-3 h-3" />
-                    </button>
-                  )}
-                </div>
-                <PriceSlider />
-              </div>
             </aside>
 
             {/* ── Product grid area ── */}
-            <div className="flex-1 min-w-0">
+            <div
+              ref={gridRef}
+              data-lenis-prevent
+              className="flex-1 min-w-0"
+            >
 
               {/* Desktop toolbar */}
               <div className="hidden md:flex items-center justify-between mb-5 gap-4">
@@ -1011,44 +911,6 @@ export default function Products() {
                   >
                     <X className="w-5 h-5 text-gray-500" />
                   </button>
-                </div>
-
-                {/* Price range */}
-                <div className="flex-1">
-                  <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-4">
-                    Price Range ({currency})
-                  </h4>
-                  <Slider.Root
-                    className="relative flex items-center select-none touch-none w-full h-5"
-                    value={priceRange}
-                    max={maxLocal}
-                    step={stepLocal}
-                    onValueChange={(v) => setPriceRange([v[0], v[1]])}
-                    onValueCommit={handlePriceCommit}
-                  >
-                    <Slider.Track className="bg-gray-200 relative grow rounded-full h-[3px]">
-                      <Slider.Range className="absolute bg-gray-900 rounded-full h-full" />
-                    </Slider.Track>
-                    <Slider.Thumb
-                      className="block w-5 h-5 bg-white border-2 border-gray-900 rounded-full shadow focus:outline-none cursor-grab active:cursor-grabbing"
-                      aria-label="Min price"
-                    />
-                    <Slider.Thumb
-                      className="block w-5 h-5 bg-white border-2 border-gray-900 rounded-full shadow focus:outline-none cursor-grab active:cursor-grabbing"
-                      aria-label="Max price"
-                    />
-                  </Slider.Root>
-                  <div className="flex items-center justify-between mt-5">
-                    <span className="text-sm font-medium text-gray-700 px-3 py-1.5 bg-gray-50 rounded-lg border border-gray-200">
-                      {getCurrencySymbol()}{priceRange[0].toLocaleString()}
-                    </span>
-                    <span className="text-gray-300 text-sm">—</span>
-                    <span className="text-sm font-medium text-gray-700 px-3 py-1.5 bg-gray-50 rounded-lg border border-gray-200">
-                      {priceRange[1] >= maxLocal
-                        ? `${getCurrencySymbol()}${priceRange[1].toLocaleString()}+`
-                        : `${getCurrencySymbol()}${priceRange[1].toLocaleString()}`}
-                    </span>
-                  </div>
                 </div>
 
                 {/* Actions */}

@@ -69,6 +69,13 @@ export interface Product {
     canonicalUrl?: string;
     slug?: string;
   };
+  regionalPricing?: {
+    UAE?: { enabled: boolean; adjustmentType: 'percentage' | 'fixed'; adjustmentValue: number };
+    Europe?: { enabled: boolean; adjustmentType: 'percentage' | 'fixed'; adjustmentValue: number };
+    India?: { enabled: boolean; adjustmentType: 'percentage' | 'fixed'; adjustmentValue: number };
+    USA?: { enabled: boolean; adjustmentType: 'percentage' | 'fixed'; adjustmentValue: number };
+    UK?: { enabled: boolean; adjustmentType: 'percentage' | 'fixed'; adjustmentValue: number };
+  };
   createdAt: string;
   updatedAt: string;
 }

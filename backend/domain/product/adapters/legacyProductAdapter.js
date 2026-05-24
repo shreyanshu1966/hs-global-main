@@ -29,6 +29,7 @@ const toLegacyProduct = (dto) => ({
     seoDescription: dto.seo.seoDescription,
     seoKeywords: dto.seo.seoKeywords,
     seo: dto.seo.enhanced,
+    regionalPricing: dto.regionalPricing || null,
     createdAt: dto.createdAt,
     updatedAt: dto.updatedAt
 });

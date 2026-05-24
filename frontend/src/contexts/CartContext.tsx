@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
-import { geteffectivePriceUSD } from '../modules/product/pricing';
+import { hasActiveDiscount, getDiscountPercentage } from '../modules/product/pricing';
+import { useRegion } from './RegionContext';
 
 export interface CartItem {
   id: string;
@@ -7,6 +8,7 @@ export interface CartItem {
   name: string;
   image: string;
   priceUSD: number; // Always store in USD (base currency)
+  regionalPricing?: Record<string, { enabled: boolean; adjustmentType: 'percentage' | 'fixed'; adjustmentValue: number }>;
   quantity: number;
   category: string;
   subcategory: string;
@@ -143,12 +145,15 @@ interface CartContextType {
   hideAddedToCart: () => void;
   getTotalItems: () => number;
   getTotalPriceNumeric: () => number;
+  getRegionalBasePriceUSD: (item: CartItem) => number;
+  getRegionalEffectivePriceUSD: (item: CartItem) => number;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(cartReducer, initialState);
+  const { region } = useRegion();
 
   // Load from localStorage on mount
   useEffect(() => {
@@ -214,9 +219,39 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     return state.items.reduce((total, item) => total + item.quantity, 0);
   };
 
+  // Regional price without discount (for strikethrough display)
+  const getRegionalBasePriceUSD = (item: CartItem): number => {
+    const base = item.priceUSD;
+    const rp = item.regionalPricing?.[region];
+    if (!rp?.enabled || !rp.adjustmentValue) return base;
+    const adjusted = rp.adjustmentType === 'percentage'
+      ? base * (1 + rp.adjustmentValue / 100)
+      : base + rp.adjustmentValue;
+    return Math.round(Math.max(0, adjusted) * 100) / 100;
+  };
+
+  const getRegionalEffectivePriceUSD = (item: CartItem): number => {
+    // Step 1: apply regional adjustment to base price first (matches backend order)
+    const base = item.priceUSD;
+    const rp = item.regionalPricing?.[region];
+    let regionalPrice = base;
+    if (rp?.enabled && rp.adjustmentValue) {
+      regionalPrice = rp.adjustmentType === 'percentage'
+        ? base * (1 + rp.adjustmentValue / 100)
+        : base + rp.adjustmentValue;
+      regionalPrice = Math.max(0, regionalPrice);
+    }
+    // Step 2: apply discount on top of regional price
+    if (hasActiveDiscount(item)) {
+      const pct = getDiscountPercentage(item);
+      regionalPrice = regionalPrice * (1 - pct / 100);
+    }
+    return Math.round(Math.max(0, regionalPrice) * 100) / 100;
+  };
+
   const getTotalPriceNumeric = (): number => {
     return state.items.reduce((sum, item) => {
-      return sum + (geteffectivePriceUSD(item) * item.quantity);
+      return sum + (getRegionalEffectivePriceUSD(item) * item.quantity);
     }, 0);
   };
 
@@ -233,6 +268,8 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     hideAddedToCart,
     getTotalItems,
     getTotalPriceNumeric,
+    getRegionalBasePriceUSD,
+    getRegionalEffectivePriceUSD,
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

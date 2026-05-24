@@ -372,6 +372,35 @@ const productSchema = new mongoose.Schema({
         supplier: String,
         artisan: String,
         countryOfOrigin: String
+    },
+
+    // Region-wise pricing adjustments (from base priceUSD)
+    regionalPricing: {
+        UAE: {
+            enabled: { type: Boolean, default: false },
+            adjustmentType: { type: String, enum: ['percentage', 'fixed'], default: 'percentage' },
+            adjustmentValue: { type: Number, default: 0 }
+        },
+        Europe: {
+            enabled: { type: Boolean, default: false },
+            adjustmentType: { type: String, enum: ['percentage', 'fixed'], default: 'percentage' },
+            adjustmentValue: { type: Number, default: 0 }
+        },
+        India: {
+            enabled: { type: Boolean, default: false },
+            adjustmentType: { type: String, enum: ['percentage', 'fixed'], default: 'percentage' },
+            adjustmentValue: { type: Number, default: 0 }
+        },
+        USA: {
+            enabled: { type: Boolean, default: false },
+            adjustmentType: { type: String, enum: ['percentage', 'fixed'], default: 'percentage' },
+            adjustmentValue: { type: Number, default: 0 }
+        },
+        UK: {
+            enabled: { type: Boolean, default: false },
+            adjustmentType: { type: String, enum: ['percentage', 'fixed'], default: 'percentage' },
+            adjustmentValue: { type: Number, default: 0 }
+        }
     }
 }, {
     timestamps: true

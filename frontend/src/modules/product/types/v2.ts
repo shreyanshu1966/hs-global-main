@@ -63,6 +63,13 @@ export interface ProductV2 {
     averageRating: number;
     totalReviews: number;
   };
+  regionalPricing?: {
+    UAE?: { enabled: boolean; adjustmentType: 'percentage' | 'fixed'; adjustmentValue: number };
+    Europe?: { enabled: boolean; adjustmentType: 'percentage' | 'fixed'; adjustmentValue: number };
+    India?: { enabled: boolean; adjustmentType: 'percentage' | 'fixed'; adjustmentValue: number };
+    USA?: { enabled: boolean; adjustmentType: 'percentage' | 'fixed'; adjustmentValue: number };
+    UK?: { enabled: boolean; adjustmentType: 'percentage' | 'fixed'; adjustmentValue: number };
+  } | null;
   createdAt: string;
   updatedAt: string;
 }

@@ -67,6 +67,7 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
           name: product.name,
           image: getProductImage(),
           priceUSD: getRawINRPrice(),
+          regionalPricing: (product as any).regionalPricing,
           category: product.category,
           subcategory: product.subcategory,
           discount: product.discount,
@@ -99,10 +100,10 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
       return;
     }
 
-    // For furniture: Add to cart directly with raw INR price
+    // For furniture: Add to cart directly
     const resolvedId = getProductId();
     const cartItem = {
-      id: resolvedId, // Resolve ID from productId, _id, or id depending on product shape
+      id: resolvedId,
       productId: (product as any).productId || resolvedId,
       name: product.name,
       image: getProductImage(),
@@ -110,6 +111,7 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
       category: product.category,
       subcategory: product.subcategory,
       discount: product.discount,
+      regionalPricing: (product as any).regionalPricing,
     };
 
     addItem(cartItem);

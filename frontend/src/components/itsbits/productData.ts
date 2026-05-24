@@ -15,6 +15,8 @@ export interface ItsbitsCardItem {
   createdAt?: string;
   averageRating?: number;
   totalReviews?: number;
+  regionalPricing?: Product['regionalPricing'];
+  discount?: Product['discount'];
 }
 
 const toTitleCase = (value: string) =>
@@ -36,32 +38,20 @@ export const getItsbitsProductImage = (product: Product): string => {
     : getProductCloudinaryUrl(imagePath);
 };
 
+// Price computation is deferred to the card component via usePrice() so regional
+// adjustments are applied correctly at render time.
 const getPriceLabels = (product: Product): {
   priceUSD?: number;
-  originalPriceUSD?: number;
   priceLabel?: string;
 } => {
   const basePrice = product.priceUSD || 0;
-  const hasDiscount = Boolean(product.discount?.enabled && product.discount.percentage > 0 && basePrice > 0);
-
-  if (basePrice <= 0) {
-    return { priceLabel: 'Request Quote' };
-  }
-
-  if (!hasDiscount) {
-    return { priceUSD: basePrice };
-  }
-
-  const finalPrice = basePrice - (basePrice * product.discount!.percentage) / 100;
-  return {
-    priceUSD: finalPrice,
-    originalPriceUSD: basePrice,
-  };
+  if (basePrice <= 0) return { priceLabel: 'Request Quote' };
+  return { priceUSD: basePrice };
 };
 
 export const mapProductToItsbitsCard = (product: Product): ItsbitsCardItem => {
   const categoryLabel = toTitleCase(product.subcategory || product.category || 'HS Global Collection');
-  const { priceUSD, originalPriceUSD, priceLabel } = getPriceLabels(product);
+  const { priceUSD, priceLabel } = getPriceLabels(product);
 
   return {
     id: product.productId || product._id,
@@ -69,12 +59,13 @@ export const mapProductToItsbitsCard = (product: Product): ItsbitsCardItem => {
     title: product.name,
     designer: categoryLabel,
     priceUSD,
-    originalPriceUSD,
     priceLabel,
     href: `/product/${product.productId || product._id}`,
     createdAt: product.createdAt,
     averageRating: product.averageRating,
     totalReviews: product.totalReviews,
+    regionalPricing: product.regionalPricing,
+    discount: product.discount,
   };
 };
 

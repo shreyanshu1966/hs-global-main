@@ -6,8 +6,8 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 
 export const AddedToCartNotification: React.FC = () => {
-  const { state, hideAddedToCart } = useCart();
-  const { formatPrice, convertFromUSD } = useCurrency();
+  const { state, hideAddedToCart, getRegionalEffectivePriceUSD } = useCart();
+  const { formatPrice } = useCurrency();
   const notificationRef = useRef<HTMLDivElement>(null);
 
   const { contextSafe } = useGSAP({ scope: notificationRef });
@@ -95,11 +95,7 @@ export const AddedToCartNotification: React.FC = () => {
                 <span>Qty: {state.lastAddedItem.quantity}</span>
                 <span>•</span>
                 <span className="font-semibold">
-                  {formatPrice(convertFromUSD(
-                    (state.lastAddedItem.discount?.enabled && state.lastAddedItem.discount.percentage > 0)
-                      ? state.lastAddedItem.priceUSD * (1 - (state.lastAddedItem.discount.percentage ?? 0) / 100)
-                      : state.lastAddedItem.priceUSD
-                  ))}
+                  {formatPrice(getRegionalEffectivePriceUSD(state.lastAddedItem))}
                 </span>
               </div>
             </div>
@@ -119,13 +115,7 @@ export const AddedToCartNotification: React.FC = () => {
       <div className="mt-3 pt-3 border-t border-gray-100">
         <div className="flex items-center justify-between text-xs text-gray-600">
           <span>Cart Total: {formatPrice(
-            state.items.reduce((sum, item) => {
-              const hasDiscount = item.discount?.enabled && item.discount.percentage > 0;
-              const effectivePriceUSD = hasDiscount
-                ? item.priceUSD * (1 - (item.discount?.percentage ?? 0) / 100)
-                : item.priceUSD;
-              return sum + convertFromUSD(effectivePriceUSD) * item.quantity;
-            }, 0)
+            state.items.reduce((sum, item) => sum + getRegionalEffectivePriceUSD(item) * item.quantity, 0)
           )}</span>
           <span>{state.items.reduce((total, item) => total + item.quantity, 0)} items</span>
         </div>
