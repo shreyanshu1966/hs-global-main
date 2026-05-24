@@ -1259,6 +1259,114 @@ const removeProductDiscount = async (req, res) => {
     }
 };
 
+// ==================== REGIONAL PRICING ====================
+
+const { REGIONS } = require('../utils/regionUtils');
+
+/**
+ * Update regional pricing for a single product
+ * PATCH /api/admin/products/:id/regional-pricing
+ */
+const updateProductRegionalPricing = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { regionalPricing } = req.body;
+
+        if (!regionalPricing || typeof regionalPricing !== 'object') {
+            return res.status(400).json({ success: false, message: 'regionalPricing object is required' });
+        }
+
+        const product = await Product.findOne({ $or: [{ productId: id }, { _id: id }] });
+        if (!product) {
+            return res.status(404).json({ success: false, message: 'Product not found' });
+        }
+
+        // Validate and apply each region
+        for (const region of REGIONS) {
+            if (regionalPricing[region]) {
+                const { enabled, adjustmentType, adjustmentValue } = regionalPricing[region];
+                if (adjustmentType && !['percentage', 'fixed'].includes(adjustmentType)) {
+                    return res.status(400).json({ success: false, message: `Invalid adjustmentType for region ${region}` });
+                }
+                product.regionalPricing[region] = {
+                    enabled: Boolean(enabled),
+                    adjustmentType: adjustmentType || 'percentage',
+                    adjustmentValue: Number(adjustmentValue) || 0
+                };
+            }
+        }
+
+        await product.save();
+
+        res.json({ success: true, data: product.regionalPricing, message: 'Regional pricing updated' });
+    } catch (error) {
+        console.error('Update regional pricing error:', error);
+        res.status(500).json({ success: false, message: 'Failed to update regional pricing', error: error.message });
+    }
+};
+
+/**
+ * Bulk update regional pricing by category and/or subcategory
+ * POST /api/admin/products/regional-pricing/bulk
+ * Body: { category?, subcategory?, regionalPricing: {...} }
+ */
+const bulkUpdateRegionalPricing = async (req, res) => {
+    try {
+        const { category, subcategory, regionalPricing } = req.body;
+
+        if (!regionalPricing || typeof regionalPricing !== 'object') {
+            return res.status(400).json({ success: false, message: 'regionalPricing object is required' });
+        }
+
+        const filter = {};
+        if (category) filter.category = category;
+        if (subcategory) filter.subcategory = subcategory;
+
+        const affectedCount = await Product.countDocuments(filter);
+
+        // Build the $set payload
+        const setPayload = {};
+        for (const region of REGIONS) {
+            if (regionalPricing[region]) {
+                const { enabled, adjustmentType, adjustmentValue } = regionalPricing[region];
+                setPayload[`regionalPricing.${region}.enabled`] = Boolean(enabled);
+                setPayload[`regionalPricing.${region}.adjustmentType`] = adjustmentType || 'percentage';
+                setPayload[`regionalPricing.${region}.adjustmentValue`] = Number(adjustmentValue) || 0;
+            }
+        }
+
+        const result = await Product.updateMany(filter, { $set: setPayload });
+
+        res.json({
+            success: true,
+            modifiedCount: result.modifiedCount,
+            affectedCount,
+            message: `Regional pricing updated for ${result.modifiedCount} products`
+        });
+    } catch (error) {
+        console.error('Bulk update regional pricing error:', error);
+        res.status(500).json({ success: false, message: 'Failed to bulk update regional pricing', error: error.message });
+    }
+};
+
+/**
+ * Get overview of regional pricing across all products
+ * GET /api/admin/products/regional-pricing/overview
+ */
+const getRegionalPricingOverview = async (req, res) => {
+    try {
+        const stats = {};
+        for (const region of REGIONS) {
+            stats[region] = await Product.countDocuments({ [`regionalPricing.${region}.enabled`]: true });
+        }
+        const totalProducts = await Product.countDocuments({});
+        res.json({ success: true, totalProducts, regionStats: stats });
+    } catch (error) {
+        console.error('Get regional pricing overview error:', error);
+        res.status(500).json({ success: false, message: 'Failed to get overview', error: error.message });
+    }
+};
+
 module.exports = {
     getAdminProducts,
     createProductWithImages,
@@ -1279,5 +1387,9 @@ module.exports = {
     removeDiscountFromAll,
     applyBulkDiscount,
     removeBulkDiscount,
-    removeProductDiscount
+    removeProductDiscount,
+    // Regional pricing
+    updateProductRegionalPricing,
+    bulkUpdateRegionalPricing,
+    getRegionalPricingOverview
 };

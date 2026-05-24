@@ -150,6 +150,15 @@ const orderSchema = new mongoose.Schema({
     },
     notes: {
         type: String
+    },
+    region: {
+        type: String,
+        enum: ['UAE', 'Europe', 'India', 'USA', 'UK', 'default'],
+        default: 'default'
+    },
+    regionalPricingApplied: {
+        type: Boolean,
+        default: false
     }
 }, {
     timestamps: true

@@ -47,7 +47,8 @@ const getPayPalAccessToken = async () => {
  */
 exports.calculateCartTotal = async (req, res) => {
     try {
-        const { items, currency = 'USD' } = req.body;
+        const { items, currency = 'USD', region = 'default' } = req.body;
+        const { getRegionalPriceUSD } = require('../utils/pricingCalculator');
 
         if (!items || items.length === 0) {
             return res.status(400).json({ ok: false, error: 'Cart items are required' });
@@ -83,8 +84,9 @@ exports.calculateCartTotal = async (req, res) => {
                 });
             }
 
-            // Get actual price from database (in USD)
-            const actualPriceUSD = product.priceUSD;
+            // Get actual price from database (in USD), apply regional adjustment
+            const baseUSD = product.priceUSD;
+            const actualPriceUSD = getRegionalPriceUSD(product, region);
 
             // Check if discount is actually active (server-side validation)
             const isDiscountActive = product.isDiscountActive();
@@ -101,10 +103,12 @@ exports.calculateCartTotal = async (req, res) => {
                 requestedId,
                 productId: product.productId,
                 name: product.name,
-                priceUSD: actualPriceUSD,
+                priceUSD: baseUSD,
+                regionalPriceUSD: actualPriceUSD,
                 finalPriceUSD: finalPriceUSD,
                 quantity: quantity,
                 discountPercentage: discountPercentage,
+                region,
                 discount: isDiscountActive ? {
                     enabled: true,
                     percentage: product.discount.percentage
@@ -115,6 +119,7 @@ exports.calculateCartTotal = async (req, res) => {
         res.json({
             ok: true,
             items: validatedItems,
+            region,
             totals: {
                 USD: parseFloat(totalUSD.toFixed(2))
             }
@@ -134,7 +139,8 @@ exports.calculateCartTotal = async (req, res) => {
  */
 exports.createOrder = async (req, res) => {
     try {
-        const { amount, currency = 'USD', receipt, items, shippingAddress, customer } = req.body;
+        const { amount, currency = 'USD', receipt, items, shippingAddress, customer, region = 'default' } = req.body;
+        const { getRegionalPriceUSD } = require('../utils/pricingCalculator');
 
         // Enhanced validation with comprehensive security checks
         if (!amount || amount <= 0) {
@@ -209,10 +215,11 @@ exports.createOrder = async (req, res) => {
                     });
                 }
 
-                // Get actual price from database (in USD)
-                const actualPriceUSD = product.priceUSD;
+                // Get actual price from database, apply regional adjustment
+                const baseUSD = product.priceUSD;
+                const actualPriceUSD = getRegionalPriceUSD(product, region);
 
-                if (!actualPriceUSD) {
+                if (!baseUSD) {
                     return res.status(400).json({
                         ok: false,
                         error: `Product ${item.name} does not have a price`,
@@ -242,7 +249,8 @@ exports.createOrder = async (req, res) => {
                     productId: product.productId,
                     name: product.name,
                     quantity: item.quantity,
-                    priceUSD: actualPriceUSD,
+                    priceUSD: baseUSD,
+                    regionalPriceUSD: actualPriceUSD,
                     originalPrice: actualPriceUSD,
                     discountPercentage: discountPercentage,
                     discountAmount: discountAmount,
@@ -258,7 +266,7 @@ exports.createOrder = async (req, res) => {
                     } : undefined
                 });
 
-                console.log(`✅ Validated: ${product.name} - Base: $${actualPriceUSD}, Discount: ${discountPercentage}%, Final: $${finalPriceUSD}`);
+                console.log(`✅ Validated: ${product.name} - Base: $${baseUSD}, Regional (${region}): $${actualPriceUSD}, Discount: ${discountPercentage}%, Final: $${finalPriceUSD}`);
             }
 
             // Round to 2 decimal places
@@ -431,7 +439,9 @@ exports.createOrder = async (req, res) => {
                         name: customer?.name || req.user.name,
                         email: customer?.email || req.user.email,
                         phone: customer?.phone || req.user.phone
-                    }
+                    },
+                    region: region,
+                    regionalPricingApplied: region !== 'default'
                 });
             }
 

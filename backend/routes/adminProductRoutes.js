@@ -20,7 +20,11 @@ const {
     removeDiscountFromAll,
     applyBulkDiscount,
     removeBulkDiscount,
-    removeProductDiscount
+    removeProductDiscount,
+    // Regional pricing
+    updateProductRegionalPricing,
+    bulkUpdateRegionalPricing,
+    getRegionalPricingOverview
 } = require('../controllers/adminProductController');
 
 const { authMiddleware, adminMiddleware } = require('../middleware/authMiddleware');
@@ -87,6 +91,11 @@ router.patch('/:id/discount',
     updateProductDiscount
 );
 router.delete('/:id/discount', removeProductDiscount);
+
+// Regional pricing routes
+router.get('/regional-pricing/overview', getRegionalPricingOverview);
+router.post('/regional-pricing/bulk', bulkUpdateRegionalPricing);
+router.patch('/:id/regional-pricing', updateProductRegionalPricing);
 
 // Bulk discount operations
 router.post('/discounts/apply-all',

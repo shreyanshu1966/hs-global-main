@@ -127,6 +127,17 @@ const getProductsByCategory = async (category, query) => {
         filters.subcategory = subcategoryFilter;
     }
 
+    const minPrice = parsePrice(query.minPrice);
+    const maxPrice = parsePrice(query.maxPrice);
+
+    if (minPrice !== undefined) {
+        filters.priceUSD = { ...filters.priceUSD, $gte: minPrice };
+    }
+
+    if (maxPrice !== undefined) {
+        filters.priceUSD = { ...filters.priceUSD, $lte: maxPrice };
+    }
+
     const sort = {};
     if (sortBy === 'featured') {
         sort.featured = -1;
