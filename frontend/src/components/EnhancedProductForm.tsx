@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { X, Save, Eye, Image as ImageIcon, Video } from 'lucide-react';
+import { X, Save, Eye, Image as ImageIcon, Video, Globe } from 'lucide-react';
+import { countries } from '../data/countries';
 import ProductImageManager from '../components/ProductImageManager';
 import ProductSpecsEditor from '../components/ProductSpecsEditor';
 import ProductVideoManager from '../components/ProductVideoManager';
 import { productService, type Category } from '../services/productService';
+import { DEFAULT_RATES } from '../utils/pricing';
 
 interface EnhancedProductFormProps {
   editingProduct?: any;
@@ -87,6 +89,12 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
   const [videoUploading, setVideoUploading] = useState(false);
 
   const [regionalPricing, setRegionalPricing] = useState<Record<RegionKey, { enabled: boolean; adjustmentType: AdjustmentType; adjustmentValue: number }>>(defaultRegionalPricing);
+
+  const [shippingConfig, setShippingConfig] = useState<{ shipsWorldwide: boolean; excludedCountries: string[] }>({
+    shipsWorldwide: true,
+    excludedCountries: [],
+  });
+  const [excludeSearch, setExcludeSearch] = useState('');
 
   // Similar products picker state
   const [similarProductIds, setSimilarProductIds] = useState<string[]>([]);
@@ -183,6 +191,14 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
           India: editingProduct.regionalPricing.India || def.India,
           USA: editingProduct.regionalPricing.USA || def.USA,
           UK: editingProduct.regionalPricing.UK || def.UK,
+        });
+      }
+
+      // Set shipping config
+      if (editingProduct.shipping) {
+        setShippingConfig({
+          shipsWorldwide: editingProduct.shipping.shipsWorldwide !== false,
+          excludedCountries: editingProduct.shipping.excludedCountries || [],
         });
       }
 
@@ -326,7 +342,11 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
         discount: formData.discount,
         hasVideo: !!video,
         similarProducts: similarProductIds,
-        regionalPricing
+        regionalPricing,
+        shipping: {
+          shipsWorldwide: shippingConfig.shipsWorldwide,
+          excludedCountries: shippingConfig.excludedCountries,
+        },
       };
 
       // Extract video file (only if it's new, not existing)
@@ -799,7 +819,8 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
                       <div>
                         <p className="text-gray-600">Original Price</p>
-                        <p className="font-semibold text-gray-900">${parseFloat(formData.priceUSD).toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
+                        <p className="font-semibold text-gray-900">₹{Math.round(parseFloat(formData.priceUSD) * DEFAULT_RATES.INR).toLocaleString('en-IN')}</p>
+                        <p className="text-xs text-gray-400">${parseFloat(formData.priceUSD).toLocaleString('en-US', { minimumFractionDigits: 2 })} USD</p>
                       </div>
                       <div>
                         <p className="text-gray-600">Discount</p>
@@ -808,13 +829,13 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
                       <div>
                         <p className="text-gray-600">Final Price</p>
                         <p className="font-semibold text-green-600">
-                          ${(Math.round(parseFloat(formData.priceUSD) * (1 - formData.discount.percentage / 100) * 100) / 100).toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                          ₹{Math.round(parseFloat(formData.priceUSD) * (1 - formData.discount.percentage / 100) * DEFAULT_RATES.INR).toLocaleString('en-IN')}
                         </p>
                       </div>
                       <div>
                         <p className="text-gray-600">You Save</p>
                         <p className="font-semibold text-green-600">
-                          ${(Math.round(parseFloat(formData.priceUSD) * formData.discount.percentage / 100 * 100) / 100).toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                          ₹{Math.round(parseFloat(formData.priceUSD) * formData.discount.percentage / 100 * DEFAULT_RATES.INR).toLocaleString('en-IN')}
                         </p>
                       </div>
                     </div>
@@ -1026,6 +1047,110 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
             )}
           </div>
 
+          {/* Shipping Availability Section */}
+          <div className="space-y-4 border-t pt-4">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                <Globe className="w-5 h-5" />
+                Shipping Availability
+              </h3>
+              <p className="text-sm text-gray-500 mt-1">
+                Control which countries this product can be delivered to.
+              </p>
+            </div>
+
+            {/* Ships Worldwide toggle */}
+            <div className="flex items-center justify-between border border-gray-200 rounded-lg p-4 bg-gray-50">
+              <div>
+                <p className="text-sm font-medium text-gray-900">Ships Worldwide</p>
+                <p className="text-xs text-gray-500 mt-0.5">Enable to ship to all countries. Add exceptions below.</p>
+              </div>
+              <button
+                type="button"
+                disabled={isFormDisabled}
+                onClick={() => setShippingConfig(prev => ({ ...prev, shipsWorldwide: !prev.shipsWorldwide }))}
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${shippingConfig.shipsWorldwide ? 'bg-blue-600' : 'bg-gray-300'} disabled:opacity-50`}
+              >
+                <span className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${shippingConfig.shipsWorldwide ? 'translate-x-6' : 'translate-x-1'}`} />
+              </button>
+            </div>
+
+            {/* Excluded countries (when worldwide is on) */}
+            {shippingConfig.shipsWorldwide && (
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-gray-700">Exclude countries (optional)</p>
+
+                {/* Existing excluded tags */}
+                {shippingConfig.excludedCountries.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5">
+                    {shippingConfig.excludedCountries.map(code => {
+                      const c = countries.find(x => x.code === code);
+                      return (
+                        <span key={code} className="inline-flex items-center gap-1 bg-red-50 border border-red-200 text-red-700 text-xs font-medium px-2 py-1 rounded-full">
+                          {c?.flag} {c?.name || code}
+                          <button
+                            type="button"
+                            disabled={isFormDisabled}
+                            onClick={() => setShippingConfig(prev => ({ ...prev, excludedCountries: prev.excludedCountries.filter(x => x !== code) }))}
+                            className="ml-0.5 hover:text-red-900 disabled:opacity-50"
+                          >
+                            <X className="w-3 h-3" />
+                          </button>
+                        </span>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {/* Country search/add */}
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={excludeSearch}
+                    onChange={e => setExcludeSearch(e.target.value)}
+                    placeholder="Search country to exclude..."
+                    disabled={isFormDisabled}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+                  />
+                  {excludeSearch.trim() && (
+                    <div className="absolute z-50 left-0 right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-44 overflow-y-auto">
+                      {countries
+                        .filter(c =>
+                          !shippingConfig.excludedCountries.includes(c.code) &&
+                          (c.name.toLowerCase().includes(excludeSearch.toLowerCase()) || c.code.toLowerCase().includes(excludeSearch.toLowerCase()))
+                        )
+                        .slice(0, 20)
+                        .map(c => (
+                          <button
+                            key={c.code}
+                            type="button"
+                            disabled={isFormDisabled}
+                            onClick={() => {
+                              setShippingConfig(prev => ({ ...prev, excludedCountries: [...prev.excludedCountries, c.code] }));
+                              setExcludeSearch('');
+                            }}
+                            className="w-full flex items-center gap-2 px-3 py-2 hover:bg-gray-50 text-left text-sm"
+                          >
+                            <span>{c.flag}</span>
+                            <span className="font-medium text-gray-800">{c.name}</span>
+                            <span className="text-gray-400 text-xs ml-auto">{c.code}</span>
+                          </button>
+                        ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* When worldwide is off — all restricted notice */}
+            {!shippingConfig.shipsWorldwide && (
+              <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
+                <p className="text-sm text-amber-800 font-medium">Product restricted from all countries.</p>
+                <p className="text-xs text-amber-700 mt-0.5">Enable "Ships Worldwide" to allow deliveries.</p>
+              </div>
+            )}
+          </div>
+
           {/* Regional Pricing Section */}
           <div className="space-y-4 border-t pt-4">
             <div>
@@ -1068,7 +1193,8 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
                       </div>
                       {rp.enabled && basePrice > 0 && (
                         <span className={`text-sm font-semibold ${previewPrice > basePrice ? 'text-orange-600' : previewPrice < basePrice ? 'text-green-600' : 'text-gray-500'}`}>
-                          Preview: ${previewPrice.toFixed(2)} USD
+                          ₹{Math.round(previewPrice * DEFAULT_RATES.INR).toLocaleString('en-IN')}
+                          <span className="ml-1 text-xs font-normal opacity-60">(≈ ${previewPrice.toFixed(2)} USD)</span>
                         </span>
                       )}
                     </div>

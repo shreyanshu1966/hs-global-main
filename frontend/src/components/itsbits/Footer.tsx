@@ -143,40 +143,44 @@ const Footer = () => {
                   {status === 'error' && <p className="text-xs text-red-600">Failed to subscribe. Try again.</p>}
                 </form>
 
-                <div className="flex items-center gap-3 pt-1">
-                  <a
-                    href="https://www.facebook.com/hsglobalexport"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Facebook"
-                    className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#d9d2c7] text-[#1877F2] transition-all duration-200 hover:border-[#1877F2] hover:bg-[#1877F2]/10 hover:scale-110"
-                  >
-                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
-                      <path d="M13.5 22v-8h2.7l.4-3h-3.1V9.1c0-.9.3-1.5 1.6-1.5h1.7V4.9c-.8-.1-1.5-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H8v3h2.6v8h2.9Z" />
-                    </svg>
-                  </a>
-
-                  <a
-                    href="https://www.instagram.com/hsglobalexport116/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Instagram"
-                    className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#d9d2c7] text-[#E4405F] transition-all duration-200 hover:border-[#E4405F] hover:bg-[#E4405F]/10 hover:scale-110"
-                  >
-                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+                <div className="flex items-center gap-2.5 pt-1 flex-wrap">
+                  {/* Instagram */}
+                  <a href="https://www.instagram.com/hsglobalexport_com/?hl=en" target="_blank" rel="noopener noreferrer" aria-label="Instagram"
+                    className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#d9d2c7] text-[#E4405F] transition-all duration-200 hover:border-[#E4405F] hover:bg-[#E4405F]/10 hover:scale-110">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true">
                       <path d="M7.8 2h8.4A5.8 5.8 0 0 1 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8A5.8 5.8 0 0 1 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2Zm0 1.9A3.9 3.9 0 0 0 3.9 7.8v8.4a3.9 3.9 0 0 0 3.9 3.9h8.4a3.9 3.9 0 0 0 3.9-3.9V7.8a3.9 3.9 0 0 0-3.9-3.9H7.8Zm8.9 1.5a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.9a3.1 3.1 0 1 0 0 6.2 3.1 3.1 0 0 0 0-6.2Z" />
                     </svg>
                   </a>
 
-                  <a
-                    href="https://www.linkedin.com/company/hsglobalexport"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="LinkedIn"
-                    className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#d9d2c7] text-[#0A66C2] transition-all duration-200 hover:border-[#0A66C2] hover:bg-[#0A66C2]/10 hover:scale-110"
-                  >
-                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+                  {/* Facebook */}
+                  <a href="https://www.facebook.com/profile.php?id=61571531083009" target="_blank" rel="noopener noreferrer" aria-label="Facebook"
+                    className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#d9d2c7] text-[#1877F2] transition-all duration-200 hover:border-[#1877F2] hover:bg-[#1877F2]/10 hover:scale-110">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true">
+                      <path d="M13.5 22v-8h2.7l.4-3h-3.1V9.1c0-.9.3-1.5 1.6-1.5h1.7V4.9c-.8-.1-1.5-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H8v3h2.6v8h2.9Z" />
+                    </svg>
+                  </a>
+
+                  {/* LinkedIn */}
+                  <a href="https://www.linkedin.com/company/hs-global-export/?viewAsMember=true" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"
+                    className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#d9d2c7] text-[#0A66C2] transition-all duration-200 hover:border-[#0A66C2] hover:bg-[#0A66C2]/10 hover:scale-110">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true">
                       <path d="M6.5 8.8V22H2.7V8.8h3.8ZM4.6 2A2.2 2.2 0 1 1 4.6 6.4 2.2 2.2 0 0 1 4.6 2ZM22 13.9V22h-3.8v-7.5c0-1.8-.7-3-2.3-3-1.3 0-2 .9-2.4 1.7-.1.3-.2.8-.2 1.2V22H9.5s.1-12.1 0-13.2h3.8v1.9c.5-.8 1.5-1.9 3.7-1.9 2.7 0 5 1.8 5 5.8Z" />
+                    </svg>
+                  </a>
+
+                  {/* Pinterest */}
+                  <a href="https://in.pinterest.com/hsglobalexport/_pins/" target="_blank" rel="noopener noreferrer" aria-label="Pinterest"
+                    className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#d9d2c7] text-[#E60023] transition-all duration-200 hover:border-[#E60023] hover:bg-[#E60023]/10 hover:scale-110">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true">
+                      <path d="M12 2C6.477 2 2 6.477 2 12c0 4.236 2.636 7.855 6.356 9.312-.088-.791-.167-2.005.035-2.868.181-.78 1.172-4.97 1.172-4.97s-.299-.598-.299-1.482c0-1.388.806-2.428 1.808-2.428.853 0 1.267.641 1.267 1.408 0 .858-.546 2.141-.828 3.33-.236.995.498 1.806 1.476 1.806 1.772 0 3.136-1.867 3.136-4.563 0-2.386-1.716-4.052-4.164-4.052-2.838 0-4.503 2.128-4.503 4.329 0 .857.33 1.775.742 2.277a.3.3 0 0 1 .069.283c-.076.313-.244.995-.277 1.134-.044.183-.145.221-.335.134-1.249-.581-2.03-2.407-2.03-3.874 0-3.154 2.292-6.052 6.608-6.052 3.469 0 6.165 2.473 6.165 5.776 0 3.447-2.173 6.22-5.19 6.22-1.013 0-1.966-.527-2.292-1.148l-.623 2.378c-.226.869-.835 1.958-1.244 2.621.937.29 1.931.446 2.962.446 5.523 0 10-4.477 10-10S17.523 2 12 2Z" />
+                    </svg>
+                  </a>
+
+                  {/* X / Twitter */}
+                  <a href="https://x.com/hsglobalex51217" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)"
+                    className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#d9d2c7] text-[#111] transition-all duration-200 hover:border-[#111] hover:bg-[#111]/10 hover:scale-110">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true">
+                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.259 5.632L18.244 2.25Zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77Z" />
                     </svg>
                   </a>
                 </div>

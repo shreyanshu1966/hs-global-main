@@ -339,7 +339,15 @@ const productSchema = new mongoose.Schema({
             default: '2-3 business days'
         },
         freeShippingThreshold: Number,
-        shippingNotes: String
+        shippingNotes: String,
+        shipsWorldwide: {
+            type: Boolean,
+            default: true
+        },
+        excludedCountries: [{
+            type: String,
+            trim: true
+        }]
     },
 
     productType: {

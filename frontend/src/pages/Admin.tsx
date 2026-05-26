@@ -57,6 +57,7 @@ import contactService, { Contact, ContactStats } from '../services/contactServic
 import quotationService, { Quotation, QuotationStats } from '../services/quotationService';
 import { adminProductApi } from '../modules/product/api';
 import type { AdminProduct as Product, AdminProductFormData as ProductFormData } from '../modules/product/types';
+import { formatAdminINR } from '../utils/pricing';
 import reviewService, { Review } from '../services/reviewService';
 import {
     fetchCustomCategories,
@@ -129,7 +130,7 @@ const COLORS = ['#10b981', '#f59e0b', '#ef4444', '#3b82f6', '#8b5cf6'];
 const Admin = () => {
     const { user, token, logout } = useAuth();
     const navigate = useNavigate();
-    const [activeTab, setActiveTab] = useState<'analytics' | 'orders' | 'users' | 'blogs' | 'contacts' | 'quotations' | 'products' | 'categories' | 'reviews' | 'homepage' | 'popups'>('analytics');
+    const [activeTab, setActiveTab] = useState<'analytics' | 'orders' | 'users' | 'blogs' | 'contacts' | 'quotations' | 'products' | 'categories' | 'reviews' | 'homepage' | 'popups' | 'delivery-checks'>('analytics');
     const [loading, setLoading] = useState(true);
     const [isMounted, setIsMounted] = useState(false);
 
@@ -192,6 +193,7 @@ const Admin = () => {
     const [productsPagination, setProductsPagination] = useState<any>(null);
     const [productsSearch, setProductsSearch] = useState('');
     const [productsCategoryFilter, setProductsCategoryFilter] = useState('');
+    const [productsSubcategoryFilter, setProductsSubcategoryFilter] = useState('');
     const [productsStatusFilter, setProductsStatusFilter] = useState('');
     const [showProductModal, setShowProductModal] = useState(false);
     const [editingProduct, setEditingProduct] = useState<Product | null>(null);
@@ -290,7 +292,7 @@ const Admin = () => {
             return;
         }
         loadData();
-    }, [user, navigate, activeTab, usersPage, ordersPage, usersSearch, usersRoleFilter, ordersSearch, ordersStatusFilter, ordersDeliveryFilter, blogsPage, contactsPage, contactsStatusFilter, quotationsPage, quotationsStatusFilter, productsPage, productsCategoryFilter, productsStatusFilter, reviewsPage, reviewsStatusFilter]);
+    }, [user, navigate, activeTab, usersPage, ordersPage, usersSearch, usersRoleFilter, ordersSearch, ordersStatusFilter, ordersDeliveryFilter, blogsPage, contactsPage, contactsStatusFilter, quotationsPage, quotationsStatusFilter, productsPage, productsCategoryFilter, productsSubcategoryFilter, productsStatusFilter, reviewsPage, reviewsStatusFilter]);
 
     // Lock body scroll when any modal is open
     // Lock body scroll when any modal is open
@@ -381,6 +383,7 @@ const Admin = () => {
                         limit: 10,
                         search: productsSearch,
                         category: productsCategoryFilter,
+                        subcategory: productsSubcategoryFilter,
                         status: productsStatusFilter
                     }),
                     productService.getCategories(),
@@ -1331,6 +1334,16 @@ const Admin = () => {
                             >
                                 <Bell className="w-4 h-4" />
                                 <span>Popups</span>
+                            </button>
+                            <button
+                                onClick={() => setActiveTab('delivery-checks')}
+                                className={`flex items-center justify-center gap-2 px-4 py-3 rounded-md font-medium text-sm transition-all ${activeTab === 'delivery-checks'
+                                    ? 'bg-blue-600 text-white shadow-sm'
+                                    : 'text-gray-600 hover:bg-gray-50'
+                                    }`}
+                            >
+                                <Package className="w-4 h-4" />
+                                <span>Delivery Checks</span>
                             </button>
                             <button
                                 onClick={() => setActiveTab('contacts')}
@@ -2733,13 +2746,31 @@ const Admin = () => {
                                         value={productsCategoryFilter}
                                         onChange={(e) => {
                                             setProductsCategoryFilter(e.target.value);
+                                            setProductsSubcategoryFilter('');
                                             setProductsPage(1);
                                         }}
                                         className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                                     >
                                         <option value="">All Categories</option>
-                                        <option value="furniture">Furniture</option>
+                                        {categoryOptions.map((cat) => (
+                                            <option key={cat} value={cat} className="capitalize">{cat.charAt(0).toUpperCase() + cat.slice(1)}</option>
+                                        ))}
                                     </select>
+                                    {productsCategoryFilter && (categoryMetaMap[productsCategoryFilter]?.subcategories ?? []).length > 0 && (
+                                        <select
+                                            value={productsSubcategoryFilter}
+                                            onChange={(e) => {
+                                                setProductsSubcategoryFilter(e.target.value);
+                                                setProductsPage(1);
+                                            }}
+                                            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                        >
+                                            <option value="">All Subcategories</option>
+                                            {(categoryMetaMap[productsCategoryFilter]?.subcategories ?? []).map((sub) => (
+                                                <option key={sub} value={sub} className="capitalize">{sub.charAt(0).toUpperCase() + sub.slice(1)}</option>
+                                            ))}
+                                        </select>
+                                    )}
                                     <select
                                         value={productsStatusFilter}
                                         onChange={(e) => {
@@ -2833,15 +2864,15 @@ const Admin = () => {
                                                                     {product.discount?.enabled && product.discount.percentage > 0 ? (
                                                                         <div>
                                                                             <div className="text-sm font-medium text-green-600">
-                                                                                {formatCurrency(Math.round(product.priceUSD * (1 - product.discount.percentage / 100)))}
+                                                                                {formatAdminINR(product.priceUSD * (1 - product.discount.percentage / 100))}
                                                                             </div>
                                                                             <div className="text-xs text-gray-500 line-through">
-                                                                                {formatCurrency(product.priceUSD)}
+                                                                                {formatAdminINR(product.priceUSD)}
                                                                             </div>
                                                                         </div>
                                                                     ) : (
                                                                         <div className="text-sm font-medium text-gray-900">
-                                                                            {formatCurrency(product.priceUSD)}
+                                                                            {formatAdminINR(product.priceUSD)}
                                                                         </div>
                                                                     )}
                                                                 </>
@@ -3037,6 +3068,9 @@ const Admin = () => {
 
                     {/* Popup Management Tab */}
                     {activeTab === 'popups' && <PopupManagement />}
+
+                    {/* Delivery Check Analytics Tab */}
+                    {activeTab === 'delivery-checks' && <DeliveryCheckAnalyticsTab />}
 
                     {/* Product Modal */}
                     {showProductModal && isMounted && typeof document !== 'undefined' && document.body && createPortal(
@@ -3506,11 +3540,11 @@ const Admin = () => {
                                                                 {previewProduct.discount?.enabled && previewProduct.discount?.percentage ? (
                                                                     <>
                                                                         <span className="text-lg font-bold text-gray-900">
-                                                                            ${Math.round(previewProduct.priceUSD * (1 - (previewProduct.discount.percentage / 100)) * 100) / 100}
+                                                                            {formatAdminINR(Math.round(previewProduct.priceUSD * (1 - (previewProduct.discount.percentage / 100)) * 100) / 100)}
                                                                         </span>
                                                                         <br />
                                                                         <span className="text-sm text-gray-500 line-through">
-                                                                            ${previewProduct.priceUSD.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                                                                            {formatAdminINR(previewProduct.priceUSD)}
                                                                         </span>
                                                                         <span className="ml-2 px-2 py-1 bg-red-100 text-red-700 text-xs rounded-full">
                                                                             {previewProduct.discount.percentage}% OFF
@@ -3518,7 +3552,7 @@ const Admin = () => {
                                                                     </>
                                                                 ) : (
                                                                     <span className="text-lg font-bold text-gray-900">
-                                                                        ${previewProduct.priceUSD.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                                                                        {formatAdminINR(previewProduct.priceUSD)}
                                                                     </span>
                                                                 )}
                                                             </div>
@@ -3624,5 +3658,209 @@ const Admin = () => {
 };
 
 export default Admin;
+
+// ─── Delivery Check Analytics tab ────────────────────────────────────────────
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+
+interface DeliveryRecord {
+    _id: string;
+    countryCode: string;
+    countryName: string;
+    postalCode: string;
+    productId: string;
+    result: 'available' | 'unavailable';
+    createdAt: string;
+}
+
+interface CountryStat {
+    countryCode: string;
+    countryName: string;
+    total: number;
+    available: number;
+    unavailable: number;
+}
+
+function DeliveryCheckAnalyticsTab() {
+    const [records, setRecords]         = useState<DeliveryRecord[]>([]);
+    const [byCountry, setByCountry]     = useState<CountryStat[]>([]);
+    const [byResult, setByResult]       = useState<Record<string, number>>({});
+    const [total, setTotal]             = useState(0);
+    const [loading, setLoading]         = useState(true);
+    const [error, setError]             = useState('');
+    const [filterCountry, setFilterCountry] = useState('');
+    const [page, setPage]               = useState(1);
+    const [totalPages, setTotalPages]   = useState(1);
+
+    const fetchData = async (pg = 1, country = '') => {
+        setLoading(true);
+        setError('');
+        try {
+            const token = localStorage.getItem('authToken');
+            const params = new URLSearchParams({ page: String(pg), limit: '50' });
+            if (country) params.set('country', country);
+            const res = await fetch(`${API_URL}/admin/delivery-analytics?${params}`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            if (!res.ok) throw new Error('Failed to fetch');
+            const json = await res.json();
+            setRecords(json.data.records);
+            setByCountry(json.data.byCountry);
+            setByResult(json.data.byResult || {});
+            setTotal(json.data.total);
+            setTotalPages(json.pagination.total);
+        } catch (e: any) {
+            setError(e.message || 'Error loading data');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => { fetchData(1, filterCountry); }, []);
+
+    const handleFilter = () => { setPage(1); fetchData(1, filterCountry); };
+    const handlePage = (p: number) => { setPage(p); fetchData(p, filterCountry); };
+
+    const available   = byResult['available']   || 0;
+    const unavailable = byResult['unavailable'] || 0;
+
+    return (
+        <div className="space-y-6">
+            <div className="flex items-center justify-between">
+                <div>
+                    <h2 className="text-xl font-bold text-gray-900">Delivery Check Analytics</h2>
+                    <p className="text-sm text-gray-500 mt-0.5">Countries and pincodes users checked on product pages</p>
+                </div>
+                <button onClick={() => fetchData(page, filterCountry)} className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-medium transition-colors">
+                    Refresh
+                </button>
+            </div>
+
+            {/* Summary cards */}
+            <div className="grid grid-cols-3 gap-4">
+                <div className="bg-white border border-gray-200 rounded-xl p-4">
+                    <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">Total Checks</p>
+                    <p className="text-2xl font-bold text-gray-900">{total.toLocaleString()}</p>
+                </div>
+                <div className="bg-white border border-green-200 rounded-xl p-4">
+                    <p className="text-xs text-green-600 uppercase tracking-wide mb-1">Available</p>
+                    <p className="text-2xl font-bold text-green-700">{available.toLocaleString()}</p>
+                    <p className="text-xs text-gray-400">{total ? Math.round(available / total * 100) : 0}% of checks</p>
+                </div>
+                <div className="bg-white border border-red-200 rounded-xl p-4">
+                    <p className="text-xs text-red-500 uppercase tracking-wide mb-1">Unavailable</p>
+                    <p className="text-2xl font-bold text-red-600">{unavailable.toLocaleString()}</p>
+                    <p className="text-xs text-gray-400">{total ? Math.round(unavailable / total * 100) : 0}% of checks</p>
+                </div>
+            </div>
+
+            {/* Country breakdown */}
+            {byCountry.length > 0 && (
+                <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+                    <div className="px-5 py-3 border-b border-gray-100">
+                        <h3 className="text-sm font-semibold text-gray-800">By Country</h3>
+                    </div>
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-sm">
+                            <thead className="bg-gray-50 text-xs text-gray-500 uppercase tracking-wide">
+                                <tr>
+                                    <th className="px-5 py-3 text-left">Country</th>
+                                    <th className="px-5 py-3 text-right">Total</th>
+                                    <th className="px-5 py-3 text-right">Available</th>
+                                    <th className="px-5 py-3 text-right">Unavailable</th>
+                                    <th className="px-5 py-3 text-left">Share</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-gray-100">
+                                {byCountry.map(c => (
+                                    <tr key={c.countryCode} className="hover:bg-gray-50 transition-colors">
+                                        <td className="px-5 py-3 font-medium text-gray-900">{c.countryName} <span className="text-gray-400 text-xs ml-1">{c.countryCode}</span></td>
+                                        <td className="px-5 py-3 text-right font-semibold">{c.total}</td>
+                                        <td className="px-5 py-3 text-right text-green-600">{c.available}</td>
+                                        <td className="px-5 py-3 text-right text-red-500">{c.unavailable}</td>
+                                        <td className="px-5 py-3">
+                                            <div className="flex items-center gap-2">
+                                                <div className="flex-1 bg-gray-100 rounded-full h-1.5 min-w-[60px]">
+                                                    <div className="bg-blue-500 h-1.5 rounded-full" style={{ width: `${total ? Math.round(c.total / total * 100) : 0}%` }} />
+                                                </div>
+                                                <span className="text-xs text-gray-400 w-8 text-right">{total ? Math.round(c.total / total * 100) : 0}%</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            )}
+
+            {/* Filter + recent records */}
+            <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+                <div className="px-5 py-3 border-b border-gray-100 flex items-center gap-3">
+                    <h3 className="text-sm font-semibold text-gray-800 mr-auto">Recent Checks</h3>
+                    <input
+                        type="text"
+                        value={filterCountry}
+                        onChange={e => setFilterCountry(e.target.value.toUpperCase())}
+                        onKeyDown={e => e.key === 'Enter' && handleFilter()}
+                        placeholder="Filter by country code (e.g. IN)"
+                        className="border border-gray-200 rounded-lg px-3 py-1.5 text-xs w-52 focus:outline-none focus:border-blue-400"
+                    />
+                    <button onClick={handleFilter} className="px-3 py-1.5 bg-blue-600 text-white text-xs font-medium rounded-lg hover:bg-blue-700">Apply</button>
+                    {filterCountry && <button onClick={() => { setFilterCountry(''); fetchData(1, ''); }} className="px-3 py-1.5 bg-gray-100 text-gray-600 text-xs font-medium rounded-lg hover:bg-gray-200">Clear</button>}
+                </div>
+
+                {loading && <div className="px-5 py-8 text-center text-gray-400 text-sm">Loading...</div>}
+                {error  && <div className="px-5 py-8 text-center text-red-500 text-sm">{error}</div>}
+                {!loading && !error && records.length === 0 && (
+                    <div className="px-5 py-8 text-center text-gray-400 text-sm">No delivery checks recorded yet.</div>
+                )}
+                {!loading && records.length > 0 && (
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-sm">
+                            <thead className="bg-gray-50 text-xs text-gray-500 uppercase tracking-wide">
+                                <tr>
+                                    <th className="px-5 py-3 text-left">Country</th>
+                                    <th className="px-5 py-3 text-left">Pincode</th>
+                                    <th className="px-5 py-3 text-left">Product</th>
+                                    <th className="px-5 py-3 text-left">Result</th>
+                                    <th className="px-5 py-3 text-left">Date</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-gray-100">
+                                {records.map(r => (
+                                    <tr key={r._id} className="hover:bg-gray-50 transition-colors">
+                                        <td className="px-5 py-3 font-medium text-gray-900">{r.countryName} <span className="text-gray-400 text-xs">{r.countryCode}</span></td>
+                                        <td className="px-5 py-3 text-gray-600">{r.postalCode || <span className="text-gray-300">—</span>}</td>
+                                        <td className="px-5 py-3 text-gray-600 font-mono text-xs">{r.productId || <span className="text-gray-300">—</span>}</td>
+                                        <td className="px-5 py-3">
+                                            <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${r.result === 'available' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600'}`}>
+                                                {r.result}
+                                            </span>
+                                        </td>
+                                        <td className="px-5 py-3 text-gray-400 text-xs whitespace-nowrap">
+                                            {new Date(r.createdAt).toLocaleString()}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
+
+                {/* Pagination */}
+                {totalPages > 1 && (
+                    <div className="px-5 py-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
+                        <span>Page {page} of {totalPages}</span>
+                        <div className="flex gap-1.5">
+                            <button disabled={page <= 1} onClick={() => handlePage(page - 1)} className="px-3 py-1.5 rounded border border-gray-200 disabled:opacity-40 hover:bg-gray-50 transition-colors">Prev</button>
+                            <button disabled={page >= totalPages} onClick={() => handlePage(page + 1)} className="px-3 py-1.5 rounded border border-gray-200 disabled:opacity-40 hover:bg-gray-50 transition-colors">Next</button>
+                        </div>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+}
 
 

@@ -362,14 +362,6 @@ export default function Products() {
 
         {/* ── Page header + desktop category tabs ── */}
         <div className="bg-white border-b border-gray-100 shrink-0">
-          <div className="max-w-[1680px] mx-auto px-4 sm:px-6 xl:px-8 pt-8 pb-0 md:pt-10">
-            <h1 className="text-2xl md:text-3xl font-semibold text-gray-900 tracking-tight capitalize pb-1">
-              {pageTitle}
-            </h1>
-            <p className="text-sm md:text-base text-gray-500 pb-5">
-              Premium natural stone &amp; luxury furniture for every space
-            </p>
-          </div>
 
           {/* Desktop category pill bar */}
           <nav

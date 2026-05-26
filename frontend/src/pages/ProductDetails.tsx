@@ -9,11 +9,14 @@ import { ProductGallery } from "../components/product/ProductGallery";
 import { useCart } from "../contexts/CartContext";
 import { useProduct } from "../hooks/useProducts";
 import { useProductSEO, formatRobotsMeta } from "../hooks/useProductSEO";
+import { fetchCategoryProducts, fetchFeaturedProducts, fetchProductList } from "../modules/product/store";
 import { ProductInfo } from "../components/product/ProductInfo";
 import { ProductSpecifications } from "../components/product/ProductSpecifications";
 import { ProductReviews } from "../components/product/ProductReviews";
 import { RelatedProducts } from "../components/product/RelatedProducts";
 import { SimilarProducts } from "../components/product/SimilarProducts";
+import { ProductFAQ } from "../components/product/ProductFAQ";
+import { CompactCarousel } from "../components/product/CompactCarousel";
 
 const ProductDetails = () => {
   const { id }: { id?: string } = useParams<{ id?: string }>();
@@ -21,8 +24,12 @@ const ProductDetails = () => {
   const [reviewStats, setReviewStats] = useState({ averageRating: 0, totalReviews: 0, ratingBreakdown: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 } });
   const [reviewsLoading, setReviewsLoading] = useState(true);
 
+  // Extra carousel data
+  const [categoryProducts, setCategoryProducts] = useState<any[]>([]);
+  const [newArrivals, setNewArrivals]           = useState<any[]>([]);
+  const [trending, setTrending]                 = useState<any[]>([]);
+
   const { state: cartState } = useCart();
-  const relatedRef = useRef<HTMLDivElement | null>(null);
   const reviewsRef = useRef<HTMLDivElement>(null);
   // Tall scroll-space wrapper — drives image transitions inside
   const heroWrapperRef = useRef<HTMLDivElement>(null);
@@ -83,6 +90,13 @@ const ProductDetails = () => {
       totalReviews: dbProduct.totalReviews,
       discount: dbProduct.discount,
       regionalPricing: dbProduct.regionalPricing,
+      shipping: dbProduct.shipping,
+      slabSpecs: dbProduct.slabSpecs,
+      customSpecs: dbProduct.customSpecs,
+      manufacturing: dbProduct.manufacturing,
+      dimensions: dbProduct.dimensions,
+      weight: dbProduct.weight,
+      tags: dbProduct.tags,
     };
   }, [dbProduct, dbRelatedProducts, dbSimilarProducts]);
 
@@ -145,6 +159,42 @@ const ProductDetails = () => {
     }
   };
 
+  // Fetch extra carousels once the main product is known
+  useEffect(() => {
+    if (!product) return;
+    const currentId = String(product.productId || product._id || product.id || '');
+
+    const exclude = (list: any[]) =>
+      list.filter(p => String(p.productId || p._id || p.id || '') !== currentId).slice(0, 16);
+
+    // 1. More in same category
+    fetchCategoryProducts(product.category, { limit: 20, sortBy: 'createdAt', sortOrder: 'desc' })
+      .then(res => {
+        if (res.success && res.data && 'products' in res.data) {
+          setCategoryProducts(exclude(res.data.products as any[]));
+        }
+      })
+      .catch(() => {});
+
+    // 2. New arrivals (all categories, newest first)
+    fetchProductList({ limit: 16, sortBy: 'createdAt', sortOrder: 'desc' })
+      .then(res => {
+        if (res.success && Array.isArray(res.data)) {
+          setNewArrivals(exclude(res.data as any[]));
+        }
+      })
+      .catch(() => {});
+
+    // 3. Trending / featured
+    fetchFeaturedProducts(16)
+      .then(res => {
+        if (res.success && Array.isArray(res.data)) {
+          setTrending(exclude(res.data as any[]));
+        }
+      })
+      .catch(() => {});
+  }, [product?.category, product?.productId, product?._id]);
+
   // ─────────────────────────────────────────────────────────────────────────
 
   // Browser Share API
@@ -166,15 +216,6 @@ const ProductDetails = () => {
       navigator.clipboard.writeText(window.location.href);
       alert("Link copied to clipboard!");
     }
-  };
-
-  const scrollRelated = (dir: 'left' | 'right') => {
-    if (!relatedRef.current) return;
-    const amount = 360;
-    relatedRef.current.scrollBy({
-      left: dir === 'left' ? -amount : amount,
-      behavior: 'smooth',
-    });
   };
 
   // Show loading state with skeleton
@@ -407,26 +448,24 @@ const ProductDetails = () => {
           /* RIGHT: frozen info — no scroll */
           .pd-info-col {
             flex: 1;
-            height: 100%;
+            min-height: 0;
             overflow: hidden;
             display: flex;
             flex-direction: column;
             background: #ffffff;
           }
 
-          /* Thin scrollable inner so info doesn't get clipped on short screens */
+          /* Info column inner — no scroll, content sized to fit */
           .pd-info-scroll {
             flex: 1;
-            overflow-y: auto;
-            overflow-x: hidden;
-            padding: 32px 32px 32px 28px;
-            scrollbar-width: thin;
-            scrollbar-color: #e2e8f0 transparent;
+            min-height: 0;
+            overflow: hidden;
+            padding: 24px 28px 24px 24px;
             box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
           }
-          .pd-info-scroll::-webkit-scrollbar { width: 4px; }
-          .pd-info-scroll::-webkit-scrollbar-track { background: transparent; }
-          .pd-info-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
 
           /* Mobile: disable scroll-hijack, normal stacked layout */
           @media (max-width: 1023px) {
@@ -495,17 +534,54 @@ const ProductDetails = () => {
           </div>
         </section>
 
-        {/* Related Products */}
+        {/* FAQ */}
+        <ProductFAQ />
+
+        {/* Similar Products carousel — below FAQ */}
+        {product.similarProducts && product.similarProducts.length > 0 && (
+          <div className="border-t border-[#e2e8f0]">
+            <CompactCarousel title="Explore Similar" products={product.similarProducts} />
+          </div>
+        )}
+
+        {/* Related Products carousel */}
         {product.relatedProducts && product.relatedProducts.length > 0 && (
-          <section className="py-14 lg:py-16 bg-[#f8fafc] border-b border-[#e2e8f0]">
-            <div className="container mx-auto px-6">
-              <RelatedProducts
-                relatedProducts={product.relatedProducts}
-                scrollRelated={scrollRelated}
-                relatedRef={relatedRef}
-              />
-            </div>
-          </section>
+          <div className="border-t border-[#e2e8f0]">
+            <RelatedProducts relatedProducts={product.relatedProducts} />
+          </div>
+        )}
+
+        {/* More in same category */}
+        {categoryProducts.length > 0 && (
+          <div className="border-t border-[#e2e8f0]">
+            <CompactCarousel
+              title={`More in ${product.category}`}
+              products={categoryProducts}
+              viewAllLink={`/products/${product.category?.toLowerCase()}`}
+            />
+          </div>
+        )}
+
+        {/* New Arrivals */}
+        {newArrivals.length > 0 && (
+          <div className="border-t border-[#e2e8f0]">
+            <CompactCarousel
+              title="New Arrivals"
+              products={newArrivals}
+              viewAllLink="/products"
+            />
+          </div>
+        )}
+
+        {/* Trending */}
+        {trending.length > 0 && (
+          <div className="border-t border-[#e2e8f0]">
+            <CompactCarousel
+              title="Trending Now"
+              products={trending}
+              viewAllLink="/products"
+            />
+          </div>
         )}
 
         {/* Reviews */}
@@ -523,7 +599,7 @@ const ProductDetails = () => {
         </section>
 
         {/* Contact Strip */}
-        <section className="border-t border-[#e2e8f0] bg-[#f8fafc]">
+        <section className="border-t border-[#e2e8f0]">
           <ContactUs />
         </section>
       </motion.main>

@@ -140,3 +140,11 @@ export function getCurrencySymbolForRegion(region: string): string {
   const currencyCode = REGION_CURRENCIES[region] || 'USD';
   return CURRENCY_SYMBOLS[currencyCode] || '$';
 }
+
+// Admin-only: always display a USD amount as INR for Indian admin reference.
+// Uses live rates if provided, otherwise falls back to DEFAULT_RATES.
+export function formatAdminINR(priceUSD: number, rates?: Record<string, number>): string {
+  const inrRate = (rates && rates.INR) || DEFAULT_RATES.INR;
+  const inrAmount = Math.round(priceUSD * inrRate);
+  return `₹${inrAmount.toLocaleString('en-IN')}`;
+}

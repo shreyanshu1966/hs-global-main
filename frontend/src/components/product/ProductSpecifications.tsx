@@ -1,119 +1,287 @@
 import React from 'react';
-import { Heading, Body } from '../ui/Typography';
+import { Package, Truck, Wrench, FileText } from 'lucide-react';
 
 interface ProductSpecificationsProps {
-    product: any;
+  product: any;
 }
 
+// ── helpers ──────────────────────────────────────────────────────────────────
+function formatKey(raw: string): string {
+  return raw
+    .replace(/([A-Z])/g, ' $1')
+    .replace(/_/g, ' ')
+    .replace(/\b\w/g, c => c.toUpperCase())
+    .trim();
+}
+
+function SpecRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex justify-between items-start gap-6 py-3 border-b border-[#f0f0f0] last:border-b-0">
+      <span className="text-[11px] font-semibold uppercase tracking-[0.1em] text-[#888] shrink-0 pt-px">
+        {label}
+      </span>
+      <span className="text-[13px] text-[#2a2a2a] text-right leading-snug">{value}</span>
+    </div>
+  );
+}
+
+function SpecGroup({ title, rows }: { title: string; rows: [string, string][] }) {
+  if (!rows.length) return null;
+  return (
+    <div>
+      <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#bbb] mb-1 mt-5 first:mt-0">
+        {title}
+      </p>
+      <div className="bg-[#fafafa] rounded-lg px-4">
+        {rows.map(([label, value]) => (
+          <SpecRow key={label} label={label} value={value} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// Render description text: turn line-breaks into paragraphs, bold **text**
+function DescriptionBody({ text }: { text: string }) {
+  const paragraphs = text.split(/\n{2,}/).map(p => p.trim()).filter(Boolean);
+
+  return (
+    <div className="space-y-3">
+      {paragraphs.map((para, i) => {
+        // single newlines → <br>
+        const lines = para.split(/\n/).map((l, li) => (
+          <React.Fragment key={li}>
+            {li > 0 && <br />}
+            {l}
+          </React.Fragment>
+        ));
+        return (
+          <p key={i} className="text-[13.5px] text-[#444] leading-[1.75]">
+            {lines}
+          </p>
+        );
+      })}
+    </div>
+  );
+}
+
+// ── Tab button ────────────────────────────────────────────────────────────────
+type Tab = 'details' | 'custom' | 'shipping';
+
+function TabBtn({
+  active, onClick, icon, label,
+}: {
+  active: boolean; onClick: () => void;
+  icon: React.ReactNode; label: string;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={`flex items-center gap-1.5 px-3.5 py-2 text-[11px] font-semibold uppercase tracking-[0.1em] rounded-full transition-all ${
+        active
+          ? 'bg-[#111] text-white'
+          : 'text-[#888] hover:text-[#111] hover:bg-[#f3f3f3]'
+      }`}
+    >
+      {icon}
+      {label}
+    </button>
+  );
+}
+
+// ── Main component ────────────────────────────────────────────────────────────
 export function ProductSpecifications({ product }: ProductSpecificationsProps) {
-    const [activeTab, setActiveTab] = React.useState<'details' | 'designer' | 'custom' | 'seller' | 'shipping'>('details');
-    const [isDescriptionExpanded, setIsDescriptionExpanded] = React.useState(false);
-    const DESCRIPTION_PREVIEW_CHARS = 520;
+  const [activeTab, setActiveTab] = React.useState<Tab>('details');
 
-    const specEntries = Object.entries(product.specs || {});
-    const descriptionText = (product.description || '').trim();
-    const shouldShowDescriptionToggle = descriptionText.length > DESCRIPTION_PREVIEW_CHARS;
-    const visibleDescription = shouldShowDescriptionToggle && !isDescriptionExpanded
-        ? `${descriptionText.slice(0, DESCRIPTION_PREVIEW_CHARS).trimEnd()}...`
-        : descriptionText;
+  const description = (product.description || '').trim();
 
-    const detailsRows = [
-        ...specEntries.map(([key, value]) => [key, String(value)] as const),
-        ['Reference Number', product.productId || product.id || 'HSG-PDP-REF'],
-        ['Condition', product.available ? 'Available' : 'Out of Stock'],
-    ];
+  // ── Spec groups ──────────────────────────────────────────────────────────
+  const SKIP_SPEC_KEYS = new Set(['etsyUrl', '_id', '__v']);
 
-    return (
-        <div className="max-w-6xl mx-auto space-y-6">
-            <div className="space-y-3">
-                <Heading level={2} serif className="text-[#26221c]">Item Details</Heading>
-                <div className="h-px w-20 bg-[#94a3b8]"></div>
-            </div>
+  // Build furniture-specific rows
+  const furnitureRows: [string, string][] = Object.entries(product.specs || {})
+    .filter(([k, v]) => v && !SKIP_SPEC_KEYS.has(k))
+    .map(([k, v]) => [formatKey(k), String(v)]);
 
-            <div className="flex flex-wrap gap-2 border-b border-[#e2e8f0] pb-3">
-                <button
-                    onClick={() => setActiveTab('details')}
-                    className={`px-3 py-2 text-[11px] uppercase tracking-[0.1em] border transition-colors ${activeTab === 'details' ? 'bg-[#111827] text-white border-[#111827]' : 'bg-white text-[#334155] border-[#cbd5e1] hover:border-[#94a3b8]'}`}
-                >
-                    Item Details
-                </button>
+  // Build slab-specific rows
+  const slabRows: [string, string][] = Object.entries(product.slabSpecs || {})
+    .filter(([k, v]) => v && !SKIP_SPEC_KEYS.has(k))
+    .map(([k, v]) => [formatKey(k), String(v)]);
 
-                <button
-                    onClick={() => setActiveTab('custom')}
-                    className={`px-3 py-2 text-[11px] uppercase tracking-[0.1em] border transition-colors ${activeTab === 'custom' ? 'bg-[#111827] text-white border-[#111827]' : 'bg-white text-[#334155] border-[#cbd5e1] hover:border-[#94a3b8]'}`}
-                >
-                    Customization
-                </button>
+  // Custom specs
+  const customSpecRows: [string, string][] = (product.customSpecs || [])
+    .filter((s: any) => s.value)
+    .sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0))
+    .map((s: any) => [s.label || formatKey(s.key), String(s.value)]);
 
-                <button
-                    onClick={() => setActiveTab('shipping')}
-                    className={`px-3 py-2 text-[11px] uppercase tracking-[0.1em] border transition-colors ${activeTab === 'shipping' ? 'bg-[#111827] text-white border-[#111827]' : 'bg-white text-[#334155] border-[#cbd5e1] hover:border-[#94a3b8]'}`}
-                >
-                    Shipping & Returns
-                </button>
-            </div>
+  // Dimensions
+  const dims = product.dimensions;
+  const dimRows: [string, string][] = [];
+  if (dims?.length) dimRows.push(['Length', `${dims.length} ${dims.unit || 'cm'}`]);
+  if (dims?.width)  dimRows.push(['Width',  `${dims.width} ${dims.unit || 'cm'}`]);
+  if (dims?.height) dimRows.push(['Height', `${dims.height} ${dims.unit || 'cm'}`]);
+  if (product.weight) dimRows.push(['Weight', `${product.weight} kg`]);
 
-            {activeTab === 'details' && (
-                <div className="space-y-4">
-                    <Body color="secondary" className="text-[#334155] leading-relaxed">
-                        {visibleDescription}
-                    </Body>
-                    {shouldShowDescriptionToggle && (
-                        <div className="flex justify-center pt-1">
-                            <button
-                                type="button"
-                                onClick={() => setIsDescriptionExpanded((prev) => !prev)}
-                                className="inline-flex items-center text-xs sm:text-sm font-semibold uppercase tracking-[0.08em] text-[#0f172a] hover:text-[#334155] transition-colors"
-                                aria-label={isDescriptionExpanded ? 'Show less description' : 'Load more description'}
-                            >
-                                {isDescriptionExpanded ? 'Show Less' : 'Load More'}
-                            </button>
-                        </div>
-                    )}
-                    <div className="grid md:grid-cols-2 gap-x-8">
-                        {detailsRows.map(([key, value], index) => (
-                            <div key={`${key}-${index}`} className="flex justify-between items-center py-3 border-b border-[#e2e8f0] gap-6">
-                                <span className="font-sans font-semibold text-[#1f2937] uppercase tracking-[0.1em] text-[11px]">{key}</span>
-                                <span className="font-sans text-[#475569] text-sm text-right">{value}</span>
-                            </div>
-                        ))}
-                    </div>
-                </div>
+  // Identity rows
+  const identityRows: [string, string][] = [
+    product.productCode ? ['SKU', product.productCode] : null,
+    product.productId   ? ['Reference', product.productId] : null,
+    product.category    ? ['Category', product.category] : null,
+    product.subcategory ? ['Type', product.subcategory] : null,
+    ['Availability', product.available ? 'In Stock' : 'Out of Stock'],
+  ].filter(Boolean) as [string, string][];
+
+  // Manufacturing rows
+  const mfg = product.manufacturing || {};
+  const mfgRows: [string, string][] = [
+    mfg.countryOfOrigin ? ['Origin', mfg.countryOfOrigin] : null,
+    mfg.leadTime        ? ['Lead Time', mfg.leadTime]     : null,
+    typeof mfg.minimumOrder === 'number' && mfg.minimumOrder > 1
+      ? ['Min. Order', `${mfg.minimumOrder} units`] : null,
+    mfg.isCustomMade !== undefined
+      ? ['Custom Made', mfg.isCustomMade ? 'Yes' : 'No'] : null,
+  ].filter(Boolean) as [string, string][];
+
+  // Tags
+  const tags: string[] = (product.tags || []).filter(Boolean);
+
+  // Decide which spec groups to show (avoid duplication between furniture & slab)
+  const allSpecRows = [...furnitureRows, ...slabRows, ...customSpecRows];
+
+  // ── Shipping data ────────────────────────────────────────────────────────
+  const ship = product.shipping || {};
+  const shippingRows: [string, string][] = [
+    ['Ships From', 'Ahmedabad, India'],
+    ship.shippingClass
+      ? ['Shipping Class', formatKey(ship.shippingClass)] : null,
+    ship.handlingTime
+      ? ['Handling Time', ship.handlingTime] : null,
+    ['Worldwide', ship.shipsWorldwide === false ? 'Selected countries only' : 'Yes'],
+    ['Incoterms',  'FOB & CIF available'],
+    ['Insurance',  'Marine transit insurance included'],
+    ['Packaging',  'ISPM-15 certified wooden crates with foam'],
+  ].filter(Boolean) as [string, string][];
+
+  const returnRows: [string, string][] = [
+    ['Inspection Window', '30 days from port clearance'],
+    ['Claim Types',       'Structural defects, transit damage, spec mismatch'],
+    ['Resolution',        'Priority replacement or proportional refund'],
+    ['Pre-shipment',      'HD photos & video approval before dispatch'],
+  ];
+
+  // ── Customization data ───────────────────────────────────────────────────
+  const customizationRows: [string, string][] = [
+    mfg.leadTime ? ['Lead Time', mfg.leadTime] : ['Lead Time', '3–6 weeks typical'],
+    typeof mfg.minimumOrder === 'number' && mfg.minimumOrder > 1
+      ? ['Min. Order', `${mfg.minimumOrder} units`]
+      : ['Min. Order', 'Contact us'],
+    ['Dimensions',  'Custom-cut to architectural specs'],
+    ['Finishes',    'High-gloss diamond polish · Matte honed · Leather'],
+    ['Colours',     'Subject to quarry availability'],
+    ['Certification', 'ISPM-15 compliant packaging'],
+  ].filter(Boolean) as [string, string][];
+
+  return (
+    <div className="max-w-6xl mx-auto">
+
+      {/* Section heading */}
+      <div className="mb-8">
+        <p className="text-[10.5px] font-semibold tracking-[0.18em] text-[#aaa] uppercase mb-1.5">Product</p>
+        <h2 className="font-serif text-[26px] sm:text-[30px] font-normal text-[#1a1a1a] leading-tight">
+          Item Details
+        </h2>
+      </div>
+
+      {/* Tabs */}
+      <div className="flex flex-wrap gap-2 mb-8">
+        <TabBtn active={activeTab === 'details'}  onClick={() => setActiveTab('details')}
+          icon={<FileText className="w-3.5 h-3.5" strokeWidth={1.8} />} label="Details" />
+        <TabBtn active={activeTab === 'custom'}   onClick={() => setActiveTab('custom')}
+          icon={<Wrench className="w-3.5 h-3.5" strokeWidth={1.8} />}   label="Customisation" />
+        <TabBtn active={activeTab === 'shipping'} onClick={() => setActiveTab('shipping')}
+          icon={<Truck className="w-3.5 h-3.5" strokeWidth={1.8} />}    label="Shipping & Returns" />
+      </div>
+
+      {/* ── DETAILS TAB ── */}
+      {activeTab === 'details' && (
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16">
+
+          {/* Left: description */}
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#bbb] mb-4">Description</p>
+            {description
+              ? <DescriptionBody text={description} />
+              : <p className="text-[13.5px] text-[#999] italic">No description provided.</p>
+            }
+
+            {/* Tags */}
+            {tags.length > 0 && (
+              <div className="mt-6 flex flex-wrap gap-1.5">
+                {tags.map(tag => (
+                  <span key={tag} className="px-2.5 py-1 rounded-full bg-[#f3f3f3] text-[11px] text-[#666] tracking-wide">
+                    {tag}
+                  </span>
+                ))}
+              </div>
             )}
+          </div>
 
-
-
-            {activeTab === 'custom' && (
-                <div className="space-y-4">
-                    <Body color="secondary" className="text-[#334155] leading-relaxed">
-                        We support custom bulk orders with tailored dimensions, materials, and finishes. Contact us to discuss your requirements and get a personalised quote.
-                    </Body>
-                </div>
+          {/* Right: spec groups */}
+          <div>
+            {allSpecRows.length > 0 && (
+              <SpecGroup title="Specifications" rows={allSpecRows} />
             )}
-
-
-
-            {activeTab === 'shipping' && (
-                <div className="grid md:grid-cols-2 gap-x-8">
-                    <div className="flex justify-between items-center py-3 border-b border-[#e2e8f0] gap-6">
-                        <span className="font-sans font-semibold text-[#1f2937] uppercase tracking-[0.1em] text-[11px]">Shipping</span>
-                        <span className="font-sans text-[#475569] text-sm text-right">Ships from India</span>
-                    </div>
-                    <div className="flex justify-between items-center py-3 border-b border-[#e2e8f0] gap-6">
-                        <span className="font-sans font-semibold text-[#1f2937] uppercase tracking-[0.1em] text-[11px]">Rates</span>
-                        <span className="font-sans text-[#475569] text-sm text-right">Calculated at checkout</span>
-                    </div>
-                    <div className="flex justify-between items-center py-3 border-b border-[#e2e8f0] gap-6">
-                        <span className="font-sans font-semibold text-[#1f2937] uppercase tracking-[0.1em] text-[11px]">Returns</span>
-                        <span className="font-sans text-[#475569] text-sm text-right">Money-Back Guarantee</span>
-                    </div>
-                    <div className="flex justify-between items-center py-3 border-b border-[#e2e8f0] gap-6">
-                        <span className="font-sans font-semibold text-[#1f2937] uppercase tracking-[0.1em] text-[11px]">Cancellation</span>
-                        <span className="font-sans text-[#475569] text-sm text-right">24-Hour Cancellation</span>
-                    </div>
-                </div>
+            {dimRows.length > 0 && (
+              <SpecGroup title="Dimensions & Weight" rows={dimRows} />
             )}
+            {mfgRows.length > 0 && (
+              <SpecGroup title="Manufacturing" rows={mfgRows} />
+            )}
+            <SpecGroup title="Product Identity" rows={identityRows} />
+          </div>
 
         </div>
-    );
+      )}
+
+      {/* ── CUSTOMISATION TAB ── */}
+      {activeTab === 'custom' && (
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16">
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#bbb] mb-4">About Custom Orders</p>
+            <div className="space-y-3 text-[13.5px] text-[#444] leading-[1.75]">
+              <p>
+                We accept custom bulk orders tailored to your architectural specifications — including bespoke
+                dimensions, finishes, and material selections from our premium quarry partners.
+              </p>
+              <p>
+                Every custom order is subject to a pre-production approval process: you will receive
+                high-resolution material samples, dimensional drawings, and a Proforma Invoice before
+                manufacturing begins.
+              </p>
+              <p>
+                Custom orders are produced to the agreed specification and are non-returnable except in
+                cases of structural defect or significant dimensional variance.
+              </p>
+            </div>
+          </div>
+          <div>
+            <SpecGroup title="Custom Order Details" rows={customizationRows} />
+          </div>
+        </div>
+      )}
+
+      {/* ── SHIPPING & RETURNS TAB ── */}
+      {activeTab === 'shipping' && (
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16">
+          <div>
+            <SpecGroup title="Shipping" rows={shippingRows} />
+          </div>
+          <div>
+            <SpecGroup title="Inspection & Returns" rows={returnRows} />
+          </div>
+        </div>
+      )}
+
+    </div>
+  );
 }

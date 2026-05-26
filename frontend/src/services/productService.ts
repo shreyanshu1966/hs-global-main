@@ -76,6 +76,15 @@ export interface Product {
     USA?: { enabled: boolean; adjustmentType: 'percentage' | 'fixed'; adjustmentValue: number };
     UK?: { enabled: boolean; adjustmentType: 'percentage' | 'fixed'; adjustmentValue: number };
   };
+  shipping?: {
+    requiresShipping?: boolean;
+    shippingClass?: string;
+    handlingTime?: string;
+    freeShippingThreshold?: number;
+    shippingNotes?: string;
+    shipsWorldwide?: boolean;
+    excludedCountries?: string[];
+  };
   createdAt: string;
   updatedAt: string;
 }

@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { ChevronDown, ChevronUp, MessageCircle } from 'lucide-react';
-import { Heading } from '../ui/Typography';
-import { Button } from '../ui/Button';
+import { Star, ChevronDown, ChevronUp, PenLine } from 'lucide-react';
 import { ReviewStats } from '../ReviewStats';
 import { ReviewList } from '../ReviewList';
 import { ReviewForm } from '../ReviewForm';
@@ -9,93 +7,125 @@ import { useAuth } from '../../contexts/AuthContext';
 import { Link } from 'react-router-dom';
 
 interface ProductReviewsProps {
-    product: any;
-    reviewStats: any;
-    reviews: any[];
-    reviewsLoading: boolean;
-    onReviewSubmitted: () => void;
-    reviewsRef: React.RefObject<HTMLDivElement>;
+  product: any;
+  reviewStats: any;
+  reviews: any[];
+  reviewsLoading: boolean;
+  onReviewSubmitted: () => void;
+  reviewsRef: React.RefObject<HTMLDivElement>;
 }
 
 export function ProductReviews({
-    product,
-    reviewStats,
-    reviews,
-    reviewsLoading,
-    onReviewSubmitted,
-    reviewsRef,
+  product,
+  reviewStats,
+  reviews,
+  reviewsLoading,
+  onReviewSubmitted,
+  reviewsRef,
 }: ProductReviewsProps) {
-    const [showAllReviews, setShowAllReviews] = useState(false);
-    const [showReviewForm, setShowReviewForm] = useState(false);
-    const { user } = useAuth();
+  const [showAll, setShowAll] = useState(false);
+  const [showForm, setShowForm] = useState(false);
+  const { user } = useAuth();
 
-    return (
-        <div ref={reviewsRef} className="max-w-6xl mx-auto space-y-10">
-            <div className="text-center space-y-6">
-                <Heading level={2} serif className="text-[#26221c]">Customer Reviews</Heading>
-                <div className="h-px w-24 bg-[#837255] mx-auto"></div>
+  const visibleReviews = showAll ? reviews : reviews.slice(0, 3);
+  const hasReviews = reviewStats.totalReviews > 0;
+
+  return (
+    <div ref={reviewsRef} className="max-w-5xl mx-auto">
+
+      {/* Section header */}
+      <div className="flex items-end justify-between mb-8">
+        <div>
+          <h2 className="text-[22px] md:text-[28px] font-serif text-[#111] leading-tight">
+            Customer Reviews
+          </h2>
+          {hasReviews && (
+            <div className="flex items-center gap-2 mt-1.5">
+              <div className="flex gap-0.5">
+                {[1, 2, 3, 4, 5].map(s => (
+                  <Star key={s} className={`w-4 h-4 ${s <= Math.round(reviewStats.averageRating) ? 'fill-amber-400 text-amber-400' : 'text-[#e5e7eb]'}`} />
+                ))}
+              </div>
+              <span className="text-[13px] text-[#6b7280]">
+                {reviewStats.averageRating.toFixed(1)} · {reviewStats.totalReviews} review{reviewStats.totalReviews !== 1 ? 's' : ''}
+              </span>
             </div>
-
-            <div className="grid lg:grid-cols-3 gap-12">
-                {/* Stats */}
-                <div className="lg:col-span-1 lg:sticky lg:top-24 h-fit">
-                    <ReviewStats stats={reviewStats} loading={reviewsLoading} />
-                </div>
-
-                {/* List & Form */}
-                <div className="lg:col-span-2 space-y-10">
-                    <div>
-                        <ReviewList reviews={showAllReviews ? reviews : reviews.slice(0, 2)} loading={reviewsLoading} />
-
-                        {reviews.length > 2 && (
-                            <div className="mt-8">
-                                <Button
-                                    variant="text"
-                                    onClick={() => setShowAllReviews(!showAllReviews)}
-                                    className="flex items-center gap-2 group text-xs uppercase tracking-[0.09em] text-[#4f473c]"
-                                >
-                                    {showAllReviews ? 'Show Less' : `Show More (${reviews.length - 2})`}
-                                    {showAllReviews ? (
-                                        <ChevronUp className="w-4 h-4 group-hover:-translate-y-1 transition-transform" />
-                                    ) : (
-                                        <ChevronDown className="w-4 h-4 group-hover:translate-y-1 transition-transform" />
-                                    )}
-                                </Button>
-                            </div>
-                        )}
-                    </div>
-
-                    <div className="pt-8 border-t border-[#e2e8f0]">
-                        <button
-                            onClick={() => setShowReviewForm(!showReviewForm)}
-                            className="w-full flex items-center justify-between p-6 bg-white border border-[#e2e8f0] hover:border-[#2B2B2B] transition-colors group"
-                        >
-                            <h3 className="text-xl font-serif text-[#2B2B2B] flex items-center gap-3">
-                                <MessageCircle className="w-5 h-5 text-[#475569]" />
-                                Write a Review
-                            </h3>
-                            <ChevronDown className={`w-5 h-5 text-[#6B6B6B] group-hover:text-[#2B2B2B] transition-transform duration-300 ${showReviewForm ? 'rotate-180' : ''}`} />
-                        </button>
-
-                        {showReviewForm && (
-                            <div className="mt-6">
-                                {user ? (
-                                    <ReviewForm productId={product.id} onReviewSubmitted={onReviewSubmitted} />
-                                ) : (
-                                    <div className="bg-white border border-[#e2e8f0] p-8 text-center space-y-6">
-                                        <p className="text-[#6B6B6B] font-sans">Please sign in to write a review</p>
-                                        <Link to="/login">
-                                            <Button variant="secondary" className="px-8 border-[#cbd5e1] bg-[#f1f5f9] hover:bg-[#e2e8f0]">
-                                                Sign In
-                                            </Button>
-                                        </Link>
-                                    </div>
-                                )}
-                            </div>
-                        )}
-                    </div>
-                </div>
-            </div>
+          )}
         </div>
-    );
+
+        {/* Write a review CTA */}
+        <button
+          onClick={() => setShowForm(v => !v)}
+          className="hidden sm:flex items-center gap-2 px-4 py-2.5 bg-[#111] text-white text-[12px] font-semibold uppercase tracking-[0.06em] rounded-xl hover:bg-[#333] transition-colors"
+        >
+          <PenLine className="w-3.5 h-3.5" />
+          Write a Review
+        </button>
+      </div>
+
+      {/* Review form (inline, toggled) */}
+      {showForm && (
+        <div className="mb-8 bg-[#fafafa] rounded-2xl border border-[#f0f0f0] p-6">
+          {user ? (
+            <ReviewForm
+              productId={product.id || product._id || product.productId}
+              onReviewSubmitted={() => { onReviewSubmitted(); setShowForm(false); }}
+            />
+          ) : (
+            <div className="text-center py-8 space-y-4">
+              <p className="text-[14px] text-[#6b7280]">Please sign in to write a review</p>
+              <Link
+                to="/login"
+                className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#111] text-white text-[12px] font-semibold uppercase tracking-[0.06em] rounded-xl hover:bg-[#333] transition-colors"
+              >
+                Sign In
+              </Link>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Mobile write-review button */}
+      <button
+        onClick={() => setShowForm(v => !v)}
+        className="sm:hidden w-full flex items-center justify-center gap-2 px-4 py-3 bg-[#111] text-white text-[12px] font-semibold uppercase tracking-[0.06em] rounded-xl hover:bg-[#333] transition-colors mb-8"
+      >
+        <PenLine className="w-3.5 h-3.5" />
+        Write a Review
+      </button>
+
+      {/* Content: stats + list */}
+      {(hasReviews || reviewsLoading) && (
+        <div className="grid lg:grid-cols-[280px_1fr] gap-8">
+          {/* Stats panel */}
+          <div className="lg:sticky lg:top-8 h-fit">
+            <ReviewStats stats={reviewStats} loading={reviewsLoading} />
+          </div>
+
+          {/* Review list */}
+          <div>
+            <ReviewList reviews={visibleReviews} loading={reviewsLoading} />
+
+            {reviews.length > 3 && !reviewsLoading && (
+              <button
+                onClick={() => setShowAll(v => !v)}
+                className="mt-5 flex items-center gap-1.5 text-[12px] font-semibold uppercase tracking-[0.06em] text-[#555] hover:text-[#111] transition-colors"
+              >
+                {showAll ? (
+                  <><ChevronUp className="w-4 h-4" /> Show Less</>
+                ) : (
+                  <><ChevronDown className="w-4 h-4" /> Show {reviews.length - 3} More</>
+                )}
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Empty state */}
+      {!hasReviews && !reviewsLoading && (
+        <ReviewList reviews={[]} loading={false} />
+      )}
+    </div>
+  );
 }

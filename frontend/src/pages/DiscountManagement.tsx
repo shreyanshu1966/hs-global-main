@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { useCurrency } from '../contexts/CurrencyContext';
 import { adminPricingApi } from '../modules/product/api';
+import { formatAdminINR } from '../utils/pricing';
 import type { DiscountAnalytics, DiscountedProduct } from '../modules/product/types';
 import { Percent, TrendingUp, Calendar, AlertCircle, RefreshCw, Filter, Search, Plus, Trash2, X, Check } from 'lucide-react';
 
 const DiscountManagement: React.FC = () => {
     const { token } = useAuth();
-    const { formatPrice } = useCurrency();
 
     // State
     const [analytics, setAnalytics] = useState<DiscountAnalytics | null>(null);
@@ -619,18 +618,18 @@ const DiscountManagement: React.FC = () => {
                                                     {product.discount.enabled ? (
                                                         <div>
                                                             <p className="font-semibold text-green-600">
-                                                                {formatPrice(product.finalPrice)}
+                                                                {formatAdminINR(product.finalPrice)}
                                                             </p>
                                                             <p className="text-sm text-gray-500 line-through">
-                                                                {formatPrice(product.priceUSD)}
+                                                                {formatAdminINR(product.priceUSD)}
                                                             </p>
                                                             <p className="text-xs text-green-600 font-medium">
-                                                                Save {formatPrice(product.priceUSD - product.finalPrice)}
+                                                                Save {formatAdminINR(product.priceUSD - product.finalPrice)}
                                                             </p>
                                                         </div>
                                                     ) : (
                                                         <p className="font-semibold text-gray-900">
-                                                            {formatPrice(product.priceUSD)}
+                                                            {formatAdminINR(product.priceUSD)}
                                                         </p>
                                                     )}
                                                 </td>

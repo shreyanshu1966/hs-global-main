@@ -1,5 +1,6 @@
 import React from 'react';
 import { Star, Package, Share2, MessageCircle, FileText, Heart, Truck } from 'lucide-react';
+import DeliveryChecker from './DeliveryChecker';
 import { useNavigate, Link } from 'react-router-dom';
 import { useCart } from '../../contexts/CartContext';
 import { useTrackAddToCart } from '../../hooks/useProducts';
@@ -72,116 +73,127 @@ export function ProductInfo({
     };
 
     return (
-        <div className="flex flex-col px-4 md:px-8 py-6 md:py-10 max-w-xl">
-            {/* Breadcrumbs - Minimal */}
-            <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.15em] text-[#888] mb-8">
-                <Link to="/" className="hover:text-[#111] transition-colors">Home</Link>
-                <span aria-hidden="true" className="text-[#ccc] px-1">/</span>
-                <Link to={`/products/${product.category?.toLowerCase()}`} className="hover:text-[#111] transition-colors">{product.category}</Link>
-                <span aria-hidden="true" className="text-[#ccc] px-1">/</span>
-                <span aria-current="page" className="text-[#111] font-medium truncate max-w-[150px]">{product.name}</span>
-            </nav>
-
-            {/* Share / Favourite */}
-            <div className="flex justify-end items-center gap-3 mb-4">
-                <button onClick={handleShare} className="text-[#111827] hover:opacity-70 transition-opacity">
-                    <Share2 className="w-5 h-5" strokeWidth={1.5} />
-                </button>
-                <button
-                    onClick={() => toggleWishlist({
-                        id: product.id || product._id || product.productId || '',
-                        title: product.name,
-                        image: product.image || (product.images && product.images[0]),
-                        href: `/products/${product.id || product._id || product.productId}`,
-                    })}
-                    className="text-[#111827] hover:opacity-70 transition-opacity"
-                    aria-label={isFavorite ? 'Remove from wishlist' : 'Add to wishlist'}
-                >
-                    <Heart className={`w-5 h-5 ${isFavorite ? 'fill-[#111827]' : ''}`} strokeWidth={1.5} />
-                </button>
+        <div className="flex flex-col max-w-xl">
+            {/* Breadcrumbs + Share row */}
+            <div className="flex items-center justify-between mb-3">
+                <nav aria-label="Breadcrumb" className="flex items-center gap-1 text-[10px] uppercase tracking-[0.15em] text-[#888]">
+                    <Link to="/" className="hover:text-[#111] transition-colors">Home</Link>
+                    <span aria-hidden="true" className="text-[#ccc] px-0.5">/</span>
+                    <Link to={`/products/${product.category?.toLowerCase()}`} className="hover:text-[#111] transition-colors">{product.category}</Link>
+                    <span aria-hidden="true" className="text-[#ccc] px-0.5">/</span>
+                    <span aria-current="page" className="text-[#111] font-medium truncate max-w-[120px]">{product.name}</span>
+                </nav>
+                <div className="flex items-center gap-2.5 shrink-0 ml-3">
+                    <button onClick={handleShare} className="text-[#111827] hover:opacity-70 transition-opacity">
+                        <Share2 className="w-4 h-4" strokeWidth={1.5} />
+                    </button>
+                    <button
+                        onClick={() => toggleWishlist({
+                            id: product.id || product._id || product.productId || '',
+                            title: product.name,
+                            image: product.image || (product.images && product.images[0]),
+                            href: `/products/${product.id || product._id || product.productId}`,
+                        })}
+                        className="text-[#111827] hover:opacity-70 transition-opacity"
+                        aria-label={isFavorite ? 'Remove from wishlist' : 'Add to wishlist'}
+                    >
+                        <Heart className={`w-4 h-4 ${isFavorite ? 'fill-[#111827]' : ''}`} strokeWidth={1.5} />
+                    </button>
+                </div>
             </div>
 
             {/* Title */}
-            <h1 className="font-serif text-[26px] md:text-[32px] text-[#222222] leading-[1.2] mb-1">
+            <h1 className="font-serif text-[22px] md:text-[26px] text-[#222222] leading-[1.2] mb-1">
                 {product.name}
             </h1>
 
             {/* SKU */}
             {product.productCode && (
-                <p className="text-[11px] tracking-[0.12em] text-[#aaa] uppercase mb-3">
+                <p className="text-[10px] tracking-[0.12em] text-[#aaa] uppercase mb-2">
                     SKU · {product.productCode}
                 </p>
             )}
 
             {/* Sub Description */}
             {product.subDescription && (
-                <p className="text-[13.5px] text-[#6b7280] leading-relaxed mb-4" style={{ fontWeight: 300 }}>
+                <p className="text-[12.5px] text-[#6b7280] leading-relaxed mb-2" style={{ fontWeight: 300 }}>
                     {product.subDescription}
                 </p>
             )}
 
             {/* Rating */}
-            {reviewStats.totalReviews > 0 && (
-                <div 
-                    className="flex items-center gap-2 mb-6 cursor-pointer group"
-                    onClick={() => reviewsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
-                >
-                    <div className="flex items-center">
-                        <Star className="w-4 h-4 fill-[#111827] text-[#111827]" />
-                        <span className="text-sm font-semibold ml-1">{reviewStats.averageRating.toFixed(1)}</span>
-                    </div>
-                    <span className="text-xs text-[#666666] group-hover:underline">
-                        ({reviewStats.totalReviews} Reviews)
-                    </span>
+            <div
+                className="flex items-center gap-2 mb-3 cursor-pointer group"
+                onClick={() => reviewsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+            >
+                <div className="flex items-center gap-0.5">
+                    {[1, 2, 3, 4, 5].map(star => (
+                        <Star
+                            key={star}
+                            className={`w-3.5 h-3.5 transition-colors ${
+                                star <= Math.round(reviewStats.averageRating)
+                                    ? 'fill-amber-400 text-amber-400'
+                                    : 'text-[#d1d5db]'
+                            }`}
+                        />
+                    ))}
                 </div>
-            )}
+                {reviewStats.totalReviews > 0 ? (
+                    <span className="text-[11px] text-[#555] group-hover:underline">
+                        <span className="font-semibold">{reviewStats.averageRating.toFixed(1)}</span>
+                        {' · '}{reviewStats.totalReviews} review{reviewStats.totalReviews !== 1 ? 's' : ''}
+                    </span>
+                ) : (
+                    <span className="text-[11px] text-[#9ca3af] group-hover:underline">No reviews yet</span>
+                )}
+            </div>
 
             {/* Price Area */}
-            <div className="mb-8">
+            <div className="mb-4">
                 {basePriceUSD ? (
-                    <div className="flex flex-col gap-1">
-                        <div className="flex items-end gap-3 flex-wrap">
-                            <span className="text-[28px] md:text-[34px] font-medium text-[#111827] leading-none">
+                    <div className="flex flex-col gap-0.5">
+                        <div className="flex items-end gap-2.5 flex-wrap">
+                            <span className="text-[24px] md:text-[28px] font-medium text-[#111827] leading-none">
                                 {price.formattedPrice}
                             </span>
                             {hasDiscount && (
                                 <>
-                                    <span className="text-[16px] text-[#757575] line-through mb-[4px]">
+                                    <span className="text-[13px] text-[#757575] line-through mb-[2px]">
                                         MRP: {price.originalFormattedPrice}
                                     </span>
                                     {discountPercentage > 0 && (
-                                        <span className="text-[14px] font-semibold text-[#b82121] mb-[4px]">
+                                        <span className="text-[12px] font-semibold text-[#b82121] mb-[2px]">
                                             ({discountPercentage}% OFF)
                                         </span>
                                     )}
                                 </>
                             )}
                         </div>
-                        <p className="text-[11px] text-[#757575] mt-1 uppercase tracking-wide">
+                        <p className="text-[10px] text-[#757575] uppercase tracking-wide">
                             Inclusive of all taxes
                         </p>
                     </div>
                 ) : (
-                    <div className="text-[28px] font-medium text-[#111827]">
+                    <div className="text-[24px] font-medium text-[#111827]">
                         Price on Request
                     </div>
                 )}
             </div>
 
             {/* CTA Buttons */}
-            <div className="space-y-4 mb-8">
+            <div className="mb-4">
                 {product.available ? (
-                    <div className="flex flex-col gap-3">
+                    <div className="flex flex-col gap-2">
                         <button
                             type="button"
                             onClick={handleBuyNow}
-                            className="w-full h-[52px] bg-[#111827] text-white hover:bg-black transition-colors duration-300 font-semibold tracking-[0.1em] text-[13px] uppercase flex items-center justify-center"
+                            className="w-full h-[44px] bg-[#111827] text-white hover:bg-black transition-colors duration-300 font-semibold tracking-[0.1em] text-[12px] uppercase flex items-center justify-center"
                         >
                             Buy Now
                         </button>
                         <AddToCartButton
                             product={product}
-                            className="w-full h-[52px] bg-white border border-[#111827] text-[#111827] hover:bg-[#f9fafb] transition-colors duration-300 font-semibold tracking-[0.1em] text-[13px] uppercase flex items-center justify-center"
+                            className="w-full h-[44px] bg-white border border-[#111827] text-[#111827] hover:bg-[#f9fafb] transition-colors duration-300 font-semibold tracking-[0.1em] text-[12px] uppercase flex items-center justify-center"
                         />
                     </div>
                 ) : (
@@ -191,29 +203,30 @@ export function ProductInfo({
                         )}`}
                         target="_blank"
                         rel="noreferrer"
-                        className="w-full h-[52px] bg-[#111827] text-white hover:bg-black transition-colors duration-300 font-semibold tracking-[0.1em] text-[13px] uppercase flex items-center justify-center gap-2"
+                        className="w-full h-[44px] bg-[#111827] text-white hover:bg-black transition-colors duration-300 font-semibold tracking-[0.1em] text-[12px] uppercase flex items-center justify-center gap-2 block"
                     >
                         Contact for Availability
                     </a>
                 )}
             </div>
 
+            {/* Delivery Checker */}
+            <div className="border-t border-[#e5e7eb] pt-3 pb-3">
+                <DeliveryChecker shippingConfig={product.shipping} productId={product.productId || product._id || ''} />
+            </div>
 
-            
             {/* Seller Contact */}
-            <div className="border-t border-[#e5e7eb] pt-5 mt-5">
-                 <a
+            <div className="border-t border-[#e5e7eb] pt-3">
+                <a
                     href={`https://wa.me/918107115116?text=${encodeURIComponent('Hi! I want to discuss ' + product.name + ' before purchase.')}`}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.08em] text-[#111] hover:text-[#555] transition-colors"
+                    className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-[#111] hover:text-[#555] transition-colors"
                 >
-                    <MessageCircle className="w-4 h-4" strokeWidth={1.5} />
+                    <MessageCircle className="w-3.5 h-3.5" strokeWidth={1.5} />
                     Contact Seller for Bulk Pricing
                 </a>
             </div>
-
-
         </div>
     );
 }
