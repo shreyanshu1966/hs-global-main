@@ -108,6 +108,8 @@ app.use('/api', require('./routes/homePageConfigRoutes')); // Public home page c
 app.use('/api/admin', require('./routes/adminPopupConfigRoutes')); // Admin popup config
 app.use('/api', require('./routes/popupConfigRoutes')); // Public popup config
 app.use('/api', require('./routes/productRoutes')); // Product routes
+app.use('/api/delivery-analytics', require('./routes/deliveryAnalyticsRoutes')); // Delivery check analytics
+app.use('/api/admin/delivery-analytics', require('./routes/deliveryAnalyticsRoutes')); // Admin read alias
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
