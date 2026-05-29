@@ -39,6 +39,12 @@ type RegionKey = 'UAE' | 'Europe' | 'India' | 'USA' | 'UK';
 const REGION_DISPLAY_CURRENCY: Record<RegionKey, string> = {
   UAE: 'USD ($)', Europe: 'GBP (£)', India: 'INR (₹)', USA: 'USD ($)', UK: 'GBP (£)'
 };
+const REGION_CURRENCY_SYMBOL: Record<RegionKey, string> = {
+  UAE: '$', Europe: '£', India: '₹', USA: '$', UK: '£'
+};
+const REGION_CURRENCY_CODE: Record<RegionKey, string> = {
+  UAE: 'USD', Europe: 'GBP', India: 'INR', USA: 'USD', UK: 'GBP'
+};
 const ALL_REGIONS: RegionKey[] = ['UAE', 'Europe', 'India', 'USA', 'UK'];
 const defaultRegionalPricing = (): Record<RegionKey, { enabled: boolean; adjustmentType: AdjustmentType; adjustmentValue: number }> => ({
   UAE: { enabled: false, adjustmentType: 'percentage', adjustmentValue: 0 },
@@ -89,6 +95,7 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
   const [videoUploading, setVideoUploading] = useState(false);
 
   const [regionalPricing, setRegionalPricing] = useState<Record<RegionKey, { enabled: boolean; adjustmentType: AdjustmentType; adjustmentValue: number }>>(defaultRegionalPricing);
+  const [priceINR, setPriceINR] = useState<string>('');
 
   const [shippingConfig, setShippingConfig] = useState<{ shipsWorldwide: boolean; excludedCountries: string[] }>({
     shipsWorldwide: true,
@@ -182,17 +189,29 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
         setSimilarProductIds(editingProduct.similarProducts);
       }
 
-      // Set regional pricing
+      // Set regional pricing — convert fixed adjustments from USD → INR for display
       if (editingProduct.regionalPricing) {
         const def = defaultRegionalPricing();
+        const convertLoad = (rp: any) => {
+          if (!rp) return null;
+          return {
+            ...rp,
+            adjustmentValue: rp.adjustmentType === 'fixed'
+              ? Math.round(rp.adjustmentValue * DEFAULT_RATES.INR)
+              : rp.adjustmentValue,
+          };
+        };
         setRegionalPricing({
-          UAE: editingProduct.regionalPricing.UAE || def.UAE,
-          Europe: editingProduct.regionalPricing.Europe || def.Europe,
-          India: editingProduct.regionalPricing.India || def.India,
-          USA: editingProduct.regionalPricing.USA || def.USA,
-          UK: editingProduct.regionalPricing.UK || def.UK,
+          UAE: convertLoad(editingProduct.regionalPricing.UAE) || def.UAE,
+          Europe: convertLoad(editingProduct.regionalPricing.Europe) || def.Europe,
+          India: convertLoad(editingProduct.regionalPricing.India) || def.India,
+          USA: convertLoad(editingProduct.regionalPricing.USA) || def.USA,
+          UK: convertLoad(editingProduct.regionalPricing.UK) || def.UK,
         });
       }
+
+      // Initialize INR price display
+      setPriceINR(editingProduct.priceUSD ? String(Math.round(editingProduct.priceUSD * DEFAULT_RATES.INR)) : '');
 
       // Set shipping config
       if (editingProduct.shipping) {
@@ -292,6 +311,12 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
     }
   };
 
+  const handlePriceINRChange = (rawVal: string) => {
+    setPriceINR(rawVal);
+    const inrNum = parseFloat(rawVal);
+    handleInputChange('priceUSD', rawVal && !isNaN(inrNum) ? String(inrNum / DEFAULT_RATES.INR) : '');
+  };
+
   const handleSpecsChange = (specs: any, customSpecsData?: any[]) => {
     setFormData(prev => ({ ...prev, furnitureSpecs: specs }));
 
@@ -327,6 +352,18 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
       setFormSubmitting(true);
 
       // Prepare final form data
+      // Convert fixed regional adjustments from INR → USD for backend storage
+      const convertRpSave = (rp: { enabled: boolean; adjustmentType: AdjustmentType; adjustmentValue: number }) => ({
+        ...rp,
+        adjustmentValue: rp.adjustmentType === 'fixed'
+          ? rp.adjustmentValue / DEFAULT_RATES.INR
+          : rp.adjustmentValue,
+      });
+      const regionalPricingForSave = Object.fromEntries(
+        (Object.entries(regionalPricing) as [RegionKey, typeof regionalPricing[RegionKey]][]).map(
+          ([k, v]) => [k, convertRpSave(v)]
+        )
+      );
       const finalFormData = {
         productId: formData.productId,
         name: formData.name,
@@ -342,7 +379,7 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
         discount: formData.discount,
         hasVideo: !!video,
         similarProducts: similarProductIds,
-        regionalPricing,
+        regionalPricing: regionalPricingForSave,
         shipping: {
           shipsWorldwide: shippingConfig.shipsWorldwide,
           excludedCountries: shippingConfig.excludedCountries,
@@ -613,17 +650,25 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Price (USD)
+                  Price (INR)
                 </label>
-                <input
-                  type="number"
-                  min="0"
-                  value={formData.priceUSD}
-                  onChange={(e) => handleInputChange('priceUSD', e.target.value)}
-                  disabled={isFormDisabled}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
-                  placeholder="Leave empty for 'Price on Request'"
-                />
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 font-medium pointer-events-none">₹</span>
+                  <input
+                    type="number"
+                    min="0"
+                    value={priceINR}
+                    onChange={(e) => handlePriceINRChange(e.target.value)}
+                    disabled={isFormDisabled}
+                    className="w-full pl-7 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                    placeholder="e.g. 83500"
+                  />
+                </div>
+                {priceINR && parseFloat(priceINR) > 0 && (
+                  <p className="text-xs text-gray-400 mt-1">
+                    ≈ ${(parseFloat(priceINR) / DEFAULT_RATES.INR).toFixed(2)} USD
+                  </p>
+                )}
               </div>
 
               <div>
@@ -1164,13 +1209,29 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
               {ALL_REGIONS.map((region) => {
                 const rp = regionalPricing[region];
                 const basePrice = parseFloat(formData.priceUSD?.toString() || '0') || 0;
+                // fixed adjustmentValue is stored in INR in state; convert to USD for preview math
                 let previewPrice = basePrice;
                 if (rp.enabled && rp.adjustmentValue) {
                   previewPrice = rp.adjustmentType === 'percentage'
                     ? basePrice * (1 + rp.adjustmentValue / 100)
-                    : basePrice + rp.adjustmentValue;
+                    : basePrice + rp.adjustmentValue / DEFAULT_RATES.INR;
                   previewPrice = Math.max(0, Math.round(previewPrice * 100) / 100);
                 }
+                const basePriceINR = Math.round(basePrice * DEFAULT_RATES.INR);
+                const premiumPriceINR = Math.round(previewPrice * DEFAULT_RATES.INR);
+                const regionRate = REGION_CURRENCY_CODE[region] === 'INR'
+                  ? DEFAULT_RATES.INR
+                  : REGION_CURRENCY_CODE[region] === 'GBP'
+                    ? DEFAULT_RATES.GBP
+                    : 1;
+                const sym = REGION_CURRENCY_SYMBOL[region];
+                const code = REGION_CURRENCY_CODE[region];
+                const basePriceRegional = REGION_CURRENCY_CODE[region] === 'INR'
+                  ? basePriceINR
+                  : parseFloat((basePrice * regionRate).toFixed(2));
+                const premiumPriceRegional = REGION_CURRENCY_CODE[region] === 'INR'
+                  ? premiumPriceINR
+                  : parseFloat((previewPrice * regionRate).toFixed(2));
                 return (
                   <div key={region} className={`border rounded-lg p-4 ${rp.enabled ? 'border-blue-300 bg-blue-50' : 'border-gray-200 bg-gray-50'}`}>
                     <div className="flex items-center justify-between mb-3">
@@ -1191,11 +1252,29 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
                         </label>
                         <span className="text-xs text-gray-400">({REGION_DISPLAY_CURRENCY[region]})</span>
                       </div>
-                      {rp.enabled && basePrice > 0 && (
-                        <span className={`text-sm font-semibold ${previewPrice > basePrice ? 'text-orange-600' : previewPrice < basePrice ? 'text-green-600' : 'text-gray-500'}`}>
-                          ₹{Math.round(previewPrice * DEFAULT_RATES.INR).toLocaleString('en-IN')}
-                          <span className="ml-1 text-xs font-normal opacity-60">(≈ ${previewPrice.toFixed(2)} USD)</span>
-                        </span>
+                      {basePrice > 0 && (
+                        <div className="text-right text-sm space-y-0.5">
+                          <div className="text-gray-500">
+                            <span className="text-xs text-gray-400 mr-1">Base:</span>
+                            <span className="font-medium">₹{basePriceINR.toLocaleString('en-IN')}</span>
+                            {code !== 'INR' && (
+                              <span className="ml-1 text-xs text-gray-400">
+                                ({sym}{REGION_CURRENCY_CODE[region] === 'USD' ? basePrice.toFixed(2) : basePriceRegional} {code})
+                              </span>
+                            )}
+                          </div>
+                          {rp.enabled && rp.adjustmentValue !== 0 && (
+                            <div className={premiumPriceINR > basePriceINR ? 'text-orange-600' : 'text-green-600'}>
+                              <span className="text-xs mr-1 opacity-70">With premium:</span>
+                              <span className="font-semibold">₹{premiumPriceINR.toLocaleString('en-IN')}</span>
+                              {code !== 'INR' && (
+                                <span className="ml-1 text-xs opacity-70">
+                                  ({sym}{REGION_CURRENCY_CODE[region] === 'USD' ? previewPrice.toFixed(2) : premiumPriceRegional} {code})
+                                </span>
+                              )}
+                            </div>
+                          )}
+                        </div>
                       )}
                     </div>
                     {rp.enabled && (
@@ -1210,28 +1289,28 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
                           className="text-sm border border-gray-300 rounded-lg px-3 py-2 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         >
                           <option value="percentage">Percentage (%)</option>
-                          <option value="fixed">Fixed Value ($)</option>
+                          <option value="fixed">Fixed Value (₹)</option>
                         </select>
                         <div className="relative flex-1">
                           <input
                             type="number"
-                            step="0.01"
+                            step={rp.adjustmentType === 'percentage' ? '0.01' : '1'}
                             value={rp.adjustmentValue}
                             onChange={(e) => setRegionalPricing(prev => ({
                               ...prev,
                               [region]: { ...prev[region], adjustmentValue: parseFloat(e.target.value) || 0 }
                             }))}
-                            placeholder={rp.adjustmentType === 'percentage' ? 'e.g. 10 or -5' : 'e.g. 50 or -20'}
+                            placeholder={rp.adjustmentType === 'percentage' ? 'e.g. 10 or -5' : 'e.g. 5000 or -2000'}
                             disabled={isFormDisabled}
                             className="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                           />
                           <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm pointer-events-none">
-                            {rp.adjustmentType === 'percentage' ? '%' : '$'}
+                            {rp.adjustmentType === 'percentage' ? '%' : '₹'}
                           </span>
                         </div>
                         <span className="text-xs text-gray-400 whitespace-nowrap">
                           {rp.adjustmentValue > 0 ? '+' : ''}{rp.adjustmentValue}
-                          {rp.adjustmentType === 'percentage' ? '% markup' : '$ added'}
+                          {rp.adjustmentType === 'percentage' ? '% markup' : '₹ added'}
                         </span>
                       </div>
                     )}
