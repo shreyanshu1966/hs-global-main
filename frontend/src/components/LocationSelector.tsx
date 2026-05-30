@@ -6,9 +6,9 @@ import { CURRENCY_SYMBOLS } from '../utils/pricing';
 const REGIONS: { value: Region; label: string; flag: string; currency: string }[] = [
   { value: 'India',  label: 'India',  flag: '🇮🇳', currency: 'INR' },
   { value: 'USA',    label: 'USA',    flag: '🇺🇸', currency: 'USD' },
-  { value: 'UAE',    label: 'UAE',    flag: '🇦🇪', currency: 'USD' },
+  { value: 'UAE',    label: 'UAE',    flag: '🇦🇪', currency: 'AED' },
   { value: 'UK',     label: 'UK',     flag: '🇬🇧', currency: 'GBP' },
-  { value: 'Europe', label: 'Europe', flag: '🇪🇺', currency: 'GBP' },
+  { value: 'Europe', label: 'Europe', flag: '🇪🇺', currency: 'EUR' },
   { value: 'default', label: 'Global', flag: '🌍', currency: 'USD' },
 ];
 

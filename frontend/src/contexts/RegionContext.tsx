@@ -4,8 +4,8 @@ import { useLocalization } from './LocalizationContext';
 export type Region = 'UAE' | 'Europe' | 'India' | 'USA' | 'UK' | 'default';
 
 export const REGION_CURRENCIES: Record<Region, string> = {
-    UAE: 'USD',
-    Europe: 'GBP',
+    UAE: 'AED',
+    Europe: 'EUR',
     India: 'INR',
     USA: 'USD',
     UK: 'GBP',

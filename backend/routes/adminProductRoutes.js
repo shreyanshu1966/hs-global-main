@@ -24,7 +24,11 @@ const {
     // Regional pricing
     updateProductRegionalPricing,
     bulkUpdateRegionalPricing,
-    getRegionalPricingOverview
+    getRegionalPricingOverview,
+    // Bulk actions
+    bulkUpdateStatus,
+    bulkDeleteProducts,
+    bulkAdjustPrice
 } = require('../controllers/adminProductController');
 
 const { authMiddleware, adminMiddleware } = require('../middleware/authMiddleware');
@@ -112,5 +116,10 @@ router.post('/discounts/apply-bulk',
     applyBulkDiscount
 );
 router.post('/discounts/remove-bulk', removeBulkDiscount);
+
+// Bulk actions
+router.patch('/bulk/status', bulkUpdateStatus);
+router.delete('/bulk', bulkDeleteProducts);
+router.patch('/bulk/price', bulkAdjustPrice);
 
 module.exports = router;

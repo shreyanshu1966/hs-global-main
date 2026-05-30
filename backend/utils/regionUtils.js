@@ -1,9 +1,9 @@
 const REGIONS = ['UAE', 'Europe', 'India', 'USA', 'UK'];
 
-// Display currency for each region (only INR, USD, GBP on the website)
+// Display currency for each region
 const REGION_CURRENCIES = {
-    UAE: 'USD',
-    Europe: 'GBP',
+    UAE: 'AED',
+    Europe: 'EUR',
     India: 'INR',
     USA: 'USD',
     UK: 'GBP',

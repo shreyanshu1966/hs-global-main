@@ -32,6 +32,7 @@ const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 const VerifyEmail = lazy(() => import("./pages/VerifyEmail"));
 const LoginOTP = lazy(() => import("./pages/LoginOTP"));
 const Admin = lazy(() => import("./pages/Admin"));
+const AdminProductFormPage = lazy(() => import("./pages/AdminProductFormPage"));
 const DiscountManagement = lazy(() => import("./pages/DiscountManagement"));
 const Wishlist = lazy(() => import("./pages/Wishlist"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -119,6 +120,8 @@ function App() {
                       <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
                       <Route path="/orders/:orderId" element={<ProtectedRoute><OrderDetails /></ProtectedRoute>} />
                       <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
+                      <Route path="/admin/products/new" element={<ProtectedRoute><AdminProductFormPage /></ProtectedRoute>} />
+                      <Route path="/admin/products/:productId/edit" element={<ProtectedRoute><AdminProductFormPage /></ProtectedRoute>} />
                       <Route path="/admin/discounts" element={<ProtectedRoute><DiscountManagement /></ProtectedRoute>} />
                       <Route path="*" element={<NotFound />} />
                     </Routes>

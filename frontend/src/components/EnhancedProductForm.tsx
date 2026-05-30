@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { X, Save, Eye, Image as ImageIcon, Video, Globe } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { X, Save, Eye, Image as ImageIcon, Video, Globe, ArrowLeft } from 'lucide-react';
 import { countries } from '../data/countries';
 import ProductImageManager from '../components/ProductImageManager';
 import ProductSpecsEditor from '../components/ProductSpecsEditor';
 import ProductVideoManager from '../components/ProductVideoManager';
 import { productService, type Category } from '../services/productService';
 import { DEFAULT_RATES } from '../utils/pricing';
+import { useCurrency } from '../contexts/CurrencyContext';
 
 interface EnhancedProductFormProps {
   editingProduct?: any;
@@ -36,22 +37,34 @@ interface VideoFile {
 
 type AdjustmentType = 'percentage' | 'fixed';
 type RegionKey = 'UAE' | 'Europe' | 'India' | 'USA' | 'UK';
+
 const REGION_DISPLAY_CURRENCY: Record<RegionKey, string> = {
-  UAE: 'USD ($)', Europe: 'GBP (£)', India: 'INR (₹)', USA: 'USD ($)', UK: 'GBP (£)'
+  UAE: 'AED (د.إ)', Europe: 'EUR (€)', India: 'INR (₹)', USA: 'USD ($)', UK: 'GBP (£)'
 };
 const REGION_CURRENCY_SYMBOL: Record<RegionKey, string> = {
-  UAE: '$', Europe: '£', India: '₹', USA: '$', UK: '£'
+  UAE: 'AED', Europe: '€', India: '₹', USA: '$', UK: '£'
 };
 const REGION_CURRENCY_CODE: Record<RegionKey, string> = {
-  UAE: 'USD', Europe: 'GBP', India: 'INR', USA: 'USD', UK: 'GBP'
+  UAE: 'AED', Europe: 'EUR', India: 'INR', USA: 'USD', UK: 'GBP'
 };
 const ALL_REGIONS: RegionKey[] = ['UAE', 'Europe', 'India', 'USA', 'UK'];
+
+const SECTION_TABS = [
+  { id: 'photos',          label: 'Photos' },
+  { id: 'details',         label: 'Title & Info' },
+  { id: 'listing-details', label: 'Details' },
+  { id: 'pricing',         label: 'Pricing' },
+  { id: 'specs',           label: 'Specs' },
+  { id: 'shipping',        label: 'Shipping' },
+] as const;
+type SectionId = typeof SECTION_TABS[number]['id'];
+
 const defaultRegionalPricing = (): Record<RegionKey, { enabled: boolean; adjustmentType: AdjustmentType; adjustmentValue: number }> => ({
-  UAE: { enabled: false, adjustmentType: 'percentage', adjustmentValue: 0 },
+  UAE:    { enabled: false, adjustmentType: 'percentage', adjustmentValue: 0 },
   Europe: { enabled: false, adjustmentType: 'percentage', adjustmentValue: 0 },
-  India: { enabled: false, adjustmentType: 'percentage', adjustmentValue: 0 },
-  USA: { enabled: false, adjustmentType: 'percentage', adjustmentValue: 0 },
-  UK: { enabled: false, adjustmentType: 'percentage', adjustmentValue: 0 },
+  India:  { enabled: false, adjustmentType: 'percentage', adjustmentValue: 0 },
+  USA:    { enabled: false, adjustmentType: 'percentage', adjustmentValue: 0 },
+  UK:     { enabled: false, adjustmentType: 'percentage', adjustmentValue: 0 },
 });
 
 const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
@@ -63,7 +76,6 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
   previewLoading = false,
   uploadProgress = { images: 0, video: 0 }
 }) => {
-  // Form state
   const [formData, setFormData] = useState({
     productId: '',
     name: '',
@@ -76,236 +88,151 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
     available: true,
     featured: false,
     furnitureSpecs: {} as any,
-    discount: {
-      enabled: false,
-      percentage: 0,
-      startDate: null,
-      endDate: null,
-      description: ''
-    }
+    discount: { enabled: false, percentage: 0, startDate: null as any, endDate: null as any, description: '' }
   });
 
-  const [images, setImages] = useState<ProductImage[]>([]);
-  const [customSpecs, setCustomSpecs] = useState<any[]>([]);
+  const [images, setImages]               = useState<ProductImage[]>([]);
+  const [customSpecs, setCustomSpecs]     = useState<any[]>([]);
   const [showCustomSubcategory, setShowCustomSubcategory] = useState(false);
-  const [customSubcategory, setCustomSubcategory] = useState('');
+  const [customSubcategory, setCustomSubcategory]         = useState('');
   const [allCategories, setAllCategories] = useState<Category[]>([]);
   const [availableSubcategories, setAvailableSubcategories] = useState<string[]>([]);
-  const [video, setVideo] = useState<VideoFile | null>(null);
+  const [video, setVideo]                 = useState<VideoFile | null>(null);
   const [videoUploading, setVideoUploading] = useState(false);
-
   const [regionalPricing, setRegionalPricing] = useState<Record<RegionKey, { enabled: boolean; adjustmentType: AdjustmentType; adjustmentValue: number }>>(defaultRegionalPricing);
-  const [priceINR, setPriceINR] = useState<string>('');
-
-  const [shippingConfig, setShippingConfig] = useState<{ shipsWorldwide: boolean; excludedCountries: string[] }>({
-    shipsWorldwide: true,
-    excludedCountries: [],
-  });
+  const [priceINR, setPriceINR]           = useState<string>('');
+  const [shippingConfig, setShippingConfig] = useState<{ shipsWorldwide: boolean; excludedCountries: string[] }>({ shipsWorldwide: true, excludedCountries: [] });
   const [excludeSearch, setExcludeSearch] = useState('');
-
-  // Similar products picker state
   const [similarProductIds, setSimilarProductIds] = useState<string[]>([]);
-  const [simSearch, setSimSearch] = useState('');
-  const [simResults, setSimResults] = useState<any[]>([]);
-  const [simSearching, setSimSearching] = useState(false);
-  
-  // Loading states for form submission
+  const [simSearch, setSimSearch]         = useState('');
+  const [simResults, setSimResults]       = useState<any[]>([]);
+  const [simSearching, setSimSearching]   = useState(false);
   const [validationLoading, setValidationLoading] = useState(false);
-  const [formSubmitting, setFormSubmitting] = useState(false);
-  
-  // Computed value to disable form during any loading state
+  const [formSubmitting, setFormSubmitting]       = useState(false);
+
   const isFormDisabled = validationLoading || formSubmitting || loading || previewLoading || videoUploading;
 
-  // Load all categories once from API
+  // Live exchange rates (fetched by CurrencyContext every 30 min; falls back to DEFAULT_RATES)
+  const { exchangeRates } = useCurrency();
+  const liveRate = (code: string): number =>
+    (exchangeRates[code] as number | undefined) ?? (DEFAULT_RATES[code as keyof typeof DEFAULT_RATES] as number | undefined) ?? 1;
+
+  // Scroll-spy
+  const bodyRef      = useRef<HTMLDivElement>(null);
+  const sectionRefs  = useRef<Partial<Record<SectionId, HTMLDivElement | null>>>({});
+  const [activeSection, setActiveSection] = useState<SectionId>('photos');
+
+  // ─── Load categories ───────────────────────────────────────────────────────
   useEffect(() => {
-    const loadDynamicCategories = async () => {
-      try {
-        const response = await productService.getCategories();
-        if (!response.success || !Array.isArray(response.data)) return;
-        setAllCategories(response.data as Category[]);
-      } catch (error) {
-        console.error('Failed to load categories for product form:', error);
-      }
-    };
-    loadDynamicCategories();
+    productService.getCategories().then(r => {
+      if (r.success && Array.isArray(r.data)) setAllCategories(r.data as Category[]);
+    }).catch(() => {});
   }, []);
 
-  // Update available subcategories whenever the selected category or loaded categories change
   useEffect(() => {
-    const match = allCategories.find(
-      (item) => String(item.category).toLowerCase() === formData.category.toLowerCase()
-    );
+    const match = allCategories.find(i => String(i.category).toLowerCase() === formData.category.toLowerCase());
     setAvailableSubcategories(match?.subcategories || []);
   }, [formData.category, allCategories]);
 
-  // Initialize form when editing
+  // ─── Populate form when editing ────────────────────────────────────────────
   useEffect(() => {
-    if (editingProduct) {
-      const validCategories = ['furniture', 'handicraft', 'leather'];
-      setFormData({
-        productId: editingProduct.productId || '',
-        name: editingProduct.name || '',
-        category: validCategories.includes(editingProduct.category) ? editingProduct.category : 'furniture',
-        subcategory: editingProduct.subcategory || '',
-        description: editingProduct.description || '',
-        subDescription: editingProduct.subDescription || '',
-        priceUSD: editingProduct.priceUSD || '',
-        status: editingProduct.status || 'active',
-        available: editingProduct.available !== false,
-        featured: editingProduct.featured || false,
-        furnitureSpecs: editingProduct.furnitureSpecs || {},
-        discount: editingProduct.discount || {
-          enabled: false,
-          percentage: 0,
-          startDate: null,
-          endDate: null,
-          description: ''
-        }
+    if (!editingProduct) return;
+    const validCategories = ['furniture', 'handicraft', 'leather'];
+    setFormData({
+      productId:      editingProduct.productId    || '',
+      name:           editingProduct.name         || '',
+      category:       validCategories.includes(editingProduct.category) ? editingProduct.category : 'furniture',
+      subcategory:    editingProduct.subcategory  || '',
+      description:    editingProduct.description  || '',
+      subDescription: editingProduct.subDescription || '',
+      priceUSD:       editingProduct.priceUSD     || '',
+      status:         editingProduct.status       || 'active',
+      available:      editingProduct.available    !== false,
+      featured:       editingProduct.featured     || false,
+      furnitureSpecs: editingProduct.furnitureSpecs || {},
+      discount: editingProduct.discount || { enabled: false, percentage: 0, startDate: null, endDate: null, description: '' }
+    });
+    if (editingProduct.images?.length > 0) {
+      setImages(editingProduct.images.map((url: string, i: number) => ({ id: `existing_${i}`, url, isMain: i === 0, isExisting: true })));
+    }
+    if (editingProduct.customSpecs)     setCustomSpecs(editingProduct.customSpecs);
+    if (editingProduct.similarProducts?.length > 0) setSimilarProductIds(editingProduct.similarProducts);
+
+    if (editingProduct.category === 'slabs' && editingProduct.subcategory) {
+      setShowCustomSubcategory(true);
+      setCustomSubcategory(editingProduct.subcategory);
+    }
+
+    if (editingProduct.regionalPricing) {
+      const def = defaultRegionalPricing();
+      const cvt = (rp: any) => !rp ? null : { ...rp, adjustmentValue: rp.adjustmentType === 'fixed' ? Math.round(rp.adjustmentValue * liveRate('INR')) : rp.adjustmentValue };
+      setRegionalPricing({
+        UAE:    cvt(editingProduct.regionalPricing.UAE)    || def.UAE,
+        Europe: cvt(editingProduct.regionalPricing.Europe) || def.Europe,
+        India:  cvt(editingProduct.regionalPricing.India)  || def.India,
+        USA:    cvt(editingProduct.regionalPricing.USA)    || def.USA,
+        UK:     cvt(editingProduct.regionalPricing.UK)     || def.UK,
       });
-      // Set existing images
-      if (editingProduct.images && editingProduct.images.length > 0) {
-        const existingImages = editingProduct.images.map((url: string, index: number) => ({
-          id: `existing_${index}`,
-          url,
-          isMain: index === 0,
-          isExisting: true
-        }));
-        setImages(existingImages);
-      }
+    }
 
-      // Set custom specs
-      if (editingProduct.customSpecs) {
-        setCustomSpecs(editingProduct.customSpecs);
-      }
+    setPriceINR(editingProduct.priceUSD ? String(Math.round(editingProduct.priceUSD * liveRate('INR'))) : '');
 
-      // Legacy slabs records are edited as furniture with a custom subcategory.
-      if (editingProduct.category === 'slabs' && editingProduct.subcategory) {
-        setShowCustomSubcategory(true);
-        setCustomSubcategory(editingProduct.subcategory);
-      }
-
-      // Set similar products
-      if (editingProduct.similarProducts && editingProduct.similarProducts.length > 0) {
-        setSimilarProductIds(editingProduct.similarProducts);
-      }
-
-      // Set regional pricing — convert fixed adjustments from USD → INR for display
-      if (editingProduct.regionalPricing) {
-        const def = defaultRegionalPricing();
-        const convertLoad = (rp: any) => {
-          if (!rp) return null;
-          return {
-            ...rp,
-            adjustmentValue: rp.adjustmentType === 'fixed'
-              ? Math.round(rp.adjustmentValue * DEFAULT_RATES.INR)
-              : rp.adjustmentValue,
-          };
-        };
-        setRegionalPricing({
-          UAE: convertLoad(editingProduct.regionalPricing.UAE) || def.UAE,
-          Europe: convertLoad(editingProduct.regionalPricing.Europe) || def.Europe,
-          India: convertLoad(editingProduct.regionalPricing.India) || def.India,
-          USA: convertLoad(editingProduct.regionalPricing.USA) || def.USA,
-          UK: convertLoad(editingProduct.regionalPricing.UK) || def.UK,
-        });
-      }
-
-      // Initialize INR price display
-      setPriceINR(editingProduct.priceUSD ? String(Math.round(editingProduct.priceUSD * DEFAULT_RATES.INR)) : '');
-
-      // Set shipping config
-      if (editingProduct.shipping) {
-        setShippingConfig({
-          shipsWorldwide: editingProduct.shipping.shipsWorldwide !== false,
-          excludedCountries: editingProduct.shipping.excludedCountries || [],
-        });
-      }
-
-      // Set existing video
-      if (editingProduct.hasVideo && editingProduct.videoUrl) {
-        const existingVideoFile = new File([], editingProduct.videoFilename || 'video.mp4', {
-          type: 'video/mp4'
-        });
-        setVideo({
-          file: existingVideoFile,
-          url: editingProduct.videoUrl,
-          size: editingProduct.videoSize || 0,
-          isExisting: true
-        });
-      }
+    if (editingProduct.shipping) {
+      setShippingConfig({ shipsWorldwide: editingProduct.shipping.shipsWorldwide !== false, excludedCountries: editingProduct.shipping.excludedCountries || [] });
+    }
+    if (editingProduct.hasVideo && editingProduct.videoUrl) {
+      setVideo({ file: new File([], editingProduct.videoFilename || 'video.mp4', { type: 'video/mp4' }), url: editingProduct.videoUrl, size: editingProduct.videoSize || 0, isExisting: true });
     }
   }, [editingProduct]);
 
   useEffect(() => {
     if (!editingProduct?.subcategory || availableSubcategories.length === 0) return;
-
-    const exists = availableSubcategories.includes(editingProduct.subcategory);
-    if (!exists) {
+    if (!availableSubcategories.includes(editingProduct.subcategory)) {
       setShowCustomSubcategory(true);
       setCustomSubcategory(editingProduct.subcategory);
     }
   }, [editingProduct, availableSubcategories]);
 
-  // Search for products to add as similar
+  // ─── Similar products search ────────────────────────────────────────────────
   useEffect(() => {
-    if (!simSearch.trim()) {
-      setSimResults([]);
-      return;
-    }
+    if (!simSearch.trim()) { setSimResults([]); return; }
     let cancelled = false;
     const run = async () => {
       setSimSearching(true);
       try {
         const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
-        const token = localStorage.getItem('authToken');
-        const res = await fetch(
-          `${API_URL}/admin/products?search=${encodeURIComponent(simSearch.trim())}&limit=10`,
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
+        const token   = localStorage.getItem('authToken');
+        const res     = await fetch(`${API_URL}/admin/products?search=${encodeURIComponent(simSearch.trim())}&limit=10`, { headers: { Authorization: `Bearer ${token}` } });
         if (!cancelled && res.ok) {
           const data = await res.json();
-          const results = (data.data || []).filter(
-            (p: any) =>
-              p.productId !== formData.productId &&
-              !similarProductIds.includes(p.productId)
-          );
-          setSimResults(results);
+          setSimResults((data.data || []).filter((p: any) => p.productId !== formData.productId && !similarProductIds.includes(p.productId)));
         }
-      } catch {
-        if (!cancelled) setSimResults([]);
-      } finally {
-        if (!cancelled) setSimSearching(false);
-      }
+      } catch { if (!cancelled) setSimResults([]); }
+      finally  { if (!cancelled) setSimSearching(false); }
     };
-    const timer = setTimeout(run, 300);
-    return () => {
-      cancelled = true;
-      clearTimeout(timer);
-    };
+    const t = setTimeout(run, 300);
+    return () => { cancelled = true; clearTimeout(t); };
   }, [simSearch, formData.productId, similarProductIds]);
 
-  const addSimilarProduct = (p: any) => {
-    if (!similarProductIds.includes(p.productId)) {
-      setSimilarProductIds(prev => [...prev, p.productId]);
-    }
-    setSimSearch('');
-    setSimResults([]);
-  };
+  // ─── Scroll-spy (uses window scroll) ──────────────────────────────────────
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      entries => entries.forEach(e => { if (e.isIntersecting) setActiveSection(e.target.id as SectionId); }),
+      { root: null, rootMargin: '-10% 0px -70% 0px', threshold: 0 }
+    );
+    Object.values(sectionRefs.current).forEach(el => el && obs.observe(el));
+    return () => obs.disconnect();
+  }, []);
 
-  const removeSimilarProduct = (pid: string) => {
-    setSimilarProductIds(prev => prev.filter(id => id !== pid));
+  // ─── Handlers ──────────────────────────────────────────────────────────────
+  const scrollToSection = (id: SectionId) => {
+    sectionRefs.current[id]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   const handleInputChange = (field: string, value: any) => {
     if (field.includes('.')) {
       const [parent, child] = field.split('.');
-      setFormData(prev => ({
-        ...prev,
-        [parent]: {
-          ...prev[parent as keyof typeof prev],
-          [child]: value
-        }
-      }));
+      setFormData(prev => ({ ...prev, [parent]: { ...prev[parent as keyof typeof prev], [child]: value } }));
     } else {
       setFormData(prev => ({ ...prev, [field]: value }));
     }
@@ -313,87 +240,53 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
 
   const handlePriceINRChange = (rawVal: string) => {
     setPriceINR(rawVal);
-    const inrNum = parseFloat(rawVal);
-    handleInputChange('priceUSD', rawVal && !isNaN(inrNum) ? String(inrNum / DEFAULT_RATES.INR) : '');
+    const n = parseFloat(rawVal);
+    handleInputChange('priceUSD', rawVal && !isNaN(n) ? String(n / liveRate('INR')) : '');
   };
 
   const handleSpecsChange = (specs: any, customSpecsData?: any[]) => {
     setFormData(prev => ({ ...prev, furnitureSpecs: specs }));
-
-    if (customSpecsData) {
-      setCustomSpecs(customSpecsData);
-    }
+    if (customSpecsData) setCustomSpecs(customSpecsData);
   };
 
-  const handleSave = async () => {
-    if (isFormDisabled) return; // Prevent double submission
-    
-    try {
-      // Step 1: Validate form fields
-      setValidationLoading(true);
-      
-      // Validate required fields
-      const finalSubcategory = showCustomSubcategory ? customSubcategory.trim() : formData.subcategory;
+  const addSimilarProduct = (p: any) => {
+    if (!similarProductIds.includes(p.productId)) setSimilarProductIds(prev => [...prev, p.productId]);
+    setSimSearch(''); setSimResults([]);
+  };
+  const removeSimilarProduct = (pid: string) => setSimilarProductIds(prev => prev.filter(id => id !== pid));
 
+  const handleSave = async () => {
+    if (isFormDisabled) return;
+    try {
+      setValidationLoading(true);
+      const finalSubcategory = showCustomSubcategory ? customSubcategory.trim() : formData.subcategory;
       if (!formData.productId || !formData.name || !formData.description || !finalSubcategory) {
         alert('Please fill in all required fields (Product ID, Name, Subcategory, Description)');
-        setValidationLoading(false);
-        return;
+        setValidationLoading(false); return;
       }
+      if (images.length === 0) { alert('Please add at least one product image'); setValidationLoading(false); return; }
 
-      if (images.length === 0) {
-        alert('Please add at least one product image');
-        setValidationLoading(false);
-        return;
-      }
-      
-      // Step 2: Prepare data for submission
       setValidationLoading(false);
       setFormSubmitting(true);
 
-      // Prepare final form data
-      // Convert fixed regional adjustments from INR → USD for backend storage
-      const convertRpSave = (rp: { enabled: boolean; adjustmentType: AdjustmentType; adjustmentValue: number }) => ({
-        ...rp,
-        adjustmentValue: rp.adjustmentType === 'fixed'
-          ? rp.adjustmentValue / DEFAULT_RATES.INR
-          : rp.adjustmentValue,
+      const cvtSave = (rp: { enabled: boolean; adjustmentType: AdjustmentType; adjustmentValue: number }) => ({
+        ...rp, adjustmentValue: rp.adjustmentType === 'fixed' ? rp.adjustmentValue / liveRate('INR') : rp.adjustmentValue,
       });
       const regionalPricingForSave = Object.fromEntries(
-        (Object.entries(regionalPricing) as [RegionKey, typeof regionalPricing[RegionKey]][]).map(
-          ([k, v]) => [k, convertRpSave(v)]
-        )
+        (Object.entries(regionalPricing) as [RegionKey, typeof regionalPricing[RegionKey]][]).map(([k, v]) => [k, cvtSave(v)])
       );
-      const finalFormData = {
-        productId: formData.productId,
-        name: formData.name,
-        category: formData.category,
-        subcategory: finalSubcategory,
-        description: formData.description,
+
+      await onSave({
+        productId: formData.productId, name: formData.name, category: formData.category,
+        subcategory: finalSubcategory, description: formData.description,
         subDescription: formData.subDescription || '',
         priceUSD: formData.priceUSD ? parseFloat(formData.priceUSD.toString()) : undefined,
-        status: formData.status,
-        available: formData.available,
-        featured: formData.featured,
-        furnitureSpecs: formData.furnitureSpecs,
-        discount: formData.discount,
-        hasVideo: !!video,
-        similarProducts: similarProductIds,
-        regionalPricing: regionalPricingForSave,
-        shipping: {
-          shipsWorldwide: shippingConfig.shipsWorldwide,
-          excludedCountries: shippingConfig.excludedCountries,
-        },
-      };
+        status: formData.status, available: formData.available, featured: formData.featured,
+        furnitureSpecs: formData.furnitureSpecs, discount: formData.discount, hasVideo: !!video,
+        similarProducts: similarProductIds, regionalPricing: regionalPricingForSave,
+        shipping: { shipsWorldwide: shippingConfig.shipsWorldwide, excludedCountries: shippingConfig.excludedCountries },
+      }, images, customSpecs, video && !video.isExisting ? video.file : null);
 
-      // Extract video file (only if it's new, not existing)
-      const videoFile = video && !video.isExisting ? video.file : null;
-
-      // Step 3: Call parent's save function (parent's loading prop will handle upload progress)
-      await onSave(finalFormData, images, customSpecs, videoFile);
-      
-      // If we reach here, save was successful
-      // Parent will handle modal closing, so we just reset our internal state
       setFormSubmitting(false);
     } catch (error) {
       console.error('Error saving product:', error);
@@ -403,42 +296,23 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
   };
 
   const handlePreview = async () => {
-    if (isFormDisabled) return; // Prevent double submission
-    
+    if (isFormDisabled) return;
     try {
       setValidationLoading(true);
-      
-      // Quick validation for preview
       if (!formData.name || !formData.description) {
-        alert('Please fill in at least Product Name and Description for preview');
-        return;
+        alert('Please fill in at least Product Name and Description for preview'); return;
       }
-      
       setValidationLoading(false);
-
       const finalSubcategory = showCustomSubcategory ? customSubcategory.trim() : formData.subcategory;
-      
-      const finalFormData = {
-        productId: formData.productId,
-        name: formData.name,
-        category: formData.category,
-        subcategory: finalSubcategory,
-        description: formData.description,
+      await onPreview({
+        productId: formData.productId, name: formData.name, category: formData.category,
+        subcategory: finalSubcategory, description: formData.description,
         subDescription: formData.subDescription || '',
         priceUSD: formData.priceUSD ? parseFloat(formData.priceUSD.toString()) : undefined,
-        status: formData.status,
-        available: formData.available,
-        featured: formData.featured,
-        furnitureSpecs: formData.furnitureSpecs,
-        discount: formData.discount,
-        hasVideo: !!video,
-        similarProducts: similarProductIds
-      };
-
-      // Extract video file (only if it's new, not existing)
-      const videoFile = video && !video.isExisting ? video.file : null;
-
-      await onPreview(finalFormData, images, videoFile);
+        status: formData.status, available: formData.available, featured: formData.featured,
+        furnitureSpecs: formData.furnitureSpecs, discount: formData.discount,
+        hasVideo: !!video, similarProducts: similarProductIds,
+      }, images, video && !video.isExisting ? video.file : null);
     } catch (error) {
       console.error('Error previewing product:', error);
       alert('Failed to generate preview. Please try again.');
@@ -447,926 +321,570 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
     }
   };
 
+  // ─── Tiny helpers ──────────────────────────────────────────────────────────
+  const Spinner = () => (
+    <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+    </svg>
+  );
+
+  const inputCls = 'w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-orange-400 focus:border-transparent disabled:bg-gray-50 disabled:cursor-not-allowed transition-colors bg-white';
+  const labelCls = 'block text-sm font-medium text-gray-700 mb-1.5';
+
+  // ─── Section anchor helper ─────────────────────────────────────────────────
+  const secRef = (id: SectionId) => (el: HTMLDivElement | null) => { sectionRefs.current[id] = el; };
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  //  RENDER
+  // ═══════════════════════════════════════════════════════════════════════════
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-      <div className="bg-white rounded-xl shadow-2xl w-full max-w-4xl flex flex-col relative animate-in fade-in zoom-in-95 duration-200" style={{ height: '90vh', maxHeight: '800px' }}>
-        
-        {/* Form Loading Overlay */}
-        {isFormDisabled && (
-          <div className="absolute inset-0 bg-white bg-opacity-95 flex items-center justify-center z-50 rounded-xl">
-            <div className="bg-white p-8 rounded-lg shadow-2xl border-2 border-blue-100 max-w-md w-full mx-4">
-              <div className="flex flex-col items-center space-y-4">
-                {/* Animated Spinner */}
-                <div className="relative">
-                  <div className="w-16 h-16 border-4 border-gray-200 border-t-blue-600 rounded-full animate-spin"></div>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-8 h-8 bg-blue-600 rounded-full opacity-20 animate-pulse"></div>
+    <div className="min-h-screen bg-[#f5f4f0]">
+
+      {/* ── Loading overlay ── */}
+      {isFormDisabled && (
+        <div className="absolute inset-0 z-50 bg-white/90 backdrop-blur-sm flex items-center justify-center">
+          <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 max-w-sm w-full mx-4 text-center space-y-4">
+            <div className="relative mx-auto w-14 h-14">
+              <div className="w-14 h-14 border-4 border-gray-100 border-t-orange-500 rounded-full animate-spin" />
+            </div>
+            <p className="text-base font-semibold text-gray-800">
+              {validationLoading ? 'Validating…' :
+               formSubmitting && !loading ? 'Preparing…' :
+               loading && (uploadProgress.images > 0 || uploadProgress.video > 0) ? 'Uploading media…' :
+               loading ? (editingProduct ? 'Updating product…' : 'Creating product…') :
+               previewLoading ? 'Generating preview…' :
+               videoUploading ? 'Processing video…' : 'Processing…'}
+            </p>
+            {loading && (uploadProgress.images > 0 || uploadProgress.video > 0) && (
+              <div className="space-y-2 text-left">
+                {uploadProgress.images > 0 && (
+                  <div>
+                    <div className="flex justify-between text-xs text-gray-500 mb-1"><span>Images</span><span>{Math.round(uploadProgress.images)}%</span></div>
+                    <div className="h-1.5 bg-gray-100 rounded-full"><div className="h-full bg-orange-500 rounded-full transition-all" style={{ width: `${uploadProgress.images}%` }} /></div>
                   </div>
+                )}
+                {uploadProgress.video > 0 && (
+                  <div>
+                    <div className="flex justify-between text-xs text-gray-500 mb-1"><span>Video</span><span>{Math.round(uploadProgress.video)}%</span></div>
+                    <div className="h-1.5 bg-gray-100 rounded-full"><div className="h-full bg-purple-500 rounded-full transition-all" style={{ width: `${uploadProgress.video}%` }} /></div>
+                  </div>
+                )}
+              </div>
+            )}
+            <p className="text-xs text-gray-400">Please do not close this window</p>
+          </div>
+        </div>
+      )}
+
+      {/* ── Sticky header ── */}
+      <div className="sticky top-0 z-20 bg-white border-b border-gray-200 shadow-sm">
+        {/* Top bar */}
+        <div className="flex items-center justify-between px-6 py-3.5 gap-4">
+          <div className="flex items-center gap-3 min-w-0">
+            <button onClick={onCancel} disabled={isFormDisabled}
+              className="flex items-center gap-1.5 text-gray-500 hover:text-gray-900 transition-colors text-sm font-medium shrink-0 disabled:opacity-40">
+              <ArrowLeft className="w-4 h-4" />
+              Listings
+            </button>
+            <span className="text-gray-300">/</span>
+            <h1 className="text-sm font-semibold text-gray-900 truncate max-w-xs">
+              {editingProduct ? (formData.name || 'Edit Listing') : 'New Listing'}
+            </h1>
+            <span className={`shrink-0 px-2 py-0.5 rounded-full text-xs font-semibold capitalize ${
+              formData.status === 'active'   ? 'bg-green-100 text-green-700' :
+              formData.status === 'inactive' ? 'bg-gray-100 text-gray-600'  : 'bg-yellow-100 text-yellow-700'
+            }`}>{formData.status}</span>
+          </div>
+          <div className="flex items-center gap-2 shrink-0">
+            <button onClick={handlePreview} disabled={isFormDisabled}
+              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors disabled:opacity-40">
+              {previewLoading ? <Spinner /> : <Eye className="w-4 h-4" />}
+              {previewLoading ? 'Previewing…' : 'Preview'}
+            </button>
+            <button onClick={handleSave} disabled={isFormDisabled}
+              className="flex items-center gap-2 px-5 py-2 text-sm font-semibold text-white bg-orange-500 hover:bg-orange-600 rounded-xl shadow-sm transition-colors disabled:opacity-40">
+              {(loading || formSubmitting || validationLoading || videoUploading) ? <Spinner /> : <Save className="w-4 h-4" />}
+              {validationLoading ? 'Validating…' :
+               formSubmitting && !loading ? 'Preparing…' :
+               loading && (uploadProgress.images > 0 || uploadProgress.video > 0) ? 'Uploading…' :
+               loading ? (editingProduct ? 'Updating…' : 'Publishing…') :
+               videoUploading ? 'Processing…' :
+               editingProduct ? 'Update' : 'Publish'}
+            </button>
+          </div>
+        </div>
+
+        {/* Section jump-tabs */}
+        <div className="flex border-t border-gray-100 px-2 overflow-x-auto scrollbar-none">
+          {SECTION_TABS.map(tab => (
+            <button key={tab.id} onClick={() => scrollToSection(tab.id)}
+              className={`px-4 py-2.5 text-sm font-medium border-b-2 whitespace-nowrap transition-colors ${
+                activeSection === tab.id
+                  ? 'text-orange-600 border-orange-500'
+                  : 'text-gray-400 border-transparent hover:text-gray-700'
+              }`}>
+              {tab.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* ── Body ── */}
+      <div ref={bodyRef} className="max-w-4xl mx-auto px-8 py-7 space-y-5 pb-16">
+
+          {/* ① Photos & Video */}
+          <div ref={secRef('photos')} id="photos" className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            <div className="flex items-center gap-2.5 px-6 py-4 border-b border-gray-50">
+              <ImageIcon className="w-4 h-4 text-gray-400" />
+              <div>
+                <h2 className="font-semibold text-gray-900 text-[15px]">Photos</h2>
+                <p className="text-xs text-gray-400 mt-0.5">Add up to 10 photos. First photo is the main image.</p>
+              </div>
+            </div>
+            <div className="px-6 py-5 space-y-5">
+              <ProductImageManager images={images} onImagesChange={setImages} onMainImageChange={() => {}} aspectRatio={1} allowCrop maxImages={10} />
+              {uploadProgress.images > 0 && uploadProgress.images < 100 && (
+                <div className="rounded-xl bg-orange-50 border border-orange-100 p-3">
+                  <div className="flex justify-between text-xs text-orange-700 mb-1.5"><span>Uploading images…</span><span>{uploadProgress.images}%</span></div>
+                  <div className="h-1.5 bg-orange-100 rounded-full"><div className="h-full bg-orange-500 rounded-full transition-all" style={{ width: `${uploadProgress.images}%` }} /></div>
                 </div>
-                
-                {/* Status Message */}
-                <div className="text-center space-y-2">
-                  <div className="text-xl font-semibold text-gray-900">
-                    {validationLoading ? '🔍 Validating Form...' :
-                     formSubmitting && !loading ? '📝 Preparing Submission...' :
-                     loading && uploadProgress && (uploadProgress.images > 0 || uploadProgress.video > 0) ? '☁️ Uploading Media...' :
-                     loading ? (editingProduct ? '💾 Updating Product...' : '✨ Creating Product...') :
-                     previewLoading ? '👁️ Generating Preview...' :
-                     videoUploading ? '🎬 Processing Video...' :
-                     '⏳ Processing...'}
-                  </div>
-                  
-                  {/* Progress Details */}
-                  <div className="text-sm text-gray-600 space-y-1">
-                    {validationLoading && (
-                      <p>Checking required fields and data...</p>
-                    )}
-                    {formSubmitting && !loading && (
-                      <p>Preparing product data for upload...</p>
-                    )}
-                    {loading && images.filter(img => img.file && !img.isExisting).length > 0 && (
-                      <p>Uploading {images.filter(img => img.file && !img.isExisting).length} image(s){video && !video.isExisting ? ' and video' : ''}...</p>
-                    )}
-                    {loading && !formSubmitting && (
-                      <p>{editingProduct ? 'Saving your changes...' : 'Creating your new product...'}</p>
-                    )}
-                    {previewLoading && (
-                      <p>Building preview with current data...</p>
-                    )}
-                  </div>
-                  
-                  {/* Upload Progress Bars */}
-                  {loading && uploadProgress && (uploadProgress.images > 0 || uploadProgress.video > 0) && (
-                    <div className="w-full space-y-2 mt-4">
-                      {uploadProgress.images > 0 && (
-                        <div className="space-y-1">
-                          <div className="flex justify-between text-xs text-gray-600">
-                            <span>Images</span>
-                            <span>{Math.round(uploadProgress.images)}%</span>
-                          </div>
-                          <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-                            <div 
-                              className="bg-blue-600 h-2 rounded-full transition-all duration-300 ease-out"
-                              style={{ width: `${uploadProgress.images}%` }}
-                            ></div>
-                          </div>
-                        </div>
-                      )}
-                      {uploadProgress.video > 0 && (
-                        <div className="space-y-1">
-                          <div className="flex justify-between text-xs text-gray-600">
-                            <span>Video</span>
-                            <span>{Math.round(uploadProgress.video)}%</span>
-                          </div>
-                          <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-                            <div 
-                              className="bg-green-600 h-2 rounded-full transition-all duration-300 ease-out"
-                              style={{ width: `${uploadProgress.video}%` }}
-                            ></div>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                  
-                  {/* Warning Message */}
-                  <div className="text-xs text-gray-500 mt-3 pt-3 border-t border-gray-200">
-                    {(formSubmitting || loading) ? '⚠️ Please wait, this may take a few moments...' : '⚠️ Please do not close this window'}
-                  </div>
+              )}
+              {/* Video */}
+              <div className="pt-4 border-t border-gray-100">
+                <div className="flex items-center gap-2 mb-1">
+                  <Video className="w-4 h-4 text-gray-400" />
+                  <span className="text-sm font-medium text-gray-700">Video <span className="text-gray-400 font-normal text-xs">(optional)</span></span>
                 </div>
+                <p className="text-xs text-gray-400 mb-3 ml-6">Showcase your product in action.</p>
+                <ProductVideoManager
+                  video={video}
+                  onVideoChange={v => { setVideo(v); if (v && !v.isExisting) { setVideoUploading(true); setTimeout(() => setVideoUploading(false), 1000); } }}
+                  disabled={loading || videoUploading}
+                  maxSize={100 * 1024 * 1024}
+                />
+                {uploadProgress.video > 0 && uploadProgress.video < 100 && (
+                  <div className="rounded-xl bg-purple-50 border border-purple-100 p-3 mt-3">
+                    <div className="flex justify-between text-xs text-purple-700 mb-1.5"><span>Uploading video…</span><span>{uploadProgress.video}%</span></div>
+                    <div className="h-1.5 bg-purple-100 rounded-full"><div className="h-full bg-purple-500 rounded-full transition-all" style={{ width: `${uploadProgress.video}%` }} /></div>
+                  </div>
+                )}
+                {videoUploading && (
+                  <div className="flex items-center gap-2 text-amber-600 text-xs mt-2">
+                    <div className="animate-spin w-3 h-3 border-2 border-amber-600 border-t-transparent rounded-full" />
+                    Processing video…
+                  </div>
+                )}
               </div>
             </div>
           </div>
-        )}
-        {/* Header */}
-        <div className="flex-none p-6 border-b border-gray-200 flex justify-between items-center bg-white z-10 rounded-t-xl">
-          <h2 className="text-xl font-bold text-gray-900">
-            {editingProduct ? 'Edit Product' : 'Create New Product'}
-          </h2>
-          <button onClick={onCancel} className="p-2 hover:bg-gray-100 rounded-full transition-colors">
-            <X className="w-5 h-5 text-gray-500" />
-          </button>
-        </div>
 
-        {/* Content */}
-        <div className="flex-1 min-h-0 p-6 space-y-6 overflow-y-auto overscroll-contain custom-scrollbar">
-          {/* Basic Information */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-              Basic Information
-            </h3>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Product ID <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  required
-                  disabled={!!editingProduct || isFormDisabled}
-                  value={formData.productId}
-                  onChange={(e) => handleInputChange('productId', e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
-                  placeholder="e.g., PROD001"
-                />
+          {/* ② Title & Description */}
+          <div ref={secRef('details')} id="details" className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            <div className="px-6 py-4 border-b border-gray-50">
+              <h2 className="font-semibold text-gray-900 text-[15px]">Title & Description</h2>
+              <p className="text-xs text-gray-400 mt-0.5">Help buyers understand and find your listing.</p>
+            </div>
+            <div className="px-6 py-5 space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className={labelCls}>Product ID <span className="text-red-400">*</span></label>
+                  <input type="text" required disabled={!!editingProduct || isFormDisabled}
+                    value={formData.productId} onChange={e => handleInputChange('productId', e.target.value)}
+                    className={inputCls} placeholder="e.g. PROD001" />
+                </div>
+                <div>
+                  <label className={labelCls}>Product Name <span className="text-red-400">*</span></label>
+                  <input type="text" required disabled={isFormDisabled}
+                    value={formData.name} onChange={e => handleInputChange('name', e.target.value)}
+                    className={inputCls} placeholder="e.g. Marble Coffee Table" />
+                </div>
               </div>
-
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Product Name <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  required
-                  disabled={isFormDisabled}
-                  value={formData.name}
-                  onChange={(e) => handleInputChange('name', e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
-                  placeholder="e.g., Marble Coffee Table"
-                />
+                <label className={labelCls}>Description <span className="text-red-400">*</span></label>
+                <textarea required rows={5} disabled={isFormDisabled}
+                  value={formData.description} onChange={e => handleInputChange('description', e.target.value)}
+                  className={`${inputCls} resize-y`} placeholder="Describe your product — materials, dimensions, craftsmanship…" />
               </div>
-
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Category <span className="text-red-500">*</span>
-                </label>
-                <select
-                  value={formData.category}
-                  disabled={isFormDisabled}
-                  onChange={(e) => {
-                    setFormData(prev => ({ ...prev, category: e.target.value, subcategory: '' }));
-                    setShowCustomSubcategory(false);
-                    setCustomSubcategory('');
-                  }}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
-                >
-                  <option value="furniture">Furniture</option>
-                  <option value="handicraft">Handicraft</option>
-                  <option value="leather">Leather</option>
-                </select>
+                <div className="flex justify-between mb-1.5">
+                  <label className="text-sm font-medium text-gray-700">Sub Description <span className="text-gray-400 font-normal text-xs">(optional)</span></label>
+                  <span className={`text-xs ${formData.subDescription.length > 160 ? 'text-red-500 font-semibold' : 'text-gray-400'}`}>{formData.subDescription.length}/160</span>
+                </div>
+                <input type="text" maxLength={160} disabled={isFormDisabled}
+                  value={formData.subDescription} onChange={e => handleInputChange('subDescription', e.target.value)}
+                  className={inputCls} placeholder="Short subtitle shown below the product name (max 160 chars)" />
               </div>
+              <div className="flex gap-5 pt-1">
+                {[
+                  { field: 'available', label: 'Available for Sale', checked: formData.available },
+                  { field: 'featured',  label: 'Featured Product',   checked: formData.featured },
+                ].map(({ field, label, checked }) => (
+                  <label key={field} className="flex items-center gap-2 cursor-pointer select-none">
+                    <input type="checkbox" checked={checked} disabled={isFormDisabled}
+                      onChange={e => handleInputChange(field, e.target.checked)}
+                      className="w-4 h-4 text-orange-500 rounded border-gray-300 disabled:opacity-50" />
+                    <span className="text-sm text-gray-700">{label}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+          </div>
 
+          {/* ③ Listing Details */}
+          <div ref={secRef('listing-details')} id="listing-details" className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            <div className="px-6 py-4 border-b border-gray-50">
+              <h2 className="font-semibold text-gray-900 text-[15px]">Listing Details</h2>
+              <p className="text-xs text-gray-400 mt-0.5">Category, status and visibility settings.</p>
+            </div>
+            <div className="px-6 py-5 space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className={labelCls}>Category <span className="text-red-400">*</span></label>
+                  <select value={formData.category} disabled={isFormDisabled}
+                    onChange={e => { setFormData(prev => ({ ...prev, category: e.target.value, subcategory: '' })); setShowCustomSubcategory(false); setCustomSubcategory(''); }}
+                    className={inputCls}>
+                    <option value="furniture">Furniture</option>
+                    <option value="handicraft">Handicraft</option>
+                    <option value="leather">Leather</option>
+                  </select>
+                </div>
+                <div>
+                  <label className={labelCls}>Status</label>
+                  <select value={formData.status} onChange={e => handleInputChange('status', e.target.value)} className={inputCls}>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                    <option value="draft">Draft</option>
+                  </select>
+                </div>
+              </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Subcategory <span className="text-red-500">*</span>
-                </label>
-                <select
-                  required={!showCustomSubcategory}
+                <label className={labelCls}>Subcategory <span className="text-red-400">*</span></label>
+                <select required={!showCustomSubcategory}
                   value={showCustomSubcategory ? 'custom' : formData.subcategory}
-                  onChange={(e) => {
-                    if (e.target.value === 'custom') {
-                      setShowCustomSubcategory(true);
-                      setCustomSubcategory('');
-                    } else {
-                      setShowCustomSubcategory(false);
-                      handleInputChange('subcategory', e.target.value);
-                    }
+                  onChange={e => {
+                    if (e.target.value === 'custom') { setShowCustomSubcategory(true); setCustomSubcategory(''); }
+                    else { setShowCustomSubcategory(false); handleInputChange('subcategory', e.target.value); }
                   }}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="">Select Subcategory</option>
+                  className={inputCls}>
+                  <option value="">Select subcategory…</option>
                   {availableSubcategories.map(sub => (
-                    <option key={sub} value={sub}>
-                      {sub.charAt(0).toUpperCase() + sub.slice(1).replace('-', ' ')}
-                    </option>
+                    <option key={sub} value={sub}>{sub.charAt(0).toUpperCase() + sub.slice(1).replace('-', ' ')}</option>
                   ))}
                   <option value="custom">➕ Add Custom Subcategory</option>
                 </select>
-
                 {showCustomSubcategory && (
-                  <div className="mt-2">
-                    <input
-                      type="text"
-                      required
-                      value={customSubcategory}
-                      onChange={(e) => setCustomSubcategory(e.target.value)}
-                      placeholder="Enter custom subcategory"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
+                  <input type="text" required value={customSubcategory} onChange={e => setCustomSubcategory(e.target.value)}
+                    placeholder="Enter custom subcategory" className={`${inputCls} mt-2`} />
                 )}
               </div>
+            </div>
+          </div>
 
+          {/* ④ Pricing */}
+          <div ref={secRef('pricing')} id="pricing" className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            <div className="px-6 py-4 border-b border-gray-50">
+              <h2 className="font-semibold text-gray-900 text-[15px]">Pricing</h2>
+              <p className="text-xs text-gray-400 mt-0.5">Set your price and optional discount.</p>
+            </div>
+            <div className="px-6 py-5 space-y-5">
+              {/* Price input */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Price (INR)
-                </label>
+                <label className={labelCls}>Price (INR)</label>
                 <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 font-medium pointer-events-none">₹</span>
-                  <input
-                    type="number"
-                    min="0"
-                    value={priceINR}
-                    onChange={(e) => handlePriceINRChange(e.target.value)}
-                    disabled={isFormDisabled}
-                    className="w-full pl-7 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
-                    placeholder="e.g. 83500"
-                  />
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-medium pointer-events-none">₹</span>
+                  <input type="number" min="0" value={priceINR} onChange={e => handlePriceINRChange(e.target.value)} disabled={isFormDisabled}
+                    className={`${inputCls} pl-8`} placeholder="e.g. 83500" />
                 </div>
                 {priceINR && parseFloat(priceINR) > 0 && (
-                  <p className="text-xs text-gray-400 mt-1">
-                    ≈ ${(parseFloat(priceINR) / DEFAULT_RATES.INR).toFixed(2)} USD
-                  </p>
+                  <p className="text-xs text-gray-400 mt-1.5">≈ ${(parseFloat(priceINR) / liveRate('INR')).toFixed(2)} USD</p>
                 )}
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Status
+              {/* Discount */}
+              <div className="border border-gray-100 rounded-xl p-4 space-y-4">
+                <label className="flex items-center gap-2.5 cursor-pointer">
+                  <input type="checkbox" checked={formData.discount.enabled}
+                    onChange={e => handleInputChange('discount.enabled', e.target.checked)}
+                    className="w-4 h-4 text-orange-500 rounded border-gray-300" />
+                  <span className="text-sm font-medium text-gray-800">Enable Discount</span>
                 </label>
-                <select
-                  value={formData.status}
-                  onChange={(e) => handleInputChange('status', e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
-                  <option value="draft">Draft</option>
-                </select>
-              </div>
-            </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Description <span className="text-red-500">*</span>
-              </label>
-              <textarea
-                required
-                rows={4}
-                value={formData.description}
-                onChange={(e) => handleInputChange('description', e.target.value)}
-                disabled={isFormDisabled}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
-                placeholder="Enter product description..."
-              />
-            </div>
-
-            <div>
-              <div className="flex justify-between items-center mb-1">
-                <label className="block text-sm font-medium text-gray-700">
-                  Sub Description <span className="text-gray-400 font-normal text-xs">(optional · shown below product title)</span>
-                </label>
-                <span className={`text-xs ${formData.subDescription.length > 160 ? 'text-red-500 font-semibold' : 'text-gray-400'}`}>
-                  {formData.subDescription.length}/160
-                </span>
-              </div>
-              <input
-                type="text"
-                maxLength={160}
-                value={formData.subDescription}
-                onChange={(e) => handleInputChange('subDescription', e.target.value)}
-                disabled={isFormDisabled}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed text-sm"
-                placeholder="Short subtitle shown under the product name (max 160 chars)…"
-              />
-            </div>
-
-            <div className="flex gap-6">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={formData.available}
-                  onChange={(e) => handleInputChange('available', e.target.checked)}
-                  disabled={isFormDisabled}
-                  className="w-4 h-4 text-blue-600 disabled:opacity-50"
-                />
-                <span className="text-sm text-gray-700">Available for Sale</span>
-              </label>
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={formData.featured}
-                  onChange={(e) => handleInputChange('featured', e.target.checked)}
-                  disabled={isFormDisabled}
-                  className="w-4 h-4 text-blue-600 disabled:opacity-50"
-                />
-                <span className="text-sm text-gray-700">Featured Product</span>
-              </label>
-            </div>
-          </div>
-
-          {/* Discount Section */}
-          <div className="space-y-4 border-t pt-4">
-            <div className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                checked={formData.discount.enabled}
-                onChange={(e) => handleInputChange('discount.enabled', e.target.checked)}
-                className="w-4 h-4 text-blue-600"
-              />
-              <label className="text-sm font-medium text-gray-700">
-                Enable Discount
-              </label>
-            </div>
-
-            {formData.discount.enabled && (
-              <div className="space-y-4 ml-6">
-                {/* Discount Percentage and Description */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Discount Percentage <span className="text-red-500">*</span>
-                    </label>
-                    <div className="relative">
-                      <input
-                        type="number"
-                        min="0"
-                        max="100"
-                        step="0.01"
-                        value={formData.discount.percentage}
-                        onChange={(e) => {
-                          const value = parseFloat(e.target.value) || 0;
-                          if (value >= 0 && value <= 100) {
-                            handleInputChange('discount.percentage', value);
-                          }
-                        }}
-                        className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${formData.discount.enabled && formData.discount.percentage <= 0
-                            ? 'border-red-300 bg-red-50'
-                            : 'border-gray-300'
-                          }`}
-                        placeholder="e.g., 10"
-                        required={formData.discount.enabled}
-                      />
-                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">%</span>
+                {formData.discount.enabled && (
+                  <div className="space-y-4 pt-1">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className={labelCls}>Discount % <span className="text-red-400">*</span></label>
+                        <div className="relative">
+                          <input type="number" min="0" max="100" step="0.01"
+                            value={formData.discount.percentage}
+                            onChange={e => { const v = parseFloat(e.target.value) || 0; if (v >= 0 && v <= 100) handleInputChange('discount.percentage', v); }}
+                            className={`${inputCls} pr-8 ${formData.discount.percentage <= 0 ? 'border-red-300 bg-red-50' : ''}`}
+                            placeholder="e.g. 10" required={formData.discount.enabled} />
+                          <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm pointer-events-none">%</span>
+                        </div>
+                      </div>
+                      <div>
+                        <label className={labelCls}>Label</label>
+                        <input type="text" maxLength={200} value={formData.discount.description}
+                          onChange={e => handleInputChange('discount.description', e.target.value)}
+                          placeholder="e.g. Summer Sale" className={inputCls} />
+                      </div>
                     </div>
-                    {formData.discount.enabled && formData.discount.percentage <= 0 && (
-                      <p className="mt-1 text-xs text-red-600">Percentage must be greater than 0</p>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className={labelCls}>Start Date</label>
+                        <input type="datetime-local" value={formData.discount.startDate || ''}
+                          onChange={e => handleInputChange('discount.startDate', e.target.value || null)}
+                          className={`${inputCls} ${formData.discount.startDate && formData.discount.endDate && new Date(formData.discount.startDate) >= new Date(formData.discount.endDate) ? 'border-red-300' : ''}`} />
+                        <p className="text-xs text-gray-400 mt-1">Leave empty for immediate start</p>
+                      </div>
+                      <div>
+                        <label className={labelCls}>End Date</label>
+                        <input type="datetime-local" value={formData.discount.endDate || ''}
+                          onChange={e => handleInputChange('discount.endDate', e.target.value || null)}
+                          className={`${inputCls} ${formData.discount.startDate && formData.discount.endDate && new Date(formData.discount.startDate) >= new Date(formData.discount.endDate) ? 'border-red-300' : ''}`} />
+                        <p className="text-xs text-gray-400 mt-1">Leave empty for no expiration</p>
+                      </div>
+                    </div>
+                    {formData.discount.startDate && formData.discount.endDate && new Date(formData.discount.startDate) >= new Date(formData.discount.endDate) && (
+                      <p className="text-xs text-red-600 bg-red-50 rounded-lg px-3 py-2">⚠️ Start date must be before end date</p>
                     )}
-                    {formData.discount.percentage > 0 && formData.discount.percentage <= 100 && (
-                      <p className="mt-1 text-xs text-green-600">✓ Valid discount percentage</p>
-                    )}
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Discount Description
-                    </label>
-                    <input
-                      type="text"
-                      maxLength={200}
-                      value={formData.discount.description}
-                      onChange={(e) => handleInputChange('discount.description', e.target.value)}
-                      placeholder="e.g., Summer Sale, Limited Time Offer"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                    />
-                    <p className="mt-1 text-xs text-gray-500">{formData.discount.description.length}/200 characters</p>
-                  </div>
-                </div>
-
-                {/* Date Range */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Start Date (Optional)
-                    </label>
-                    <input
-                      type="datetime-local"
-                      value={formData.discount.startDate || ''}
-                      onChange={(e) => handleInputChange('discount.startDate', e.target.value || null)}
-                      className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${formData.discount.startDate && formData.discount.endDate &&
-                          new Date(formData.discount.startDate) >= new Date(formData.discount.endDate)
-                          ? 'border-red-300 bg-red-50'
-                          : 'border-gray-300'
-                        }`}
-                    />
-                    <p className="mt-1 text-xs text-gray-500">Leave empty for immediate start</p>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      End Date (Optional)
-                    </label>
-                    <input
-                      type="datetime-local"
-                      value={formData.discount.endDate || ''}
-                      onChange={(e) => handleInputChange('discount.endDate', e.target.value || null)}
-                      className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${formData.discount.startDate && formData.discount.endDate &&
-                          new Date(formData.discount.startDate) >= new Date(formData.discount.endDate)
-                          ? 'border-red-300 bg-red-50'
-                          : 'border-gray-300'
-                        }`}
-                    />
-                    <p className="mt-1 text-xs text-gray-500">Leave empty for no expiration</p>
-                  </div>
-                </div>
-
-                {/* Date Validation Error */}
-                {formData.discount.startDate && formData.discount.endDate &&
-                  new Date(formData.discount.startDate) >= new Date(formData.discount.endDate) && (
-                    <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-                      <p className="text-sm text-red-800">⚠️ Start date must be before end date</p>
-                    </div>
-                  )}
-
-                {/* Discount Preview */}
-                {formData.discount.percentage > 0 && formData.priceUSD && (
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                    <h4 className="text-sm font-semibold text-gray-900 mb-2">💰 Discount Preview</h4>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
-                      <div>
-                        <p className="text-gray-600">Original Price</p>
-                        <p className="font-semibold text-gray-900">₹{Math.round(parseFloat(formData.priceUSD) * DEFAULT_RATES.INR).toLocaleString('en-IN')}</p>
-                        <p className="text-xs text-gray-400">${parseFloat(formData.priceUSD).toLocaleString('en-US', { minimumFractionDigits: 2 })} USD</p>
-                      </div>
-                      <div>
-                        <p className="text-gray-600">Discount</p>
-                        <p className="font-semibold text-red-600">-{formData.discount.percentage}%</p>
-                      </div>
-                      <div>
-                        <p className="text-gray-600">Final Price</p>
-                        <p className="font-semibold text-green-600">
-                          ₹{Math.round(parseFloat(formData.priceUSD) * (1 - formData.discount.percentage / 100) * DEFAULT_RATES.INR).toLocaleString('en-IN')}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-gray-600">You Save</p>
-                        <p className="font-semibold text-green-600">
-                          ₹{Math.round(parseFloat(formData.priceUSD) * formData.discount.percentage / 100 * DEFAULT_RATES.INR).toLocaleString('en-IN')}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Discount Status */}
-                    <div className="mt-3 pt-3 border-t border-blue-200">
-                      {(() => {
-                        const now = new Date();
-                        const startDate = formData.discount.startDate ? new Date(formData.discount.startDate) : null;
-                        const endDate = formData.discount.endDate ? new Date(formData.discount.endDate) : null;
-
-                        if (startDate && now < startDate) {
-                          const daysUntil = Math.ceil((startDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
-                          return (
-                            <p className="text-sm text-blue-700">
-                              🟡 <strong>Scheduled:</strong> Discount will start in {daysUntil} day(s)
-                            </p>
-                          );
-                        } else if (endDate && now > endDate) {
-                          return (
-                            <p className="text-sm text-red-700">
-                              🔴 <strong>Expired:</strong> This discount has already ended
-                            </p>
-                          );
-                        } else if (endDate) {
-                          const daysRemaining = Math.ceil((endDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
-                          const hoursRemaining = Math.ceil((endDate.getTime() - now.getTime()) / (1000 * 60 * 60));
-
-                          return (
-                            <p className={`text-sm ${daysRemaining <= 3 ? 'text-red-700' : 'text-green-700'}`}>
-                              🟢 <strong>Active:</strong> {daysRemaining <= 3
-                                ? `Ending soon! ${hoursRemaining} hour(s) remaining`
-                                : `${daysRemaining} day(s) remaining`}
-                            </p>
-                          );
-                        } else {
-                          return (
-                            <p className="text-sm text-green-700">
-                              🟢 <strong>Active:</strong> No expiration date (permanent discount)
-                            </p>
-                          );
-                        }
-                      })()}
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-
-          {/* Product Specifications */}
-          <div className="space-y-4 border-t pt-4">
-            <ProductSpecsEditor
-              category={formData.category}
-              furnitureSpecs={formData.furnitureSpecs}
-              slabSpecs={{}}
-              customSpecs={customSpecs}
-              onSpecsChange={handleSpecsChange}
-            />
-          </div>
-
-          {/* Similar Products Section */}
-          <div className="space-y-4 border-t pt-4">
-            <h3 className="text-lg font-semibold text-gray-900">Similar Products</h3>
-            <p className="text-sm text-gray-500">These will appear as a curated strip at the top of this product's page.</p>
-
-            {/* Selected chips */}
-            {similarProductIds.length > 0 && (
-              <div className="flex flex-wrap gap-2">
-                {similarProductIds.map(pid => (
-                  <span key={pid} className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 text-gray-800 text-sm rounded-full">
-                    {pid}
-                    <button
-                      type="button"
-                      onClick={() => removeSimilarProduct(pid)}
-                      className="text-gray-400 hover:text-red-500 transition-colors ml-0.5"
-                    >
-                      ×
-                    </button>
-                  </span>
-                ))}
-              </div>
-            )}
-
-            {/* Search */}
-            <div className="relative">
-              <input
-                type="text"
-                value={simSearch}
-                onChange={e => setSimSearch(e.target.value)}
-                placeholder="Search product by name or ID..."
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm"
-              />
-              {simSearching && (
-                <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                  <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
-                </div>
-              )}
-              {simResults.length > 0 && (
-                <div className="absolute z-50 left-0 right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-52 overflow-y-auto">
-                  {simResults.map((p: any) => (
-                    <button
-                      key={p.productId}
-                      type="button"
-                      onClick={() => addSimilarProduct(p)}
-                      className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-gray-50 text-left text-sm"
-                    >
-                      {p.image && (
-                        <img src={p.image} alt={p.name} className="w-8 h-8 object-cover rounded flex-shrink-0" />
-                      )}
-                      <div className="min-w-0">
-                        <p className="font-medium text-gray-900 truncate">{p.name}</p>
-                        <p className="text-xs text-gray-500">{p.productId}</p>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Images Section */}
-          <div className="space-y-4 border-t pt-4">
-            <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-              <ImageIcon className="w-5 h-5" />
-              Product Images <span className="text-red-500">*</span>
-            </h3>
-            <ProductImageManager
-              images={images}
-              onImagesChange={setImages}
-              onMainImageChange={() => {}}
-              aspectRatio={1}
-              allowCrop={true}
-              maxImages={10}
-            />
-            
-            {/* Upload Progress for Images */}
-            {uploadProgress.images > 0 && uploadProgress.images < 100 && (
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                <div className="flex items-center gap-3">
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between text-sm text-blue-700 mb-1">
-                      <span>Uploading images...</span>
-                      <span>{uploadProgress.images}%</span>
-                    </div>
-                    <div className="w-full bg-blue-200 rounded-full h-2">
-                      <div 
-                        className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                        style={{ width: `${uploadProgress.images}%` }}
-                      ></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Video Section */}
-          <div className="space-y-4 border-t pt-4">
-            <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-              <Video className="w-5 h-5" />
-              Product Video
-              <span className="text-sm font-normal text-gray-500">(Optional)</span>
-            </h3>
-            <p className="text-sm text-gray-600">
-              Add a product video to showcase features and enhance customer engagement
-            </p>
-            <ProductVideoManager
-              video={video}
-              onVideoChange={(newVideo) => {
-                setVideo(newVideo);
-                if (newVideo && !newVideo.isExisting) {
-                  setVideoUploading(true);
-                  // Simulate upload completion after a delay
-                  setTimeout(() => setVideoUploading(false), 1000);
-                }
-              }}
-              disabled={loading || videoUploading}
-              maxSize={100 * 1024 * 1024} // 100MB
-            />
-            
-            {/* Upload Progress for Video */}
-            {uploadProgress.video > 0 && uploadProgress.video < 100 && (
-              <div className="bg-purple-50 border border-purple-200 rounded-lg p-3">
-                <div className="flex items-center gap-3">
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between text-sm text-purple-700 mb-1">
-                      <span>Uploading video...</span>
-                      <span>{uploadProgress.video}%</span>
-                    </div>
-                    <div className="w-full bg-purple-200 rounded-full h-2">
-                      <div 
-                        className="bg-purple-600 h-2 rounded-full transition-all duration-300"
-                        style={{ width: `${uploadProgress.video}%` }}
-                      ></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-            
-            {videoUploading && (
-              <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
-                <div className="flex items-center gap-2 text-amber-700">
-                  <div className="animate-spin rounded-full h-4 w-4 border-2 border-amber-700 border-t-transparent"></div>
-                  <span className="text-sm font-medium">Processing video...</span>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Shipping Availability Section */}
-          <div className="space-y-4 border-t pt-4">
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                <Globe className="w-5 h-5" />
-                Shipping Availability
-              </h3>
-              <p className="text-sm text-gray-500 mt-1">
-                Control which countries this product can be delivered to.
-              </p>
-            </div>
-
-            {/* Ships Worldwide toggle */}
-            <div className="flex items-center justify-between border border-gray-200 rounded-lg p-4 bg-gray-50">
-              <div>
-                <p className="text-sm font-medium text-gray-900">Ships Worldwide</p>
-                <p className="text-xs text-gray-500 mt-0.5">Enable to ship to all countries. Add exceptions below.</p>
-              </div>
-              <button
-                type="button"
-                disabled={isFormDisabled}
-                onClick={() => setShippingConfig(prev => ({ ...prev, shipsWorldwide: !prev.shipsWorldwide }))}
-                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${shippingConfig.shipsWorldwide ? 'bg-blue-600' : 'bg-gray-300'} disabled:opacity-50`}
-              >
-                <span className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${shippingConfig.shipsWorldwide ? 'translate-x-6' : 'translate-x-1'}`} />
-              </button>
-            </div>
-
-            {/* Excluded countries (when worldwide is on) */}
-            {shippingConfig.shipsWorldwide && (
-              <div className="space-y-2">
-                <p className="text-sm font-medium text-gray-700">Exclude countries (optional)</p>
-
-                {/* Existing excluded tags */}
-                {shippingConfig.excludedCountries.length > 0 && (
-                  <div className="flex flex-wrap gap-1.5">
-                    {shippingConfig.excludedCountries.map(code => {
-                      const c = countries.find(x => x.code === code);
-                      return (
-                        <span key={code} className="inline-flex items-center gap-1 bg-red-50 border border-red-200 text-red-700 text-xs font-medium px-2 py-1 rounded-full">
-                          {c?.flag} {c?.name || code}
-                          <button
-                            type="button"
-                            disabled={isFormDisabled}
-                            onClick={() => setShippingConfig(prev => ({ ...prev, excludedCountries: prev.excludedCountries.filter(x => x !== code) }))}
-                            className="ml-0.5 hover:text-red-900 disabled:opacity-50"
-                          >
-                            <X className="w-3 h-3" />
-                          </button>
-                        </span>
-                      );
-                    })}
-                  </div>
-                )}
-
-                {/* Country search/add */}
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={excludeSearch}
-                    onChange={e => setExcludeSearch(e.target.value)}
-                    placeholder="Search country to exclude..."
-                    disabled={isFormDisabled}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
-                  />
-                  {excludeSearch.trim() && (
-                    <div className="absolute z-50 left-0 right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-44 overflow-y-auto">
-                      {countries
-                        .filter(c =>
-                          !shippingConfig.excludedCountries.includes(c.code) &&
-                          (c.name.toLowerCase().includes(excludeSearch.toLowerCase()) || c.code.toLowerCase().includes(excludeSearch.toLowerCase()))
-                        )
-                        .slice(0, 20)
-                        .map(c => (
-                          <button
-                            key={c.code}
-                            type="button"
-                            disabled={isFormDisabled}
-                            onClick={() => {
-                              setShippingConfig(prev => ({ ...prev, excludedCountries: [...prev.excludedCountries, c.code] }));
-                              setExcludeSearch('');
-                            }}
-                            className="w-full flex items-center gap-2 px-3 py-2 hover:bg-gray-50 text-left text-sm"
-                          >
-                            <span>{c.flag}</span>
-                            <span className="font-medium text-gray-800">{c.name}</span>
-                            <span className="text-gray-400 text-xs ml-auto">{c.code}</span>
-                          </button>
-                        ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* When worldwide is off — all restricted notice */}
-            {!shippingConfig.shipsWorldwide && (
-              <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
-                <p className="text-sm text-amber-800 font-medium">Product restricted from all countries.</p>
-                <p className="text-xs text-amber-700 mt-0.5">Enable "Ships Worldwide" to allow deliveries.</p>
-              </div>
-            )}
-          </div>
-
-          {/* Regional Pricing Section */}
-          <div className="space-y-4 border-t pt-4">
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900">Regional Pricing</h3>
-              <p className="text-sm text-gray-500 mt-1">
-                Set price adjustments per region. Leave disabled to use base USD price.
-                Website shows: USD ($), GBP (£), INR (₹).
-              </p>
-            </div>
-            <div className="space-y-3">
-              {ALL_REGIONS.map((region) => {
-                const rp = regionalPricing[region];
-                const basePrice = parseFloat(formData.priceUSD?.toString() || '0') || 0;
-                // fixed adjustmentValue is stored in INR in state; convert to USD for preview math
-                let previewPrice = basePrice;
-                if (rp.enabled && rp.adjustmentValue) {
-                  previewPrice = rp.adjustmentType === 'percentage'
-                    ? basePrice * (1 + rp.adjustmentValue / 100)
-                    : basePrice + rp.adjustmentValue / DEFAULT_RATES.INR;
-                  previewPrice = Math.max(0, Math.round(previewPrice * 100) / 100);
-                }
-                const basePriceINR = Math.round(basePrice * DEFAULT_RATES.INR);
-                const premiumPriceINR = Math.round(previewPrice * DEFAULT_RATES.INR);
-                const regionRate = REGION_CURRENCY_CODE[region] === 'INR'
-                  ? DEFAULT_RATES.INR
-                  : REGION_CURRENCY_CODE[region] === 'GBP'
-                    ? DEFAULT_RATES.GBP
-                    : 1;
-                const sym = REGION_CURRENCY_SYMBOL[region];
-                const code = REGION_CURRENCY_CODE[region];
-                const basePriceRegional = REGION_CURRENCY_CODE[region] === 'INR'
-                  ? basePriceINR
-                  : parseFloat((basePrice * regionRate).toFixed(2));
-                const premiumPriceRegional = REGION_CURRENCY_CODE[region] === 'INR'
-                  ? premiumPriceINR
-                  : parseFloat((previewPrice * regionRate).toFixed(2));
-                return (
-                  <div key={region} className={`border rounded-lg p-4 ${rp.enabled ? 'border-blue-300 bg-blue-50' : 'border-gray-200 bg-gray-50'}`}>
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center gap-3">
-                        <input
-                          type="checkbox"
-                          id={`rp-${region}`}
-                          checked={rp.enabled}
-                          onChange={(e) => setRegionalPricing(prev => ({
-                            ...prev,
-                            [region]: { ...prev[region], enabled: e.target.checked }
-                          }))}
-                          className="w-4 h-4 text-blue-600 rounded"
-                          disabled={isFormDisabled}
-                        />
-                        <label htmlFor={`rp-${region}`} className="font-medium text-gray-800 cursor-pointer">
-                          {region}
-                        </label>
-                        <span className="text-xs text-gray-400">({REGION_DISPLAY_CURRENCY[region]})</span>
-                      </div>
-                      {basePrice > 0 && (
-                        <div className="text-right text-sm space-y-0.5">
-                          <div className="text-gray-500">
-                            <span className="text-xs text-gray-400 mr-1">Base:</span>
-                            <span className="font-medium">₹{basePriceINR.toLocaleString('en-IN')}</span>
-                            {code !== 'INR' && (
-                              <span className="ml-1 text-xs text-gray-400">
-                                ({sym}{REGION_CURRENCY_CODE[region] === 'USD' ? basePrice.toFixed(2) : basePriceRegional} {code})
-                              </span>
-                            )}
+                    {/* Discount preview */}
+                    {formData.discount.percentage > 0 && formData.priceUSD && (
+                      <div className="bg-orange-50 border border-orange-100 rounded-xl p-4 grid grid-cols-2 gap-3 text-sm">
+                        {[
+                          { label: 'Original', val: `₹${Math.round(parseFloat(formData.priceUSD) * liveRate('INR')).toLocaleString('en-IN')}`, cls: 'text-gray-700' },
+                          { label: 'Discount', val: `−${formData.discount.percentage}%`, cls: 'text-red-500' },
+                          { label: 'Final Price', val: `₹${Math.round(parseFloat(formData.priceUSD) * (1 - formData.discount.percentage / 100) * liveRate('INR')).toLocaleString('en-IN')}`, cls: 'text-orange-600 font-bold' },
+                          { label: 'You Save', val: `₹${Math.round(parseFloat(formData.priceUSD) * formData.discount.percentage / 100 * liveRate('INR')).toLocaleString('en-IN')}`, cls: 'text-green-600' },
+                        ].map(({ label, val, cls }) => (
+                          <div key={label}>
+                            <p className="text-xs text-gray-400">{label}</p>
+                            <p className={`font-semibold mt-0.5 ${cls}`}>{val}</p>
                           </div>
-                          {rp.enabled && rp.adjustmentValue !== 0 && (
-                            <div className={premiumPriceINR > basePriceINR ? 'text-orange-600' : 'text-green-600'}>
-                              <span className="text-xs mr-1 opacity-70">With premium:</span>
-                              <span className="font-semibold">₹{premiumPriceINR.toLocaleString('en-IN')}</span>
-                              {code !== 'INR' && (
-                                <span className="ml-1 text-xs opacity-70">
-                                  ({sym}{REGION_CURRENCY_CODE[region] === 'USD' ? previewPrice.toFixed(2) : premiumPriceRegional} {code})
-                                </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* ── Regional Pricing (paired with base pricing) ── */}
+              <div className="border-t border-gray-100 pt-5 space-y-3">
+                <div>
+                  <h3 className="text-sm font-semibold text-gray-900">Regional Pricing</h3>
+                  <p className="text-xs text-gray-400 mt-0.5">Override price per region. Leave disabled to use the base price.</p>
+                </div>
+                <div className="space-y-2">
+                  {ALL_REGIONS.map(region => {
+                    const rp = regionalPricing[region];
+                    const basePrice    = parseFloat(formData.priceUSD?.toString() || '0') || 0;
+                    let   previewPrice = basePrice;
+                    if (rp.enabled && rp.adjustmentValue) {
+                      previewPrice = rp.adjustmentType === 'percentage'
+                        ? basePrice * (1 + rp.adjustmentValue / 100)
+                        : basePrice + rp.adjustmentValue / liveRate('INR');
+                      previewPrice = Math.max(0, Math.round(previewPrice * 100) / 100);
+                    }
+                    const basePriceINR    = Math.round(basePrice    * liveRate('INR'));
+                    const premiumPriceINR = Math.round(previewPrice * liveRate('INR'));
+                    const code            = REGION_CURRENCY_CODE[region];
+                    const sym             = REGION_CURRENCY_SYMBOL[region];
+                    const regionRate      = liveRate(code);
+                    const basePriceReg    = parseFloat((basePrice    * regionRate).toFixed(2));
+                    const premiumPriceReg = parseFloat((previewPrice * regionRate).toFixed(2));
+
+                    return (
+                      <div key={region} className={`rounded-xl border p-3.5 transition-colors ${rp.enabled ? 'border-orange-200 bg-orange-50' : 'border-gray-100 bg-gray-50'}`}>
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="flex items-center gap-2.5">
+                            <input type="checkbox" id={`rp-${region}`} checked={rp.enabled}
+                              onChange={e => setRegionalPricing(prev => ({ ...prev, [region]: { ...prev[region], enabled: e.target.checked } }))}
+                              className="w-4 h-4 text-orange-500 rounded mt-0.5" disabled={isFormDisabled} />
+                            <div>
+                              <label htmlFor={`rp-${region}`} className="text-sm font-semibold text-gray-800 cursor-pointer">{region}</label>
+                              <p className="text-xs text-gray-400">{REGION_DISPLAY_CURRENCY[region]}</p>
+                            </div>
+                          </div>
+                          {basePrice > 0 && (
+                            <div className="text-right text-xs space-y-0.5">
+                              <div className="text-gray-500">
+                                <span className="text-gray-400">Base: </span>
+                                <span className="font-medium">₹{basePriceINR.toLocaleString('en-IN')}</span>
+                                {code !== 'INR' && <span className="text-gray-400 ml-1">({sym}{basePriceReg} {code})</span>}
+                              </div>
+                              {rp.enabled && rp.adjustmentValue !== 0 && (
+                                <div className={premiumPriceINR > basePriceINR ? 'text-orange-600 font-medium' : 'text-green-600 font-medium'}>
+                                  With: ₹{premiumPriceINR.toLocaleString('en-IN')}
+                                  {code !== 'INR' && <span className="opacity-70 ml-1">({sym}{premiumPriceReg} {code})</span>}
+                                </div>
                               )}
                             </div>
                           )}
                         </div>
-                      )}
-                    </div>
-                    {rp.enabled && (
-                      <div className="flex gap-3 items-center">
-                        <select
-                          value={rp.adjustmentType}
-                          onChange={(e) => setRegionalPricing(prev => ({
-                            ...prev,
-                            [region]: { ...prev[region], adjustmentType: e.target.value as AdjustmentType }
-                          }))}
-                          disabled={isFormDisabled}
-                          className="text-sm border border-gray-300 rounded-lg px-3 py-2 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        >
-                          <option value="percentage">Percentage (%)</option>
-                          <option value="fixed">Fixed Value (₹)</option>
-                        </select>
-                        <div className="relative flex-1">
-                          <input
-                            type="number"
-                            step={rp.adjustmentType === 'percentage' ? '0.01' : '1'}
-                            value={rp.adjustmentValue}
-                            onChange={(e) => setRegionalPricing(prev => ({
-                              ...prev,
-                              [region]: { ...prev[region], adjustmentValue: parseFloat(e.target.value) || 0 }
-                            }))}
-                            placeholder={rp.adjustmentType === 'percentage' ? 'e.g. 10 or -5' : 'e.g. 5000 or -2000'}
-                            disabled={isFormDisabled}
-                            className="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                          />
-                          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm pointer-events-none">
-                            {rp.adjustmentType === 'percentage' ? '%' : '₹'}
-                          </span>
+                        {rp.enabled && (
+                          <div className="flex gap-2 items-center mt-3 pl-6">
+                            <select value={rp.adjustmentType}
+                              onChange={e => setRegionalPricing(prev => ({ ...prev, [region]: { ...prev[region], adjustmentType: e.target.value as AdjustmentType } }))}
+                              disabled={isFormDisabled}
+                              className="text-xs border border-gray-200 rounded-lg px-3 py-2 bg-white focus:ring-2 focus:ring-orange-400 focus:border-transparent">
+                              <option value="percentage">Percentage (%)</option>
+                              <option value="fixed">Fixed (₹)</option>
+                            </select>
+                            <div className="relative flex-1">
+                              <input type="number" step={rp.adjustmentType === 'percentage' ? '0.01' : '1'}
+                                value={rp.adjustmentValue}
+                                onChange={e => setRegionalPricing(prev => ({ ...prev, [region]: { ...prev[region], adjustmentValue: parseFloat(e.target.value) || 0 } }))}
+                                placeholder={rp.adjustmentType === 'percentage' ? 'e.g. 10' : 'e.g. 5000'}
+                                disabled={isFormDisabled}
+                                className="w-full text-xs border border-gray-200 rounded-lg px-3 py-2 pr-7 focus:ring-2 focus:ring-orange-400 focus:border-transparent bg-white" />
+                              <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none">
+                                {rp.adjustmentType === 'percentage' ? '%' : '₹'}
+                              </span>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          {/* ⑤ Product Specs */}
+          <div ref={secRef('specs')} id="specs" className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            <div className="px-6 py-5">
+              <ProductSpecsEditor
+                category={formData.category as 'furniture' | 'slabs'}
+                furnitureSpecs={formData.furnitureSpecs}
+                slabSpecs={{}}
+                customSpecs={customSpecs}
+                onSpecsChange={handleSpecsChange}
+              />
+            </div>
+          </div>
+
+          {/* ⑥ Similar Products */}
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            <div className="px-6 py-4 border-b border-gray-50">
+              <h2 className="font-semibold text-gray-900 text-[15px]">Similar Products</h2>
+              <p className="text-xs text-gray-400 mt-0.5">Shown as a curated strip at the top of this product's page.</p>
+            </div>
+            <div className="px-6 py-5 space-y-3">
+              {similarProductIds.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {similarProductIds.map(pid => (
+                    <span key={pid} className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 text-gray-800 text-sm rounded-full">
+                      {pid}
+                      <button type="button" onClick={() => removeSimilarProduct(pid)} className="text-gray-400 hover:text-red-500 transition-colors">×</button>
+                    </span>
+                  ))}
+                </div>
+              )}
+              <div className="relative">
+                <input type="text" value={simSearch} onChange={e => setSimSearch(e.target.value)}
+                  placeholder="Search product by name or ID…" className={inputCls} />
+                {simSearching && (
+                  <div className="absolute right-4 top-1/2 -translate-y-1/2">
+                    <div className="w-4 h-4 border-2 border-orange-400 border-t-transparent rounded-full animate-spin" />
+                  </div>
+                )}
+                {simResults.length > 0 && (
+                  <div className="absolute z-50 left-0 right-0 top-full mt-1 bg-white border border-gray-200 rounded-xl shadow-lg max-h-52 overflow-y-auto">
+                    {simResults.map((p: any) => (
+                      <button key={p.productId} type="button" onClick={() => addSimilarProduct(p)}
+                        className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-50 text-left text-sm">
+                        {p.image && <img src={p.image} alt={p.name} className="w-9 h-9 object-cover rounded-lg flex-shrink-0" />}
+                        <div className="min-w-0">
+                          <p className="font-medium text-gray-900 truncate">{p.name}</p>
+                          <p className="text-xs text-gray-400">{p.productId}</p>
                         </div>
-                        <span className="text-xs text-gray-400 whitespace-nowrap">
-                          {rp.adjustmentValue > 0 ? '+' : ''}{rp.adjustmentValue}
-                          {rp.adjustmentType === 'percentage' ? '% markup' : '₹ added'}
-                        </span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* ⑦ Shipping */}
+          <div ref={secRef('shipping')} id="shipping" className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            <div className="flex items-center gap-2.5 px-6 py-4 border-b border-gray-50">
+              <Globe className="w-4 h-4 text-gray-400" />
+              <div>
+                <h2 className="font-semibold text-gray-900 text-[15px]">Shipping</h2>
+                <p className="text-xs text-gray-400 mt-0.5">Control which countries this product ships to.</p>
+              </div>
+            </div>
+            <div className="px-6 py-5 space-y-4">
+              <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
+                <div>
+                  <p className="text-sm font-medium text-gray-900">Ships Worldwide</p>
+                  <p className="text-xs text-gray-400 mt-0.5">Ship to all countries</p>
+                </div>
+                <button type="button" disabled={isFormDisabled}
+                  onClick={() => setShippingConfig(prev => ({ ...prev, shipsWorldwide: !prev.shipsWorldwide }))}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${shippingConfig.shipsWorldwide ? 'bg-orange-500' : 'bg-gray-300'} disabled:opacity-50`}>
+                  <span className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${shippingConfig.shipsWorldwide ? 'translate-x-6' : 'translate-x-1'}`} />
+                </button>
+              </div>
+              {shippingConfig.shipsWorldwide && (
+                <div className="space-y-3">
+                  <p className="text-sm font-medium text-gray-700">Exclude countries <span className="text-gray-400 font-normal text-xs">(optional)</span></p>
+                  {shippingConfig.excludedCountries.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5">
+                      {shippingConfig.excludedCountries.map(code => {
+                        const c = countries.find(x => x.code === code);
+                        return (
+                          <span key={code} className="inline-flex items-center gap-1 bg-red-50 border border-red-100 text-red-700 text-xs font-medium px-2 py-1 rounded-full">
+                            {c?.flag} {c?.name || code}
+                            <button type="button" disabled={isFormDisabled}
+                              onClick={() => setShippingConfig(prev => ({ ...prev, excludedCountries: prev.excludedCountries.filter(x => x !== code) }))}
+                              className="ml-0.5 hover:text-red-900 disabled:opacity-50">
+                              <X className="w-3 h-3" />
+                            </button>
+                          </span>
+                        );
+                      })}
+                    </div>
+                  )}
+                  <div className="relative">
+                    <input type="text" value={excludeSearch} onChange={e => setExcludeSearch(e.target.value)}
+                      placeholder="Search country to exclude…" disabled={isFormDisabled} className={inputCls} />
+                    {excludeSearch.trim() && (
+                      <div className="absolute z-50 left-0 right-0 top-full mt-1 bg-white border border-gray-200 rounded-xl shadow-lg max-h-44 overflow-y-auto">
+                        {countries
+                          .filter(c => !shippingConfig.excludedCountries.includes(c.code) &&
+                            (c.name.toLowerCase().includes(excludeSearch.toLowerCase()) || c.code.toLowerCase().includes(excludeSearch.toLowerCase())))
+                          .slice(0, 20)
+                          .map(c => (
+                            <button key={c.code} type="button" disabled={isFormDisabled}
+                              onClick={() => { setShippingConfig(prev => ({ ...prev, excludedCountries: [...prev.excludedCountries, c.code] })); setExcludeSearch(''); }}
+                              className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 text-left text-sm">
+                              <span>{c.flag}</span>
+                              <span className="font-medium text-gray-800">{c.name}</span>
+                              <span className="text-gray-400 text-xs ml-auto">{c.code}</span>
+                            </button>
+                          ))}
                       </div>
                     )}
                   </div>
-                );
-              })}
+                </div>
+              )}
+              {!shippingConfig.shipsWorldwide && (
+                <div className="bg-amber-50 border border-amber-100 rounded-xl p-4">
+                  <p className="text-sm text-amber-700 font-medium">Product restricted from all countries.</p>
+                  <p className="text-xs text-amber-600 mt-0.5">Enable "Ships Worldwide" to allow deliveries.</p>
+                </div>
+              )}
             </div>
           </div>
-        </div>
 
-        {/* Footer */}
-        <div className="flex-none border-t border-gray-200 p-6">
-          <div className="flex justify-end gap-3">
-            <button
-              onClick={onCancel}
-              disabled={isFormDisabled}
-              className="px-4 py-2 bg-gray-200 hover:bg-gray-300 disabled:bg-gray-100 disabled:cursor-not-allowed text-gray-700 rounded-lg font-medium transition-colors"
-            >
-              Cancel
-            </button>
-            <button
-              onClick={handlePreview}
-              disabled={isFormDisabled}
-              className="px-4 py-2 bg-gray-600 hover:bg-gray-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors flex items-center gap-2"
-            >
-              {(previewLoading || validationLoading) && (
-                <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-              )}
-              <Eye className="w-4 h-4" />
-              {previewLoading ? 'Previewing...' : validationLoading ? 'Validating...' : 'Preview'}
-            </button>
-            <button
-              onClick={handleSave}
-              disabled={isFormDisabled}
-              className="px-6 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors flex items-center gap-2"
-            >
-              {(loading || videoUploading || formSubmitting || validationLoading) && (
-                <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-              )}
-              <Save className="w-4 h-4" />
-              {validationLoading ? 'Validating...' :
-               formSubmitting && !loading ? 'Preparing...' :
-               loading && uploadProgress && (uploadProgress.images > 0 || uploadProgress.video > 0) ? 'Uploading...' :
-               loading ? (editingProduct ? 'Updating...' : 'Creating...') :
-               videoUploading ? 'Processing Video...' :
-               (editingProduct ? 'Update Product' : 'Create Product')}
-            </button>
-          </div>
-        </div>
-      </div>
+      </div>{/* end body */}
+
     </div>
   );
 };

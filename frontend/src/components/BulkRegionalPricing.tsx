@@ -7,7 +7,7 @@ type RegionKey = 'UAE' | 'Europe' | 'India' | 'USA' | 'UK';
 
 const ALL_REGIONS: RegionKey[] = ['UAE', 'Europe', 'India', 'USA', 'UK'];
 const REGION_CURRENCIES: Record<RegionKey, string> = {
-  UAE: 'USD ($)', Europe: 'GBP (£)', India: 'INR (₹)', USA: 'USD ($)', UK: 'GBP (£)'
+  UAE: 'AED (د.إ)', Europe: 'EUR (€)', India: 'INR (₹)', USA: 'USD ($)', UK: 'GBP (£)'
 };
 
 const defaultRP = () =>

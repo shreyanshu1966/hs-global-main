@@ -5,8 +5,8 @@
 // ============================================================
 
 export const REGION_CURRENCIES: Record<string, string> = {
-  UAE: 'USD',
-  Europe: 'GBP',
+  UAE: 'AED',
+  Europe: 'EUR',
   India: 'INR',
   USA: 'USD',
   UK: 'GBP',
@@ -17,12 +17,16 @@ export const CURRENCY_SYMBOLS: Record<string, string> = {
   USD: '$',
   INR: '₹',
   GBP: '£',
+  EUR: '€',
+  AED: 'AED',
 };
 
 export const DEFAULT_RATES: Record<string, number> = {
   USD: 1,
   INR: 83.5,
   GBP: 0.79,
+  EUR: 0.92,
+  AED: 3.67,
 };
 
 export interface RegionalPricingEntry {

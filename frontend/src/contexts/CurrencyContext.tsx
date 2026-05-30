@@ -19,7 +19,7 @@ interface CurrencyContextType {
 }
 
 export { CURRENCY_SYMBOLS, DEFAULT_RATES };
-export const SUPPORTED_CURRENCIES = ['USD', 'INR', 'GBP'];
+export const SUPPORTED_CURRENCIES = ['USD', 'INR', 'GBP', 'EUR', 'AED'];
 
 const API_URL = `${import.meta.env.VITE_API_URL || '/api'}/currency/rates`;
 
