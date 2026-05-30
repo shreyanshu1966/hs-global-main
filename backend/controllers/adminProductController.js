@@ -1259,6 +1259,120 @@ const removeProductDiscount = async (req, res) => {
     }
 };
 
+// ==================== BULK ACTIONS ====================
+
+/**
+ * Bulk update status for selected products
+ * PATCH /api/admin/products/bulk/status
+ */
+const bulkUpdateStatus = async (req, res) => {
+    try {
+        const { productIds, status } = req.body;
+        if (!productIds || !Array.isArray(productIds) || productIds.length === 0) {
+            return res.status(400).json({ success: false, message: 'productIds array is required' });
+        }
+        const validStatuses = ['active', 'inactive', 'draft'];
+        if (!validStatuses.includes(status)) {
+            return res.status(400).json({ success: false, message: `status must be one of: ${validStatuses.join(', ')}` });
+        }
+        const result = await Product.updateMany(
+            { productId: { $in: productIds } },
+            { $set: { status } }
+        );
+        const updated = result?.modifiedCount ?? result?.nModified ?? 0;
+        res.json({ success: true, data: { updated }, message: `${updated} product(s) set to ${status}` });
+    } catch (error) {
+        console.error('Bulk status update error:', error);
+        res.status(500).json({ success: false, message: 'Failed to update status', error: error.message });
+    }
+};
+
+/**
+ * Bulk delete selected products (removes images + video)
+ * DELETE /api/admin/products/bulk
+ */
+const bulkDeleteProducts = async (req, res) => {
+    try {
+        const { productIds } = req.body;
+        if (!productIds || !Array.isArray(productIds) || productIds.length === 0) {
+            return res.status(400).json({ success: false, message: 'productIds array is required' });
+        }
+        const products = await Product.find({ productId: { $in: productIds } });
+        let deleted = 0;
+        for (const product of products) {
+            try {
+                if (product.videoUrl) {
+                    await deleteVideoFromGoDaddy(product.videoUrl).catch(() => {});
+                }
+                if (product.images?.length) {
+                    await deleteMultipleFromCloudinary(product.images).catch(() => {});
+                }
+                await Product.deleteOne({ _id: product._id });
+                deleted++;
+            } catch (err) {
+                console.error(`Failed to delete product ${product.productId}:`, err);
+            }
+        }
+        res.json({ success: true, data: { deleted }, message: `${deleted} product(s) deleted` });
+    } catch (error) {
+        console.error('Bulk delete error:', error);
+        res.status(500).json({ success: false, message: 'Failed to delete products', error: error.message });
+    }
+};
+
+/**
+ * Bulk price adjustment for selected products
+ * PATCH /api/admin/products/bulk/price
+ * Body: { productIds, adjustType: 'percentage'|'fixed_inr', value, direction: 'increase'|'decrease' }
+ */
+const bulkAdjustPrice = async (req, res) => {
+    try {
+        const { productIds, adjustType, value, direction } = req.body;
+        if (!productIds || !Array.isArray(productIds) || productIds.length === 0) {
+            return res.status(400).json({ success: false, message: 'productIds array is required' });
+        }
+        if (!['percentage', 'fixed_inr'].includes(adjustType)) {
+            return res.status(400).json({ success: false, message: 'adjustType must be percentage or fixed_inr' });
+        }
+        if (typeof value !== 'number' || value <= 0) {
+            return res.status(400).json({ success: false, message: 'value must be a positive number' });
+        }
+        if (!['increase', 'decrease'].includes(direction)) {
+            return res.status(400).json({ success: false, message: 'direction must be increase or decrease' });
+        }
+
+        // Get live INR rate for fixed_inr conversion
+        let inrRate = 83.5;
+        if (adjustType === 'fixed_inr') {
+            try {
+                const Currency = require('../models/Currency');
+                const currencyDoc = await Currency.findOne({ base: 'USD' });
+                if (currencyDoc?.rates?.INR) inrRate = currencyDoc.rates.INR;
+            } catch { /* use fallback */ }
+        }
+
+        const products = await Product.find({ productId: { $in: productIds }, priceUSD: { $exists: true, $gt: 0 } });
+        let updated = 0;
+        for (const product of products) {
+            let newPrice;
+            if (adjustType === 'percentage') {
+                const multiplier = direction === 'increase' ? 1 + value / 100 : 1 - value / 100;
+                newPrice = product.priceUSD * multiplier;
+            } else {
+                const deltaUSD = value / inrRate;
+                newPrice = direction === 'increase' ? product.priceUSD + deltaUSD : product.priceUSD - deltaUSD;
+            }
+            newPrice = Math.max(0.01, Math.round(newPrice * 100) / 100);
+            await Product.updateOne({ _id: product._id }, { $set: { priceUSD: newPrice } });
+            updated++;
+        }
+        res.json({ success: true, data: { updated }, message: `Price adjusted for ${updated} product(s)` });
+    } catch (error) {
+        console.error('Bulk price adjust error:', error);
+        res.status(500).json({ success: false, message: 'Failed to adjust prices', error: error.message });
+    }
+};
+
 // ==================== REGIONAL PRICING ====================
 
 const { REGIONS } = require('../utils/regionUtils');
@@ -1391,5 +1505,9 @@ module.exports = {
     // Regional pricing
     updateProductRegionalPricing,
     bulkUpdateRegionalPricing,
-    getRegionalPricingOverview
+    getRegionalPricingOverview,
+    // Bulk actions
+    bulkUpdateStatus,
+    bulkDeleteProducts,
+    bulkAdjustPrice
 };

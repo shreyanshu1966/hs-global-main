@@ -17,7 +17,7 @@ const TARGET_PRODUCT_ID = process.argv.find(a => a.startsWith('--product='))?.sp
     || null;
 
 const REGIONS = ['default', 'UAE', 'USA', 'India', 'Europe', 'UK'];
-const REGION_CURRENCIES = { default: 'USD', UAE: 'USD', USA: 'USD', India: 'INR', Europe: 'GBP', UK: 'GBP' };
+const REGION_CURRENCIES = { default: 'USD', UAE: 'AED', USA: 'USD', India: 'INR', Europe: 'EUR', UK: 'GBP' };
 
 // ─── HTTP helper ─────────────────────────────────────────────────────────────
 function request(url, options = {}, body = null) {
