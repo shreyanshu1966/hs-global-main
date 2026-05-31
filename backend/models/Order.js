@@ -151,6 +151,12 @@ const orderSchema = new mongoose.Schema({
     notes: {
         type: String
     },
+    coupon: {
+        code: String,
+        discountType: String,
+        discountValue: Number,
+        discountAmountUSD: Number
+    },
     region: {
         type: String,
         enum: ['UAE', 'Europe', 'India', 'USA', 'UK', 'default'],

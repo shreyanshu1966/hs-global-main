@@ -110,6 +110,8 @@ app.use('/api', require('./routes/popupConfigRoutes')); // Public popup config
 app.use('/api', require('./routes/productRoutes')); // Product routes
 app.use('/api/delivery-analytics', require('./routes/deliveryAnalyticsRoutes')); // Delivery check analytics
 app.use('/api/admin/delivery-analytics', require('./routes/deliveryAnalyticsRoutes')); // Admin read alias
+app.use('/api/coupons', require('./routes/couponRoutes')); // Coupon management
+app.use('/api/spec-keys', require('./routes/specKeyRoutes')); // Product spec key pool
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
