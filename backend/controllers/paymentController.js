@@ -47,7 +47,7 @@ const getPayPalAccessToken = async () => {
  */
 exports.calculateCartTotal = async (req, res) => {
     try {
-        const { items, currency = 'USD', region = 'default' } = req.body;
+        const { items, currency = 'USD', region = 'default', couponCode } = req.body;
         const { getRegionalPriceUSD } = require('../utils/pricingCalculator');
 
         if (!items || items.length === 0) {
@@ -116,12 +116,39 @@ exports.calculateCartTotal = async (req, res) => {
             });
         }
 
+        // Validate and apply coupon if provided
+        let couponDiscount = null;
+        let finalTotalUSD = totalUSD;
+
+        if (couponCode && typeof couponCode === 'string') {
+            const Coupon = require('../models/Coupon');
+            const coupon = await Coupon.findOne({ code: couponCode.trim().toUpperCase() });
+
+            if (coupon) {
+                const userId = req.user?._id || null;
+                const validity = coupon.isValid(totalUSD, userId);
+
+                if (validity.valid) {
+                    const discountAmountUSD = coupon.calculateDiscount(totalUSD);
+                    finalTotalUSD = Math.max(0, totalUSD - discountAmountUSD);
+                    couponDiscount = {
+                        code: coupon.code,
+                        discountType: coupon.discountType,
+                        discountValue: coupon.discountValue,
+                        discountAmountUSD: parseFloat(discountAmountUSD.toFixed(2))
+                    };
+                }
+            }
+        }
+
         res.json({
             ok: true,
             items: validatedItems,
             region,
+            couponDiscount,
             totals: {
-                USD: parseFloat(totalUSD.toFixed(2))
+                USD: parseFloat(finalTotalUSD.toFixed(2)),
+                subtotalUSD: parseFloat(totalUSD.toFixed(2))
             }
         });
     } catch (error) {
@@ -139,7 +166,7 @@ exports.calculateCartTotal = async (req, res) => {
  */
 exports.createOrder = async (req, res) => {
     try {
-        const { amount, currency = 'USD', receipt, items, shippingAddress, customer, region = 'default' } = req.body;
+        const { amount, currency = 'USD', receipt, items, shippingAddress, customer, region = 'default', couponCode } = req.body;
         const { getRegionalPriceUSD } = require('../utils/pricingCalculator');
 
         // Enhanced validation with comprehensive security checks
@@ -271,6 +298,36 @@ exports.createOrder = async (req, res) => {
 
             // Round to 2 decimal places
             serverCalculatedTotal = parseFloat(serverCalculatedTotal.toFixed(2));
+
+            // Validate and apply coupon server-side (never trust frontend discount)
+            let appliedCoupon = null;
+            let couponDiscountAmountUSD = 0;
+
+            if (couponCode && typeof couponCode === 'string') {
+                const Coupon = require('../models/Coupon');
+                const coupon = await Coupon.findOne({ code: couponCode.trim().toUpperCase() });
+
+                if (!coupon) {
+                    return res.status(400).json({ ok: false, error: 'Invalid coupon code', code: 'INVALID_COUPON' });
+                }
+
+                const validity = coupon.isValid(serverCalculatedTotal, req.user._id);
+                if (!validity.valid) {
+                    return res.status(400).json({ ok: false, error: validity.message, code: 'COUPON_INVALID' });
+                }
+
+                couponDiscountAmountUSD = coupon.calculateDiscount(serverCalculatedTotal);
+                appliedCoupon = {
+                    couponDoc: coupon,
+                    code: coupon.code,
+                    discountType: coupon.discountType,
+                    discountValue: coupon.discountValue,
+                    discountAmountUSD: parseFloat(couponDiscountAmountUSD.toFixed(2))
+                };
+
+                serverCalculatedTotal = parseFloat(Math.max(0, serverCalculatedTotal - couponDiscountAmountUSD).toFixed(2));
+                console.log(`🎟️ Coupon applied: ${coupon.code} → -$${couponDiscountAmountUSD.toFixed(2)}, new total: $${serverCalculatedTotal}`);
+            }
 
             // Compare with frontend amount for logging/monitoring only (don't reject)
             const frontendAmountUSD = parseFloat(amount);
@@ -441,7 +498,27 @@ exports.createOrder = async (req, res) => {
                         phone: customer?.phone || req.user.phone
                     },
                     region: region,
-                    regionalPricingApplied: region !== 'default'
+                    regionalPricingApplied: region !== 'default',
+                    coupon: appliedCoupon ? {
+                        code: appliedCoupon.code,
+                        discountType: appliedCoupon.discountType,
+                        discountValue: appliedCoupon.discountValue,
+                        discountAmountUSD: appliedCoupon.discountAmountUSD
+                    } : undefined
+                });
+            }
+
+            // Record coupon usage atomically after order is persisted
+            if (appliedCoupon) {
+                await appliedCoupon.couponDoc.updateOne({
+                    $inc: { usedCount: 1 },
+                    $push: {
+                        usageLog: {
+                            userId: req.user._id,
+                            orderId: transactionId,
+                            usedAt: new Date()
+                        }
+                    }
                 });
             }
 

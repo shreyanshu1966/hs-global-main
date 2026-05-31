@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useState, useRef } from 'react';
-import { X, Plus, Minus, Trash2, MessageCircle } from 'lucide-react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { X, Plus, Minus, Trash2, MessageCircle, Tag, Loader2 } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { useNavigate } from 'react-router-dom';
 import { useCurrency } from '../contexts/CurrencyContext';
@@ -7,13 +7,18 @@ import { useAuth } from '../contexts/AuthContext';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+
 export const CartDrawer: React.FC = () => {
   const { formatPrice } = useCurrency();
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
-  const { state, updateQuantity, removeItem, closeCart, getTotalItems, getRegionalEffectivePriceUSD, getRegionalBasePriceUSD } = useCart();
+  const { state, updateQuantity, removeItem, closeCart, getTotalItems, getRegionalEffectivePriceUSD, getRegionalBasePriceUSD, applyCoupon, removeCoupon } = useCart();
 
   const [isRendered, setIsRendered] = useState(false);
+  const [couponInput, setCouponInput] = useState('');
+  const [couponLoading, setCouponLoading] = useState(false);
+  const [couponError, setCouponError] = useState<string | null>(null);
   const backdropRef = useRef<HTMLDivElement>(null);
   const drawerRef = useRef<HTMLDivElement>(null);
   
@@ -57,7 +62,12 @@ export const CartDrawer: React.FC = () => {
     return state.items.reduce((sum, item) => sum + getRegionalEffectivePriceUSD(item) * item.quantity, 0);
   }, [state.items, getRegionalEffectivePriceUSD]);
 
-  const totalAmount = subtotalUSD;
+  const totalAmount = useMemo(() => {
+    if (state.appliedCoupon) {
+      return Math.max(0, subtotalUSD - state.appliedCoupon.discountAmountUSD);
+    }
+    return subtotalUSD;
+  }, [subtotalUSD, state.appliedCoupon]);
 
   const handleClose = () => closeCart();
 
@@ -87,6 +97,35 @@ export const CartDrawer: React.FC = () => {
       removeItem(id);
     } else {
       updateQuantity(id, newQuantity);
+    }
+  };
+
+  const handleApplyCoupon = async () => {
+    if (!couponInput.trim()) return;
+    setCouponLoading(true);
+    setCouponError(null);
+    try {
+      const res = await fetch(`${API_URL}/coupons/validate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: couponInput.trim(), cartTotalUSD: subtotalUSD })
+      });
+      const data = await res.json();
+      if (!data.ok) {
+        setCouponError(data.message || 'Invalid coupon');
+      } else {
+        applyCoupon({
+          code: data.code,
+          discountType: data.discountType,
+          discountValue: data.discountValue,
+          discountAmountUSD: data.discountAmountUSD
+        });
+        setCouponInput('');
+      }
+    } catch {
+      setCouponError('Failed to validate coupon. Please try again.');
+    } finally {
+      setCouponLoading(false);
     }
   };
 
@@ -227,8 +266,44 @@ export const CartDrawer: React.FC = () => {
 
             {state.items.length > 0 && (
               <div className="px-6 py-5 border-t border-[#e5e7eb] bg-white flex flex-col gap-4">
+                {/* Coupon Input */}
+                {state.appliedCoupon ? (
+                  <div className="flex items-center justify-between bg-green-50 border border-green-200 px-3 py-2 rounded">
+                    <div className="flex items-center gap-2 text-green-800 text-sm">
+                      <Tag className="w-4 h-4" />
+                      <span className="font-semibold">{state.appliedCoupon.code}</span>
+                      <span className="text-green-600">−{formatPrice(state.appliedCoupon.discountAmountUSD)}</span>
+                    </div>
+                    <button onClick={() => removeCoupon()} className="text-green-700 hover:text-red-600 transition-colors text-xs font-medium">Remove</button>
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-1">
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={couponInput}
+                        onChange={e => { setCouponInput(e.target.value.toUpperCase()); setCouponError(null); }}
+                        onKeyDown={e => e.key === 'Enter' && handleApplyCoupon()}
+                        placeholder="Coupon code"
+                        className="flex-1 px-3 py-2 border border-[#d1d5db] text-sm outline-none focus:border-black transition-colors"
+                      />
+                      <button
+                        onClick={handleApplyCoupon}
+                        disabled={couponLoading || !couponInput.trim()}
+                        className="px-4 py-2 bg-black text-white text-xs font-semibold uppercase tracking-wide hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
+                      >
+                        {couponLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : 'Apply'}
+                      </button>
+                    </div>
+                    {couponError && <p className="text-xs text-red-600">{couponError}</p>}
+                  </div>
+                )}
+
+                {/* Subtotal */}
                 <div className="flex items-center justify-between border border-[#e5e7eb] bg-[#f8fafc] px-4 py-3">
-                  <span className="text-xs uppercase tracking-[0.1em] font-semibold text-[#374151]">Subtotal</span>
+                  <span className="text-xs uppercase tracking-[0.1em] font-semibold text-[#374151]">
+                    {state.appliedCoupon ? 'Total' : 'Subtotal'}
+                  </span>
                   <span className="text-xl font-['Playfair_Display'] font-bold text-[#111111]">
                     {formatPrice(totalAmount)}
                   </span>

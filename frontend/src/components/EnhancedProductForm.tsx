@@ -244,9 +244,9 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
     handleInputChange('priceUSD', rawVal && !isNaN(n) ? String(n / liveRate('INR')) : '');
   };
 
-  const handleSpecsChange = (specs: any, customSpecsData?: any[]) => {
+  const handleSpecsChange = (specs: any, customSpecsData: any[]) => {
     setFormData(prev => ({ ...prev, furnitureSpecs: specs }));
-    if (customSpecsData) setCustomSpecs(customSpecsData);
+    setCustomSpecs(customSpecsData);
   };
 
   const addSimilarProduct = (p: any) => {
@@ -276,6 +276,16 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
         (Object.entries(regionalPricing) as [RegionKey, typeof regionalPricing[RegionKey]][]).map(([k, v]) => [k, cvtSave(v)])
       );
 
+      const formattedCustomSpecs = customSpecs
+        .filter((s: any) => s.label && s.label.trim())
+        .map((s: any, i: number) => ({
+          key: (s.key || s.label).trim().toLowerCase().replace(/\s+/g, '_'),
+          label: s.label.trim(),
+          value: (s.value || '').trim(),
+          type: 'text',
+          order: i,
+        }));
+
       await onSave({
         productId: formData.productId, name: formData.name, category: formData.category,
         subcategory: finalSubcategory, description: formData.description,
@@ -283,6 +293,7 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
         priceUSD: formData.priceUSD ? parseFloat(formData.priceUSD.toString()) : undefined,
         status: formData.status, available: formData.available, featured: formData.featured,
         furnitureSpecs: formData.furnitureSpecs, discount: formData.discount, hasVideo: !!video,
+        customSpecs: formattedCustomSpecs,
         similarProducts: similarProductIds, regionalPricing: regionalPricingForSave,
         shipping: { shipsWorldwide: shippingConfig.shipsWorldwide, excludedCountries: shippingConfig.excludedCountries },
       }, images, customSpecs, video && !video.isExisting ? video.file : null);
@@ -758,9 +769,8 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
           <div ref={secRef('specs')} id="specs" className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
             <div className="px-6 py-5">
               <ProductSpecsEditor
-                category={formData.category as 'furniture' | 'slabs'}
+                category={formData.category}
                 furnitureSpecs={formData.furnitureSpecs}
-                slabSpecs={{}}
                 customSpecs={customSpecs}
                 onSpecsChange={handleSpecsChange}
               />

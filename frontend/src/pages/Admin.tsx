@@ -1402,24 +1402,46 @@ const Admin = () => {
 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                     {/* Quick Actions */}
-                    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg shadow-sm border border-blue-200 p-4 mb-6">
-                        <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                                <div className="p-2 bg-blue-600 rounded-lg">
-                                    <Percent className="w-5 h-5 text-white" />
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg shadow-sm border border-blue-200 p-4">
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-3">
+                                    <div className="p-2 bg-blue-600 rounded-lg">
+                                        <Percent className="w-5 h-5 text-white" />
+                                    </div>
+                                    <div>
+                                        <h3 className="text-sm font-semibold text-gray-900">Discount Management</h3>
+                                        <p className="text-xs text-gray-600">Manage product discounts and cleanup expired offers</p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h3 className="text-sm font-semibold text-gray-900">Discount Management</h3>
-                                    <p className="text-xs text-gray-600">View analytics, manage product discounts, and cleanup expired offers</p>
-                                </div>
+                                <button
+                                    onClick={() => navigate('/admin/discounts')}
+                                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium text-sm transition-colors flex items-center gap-2"
+                                >
+                                    <Percent className="w-4 h-4" />
+                                    Manage
+                                </button>
                             </div>
-                            <button
-                                onClick={() => navigate('/admin/discounts')}
-                                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium text-sm transition-colors flex items-center gap-2"
-                            >
-                                <Percent className="w-4 h-4" />
-                                Manage Discounts
-                            </button>
+                        </div>
+                        <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg shadow-sm border border-green-200 p-4">
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-3">
+                                    <div className="p-2 bg-green-600 rounded-lg">
+                                        <Tag className="w-5 h-5 text-white" />
+                                    </div>
+                                    <div>
+                                        <h3 className="text-sm font-semibold text-gray-900">Coupon Codes</h3>
+                                        <p className="text-xs text-gray-600">Create and manage discount coupon codes for checkout</p>
+                                    </div>
+                                </div>
+                                <button
+                                    onClick={() => navigate('/admin/coupons')}
+                                    className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium text-sm transition-colors flex items-center gap-2"
+                                >
+                                    <Tag className="w-4 h-4" />
+                                    Manage
+                                </button>
+                            </div>
                         </div>
                     </div>
 

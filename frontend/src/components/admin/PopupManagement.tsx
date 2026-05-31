@@ -1,12 +1,145 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
-  Save, ToggleLeft, ToggleRight, Clock, Tag, Percent, Calendar,
-  Image as ImageIcon, Eye, EyeOff, Loader2, Check, AlertCircle,
-  ImagePlus, Timer, Bell, LogIn, MessageSquare, Zap, X, RefreshCw
+  Save, Clock, Tag, Percent, Calendar,
+  Loader2, Check, AlertCircle,
+  ImagePlus, Timer, Bell, LogIn, Zap, X, RefreshCw,
+  ChevronDown, Link2
 } from 'lucide-react';
 import { popupConfigService, PopupConfig, DEFAULT_POPUP_CONFIG } from '../../services/popupConfigService';
 import ImageCropper from '../ImageCropper';
 import { homePageConfigService } from '../../services/homePageConfigService';
+import { useAuth } from '../../contexts/AuthContext';
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+
+interface SavedCoupon {
+  _id: string;
+  code: string;
+  discountType: 'percentage' | 'fixed';
+  discountValue: number;
+  isActive: boolean;
+  endDate: string | null;
+  usedCount: number;
+  maxUses: number | null;
+}
+
+// ─── Coupon picker field ────────────────────────────────────────
+
+interface CouponPickerProps {
+  code: string;
+  discountPercentage: number;
+  onCodeChange: (code: string) => void;
+  onDiscountChange: (pct: number) => void;
+  coupons: SavedCoupon[];
+}
+
+const CouponPickerField: React.FC<CouponPickerProps> = ({ code, discountPercentage, onCodeChange, onDiscountChange, coupons }) => {
+  const [manualMode, setManualMode] = useState(false);
+  const linked = coupons.find(c => c.code === code);
+  const isExpired = linked?.endDate ? new Date(linked.endDate) < new Date() : false;
+
+  const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const val = e.target.value;
+    if (val === '__manual__') { setManualMode(true); return; }
+    const picked = coupons.find(c => c._id === val);
+    if (!picked) return;
+    onCodeChange(picked.code);
+    if (picked.discountType === 'percentage') onDiscountChange(picked.discountValue);
+    setManualMode(false);
+  };
+
+  return (
+    <div className="grid grid-cols-2 gap-4">
+      <div>
+        <label className="block text-xs font-medium text-gray-600 mb-1.5 uppercase tracking-wide">Coupon code</label>
+
+        {/* Saved coupon selector */}
+        {!manualMode ? (
+          <div className="space-y-2">
+            <div className="relative">
+              <Link2 className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 pointer-events-none" />
+              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 pointer-events-none" />
+              <select
+                value={linked?._id ?? ''}
+                onChange={handleSelect}
+                className="w-full pl-8 pr-8 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#111827] appearance-none bg-white"
+              >
+                <option value="">— pick a saved coupon —</option>
+                {coupons.map(c => (
+                  <option key={c._id} value={c._id}>
+                    {c.code} ({c.discountType === 'percentage' ? `${c.discountValue}%` : `$${c.discountValue}`})
+                  </option>
+                ))}
+                <option value="__manual__">✏ Enter manually…</option>
+              </select>
+            </div>
+
+            {/* Selected coupon badge */}
+            {code && (
+              <div className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-mono font-bold border ${
+                isExpired
+                  ? 'bg-red-50 border-red-200 text-red-700'
+                  : linked
+                    ? 'bg-green-50 border-green-200 text-green-800'
+                    : 'bg-gray-50 border-gray-200 text-gray-700'
+              }`}>
+                <Tag className="w-3 h-3 flex-shrink-0" />
+                {code}
+                {linked && !isExpired && <span className="ml-auto text-[10px] font-normal text-green-600 font-sans">linked</span>}
+                {linked && isExpired && <span className="ml-auto text-[10px] font-normal text-red-500 font-sans">expired</span>}
+                {!linked && code && <span className="ml-auto text-[10px] font-normal text-amber-600 font-sans">manual</span>}
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="space-y-2">
+            <div className="relative">
+              <Tag className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <input
+                type="text"
+                value={code}
+                onChange={e => onCodeChange(e.target.value.toUpperCase())}
+                placeholder="HS10"
+                autoFocus
+                className="w-full pl-9 pr-3 py-2 text-sm font-mono font-bold border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#111827] uppercase"
+              />
+            </div>
+            <button
+              type="button"
+              onClick={() => setManualMode(false)}
+              className="text-[10px] text-blue-600 hover:underline flex items-center gap-1"
+            >
+              <Link2 className="w-3 h-3" /> Link to saved coupon
+            </button>
+          </div>
+        )}
+      </div>
+
+      <div>
+        <label className="block text-xs font-medium text-gray-600 mb-1.5 uppercase tracking-wide">
+          Discount %
+          {linked && linked.discountType === 'percentage' && (
+            <span className="ml-1.5 normal-case tracking-normal text-green-600 text-[10px] font-normal">(from coupon)</span>
+          )}
+        </label>
+        <div className="relative">
+          <Percent className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <input
+            type="number"
+            min={1}
+            max={100}
+            value={discountPercentage}
+            onChange={e => onDiscountChange(Number(e.target.value))}
+            className="w-full pl-9 pr-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#111827]"
+          />
+        </div>
+        {linked && linked.discountType === 'fixed' && (
+          <p className="text-[10px] text-amber-600 mt-1">Note: linked coupon is fixed ${linked.discountValue} — set display % manually</p>
+        )}
+      </div>
+    </div>
+  );
+};
 
 // ─── Reusable field components ─────────────────────────────────
 
@@ -143,12 +276,14 @@ const SectionCard: React.FC<{ icon: React.ReactNode; title: string; subtitle: st
 // ─── Main component ──────────────────────────────────────────────
 
 const PopupManagement: React.FC = () => {
+  const { token } = useAuth();
   const [config, setConfig] = useState<PopupConfig>(DEFAULT_POPUP_CONFIG);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState('');
   const [activeTab, setActiveTab] = useState<'entry' | 'exit' | 'toast'>('entry');
+  const [savedCoupons, setSavedCoupons] = useState<SavedCoupon[]>([]);
 
   useEffect(() => {
     popupConfigService.getAdminConfig()
@@ -156,6 +291,16 @@ const PopupManagement: React.FC = () => {
       .catch(err => setError(err.message || 'Failed to load config'))
       .finally(() => setLoading(false));
   }, []);
+
+  useEffect(() => {
+    if (!token) return;
+    fetch(`${API_URL}/coupons?limit=100`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .then(r => r.json())
+      .then(d => { if (d.ok) setSavedCoupons(d.coupons); })
+      .catch(() => {});
+  }, [token]);
 
   const handleSave = async () => {
     setSaving(true);
@@ -335,37 +480,14 @@ const PopupManagement: React.FC = () => {
             label="Left panel background image"
           />
 
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <FieldLabel>Coupon code</FieldLabel>
-              <div className="relative">
-                <Tag className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <input
-                  type="text"
-                  value={config.entryPopup.couponCode}
-                  onChange={(e) => setEntry({ couponCode: e.target.value.toUpperCase() })}
-                  placeholder="HS10"
-                  className="w-full pl-9 pr-3 py-2 text-sm font-mono font-bold border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#111827] uppercase"
-                />
-              </div>
-              <p className="text-[10px] text-gray-400 mt-1">Shown to user after form submit</p>
-            </div>
-            <div>
-              <FieldLabel>Discount %</FieldLabel>
-              <div className="relative">
-                <Percent className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <input
-                  type="number"
-                  min={1}
-                  max={100}
-                  value={config.entryPopup.discountPercentage}
-                  onChange={(e) => setEntry({ discountPercentage: Number(e.target.value) })}
-                  className="w-full pl-9 pr-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#111827]"
-                />
-              </div>
-              <p className="text-[10px] text-gray-400 mt-1">Shown as highlight at top of popup</p>
-            </div>
-          </div>
+          <CouponPickerField
+            code={config.entryPopup.couponCode}
+            discountPercentage={config.entryPopup.discountPercentage}
+            onCodeChange={v => setEntry({ couponCode: v })}
+            onDiscountChange={v => setEntry({ discountPercentage: v })}
+            coupons={savedCoupons}
+          />
+          <p className="text-[10px] text-gray-400 -mt-2">Code is shown to the user after they submit the lead form.</p>
 
           <div className="bg-blue-50 border border-blue-100 rounded-xl p-4">
             <div className="flex gap-2">
@@ -415,35 +537,13 @@ const PopupManagement: React.FC = () => {
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <FieldLabel>Coupon code</FieldLabel>
-              <div className="relative">
-                <Tag className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <input
-                  type="text"
-                  value={config.exitIntent.couponCode}
-                  onChange={(e) => setExit({ couponCode: e.target.value.toUpperCase() })}
-                  placeholder="HS10"
-                  className="w-full pl-9 pr-3 py-2 text-sm font-mono font-bold border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#111827] uppercase"
-                />
-              </div>
-            </div>
-            <div>
-              <FieldLabel>Discount %</FieldLabel>
-              <div className="relative">
-                <Percent className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <input
-                  type="number"
-                  min={1}
-                  max={100}
-                  value={config.exitIntent.discountPercentage}
-                  onChange={(e) => setExit({ discountPercentage: Number(e.target.value) })}
-                  className="w-full pl-9 pr-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#111827]"
-                />
-              </div>
-            </div>
-          </div>
+          <CouponPickerField
+            code={config.exitIntent.couponCode}
+            discountPercentage={config.exitIntent.discountPercentage}
+            onCodeChange={v => setExit({ couponCode: v })}
+            onDiscountChange={v => setExit({ discountPercentage: v })}
+            coupons={savedCoupons}
+          />
 
           <div>
             <div className="flex items-center justify-between mb-1.5">
@@ -517,35 +617,13 @@ const PopupManagement: React.FC = () => {
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <FieldLabel>Coupon code</FieldLabel>
-              <div className="relative">
-                <Tag className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <input
-                  type="text"
-                  value={config.pageToast.couponCode}
-                  onChange={(e) => setToast({ couponCode: e.target.value.toUpperCase() })}
-                  placeholder="HS10"
-                  className="w-full pl-9 pr-3 py-2 text-sm font-mono font-bold border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#111827] uppercase"
-                />
-              </div>
-            </div>
-            <div>
-              <FieldLabel>Discount %</FieldLabel>
-              <div className="relative">
-                <Percent className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <input
-                  type="number"
-                  min={1}
-                  max={100}
-                  value={config.pageToast.discountPercentage}
-                  onChange={(e) => setToast({ discountPercentage: Number(e.target.value) })}
-                  className="w-full pl-9 pr-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#111827]"
-                />
-              </div>
-            </div>
-          </div>
+          <CouponPickerField
+            code={config.pageToast.couponCode}
+            discountPercentage={config.pageToast.discountPercentage}
+            onCodeChange={v => setToast({ couponCode: v })}
+            onDiscountChange={v => setToast({ discountPercentage: v })}
+            coupons={savedCoupons}
+          />
 
           <div className="grid grid-cols-2 gap-4">
             <div>

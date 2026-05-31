@@ -64,6 +64,7 @@ export interface LegacyProduct {
     canonicalUrl?: string;
     slug?: string;
   };
+  customSpecs?: Array<{ key: string; label: string; value: string; type?: string; order?: number }>;
   productCode?: string;
   subDescription?: string;
   regionalPricing?: {

@@ -28,6 +28,13 @@ export interface CartItem {
 }
 
 
+export interface AppliedCoupon {
+  code: string;
+  discountType: 'percentage' | 'fixed';
+  discountValue: number;
+  discountAmountUSD: number;
+}
+
 interface CartState {
   items: CartItem[];
   isPhoneVerified: boolean;
@@ -35,6 +42,7 @@ interface CartState {
   isCartOpen: boolean;
   showAddedToCart: boolean;
   lastAddedItem: CartItem | null;
+  appliedCoupon: AppliedCoupon | null;
 }
 
 type CartAction =
@@ -46,7 +54,9 @@ type CartAction =
   | { type: 'TOGGLE_CART' }
   | { type: 'CLOSE_CART' }
   | { type: 'HIDE_ADDED_TO_CART' }
-  | { type: 'RESTORE_CART'; payload: { items: CartItem[] } };
+  | { type: 'RESTORE_CART'; payload: { items: CartItem[] } }
+  | { type: 'APPLY_COUPON'; payload: AppliedCoupon }
+  | { type: 'REMOVE_COUPON' };
 
 const initialState: CartState = {
   items: [],
@@ -55,6 +65,7 @@ const initialState: CartState = {
   isCartOpen: false,
   showAddedToCart: false,
   lastAddedItem: null,
+  appliedCoupon: null,
 };
 
 function cartReducer(state: CartState, action: CartAction): CartState {
@@ -100,6 +111,7 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       return {
         ...state,
         items: [],
+        appliedCoupon: null,
       };
     case 'SET_PHONE_VERIFIED':
       return {
@@ -128,6 +140,10 @@ function cartReducer(state: CartState, action: CartAction): CartState {
         ...state,
         items: action.payload.items,
       };
+    case 'APPLY_COUPON':
+      return { ...state, appliedCoupon: action.payload };
+    case 'REMOVE_COUPON':
+      return { ...state, appliedCoupon: null };
     default:
       return state;
   }
@@ -147,6 +163,8 @@ interface CartContextType {
   getTotalPriceNumeric: () => number;
   getRegionalBasePriceUSD: (item: CartItem) => number;
   getRegionalEffectivePriceUSD: (item: CartItem) => number;
+  applyCoupon: (coupon: AppliedCoupon) => void;
+  removeCoupon: () => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -164,9 +182,11 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         if (parsed.isPhoneVerified && parsed.phoneNumber) {
           dispatch({ type: 'SET_PHONE_VERIFIED', payload: { phoneNumber: parsed.phoneNumber } });
         }
-        // Restore items if they exist
         if (parsed.items && Array.isArray(parsed.items) && parsed.items.length > 0) {
           dispatch({ type: 'RESTORE_CART', payload: { items: parsed.items } });
+        }
+        if (parsed.appliedCoupon) {
+          dispatch({ type: 'APPLY_COUPON', payload: parsed.appliedCoupon });
         }
       } catch (e) {
         console.warn('Failed to load cart from localStorage:', e);
@@ -180,8 +200,9 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       isPhoneVerified: state.isPhoneVerified,
       phoneNumber: state.phoneNumber,
       items: state.items,
+      appliedCoupon: state.appliedCoupon,
     }));
-  }, [state.isPhoneVerified, state.phoneNumber, state.items]);
+  }, [state.isPhoneVerified, state.phoneNumber, state.items, state.appliedCoupon]);
 
   const addItem = (item: Omit<CartItem, 'quantity'>) => {
     dispatch({ type: 'ADD_ITEM', payload: item });
@@ -250,9 +271,21 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const getTotalPriceNumeric = (): number => {
-    return state.items.reduce((sum, item) => {
+    const itemsTotal = state.items.reduce((sum, item) => {
       return sum + (getRegionalEffectivePriceUSD(item) * item.quantity);
     }, 0);
+    if (state.appliedCoupon) {
+      return Math.max(0, itemsTotal - state.appliedCoupon.discountAmountUSD);
+    }
+    return itemsTotal;
+  };
+
+  const applyCoupon = (coupon: AppliedCoupon) => {
+    dispatch({ type: 'APPLY_COUPON', payload: coupon });
+  };
+
+  const removeCoupon = () => {
+    dispatch({ type: 'REMOVE_COUPON' });
   };
 
 
@@ -270,6 +303,8 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     getTotalPriceNumeric,
     getRegionalBasePriceUSD,
     getRegionalEffectivePriceUSD,
+    applyCoupon,
+    removeCoupon,
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

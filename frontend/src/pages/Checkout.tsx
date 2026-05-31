@@ -4,13 +4,13 @@ import { useCurrency } from '../contexts/CurrencyContext';
 import { useRegion } from '../contexts/RegionContext';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { Minus, Plus, Trash2, ArrowLeft, Loader2, ChevronDown } from 'lucide-react';
+import { Minus, Plus, Trash2, ArrowLeft, Loader2, ChevronDown, Tag } from 'lucide-react';
 import { Country, State, City } from 'country-state-city';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
 const Checkout: React.FC = () => {
-  const { state, removeItem, updateQuantity, getRegionalEffectivePriceUSD } = useCart();
+  const { state, removeItem, updateQuantity, getRegionalEffectivePriceUSD, applyCoupon, removeCoupon } = useCart();
   const { formatPrice, getCurrencySymbol, convertFromUSD, currency } = useCurrency();
   const { region: pricingRegion } = useRegion();
   const { user } = useAuth();
@@ -34,6 +34,11 @@ const Checkout: React.FC = () => {
   // Backend-calculated prices
   const [backendPrices, setBackendPrices] = useState<any>(null);
   const [loadingPrices, setLoadingPrices] = useState(false);
+
+  // Coupon state (local to checkout for input; applied coupon lives in CartContext)
+  const [couponInput, setCouponInput] = useState('');
+  const [couponLoading, setCouponLoading] = useState(false);
+  const [couponError, setCouponError] = useState<string | null>(null);
 
   const getCheckoutItemId = (item: any): string => String(item?.productId || item?.id || '');
 
@@ -74,7 +79,8 @@ const Checkout: React.FC = () => {
               quantity: item.quantity
             })),
             currency: currency,
-            region: pricingRegion
+            region: pricingRegion,
+            couponCode: state.appliedCoupon?.code || undefined
           })
         });
 
@@ -222,7 +228,21 @@ const Checkout: React.FC = () => {
     }
   }, [state.phoneNumber, state.isPhoneVerified, phone]);
 
-  // Backend returns totals.USD (regional + discount applied), we convert to display currency
+  // Backend returns totals.USD (regional + product discounts applied; coupon also applied if provided)
+  const subtotalBeforeCouponUSD = useMemo(() => {
+    if (hasAuthoritativePricing && backendPrices?.totals?.subtotalUSD !== undefined) {
+      return Number(backendPrices.totals.subtotalUSD);
+    }
+    if (hasAuthoritativePricing && backendPrices?.totals?.USD !== undefined) {
+      return Number(backendPrices.totals.USD);
+    }
+    return 0;
+  }, [backendPrices, hasAuthoritativePricing]);
+
+  const couponDiscountUSD = useMemo(() => {
+    return backendPrices?.couponDiscount?.discountAmountUSD ?? 0;
+  }, [backendPrices]);
+
   const subtotalUSD = useMemo(() => {
     if (hasAuthoritativePricing && backendPrices?.totals?.USD !== undefined) {
       return Number(backendPrices.totals.USD);
@@ -292,6 +312,7 @@ const Checkout: React.FC = () => {
           receipt: `rcpt_${Date.now()}`,
           items: orderItems,
           region: pricingRegion,
+          couponCode: state.appliedCoupon?.code || undefined,
           shippingAddress: {
             street: address1,
             city,
@@ -328,6 +349,30 @@ const Checkout: React.FC = () => {
       console.error('Failed to create order:', error);
       setPaymentError(error.message || 'Failed to create order');
       setIsCreatingOrder(false);
+    }
+  };
+
+  const handleApplyCoupon = async () => {
+    if (!couponInput.trim()) return;
+    setCouponLoading(true);
+    setCouponError(null);
+    try {
+      const res = await fetch(`${API_URL}/coupons/validate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: couponInput.trim(), cartTotalUSD: subtotalBeforeCouponUSD, userId: user?._id })
+      });
+      const data = await res.json();
+      if (!data.ok) {
+        setCouponError(data.message || 'Invalid coupon');
+      } else {
+        applyCoupon({ code: data.code, discountType: data.discountType, discountValue: data.discountValue, discountAmountUSD: data.discountAmountUSD });
+        setCouponInput('');
+      }
+    } catch {
+      setCouponError('Failed to validate coupon. Please try again.');
+    } finally {
+      setCouponLoading(false);
     }
   };
 
@@ -665,11 +710,57 @@ const Checkout: React.FC = () => {
                 </div>
               )}
 
-              <div className="mt-6 pt-6 border-t border-gray-100 space-y-3">
+              {/* Coupon Input */}
+              <div className="mt-6 pt-4 border-t border-gray-100">
+                {state.appliedCoupon ? (
+                  <div className="flex items-center justify-between bg-green-50 border border-green-200 rounded-lg px-4 py-3">
+                    <div className="flex items-center gap-2 text-green-800 text-sm">
+                      <Tag className="w-4 h-4" />
+                      <span className="font-semibold">{state.appliedCoupon.code}</span>
+                      <span className="text-green-600">
+                        {state.appliedCoupon.discountType === 'percentage'
+                          ? `${state.appliedCoupon.discountValue}% off`
+                          : `$${state.appliedCoupon.discountValue.toFixed(2)} off`}
+                      </span>
+                    </div>
+                    <button onClick={() => removeCoupon()} className="text-sm text-green-700 hover:text-red-600 transition-colors font-medium">Remove</button>
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-sm font-medium text-gray-700">Coupon Code</label>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={couponInput}
+                        onChange={e => { setCouponInput(e.target.value.toUpperCase()); setCouponError(null); }}
+                        onKeyDown={e => e.key === 'Enter' && handleApplyCoupon()}
+                        placeholder="Enter coupon code"
+                        className="flex-1 px-4 py-3 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all text-sm"
+                      />
+                      <button
+                        onClick={handleApplyCoupon}
+                        disabled={couponLoading || !couponInput.trim()}
+                        className="px-4 py-3 bg-black text-white text-sm font-semibold rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                      >
+                        {couponLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Apply'}
+                      </button>
+                    </div>
+                    {couponError && <p className="text-xs text-red-600">{couponError}</p>}
+                  </div>
+                )}
+              </div>
+
+              <div className="mt-4 pt-4 border-t border-gray-100 space-y-3">
                 <div className="flex justify-between text-sm text-gray-600">
                   <span>Subtotal</span>
-                  <span>{getCurrencySymbol()}{subtotal.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
+                  <span>{getCurrencySymbol()}{convertFromUSD(subtotalBeforeCouponUSD).toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
                 </div>
+                {couponDiscountUSD > 0 && (
+                  <div className="flex justify-between text-sm text-green-700 font-medium">
+                    <span className="flex items-center gap-1.5"><Tag className="w-3.5 h-3.5" />{backendPrices?.couponDiscount?.code}</span>
+                    <span>−{getCurrencySymbol()}{convertFromUSD(couponDiscountUSD).toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
+                  </div>
+                )}
                 <div className="flex justify-between text-sm text-gray-600">
                   <span>Shipping</span>
                   <span className="text-gray-700 font-medium">Not Included</span>

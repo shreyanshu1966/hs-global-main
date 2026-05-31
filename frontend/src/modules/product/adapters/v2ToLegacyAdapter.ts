@@ -36,6 +36,7 @@ export const toLegacyProduct = (product: ProductV2): LegacyProduct => ({
   videoUploadedAt: product.media.video.uploadedAt,
   furnitureSpecs: product.specs.furniture || undefined,
   slabSpecs: product.specs.slab || undefined,
+  customSpecs: Array.isArray(product.specs.custom) ? product.specs.custom : [],
   status: product.status,
   featured: product.featured,
   tags: product.taxonomy.tags,

@@ -98,17 +98,12 @@ export function ProductSpecifications({ product }: ProductSpecificationsProps) {
   // ── Spec groups ──────────────────────────────────────────────────────────
   const SKIP_SPEC_KEYS = new Set(['etsyUrl', '_id', '__v']);
 
-  // Build furniture-specific rows
+  // Furniture-specific rows (furniture category only)
   const furnitureRows: [string, string][] = Object.entries(product.specs || {})
     .filter(([k, v]) => v && !SKIP_SPEC_KEYS.has(k))
     .map(([k, v]) => [formatKey(k), String(v)]);
 
-  // Build slab-specific rows
-  const slabRows: [string, string][] = Object.entries(product.slabSpecs || {})
-    .filter(([k, v]) => v && !SKIP_SPEC_KEYS.has(k))
-    .map(([k, v]) => [formatKey(k), String(v)]);
-
-  // Custom specs
+  // Custom key:value specs — only entries with a value are shown
   const customSpecRows: [string, string][] = (product.customSpecs || [])
     .filter((s: any) => s.value)
     .sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0))
@@ -145,8 +140,7 @@ export function ProductSpecifications({ product }: ProductSpecificationsProps) {
   // Tags
   const tags: string[] = (product.tags || []).filter(Boolean);
 
-  // Decide which spec groups to show (avoid duplication between furniture & slab)
-  const allSpecRows = [...furnitureRows, ...slabRows, ...customSpecRows];
+  const allSpecRows = [...furnitureRows, ...customSpecRows];
 
   // ── Shipping data ────────────────────────────────────────────────────────
   const ship = product.shipping || {};

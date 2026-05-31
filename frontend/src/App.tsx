@@ -34,6 +34,7 @@ const LoginOTP = lazy(() => import("./pages/LoginOTP"));
 const Admin = lazy(() => import("./pages/Admin"));
 const AdminProductFormPage = lazy(() => import("./pages/AdminProductFormPage"));
 const DiscountManagement = lazy(() => import("./pages/DiscountManagement"));
+const CouponManagement = lazy(() => import("./pages/CouponManagement"));
 const Wishlist = lazy(() => import("./pages/Wishlist"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 import { ProtectedRoute } from "./components/ProtectedRoute";
@@ -123,6 +124,7 @@ function App() {
                       <Route path="/admin/products/new" element={<ProtectedRoute><AdminProductFormPage /></ProtectedRoute>} />
                       <Route path="/admin/products/:productId/edit" element={<ProtectedRoute><AdminProductFormPage /></ProtectedRoute>} />
                       <Route path="/admin/discounts" element={<ProtectedRoute><DiscountManagement /></ProtectedRoute>} />
+                      <Route path="/admin/coupons" element={<ProtectedRoute><CouponManagement /></ProtectedRoute>} />
                       <Route path="*" element={<NotFound />} />
                     </Routes>
                   </Suspense>

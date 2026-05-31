@@ -91,7 +91,6 @@ const ProductDetails = () => {
       discount: dbProduct.discount,
       regionalPricing: dbProduct.regionalPricing,
       shipping: dbProduct.shipping,
-      slabSpecs: dbProduct.slabSpecs,
       customSpecs: dbProduct.customSpecs,
       manufacturing: dbProduct.manufacturing,
       dimensions: dbProduct.dimensions,

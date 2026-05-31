@@ -168,6 +168,19 @@ const createProductWithImages = async (req, res) => {
             }
         }
 
+        // Auto-upsert custom spec labels into the shared SpecKey pool
+        if (productData.customSpecs && Array.isArray(productData.customSpecs)) {
+            const SpecKey = require('../models/SpecKey');
+            const upserts = productData.customSpecs
+                .filter(s => s.label && s.label.trim())
+                .map(s => SpecKey.findOneAndUpdate(
+                    { label: s.label.trim() },
+                    { label: s.label.trim() },
+                    { upsert: true, new: true, setDefaultsOnInsert: true }
+                ));
+            await Promise.all(upserts);
+        }
+
         const product = new Product(productData);
         await product.save();
 
@@ -330,6 +343,19 @@ const updateProductWithImages = async (req, res) => {
             } catch (videoError) {
                 console.error('❌ Video deletion failed:', videoError);
             }
+        }
+
+        // Auto-upsert custom spec labels into the shared SpecKey pool
+        if (productData.customSpecs && Array.isArray(productData.customSpecs)) {
+            const SpecKey = require('../models/SpecKey');
+            const upserts = productData.customSpecs
+                .filter(s => s.label && s.label.trim())
+                .map(s => SpecKey.findOneAndUpdate(
+                    { label: s.label.trim() },
+                    { label: s.label.trim() },
+                    { upsert: true, new: true, setDefaultsOnInsert: true }
+                ));
+            await Promise.all(upserts);
         }
 
         // Update product
@@ -705,7 +731,7 @@ const processProductImages = async (req, res) => {
 const updateProductSpecifications = async (req, res) => {
     try {
         const { productId } = req.params;
-        const { furnitureSpecs, slabSpecs, customSpecs } = req.body;
+        const { furnitureSpecs, customSpecs } = req.body;
 
         const product = await Product.findOne({ productId });
         if (!product) {
@@ -717,25 +743,35 @@ const updateProductSpecifications = async (req, res) => {
 
         const updateData = { updatedAt: new Date() };
 
-        // Update standard specifications based on category
+        // Furniture specs (only for furniture category)
         if (product.category === 'furniture' && furnitureSpecs) {
             updateData.furnitureSpecs = furnitureSpecs;
-        } else if (product.category === 'slabs' && slabSpecs) {
-            updateData.slabSpecs = slabSpecs;
         }
 
-        // Update custom specifications
+        // Custom key:value specifications
         if (customSpecs && Array.isArray(customSpecs)) {
-            // Validate custom specs
-            const validCustomSpecs = customSpecs.filter(spec => 
-                spec.key && spec.label && 
-                ['text', 'number', 'select', 'textarea'].includes(spec.type)
-            );
+            const valid = customSpecs
+                .filter(s => s.label && s.label.trim())
+                .map((s, i) => ({
+                    key: s.label.trim().toLowerCase().replace(/\s+/g, '_'),
+                    label: s.label.trim(),
+                    value: s.value || '',
+                    type: 'text',
+                    order: i
+                }));
 
-            updateData.customSpecs = validCustomSpecs.map((spec, index) => ({
-                ...spec,
-                order: spec.order || index
-            }));
+            updateData.customSpecs = valid;
+
+            // Auto-upsert each unique label into the shared SpecKey pool
+            const SpecKey = require('../models/SpecKey');
+            const upserts = valid.map(s =>
+                SpecKey.findOneAndUpdate(
+                    { label: s.label },
+                    { label: s.label },
+                    { upsert: true, new: true, setDefaultsOnInsert: true }
+                )
+            );
+            await Promise.all(upserts);
         }
 
         const updatedProduct = await Product.findOneAndUpdate(
