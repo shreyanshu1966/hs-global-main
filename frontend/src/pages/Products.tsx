@@ -10,7 +10,7 @@ import type { Product } from "../services/productService";
 import { useProducts, useCategories } from "../hooks/useProducts";
 import { ProductCard } from "../components/cards/ProductCard";
 import { ProductCardSkeleton } from "../components/cards/ProductCardSkeleton";
-import { SORT_OPTIONS, getSortOptionLabel } from "../components/filters/SortDropdown";
+import { SORT_OPTIONS, DEFAULT_SORT, getSortOptionLabel } from "../components/filters/SortDropdown";
 
 const toSlug = (v: string) => v.toLowerCase().trim().replace(/\s+/g, "-");
 const LIMIT = 12;
@@ -124,8 +124,8 @@ export default function Products() {
   const [activeCategory, setActiveCategory] = useState(initParams.category);
   const [activeSubcategory, setActiveSubcategory] = useState(initParams.subcategory);
   const [crossCategoryFilter, setCrossCategoryFilter] = useState<"" | "furniture" | "handicraft">(initParams.categoryFilter);
-  const [sortBy, setSortBy] = useState("createdAt");
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
+  const [sortBy, setSortBy] = useState(DEFAULT_SORT.sortBy);
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">(DEFAULT_SORT.sortOrder);
   const [page, setPage] = useState(1);
   const [visibleProducts, setVisibleProducts] = useState<Product[]>([]);
   const [firstNewIndex, setFirstNewIndex] = useState(0);

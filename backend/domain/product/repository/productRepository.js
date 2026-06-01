@@ -1,5 +1,29 @@
 const Product = require('../../../models/Product');
 
+/**
+ * Find products using a custom ordering array.
+ * Products whose productId appears in orderedIds are returned first (in that order).
+ * Remaining products fall to the end sorted by createdAt desc.
+ */
+const findProductsOrdered = ({ filters, orderedIds, skip, limit }) => {
+    return Product.aggregate([
+        { $match: filters },
+        {
+            $addFields: {
+                __ord: {
+                    $let: {
+                        vars: { idx: { $indexOfArray: [orderedIds, '$productId'] } },
+                        in: { $cond: [{ $eq: ['$$idx', -1] }, 999999, '$$idx'] }
+                    }
+                }
+            }
+        },
+        { $sort: { __ord: 1, createdAt: -1 } },
+        { $skip: skip },
+        { $limit: limit }
+    ]);
+};
+
 const findProducts = ({ filters, sort, skip, limit, searchTerm }) => {
     if (searchTerm) {
         return Product.search(searchTerm, filters).sort(sort).skip(skip).limit(limit).exec();
@@ -104,6 +128,7 @@ const softDeleteByProductId = (productId) => Product.findOneAndUpdate(
 );
 
 module.exports = {
+    findProductsOrdered,
     findProducts,
     countProducts,
     findByProductIdActive,

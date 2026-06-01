@@ -15,6 +15,7 @@ interface ProductVideoManagerProps {
   maxSize?: number; // in bytes (default 100MB)
   acceptedFormats?: string[];
   disabled?: boolean;
+  hideUploadZone?: boolean;
 }
 
 const ProductVideoManager: React.FC<ProductVideoManagerProps> = ({
@@ -22,7 +23,8 @@ const ProductVideoManager: React.FC<ProductVideoManagerProps> = ({
   onVideoChange,
   maxSize = 100 * 1024 * 1024, // 100MB default
   acceptedFormats = ['video/mp4', 'video/webm', 'video/ogg', 'video/avi', 'video/mov'],
-  disabled = false
+  disabled = false,
+  hideUploadZone = false
 }) => {
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -283,6 +285,19 @@ const ProductVideoManager: React.FC<ProductVideoManagerProps> = ({
     );
   }
 
+  if (hideUploadZone) {
+    return (
+      <>
+        {error && (
+          <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+            <AlertCircle className="w-4 h-4 text-red-500 flex-shrink-0" />
+            <p className="text-sm text-red-700">{error}</p>
+          </div>
+        )}
+      </>
+    );
+  }
+
   return (
     <div className="space-y-3">
       {/* Upload Area */}
@@ -318,7 +333,7 @@ const ProductVideoManager: React.FC<ProductVideoManagerProps> = ({
               <Video className="w-12 h-12 mx-auto" />
             )}
           </div>
-          
+
           <div className="space-y-2">
             <p className={`text-sm font-medium ${disabled ? 'text-gray-400' : 'text-gray-700'}`}>
               {uploading ? 'Processing video...' : 'Upload product video'}

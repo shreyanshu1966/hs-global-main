@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { X, Save, Eye, Image as ImageIcon, Video, Globe, ArrowLeft } from 'lucide-react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { X, Save, Eye, Image as ImageIcon, Video, Globe, ArrowLeft, Upload } from 'lucide-react';
 import { countries } from '../data/countries';
 import ProductImageManager from '../components/ProductImageManager';
 import ProductSpecsEditor from '../components/ProductSpecsEditor';
@@ -109,8 +109,55 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
   const [simSearching, setSimSearching]   = useState(false);
   const [validationLoading, setValidationLoading] = useState(false);
   const [formSubmitting, setFormSubmitting]       = useState(false);
+  const [unifiedDragOver, setUnifiedDragOver]     = useState(false);
+  const unifiedInputRef = useRef<HTMLInputElement>(null);
+  const descTextareaRef = useRef<HTMLTextAreaElement>(null);
 
   const isFormDisabled = validationLoading || formSubmitting || loading || previewLoading || videoUploading;
+
+  const handleUnifiedFiles = useCallback(async (files: File[]) => {
+    const imageFiles = files.filter(f => f.type.startsWith('image/'));
+    const videoFiles = files.filter(f => f.type.startsWith('video/'));
+
+    if (imageFiles.length > 0) {
+      const remaining = 10 - images.length;
+      const validImages = imageFiles.slice(0, remaining).filter(f => f.size <= 5 * 1024 * 1024);
+      if (validImages.length > 0) {
+        const results = await Promise.all(validImages.map(file =>
+          new Promise<{ file: File; url: string; id: string }>(resolve => {
+            const id = `${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+            const reader = new FileReader();
+            reader.onload = ev => resolve({ file, url: ev.target?.result as string, id });
+            reader.readAsDataURL(file);
+          })
+        ));
+        setImages(prev => {
+          const hasNone = prev.length === 0;
+          const newImgs: ProductImage[] = results.map((r, i) => ({
+            id: r.id, file: r.file, url: r.url,
+            isMain: hasNone && i === 0, isNew: true,
+          }));
+          return [...prev, ...newImgs];
+        });
+      }
+    }
+
+    if (videoFiles.length > 0 && !video) {
+      const file = videoFiles[0];
+      if (file.size <= 100 * 1024 * 1024) {
+        const videoUrl = URL.createObjectURL(file);
+        const el = document.createElement('video');
+        el.src = videoUrl;
+        const duration = await new Promise<number>(resolve => {
+          el.addEventListener('loadedmetadata', () => resolve(el.duration));
+          el.addEventListener('error', () => resolve(0));
+        });
+        setVideo({ file, url: videoUrl, size: file.size, duration, isExisting: false });
+        setVideoUploading(true);
+        setTimeout(() => setVideoUploading(false), 1000);
+      }
+    }
+  }, [images, video]);
 
   // Live exchange rates (fetched by CurrencyContext every 30 min; falls back to DEFAULT_RATES)
   const { exchangeRates } = useCurrency();
@@ -137,7 +184,7 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
   // ─── Populate form when editing ────────────────────────────────────────────
   useEffect(() => {
     if (!editingProduct) return;
-    const validCategories = ['furniture', 'handicraft', 'leather'];
+    const validCategories = ['furniture', 'handicraft', 'leather', 'semi-precious-stone'];
     setFormData({
       productId:      editingProduct.productId    || '',
       name:           editingProduct.name         || '',
@@ -192,6 +239,14 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
       setCustomSubcategory(editingProduct.subcategory);
     }
   }, [editingProduct, availableSubcategories]);
+
+  // Auto-resize description textarea when value is populated (e.g. loading existing product)
+  useEffect(() => {
+    const el = descTextareaRef.current;
+    if (!el) return;
+    el.style.height = 'auto';
+    el.style.height = `${el.scrollHeight}px`;
+  }, [formData.description]);
 
   // ─── Similar products search ────────────────────────────────────────────────
   useEffect(() => {
@@ -449,44 +504,70 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
             <div className="flex items-center gap-2.5 px-6 py-4 border-b border-gray-50">
               <ImageIcon className="w-4 h-4 text-gray-400" />
               <div>
-                <h2 className="font-semibold text-gray-900 text-[15px]">Photos</h2>
-                <p className="text-xs text-gray-400 mt-0.5">Add up to 10 photos. First photo is the main image.</p>
+                <h2 className="font-semibold text-gray-900 text-[15px]">Photos & Video</h2>
+                <p className="text-xs text-gray-400 mt-0.5">Up to 10 photos + 1 video. First photo is the main image.</p>
               </div>
             </div>
-            <div className="px-6 py-5 space-y-5">
-              <ProductImageManager images={images} onImagesChange={setImages} onMainImageChange={() => {}} aspectRatio={1} allowCrop maxImages={10} />
+            <div className="px-6 py-5 space-y-4">
+              {/* Unified upload zone */}
+              <div
+                className={`border-2 border-dashed rounded-xl px-6 py-5 text-center cursor-pointer transition-all ${unifiedDragOver ? 'border-orange-400 bg-orange-50' : 'border-gray-200 hover:border-gray-300 bg-gray-50 hover:bg-white'}`}
+                onClick={() => !isFormDisabled && unifiedInputRef.current?.click()}
+                onDrop={e => { e.preventDefault(); setUnifiedDragOver(false); if (!isFormDisabled) handleUnifiedFiles(Array.from(e.dataTransfer.files)); }}
+                onDragOver={e => { e.preventDefault(); setUnifiedDragOver(true); }}
+                onDragLeave={() => setUnifiedDragOver(false)}
+              >
+                <input
+                  ref={unifiedInputRef}
+                  type="file"
+                  accept="image/*,video/*"
+                  multiple
+                  className="hidden"
+                  disabled={isFormDisabled}
+                  onChange={e => { if (e.target.files) handleUnifiedFiles(Array.from(e.target.files)); e.target.value = ''; }}
+                />
+                <Upload className={`w-7 h-7 mx-auto mb-2 ${unifiedDragOver ? 'text-orange-400' : 'text-gray-300'}`} />
+                <p className="text-sm font-medium text-gray-600">Drop photos or a video here, or click to browse</p>
+                <p className="text-xs text-gray-400 mt-1">Images: JPG, PNG, WebP up to 5 MB · Video: MP4, MOV up to 100 MB</p>
+              </div>
+
+              {/* Image grid */}
+              <ProductImageManager images={images} onImagesChange={setImages} onMainImageChange={() => {}} aspectRatio={1} allowCrop maxImages={10} hideUploadZone />
               {uploadProgress.images > 0 && uploadProgress.images < 100 && (
                 <div className="rounded-xl bg-orange-50 border border-orange-100 p-3">
                   <div className="flex justify-between text-xs text-orange-700 mb-1.5"><span>Uploading images…</span><span>{uploadProgress.images}%</span></div>
                   <div className="h-1.5 bg-orange-100 rounded-full"><div className="h-full bg-orange-500 rounded-full transition-all" style={{ width: `${uploadProgress.images}%` }} /></div>
                 </div>
               )}
-              {/* Video */}
-              <div className="pt-4 border-t border-gray-100">
-                <div className="flex items-center gap-2 mb-1">
-                  <Video className="w-4 h-4 text-gray-400" />
-                  <span className="text-sm font-medium text-gray-700">Video <span className="text-gray-400 font-normal text-xs">(optional)</span></span>
+
+              {/* Video preview */}
+              {(video || videoUploading) && (
+                <div className="pt-3 border-t border-gray-100">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Video className="w-4 h-4 text-gray-400" />
+                    <span className="text-sm font-medium text-gray-700">Video <span className="text-gray-400 font-normal text-xs">(optional)</span></span>
+                  </div>
+                  <ProductVideoManager
+                    video={video}
+                    onVideoChange={v => { setVideo(v); if (v && !v.isExisting) { setVideoUploading(true); setTimeout(() => setVideoUploading(false), 1000); } }}
+                    disabled={loading || videoUploading}
+                    maxSize={100 * 1024 * 1024}
+                    hideUploadZone
+                  />
+                  {uploadProgress.video > 0 && uploadProgress.video < 100 && (
+                    <div className="rounded-xl bg-purple-50 border border-purple-100 p-3 mt-3">
+                      <div className="flex justify-between text-xs text-purple-700 mb-1.5"><span>Uploading video…</span><span>{uploadProgress.video}%</span></div>
+                      <div className="h-1.5 bg-purple-100 rounded-full"><div className="h-full bg-purple-500 rounded-full transition-all" style={{ width: `${uploadProgress.video}%` }} /></div>
+                    </div>
+                  )}
+                  {videoUploading && (
+                    <div className="flex items-center gap-2 text-amber-600 text-xs mt-2">
+                      <div className="animate-spin w-3 h-3 border-2 border-amber-600 border-t-transparent rounded-full" />
+                      Processing video…
+                    </div>
+                  )}
                 </div>
-                <p className="text-xs text-gray-400 mb-3 ml-6">Showcase your product in action.</p>
-                <ProductVideoManager
-                  video={video}
-                  onVideoChange={v => { setVideo(v); if (v && !v.isExisting) { setVideoUploading(true); setTimeout(() => setVideoUploading(false), 1000); } }}
-                  disabled={loading || videoUploading}
-                  maxSize={100 * 1024 * 1024}
-                />
-                {uploadProgress.video > 0 && uploadProgress.video < 100 && (
-                  <div className="rounded-xl bg-purple-50 border border-purple-100 p-3 mt-3">
-                    <div className="flex justify-between text-xs text-purple-700 mb-1.5"><span>Uploading video…</span><span>{uploadProgress.video}%</span></div>
-                    <div className="h-1.5 bg-purple-100 rounded-full"><div className="h-full bg-purple-500 rounded-full transition-all" style={{ width: `${uploadProgress.video}%` }} /></div>
-                  </div>
-                )}
-                {videoUploading && (
-                  <div className="flex items-center gap-2 text-amber-600 text-xs mt-2">
-                    <div className="animate-spin w-3 h-3 border-2 border-amber-600 border-t-transparent rounded-full" />
-                    Processing video…
-                  </div>
-                )}
-              </div>
+              )}
             </div>
           </div>
 
@@ -513,9 +594,20 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
               </div>
               <div>
                 <label className={labelCls}>Description <span className="text-red-400">*</span></label>
-                <textarea required rows={5} disabled={isFormDisabled}
-                  value={formData.description} onChange={e => handleInputChange('description', e.target.value)}
-                  className={`${inputCls} resize-y`} placeholder="Describe your product — materials, dimensions, craftsmanship…" />
+                <textarea
+                  ref={descTextareaRef}
+                  required
+                  disabled={isFormDisabled}
+                  value={formData.description}
+                  onChange={e => {
+                    handleInputChange('description', e.target.value);
+                    e.target.style.height = 'auto';
+                    e.target.style.height = `${e.target.scrollHeight}px`;
+                  }}
+                  className={`${inputCls} resize-none overflow-hidden`}
+                  style={{ minHeight: '96px' }}
+                  placeholder="Describe your product — materials, dimensions, craftsmanship…"
+                />
               </div>
               <div>
                 <div className="flex justify-between mb-1.5">
@@ -558,6 +650,7 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
                     <option value="furniture">Furniture</option>
                     <option value="handicraft">Handicraft</option>
                     <option value="leather">Leather</option>
+                    <option value="semi-precious-stone">Semi Precious Stone</option>
                   </select>
                 </div>
                 <div>

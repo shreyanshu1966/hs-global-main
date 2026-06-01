@@ -69,6 +69,7 @@ import { productService } from '../services/productService';
 import HomePageManagement from '../components/admin/HomePageManagement';
 import CategoryManagement from '../components/admin/CategoryManagement';
 import PopupManagement from '../components/admin/PopupManagement';
+import ProductOrderingManager from '../components/ProductOrderingManager';
 
 interface Analytics {
     users: {
@@ -250,6 +251,9 @@ const Admin = () => {
         adjustType: 'percentage' | 'fixed_inr';
         value: string;
     }>({ direction: 'increase', adjustType: 'percentage', value: '' });
+
+    // Product ordering view
+    const [showOrdering, setShowOrdering] = useState(false);
 
     // Bulk Edit (inline spreadsheet mode)
     const [bulkEditMode, setBulkEditMode] = useState(false);
@@ -2892,6 +2896,11 @@ const Admin = () => {
                     {activeTab === 'products' && (
                         <div className="space-y-5">
 
+                            {/* Ordering sub-view */}
+                            {showOrdering ? (
+                                <ProductOrderingManager onBack={() => setShowOrdering(false)} />
+                            ) : (<>
+
                             {/* ── Top bar: title + Bulk Edit + Add button ── */}
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-3">
@@ -2903,6 +2912,13 @@ const Admin = () => {
                                     )}
                                 </div>
                                 <div className="flex items-center gap-2">
+                                    <button
+                                        onClick={() => setShowOrdering(true)}
+                                        className="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-sm transition-colors border bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
+                                    >
+                                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 7h18M3 12h12M3 17h7" /></svg>
+                                        Manage Order
+                                    </button>
                                     <button
                                         onClick={() => {
                                             if (bulkEditMode && Object.keys(bulkEditChanges).length > 0) {
@@ -3382,6 +3398,7 @@ const Admin = () => {
                                 </div>
                             </div>
 
+                        </>)}
                         </div>
                     )}
 

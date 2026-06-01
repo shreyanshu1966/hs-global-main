@@ -18,6 +18,7 @@ interface ProductImageManagerProps {
   maxImages?: number;
   aspectRatio?: number;
   allowCrop?: boolean;
+  hideUploadZone?: boolean;
 }
 
 const ProductImageManager: React.FC<ProductImageManagerProps> = ({
@@ -26,7 +27,8 @@ const ProductImageManager: React.FC<ProductImageManagerProps> = ({
   onMainImageChange,
   maxImages = 10,
   aspectRatio,
-  allowCrop = true
+  allowCrop = true,
+  hideUploadZone = false
 }) => {
   const [showCropper, setShowCropper] = useState(false);
   const [cropImage, setCropImage] = useState<{ src: string; file: File; imageId?: string } | null>(null);
@@ -209,31 +211,33 @@ const ProductImageManager: React.FC<ProductImageManagerProps> = ({
 
   return (
     <div className="space-y-4">
-      {/* Upload Area */}
-      <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors">
-        <Upload className="w-12 h-12 mx-auto text-gray-400 mb-3" />
-        <p className="text-sm text-gray-600 mb-2">
-          Click to upload or drag and drop
-        </p>
-        <p className="text-xs text-gray-500 mb-4">
-          Upload images and use the edit button to crop them. Supports JPG, PNG, WebP up to 5MB
-        </p>
-        <input
-          type="file"
-          accept="image/*"
-          multiple
-          onChange={handleFileSelect}
-          className="hidden"
-          ref={fileInputRef}
-          id="image-upload"
-        />
-        <label
-          htmlFor="image-upload"
-          className="inline-block px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg cursor-pointer transition-colors"
-        >
-          Select Images
-        </label>
-      </div>
+      {/* Upload Area — hidden when parent provides a unified upload zone */}
+      {!hideUploadZone && (
+        <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors">
+          <Upload className="w-12 h-12 mx-auto text-gray-400 mb-3" />
+          <p className="text-sm text-gray-600 mb-2">
+            Click to upload or drag and drop
+          </p>
+          <p className="text-xs text-gray-500 mb-4">
+            Upload images and use the edit button to crop them. Supports JPG, PNG, WebP up to 5MB
+          </p>
+          <input
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={handleFileSelect}
+            className="hidden"
+            ref={fileInputRef}
+            id="image-upload"
+          />
+          <label
+            htmlFor="image-upload"
+            className="inline-block px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg cursor-pointer transition-colors"
+          >
+            Select Images
+          </label>
+        </div>
+      )}
 
       {/* Images Grid */}
       {images.length > 0 && (

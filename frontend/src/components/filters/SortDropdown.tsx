@@ -8,6 +8,7 @@ export type SortOption = {
 };
 
 export const SORT_OPTIONS: SortOption[] = [
+    { label: 'Relevance', sortBy: 'relevance', sortOrder: 'asc' },
     { label: 'Newest Arrivals', sortBy: 'createdAt', sortOrder: 'desc' },
     { label: 'Price: Low to High', sortBy: 'priceUSD', sortOrder: 'asc' },
     { label: 'Price: High to Low', sortBy: 'priceUSD', sortOrder: 'desc' },
@@ -15,10 +16,12 @@ export const SORT_OPTIONS: SortOption[] = [
     { label: 'Name: Z-A', sortBy: 'name', sortOrder: 'desc' },
 ];
 
+export const DEFAULT_SORT: SortOption = SORT_OPTIONS[0];
+
 export const getSortOptionLabel = (sortBy: string, sortOrder: 'asc' | 'desc') => {
     return SORT_OPTIONS.find(
         opt => opt.sortBy === sortBy && opt.sortOrder === sortOrder
-    )?.label || SORT_OPTIONS[0].label;
+    )?.label || DEFAULT_SORT.label;
 };
 
 interface SortDropdownProps {

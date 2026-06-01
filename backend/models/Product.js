@@ -76,7 +76,7 @@ const productSchema = new mongoose.Schema({
     category: {
         type: String,
         required: true,
-        enum: ['furniture', 'handicraft', 'leather'],
+        enum: ['furniture', 'handicraft', 'leather', 'semi-precious-stone'],
         trim: true
     },
     subcategory: {
