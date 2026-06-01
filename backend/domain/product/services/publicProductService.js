@@ -2,6 +2,7 @@ const repository = require('../repository/productRepository');
 const { buildSubcategoryFilter } = require('../utils/subcategoryFilter');
 const { toProductDto } = require('../dto/productDto');
 const Category = require('../../../models/Category');
+const ProductOrdering = require('../../../models/ProductOrdering');
 
 const toPagination = ({ page, limit, total, count }) => ({
     current: page,
@@ -27,7 +28,7 @@ const parsePrice = (value) => {
 const getAllProducts = async (query) => {
     const page = parsePositiveInt(query.page, 1);
     const limit = parsePositiveInt(query.limit, 20);
-    const sortBy = query.sortBy || 'createdAt';
+    const sortBy = query.sortBy || 'relevance';
     const sortOrder = query.sortOrder === 'asc' ? 'asc' : 'desc';
 
     const filters = {
@@ -70,18 +71,31 @@ const getAllProducts = async (query) => {
         filters.priceUSD = { ...filters.priceUSD, $lte: maxPrice };
     }
 
-    const sort = { [sortBy]: sortOrder === 'desc' ? -1 : 1 };
     const skip = (page - 1) * limit;
-
-    const products = await repository.findProducts({
-        filters,
-        sort,
-        skip,
-        limit,
-        searchTerm: query.search ? query.search.trim() : undefined
-    });
-
     const total = await repository.countProducts(filters);
+
+    let products;
+    if (sortBy === 'relevance') {
+        // Determine scope: category+subcategory or category-only or global
+        const scopeCategory    = query.category    || null;
+        const scopeSubcategory = query.subcategory || null;
+        const ordering = await ProductOrdering.findOne({
+            category: scopeCategory,
+            subcategory: scopeSubcategory
+        });
+        const orderedIds = ordering ? ordering.productIds : [];
+        products = await repository.findProductsOrdered({ filters, orderedIds, skip, limit });
+    } else {
+        const sort = { [sortBy]: sortOrder === 'desc' ? -1 : 1 };
+        products = await repository.findProducts({
+            filters,
+            sort,
+            skip,
+            limit,
+            searchTerm: query.search ? query.search.trim() : undefined
+        });
+    }
+
     const items = products.map(toProductDto);
 
     return {
@@ -113,7 +127,7 @@ const getProductById = async (productId) => {
 const getProductsByCategory = async (category, query) => {
     const page = parsePositiveInt(query.page, 1);
     const limit = parsePositiveInt(query.limit, 20);
-    const sortBy = query.sortBy || 'featured';
+    const sortBy = query.sortBy || 'relevance';
     const sortOrder = query.sortOrder === 'asc' ? 'asc' : 'desc';
 
     const filters = {
@@ -138,18 +152,31 @@ const getProductsByCategory = async (category, query) => {
         filters.priceUSD = { ...filters.priceUSD, $lte: maxPrice };
     }
 
-    const sort = {};
-    if (sortBy === 'featured') {
-        sort.featured = -1;
-        sort.createdAt = -1;
-    } else {
-        sort[sortBy] = sortOrder === 'desc' ? -1 : 1;
-    }
-
     const skip = (page - 1) * limit;
-    const products = await repository.findByCategory({ filters, sort, skip, limit });
-    const total = await repository.countProducts(filters);
-    const subcategories = await repository.distinctSubcategoriesByCategory(category);
+    const [total, subcategories] = await Promise.all([
+        repository.countProducts(filters),
+        repository.distinctSubcategoriesByCategory(category)
+    ]);
+
+    let products;
+    if (sortBy === 'relevance') {
+        const scopeSubcategory = query.subcategory || null;
+        const ordering = await ProductOrdering.findOne({
+            category,
+            subcategory: scopeSubcategory
+        });
+        const orderedIds = ordering ? ordering.productIds : [];
+        products = await repository.findProductsOrdered({ filters, orderedIds, skip, limit });
+    } else {
+        const sort = {};
+        if (sortBy === 'featured') {
+            sort.featured = -1;
+            sort.createdAt = -1;
+        } else {
+            sort[sortBy] = sortOrder === 'desc' ? -1 : 1;
+        }
+        products = await repository.findByCategory({ filters, sort, skip, limit });
+    }
 
     const items = products.map(toProductDto);
 
