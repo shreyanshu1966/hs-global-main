@@ -2,6 +2,7 @@ export interface ProductPricingV2 {
   currency: 'USD';
   basePriceUSD: number;
   effectivePriceUSD: number;
+  pricePerSqFt?: number;
   discountStatus: 'none' | 'scheduled' | 'active' | 'expired';
   discount: {
     enabled: boolean;
@@ -49,6 +50,7 @@ export interface ProductV2 {
   specs: {
     furniture: Record<string, string> | null;
     slab: Record<string, string> | null;
+    stone: Record<string, string> | null;
     custom: Array<Record<string, unknown>>;
   };
   seo: {

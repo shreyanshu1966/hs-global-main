@@ -69,6 +69,7 @@ const toProductDto = (product) => {
             currency: 'USD',
             basePriceUSD,
             effectivePriceUSD,
+            pricePerSqFt: product.pricePerSqFt != null ? Number(product.pricePerSqFt) : undefined,
             discountStatus: discountStatus.state,
             discount: {
                 enabled: Boolean(product.discount?.enabled),
@@ -93,6 +94,7 @@ const toProductDto = (product) => {
         specs: {
             furniture: product.furnitureSpecs || null,
             slab: product.slabSpecs || null,
+            stone: product.stoneSpecs || null,
             custom: Array.isArray(product.customSpecs) ? product.customSpecs : []
         },
         seo: {

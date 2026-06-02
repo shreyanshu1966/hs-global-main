@@ -140,7 +140,29 @@ export function ProductSpecifications({ product }: ProductSpecificationsProps) {
   // Tags
   const tags: string[] = (product.tags || []).filter(Boolean);
 
-  const allSpecRows = [...furnitureRows, ...customSpecRows];
+  // Semi-precious-stone specific rows
+  const STONE_SPEC_LABELS: Record<string, string> = {
+    minSlabSize:     'Minimum Slab Size',
+    maxSlabSize:     'Maximum Slab Size',
+    thickness:       'Thickness',
+    surfaceFinish:   'Surface Finish',
+    form:            'Form',
+    material:        'Material',
+    usage:           'Usage',
+    moh:             'MOH',
+    refractiveIndex: 'Refractive Index',
+    waterAbsorption: 'Water Absorption',
+    priceRange:      'Price Range',
+  };
+  const stoneSpecs = product.stoneSpecs || {};
+  const stoneSpecRows: [string, string][] = Object.entries(STONE_SPEC_LABELS)
+    .filter(([key]) => stoneSpecs[key])
+    .map(([key, label]) => [label, String(stoneSpecs[key])]);
+
+  const isSemiPreciousStone = product.category === 'semi-precious-stone';
+  const allSpecRows = isSemiPreciousStone
+    ? [...stoneSpecRows, ...customSpecRows]
+    : [...furnitureRows, ...customSpecRows];
 
   // ── Shipping data ────────────────────────────────────────────────────────
   const ship = product.shipping || {};

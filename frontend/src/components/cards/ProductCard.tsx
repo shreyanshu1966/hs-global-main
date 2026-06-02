@@ -26,11 +26,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
     const videoStartTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     // ---- Pricing (centralized engine) ----
+    const isSemiPreciousStone = product.category === 'semi-precious-stone';
     const price = usePrice(product);
     const hasValidPrice = price.baseUSD > 0;
-    const showDiscount = price.hasDiscount && hasValidPrice;
+    const showDiscount = price.hasDiscount && hasValidPrice && !isSemiPreciousStone;
     const displayPrice = price.formattedPrice;
     const originalDisplayPrice = price.originalFormattedPrice;
+    const sqFtPrice = (product as any).pricePerSqFt as number | undefined;
     const wishlistId = String(product.productId || product._id || product.name);
     const isWishlisted = isInWishlist(wishlistId);
 
@@ -286,7 +288,22 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
                             </span>
                         </div>
                     )}
-                    {showDiscount ? (
+                    {isSemiPreciousStone ? (
+                        sqFtPrice && sqFtPrice > 0 ? (
+                            <div className="space-y-0.5">
+                                <p className="text-[16px] sm:text-lg font-medium text-[#2B2B2B] leading-none">
+                                    ₹{sqFtPrice.toLocaleString('en-IN')}
+                                    <span className="text-sm font-normal text-[#6B7280] ml-1">/ sq.ft</span>
+                                </p>
+                                <p className="text-[10px] text-[#9ca3af] uppercase tracking-wide">Request quotation to buy</p>
+                            </div>
+                        ) : (
+                            <div className="space-y-0.5">
+                                <p className="text-[16px] sm:text-lg font-medium text-[#2B2B2B] leading-none">Price on Request</p>
+                                <p className="text-[10px] text-[#9ca3af] uppercase tracking-wide">Request quotation to buy</p>
+                            </div>
+                        )
+                    ) : showDiscount ? (
                         <div className="space-y-1.5">
                             <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
                                 <p className="text-[16px] sm:text-lg font-semibold text-[#b91c1c] leading-none">{displayPrice}</p>

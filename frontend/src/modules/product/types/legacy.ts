@@ -9,6 +9,7 @@ export interface LegacyProduct {
   images: string[];
   sortedImages?: string[];
   priceUSD?: number;
+  pricePerSqFt?: number;
   available: boolean;
   discount?: {
     enabled: boolean;
@@ -39,6 +40,19 @@ export interface LegacyProduct {
     origin?: string;
     material?: string;
     application?: string;
+  };
+  stoneSpecs?: {
+    minSlabSize?: string;
+    maxSlabSize?: string;
+    thickness?: string;
+    surfaceFinish?: string;
+    form?: string;
+    material?: string;
+    usage?: string;
+    moh?: string;
+    refractiveIndex?: string;
+    waterAbsorption?: string;
+    priceRange?: string;
   };
   status: string;
   featured: boolean;

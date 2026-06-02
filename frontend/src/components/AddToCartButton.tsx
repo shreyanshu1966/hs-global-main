@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ShoppingCart, Check, FileText } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { useSlabCustomization } from '../contexts/SlabCustomizationContext';
+import { useStoneQuotation } from '../contexts/StoneQuotationContext';
 import { Product } from '../services/productService'; // Updated to use Service type
 import { useTrackAddToCart } from '../hooks/useProducts';
 import gsap from 'gsap';
@@ -27,6 +28,7 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
 }) => {
   const { state, addItem, toggleCart } = useCart();
   const { openModal: openSlabModal, setCustomization } = useSlabCustomization();
+  const { openModal: openStoneModal } = useStoneQuotation();
   const trackAddToCart = useTrackAddToCart();
   const [isAdded, setIsAdded] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -84,6 +86,12 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
 
 
   const handleClick = () => {
+    // For semi-precious-stone: Request quotation
+    if (product.category === 'semi-precious-stone') {
+      openStoneModal(product);
+      return;
+    }
+
     // For slabs: Request quotation (open modal directly)
     if (product.category === 'slabs') {
       // Apply preselected customization if provided
@@ -149,6 +157,37 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
   const handleMouseUp = contextSafe(() => {
     gsap.to(buttonRef.current, { scale: 1.02, duration: 0.1 });
   });
+
+  // For semi-precious-stone, show "Request Quotation" button
+  if (product.category === 'semi-precious-stone') {
+    if (variant === 'compact') {
+      return (
+        <button
+          onClick={handleClick}
+          aria-label="Request quotation"
+          title="Request quotation"
+          className={`px-3 py-2 text-xs md:text-sm font-semibold transition-all duration-300 flex items-center justify-center gap-1 ${className}`}
+        >
+          <FileText className="w-3.5 h-3.5" />
+          {!iconOnly && <span>Request Quote</span>}
+        </button>
+      );
+    }
+    return (
+      <button
+        ref={buttonRef}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
+        onClick={handleClick}
+        className={`px-5 py-3 font-semibold transition-all duration-300 flex items-center gap-2 ${className}`}
+      >
+        <FileText className="w-4 h-4" />
+        Request Quotation
+      </button>
+    );
+  }
 
   // For slabs, show "Request Quotation" button
   if (product.category === 'slabs') {

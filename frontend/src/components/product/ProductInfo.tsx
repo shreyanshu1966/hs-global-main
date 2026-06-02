@@ -1,5 +1,5 @@
 import React from 'react';
-import { Star, Package, Share2, MessageCircle, FileText, Heart, Truck } from 'lucide-react';
+import { Star, Package, Share2, MessageCircle, FileText, Heart, Truck, Gem } from 'lucide-react';
 import DeliveryChecker from './DeliveryChecker';
 import { useNavigate, Link } from 'react-router-dom';
 import { useCart } from '../../contexts/CartContext';
@@ -7,6 +7,7 @@ import { useTrackAddToCart } from '../../hooks/useProducts';
 import { AddToCartButton } from '../AddToCartButton';
 import { usePrice } from '../../hooks/usePrice';
 import { useWishlist } from '../../contexts/WishlistContext';
+import { useStoneQuotation } from '../../contexts/StoneQuotationContext';
 
 import { Heading, Body, Caption } from '../ui/Typography';
 import { Button } from '../ui/Button';
@@ -30,11 +31,15 @@ export function ProductInfo({
     const { addItem } = useCart();
     const trackAddToCart = useTrackAddToCart();
     const { isInWishlist, toggleWishlist } = useWishlist();
+    const { openModal: openStoneQuotationModal } = useStoneQuotation();
     const isFavorite = isInWishlist(product.id || product._id || product.productId || '');
+
+    const isSemiPreciousStone = product.category === 'semi-precious-stone';
+    const sqFtPrice = product.pricePerSqFt as number | undefined;
 
     const price = usePrice(product);
     const basePriceUSD = price.baseUSD;
-    const hasDiscount = price.hasDiscount;
+    const hasDiscount = price.hasDiscount && !isSemiPreciousStone;
     const discountPercentage = Math.round(price.discountPercentage);
     const sellerRating = reviewStats.totalReviews > 0 ? reviewStats.averageRating.toFixed(1) : '5.0';
 
@@ -150,7 +155,34 @@ export function ProductInfo({
 
             {/* Price Area */}
             <div className="mb-4">
-                {basePriceUSD ? (
+                {isSemiPreciousStone ? (
+                    sqFtPrice && sqFtPrice > 0 ? (
+                        <div className="flex flex-col gap-1">
+                            <div className="flex items-baseline gap-1.5">
+                                <span className="text-[28px] md:text-[32px] font-medium text-[#111827] leading-none">
+                                    ₹{sqFtPrice.toLocaleString('en-IN')}
+                                </span>
+                                <span className="text-[15px] text-[#6b7280]">/ sq.ft</span>
+                            </div>
+                            <div className="flex items-center gap-1.5 mt-1">
+                                <Gem className="w-3.5 h-3.5 text-[#7c5cbf]" />
+                                <p className="text-[11px] text-[#7c5cbf] uppercase tracking-wide font-medium">
+                                    Custom pricing — request a quotation
+                                </p>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="flex flex-col gap-1">
+                            <div className="text-[26px] font-medium text-[#111827]">Price on Request</div>
+                            <div className="flex items-center gap-1.5">
+                                <Gem className="w-3.5 h-3.5 text-[#7c5cbf]" />
+                                <p className="text-[11px] text-[#7c5cbf] uppercase tracking-wide font-medium">
+                                    Custom pricing — request a quotation
+                                </p>
+                            </div>
+                        </div>
+                    )
+                ) : basePriceUSD ? (
                     <div className="flex flex-col gap-0.5">
                         <div className="flex items-end gap-2.5 flex-wrap">
                             <span className="text-[24px] md:text-[28px] font-medium text-[#111827] leading-none">
@@ -182,7 +214,16 @@ export function ProductInfo({
 
             {/* CTA Buttons */}
             <div className="mb-4">
-                {product.available ? (
+                {isSemiPreciousStone ? (
+                    <button
+                        type="button"
+                        onClick={() => openStoneQuotationModal(product)}
+                        className="w-full h-[44px] bg-[#111827] text-white hover:bg-black transition-colors duration-300 font-semibold tracking-[0.1em] text-[12px] uppercase flex items-center justify-center gap-2"
+                    >
+                        <FileText className="w-4 h-4" />
+                        Request Quotation
+                    </button>
+                ) : product.available ? (
                     <div className="flex flex-col gap-2">
                         <button
                             type="button"

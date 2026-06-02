@@ -78,6 +78,8 @@ const ProductDetails = () => {
       image: baseImages[0],
       images: baseImages,
       priceUSD: dbProduct.priceUSD,
+      pricePerSqFt: dbProduct.pricePerSqFt,
+      stoneSpecs: dbProduct.stoneSpecs,
       moq,
       specs,
       description: dbProduct.description || "Premium natural stone slab ideal for countertops, vanities, flooring and wall cladding with strict quality selection.",

@@ -21,6 +21,7 @@ export const toLegacyProduct = (product: ProductV2): LegacyProduct => ({
   images: product.media.galleryImages,
   sortedImages: product.media.sortedImages,
   priceUSD: product.pricing.basePriceUSD || undefined,
+  pricePerSqFt: product.pricing.pricePerSqFt || undefined,
   available: product.availability.available,
   discount: {
     enabled: product.pricing.discount.enabled,
@@ -36,6 +37,7 @@ export const toLegacyProduct = (product: ProductV2): LegacyProduct => ({
   videoUploadedAt: product.media.video.uploadedAt,
   furnitureSpecs: product.specs.furniture || undefined,
   slabSpecs: product.specs.slab || undefined,
+  stoneSpecs: product.specs.stone || undefined,
   customSpecs: Array.isArray(product.specs.custom) ? product.specs.custom : [],
   status: product.status,
   featured: product.featured,

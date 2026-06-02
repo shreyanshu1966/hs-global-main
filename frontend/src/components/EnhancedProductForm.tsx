@@ -101,6 +101,12 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
   const [videoUploading, setVideoUploading] = useState(false);
   const [regionalPricing, setRegionalPricing] = useState<Record<RegionKey, { enabled: boolean; adjustmentType: AdjustmentType; adjustmentValue: number }>>(defaultRegionalPricing);
   const [priceINR, setPriceINR]           = useState<string>('');
+  const [pricePerSqFtINR, setPricePerSqFtINR] = useState<string>('');
+  const [stoneSpecs, setStoneSpecs] = useState({
+    minSlabSize: '', maxSlabSize: '', thickness: '', surfaceFinish: '',
+    form: '', material: '', usage: '', moh: '', refractiveIndex: '',
+    waterAbsorption: '', priceRange: '',
+  });
   const [shippingConfig, setShippingConfig] = useState<{ shipsWorldwide: boolean; excludedCountries: string[] }>({ shipsWorldwide: true, excludedCountries: [] });
   const [excludeSearch, setExcludeSearch] = useState('');
   const [similarProductIds, setSimilarProductIds] = useState<string[]>([]);
@@ -223,6 +229,22 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
     }
 
     setPriceINR(editingProduct.priceUSD ? String(Math.round(editingProduct.priceUSD * liveRate('INR'))) : '');
+    setPricePerSqFtINR(editingProduct.pricePerSqFt ? String(editingProduct.pricePerSqFt) : '');
+    if (editingProduct.stoneSpecs) {
+      setStoneSpecs({
+        minSlabSize:     editingProduct.stoneSpecs.minSlabSize     || '',
+        maxSlabSize:     editingProduct.stoneSpecs.maxSlabSize     || '',
+        thickness:       editingProduct.stoneSpecs.thickness       || '',
+        surfaceFinish:   editingProduct.stoneSpecs.surfaceFinish   || '',
+        form:            editingProduct.stoneSpecs.form            || '',
+        material:        editingProduct.stoneSpecs.material        || '',
+        usage:           editingProduct.stoneSpecs.usage           || '',
+        moh:             editingProduct.stoneSpecs.moh             || '',
+        refractiveIndex: editingProduct.stoneSpecs.refractiveIndex || '',
+        waterAbsorption: editingProduct.stoneSpecs.waterAbsorption || '',
+        priceRange:      editingProduct.stoneSpecs.priceRange      || '',
+      });
+    }
 
     if (editingProduct.shipping) {
       setShippingConfig({ shipsWorldwide: editingProduct.shipping.shipsWorldwide !== false, excludedCountries: editingProduct.shipping.excludedCountries || [] });
@@ -345,9 +367,11 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
         productId: formData.productId, name: formData.name, category: formData.category,
         subcategory: finalSubcategory, description: formData.description,
         subDescription: formData.subDescription || '',
-        priceUSD: formData.priceUSD ? parseFloat(formData.priceUSD.toString()) : undefined,
+        priceUSD: formData.category === 'semi-precious-stone' ? undefined : (formData.priceUSD ? parseFloat(formData.priceUSD.toString()) : undefined),
+        pricePerSqFt: formData.category === 'semi-precious-stone' && pricePerSqFtINR ? parseFloat(pricePerSqFtINR) : undefined,
         status: formData.status, available: formData.available, featured: formData.featured,
         furnitureSpecs: formData.furnitureSpecs, discount: formData.discount, hasVideo: !!video,
+        stoneSpecs: formData.category === 'semi-precious-stone' ? stoneSpecs : undefined,
         customSpecs: formattedCustomSpecs,
         similarProducts: similarProductIds, regionalPricing: regionalPricingForSave,
         shipping: { shipsWorldwide: shippingConfig.shipsWorldwide, excludedCountries: shippingConfig.excludedCountries },
@@ -374,9 +398,11 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
         productId: formData.productId, name: formData.name, category: formData.category,
         subcategory: finalSubcategory, description: formData.description,
         subDescription: formData.subDescription || '',
-        priceUSD: formData.priceUSD ? parseFloat(formData.priceUSD.toString()) : undefined,
+        priceUSD: formData.category === 'semi-precious-stone' ? undefined : (formData.priceUSD ? parseFloat(formData.priceUSD.toString()) : undefined),
+        pricePerSqFt: formData.category === 'semi-precious-stone' && pricePerSqFtINR ? parseFloat(pricePerSqFtINR) : undefined,
         status: formData.status, available: formData.available, featured: formData.featured,
         furnitureSpecs: formData.furnitureSpecs, discount: formData.discount,
+        stoneSpecs: formData.category === 'semi-precious-stone' ? stoneSpecs : undefined,
         hasVideo: !!video, similarProducts: similarProductIds,
       }, images, video && !video.isExisting ? video.file : null);
     } catch (error) {
@@ -692,18 +718,35 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
               <p className="text-xs text-gray-400 mt-0.5">Set your price and optional discount.</p>
             </div>
             <div className="px-6 py-5 space-y-5">
-              {/* Price input */}
-              <div>
-                <label className={labelCls}>Price (INR)</label>
-                <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-medium pointer-events-none">₹</span>
-                  <input type="number" min="0" value={priceINR} onChange={e => handlePriceINRChange(e.target.value)} disabled={isFormDisabled}
-                    className={`${inputCls} pl-8`} placeholder="e.g. 83500" />
+              {/* Price input — sq/ft for semi-precious-stone, regular price otherwise */}
+              {formData.category === 'semi-precious-stone' ? (
+                <div>
+                  <label className={labelCls}>Price per Sq.ft (INR)</label>
+                  <div className="relative">
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-medium pointer-events-none">₹</span>
+                    <input type="number" min="0" value={pricePerSqFtINR}
+                      onChange={e => setPricePerSqFtINR(e.target.value)}
+                      disabled={isFormDisabled}
+                      className={`${inputCls} pl-8`} placeholder="e.g. 450" />
+                  </div>
+                  {pricePerSqFtINR && parseFloat(pricePerSqFtINR) > 0 && (
+                    <p className="text-xs text-gray-400 mt-1.5">Shown as ₹{parseFloat(pricePerSqFtINR).toLocaleString('en-IN')} / sq.ft to customers</p>
+                  )}
+                  <p className="text-xs text-purple-500 mt-1.5">Customers will see this price and request a quotation — no cart/checkout.</p>
                 </div>
-                {priceINR && parseFloat(priceINR) > 0 && (
-                  <p className="text-xs text-gray-400 mt-1.5">≈ ${(parseFloat(priceINR) / liveRate('INR')).toFixed(2)} USD</p>
-                )}
-              </div>
+              ) : (
+                <div>
+                  <label className={labelCls}>Price (INR)</label>
+                  <div className="relative">
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-medium pointer-events-none">₹</span>
+                    <input type="number" min="0" value={priceINR} onChange={e => handlePriceINRChange(e.target.value)} disabled={isFormDisabled}
+                      className={`${inputCls} pl-8`} placeholder="e.g. 83500" />
+                  </div>
+                  {priceINR && parseFloat(priceINR) > 0 && (
+                    <p className="text-xs text-gray-400 mt-1.5">≈ ${(parseFloat(priceINR) / liveRate('INR')).toFixed(2)} USD</p>
+                  )}
+                </div>
+              )}
 
               {/* Discount */}
               <div className="border border-gray-100 rounded-xl p-4 space-y-4">
@@ -858,17 +901,56 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
             </div>
           </div>
 
-          {/* ⑤ Product Specs */}
-          <div ref={secRef('specs')} id="specs" className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-            <div className="px-6 py-5">
-              <ProductSpecsEditor
-                category={formData.category}
-                furnitureSpecs={formData.furnitureSpecs}
-                customSpecs={customSpecs}
-                onSpecsChange={handleSpecsChange}
-              />
+          {/* ⑤ Stone Specifications — only for semi-precious-stone */}
+          {formData.category === 'semi-precious-stone' && (
+            <div ref={secRef('specs')} id="specs" className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+              <div className="px-6 py-4 border-b border-gray-50">
+                <h2 className="font-semibold text-gray-900 text-[15px]">Stone Specifications</h2>
+                <p className="text-xs text-gray-400 mt-0.5">Technical details shown on the product page.</p>
+              </div>
+              <div className="px-6 py-5 grid grid-cols-2 gap-4">
+                {([
+                  ['minSlabSize',     'Minimum Slab Size', 'e.g. 180 × 60 cm'],
+                  ['maxSlabSize',     'Maximum Slab Size', 'e.g. 280 × 180 cm'],
+                  ['thickness',       'Thickness',         'e.g. 10mm / 15mm / 20mm'],
+                  ['surfaceFinish',   'Surface Finish',    'e.g. Polished, Honed, Brushed'],
+                  ['form',            'Form',              'e.g. Slab, Tile, Custom'],
+                  ['material',        'Material',          'e.g. Amethyst, Agate, Onyx'],
+                  ['usage',           'Usage',             'e.g. Tabletop, Wall Cladding'],
+                  ['moh',             'MOH Hardness',      'e.g. 7'],
+                  ['refractiveIndex', 'Refractive Index',  'e.g. 1.544'],
+                  ['waterAbsorption', 'Water Absorption',  'e.g. < 0.1%'],
+                  ['priceRange',      'Price Range',       'e.g. ₹400 – ₹800 / sq.ft'],
+                ] as [keyof typeof stoneSpecs, string, string][]).map(([key, label, placeholder]) => (
+                  <div key={key} className={key === 'priceRange' ? 'col-span-2' : ''}>
+                    <label className={labelCls}>{label}</label>
+                    <input
+                      type="text"
+                      value={stoneSpecs[key]}
+                      onChange={e => setStoneSpecs(prev => ({ ...prev, [key]: e.target.value }))}
+                      placeholder={placeholder}
+                      disabled={isFormDisabled}
+                      className={inputCls}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
+
+          {/* ⑤ Product Specs (furniture / other categories) */}
+          {formData.category !== 'semi-precious-stone' && (
+            <div id="specs" className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+              <div className="px-6 py-5">
+                <ProductSpecsEditor
+                  category={formData.category}
+                  furnitureSpecs={formData.furnitureSpecs}
+                  customSpecs={customSpecs}
+                  onSpecsChange={handleSpecsChange}
+                />
+              </div>
+            </div>
+          )}
 
           {/* ⑥ Similar Products */}
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">

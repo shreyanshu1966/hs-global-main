@@ -12,6 +12,7 @@ export interface Product {
   images: string[];
   sortedImages?: string[];
   priceUSD?: number;
+  pricePerSqFt?: number;
   available: boolean;
   discount?: {
     enabled: boolean;

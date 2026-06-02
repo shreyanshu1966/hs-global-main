@@ -52,6 +52,9 @@ Thumbs.db
 # PM2
 .pm2/
 
+# Deploy credentials — never commit this
+deploy/.env.deploy
+
 # Coverage
 coverage/
 *.lcov

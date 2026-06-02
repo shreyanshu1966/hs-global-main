@@ -25,6 +25,8 @@ import { WishlistProvider } from './contexts/WishlistContext';
 import { PhoneVerificationProvider } from './contexts/PhoneVerificationContext';
 import { SlabCustomizationProvider } from './contexts/SlabCustomizationContext';
 import { SlabCustomizationModal } from './components/SlabCustomizationModal';
+import { StoneQuotationProvider } from './contexts/StoneQuotationContext';
+import { StoneQuotationModal } from './components/StoneQuotationModal';
 import { LocalizationProvider } from './contexts/LocalizationContext';
 import { RegionProvider } from './contexts/RegionContext';
 import { GoogleOAuthProvider } from '@react-oauth/google';
@@ -40,8 +42,11 @@ createRoot(document.getElementById('root')!).render(
             <WishlistProvider>
             <PhoneVerificationProvider>
               <SlabCustomizationProvider>
-                <App />
-                <SlabCustomizationModal />
+                <StoneQuotationProvider>
+                  <App />
+                  <SlabCustomizationModal />
+                  <StoneQuotationModal />
+                </StoneQuotationProvider>
               </SlabCustomizationProvider>
             </PhoneVerificationProvider>
             </WishlistProvider>
