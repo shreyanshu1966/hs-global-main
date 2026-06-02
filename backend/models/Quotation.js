@@ -23,16 +23,24 @@ const quotationSchema = new mongoose.Schema({
     },
     finish: {
         type: String,
-        required: true
+        default: ''
     },
     thickness: {
         type: String,
-        required: true
+        default: ''
     },
     requirement: {
         type: Number,
-        required: true,
-        min: 1
+        min: 0,
+        default: 0
+    },
+    notes: {
+        type: String,
+        default: ''
+    },
+    category: {
+        type: String,
+        default: 'slabs'
     },
     status: {
         type: String,

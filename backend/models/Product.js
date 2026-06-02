@@ -21,6 +21,20 @@ const slabSpecsSchema = new mongoose.Schema({
     application: String
 }, { _id: false });
 
+const stoneSpecsSchema = new mongoose.Schema({
+    minSlabSize:     String,
+    maxSlabSize:     String,
+    thickness:       String,
+    surfaceFinish:   String,
+    form:            String,
+    material:        String,
+    usage:           String,
+    moh:             String,
+    refractiveIndex: String,
+    waterAbsorption: String,
+    priceRange:      String,
+}, { _id: false });
+
 // Custom specification schema
 const customSpecSchema = new mongoose.Schema({
     key: {
@@ -111,6 +125,10 @@ const productSchema = new mongoose.Schema({
         type: String
     }],
     priceUSD: {
+        type: Number,
+        min: 0
+    },
+    pricePerSqFt: {
         type: Number,
         min: 0
     },
@@ -220,6 +238,8 @@ const productSchema = new mongoose.Schema({
     furnitureSpecs: furnitureSpecsSchema,
     // Slab specific fields
     slabSpecs: slabSpecsSchema,
+    // Semi Precious Stone specific fields
+    stoneSpecs: stoneSpecsSchema,
     // Custom specifications (for additional product-specific attributes)
     customSpecs: [customSpecSchema],
 
