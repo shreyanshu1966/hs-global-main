@@ -9,6 +9,4 @@ const specKeySchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
-specKeySchema.index({ label: 1 });
-
 module.exports = mongoose.model('SpecKey', specKeySchema);

@@ -63,6 +63,10 @@ const sanitizeConfigPayload = (payload) => {
     ? payload.promise.items
     : base.promise.items;
 
+  const categoryCardsInput = Array.isArray(payload?.categoryCards?.cards)
+    ? payload.categoryCards.cards
+    : base.categoryCards.cards;
+
   return {
     key: 'main',
     newArrivals: {
@@ -144,6 +148,23 @@ const sanitizeConfigPayload = (payload) => {
         .slice(0, 10)
         .map(sanitizeJournalArticle)
         .filter((item) => item.title && item.image),
+    },
+    hero: {
+      slides: (Array.isArray(payload?.hero?.slides) ? payload.hero.slides : base.hero.slides)
+        .slice(0, 10)
+        .map((s) => ({
+          heading: String(s?.heading || '').trim(),
+          subheading: String(s?.subheading || '').trim(),
+          ctaText: String(s?.ctaText || '').trim(),
+          ctaLink: String(s?.ctaLink || '/products').trim() || '/products',
+          backgroundImage: String(s?.backgroundImage || '').trim(),
+          overlayOpacity: Math.min(1, Math.max(0, Number(s?.overlayOpacity ?? 0.5))),
+        })),
+      autoplayInterval: Math.min(30000, Math.max(1000, Number(payload?.hero?.autoplayInterval ?? base.hero.autoplayInterval ?? 5000))),
+    },
+    categoryCards: {
+      title: String(payload?.categoryCards?.title || base.categoryCards.title).trim(),
+      cards: categoryCardsInput.slice(0, 4).map(sanitizeLinkCard),
     },
     promise: {
       titlePrefix: String(payload?.promise?.titlePrefix || base.promise.titlePrefix).trim(),

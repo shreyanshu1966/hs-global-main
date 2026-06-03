@@ -331,7 +331,7 @@ const updateProductWithImages = async (req, res) => {
         }
 
         // Handle video removal (if user wants to remove video)
-        if (productData.removeVideo === 'true' && existingProduct.videoUrl) {
+        if ((productData.removeVideo === true || productData.removeVideo === 'true') && existingProduct.videoUrl) {
             try {
                 await deleteVideoFromGoDaddy(existingProduct.videoUrl);
                 productData.hasVideo = false;

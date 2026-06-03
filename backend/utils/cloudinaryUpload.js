@@ -65,7 +65,7 @@ const uploadMedia = multer({
     storage: storage,
     fileFilter: mediaFileFilter,
     limits: {
-        fileSize: 10 * 1024 * 1024 // 10MB max file size
+        fileSize: 150 * 1024 * 1024 // 150MB — supports up to 100MB videos + 5MB images
     }
 });
 
