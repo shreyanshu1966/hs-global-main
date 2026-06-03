@@ -27,10 +27,13 @@ if (!fs.existsSync(basicFtpPath)) {
 }
 const { Client } = require(basicFtpPath);
 
+// Folders inside dist/ that are never uploaded (too large / already on server)
+const SKIP_FOLDERS = new Set(['videos', 'gallery']);
+
 async function main() {
-  const ftpHost   = required('FTP_HOST');
-  const ftpUser   = required('FTP_USER');
-  const ftpPass   = required('FTP_PASS');
+  const ftpHost    = required('FTP_HOST');
+  const ftpUser    = required('FTP_USER');
+  const ftpPass    = required('FTP_PASS');
   const remotePath = process.env.FTP_REMOTE_PATH || '/public_html';
 
   // ── Step 1: Build ──────────────────────────────────────────────────────────
@@ -45,27 +48,107 @@ async function main() {
     throw new Error('Build failed — frontend/dist/ was not created.');
   }
 
-  // ── Step 2: Upload via FTP ─────────────────────────────────────────────────
+  // ── Step 2: Upload via FTP (skipping heavy folders) ───────────────────────
+  console.log(`📤  Uploading dist/ → ${remotePath}`);
+  console.log(`⏭️   Skipping folders: ${[...SKIP_FOLDERS].join(', ')}\n`);
+
+  const ftpCreds = { host: ftpHost, user: ftpUser, password: ftpPass, secure: false };
+
+  let uploaded = 0;
+  let skipped  = 0;
+
+  // Collect all upload tasks upfront so we can retry from the failure point
+  const tasks = collectTasks(DIST_DIR, remotePath);
+  const total  = tasks.filter(t => t.type === 'file').length;
+  let done = 0;
+
   const client = new Client();
   client.ftp.verbose = false;
 
   try {
-    console.log(`\n🌐  Connecting to ${ftpHost}...`);
-    await client.access({
-      host: ftpHost,
-      user: ftpUser,
-      password: ftpPass,
-      secure: false,
-    });
+    await connect(client, ftpCreds);
 
-    console.log(`📤  Uploading dist/ → ${remotePath} (this may take a few minutes)...`);
-    await client.uploadFromDir(DIST_DIR, remotePath);
+    for (const task of tasks) {
+      if (task.type === 'mkdir') {
+        await withReconnect(client, ftpCreds, () => client.ensureDir(task.remote));
+        continue;
+      }
+      if (task.type === 'skip') continue;
+      // file upload
+      done++;
+      process.stdout.write(`  [${done}/${total}]  ${path.relative(DIST_DIR, task.local)}\r`);
+      await withReconnect(client, ftpCreds, () => client.uploadFrom(task.local, task.remote));
+      uploaded++;
+    }
 
-    console.log('\n✅  Frontend deployed to GoDaddy!\n');
+    skipped = tasks.filter(t => t.type === 'skip').length;
+
+    console.log(`\n\n✅  Frontend deployed to GoDaddy!`);
+    console.log(`    Files uploaded : ${uploaded}`);
+    console.log(`    Folders skipped: ${skipped}\n`);
   } finally {
     client.close();
   }
 }
+
+async function connect(client, creds) {
+  await client.access(creds);
+  // Enable TCP keepalive so the control socket doesn't time out during big uploads
+  if (client.ftp.socket) {
+    client.ftp.socket.setKeepAlive(true, 10000);
+  }
+}
+
+async function withReconnect(client, creds, fn) {
+  const MAX_RETRIES = 3;
+  for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+    try {
+      return await fn();
+    } catch (err) {
+      const retriable = err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED'
+        || (err.message && (err.message.includes('ECONNRESET') || err.message.includes('control socket')));
+      if (retriable && attempt < MAX_RETRIES) {
+        console.log(`\n  ⚠️  Connection dropped — reconnecting (attempt ${attempt + 1})...`);
+        try { client.close(); } catch (_) {}
+        await new Promise(r => setTimeout(r, 2000 * attempt));
+        await connect(client, creds);
+      } else {
+        throw err;
+      }
+    }
+  }
+}
+
+/**
+ * Walks the local dist tree and returns a flat list of tasks:
+ *   { type: 'mkdir', remote }
+ *   { type: 'file',  local, remote }
+ *   { type: 'skip',  name }
+ * Uses absolute remote paths throughout so we never need to track CWD.
+ */
+function collectTasks(localDir, remoteDir) {
+  const tasks = [];
+  tasks.push({ type: 'mkdir', remote: remoteDir });
+
+  const entries = fs.readdirSync(localDir, { withFileTypes: true });
+  for (const entry of entries) {
+    const localPath   = path.join(localDir, entry.name);
+    const remotePath  = remoteDir + '/' + entry.name;
+
+    if (entry.isDirectory()) {
+      if (SKIP_FOLDERS.has(entry.name)) {
+        console.log(`  ⏭️   Skipping  ${entry.name}/`);
+        tasks.push({ type: 'skip', name: entry.name });
+        continue;
+      }
+      tasks.push(...collectTasks(localPath, remotePath));
+    } else {
+      tasks.push({ type: 'file', local: localPath, remote: remotePath });
+    }
+  }
+  return tasks;
+}
+
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 

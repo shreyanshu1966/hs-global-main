@@ -313,6 +313,218 @@ const HomePageManagement = () => {
         </div>
       </div>
 
+      {/* ── Hero Section ─────────────────────────────────────────────────────── */}
+      <div className={panelClass}>
+        <div className="flex items-center justify-between flex-wrap gap-3">
+          <div>
+            <h3 className="text-lg font-semibold text-slate-900">Hero Slides ({config.hero.slides.length})</h3>
+            <p className="mt-0.5 text-xs text-slate-500">Full-width slideshow at the top of the homepage. Add up to 10 slides.</p>
+          </div>
+          <div className="flex items-center gap-3">
+            <label className="text-xs font-medium text-slate-600 flex items-center gap-2">
+              Autoplay (ms)
+              <input
+                type="number"
+                min={1000}
+                max={30000}
+                step={500}
+                value={config.hero.autoplayInterval}
+                onChange={(e) => setConfig((prev) => ({ ...prev, hero: { ...prev.hero, autoplayInterval: Number(e.target.value) } }))}
+                className="w-24 rounded-lg border border-slate-300 px-2 py-1.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-100"
+              />
+            </label>
+            {config.hero.slides.length < 10 && (
+              <button
+                onClick={() =>
+                  setConfig((prev) => ({
+                    ...prev,
+                    hero: {
+                      ...prev.hero,
+                      slides: [
+                        ...prev.hero.slides,
+                        { heading: '', subheading: '', ctaText: '', ctaLink: '/products', backgroundImage: '', overlayOpacity: 0.5 },
+                      ],
+                    },
+                  }))
+                }
+                className="inline-flex items-center gap-1 rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+              >
+                <Plus size={14} /> Add Slide
+              </button>
+            )}
+          </div>
+        </div>
+
+        <div className="mt-4 space-y-4">
+          {config.hero.slides.map((slide, i) => (
+            <div key={i} className="rounded-xl border border-slate-200 bg-slate-50/70 p-4">
+              <div className="flex items-center justify-between mb-3">
+                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Slide {i + 1}</p>
+                <button
+                  onClick={() =>
+                    setConfig((prev) => ({
+                      ...prev,
+                      hero: { ...prev.hero, slides: prev.hero.slides.filter((_, idx) => idx !== i) },
+                    }))
+                  }
+                  className="p-1.5 text-slate-400 hover:text-red-500 transition-colors"
+                  title="Remove slide"
+                >
+                  <Trash2 size={14} />
+                </button>
+              </div>
+              <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                <input
+                  value={slide.heading}
+                  onChange={(e) => {
+                    const v = e.target.value;
+                    setConfig((prev) => {
+                      const slides = [...prev.hero.slides];
+                      slides[i] = { ...slides[i], heading: v };
+                      return { ...prev, hero: { ...prev.hero, slides } };
+                    });
+                  }}
+                  placeholder="Heading"
+                  className={inputClass}
+                />
+                <textarea
+                  value={slide.subheading}
+                  onChange={(e) => {
+                    const v = e.target.value;
+                    setConfig((prev) => {
+                      const slides = [...prev.hero.slides];
+                      slides[i] = { ...slides[i], subheading: v };
+                      return { ...prev, hero: { ...prev.hero, slides } };
+                    });
+                  }}
+                  placeholder="Subheading"
+                  rows={2}
+                  className={inputClass}
+                />
+                <input
+                  value={slide.ctaText}
+                  onChange={(e) => {
+                    const v = e.target.value;
+                    setConfig((prev) => {
+                      const slides = [...prev.hero.slides];
+                      slides[i] = { ...slides[i], ctaText: v };
+                      return { ...prev, hero: { ...prev.hero, slides } };
+                    });
+                  }}
+                  placeholder="CTA button text"
+                  className={inputClass}
+                />
+                <input
+                  value={slide.ctaLink}
+                  onChange={(e) => {
+                    const v = e.target.value;
+                    setConfig((prev) => {
+                      const slides = [...prev.hero.slides];
+                      slides[i] = { ...slides[i], ctaLink: v };
+                      return { ...prev, hero: { ...prev.hero, slides } };
+                    });
+                  }}
+                  placeholder="CTA link (e.g. /products)"
+                  className={inputClass}
+                />
+              </div>
+              <div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-2">
+                <div>
+                  <p className="mb-1 text-xs font-medium text-slate-600">Background Image</p>
+                  <AdminImageUploadField
+                    value={slide.backgroundImage}
+                    onChange={(url) =>
+                      setConfig((prev) => {
+                        const slides = [...prev.hero.slides];
+                        slides[i] = { ...slides[i], backgroundImage: url };
+                        return { ...prev, hero: { ...prev.hero, slides } };
+                      })
+                    }
+                  />
+                </div>
+                <div>
+                  <p className="mb-1 text-xs font-medium text-slate-600">
+                    Overlay Darkness: {Math.round((slide.overlayOpacity ?? 0.5) * 100)}%
+                  </p>
+                  <input
+                    type="range"
+                    min={0}
+                    max={1}
+                    step={0.05}
+                    value={slide.overlayOpacity ?? 0.5}
+                    onChange={(e) => {
+                      const v = Number(e.target.value);
+                      setConfig((prev) => {
+                        const slides = [...prev.hero.slides];
+                        slides[i] = { ...slides[i], overlayOpacity: v };
+                        return { ...prev, hero: { ...prev.hero, slides } };
+                      });
+                    }}
+                    className="w-full accent-slate-800 mt-2"
+                  />
+                  <div className="flex justify-between text-xs text-slate-400 mt-1">
+                    <span>Light (0%)</span><span>Dark (100%)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ── Category Cards ───────────────────────────────────────────────────── */}
+      <div className={panelClass}>
+        <h3 className="text-lg font-semibold text-slate-900">Category Cards (4 cards)</h3>
+        <p className="mt-1 text-xs text-slate-500">Displayed in a 4-column grid below the hero. Exactly 4 cards.</p>
+        <div className="mt-3">
+          <input
+            value={config.categoryCards.title}
+            onChange={(e) => setConfig((prev) => ({ ...prev, categoryCards: { ...prev.categoryCards, title: e.target.value } }))}
+            placeholder="Section title (e.g. Shop By Category)"
+            className={inputClass}
+          />
+        </div>
+        <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+          {Array.from({ length: 4 }).map((_, i) => {
+            const card = config.categoryCards.cards[i] || { title: '', subtitle: '', image: '', link: '/products' };
+            const updateCard = (key: keyof HomePageLinkCard, value: string) =>
+              setConfig((prev) => {
+                const cards = [...(prev.categoryCards.cards || [])];
+                while (cards.length < 4) cards.push({ title: '', subtitle: '', image: '', link: '/products' });
+                cards[i] = { ...cards[i], [key]: value };
+                return { ...prev, categoryCards: { ...prev.categoryCards, cards } };
+              });
+            return (
+              <div key={i} className="rounded-xl border border-slate-200 bg-slate-50/70 p-4 space-y-3">
+                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Card {i + 1}</p>
+                <input
+                  value={card.title}
+                  onChange={(e) => updateCard('title', e.target.value)}
+                  placeholder="Category name"
+                  className={inputClass}
+                />
+                <input
+                  value={card.subtitle}
+                  onChange={(e) => updateCard('subtitle', e.target.value)}
+                  placeholder="Subtitle (optional)"
+                  className={inputClass}
+                />
+                <input
+                  value={card.link}
+                  onChange={(e) => updateCard('link', e.target.value)}
+                  placeholder="Link (e.g. /products?cat=marble)"
+                  className={inputClass}
+                />
+                <AdminImageUploadField
+                  value={card.image}
+                  onChange={(url) => updateCard('image', url)}
+                />
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
       <div className={panelClass}>
         <h3 className="text-lg font-semibold text-slate-900">Highlights Carousel Header</h3>
         <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { ArrowLeft, GripVertical, Plus, X, Save, RotateCcw, Loader2, ChevronDown } from 'lucide-react';
+import { ArrowLeft, GripVertical, Plus, X, Save, RotateCcw, Loader2, ChevronDown, Search } from 'lucide-react';
 
 const API_BASE = (import.meta as any).env?.VITE_API_URL || 'http://localhost:3000/api';
 const authHeaders = () => ({
@@ -51,6 +51,8 @@ const ProductOrderingManager: React.FC<ProductOrderingManagerProps> = ({ onBack 
   const [saving, setSaving] = useState(false);
   const [isDirty, setIsDirty] = useState(false);
   const [toast, setToast] = useState<{ msg: string; type: 'success' | 'error' } | null>(null);
+  const [orderedSearch, setOrderedSearch] = useState('');
+  const [unorderedSearch, setUnorderedSearch] = useState('');
 
   // Drag state for ordered list
   const dragIdx = useRef<number | null>(null);
@@ -62,6 +64,15 @@ const ProductOrderingManager: React.FC<ProductOrderingManagerProps> = ({ onBack 
 
   const unorderedProducts = allProducts.filter(p => !orderedIds.includes(p.productId));
 
+  const filterBySearch = (products: AdminProduct[], query: string) => {
+    const q = query.trim().toLowerCase();
+    if (!q) return products;
+    return products.filter(p => p.name.toLowerCase().includes(q) || p.productId.toLowerCase().includes(q));
+  };
+
+  const visibleOrdered = filterBySearch(orderedProducts, orderedSearch);
+  const visibleUnordered = filterBySearch(unorderedProducts, unorderedSearch);
+
   // ── Toast helper ────────────────────────────────────────────────────────────
   const showToast = (msg: string, type: 'success' | 'error' = 'success') => {
     setToast({ msg, type });
@@ -70,7 +81,7 @@ const ProductOrderingManager: React.FC<ProductOrderingManagerProps> = ({ onBack 
 
   // ── Fetch categories ────────────────────────────────────────────────────────
   useEffect(() => {
-    fetch(`${API_BASE}/categories`, { headers: authHeaders() })
+    fetch(`${API_BASE}/products/categories`, { headers: authHeaders() })
       .then(r => r.json())
       .then(d => {
         if (d.success && Array.isArray(d.data)) {
@@ -200,10 +211,14 @@ const ProductOrderingManager: React.FC<ProductOrderingManagerProps> = ({ onBack 
 
   const changeCategory = (cat: string | null) => {
     setScope({ category: cat, subcategory: null });
+    setOrderedSearch('');
+    setUnorderedSearch('');
   };
 
   const changeSubcategory = (sub: string | null) => {
     setScope(s => ({ ...s, subcategory: sub }));
+    setOrderedSearch('');
+    setUnorderedSearch('');
   };
 
   // ── Render ──────────────────────────────────────────────────────────────────
@@ -339,13 +354,29 @@ const ProductOrderingManager: React.FC<ProductOrderingManagerProps> = ({ onBack 
                 {orderedProducts.length}
               </span>
             </div>
+            <div className="px-4 py-2.5 border-b border-gray-50">
+              <div className="relative">
+                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 pointer-events-none" />
+                <input
+                  type="text"
+                  value={orderedSearch}
+                  onChange={e => setOrderedSearch(e.target.value)}
+                  placeholder="Search ordered…"
+                  className="w-full pl-8 pr-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-300 focus:border-transparent placeholder-gray-400"
+                />
+              </div>
+            </div>
             <div className="divide-y divide-gray-50 max-h-[540px] overflow-y-auto">
               {orderedProducts.length === 0 ? (
                 <p className="text-sm text-gray-400 text-center py-10">
                   No custom order set. Add products from the right →
                 </p>
+              ) : visibleOrdered.length === 0 ? (
+                <p className="text-sm text-gray-400 text-center py-10">No matches for "{orderedSearch}"</p>
               ) : (
-                orderedProducts.map((product, index) => (
+                visibleOrdered.map((product) => {
+                  const index = orderedIds.indexOf(product.productId);
+                  return (
                   <div
                     key={product.productId}
                     draggable
@@ -384,7 +415,8 @@ const ProductOrderingManager: React.FC<ProductOrderingManagerProps> = ({ onBack 
                       <X className="w-3.5 h-3.5" />
                     </button>
                   </div>
-                ))
+                  );
+                })
               )}
             </div>
           </div>
@@ -400,13 +432,27 @@ const ProductOrderingManager: React.FC<ProductOrderingManagerProps> = ({ onBack 
                 {unorderedProducts.length}
               </span>
             </div>
+            <div className="px-4 py-2.5 border-b border-gray-50">
+              <div className="relative">
+                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 pointer-events-none" />
+                <input
+                  type="text"
+                  value={unorderedSearch}
+                  onChange={e => setUnorderedSearch(e.target.value)}
+                  placeholder="Search unordered…"
+                  className="w-full pl-8 pr-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-300 focus:border-transparent placeholder-gray-400"
+                />
+              </div>
+            </div>
             <div className="divide-y divide-gray-50 max-h-[540px] overflow-y-auto">
               {unorderedProducts.length === 0 ? (
                 <p className="text-sm text-gray-400 text-center py-10">
                   {allProducts.length === 0 ? 'No products in this scope.' : 'All products are in the ordered list.'}
                 </p>
+              ) : visibleUnordered.length === 0 ? (
+                <p className="text-sm text-gray-400 text-center py-10">No matches for "{unorderedSearch}"</p>
               ) : (
-                unorderedProducts.map(product => (
+                visibleUnordered.map(product => (
                   <div
                     key={product.productId}
                     className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors group"

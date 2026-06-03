@@ -86,6 +86,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                         }
                     } catch (error) {
                         console.error('Error verifying token:', error);
+                        // Network error during verification — keep existing auth state
+                        // (a transient failure should not log the user out)
                     }
                 }
             } catch (error) {

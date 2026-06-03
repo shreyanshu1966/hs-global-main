@@ -1,5 +1,6 @@
 import { ReactNode, Suspense, lazy, startTransition, useEffect, useRef, useState } from 'react';
-import NewArrivalsCarousel from './NewArrivalsCarousel';
+import HeroSection from './HeroSection';
+import CategoryCards from './CategoryCards';
 import { HomePageConfig, homePageConfigService } from '../../services/homePageConfigService';
 
 const SpotlightSection = lazy(() => import('./SpotlightSection'));
@@ -95,23 +96,19 @@ const HomePage = () => {
   return (
     <main className="w-full mx-auto overflow-hidden" id="mainContent">
 
-      {/* ===== SECTION 1: See What's New (New Arrivals Carousel) ===== */}
-      <NewArrivalsCarousel
-        headingTitle={config.newArrivals.title}
-        ctaText={config.newArrivals.ctaText}
-        ctaLink={config.newArrivals.ctaLink}
-        sourceType={config.newArrivals.sourceType}
-        manualProductIds={config.newArrivals.manualProductIds}
-        tag={config.newArrivals.tag}
-        limit={config.newArrivals.limit}
-        category={config.newArrivals.category}
-        featured={config.newArrivals.featured}
-        sortBy={config.newArrivals.sortBy}
-        sortOrder={config.newArrivals.sortOrder}
-        marbleFurnitureOnly={config.newArrivals.marbleFurnitureOnly}
+      {/* ===== SECTION 1: Hero ===== */}
+      <HeroSection
+        slides={config.hero.slides}
+        autoplayInterval={config.hero.autoplayInterval}
       />
 
-      {/* ===== SECTION 2: In the Spotlight ===== */}
+      {/* ===== SECTION 2: Category Cards ===== */}
+      <CategoryCards
+        title={config.categoryCards.title}
+        cards={config.categoryCards.cards}
+      />
+
+      {/* ===== SECTION 3: In the Spotlight ===== */}
       <DeferredSection minHeight={620}>
         <SpotlightSection
           sectionTitle={config.spotlight.title}
@@ -124,7 +121,7 @@ const HomePage = () => {
         />
       </DeferredSection>
 
-      {/* ===== SECTION 3: Personalized Collection ===== */}
+      {/* ===== SECTION 4: Personalized Collection ===== */}
       <DeferredSection minHeight={560}>
         <CollectionJustForYou
           title={config.personalizedCollection.title}
@@ -134,7 +131,7 @@ const HomePage = () => {
         />
       </DeferredSection>
 
-      {/* ===== SECTION 4-7: Product Carousels ===== */}
+      {/* ===== SECTION 5-8: Product Carousels ===== */}
       {config.productCarousels
         .filter((item) => item.enabled)
         .map((item, index) => (

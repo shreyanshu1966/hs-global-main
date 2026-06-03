@@ -35,8 +35,29 @@ export interface HomePagePromiseItem {
   text: string;
 }
 
+export interface HomePageHeroSlide {
+  heading: string;
+  subheading: string;
+  ctaText: string;
+  ctaLink: string;
+  backgroundImage: string;
+  overlayOpacity: number;
+}
+
+export interface HomePageHero {
+  slides: HomePageHeroSlide[];
+  autoplayInterval: number;
+}
+
+export interface HomePageCategoryCards {
+  title: string;
+  cards: HomePageLinkCard[];
+}
+
 export interface HomePageConfig {
   key?: string;
+  hero: HomePageHero;
+  categoryCards: HomePageCategoryCards;
   newArrivals: {
     title: string;
     ctaText: string;
@@ -114,6 +135,28 @@ const getAuthHeaders = () => {
 const getAuthToken = () => localStorage.getItem('authToken');
 
 const defaultConfig: HomePageConfig = {
+  hero: {
+    slides: [
+      {
+        heading: 'Premium Natural Stone & Marble',
+        subheading: 'Discover our exquisite collection of marble, granite, and natural stone products crafted for architects, designers, and global buyers.',
+        ctaText: 'Explore Products',
+        ctaLink: '/products',
+        backgroundImage: '/banner4.webp',
+        overlayOpacity: 0.5,
+      },
+    ],
+    autoplayInterval: 5000,
+  },
+  categoryCards: {
+    title: 'Shop By Category',
+    cards: [
+      { title: 'Marble', subtitle: 'Premium slabs & tiles', image: '/marble-solutions.webp', link: '/products?cat=marble' },
+      { title: 'Granite', subtitle: 'Durable natural stone', image: '/granite-solutions.webp', link: '/products?cat=granite' },
+      { title: 'Furniture', subtitle: 'Luxury marble furniture', image: '/service.webp', link: '/products?cat=furniture' },
+      { title: 'Export', subtitle: 'Global delivery network', image: '/export.webp', link: '/services' },
+    ],
+  },
   newArrivals: {
     title: '',
     ctaText: '',
@@ -183,6 +226,15 @@ const defaultConfig: HomePageConfig = {
 const normalizeConfig = (config?: Partial<HomePageConfig> | null): HomePageConfig => ({
   ...defaultConfig,
   ...config,
+  hero: {
+    slides: Array.isArray(config?.hero?.slides) ? config!.hero!.slides : defaultConfig.hero.slides,
+    autoplayInterval: config?.hero?.autoplayInterval ?? defaultConfig.hero.autoplayInterval,
+  },
+  categoryCards: {
+    ...defaultConfig.categoryCards,
+    ...(config?.categoryCards || {}),
+    cards: Array.isArray(config?.categoryCards?.cards) ? config!.categoryCards!.cards : defaultConfig.categoryCards.cards,
+  },
   newArrivals: { ...defaultConfig.newArrivals, ...(config?.newArrivals || {}) },
   personalizedCollection: { ...defaultConfig.personalizedCollection, ...(config?.personalizedCollection || {}) },
   spotlight: {

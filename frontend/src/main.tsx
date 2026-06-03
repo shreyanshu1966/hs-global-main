@@ -1,7 +1,25 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import axios from 'axios';
 import App from './App.tsx';
 import './index.css';
+
+// Redirect to login on 401 — catches expired JWT so the browser doesn't
+// misreport it as a CORS error and the admin doesn't see a confusing failure.
+axios.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('authUser');
+      window.dispatchEvent(new Event('auth-change'));
+      if (window.location.pathname.startsWith('/admin')) {
+        window.location.href = '/login';
+      }
+    }
+    return Promise.reject(error);
+  }
+);
 import "@fontsource/inter";
 import "@fontsource/inter/500.css";
 import "@fontsource/inter/600.css";

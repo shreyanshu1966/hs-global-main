@@ -127,6 +127,29 @@ const homePageConfigSchema = new mongoose.Schema(
         default: [],
       },
     },
+    hero: {
+      slides: {
+        type: [
+          new mongoose.Schema(
+            {
+              heading: { type: String, default: '', trim: true },
+              subheading: { type: String, default: '', trim: true },
+              ctaText: { type: String, default: '', trim: true },
+              ctaLink: { type: String, default: '/products', trim: true },
+              backgroundImage: { type: String, default: '', trim: true },
+              overlayOpacity: { type: Number, default: 0.5, min: 0, max: 1 },
+            },
+            { _id: false }
+          ),
+        ],
+        default: [],
+      },
+      autoplayInterval: { type: Number, default: 5000 },
+    },
+    categoryCards: {
+      title: { type: String, default: 'Shop By Category', trim: true },
+      cards: { type: [linkCardSchema], default: [] },
+    },
     promise: {
       titlePrefix: { type: String, default: 'The HS Global', trim: true },
       titleHighlight: { type: String, default: 'Promise', trim: true },
@@ -242,6 +265,28 @@ homePageConfigSchema.statics.getDefaultConfig = function getDefaultConfig() {
           imageAlt: 'HS Global Services',
           layout: 'portrait',
         },
+      ],
+    },
+    hero: {
+      slides: [
+        {
+          heading: 'Premium Natural Stone & Marble',
+          subheading: 'Discover our exquisite collection of marble, granite, and natural stone products crafted for architects, designers, and global buyers.',
+          ctaText: 'Explore Products',
+          ctaLink: '/products',
+          backgroundImage: '/banner4.webp',
+          overlayOpacity: 0.5,
+        },
+      ],
+      autoplayInterval: 5000,
+    },
+    categoryCards: {
+      title: 'Shop By Category',
+      cards: [
+        { title: 'Marble', subtitle: 'Premium slabs & tiles', image: '/marble-solutions.webp', link: '/products?cat=marble' },
+        { title: 'Granite', subtitle: 'Durable natural stone', image: '/granite-solutions.webp', link: '/products?cat=granite' },
+        { title: 'Furniture', subtitle: 'Luxury marble furniture', image: '/service.webp', link: '/products?cat=furniture' },
+        { title: 'Export', subtitle: 'Global delivery network', image: '/export.webp', link: '/services' },
       ],
     },
     promise: {
