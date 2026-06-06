@@ -38,11 +38,15 @@ export const GalleryModal = ({
 }: GalleryModalProps) => {
   const [SwiperComponents, setSwiperComponents] = useState<{ Swiper: any; SwiperSlide: any } | null>(null);
   const swiperRef = useRef<any>(null);
+  const [titleExpanded, setTitleExpanded] = useState(false);
 
   const allCategoryItems = useMemo(() => {
     if (!currentItem) return [];
     return modalList.filter(i => i.category === currentItem.category);
   }, [modalList, currentItem]);
+
+  // Reset title expansion when item changes
+  useEffect(() => { setTitleExpanded(false); }, [currentItem?.id]);
 
   // Lock body scroll
   useEffect(() => {
@@ -159,31 +163,31 @@ export const GalleryModal = ({
             onClick={e => e.stopPropagation()}
           >
             {/* ── Top Bar ────────────────────────────────────────────────── */}
-            <div className="absolute top-0 inset-x-0 z-30 flex items-center gap-2 p-3 bg-gradient-to-b from-black/75 via-black/30 to-transparent pointer-events-auto">
+            <div className="absolute top-0 inset-x-0 z-30 flex items-center gap-2 p-3 bg-gradient-to-b from-black/80 via-black/25 to-transparent pointer-events-auto">
               {/* Close */}
               <button
                 onClick={onClose}
-                className="w-9 h-9 flex items-center justify-center rounded-full bg-black/40 backdrop-blur-md text-white border border-white/15 hover:bg-white hover:text-black transition-colors shrink-0"
+                className="w-8 h-8 flex items-center justify-center rounded-full bg-black/50 backdrop-blur-md text-white/80 border border-white/12 hover:bg-white hover:text-black transition-all shrink-0"
                 aria-label="Close"
               >
-                <X size={18} />
+                <X size={15} />
               </button>
 
-              {/* Category + title */}
-              <div className="flex-1 min-w-0 px-1">
-                <p className="text-[13px] font-semibold text-white leading-tight truncate">{currentItem.category}</p>
+              {/* Category + counter */}
+              <div className="flex-1 min-w-0 px-2">
+                <p className="text-[12px] font-medium text-white/90 leading-tight truncate tracking-wide">{currentItem.category}</p>
                 {pageLabel && (
-                  <p className="text-[11px] text-white/45 leading-tight mt-0.5">{pageLabel}</p>
+                  <p className="text-[10px] text-white/35 leading-tight mt-0.5 tabular-nums">{pageLabel}</p>
                 )}
               </div>
 
               {/* Share */}
               <button
                 onClick={handleShare}
-                className="w-9 h-9 flex items-center justify-center rounded-full bg-black/40 backdrop-blur-md text-white border border-white/15 hover:bg-white hover:text-black transition-colors shrink-0"
+                className="w-8 h-8 flex items-center justify-center rounded-full bg-black/50 backdrop-blur-md text-white/80 border border-white/12 hover:bg-white hover:text-black transition-all shrink-0"
                 aria-label="Share"
               >
-                <Share2 size={16} />
+                <Share2 size={14} />
               </button>
 
               {/* WhatsApp */}
@@ -191,7 +195,7 @@ export const GalleryModal = ({
                 href={waUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="w-9 h-9 flex items-center justify-center rounded-full bg-[#25D366] text-white hover:bg-[#20bb5c] transition-colors shrink-0"
+                className="w-8 h-8 flex items-center justify-center rounded-full bg-[#25D366] text-white hover:bg-[#1fba5b] transition-colors shrink-0"
                 aria-label="Inquire on WhatsApp"
               >
                 <WAIcon />
@@ -253,11 +257,11 @@ export const GalleryModal = ({
             </div>
 
             {/* ── Bottom Panel ───────────────────────────────────────────── */}
-            <div className="shrink-0 bg-[#0d0d0d] border-t border-white/[0.06]">
+            <div className="shrink-0 bg-[#0c0c0c] border-t border-white/[0.05]">
               {/* Thumbnail strip */}
               <div className="px-3 pt-3 pb-1">
-                <p className="text-[11px] text-white/35 mb-2 font-medium">
-                  More from <span className="text-white/60">{currentItem.category}</span>
+                <p className="text-[10px] tracking-[0.18em] uppercase text-white/25 mb-2.5 font-medium">
+                  More · <span className="text-white/45 normal-case tracking-normal">{currentItem.category}</span>
                 </p>
                 {SwiperComponents ? (
                   <SwiperComponents.Swiper
@@ -307,17 +311,25 @@ export const GalleryModal = ({
               </div>
 
               {/* Info strip: code · title */}
-              <div className="flex items-center gap-2 px-4 py-3 border-t border-white/[0.05]">
-                <span className="text-[11px] font-mono font-semibold text-white/70 shrink-0 bg-white/8 px-2 py-0.5 rounded">
+              <div className="flex items-start sm:items-center gap-3 px-4 py-3 border-t border-white/[0.04]">
+                <span className="text-[11px] font-mono font-semibold text-white/80 shrink-0 bg-white/[0.07] px-2.5 py-1 rounded-md tracking-wider mt-px sm:mt-0">
                   {currentItem.code}
                 </span>
-                <span className="text-white/20 text-xs shrink-0">·</span>
-                <span className="text-[11px] text-white/40 truncate">{currentItem.title}</span>
+                <div className="flex-1 min-w-0 flex flex-col gap-0.5">
+                  <span className={`text-[11px] text-white/32 ${titleExpanded ? 'whitespace-normal break-words' : 'truncate'}`}>
+                    {currentItem.title}
+                  </span>
+                  {currentItem.title.length > 20 && (
+                    <button
+                      onClick={() => setTitleExpanded(p => !p)}
+                      className="sm:hidden self-start text-[10px] text-white/40 active:text-white/70 transition-colors"
+                    >
+                      {titleExpanded ? 'See less' : 'See more'}
+                    </button>
+                  )}
+                </div>
                 {pageLabel && (
-                  <>
-                    <span className="text-white/20 text-xs shrink-0 ml-auto">·</span>
-                    <span className="text-[11px] text-white/30 shrink-0">{pageLabel}</span>
-                  </>
+                  <span className="text-[10px] text-white/22 shrink-0 ml-auto tabular-nums mt-px sm:mt-0">{pageLabel}</span>
                 )}
               </div>
             </div>

@@ -100,6 +100,9 @@ server {
     listen 80;
     server_name api.yourdomain.com;
 
+    # Allow large uploads: product images (up to 50MB) and videos (up to 150MB)
+    client_max_body_size 200m;
+
     location / {
         proxy_pass http://localhost:3000;
         proxy_http_version 1.1;
@@ -109,6 +112,8 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_cache_bypass $http_upgrade;
+        proxy_read_timeout 300s;
+        proxy_send_timeout 300s;
     }
 }
 EOF

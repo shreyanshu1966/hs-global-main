@@ -202,7 +202,7 @@ export function ProductInfo({
                             )}
                         </div>
                         <p className="text-[10px] text-[#757575] uppercase tracking-wide">
-                            Inclusive of all taxes
+                            Free shipping
                         </p>
                     </div>
                 ) : (
