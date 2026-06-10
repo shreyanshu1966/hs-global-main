@@ -18,6 +18,10 @@ export interface CartItem {
     requirement: number;
     pricePerSqFt: number;
   };
+  selectedVariant?: {
+    attributes: Record<string, string>;
+    sku?: string | null;
+  };
   discount?: {
     enabled: boolean;
     percentage: number;

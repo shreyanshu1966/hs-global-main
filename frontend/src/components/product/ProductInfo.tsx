@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import { Star, Package, Share2, MessageCircle, FileText, Heart, Truck, Gem } from 'lucide-react';
 import DeliveryChecker from './DeliveryChecker';
 import { useNavigate, Link } from 'react-router-dom';
@@ -36,12 +36,58 @@ export function ProductInfo({
 
     const isSemiPreciousStone = product.category === 'semi-precious-stone';
     const sqFtPrice = product.pricePerSqFt as number | undefined;
+    const sellerRating = reviewStats.totalReviews > 0 ? reviewStats.averageRating.toFixed(1) : '5.0';
 
-    const price = usePrice(product);
+    // ── Variant state (must come before usePrice so we can pass the active price) ─
+    const isConfigurable = product.productType === 'configurable';
+    const variantAttributes: { name: string; values: string[] }[] = product.variantAttributes || [];
+    const variantSkus: {
+      attributes: Record<string, string>;
+      priceUSD: number | null;
+      stockQuantity: number;
+      sku?: string | null;
+      available: boolean;
+    }[] = product.variants || [];
+
+    const [selectedAttrs, setSelectedAttrs] = useState<Record<string, string>>(() => {
+      const first: Record<string, string> = {};
+      for (const attr of variantAttributes) {
+        if (attr.values[0]) first[attr.name] = attr.values[0];
+      }
+      return first;
+    });
+
+    const selectedVariant = useMemo(() => {
+      if (!isConfigurable || variantSkus.length === 0) return null;
+      return variantSkus.find(v => {
+        const attrs = v.attributes instanceof Map ? Object.fromEntries(v.attributes) : v.attributes;
+        return Object.entries(selectedAttrs).every(([k, val]) => attrs[k] === val);
+      }) ?? null;
+    }, [isConfigurable, variantSkus, selectedAttrs]);
+
+    const isValueAvailable = (attrName: string, value: string) => {
+      if (variantSkus.length === 0) return false;
+      const tentative = { ...selectedAttrs, [attrName]: value };
+      return variantSkus.some(v => {
+        const attrs = v.attributes instanceof Map ? Object.fromEntries(v.attributes) : v.attributes;
+        return Object.entries(tentative).every(([k, val]) => attrs[k] === val) && v.available !== false;
+      });
+    };
+
+    // Single source of pricing: if the selected variant has its own priceUSD, override
+    // the product's base price before feeding into usePrice. This way regional adjustments,
+    // discounts, currency formatting all flow through the same engine with no special-casing.
+    const variantPriceUSD = selectedVariant?.priceUSD ?? null;
+    const productForPrice = useMemo(
+      () => variantPriceUSD != null ? { ...product, priceUSD: variantPriceUSD } : product,
+      [product, variantPriceUSD]
+    );
+
+    // One call to usePrice, using whichever price is active (variant or base).
+    const price = usePrice(productForPrice);
     const basePriceUSD = price.baseUSD;
     const hasDiscount = price.hasDiscount && !isSemiPreciousStone;
     const discountPercentage = Math.round(price.discountPercentage);
-    const sellerRating = reviewStats.totalReviews > 0 ? reviewStats.averageRating.toFixed(1) : '5.0';
 
     const getProductId = (): string => {
         return product.productId || product._id || product.id || '';
@@ -49,6 +95,12 @@ export function ProductInfo({
 
     const getProductImage = (): string => {
         return product.image || (product.images && product.images[0]) || '/demo2.webp';
+    };
+
+    const buildVariantCartId = (baseId: string) => {
+        if (!isConfigurable || !selectedVariant) return baseId;
+        const suffix = Object.entries(selectedAttrs).map(([k, v]) => `${k}:${v}`).join('__');
+        return `${baseId}__${suffix}`;
     };
 
     const handleBuyNow = () => {
@@ -59,17 +111,22 @@ export function ProductInfo({
             return;
         }
 
+        const cartId = buildVariantCartId(resolvedId);
         if (!isInCart) {
             addItem({
-                id: resolvedId,
+                id: cartId,
                 productId: product.productId || resolvedId,
                 name: product.name,
                 image: getProductImage(),
-                priceUSD: product.priceUSD || basePriceUSD || 0,
+                // basePriceUSD already reflects the variant price (via productForPrice → usePrice)
+                priceUSD: basePriceUSD || 0,
                 regionalPricing: product.regionalPricing,
                 category: product.category,
                 subcategory: product.subcategory || '',
                 discount: product.discount,
+                selectedVariant: selectedVariant
+                    ? { attributes: selectedAttrs, sku: selectedVariant.sku }
+                    : undefined,
             });
             trackAddToCart(resolvedId);
         }
@@ -153,6 +210,55 @@ export function ProductInfo({
                 )}
             </div>
 
+            {/* Variant Selector */}
+            {isConfigurable && variantAttributes.length > 0 && (
+                <div className="mb-4 space-y-3">
+                    {variantAttributes.map(attr => (
+                        <div key={attr.name}>
+                            <p className="text-[11px] uppercase tracking-[0.12em] text-[#888] mb-2 font-medium">
+                                {attr.name}
+                                {selectedAttrs[attr.name] && (
+                                    <span className="ml-1.5 normal-case text-[#111] font-semibold tracking-normal">
+                                        — {selectedAttrs[attr.name]}
+                                    </span>
+                                )}
+                            </p>
+                            <div className="flex flex-wrap gap-2">
+                                {attr.values.map(value => {
+                                    const active = selectedAttrs[attr.name] === value;
+                                    const avail = isValueAvailable(attr.name, value);
+                                    return (
+                                        <button
+                                            key={value}
+                                            type="button"
+                                            onClick={() => avail && setSelectedAttrs(prev => ({ ...prev, [attr.name]: value }))}
+                                            className={[
+                                                'px-3 py-1.5 text-[12px] font-medium border rounded-md transition-all duration-150',
+                                                active
+                                                    ? 'border-[#111827] bg-[#111827] text-white'
+                                                    : avail
+                                                    ? 'border-[#d1d5db] text-[#374151] hover:border-[#111827]'
+                                                    : 'border-[#e5e7eb] text-[#d1d5db] cursor-not-allowed line-through',
+                                            ].join(' ')}
+                                        >
+                                            {value}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    ))}
+                    {selectedVariant?.sku && (
+                        <p className="text-[10px] tracking-[0.12em] text-[#aaa] uppercase">
+                            SKU · {selectedVariant.sku}
+                        </p>
+                    )}
+                    {isConfigurable && !selectedVariant && (
+                        <p className="text-[11px] text-[#b91c1c]">This combination is unavailable.</p>
+                    )}
+                </div>
+            )}
+
             {/* Price Area */}
             <div className="mb-4">
                 {isSemiPreciousStone ? (
@@ -228,14 +334,44 @@ export function ProductInfo({
                         <button
                             type="button"
                             onClick={handleBuyNow}
-                            className="w-full h-[44px] bg-[#111827] text-white hover:bg-black transition-colors duration-300 font-semibold tracking-[0.1em] text-[12px] uppercase flex items-center justify-center"
+                            disabled={isConfigurable && !selectedVariant}
+                            className="w-full h-[44px] bg-[#111827] text-white hover:bg-black transition-colors duration-300 font-semibold tracking-[0.1em] text-[12px] uppercase flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed"
                         >
                             Buy Now
                         </button>
-                        <AddToCartButton
-                            product={product}
-                            className="w-full h-[44px] bg-white border border-[#111827] text-[#111827] hover:bg-[#f9fafb] transition-colors duration-300 font-semibold tracking-[0.1em] text-[12px] uppercase flex items-center justify-center"
-                        />
+                        {isConfigurable ? (
+                            <button
+                                type="button"
+                                disabled={!selectedVariant}
+                                onClick={() => {
+                                    if (!selectedVariant) return;
+                                    const resolvedId = getProductId();
+                                    const cartId = buildVariantCartId(resolvedId);
+                                    addItem({
+                                        id: cartId,
+                                        productId: product.productId || resolvedId,
+                                        name: product.name,
+                                        image: getProductImage(),
+                                        // basePriceUSD already reflects variant price (via productForPrice)
+                                        priceUSD: basePriceUSD || 0,
+                                        regionalPricing: product.regionalPricing,
+                                        category: product.category,
+                                        subcategory: product.subcategory || '',
+                                        discount: product.discount,
+                                        selectedVariant: { attributes: selectedAttrs, sku: selectedVariant.sku },
+                                    });
+                                    trackAddToCart(resolvedId);
+                                }}
+                                className="w-full h-[44px] bg-white border border-[#111827] text-[#111827] hover:bg-[#f9fafb] transition-colors duration-300 font-semibold tracking-[0.1em] text-[12px] uppercase flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed"
+                            >
+                                Add to Cart
+                            </button>
+                        ) : (
+                            <AddToCartButton
+                                product={product}
+                                className="w-full h-[44px] bg-white border border-[#111827] text-[#111827] hover:bg-[#f9fafb] transition-colors duration-300 font-semibold tracking-[0.1em] text-[12px] uppercase flex items-center justify-center"
+                            />
+                        )}
                     </div>
                 ) : (
                     <a
@@ -244,7 +380,7 @@ export function ProductInfo({
                         )}`}
                         target="_blank"
                         rel="noreferrer"
-                        className="w-full h-[44px] bg-[#111827] text-white hover:bg-black transition-colors duration-300 font-semibold tracking-[0.1em] text-[12px] uppercase flex items-center justify-center gap-2 block"
+                        className="w-full h-[44px] bg-[#111827] text-white hover:bg-black transition-colors duration-300 font-semibold tracking-[0.1em] text-[12px] uppercase flex items-center justify-center gap-2"
                     >
                         Contact for Availability
                     </a>

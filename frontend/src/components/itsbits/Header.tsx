@@ -6,6 +6,7 @@ import { CartMenu } from "../CartMenu";
 import { LocationSelector } from "../LocationSelector";
 import { productService, Product } from "../../services/productService";
 import { useWishlist } from "../../contexts/WishlistContext";
+import { fetchNavbarConfig, NavCategoryConfig } from "../../services/navbarService";
 
 const Header = () => {
   const [isBottomNavVisible, setIsBottomNavVisible] = useState(true);
@@ -39,6 +40,8 @@ const Header = () => {
   const semiPreciousStoneMegaCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const desktopSearchRef = useRef<HTMLDivElement>(null);
   const mobileSearchRef = useRef<HTMLDivElement>(null);
+  const [navbarConfigs, setNavbarConfigs] = useState<Record<string, NavCategoryConfig>>({});
+
   const navigate = useNavigate();
   const location = useLocation();
   const { isAuthenticated, user } = useAuth();
@@ -51,6 +54,18 @@ const Header = () => {
     setIsMobileLeatherOpen(false);
     setIsMobileSemiPreciousStoneOpen(false);
   }, [location.pathname]);
+
+  useEffect(() => {
+    const loadNavConfig = async () => {
+      try {
+        const data = await fetchNavbarConfig();
+        setNavbarConfigs(data);
+      } catch {}
+    };
+    loadNavConfig();
+    (window as any).refreshNavCategories = loadNavConfig;
+    return () => { delete (window as any).refreshNavCategories; };
+  }, []);
 
   useEffect(() => {
     if (!isMobileMenuOpen) return;
@@ -200,13 +215,12 @@ const Header = () => {
   const navItems = [
     { label: 'Home', mobileLabel: 'Home', href: '/', active: true },
     { label: 'Marble Furniture', mobileLabel: 'Marble Furniture', href: '/products/furniture', megaMenuType: 'furniture' },
-    { label: 'Handicraft', mobileLabel: 'Handicraft', href: '/products/handicraft', megaMenuType: 'handicraft' },
-    { label: 'Leather', mobileLabel: 'Leather', href: '/products/leather', megaMenuType: 'leather' },
+    { label: 'Handicraft Furniture', mobileLabel: 'Handicraft Furniture', href: '/products/handicraft', megaMenuType: 'handicraft' },
+    { label: 'Leather Furniture', mobileLabel: 'Leather Furniture', href: '/products/leather', megaMenuType: 'leather' },
     { label: 'Semi Precious Stone', mobileLabel: 'Semi Precious Stone', href: '/products/semi-precious-stone', megaMenuType: 'semi-precious-stone' },
     { label: 'Gallery', mobileLabel: 'Gallery', href: '/gallery' },
     { label: 'Shipping', mobileLabel: 'Shipping', href: '/shipping' },
     { label: 'Journal', mobileLabel: 'Journal', href: '/blog' },
-    { label: 'About', mobileLabel: 'About', href: '/about' },
     { label: 'Custom Bulk Order', mobileLabel: 'Custom Bulk Order', href: '/contact', isSale: true },
   ];
 
@@ -229,20 +243,29 @@ const Header = () => {
     { label: 'vase', href: '/products/furniture/vase' },
   ];
 
-  const furnitureMegaGroups = [
-    {
-      title: 'Tables & Seating',
-      items: furnitureMegaItems.filter((item) => ['center table', 'coffee table', 'console table', 'dining table', 'side table', 'chaise chair'].includes(item.label)),
-    },
-    {
-      title: 'Bath & Basins',
-      items: furnitureMegaItems.filter((item) => ['bathtub', 'pedestal sink', 'sink'].includes(item.label)),
-    },
-    {
-      title: 'Decor & Lighting',
-      items: furnitureMegaItems.filter((item) => ['bowl', 'clock', 'lamp', 'mirror frame', 'tree sculpture', 'vase'].includes(item.label)),
-    },
-  ];
+  const furnitureMegaGroups = useMemo(() => {
+    const cfg = navbarConfigs['furniture'];
+    if (cfg?.sections?.length) {
+      return cfg.sections.map((sec) => ({
+        title: sec.title,
+        items: sec.items.map((it) => ({ label: it.label, href: `/products/furniture/${it.slug}` })),
+      }));
+    }
+    return [
+      {
+        title: 'Tables & Seating',
+        items: furnitureMegaItems.filter((item) => ['center table', 'coffee table', 'console table', 'dining table', 'side table', 'chaise chair'].includes(item.label)),
+      },
+      {
+        title: 'Bath & Basins',
+        items: furnitureMegaItems.filter((item) => ['bathtub', 'pedestal sink', 'sink'].includes(item.label)),
+      },
+      {
+        title: 'Decor & Lighting',
+        items: furnitureMegaItems.filter((item) => ['bowl', 'clock', 'lamp', 'mirror frame', 'tree sculpture', 'vase'].includes(item.label)),
+      },
+    ];
+  }, [navbarConfigs]);
 
   const handicraftMegaItems = [
     { label: 'All Handicrafts', href: '/products/handicraft' },
@@ -253,16 +276,25 @@ const Header = () => {
     { label: 'sofa', href: '/products/handicraft/sofa' },
   ];
 
-  const handicraftMegaGroups = [
-    {
-      title: 'Handicraft Tables',
-      items: handicraftMegaItems.filter((item) => ['coffee table', 'console table', 'dining table', 'side table'].includes(item.label)),
-    },
-    {
-      title: 'Handicraft Seating',
-      items: handicraftMegaItems.filter((item) => ['sofa'].includes(item.label)),
-    },
-  ];
+  const handicraftMegaGroups = useMemo(() => {
+    const cfg = navbarConfigs['handicraft'];
+    if (cfg?.sections?.length) {
+      return cfg.sections.map((sec) => ({
+        title: sec.title,
+        items: sec.items.map((it) => ({ label: it.label, href: `/products/handicraft/${it.slug}` })),
+      }));
+    }
+    return [
+      {
+        title: 'Handicraft Tables',
+        items: handicraftMegaItems.filter((item) => ['coffee table', 'console table', 'dining table', 'side table'].includes(item.label)),
+      },
+      {
+        title: 'Handicraft Seating',
+        items: handicraftMegaItems.filter((item) => ['sofa'].includes(item.label)),
+      },
+    ];
+  }, [navbarConfigs]);
 
   const leatherMegaItems = [
     { label: 'All Leather', href: '/products/leather' },
@@ -279,31 +311,46 @@ const Header = () => {
     { label: 'storage', href: '/products/leather/storage' },
   ];
 
-  const leatherMegaGroups = [
-    {
-      title: 'Seating',
-      items: leatherMegaItems.filter((item) => ['sofa', 'armchair', 'ottoman', 'bench'].includes(item.label)),
-    },
-    {
-      title: 'Beds & Tables',
-      items: leatherMegaItems.filter((item) => ['bed', 'side table', 'coffee table', 'console table'].includes(item.label)),
-    },
-    {
-      title: 'Storage & Decor',
-      items: leatherMegaItems.filter((item) => ['dresser', 'mirror', 'storage'].includes(item.label)),
-    },
-  ];
+  const leatherMegaGroups = useMemo(() => {
+    const cfg = navbarConfigs['leather'];
+    if (cfg?.sections?.length) {
+      return cfg.sections.map((sec) => ({
+        title: sec.title,
+        items: sec.items.map((it) => ({ label: it.label, href: `/products/leather/${it.slug}` })),
+      }));
+    }
+    return [
+      {
+        title: 'Seating',
+        items: leatherMegaItems.filter((item) => ['sofa', 'armchair', 'ottoman', 'bench'].includes(item.label)),
+      },
+      {
+        title: 'Beds & Tables',
+        items: leatherMegaItems.filter((item) => ['bed', 'side table', 'coffee table', 'console table'].includes(item.label)),
+      },
+      {
+        title: 'Storage & Decor',
+        items: leatherMegaItems.filter((item) => ['dresser', 'mirror', 'storage'].includes(item.label)),
+      },
+    ];
+  }, [navbarConfigs]);
 
   const semiPreciousStoneMegaItems = [
     { label: 'All Semi Precious Stones', href: '/products/semi-precious-stone' },
   ];
 
-  const semiPreciousStoneMegaGroups = [
-    {
-      title: 'Collections',
-      items: semiPreciousStoneMegaItems.filter((item) => item.label !== 'All Semi Precious Stones'),
-    },
-  ];
+  const semiPreciousStoneMegaGroups = useMemo(() => {
+    const cfg = navbarConfigs['semi-precious-stone'];
+    if (cfg?.sections?.length) {
+      return cfg.sections.map((sec) => ({
+        title: sec.title,
+        items: sec.items.map((it) => ({ label: it.label, href: `/products/semi-precious-stone/${it.slug}` })),
+      }));
+    }
+    const staticItems = semiPreciousStoneMegaItems.filter((item) => item.label !== 'All Semi Precious Stones');
+    if (staticItems.length === 0) return [];
+    return [{ title: 'Collections', items: staticItems }];
+  }, [navbarConfigs]);
 
   const openFurnitureMega = () => {
     if (furnitureMegaCloseTimerRef.current) {

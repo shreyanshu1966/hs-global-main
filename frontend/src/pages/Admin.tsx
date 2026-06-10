@@ -67,7 +67,7 @@ import {
 } from '../services/categoryService';
 import { productService } from '../services/productService';
 import HomePageManagement from '../components/admin/HomePageManagement';
-import CategoryManagement from '../components/admin/CategoryManagement';
+import NavbarCategoriesEditor from '../components/admin/NavbarCategoriesEditor';
 import PopupManagement from '../components/admin/PopupManagement';
 import ProductOrderingManager from '../components/ProductOrderingManager';
 
@@ -132,9 +132,12 @@ const Admin = () => {
     const { user, token, logout } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
-    const [activeTab, setActiveTab] = useState<'analytics' | 'orders' | 'users' | 'blogs' | 'contacts' | 'quotations' | 'products' | 'categories' | 'reviews' | 'homepage' | 'popups' | 'delivery-checks'>(
-      (location.state as any)?.tab === 'products' ? 'products' : 'analytics'
-    );
+    const [activeTab, setActiveTab] = useState<'analytics' | 'orders' | 'users' | 'blogs' | 'contacts' | 'quotations' | 'products' | 'categories' | 'reviews' | 'homepage' | 'popups' | 'delivery-checks'>(() => {
+      const tab = (location.state as any)?.tab;
+      const validTabs = ['analytics', 'orders', 'users', 'blogs', 'contacts', 'quotations', 'products', 'categories', 'reviews', 'homepage', 'popups', 'delivery-checks'];
+      if (tab && validTabs.includes(tab)) return tab as any;
+      return 'analytics';
+    });
     const [loading, setLoading] = useState(true);
     const [isMounted, setIsMounted] = useState(false);
 
@@ -3404,7 +3407,7 @@ const Admin = () => {
 
                     {/* Categories Tab */}
                     {activeTab === 'categories' && (
-                        <CategoryManagement />
+                        <NavbarCategoriesEditor />
                     )}
 
                     {/* Home Page Management Tab */}

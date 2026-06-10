@@ -110,6 +110,23 @@ const toProductDto = (product) => {
             totalReviews: Number(product.totalReviews || 0)
         },
         regionalPricing: product.regionalPricing || null,
+        productType: product.productType || 'simple',
+        variantAttributes: Array.isArray(product.variantAttributes) ? product.variantAttributes : [],
+        variants: Array.isArray(product.variants)
+            ? product.variants
+                .filter(v => v.available !== false)
+                .map(v => ({
+                    attributes: v.attributes instanceof Map
+                        ? Object.fromEntries(v.attributes)
+                        : (v.attributes || {}),
+                    // null = use product base price; a number = variant-specific price in USD
+                    priceUSD: v.priceUSD != null ? Number(v.priceUSD) : null,
+                    stockQuantity: Number(v.stockQuantity || 0),
+                    sku: v.sku || null,
+                    images: Array.isArray(v.images) ? v.images : [],
+                    available: v.available !== false,
+                }))
+            : [],
         createdAt: product.createdAt,
         updatedAt: product.updatedAt
     };

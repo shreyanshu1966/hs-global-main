@@ -1,7 +1,10 @@
 import { ReactNode, Suspense, lazy, startTransition, useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import HeroSection from './HeroSection';
 import CategoryCards from './CategoryCards';
+import TrustCTABar from './TrustCTABar';
 import { HomePageConfig, homePageConfigService } from '../../services/homePageConfigService';
+import { useAuth } from '../../contexts/AuthContext';
 
 const SpotlightSection = lazy(() => import('./SpotlightSection'));
 const CollectionJustForYou = lazy(() => import('./CollectionJustForYou'));
@@ -69,6 +72,9 @@ const DeferredSection = ({ children, minHeight = 520, rootMargin = '600px 0px' }
 
 const HomePage = () => {
   const [config, setConfig] = useState<HomePageConfig>(homePageConfigService.getDefaultConfig());
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const isAdmin = user?.role === 'admin';
 
   useEffect(() => {
     let mounted = true;
@@ -96,6 +102,28 @@ const HomePage = () => {
   return (
     <main className="w-full mx-auto overflow-hidden" id="mainContent">
 
+      {/* Admin floating toolbar — only visible to admins */}
+      {isAdmin && (
+        <div className="fixed bottom-6 right-6 z-[200] flex flex-col items-end gap-2">
+          <button
+            onClick={() => navigate('/admin', { state: { tab: 'categories' } })}
+            className="flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2.5 text-white text-xs font-semibold shadow-lg hover:bg-slate-700 transition-all"
+            title="Edit navbar category dropdowns"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            Edit Nav Categories
+          </button>
+          <button
+            onClick={() => navigate('/admin', { state: { tab: 'homepage' } })}
+            className="flex items-center gap-2 rounded-xl bg-slate-700 px-4 py-2.5 text-white text-xs font-semibold shadow-lg hover:bg-slate-600 transition-all"
+            title="Edit home page content"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            Edit Home Page
+          </button>
+        </div>
+      )}
+
       {/* ===== SECTION 1: Hero ===== */}
       <HeroSection
         slides={config.hero.slides}
@@ -107,6 +135,9 @@ const HomePage = () => {
         title={config.categoryCards.title}
         cards={config.categoryCards.cards}
       />
+
+      {/* ===== SECTION 2b: Trust / CTA Bar ===== */}
+      <TrustCTABar />
 
       {/* ===== SECTION 3: In the Spotlight ===== */}
       <DeferredSection minHeight={620}>

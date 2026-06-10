@@ -187,20 +187,22 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
                         </svg>
                     </button>
 
-                    <div
-                        className="absolute top-[3.25rem] right-3 z-30"
-                        onClick={(event) => {
-                            event.preventDefault();
-                            event.stopPropagation();
-                        }}
-                    >
-                        <AddToCartButton
-                            product={product}
-                            variant="compact"
-                            iconOnly
-                            className="w-9 h-9 p-0 rounded-full border border-white/70 bg-white/95 text-[#111827] shadow-sm backdrop-blur-[2px] hover:bg-white"
-                        />
-                    </div>
+                    {product.productType !== 'configurable' && (
+                        <div
+                            className="absolute top-[3.25rem] right-3 z-30"
+                            onClick={(event) => {
+                                event.preventDefault();
+                                event.stopPropagation();
+                            }}
+                        >
+                            <AddToCartButton
+                                product={product}
+                                variant="compact"
+                                iconOnly
+                                className="w-9 h-9 p-0 rounded-full border border-white/70 bg-white/95 text-[#111827] shadow-sm backdrop-blur-[2px] hover:bg-white"
+                            />
+                        </div>
+                    )}
 
                     {/* Primary image */}
                     <img
@@ -288,6 +290,28 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
                             </span>
                         </div>
                     )}
+                    {/* Variant indicator */}
+                    {product.productType === 'configurable' && product.variants && product.variants.length > 0 && (() => {
+                        const colorAttr = product.variantAttributes?.find(a => /color|colour/i.test(a.name));
+                        return (
+                            <div className="flex items-center gap-1.5 mt-1 mb-1">
+                                {colorAttr ? (
+                                    colorAttr.values.slice(0, 5).map(v => (
+                                        <span
+                                            key={v}
+                                            title={v}
+                                            className="w-3 h-3 rounded-full border border-[#e5e7eb] inline-block"
+                                            style={{ backgroundColor: v.toLowerCase() }}
+                                        />
+                                    ))
+                                ) : null}
+                                <span className="text-[10px] text-[#9ca3af] leading-none">
+                                    {product.variants.length} variant{product.variants.length !== 1 ? 's' : ''}
+                                </span>
+                            </div>
+                        );
+                    })()}
+
                     {isSemiPreciousStone ? (
                         sqFtPrice && sqFtPrice > 0 ? (
                             <div className="space-y-0.5">

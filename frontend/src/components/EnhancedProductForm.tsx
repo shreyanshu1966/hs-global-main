@@ -55,9 +55,20 @@ const SECTION_TABS = [
   { id: 'listing-details', label: 'Details' },
   { id: 'pricing',         label: 'Pricing' },
   { id: 'specs',           label: 'Specs' },
+  { id: 'variants',        label: 'Variants' },
   { id: 'shipping',        label: 'Shipping' },
 ] as const;
 type SectionId = typeof SECTION_TABS[number]['id'];
+
+interface VariantAttribute { name: string; values: string[] }
+interface VariantSku {
+  attributes: Record<string, string>;
+  /** null = use product base price; a number = custom price in INR (display) */
+  priceINR: string;
+  stockQuantity: number;
+  sku: string;
+  available: boolean;
+}
 
 const defaultRegionalPricing = (): Record<RegionKey, { enabled: boolean; adjustmentType: AdjustmentType; adjustmentValue: number }> => ({
   UAE:    { enabled: false, adjustmentType: 'percentage', adjustmentValue: 0 },
@@ -110,6 +121,10 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
   const [shippingConfig, setShippingConfig] = useState<{ shipsWorldwide: boolean; excludedCountries: string[] }>({ shipsWorldwide: true, excludedCountries: [] });
   const [excludeSearch, setExcludeSearch] = useState('');
   const [similarProductIds, setSimilarProductIds] = useState<string[]>([]);
+  const [productTypeField, setProductTypeField]   = useState<'simple' | 'configurable'>('simple');
+  const [variantAttributes, setVariantAttributes] = useState<VariantAttribute[]>([]);
+  const [variantSkus, setVariantSkus]             = useState<VariantSku[]>([]);
+  const [attrValueInputs, setAttrValueInputs]     = useState<string[]>([]); // raw comma-input per attribute
   const [simSearch, setSimSearch]         = useState('');
   const [simResults, setSimResults]       = useState<any[]>([]);
   const [simSearching, setSimSearching]   = useState(false);
@@ -249,6 +264,22 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
     if (editingProduct.shipping) {
       setShippingConfig({ shipsWorldwide: editingProduct.shipping.shipsWorldwide !== false, excludedCountries: editingProduct.shipping.excludedCountries || [] });
     }
+    if (editingProduct.productType === 'configurable') {
+      setProductTypeField('configurable');
+    }
+    if (Array.isArray(editingProduct.variantAttributes) && editingProduct.variantAttributes.length > 0) {
+      setVariantAttributes(editingProduct.variantAttributes);
+      setAttrValueInputs(editingProduct.variantAttributes.map((a: any) => (a.values || []).join(', ')));
+    }
+    if (Array.isArray(editingProduct.variants) && editingProduct.variants.length > 0) {
+      setVariantSkus(editingProduct.variants.map((v: any) => ({
+        attributes: v.attributes instanceof Map ? Object.fromEntries(v.attributes) : (v.attributes || {}),
+        priceINR: v.priceUSD != null ? String(Math.round(v.priceUSD * liveRate('INR'))) : '',
+        stockQuantity: v.stockQuantity || 0,
+        sku: v.sku || '',
+        available: v.available !== false,
+      })));
+    }
     if (editingProduct.hasVideo && editingProduct.videoUrl) {
       setVideo({ file: new File([], editingProduct.videoFilename || 'video.mp4', { type: 'video/mp4' }), url: editingProduct.videoUrl, size: editingProduct.videoSize || 0, isExisting: true });
     }
@@ -375,6 +406,19 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
         customSpecs: formattedCustomSpecs,
         similarProducts: similarProductIds, regionalPricing: regionalPricingForSave,
         shipping: { shipsWorldwide: shippingConfig.shipsWorldwide, excludedCountries: shippingConfig.excludedCountries },
+        productType: productTypeField,
+        variantAttributes: productTypeField === 'configurable' ? variantAttributes : [],
+        variants: productTypeField === 'configurable'
+          ? variantSkus.map(v => ({
+              attributes: v.attributes,
+              priceUSD: v.priceINR && parseFloat(v.priceINR) > 0
+                ? parseFloat(v.priceINR) / liveRate('INR')
+                : null,
+              stockQuantity: v.stockQuantity,
+              sku: v.sku,
+              available: v.available,
+            }))
+          : [],
       }, images, customSpecs, video && !video.isExisting ? video.file : null);
 
       setFormSubmitting(false);
@@ -423,6 +467,56 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
 
   const inputCls = 'w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-orange-400 focus:border-transparent disabled:bg-gray-50 disabled:cursor-not-allowed transition-colors bg-white';
   const labelCls = 'block text-sm font-medium text-gray-700 mb-1.5';
+
+  // ─── Variant helpers ───────────────────────────────────────────────────────
+  const addAttribute = () => {
+    setVariantAttributes(prev => [...prev, { name: '', values: [] }]);
+    setAttrValueInputs(prev => [...prev, '']);
+  };
+
+  const removeAttribute = (idx: number) => {
+    setVariantAttributes(prev => prev.filter((_, i) => i !== idx));
+    setAttrValueInputs(prev => prev.filter((_, i) => i !== idx));
+    setVariantSkus([]);
+  };
+
+  const updateAttributeName = (idx: number, name: string) => {
+    setVariantAttributes(prev => prev.map((a, i) => i === idx ? { ...a, name } : a));
+    setVariantSkus([]);
+  };
+
+  const updateAttributeValues = (idx: number, raw: string) => {
+    setAttrValueInputs(prev => prev.map((v, i) => i === idx ? raw : v));
+    const values = raw.split(',').map(s => s.trim()).filter(Boolean);
+    setVariantAttributes(prev => prev.map((a, i) => i === idx ? { ...a, values } : a));
+    setVariantSkus([]);
+  };
+
+  const generateCombinations = () => {
+    const validAttrs = variantAttributes.filter(a => a.name.trim() && a.values.length > 0);
+    if (validAttrs.length === 0) return;
+    const combos: Record<string, string>[] = [{}];
+    for (const attr of validAttrs) {
+      const next: Record<string, string>[] = [];
+      for (const existing of combos) {
+        for (const val of attr.values) {
+          next.push({ ...existing, [attr.name]: val });
+        }
+      }
+      combos.splice(0, combos.length, ...next);
+    }
+    setVariantSkus(combos.map(attributes => ({
+      attributes,
+      priceINR: '',
+      stockQuantity: 0,
+      sku: '',
+      available: true,
+    })));
+  };
+
+  const updateVariantSku = (idx: number, field: keyof VariantSku, value: any) => {
+    setVariantSkus(prev => prev.map((v, i) => i === idx ? { ...v, [field]: value } : v));
+  };
 
   // ─── Section anchor helper ─────────────────────────────────────────────────
   const secRef = (id: SectionId) => (el: HTMLDivElement | null) => { sectionRefs.current[id] = el; };
@@ -952,7 +1046,149 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
             </div>
           )}
 
-          {/* ⑥ Similar Products */}
+          {/* ⑥ Variants */}
+          <div ref={secRef('variants')} id="variants" className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            <div className="px-6 py-4 border-b border-gray-50">
+              <h2 className="font-semibold text-gray-900 text-[15px]">Variants</h2>
+              <p className="text-xs text-gray-400 mt-0.5">Add options like Color or Size. Each combination becomes a purchasable SKU.</p>
+            </div>
+            <div className="px-6 py-5 space-y-5">
+              {/* Product type toggle */}
+              <div className="flex gap-3">
+                {(['simple', 'configurable'] as const).map(pt => (
+                  <button key={pt} type="button"
+                    onClick={() => setProductTypeField(pt)}
+                    disabled={isFormDisabled}
+                    className={`flex-1 py-2.5 rounded-xl border text-sm font-medium transition-colors ${
+                      productTypeField === pt
+                        ? 'bg-orange-500 border-orange-500 text-white'
+                        : 'border-gray-200 text-gray-600 hover:border-gray-300 bg-white'
+                    }`}>
+                    {pt === 'simple' ? 'Simple product' : 'Has variants'}
+                  </button>
+                ))}
+              </div>
+
+              {productTypeField === 'configurable' && (
+                <>
+                  {/* Attribute definitions */}
+                  <div className="space-y-3">
+                    <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Attributes</p>
+                    {variantAttributes.map((attr, idx) => (
+                      <div key={idx} className="flex gap-2 items-start">
+                        <div className="flex-1 grid grid-cols-2 gap-2">
+                          <input
+                            type="text"
+                            placeholder="Name (e.g. Color)"
+                            value={attr.name}
+                            onChange={e => updateAttributeName(idx, e.target.value)}
+                            disabled={isFormDisabled}
+                            className={inputCls}
+                          />
+                          <input
+                            type="text"
+                            placeholder="Values, comma separated (e.g. Red, Blue)"
+                            value={attrValueInputs[idx] ?? ''}
+                            onChange={e => updateAttributeValues(idx, e.target.value)}
+                            disabled={isFormDisabled}
+                            className={inputCls}
+                          />
+                        </div>
+                        <button type="button" onClick={() => removeAttribute(idx)}
+                          className="mt-2 text-gray-300 hover:text-red-500 transition-colors text-lg leading-none shrink-0">×</button>
+                      </div>
+                    ))}
+                    <button type="button" onClick={addAttribute} disabled={isFormDisabled}
+                      className="text-sm text-orange-500 hover:text-orange-600 font-medium transition-colors">
+                      + Add attribute
+                    </button>
+                  </div>
+
+                  {variantAttributes.some(a => a.name && a.values.length > 0) && (
+                    <button type="button" onClick={generateCombinations} disabled={isFormDisabled}
+                      className="w-full py-2.5 rounded-xl border border-orange-300 bg-orange-50 text-orange-600 text-sm font-semibold hover:bg-orange-100 transition-colors">
+                      Generate all combinations ({variantAttributes.filter(a => a.name && a.values.length > 0).reduce((n, a) => n * a.values.length, 1)} SKUs)
+                    </button>
+                  )}
+
+                  {/* SKU table */}
+                  {variantSkus.length > 0 && (
+                    <div className="border border-gray-100 rounded-xl overflow-hidden">
+                      <table className="w-full text-sm">
+                        <thead className="bg-gray-50 border-b border-gray-100">
+                          <tr>
+                            <th className="px-4 py-2.5 text-left text-xs font-semibold text-gray-500">Variant</th>
+                            <th className="px-4 py-2.5 text-left text-xs font-semibold text-gray-500">
+                              Price (₹)
+                              <span className="ml-1 font-normal text-gray-400 normal-case">blank = base price</span>
+                            </th>
+                            <th className="px-4 py-2.5 text-left text-xs font-semibold text-gray-500">Stock</th>
+                            <th className="px-4 py-2.5 text-left text-xs font-semibold text-gray-500">SKU</th>
+                            <th className="px-4 py-2.5 text-center text-xs font-semibold text-gray-500">Avail</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-50">
+                          {variantSkus.map((sku, idx) => (
+                            <tr key={idx} className={!sku.available ? 'opacity-50' : ''}>
+                              <td className="px-4 py-2.5">
+                                <span className="text-xs text-gray-700 font-medium">
+                                  {Object.values(sku.attributes).join(' / ')}
+                                </span>
+                              </td>
+                              <td className="px-4 py-2.5">
+                                <div className="relative w-28">
+                                  <span className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none">₹</span>
+                                  <input
+                                    type="number"
+                                    min="0"
+                                    value={sku.priceINR}
+                                    onChange={e => updateVariantSku(idx, 'priceINR', e.target.value)}
+                                    placeholder={priceINR || '—'}
+                                    disabled={isFormDisabled}
+                                    className="w-full pl-5 pr-2 py-1.5 border border-gray-200 rounded-lg text-xs focus:ring-1 focus:ring-orange-400 focus:border-transparent"
+                                  />
+                                </div>
+                              </td>
+                              <td className="px-4 py-2.5">
+                                <input
+                                  type="number" min="0"
+                                  value={sku.stockQuantity}
+                                  onChange={e => updateVariantSku(idx, 'stockQuantity', parseInt(e.target.value) || 0)}
+                                  disabled={isFormDisabled}
+                                  className="w-20 px-2 py-1.5 border border-gray-200 rounded-lg text-xs focus:ring-1 focus:ring-orange-400 focus:border-transparent"
+                                />
+                              </td>
+                              <td className="px-4 py-2.5">
+                                <input
+                                  type="text"
+                                  value={sku.sku}
+                                  onChange={e => updateVariantSku(idx, 'sku', e.target.value)}
+                                  disabled={isFormDisabled}
+                                  placeholder="e.g. CHR-R-S"
+                                  className="w-28 px-2 py-1.5 border border-gray-200 rounded-lg text-xs focus:ring-1 focus:ring-orange-400 focus:border-transparent"
+                                />
+                              </td>
+                              <td className="px-4 py-2.5 text-center">
+                                <input
+                                  type="checkbox"
+                                  checked={sku.available}
+                                  onChange={e => updateVariantSku(idx, 'available', e.target.checked)}
+                                  disabled={isFormDisabled}
+                                  className="w-4 h-4 text-orange-500 rounded border-gray-300"
+                                />
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          </div>
+
+          {/* ⑦ Similar Products */}
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
             <div className="px-6 py-4 border-b border-gray-50">
               <h2 className="font-semibold text-gray-900 text-[15px]">Similar Products</h2>

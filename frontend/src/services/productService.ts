@@ -86,6 +86,20 @@ export interface Product {
     shipsWorldwide?: boolean;
     excludedCountries?: string[];
   };
+  productType?: 'simple' | 'configurable' | 'custom-order';
+  variantAttributes?: {
+    name: string;
+    values: string[];
+  }[];
+  variants?: {
+    attributes: Record<string, string>;
+    /** null = use product base price; a number = variant-specific price in USD */
+    priceUSD: number | null;
+    stockQuantity: number;
+    sku?: string | null;
+    images?: string[];
+    available: boolean;
+  }[];
   createdAt: string;
   updatedAt: string;
 }
