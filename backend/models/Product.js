@@ -376,14 +376,23 @@ const productSchema = new mongoose.Schema({
         default: 'simple'
     },
 
-    // Product variants (for configurable products)
+    // Defines the variant axes, e.g. [{ name: "Color", values: ["Red","Blue"] }]
+    variantAttributes: [{
+        name: { type: String, required: true },
+        values: [{ type: String }],
+        _id: false,
+    }],
+
+    // Each entry is one purchasable SKU (a combination of attribute values)
     variants: [{
-        name: String,
-        options: [String],
-        priceModifier: Number, // Price difference from base price
-        stockQuantity: Number,
-        sku: String,
-        images: [String]
+        attributes: { type: Map, of: String }, // e.g. { Color: "Red", Size: "Small" }
+        // If priceUSD is set it overrides the product base price; otherwise base price is used
+        priceUSD: { type: Number, default: null },
+        stockQuantity: { type: Number, default: 0 },
+        sku: { type: String, default: '' },
+        images: [{ type: String }],
+        available: { type: Boolean, default: true },
+        _id: false,
     }],
 
     // Manufacturing and sourcing

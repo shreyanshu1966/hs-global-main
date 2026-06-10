@@ -9,6 +9,14 @@ const parseScope = (query) => ({
   subcategory: query.subcategory || null,
 });
 
+// Build a case-insensitive, separator-flexible regex for subcategory ordering lookups.
+const subcategoryOrderingQuery = (subcategory) => {
+  if (subcategory === null) return null;
+  const escaped = subcategory.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const flexible = escaped.replace(/[-_\s]+/g, '[-_\\s]*');
+  return { $regex: new RegExp(`^${flexible}$`, 'i') };
+};
+
 /**
  * GET /api/admin/product-ordering
  * Returns the saved ordering for a scope plus ALL products in that scope
@@ -23,8 +31,9 @@ const getOrdering = async (req, res) => {
     if (category)    productFilter.category    = category;
     if (subcategory) productFilter.subcategory = subcategory;
 
+    const orderingQuery = { category, subcategory: subcategoryOrderingQuery(subcategory) };
     const [ordering, products] = await Promise.all([
-      ProductOrdering.findOne({ category, subcategory }),
+      ProductOrdering.findOne(orderingQuery),
       Product.find(productFilter)
         .select('productId name images category subcategory status available')
         .sort({ createdAt: -1 })
@@ -37,6 +46,7 @@ const getOrdering = async (req, res) => {
         category,
         subcategory,
         productIds: ordering ? ordering.productIds : [],
+        categoryOrder: ordering ? (ordering.categoryOrder || []) : [],
         products,
       },
     });
@@ -53,12 +63,18 @@ const getOrdering = async (req, res) => {
  */
 const saveOrdering = async (req, res) => {
   try {
-    const { productIds = [] } = req.body;
+    // Strip out any nulls / empty strings that can creep in when a product has no productId
+    const rawIds = Array.isArray(req.body.productIds) ? req.body.productIds : [];
+    const productIds = rawIds.filter(id => typeof id === 'string' && id.trim().length > 0);
+
+    const rawCategoryOrder = Array.isArray(req.body.categoryOrder) ? req.body.categoryOrder : [];
+    const categoryOrder = rawCategoryOrder.filter(c => typeof c === 'string' && c.trim().length > 0);
+
     const { category, subcategory } = parseScope(req.body);
 
     const ordering = await ProductOrdering.findOneAndUpdate(
       { category, subcategory },
-      { category, subcategory, productIds },
+      { category, subcategory, productIds, categoryOrder },
       { upsert: true, new: true, setDefaultsOnInsert: true }
     );
 
@@ -77,7 +93,7 @@ const saveOrdering = async (req, res) => {
 const resetOrdering = async (req, res) => {
   try {
     const { category, subcategory } = parseScope(req.query);
-    await ProductOrdering.deleteOne({ category, subcategory });
+    await ProductOrdering.deleteOne({ category, subcategory: subcategoryOrderingQuery(subcategory) });
     res.json({ success: true, message: 'Ordering reset' });
   } catch (err) {
     console.error('resetOrdering error:', err);

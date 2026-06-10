@@ -2,26 +2,62 @@ const Product = require('../../../models/Product');
 
 /**
  * Find products using a custom ordering array.
- * Products whose productId appears in orderedIds are returned first (in that order).
+ * Products whose productId (or _id string) appears in orderedIds are returned first (in that order).
  * Remaining products fall to the end sorted by createdAt desc.
  */
 const findProductsOrdered = ({ filters, orderedIds, skip, limit }) => {
+    // Sanitise: drop any null / empty entries that would shift real products to wrong indices
+    const cleanIds = (orderedIds || []).filter(id => typeof id === 'string' && id.length > 0);
+
     return Product.aggregate([
         { $match: filters },
         {
             $addFields: {
                 __ord: {
                     $let: {
-                        vars: { idx: { $indexOfArray: [orderedIds, '$productId'] } },
-                        in: { $cond: [{ $eq: ['$$idx', -1] }, 999999, '$$idx'] }
+                        vars: {
+                            // Match by productId first; fall back to _id string for legacy docs
+                            byProductId: { $indexOfArray: [cleanIds, '$productId'] },
+                            byIdStr:     { $indexOfArray: [cleanIds, { $toString: '$_id' }] }
+                        },
+                        in: {
+                            $let: {
+                                vars: {
+                                    idx: {
+                                        $cond: [
+                                            { $gt: ['$$byProductId', -1] },
+                                            '$$byProductId',
+                                            '$$byIdStr'
+                                        ]
+                                    }
+                                },
+                                in: { $cond: [{ $eq: ['$$idx', -1] }, 999999, '$$idx'] }
+                            }
+                        }
                     }
                 }
             }
         },
-        { $sort: { __ord: 1, createdAt: -1 } },
+        { $sort: { __ord: 1, createdAt: -1, _id: 1 } },
         { $skip: skip },
         { $limit: limit }
     ]);
+};
+
+/**
+ * Return just the productId strings for a category+subcategory scope.
+ * Used to build the cross-category flat ordering list.
+ */
+const findProductIdsByScope = ({ category, subcategoryFilter }) => {
+    const match = { status: 'active', available: true };
+    if (category)          match.category    = category;
+    if (subcategoryFilter) match.subcategory = subcategoryFilter;
+
+    return Product.find(match)
+        .select('productId')
+        .sort({ createdAt: -1, _id: 1 })
+        .lean()
+        .then(docs => docs.map(d => d.productId).filter(Boolean));
 };
 
 const findProducts = ({ filters, sort, skip, limit, searchTerm }) => {
@@ -129,6 +165,7 @@ const softDeleteByProductId = (productId) => Product.findOneAndUpdate(
 
 module.exports = {
     findProductsOrdered,
+    findProductIdsByScope,
     findProducts,
     countProducts,
     findByProductIdActive,
