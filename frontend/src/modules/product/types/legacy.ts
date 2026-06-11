@@ -79,6 +79,7 @@ export interface LegacyProduct {
     slug?: string;
   };
   customSpecs?: Array<{ key: string; label: string; value: string; type?: string; order?: number }>;
+  productSpecifications?: Record<string, unknown>;
   productCode?: string;
   subDescription?: string;
   regionalPricing?: {

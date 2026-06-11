@@ -52,6 +52,7 @@ export interface ProductV2 {
     slab: Record<string, string> | null;
     stone: Record<string, string> | null;
     custom: Array<Record<string, unknown>>;
+    productSpecifications: Record<string, unknown> | null;
   };
   seo: {
     seoTitle: string | null;

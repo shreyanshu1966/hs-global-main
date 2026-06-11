@@ -95,7 +95,8 @@ const toProductDto = (product) => {
             furniture: product.furnitureSpecs || null,
             slab: product.slabSpecs || null,
             stone: product.stoneSpecs || null,
-            custom: Array.isArray(product.customSpecs) ? product.customSpecs : []
+            custom: Array.isArray(product.customSpecs) ? product.customSpecs : [],
+            productSpecifications: product.productSpecifications || null,
         },
         seo: {
             seoTitle: product.seoTitle || null,

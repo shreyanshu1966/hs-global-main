@@ -39,6 +39,7 @@ export const toLegacyProduct = (product: ProductV2): LegacyProduct => ({
   slabSpecs: product.specs.slab || undefined,
   stoneSpecs: product.specs.stone || undefined,
   customSpecs: Array.isArray(product.specs.custom) ? product.specs.custom : [],
+  productSpecifications: product.specs.productSpecifications || undefined,
   status: product.status,
   featured: product.featured,
   tags: product.taxonomy.tags,

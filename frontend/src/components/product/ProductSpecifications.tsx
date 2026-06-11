@@ -1,11 +1,10 @@
 import React from 'react';
-import { Package, Truck, Wrench, FileText } from 'lucide-react';
+import { Truck, Wrench, FileText, Ruler, Settings, ShieldCheck, Tag as TagIcon } from 'lucide-react';
 
 interface ProductSpecificationsProps {
   product: any;
 }
 
-// ── helpers ──────────────────────────────────────────────────────────────────
 function formatKey(raw: string): string {
   return raw
     .replace(/([A-Z])/g, ' $1')
@@ -14,53 +13,71 @@ function formatKey(raw: string): string {
     .trim();
 }
 
-function SpecRow({ label, value }: { label: string; value: string }) {
+// ── Description renderer ──────────────────────────────────────────────────────
+function DescriptionBody({ text }: { text: string }) {
+  const paragraphs = text.split(/\n{2,}/).map(p => p.trim()).filter(Boolean);
   return (
-    <div className="flex justify-between items-start gap-6 py-3 border-b border-[#f0f0f0] last:border-b-0">
-      <span className="text-[11px] font-semibold uppercase tracking-[0.1em] text-[#888] shrink-0 pt-px">
-        {label}
-      </span>
-      <span className="text-[13px] text-[#2a2a2a] text-right leading-snug">{value}</span>
+    <div className="space-y-3">
+      {paragraphs.map((para, i) => {
+        const lines = para.split(/\n/).map((l, li) => (
+          <React.Fragment key={li}>{li > 0 && <br />}{l}</React.Fragment>
+        ));
+        return <p key={i} className="text-[13.5px] text-[#444] leading-[1.75]">{lines}</p>;
+      })}
     </div>
   );
 }
 
-function SpecGroup({ title, rows }: { title: string; rows: [string, string][] }) {
+// ── Grid spec card (for sections with many items: Details) ─────────────────────
+function SpecGrid({
+  title, icon, rows,
+}: {
+  title: string;
+  icon: React.ReactNode;
+  rows: [string, string][];
+}) {
   if (!rows.length) return null;
   return (
-    <div>
-      <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#bbb] mb-1 mt-5 first:mt-0">
-        {title}
-      </p>
-      <div className="bg-[#fafafa] rounded-lg px-4">
+    <div className="rounded-xl border border-[#e8e8e4] overflow-hidden">
+      <div className="flex items-center gap-2 px-4 py-2.5 bg-[#f5f4ef] border-b border-[#e8e8e4]">
+        <span className="text-[#888]">{icon}</span>
+        <span className="text-[10.5px] font-bold uppercase tracking-[0.16em] text-[#777]">{title}</span>
+      </div>
+      <div className="grid grid-cols-2 sm:grid-cols-3 divide-x divide-y divide-[#efefeb] bg-white">
         {rows.map(([label, value]) => (
-          <SpecRow key={label} label={label} value={value} />
+          <div key={label} className="px-3.5 py-3">
+            <p className="text-[9.5px] font-bold uppercase tracking-[0.12em] text-[#aaa] mb-0.5 truncate">{label}</p>
+            <p className="text-[12.5px] text-[#1a1a1a] font-medium leading-snug">{value}</p>
+          </div>
         ))}
       </div>
     </div>
   );
 }
 
-// Render description text: turn line-breaks into paragraphs, bold **text**
-function DescriptionBody({ text }: { text: string }) {
-  const paragraphs = text.split(/\n{2,}/).map(p => p.trim()).filter(Boolean);
-
+// ── Row spec card (for short sections: Dimensions, Assembly, Warranty, Identity) ─
+function SpecList({
+  title, icon, rows,
+}: {
+  title: string;
+  icon: React.ReactNode;
+  rows: [string, string][];
+}) {
+  if (!rows.length) return null;
   return (
-    <div className="space-y-3">
-      {paragraphs.map((para, i) => {
-        // single newlines → <br>
-        const lines = para.split(/\n/).map((l, li) => (
-          <React.Fragment key={li}>
-            {li > 0 && <br />}
-            {l}
-          </React.Fragment>
-        ));
-        return (
-          <p key={i} className="text-[13.5px] text-[#444] leading-[1.75]">
-            {lines}
-          </p>
-        );
-      })}
+    <div className="rounded-xl border border-[#e8e8e4] overflow-hidden">
+      <div className="flex items-center gap-2 px-4 py-2.5 bg-[#f5f4ef] border-b border-[#e8e8e4]">
+        <span className="text-[#888]">{icon}</span>
+        <span className="text-[10.5px] font-bold uppercase tracking-[0.16em] text-[#777]">{title}</span>
+      </div>
+      <div className="divide-y divide-[#f0f0ec] bg-white">
+        {rows.map(([label, value]) => (
+          <div key={label} className="flex items-start justify-between gap-4 px-4 py-2.5">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#999] shrink-0 pt-px">{label}</span>
+            <span className="text-[12.5px] text-[#1a1a1a] text-right leading-snug">{value}</span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -68,19 +85,15 @@ function DescriptionBody({ text }: { text: string }) {
 // ── Tab button ────────────────────────────────────────────────────────────────
 type Tab = 'details' | 'custom' | 'shipping';
 
-function TabBtn({
-  active, onClick, icon, label,
-}: {
+function TabBtn({ active, onClick, icon, label }: {
   active: boolean; onClick: () => void;
   icon: React.ReactNode; label: string;
 }) {
   return (
     <button
       onClick={onClick}
-      className={`flex items-center gap-1.5 px-3.5 py-2 text-[11px] font-semibold uppercase tracking-[0.1em] rounded-full transition-all ${
-        active
-          ? 'bg-[#111] text-white'
-          : 'text-[#888] hover:text-[#111] hover:bg-[#f3f3f3]'
+      className={`flex items-center gap-1.5 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.1em] rounded-full transition-all ${
+        active ? 'bg-[#111] text-white' : 'text-[#888] hover:text-[#111] hover:bg-[#f3f3f3]'
       }`}
     >
       {icon}
@@ -94,65 +107,53 @@ export function ProductSpecifications({ product }: ProductSpecificationsProps) {
   const [activeTab, setActiveTab] = React.useState<Tab>('details');
 
   const description = (product.description || '').trim();
+  const tags: string[] = (product.tags || []).filter(Boolean);
 
-  // ── Spec groups ──────────────────────────────────────────────────────────
+  // ── Data preparation ─────────────────────────────────────────────────────
+
   const SKIP_SPEC_KEYS = new Set(['etsyUrl', '_id', '__v']);
-
-  // Furniture-specific rows (furniture category only)
   const furnitureRows: [string, string][] = Object.entries(product.specs || {})
     .filter(([k, v]) => v && !SKIP_SPEC_KEYS.has(k))
     .map(([k, v]) => [formatKey(k), String(v)]);
 
-  // Custom key:value specs — only entries with a value are shown
   const customSpecRows: [string, string][] = (product.customSpecs || [])
     .filter((s: any) => s.value)
     .sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0))
     .map((s: any) => [s.label || formatKey(s.key), String(s.value)]);
 
-  // Dimensions
   const dims = product.dimensions;
-  const dimRows: [string, string][] = [];
-  if (dims?.length) dimRows.push(['Length', `${dims.length} ${dims.unit || 'cm'}`]);
-  if (dims?.width)  dimRows.push(['Width',  `${dims.width} ${dims.unit || 'cm'}`]);
-  if (dims?.height) dimRows.push(['Height', `${dims.height} ${dims.unit || 'cm'}`]);
-  if (product.weight) dimRows.push(['Weight', `${product.weight} kg`]);
+  const dimRows: [string, string][] = [
+    dims?.length ? ['Length', `${dims.length} ${dims.unit || 'cm'}`] : null,
+    dims?.width  ? ['Width',  `${dims.width} ${dims.unit || 'cm'}`]  : null,
+    dims?.height ? ['Height', `${dims.height} ${dims.unit || 'cm'}`] : null,
+    product.weight ? ['Weight', `${product.weight} kg`] : null,
+  ].filter(Boolean) as [string, string][];
 
-  // Identity rows
   const identityRows: [string, string][] = [
     product.productCode ? ['SKU', product.productCode] : null,
     product.productId   ? ['Reference', product.productId] : null,
-    product.category    ? ['Category', product.category] : null,
-    product.subcategory ? ['Type', product.subcategory] : null,
+    product.category    ? ['Category', formatKey(product.category)] : null,
+    product.subcategory ? ['Type', formatKey(product.subcategory)] : null,
     ['Availability', product.available ? 'In Stock' : 'Out of Stock'],
   ].filter(Boolean) as [string, string][];
 
-  // Manufacturing rows
   const mfg = product.manufacturing || {};
   const mfgRows: [string, string][] = [
     mfg.countryOfOrigin ? ['Origin', mfg.countryOfOrigin] : null,
-    mfg.leadTime        ? ['Lead Time', mfg.leadTime]     : null,
+    mfg.leadTime        ? ['Lead Time', mfg.leadTime] : null,
     typeof mfg.minimumOrder === 'number' && mfg.minimumOrder > 1
       ? ['Min. Order', `${mfg.minimumOrder} units`] : null,
     mfg.isCustomMade !== undefined
       ? ['Custom Made', mfg.isCustomMade ? 'Yes' : 'No'] : null,
   ].filter(Boolean) as [string, string][];
 
-  // Tags
-  const tags: string[] = (product.tags || []).filter(Boolean);
-
-  // Semi-precious-stone specific rows
+  // Stone specs
   const STONE_SPEC_LABELS: Record<string, string> = {
-    minSlabSize:     'Minimum Slab Size',
-    maxSlabSize:     'Maximum Slab Size',
-    thickness:       'Thickness',
-    surfaceFinish:   'Surface Finish',
-    form:            'Form',
-    material:        'Material',
-    usage:           'Usage',
-    moh:             'MOH',
-    refractiveIndex: 'Refractive Index',
-    waterAbsorption: 'Water Absorption',
-    priceRange:      'Price Range',
+    minSlabSize: 'Min Slab Size', maxSlabSize: 'Max Slab Size',
+    thickness: 'Thickness', surfaceFinish: 'Surface Finish',
+    form: 'Form', material: 'Material', usage: 'Usage',
+    moh: 'MOH', refractiveIndex: 'Refractive Index',
+    waterAbsorption: 'Water Absorption', priceRange: 'Price Range',
   };
   const stoneSpecs = product.stoneSpecs || {};
   const stoneSpecRows: [string, string][] = Object.entries(STONE_SPEC_LABELS)
@@ -160,33 +161,21 @@ export function ProductSpecifications({ product }: ProductSpecificationsProps) {
     .map(([key, label]) => [label, String(stoneSpecs[key])]);
 
   const isSemiPreciousStone = product.category === 'semi-precious-stone';
-  const allSpecRows = isSemiPreciousStone
-    ? [...stoneSpecRows, ...customSpecRows]
-    : [...furnitureRows, ...customSpecRows];
 
-  // Fixed product specifications sections (furniture / handicraft / leather)
+  // Fixed product spec sections
   const ps = product.productSpecifications || {};
 
   const DETAIL_LABELS: [string, string][] = [
-    ['overall_shape',         'Overall Shape'],
-    ['material',              'Material'],
-    ['top_material',          'Top Material'],
-    ['base_material',         'Base Material'],
-    ['table_top_shape',       'Table Top Shape'],
-    ['base_shape',            'Base Shape'],
-    ['table_base_type',       'Table Base Type'],
-    ['base_type',             'Base Type'],
-    ['top_color',             'Top Color'],
-    ['base_color',            'Base Color'],
-    ['wood_species',          'Wood Species'],
-    ['natural_variation_type','Natural Variation Type'],
-    ['detailing',             'Detailing'],
-    ['mixed_materials',       'Mixed Materials'],
-    ['seating_capacity',      'Seating Capacity'],
-    ['weight_capacity',       'Weight Capacity'],
-    ['custom_product',        'Custom Product'],
-    ['imported',              'Imported'],
-    ['wayfair_verified',      'Wayfair Verified'],
+    ['overall_shape', 'Overall Shape'], ['material', 'Material'],
+    ['top_material', 'Top Material'], ['base_material', 'Base Material'],
+    ['table_top_shape', 'Table Top Shape'], ['base_shape', 'Base Shape'],
+    ['table_base_type', 'Table Base Type'], ['base_type', 'Base Type'],
+    ['top_color', 'Top Color'], ['base_color', 'Base Color'],
+    ['wood_species', 'Wood Species'], ['natural_variation_type', 'Natural Variation'],
+    ['detailing', 'Detailing'], ['mixed_materials', 'Mixed Materials'],
+    ['seating_capacity', 'Seating Capacity'], ['weight_capacity', 'Weight Capacity'],
+    ['custom_product', 'Custom Product'], ['imported', 'Imported'],
+    ['wayfair_verified', 'Wayfair Verified'],
   ];
 
   const psDetailRows: [string, string][] = DETAIL_LABELS
@@ -194,13 +183,13 @@ export function ProductSpecifications({ product }: ProductSpecificationsProps) {
     .map(([k, label]) => [label, String(ps.details[k])]);
 
   const psDimensionRows: [string, string][] = [
-    ps.other_dimensions?.overall_dimensions    ? ['Overall Dimensions',    ps.other_dimensions.overall_dimensions]    : null,
+    ps.other_dimensions?.overall_dimensions     ? ['Overall Dimensions',    ps.other_dimensions.overall_dimensions]     : null,
     ps.other_dimensions?.overall_product_weight ? ['Overall Product Weight', ps.other_dimensions.overall_product_weight] : null,
+    ...dimRows,
   ].filter(Boolean) as [string, string][];
 
   const psAssemblyRows: [string, string][] = ps.assembly?.assembly_required
-    ? [['Assembly Required', ps.assembly.assembly_required]]
-    : [];
+    ? [['Assembly Required', ps.assembly.assembly_required]] : [];
 
   const psWarrantyRows: [string, string][] = [
     ps.warranty?.product_warranty ? ['Product Warranty', ps.warranty.product_warranty] : null,
@@ -208,18 +197,18 @@ export function ProductSpecifications({ product }: ProductSpecificationsProps) {
     ps.warranty?.warranty_details ? ['Warranty Details', ps.warranty.warranty_details] : null,
   ].filter(Boolean) as [string, string][];
 
-  // ── Shipping data ────────────────────────────────────────────────────────
+  const allAdditionalRows = [...furnitureRows, ...customSpecRows];
+
+  // Shipping / returns / customisation
   const ship = product.shipping || {};
   const shippingRows: [string, string][] = [
     ['Ships From', 'Ahmedabad, India'],
-    ship.shippingClass
-      ? ['Shipping Class', formatKey(ship.shippingClass)] : null,
-    ship.handlingTime
-      ? ['Handling Time', ship.handlingTime] : null,
-    ['Worldwide', ship.shipsWorldwide === false ? 'Selected countries only' : 'Yes'],
-    ['Incoterms',  'FOB & CIF available'],
-    ['Insurance',  'Marine transit insurance included'],
-    ['Packaging',  'ISPM-15 certified wooden crates with foam'],
+    ship.shippingClass  ? ['Shipping Class', formatKey(ship.shippingClass)] : null,
+    ship.handlingTime   ? ['Handling Time',  ship.handlingTime] : null,
+    ['Worldwide',   ship.shipsWorldwide === false ? 'Selected countries only' : 'Yes'],
+    ['Incoterms',   'FOB & CIF available'],
+    ['Insurance',   'Marine transit insurance included'],
+    ['Packaging',   'ISPM-15 certified wooden crates with foam'],
   ].filter(Boolean) as [string, string][];
 
   const returnRows: [string, string][] = [
@@ -229,31 +218,30 @@ export function ProductSpecifications({ product }: ProductSpecificationsProps) {
     ['Pre-shipment',      'HD photos & video approval before dispatch'],
   ];
 
-  // ── Customization data ───────────────────────────────────────────────────
   const customizationRows: [string, string][] = [
     mfg.leadTime ? ['Lead Time', mfg.leadTime] : ['Lead Time', '3–6 weeks typical'],
     typeof mfg.minimumOrder === 'number' && mfg.minimumOrder > 1
-      ? ['Min. Order', `${mfg.minimumOrder} units`]
-      : ['Min. Order', 'Contact us'],
-    ['Dimensions',  'Custom-cut to architectural specs'],
-    ['Finishes',    'High-gloss diamond polish · Matte honed · Leather'],
-    ['Colours',     'Subject to quarry availability'],
+      ? ['Min. Order', `${mfg.minimumOrder} units`] : ['Min. Order', 'Contact us'],
+    ['Dimensions',    'Custom-cut to architectural specs'],
+    ['Finishes',      'High-gloss diamond polish · Matte honed · Leather'],
+    ['Colours',       'Subject to quarry availability'],
     ['Certification', 'ISPM-15 compliant packaging'],
   ].filter(Boolean) as [string, string][];
 
+  // ── Render ──────────────────────────────────────────────────────────────────
   return (
     <div className="max-w-6xl mx-auto">
 
-      {/* Section heading */}
-      <div className="mb-8">
-        <p className="text-[10.5px] font-semibold tracking-[0.18em] text-[#aaa] uppercase mb-1.5">Product</p>
-        <h2 className="font-serif text-[26px] sm:text-[30px] font-normal text-[#1a1a1a] leading-tight">
+      {/* Heading */}
+      <div className="mb-7">
+        <p className="text-[10.5px] font-semibold tracking-[0.18em] text-[#aaa] uppercase mb-1">Product</p>
+        <h2 className="font-serif text-[24px] sm:text-[28px] font-normal text-[#1a1a1a] leading-tight">
           Item Details
         </h2>
       </div>
 
       {/* Tabs */}
-      <div className="flex flex-wrap gap-2 mb-8">
+      <div className="flex flex-wrap gap-2 mb-8 border-b border-[#f0f0ec] pb-4">
         <TabBtn active={activeTab === 'details'}  onClick={() => setActiveTab('details')}
           icon={<FileText className="w-3.5 h-3.5" strokeWidth={1.8} />} label="Details" />
         <TabBtn active={activeTab === 'custom'}   onClick={() => setActiveTab('custom')}
@@ -264,64 +252,125 @@ export function ProductSpecifications({ product }: ProductSpecificationsProps) {
 
       {/* ── DETAILS TAB ── */}
       {activeTab === 'details' && (
-        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16">
+        <div className="grid lg:grid-cols-[2fr_3fr] gap-8 lg:gap-12">
 
-          {/* Left: description */}
-          <div>
-            <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#bbb] mb-4">Description</p>
-            {description
-              ? <DescriptionBody text={description} />
-              : <p className="text-[13.5px] text-[#999] italic">No description provided.</p>
-            }
+          {/* Left: description + tags */}
+          <div className="space-y-5">
+            <div>
+              <p className="text-[9.5px] font-bold uppercase tracking-[0.2em] text-[#bbb] mb-3">Description</p>
+              {description
+                ? <DescriptionBody text={description} />
+                : <p className="text-[13.5px] text-[#999] italic">No description provided.</p>
+              }
+            </div>
 
-            {/* Tags */}
             {tags.length > 0 && (
-              <div className="mt-6 flex flex-wrap gap-1.5">
-                {tags.map(tag => (
-                  <span key={tag} className="px-2.5 py-1 rounded-full bg-[#f3f3f3] text-[11px] text-[#666] tracking-wide">
-                    {tag}
-                  </span>
-                ))}
+              <div>
+                <p className="text-[9.5px] font-bold uppercase tracking-[0.2em] text-[#bbb] mb-2">Tags</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {tags.map(tag => (
+                    <span key={tag} className="px-2.5 py-1 rounded-full bg-[#f3f3f0] border border-[#e8e8e4] text-[11px] text-[#555] tracking-wide">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
               </div>
             )}
+
+            {/* Product identity card — shown below desc on desktop */}
+            <div className="hidden lg:block">
+              <SpecList
+                title="Product Identity"
+                icon={<TagIcon className="w-3.5 h-3.5" />}
+                rows={identityRows}
+              />
+            </div>
           </div>
 
-          {/* Right: spec groups */}
-          <div>
-            {/* Stone category: legacy single group */}
-            {isSemiPreciousStone && allSpecRows.length > 0 && (
-              <SpecGroup title="Specifications" rows={allSpecRows} />
+          {/* Right: spec cards */}
+          <div className="space-y-3">
+
+            {/* Stone category */}
+            {isSemiPreciousStone && (
+              <>
+                {stoneSpecRows.length > 0 && (
+                  <SpecGrid
+                    title="Stone Specifications"
+                    icon={<Settings className="w-3.5 h-3.5" />}
+                    rows={stoneSpecRows}
+                  />
+                )}
+                {customSpecRows.length > 0 && (
+                  <SpecGrid
+                    title="Additional Specifications"
+                    icon={<Settings className="w-3.5 h-3.5" />}
+                    rows={customSpecRows}
+                  />
+                )}
+              </>
             )}
 
-            {/* Non-stone: fixed sectioned specs */}
+            {/* Non-stone: sectioned fixed specs */}
             {!isSemiPreciousStone && (
               <>
                 {psDetailRows.length > 0 && (
-                  <SpecGroup title="Details" rows={psDetailRows} />
+                  <SpecGrid
+                    title="Details"
+                    icon={<FileText className="w-3.5 h-3.5" />}
+                    rows={psDetailRows}
+                  />
                 )}
+
                 {psDimensionRows.length > 0 && (
-                  <SpecGroup title="Dimensions & Weight" rows={[...psDimensionRows, ...dimRows]} />
+                  <SpecGrid
+                    title="Dimensions & Weight"
+                    icon={<Ruler className="w-3.5 h-3.5" />}
+                    rows={psDimensionRows}
+                  />
                 )}
-                {dimRows.length > 0 && psDimensionRows.length === 0 && (
-                  <SpecGroup title="Dimensions & Weight" rows={dimRows} />
-                )}
+
                 {psAssemblyRows.length > 0 && (
-                  <SpecGroup title="Assembly" rows={psAssemblyRows} />
+                  <SpecList
+                    title="Assembly"
+                    icon={<Settings className="w-3.5 h-3.5" />}
+                    rows={psAssemblyRows}
+                  />
                 )}
+
                 {psWarrantyRows.length > 0 && (
-                  <SpecGroup title="Warranty" rows={psWarrantyRows} />
+                  <SpecList
+                    title="Warranty"
+                    icon={<ShieldCheck className="w-3.5 h-3.5" />}
+                    rows={psWarrantyRows}
+                  />
                 )}
-                {/* Legacy furniture specs + custom specs */}
-                {(furnitureRows.length > 0 || customSpecRows.length > 0) && (
-                  <SpecGroup title="Additional Specifications" rows={[...furnitureRows, ...customSpecRows]} />
+
+                {allAdditionalRows.length > 0 && (
+                  <SpecGrid
+                    title="Additional Specifications"
+                    icon={<Settings className="w-3.5 h-3.5" />}
+                    rows={allAdditionalRows}
+                  />
                 )}
               </>
             )}
 
             {mfgRows.length > 0 && (
-              <SpecGroup title="Manufacturing" rows={mfgRows} />
+              <SpecList
+                title="Manufacturing"
+                icon={<Settings className="w-3.5 h-3.5" />}
+                rows={mfgRows}
+              />
             )}
-            <SpecGroup title="Product Identity" rows={identityRows} />
+
+            {/* Product identity on mobile */}
+            <div className="lg:hidden">
+              <SpecList
+                title="Product Identity"
+                icon={<TagIcon className="w-3.5 h-3.5" />}
+                rows={identityRows}
+              />
+            </div>
           </div>
 
         </div>
@@ -329,9 +378,9 @@ export function ProductSpecifications({ product }: ProductSpecificationsProps) {
 
       {/* ── CUSTOMISATION TAB ── */}
       {activeTab === 'custom' && (
-        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16">
-          <div>
-            <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#bbb] mb-4">About Custom Orders</p>
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
+          <div className="space-y-4">
+            <p className="text-[9.5px] font-bold uppercase tracking-[0.2em] text-[#bbb] mb-3">About Custom Orders</p>
             <div className="space-y-3 text-[13.5px] text-[#444] leading-[1.75]">
               <p>
                 We accept custom bulk orders tailored to your architectural specifications — including bespoke
@@ -349,20 +398,28 @@ export function ProductSpecifications({ product }: ProductSpecificationsProps) {
             </div>
           </div>
           <div>
-            <SpecGroup title="Custom Order Details" rows={customizationRows} />
+            <SpecList
+              title="Custom Order Details"
+              icon={<Wrench className="w-3.5 h-3.5" />}
+              rows={customizationRows}
+            />
           </div>
         </div>
       )}
 
       {/* ── SHIPPING & RETURNS TAB ── */}
       {activeTab === 'shipping' && (
-        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16">
-          <div>
-            <SpecGroup title="Shipping" rows={shippingRows} />
-          </div>
-          <div>
-            <SpecGroup title="Inspection & Returns" rows={returnRows} />
-          </div>
+        <div className="grid sm:grid-cols-2 gap-4 lg:gap-6">
+          <SpecList
+            title="Shipping"
+            icon={<Truck className="w-3.5 h-3.5" />}
+            rows={shippingRows}
+          />
+          <SpecList
+            title="Inspection & Returns"
+            icon={<ShieldCheck className="w-3.5 h-3.5" />}
+            rows={returnRows}
+          />
         </div>
       )}
 
