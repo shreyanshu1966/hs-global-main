@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { Product, Category } from '../services/productService';
 import {
   fetchCategories as fetchProductCategories,
@@ -64,7 +64,15 @@ export const useProducts = (options: UseProductsOptions = {}): UseProductsReturn
     totalItems: number;
   } | null>(null);
 
+  // Incremented on every new fetch; stale responses check their ID against current before committing state.
+  const requestIdRef = useRef(0);
+
   const fetchProducts = useCallback(async () => {
+    const requestId = ++requestIdRef.current;
+
+    // Clear stale products immediately when starting a fresh (page 1) fetch so old
+    // results never surface under a new filter.
+    if (page === 1) setProducts([]);
     setLoading(true);
     setError(null);
 
@@ -89,8 +97,9 @@ export const useProducts = (options: UseProductsOptions = {}): UseProductsReturn
           minPrice,
           maxPrice
         });
-        if (response.success && 'data' in response && typeof response.data === 'object') {
-          setProducts(response.data.products);
+        if (requestId !== requestIdRef.current) return;
+        if (response.success && 'data' in response && response.data !== null && typeof response.data === 'object') {
+          setProducts((response.data as { products: Product[] }).products);
           setPagination(response.pagination || null);
           return;
         }
@@ -110,6 +119,8 @@ export const useProducts = (options: UseProductsOptions = {}): UseProductsReturn
         });
       }
 
+      if (requestId !== requestIdRef.current) return;
+
       if (response.success && Array.isArray(response.data)) {
         setProducts(response.data);
         setPagination(response.pagination || null);
@@ -117,11 +128,12 @@ export const useProducts = (options: UseProductsOptions = {}): UseProductsReturn
         setError('Invalid response format');
       }
     } catch (err) {
+      if (requestId !== requestIdRef.current) return;
       setError(err instanceof Error ? err.message : 'An error occurred');
       setProducts([]);
       setPagination(null);
     } finally {
-      setLoading(false);
+      if (requestId === requestIdRef.current) setLoading(false);
     }
   }, [category, subcategory, featured, search, page, limit, sortBy, sortOrder, minPrice, maxPrice]);
 

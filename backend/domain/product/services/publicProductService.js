@@ -16,36 +16,116 @@ const subcategoryOrderingQuery = (subcategory) => {
 const cleanIds = (doc) =>
     doc ? doc.productIds.filter(id => typeof id === 'string' && id.length > 0) : [];
 
-// Resolve custom ordering for a scope, cascading from most-specific to global.
-// Does NOT cascade into the cross-category subcategory scope (category=null, subcategory=X)
-// — that scope is handled separately by buildCategoryGroupedIds.
-const resolveOrderedIds = async (category, subcategory) => {
-    // 1. Exact scope (category + subcategory)
-    if (category !== null && subcategory !== null) {
-        const o = await ProductOrdering.findOne({
+// Normalise a subcategory string to a comparable slug: lowercase, hyphens.
+const toSlug = (s) => (s ? String(s).toLowerCase().trim().replace(/[\s_]+/g, '-') : '');
+
+/**
+ * Build a flat ordered ID list for a category-all view.
+ *
+ * Layout:
+ *   subcat1_ordered_ids… subcat1_unordered_ids…
+ *   subcat2_ordered_ids… subcat2_unordered_ids…
+ *   …remaining subcategories alphabetically…
+ *
+ * Subcategory sequence comes from the category-level ProductOrdering.subcategoryOrder.
+ * Product sequence within each subcategory comes from the {category, subcategory} ProductOrdering.productIds.
+ */
+const buildSubcategoryGroupedIds = async (category) => {
+    // Load category-level doc to get the desired subcategory sequence
+    const catDoc = await ProductOrdering.findOne({ category, subcategory: null });
+    const subcategoryOrder = catDoc ? (catDoc.subcategoryOrder || []) : [];
+
+    // All actual subcategories in this category (from live product data)
+    const rawSubcategories = await repository.distinctSubcategoriesByCategory(category);
+    const validSubcats = rawSubcategories.filter(s => s && typeof s === 'string' && s.trim().length > 0);
+
+    // Map slug → actual DB string for matching
+    const slugToActual = new Map();
+    validSubcats.forEach(sub => {
+        const key = toSlug(sub);
+        if (!slugToActual.has(key)) slugToActual.set(key, sub);
+    });
+
+    // Ordered subcategories first (those with a saved position), then the rest alphabetically
+    const usedSlugs = new Set();
+    const ordered = [];
+    for (const slug of subcategoryOrder) {
+        const key = toSlug(slug);
+        if (slugToActual.has(key) && !usedSlugs.has(key)) {
+            ordered.push(slugToActual.get(key));
+            usedSlugs.add(key);
+        }
+    }
+    const remaining = validSubcats
+        .filter(s => !usedSlugs.has(toSlug(s)))
+        .sort((a, b) => a.localeCompare(b));
+
+    const allOrderedSubcats = [...ordered, ...remaining];
+
+    const flat = [];
+    const seenIds = new Set();
+
+    for (const sub of allOrderedSubcats) {
+        const subcategoryFilter = buildSubcategoryFilter(sub);
+        if (!subcategoryFilter) continue;
+
+        // Per-subcategory ordering (exact scope — no cascading)
+        const orderDoc = await ProductOrdering.findOne({
             category,
-            subcategory: subcategoryOrderingQuery(subcategory)
+            subcategory: subcategoryOrderingQuery(sub)
         });
-        const ids = cleanIds(o);
-        if (ids.length > 0) return ids;
+        const orderedIds = cleanIds(orderDoc);
+
+        // All product IDs in this category+subcategory
+        const allIds = await repository.findProductIdsByScope({ category, subcategoryFilter });
+
+        const orderedSet = new Set(orderedIds);
+        const unordered = allIds.filter(id => !orderedSet.has(id));
+
+        for (const id of [...orderedIds, ...unordered]) {
+            if (!seenIds.has(id)) { flat.push(id); seenIds.add(id); }
+        }
     }
-    // 2. Category-only scope
-    if (category !== null) {
-        const o = await ProductOrdering.findOne({ category, subcategory: null });
-        const ids = cleanIds(o);
-        if (ids.length > 0) return ids;
+
+    return flat;
+};
+
+/**
+ * Build a flat ordered ID list for the global all-products view.
+ *
+ * Layout:
+ *   cat1 → subcategory-grouped (via buildSubcategoryGroupedIds)
+ *   cat2 → subcategory-grouped
+ *   …
+ *
+ * Category sequence comes from the global ProductOrdering.categoryOrder.
+ */
+const buildGlobalGroupedIds = async () => {
+    const globalDoc = await ProductOrdering.findOne({ category: null, subcategory: null });
+    const categoryOrder = globalDoc ? (globalDoc.categoryOrder || []) : [];
+
+    // All actual categories from live product data
+    const categoriesResult = await repository.aggregatePublicCategories();
+    const allCategories = categoriesResult.map(c => c.category).filter(Boolean);
+
+    // Ordered categories first, then the rest alphabetically
+    const orderedCats = [...new Set(categoryOrder.filter(c => allCategories.includes(c)))];
+    const remainingCats = allCategories
+        .filter(c => !orderedCats.includes(c))
+        .sort((a, b) => a.localeCompare(b));
+    const allOrderedCats = [...orderedCats, ...remainingCats];
+
+    const flat = [];
+    const seenIds = new Set();
+
+    for (const cat of allOrderedCats) {
+        const catIds = await buildSubcategoryGroupedIds(cat);
+        for (const id of catIds) {
+            if (!seenIds.has(id)) { flat.push(id); seenIds.add(id); }
+        }
     }
-    // 3. Cross-category subcategory scope (category=null, subcategory=X)
-    if (category === null && subcategory !== null) {
-        const o = await ProductOrdering.findOne({
-            category: null,
-            subcategory: subcategoryOrderingQuery(subcategory)
-        });
-        const ids = cleanIds(o);
-        if (ids.length > 0) return ids;
-    }
-    // 4. Global scope
-    return cleanIds(await ProductOrdering.findOne({ category: null, subcategory: null }));
+
+    return flat;
 };
 
 /**
@@ -90,6 +170,33 @@ const buildCategoryGroupedIds = async (subcategory, categoryOrder, subcategoryFi
     }
 
     return flat;
+};
+
+/**
+ * Resolve custom ordering for an exact category+subcategory scope only.
+ * Does NOT cascade — callers that need grouped views use the build* functions above.
+ * Also handles the cross-category subcategory scope (category=null, subcategory=X).
+ */
+const resolveOrderedIds = async (category, subcategory) => {
+    // Exact scope (category + subcategory)
+    if (category !== null && subcategory !== null) {
+        const o = await ProductOrdering.findOne({
+            category,
+            subcategory: subcategoryOrderingQuery(subcategory)
+        });
+        const ids = cleanIds(o);
+        if (ids.length > 0) return ids;
+    }
+    // Cross-category subcategory scope (category=null, subcategory=X)
+    if (category === null && subcategory !== null) {
+        const o = await ProductOrdering.findOne({
+            category: null,
+            subcategory: subcategoryOrderingQuery(subcategory)
+        });
+        const ids = cleanIds(o);
+        if (ids.length > 0) return ids;
+    }
+    return [];
 };
 
 const toPagination = ({ page, limit, total, count }) => ({
@@ -169,8 +276,11 @@ const getAllProducts = async (query) => {
 
         let orderedIds;
 
-        // Cross-category subcategory view: category=null, subcategory set
-        if (scopeCategory === null && scopeSubcategory !== null) {
+        if (scopeCategory === null && scopeSubcategory === null) {
+            // Global all-products view: category-grouped → subcategory-grouped
+            orderedIds = await buildGlobalGroupedIds();
+        } else if (scopeCategory === null && scopeSubcategory !== null) {
+            // Cross-category subcategory view
             const crossDoc = await ProductOrdering.findOne({
                 category: null,
                 subcategory: subcategoryOrderingQuery(scopeSubcategory)
@@ -182,11 +292,12 @@ const getAllProducts = async (query) => {
                     subcategoryFilter
                 );
             }
+            if (!orderedIds) {
+                orderedIds = await resolveOrderedIds(null, scopeSubcategory);
+            }
         }
 
-        if (!orderedIds) {
-            orderedIds = await resolveOrderedIds(scopeCategory, scopeSubcategory);
-        }
+        if (!orderedIds) orderedIds = [];
 
         products = await repository.findProductsOrdered({ filters, orderedIds, skip, limit });
     } else {
@@ -265,7 +376,16 @@ const getProductsByCategory = async (category, query) => {
     let products;
     if (sortBy === 'relevance') {
         const scopeSubcategory = query.subcategory || null;
-        const orderedIds = await resolveOrderedIds(category, scopeSubcategory);
+
+        let orderedIds;
+        if (!scopeSubcategory) {
+            // Category-all view: subcategory-grouped ordering
+            orderedIds = await buildSubcategoryGroupedIds(category);
+        } else {
+            // Category+subcategory view: exact per-subcategory ordering
+            orderedIds = await resolveOrderedIds(category, scopeSubcategory);
+        }
+
         products = await repository.findProductsOrdered({ filters, orderedIds, skip, limit });
     } else {
         const sort = {};

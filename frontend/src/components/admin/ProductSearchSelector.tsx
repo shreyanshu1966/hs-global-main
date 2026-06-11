@@ -22,7 +22,7 @@ const moveItem = <T,>(items: T[], from: number, to: number): T[] => {
 const ProductSearchSelector = ({
   selectedProductIds,
   onChange,
-  maxItems = 24,
+  maxItems = Infinity,
   className = '',
 }: ProductSearchSelectorProps) => {
   const [search, setSearch] = useState('');
@@ -199,7 +199,7 @@ const ProductSearchSelector = ({
           ))}
       </div>
 
-      <div className="mt-3 text-xs text-slate-500">Selected products ({selectedProductIds.length}/{maxItems})</div>
+      <div className="mt-3 text-xs text-slate-500">Selected products ({selectedProductIds.length}{isFinite(maxItems) ? `/${maxItems}` : ''})</div>
       <div className="mt-2 space-y-2">
         {loadingSelected && selectedProductIds.length > 0 && (
           <div className="flex items-center gap-2 text-xs text-slate-500">

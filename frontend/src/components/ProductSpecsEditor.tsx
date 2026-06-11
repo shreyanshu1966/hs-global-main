@@ -5,67 +5,198 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-interface FurnitureSpecs {
-  product?: string;
-  type?: string;
-  shape?: string;
-  material?: string;
-  size?: string;
-  surfaceFinish?: string;
-  delivery?: string;
-  height?: string;
-  colorName?: string;
-  packagingDetails?: string;
-  location?: string;
-}
-
 export interface SimpleSpec {
   label: string;
   value: string;
 }
 
-interface ProductSpecsEditorProps {
-  category: string;
-  furnitureSpecs?: FurnitureSpecs;
-  customSpecs?: SimpleSpec[];
-  onSpecsChange: (furnitureSpecs: FurnitureSpecs, customSpecs: SimpleSpec[]) => void;
+export interface ProductSpecifications {
+  other_dimensions: {
+    overall_dimensions: string;
+    overall_product_weight: string;
+  };
+  details: {
+    table_top_shape: string;
+    top_material: string;
+    base_material: string;
+    natural_variation_type: string;
+    seating_capacity: string;
+    table_base_type: string;
+    custom_product: string;
+    imported: string;
+    weight_capacity: string;
+    base_shape: string;
+    base_color: string;
+    top_color: string;
+    wood_species: string;
+    wayfair_verified: string;
+    mixed_materials: string;
+    detailing: string;
+    material: string;
+    base_type: string;
+    overall_shape: string;
+  };
+  assembly: {
+    assembly_required: string;
+  };
+  warranty: {
+    product_warranty: string;
+    warranty_length: string;
+    warranty_details: string;
+  };
 }
 
-// ─── Furniture predefined fields (unchanged) ──────────────────────────────────
+const EMPTY_SPECS: ProductSpecifications = {
+  other_dimensions: { overall_dimensions: '', overall_product_weight: '' },
+  details: {
+    table_top_shape: '', top_material: '', base_material: '',
+    natural_variation_type: '', seating_capacity: '', table_base_type: '',
+    custom_product: '', imported: '', weight_capacity: '', base_shape: '',
+    base_color: '', top_color: '', wood_species: '', wayfair_verified: '',
+    mixed_materials: '', detailing: '', material: '', base_type: '', overall_shape: '',
+  },
+  assembly: { assembly_required: '' },
+  warranty: { product_warranty: '', warranty_length: '', warranty_details: '' },
+};
 
-const FURNITURE_FIELDS: { key: keyof FurnitureSpecs; label: string; type: 'text' | 'select' | 'textarea'; options?: string[] }[] = [
-  { key: 'type',           label: 'Furniture Type',    type: 'select',   options: ['Table', 'Chair', 'Cabinet', 'Wash Basin', 'Sculpture', 'Bench', 'Planter', 'Fountain', 'Fireplace', 'Column', 'Urn', 'Decorative', 'Other'] },
-  { key: 'shape',          label: 'Shape',             type: 'select',   options: ['Round', 'Square', 'Rectangle', 'Oval', 'Irregular', 'Freeform', 'Custom'] },
-  { key: 'material',       label: 'Material',          type: 'select',   options: ['Marble', 'Granite', 'Quartzite', 'Onyx', 'Limestone', 'Travertine', 'Wood', 'Metal', 'Glass', 'Stone', 'Composite'] },
-  { key: 'size',           label: 'Size / Dimensions', type: 'text' },
-  { key: 'surfaceFinish',  label: 'Surface Finish',    type: 'select',   options: ['Polished', 'Honed', 'Brushed', 'Antique', 'Natural', 'Matte', 'Custom'] },
-  { key: 'colorName',      label: 'Color / Pattern',   type: 'text' },
-  { key: 'height',         label: 'Height',            type: 'text' },
-  { key: 'location',       label: 'Origin / Location', type: 'text' },
-  { key: 'packagingDetails', label: 'Packaging Details', type: 'textarea' },
+interface ProductSpecsEditorProps {
+  category: string;
+  productSpecifications?: ProductSpecifications;
+  customSpecs?: SimpleSpec[];
+  onSpecsChange: (productSpecifications: ProductSpecifications, customSpecs: SimpleSpec[]) => void;
+}
+
+// ─── Field definitions ─────────────────────────────────────────────────────────
+
+type FieldDef = {
+  key: string;
+  label: string;
+  type: 'text' | 'select' | 'textarea';
+  options?: string[];
+};
+
+const OTHER_DIMENSION_FIELDS: FieldDef[] = [
+  { key: 'overall_dimensions',    label: 'Overall Dimensions',    type: 'text' },
+  { key: 'overall_product_weight', label: 'Overall Product Weight', type: 'text' },
 ];
+
+const DETAIL_FIELDS: FieldDef[] = [
+  { key: 'overall_shape',         label: 'Overall Shape',         type: 'select', options: ['Round', 'Square', 'Rectangle', 'Oval', 'L-shaped', 'Irregular', 'Custom'] },
+  { key: 'material',              label: 'Material',              type: 'text' },
+  { key: 'top_material',          label: 'Top Material',          type: 'text' },
+  { key: 'base_material',         label: 'Base Material',         type: 'text' },
+  { key: 'table_top_shape',       label: 'Table Top Shape',       type: 'select', options: ['Round', 'Square', 'Rectangle', 'Oval', 'Irregular', 'Custom'] },
+  { key: 'base_shape',            label: 'Base Shape',            type: 'select', options: ['Round', 'Square', 'Rectangle', 'X-base', 'Pedestal', 'Custom'] },
+  { key: 'table_base_type',       label: 'Table Base Type',       type: 'select', options: ['Pedestal', 'Trestle', '4-Leg', 'X-Base', 'Hairpin', 'Custom'] },
+  { key: 'base_type',             label: 'Base Type',             type: 'text' },
+  { key: 'top_color',             label: 'Top Color',             type: 'text' },
+  { key: 'base_color',            label: 'Base Color',            type: 'text' },
+  { key: 'wood_species',          label: 'Wood Species',          type: 'text' },
+  { key: 'natural_variation_type', label: 'Natural Variation Type', type: 'text' },
+  { key: 'detailing',             label: 'Detailing',             type: 'text' },
+  { key: 'mixed_materials',       label: 'Mixed Materials',       type: 'select', options: ['Yes', 'No'] },
+  { key: 'seating_capacity',      label: 'Seating Capacity',      type: 'text' },
+  { key: 'weight_capacity',       label: 'Weight Capacity',       type: 'text' },
+  { key: 'custom_product',        label: 'Custom Product',        type: 'select', options: ['Yes', 'No'] },
+  { key: 'imported',              label: 'Imported',              type: 'select', options: ['Yes', 'No'] },
+  { key: 'wayfair_verified',      label: 'Wayfair Verified',      type: 'select', options: ['Yes', 'No'] },
+];
+
+const ASSEMBLY_FIELDS: FieldDef[] = [
+  { key: 'assembly_required', label: 'Assembly Required', type: 'select', options: ['Yes', 'No'] },
+];
+
+const WARRANTY_FIELDS: FieldDef[] = [
+  { key: 'product_warranty', label: 'Product Warranty',  type: 'select', options: ['Manufacturer Warranty', 'Limited Warranty', 'No Warranty'] },
+  { key: 'warranty_length',  label: 'Warranty Length',   type: 'text' },
+  { key: 'warranty_details', label: 'Warranty Details',  type: 'textarea' },
+];
+
+// ─── Field renderer ───────────────────────────────────────────────────────────
+
+function SectionField({
+  field, value, onChange,
+}: { field: FieldDef; value: string; onChange: (v: string) => void }) {
+  const base = 'w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent';
+  return (
+    <div>
+      <label className="block text-xs font-medium text-gray-600 mb-1">{field.label}</label>
+      {field.type === 'select' ? (
+        <select value={value} onChange={e => onChange(e.target.value)} className={base}>
+          <option value="">Select {field.label}</option>
+          {field.options!.map(o => <option key={o} value={o}>{o}</option>)}
+        </select>
+      ) : field.type === 'textarea' ? (
+        <textarea
+          value={value}
+          onChange={e => onChange(e.target.value)}
+          rows={2}
+          placeholder={`Enter ${field.label.toLowerCase()}`}
+          className={`${base} resize-none`}
+        />
+      ) : (
+        <input
+          type="text"
+          value={value}
+          onChange={e => onChange(e.target.value)}
+          placeholder={`Enter ${field.label.toLowerCase()}`}
+          className={base}
+        />
+      )}
+    </div>
+  );
+}
+
+// ─── Section block ─────────────────────────────────────────────────────────────
+
+function SpecSection({
+  title, color, fields, sectionData, onSectionChange,
+}: {
+  title: string;
+  color: string;
+  fields: FieldDef[];
+  sectionData: Record<string, string>;
+  onSectionChange: (key: string, value: string) => void;
+}) {
+  return (
+    <div>
+      <h3 className="text-sm font-semibold text-gray-800 mb-4 flex items-center gap-2">
+        <span className={`w-1.5 h-4 ${color} rounded-full inline-block`} />
+        {title}
+      </h3>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {fields.map(f => (
+          <SectionField
+            key={f.key}
+            field={f}
+            value={sectionData[f.key] || ''}
+            onChange={v => onSectionChange(f.key, v)}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
 const ProductSpecsEditor: React.FC<ProductSpecsEditorProps> = ({
   category,
-  furnitureSpecs = {},
+  productSpecifications,
   customSpecs = [],
   onSpecsChange,
 }) => {
-  // Normalise incoming customSpecs (may still have old schema shape)
   const normalise = (specs: any[]): SimpleSpec[] =>
     specs.map(s => ({ label: s.label || '', value: s.value || '' }));
 
-  const [localFurniture, setLocalFurniture] = useState<FurnitureSpecs>(furnitureSpecs);
+  const [localSpecs, setLocalSpecs] = useState<ProductSpecifications>(
+    productSpecifications ?? EMPTY_SPECS
+  );
   const [rows, setRows] = useState<SimpleSpec[]>(normalise(customSpecs));
 
-  // Shared key pool
   const [savedKeys, setSavedKeys] = useState<string[]>([]);
-  // Per-row: 'pick' = dropdown, 'type' = free-text new-key input
   const [keyMode, setKeyMode] = useState<('pick' | 'type')[]>(() => normalise(customSpecs).map(() => 'pick'));
 
-  // Always-fresh ref so savedKeys effect can read rows without a stale closure
   const rowsRef = useRef<SimpleSpec[]>(rows);
   rowsRef.current = rows;
 
@@ -73,37 +204,44 @@ const ProductSpecsEditor: React.FC<ProductSpecsEditorProps> = ({
     fetch(`${API_URL}/spec-keys`)
       .then(r => r.json())
       .then(d => { if (d.ok) setSavedKeys(d.keys.map((k: any) => k.label)); })
-      .catch(err => console.warn('Failed to load spec keys:', err));
+      .catch(() => {});
   }, []);
 
-  // When saved-key pool loads (or updates), re-evaluate keyMode:
-  // - label is empty OR in the pool → 'pick' (show dropdown, correct value pre-selected)
-  // - label exists but NOT in pool → 'type' (show text input so the custom label is visible)
   useEffect(() => {
-    setKeyMode(rowsRef.current.map((row) =>
+    setKeyMode(rowsRef.current.map(row =>
       (row.label === '' || savedKeys.includes(row.label)) ? 'pick' : 'type'
     ));
   }, [savedKeys]);
 
-  // Sync when parent re-initialises (e.g. edit page loads existing product)
-  useEffect(() => { setLocalFurniture(furnitureSpecs); }, [furnitureSpecs]);
+  useEffect(() => {
+    setLocalSpecs(productSpecifications ?? EMPTY_SPECS);
+  }, [productSpecifications]);
+
   useEffect(() => {
     const n = normalise(customSpecs);
     setRows(n);
-    // Reset all to 'pick'; the savedKeys effect above will correct custom labels
     setKeyMode(n.map(() => 'pick'));
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [customSpecs]);
 
-  // ── Furniture helpers ───────────────────────────────────────────────────────
-  const handleFurnitureChange = (key: keyof FurnitureSpecs, value: string) => {
-    const updated = { ...localFurniture, [key]: value };
-    setLocalFurniture(updated);
+  // ── Section change helpers ──────────────────────────────────────────────────
+
+  const handleSectionChange = (
+    section: keyof ProductSpecifications,
+    key: string,
+    value: string
+  ) => {
+    const updated: ProductSpecifications = {
+      ...localSpecs,
+      [section]: { ...(localSpecs[section] as any), [key]: value },
+    };
+    setLocalSpecs(updated);
     onSpecsChange(updated, rows);
   };
 
   // ── Custom spec helpers ─────────────────────────────────────────────────────
-  const notify = (nextRows: SimpleSpec[]) => onSpecsChange(localFurniture, nextRows);
+
+  const notify = (nextRows: SimpleSpec[]) => onSpecsChange(localSpecs, nextRows);
 
   const addRow = () => {
     const next = [...rows, { label: '', value: '' }];
@@ -136,54 +274,50 @@ const ProductSpecsEditor: React.FC<ProductSpecsEditorProps> = ({
     if (mode === 'pick') updateLabel(i, '');
   };
 
-  // Keys not yet used in another row (avoids duplicate keys)
   const availableKeys = (rowIndex: number) =>
     savedKeys.filter(k => !rows.some((r, i) => i !== rowIndex && r.label === k));
+
+  const NON_STONE_CATEGORIES = ['furniture', 'handicraft', 'leather'];
+  const isNonStone = NON_STONE_CATEGORIES.includes(category);
 
   return (
     <div className="space-y-8">
 
-      {/* ── Furniture specs (only for furniture category) ── */}
-      {category === 'furniture' && (
-        <div>
-          <h3 className="text-sm font-semibold text-gray-800 mb-4 flex items-center gap-2">
-            <span className="w-1.5 h-4 bg-blue-500 rounded-full inline-block" />
-            Furniture Specifications
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {FURNITURE_FIELDS.map(({ key, label, type, options }) => (
-              <div key={key}>
-                <label className="block text-xs font-medium text-gray-600 mb-1">{label}</label>
-                {type === 'select' ? (
-                  <select
-                    value={localFurniture[key] || ''}
-                    onChange={e => handleFurnitureChange(key, e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  >
-                    <option value="">Select {label}</option>
-                    {options!.map(o => <option key={o} value={o}>{o}</option>)}
-                  </select>
-                ) : type === 'textarea' ? (
-                  <textarea
-                    value={localFurniture[key] || ''}
-                    onChange={e => handleFurnitureChange(key, e.target.value)}
-                    rows={2}
-                    placeholder={`Enter ${label.toLowerCase()}`}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
-                  />
-                ) : (
-                  <input
-                    type="text"
-                    value={localFurniture[key] || ''}
-                    onChange={e => handleFurnitureChange(key, e.target.value)}
-                    placeholder={`Enter ${label.toLowerCase()}`}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  />
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
+      {/* ── Fixed specification sections (non-stone categories) ── */}
+      {isNonStone && (
+        <>
+          <SpecSection
+            title="Other Dimensions"
+            color="bg-blue-500"
+            fields={OTHER_DIMENSION_FIELDS}
+            sectionData={localSpecs.other_dimensions as unknown as Record<string, string>}
+            onSectionChange={(k, v) => handleSectionChange('other_dimensions', k, v)}
+          />
+
+          <SpecSection
+            title="Details"
+            color="bg-violet-500"
+            fields={DETAIL_FIELDS}
+            sectionData={localSpecs.details as unknown as Record<string, string>}
+            onSectionChange={(k, v) => handleSectionChange('details', k, v)}
+          />
+
+          <SpecSection
+            title="Assembly"
+            color="bg-orange-500"
+            fields={ASSEMBLY_FIELDS}
+            sectionData={localSpecs.assembly as unknown as Record<string, string>}
+            onSectionChange={(k, v) => handleSectionChange('assembly', k, v)}
+          />
+
+          <SpecSection
+            title="Warranty"
+            color="bg-emerald-500"
+            fields={WARRANTY_FIELDS}
+            sectionData={localSpecs.warranty as unknown as Record<string, string>}
+            onSectionChange={(k, v) => handleSectionChange('warranty', k, v)}
+          />
+        </>
       )}
 
       {/* ── Custom key:value specifications ── */}
@@ -191,7 +325,7 @@ const ProductSpecsEditor: React.FC<ProductSpecsEditorProps> = ({
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-sm font-semibold text-gray-800 flex items-center gap-2">
             <span className="w-1.5 h-4 bg-green-500 rounded-full inline-block" />
-            Specifications
+            Additional Specifications
             {rows.length > 0 && (
               <span className="ml-1 text-xs font-normal text-gray-400">({rows.filter(r => r.label && r.value).length} filled)</span>
             )}
@@ -207,14 +341,13 @@ const ProductSpecsEditor: React.FC<ProductSpecsEditorProps> = ({
         </div>
 
         {rows.length === 0 ? (
-          <div className="border-2 border-dashed border-gray-200 rounded-xl py-10 text-center">
+          <div className="border-2 border-dashed border-gray-200 rounded-xl py-8 text-center">
             <Tag className="w-7 h-7 text-gray-300 mx-auto mb-2" />
-            <p className="text-sm text-gray-400 font-medium">No specifications yet</p>
-            <p className="text-xs text-gray-400 mt-0.5">Click "Add Specification" to add key:value pairs</p>
+            <p className="text-sm text-gray-400 font-medium">No additional specifications</p>
+            <p className="text-xs text-gray-400 mt-0.5">Click "Add Specification" to add extra key:value pairs</p>
           </div>
         ) : (
           <div className="space-y-2">
-            {/* Table header */}
             <div className="grid grid-cols-[1fr_1fr_auto] gap-3 px-3 pb-1">
               <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider">Specification Key</span>
               <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider">Value</span>
@@ -227,7 +360,6 @@ const ProductSpecsEditor: React.FC<ProductSpecsEditorProps> = ({
 
               return (
                 <div key={i} className="grid grid-cols-[1fr_1fr_auto] gap-3 items-start bg-gray-50 rounded-xl px-3 py-3 border border-gray-100">
-                  {/* Key column */}
                   <div>
                     {mode === 'pick' ? (
                       <div className="relative">
@@ -273,7 +405,6 @@ const ProductSpecsEditor: React.FC<ProductSpecsEditorProps> = ({
                     )}
                   </div>
 
-                  {/* Value column */}
                   <input
                     type="text"
                     value={row.value}
@@ -282,7 +413,6 @@ const ProductSpecsEditor: React.FC<ProductSpecsEditorProps> = ({
                     className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
 
-                  {/* Delete */}
                   <button
                     type="button"
                     onClick={() => removeRow(i)}
@@ -297,7 +427,6 @@ const ProductSpecsEditor: React.FC<ProductSpecsEditorProps> = ({
           </div>
         )}
 
-        {/* Filled summary */}
         {rows.some(r => r.label && r.value) && (
           <div className="mt-4 bg-green-50 border border-green-100 rounded-xl px-4 py-3">
             <p className="text-[10px] font-bold uppercase tracking-wider text-green-600 mb-2">Preview (filled only)</p>

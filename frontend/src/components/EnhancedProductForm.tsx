@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { X, Save, Eye, Image as ImageIcon, Video, Globe, ArrowLeft, Upload } from 'lucide-react';
 import { countries } from '../data/countries';
 import ProductImageManager from '../components/ProductImageManager';
-import ProductSpecsEditor from '../components/ProductSpecsEditor';
+import ProductSpecsEditor, { type ProductSpecifications } from '../components/ProductSpecsEditor';
 import ProductVideoManager from '../components/ProductVideoManager';
 import { productService, type Category } from '../services/productService';
 import { DEFAULT_RATES } from '../utils/pricing';
@@ -87,6 +87,19 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
   previewLoading = false,
   uploadProgress = { images: 0, video: 0 }
 }) => {
+  const EMPTY_PRODUCT_SPECS: ProductSpecifications = {
+    other_dimensions: { overall_dimensions: '', overall_product_weight: '' },
+    details: {
+      table_top_shape: '', top_material: '', base_material: '',
+      natural_variation_type: '', seating_capacity: '', table_base_type: '',
+      custom_product: '', imported: '', weight_capacity: '', base_shape: '',
+      base_color: '', top_color: '', wood_species: '', wayfair_verified: '',
+      mixed_materials: '', detailing: '', material: '', base_type: '', overall_shape: '',
+    },
+    assembly: { assembly_required: '' },
+    warranty: { product_warranty: '', warranty_length: '', warranty_details: '' },
+  };
+
   const [formData, setFormData] = useState({
     productId: '',
     name: '',
@@ -99,6 +112,7 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
     available: true,
     featured: false,
     furnitureSpecs: {} as any,
+    productSpecifications: EMPTY_PRODUCT_SPECS as ProductSpecifications,
     discount: { enabled: false, percentage: 0, startDate: null as any, endDate: null as any, description: '' }
   });
 
@@ -218,6 +232,7 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
       available:      editingProduct.available    !== false,
       featured:       editingProduct.featured     || false,
       furnitureSpecs: editingProduct.furnitureSpecs || {},
+      productSpecifications: editingProduct.productSpecifications || EMPTY_PRODUCT_SPECS,
       discount: editingProduct.discount || { enabled: false, percentage: 0, startDate: null, endDate: null, description: '' }
     });
     if (editingProduct.images?.length > 0) {
@@ -352,8 +367,8 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
     handleInputChange('priceUSD', rawVal && !isNaN(n) ? String(n / liveRate('INR')) : '');
   };
 
-  const handleSpecsChange = (specs: any, customSpecsData: any[]) => {
-    setFormData(prev => ({ ...prev, furnitureSpecs: specs }));
+  const handleSpecsChange = (productSpecifications: ProductSpecifications, customSpecsData: any[]) => {
+    setFormData(prev => ({ ...prev, productSpecifications }));
     setCustomSpecs(customSpecsData);
   };
 
@@ -401,7 +416,9 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
         priceUSD: formData.category === 'semi-precious-stone' ? undefined : (formData.priceUSD ? parseFloat(formData.priceUSD.toString()) : undefined),
         pricePerSqFt: formData.category === 'semi-precious-stone' && pricePerSqFtINR ? parseFloat(pricePerSqFtINR) : undefined,
         status: formData.status, available: formData.available, featured: formData.featured,
-        furnitureSpecs: formData.furnitureSpecs, discount: formData.discount, hasVideo: !!video,
+        furnitureSpecs: formData.furnitureSpecs,
+        productSpecifications: formData.productSpecifications,
+        discount: formData.discount, hasVideo: !!video,
         stoneSpecs: formData.category === 'semi-precious-stone' ? stoneSpecs : undefined,
         customSpecs: formattedCustomSpecs,
         similarProducts: similarProductIds, regionalPricing: regionalPricingForSave,
@@ -445,7 +462,9 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
         priceUSD: formData.category === 'semi-precious-stone' ? undefined : (formData.priceUSD ? parseFloat(formData.priceUSD.toString()) : undefined),
         pricePerSqFt: formData.category === 'semi-precious-stone' && pricePerSqFtINR ? parseFloat(pricePerSqFtINR) : undefined,
         status: formData.status, available: formData.available, featured: formData.featured,
-        furnitureSpecs: formData.furnitureSpecs, discount: formData.discount,
+        furnitureSpecs: formData.furnitureSpecs,
+        productSpecifications: formData.productSpecifications,
+        discount: formData.discount,
         stoneSpecs: formData.category === 'semi-precious-stone' ? stoneSpecs : undefined,
         hasVideo: !!video, similarProducts: similarProductIds,
       }, images, video && !video.isExisting ? video.file : null);
@@ -1038,7 +1057,7 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
               <div className="px-6 py-5">
                 <ProductSpecsEditor
                   category={formData.category}
-                  furnitureSpecs={formData.furnitureSpecs}
+                  productSpecifications={formData.productSpecifications}
                   customSpecs={customSpecs}
                   onSpecsChange={handleSpecsChange}
                 />

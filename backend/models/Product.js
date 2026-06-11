@@ -35,6 +35,43 @@ const stoneSpecsSchema = new mongoose.Schema({
     priceRange:      String,
 }, { _id: false });
 
+// Fixed product specifications schema (furniture, handicraft, leather)
+const productSpecificationsSchema = new mongoose.Schema({
+    other_dimensions: {
+        overall_dimensions: String,
+        overall_product_weight: String,
+    },
+    details: {
+        table_top_shape:       String,
+        top_material:          String,
+        base_material:         String,
+        natural_variation_type: String,
+        seating_capacity:      String,
+        table_base_type:       String,
+        custom_product:        String,
+        imported:              String,
+        weight_capacity:       String,
+        base_shape:            String,
+        base_color:            String,
+        top_color:             String,
+        wood_species:          String,
+        wayfair_verified:      String,
+        mixed_materials:       String,
+        detailing:             String,
+        material:              String,
+        base_type:             String,
+        overall_shape:         String,
+    },
+    assembly: {
+        assembly_required: String,
+    },
+    warranty: {
+        product_warranty: String,
+        warranty_length:  String,
+        warranty_details: String,
+    },
+}, { _id: false });
+
 // Custom specification schema
 const customSpecSchema = new mongoose.Schema({
     key: {
@@ -240,6 +277,8 @@ const productSchema = new mongoose.Schema({
     slabSpecs: slabSpecsSchema,
     // Semi Precious Stone specific fields
     stoneSpecs: stoneSpecsSchema,
+    // Fixed specifications for furniture / handicraft / leather
+    productSpecifications: productSpecificationsSchema,
     // Custom specifications (for additional product-specific attributes)
     customSpecs: [customSpecSchema],
 

@@ -45,8 +45,9 @@ const getOrdering = async (req, res) => {
       data: {
         category,
         subcategory,
-        productIds: ordering ? ordering.productIds : [],
-        categoryOrder: ordering ? (ordering.categoryOrder || []) : [],
+        productIds:      ordering ? (ordering.productIds      || []) : [],
+        categoryOrder:   ordering ? (ordering.categoryOrder   || []) : [],
+        subcategoryOrder: ordering ? (ordering.subcategoryOrder || []) : [],
         products,
       },
     });
@@ -58,23 +59,51 @@ const getOrdering = async (req, res) => {
 
 /**
  * PUT /api/admin/product-ordering
- * Body: { category, subcategory, productIds }
- * Creates or replaces the ordering for the given scope.
+ *
+ * Scope rules:
+ *   Global       (category=null, subcategory=null)  → save categoryOrder; productIds cleared
+ *   Category-All (category=X,    subcategory=null)  → save subcategoryOrder; productIds cleared
+ *   Cat+Subcat   (category=X,    subcategory=X)     → save productIds (unchanged)
+ *   Cross-Cat    (category=null, subcategory=X)     → save productIds + categoryOrder (unchanged)
  */
 const saveOrdering = async (req, res) => {
   try {
-    // Strip out any nulls / empty strings that can creep in when a product has no productId
-    const rawIds = Array.isArray(req.body.productIds) ? req.body.productIds : [];
-    const productIds = rawIds.filter(id => typeof id === 'string' && id.trim().length > 0);
-
-    const rawCategoryOrder = Array.isArray(req.body.categoryOrder) ? req.body.categoryOrder : [];
-    const categoryOrder = rawCategoryOrder.filter(c => typeof c === 'string' && c.trim().length > 0);
-
     const { category, subcategory } = parseScope(req.body);
+
+    const clean = (arr) =>
+      (Array.isArray(arr) ? arr : []).filter(v => typeof v === 'string' && v.trim().length > 0);
+
+    const isGlobalScope      = category === null && subcategory === null;
+    const isCategoryOnly     = category !== null && subcategory === null;
+    const isCrossCategory    = category === null && subcategory !== null;
+    // category+subcategory is the remaining case
+
+    let productIds;
+    let categoryOrder;
+    let subcategoryOrder;
+
+    if (isGlobalScope) {
+      productIds      = [];
+      categoryOrder   = clean(req.body.categoryOrder);
+      subcategoryOrder = [];
+    } else if (isCategoryOnly) {
+      productIds      = [];
+      categoryOrder   = [];
+      subcategoryOrder = clean(req.body.subcategoryOrder);
+    } else if (isCrossCategory) {
+      productIds      = clean(req.body.productIds);
+      categoryOrder   = clean(req.body.categoryOrder);
+      subcategoryOrder = [];
+    } else {
+      // category + subcategory exact scope
+      productIds      = clean(req.body.productIds);
+      categoryOrder   = [];
+      subcategoryOrder = [];
+    }
 
     const ordering = await ProductOrdering.findOneAndUpdate(
       { category, subcategory },
-      { category, subcategory, productIds, categoryOrder },
+      { category, subcategory, productIds, categoryOrder, subcategoryOrder },
       { upsert: true, new: true, setDefaultsOnInsert: true }
     );
 

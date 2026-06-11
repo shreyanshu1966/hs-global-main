@@ -1,5 +1,19 @@
 const ctas = [
   {
+    href: '/contact',
+    label: 'Direct Manufacturer',
+    sub: 'Zero middlemen, factory pricing',
+    svg: (
+      <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-10 h-10 flex-shrink-0">
+        <rect x="6" y="26" width="36" height="16" rx="2" stroke="currentColor" strokeWidth="1.5" fill="currentColor" fillOpacity="0.06" />
+        <path d="M6 26l8-14h24l8 14" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+        <rect x="18" y="32" width="12" height="10" rx="1.5" stroke="currentColor" strokeWidth="1.4" />
+        <path d="M10 26v16M20 26v6M28 26v6M38 26v16" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" opacity="0.35" />
+        <path d="M14 19h4M30 19h4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" opacity="0.5" />
+      </svg>
+    ),
+  },
+  {
     href: '/products',
     label: 'Bespoke Customization',
     sub: 'Every piece shaped to your vision',
@@ -55,20 +69,6 @@ const ctas = [
         <path d="M17 25V18a3 3 0 0 1 4-2.8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
         <path d="M31 25V18a3 3 0 0 0-4-2.8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
         <path d="M18 34c1.5 1.5 3.5 2 6 2s4.5-.5 6-2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" opacity="0.5" />
-      </svg>
-    ),
-  },
-  {
-    href: '/contact',
-    label: 'Direct Manufacturer',
-    sub: 'Zero middlemen, factory pricing',
-    svg: (
-      <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-10 h-10 flex-shrink-0">
-        <rect x="6" y="26" width="36" height="16" rx="2" stroke="currentColor" strokeWidth="1.5" fill="currentColor" fillOpacity="0.06" />
-        <path d="M6 26l8-14h24l8 14" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-        <rect x="18" y="32" width="12" height="10" rx="1.5" stroke="currentColor" strokeWidth="1.4" />
-        <path d="M10 26v16M20 26v6M28 26v6M38 26v16" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" opacity="0.35" />
-        <path d="M14 19h4M30 19h4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" opacity="0.5" />
       </svg>
     ),
   },

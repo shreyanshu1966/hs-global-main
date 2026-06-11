@@ -164,6 +164,50 @@ export function ProductSpecifications({ product }: ProductSpecificationsProps) {
     ? [...stoneSpecRows, ...customSpecRows]
     : [...furnitureRows, ...customSpecRows];
 
+  // Fixed product specifications sections (furniture / handicraft / leather)
+  const ps = product.productSpecifications || {};
+
+  const DETAIL_LABELS: [string, string][] = [
+    ['overall_shape',         'Overall Shape'],
+    ['material',              'Material'],
+    ['top_material',          'Top Material'],
+    ['base_material',         'Base Material'],
+    ['table_top_shape',       'Table Top Shape'],
+    ['base_shape',            'Base Shape'],
+    ['table_base_type',       'Table Base Type'],
+    ['base_type',             'Base Type'],
+    ['top_color',             'Top Color'],
+    ['base_color',            'Base Color'],
+    ['wood_species',          'Wood Species'],
+    ['natural_variation_type','Natural Variation Type'],
+    ['detailing',             'Detailing'],
+    ['mixed_materials',       'Mixed Materials'],
+    ['seating_capacity',      'Seating Capacity'],
+    ['weight_capacity',       'Weight Capacity'],
+    ['custom_product',        'Custom Product'],
+    ['imported',              'Imported'],
+    ['wayfair_verified',      'Wayfair Verified'],
+  ];
+
+  const psDetailRows: [string, string][] = DETAIL_LABELS
+    .filter(([k]) => (ps.details || {})[k])
+    .map(([k, label]) => [label, String(ps.details[k])]);
+
+  const psDimensionRows: [string, string][] = [
+    ps.other_dimensions?.overall_dimensions    ? ['Overall Dimensions',    ps.other_dimensions.overall_dimensions]    : null,
+    ps.other_dimensions?.overall_product_weight ? ['Overall Product Weight', ps.other_dimensions.overall_product_weight] : null,
+  ].filter(Boolean) as [string, string][];
+
+  const psAssemblyRows: [string, string][] = ps.assembly?.assembly_required
+    ? [['Assembly Required', ps.assembly.assembly_required]]
+    : [];
+
+  const psWarrantyRows: [string, string][] = [
+    ps.warranty?.product_warranty ? ['Product Warranty', ps.warranty.product_warranty] : null,
+    ps.warranty?.warranty_length  ? ['Warranty Length',  ps.warranty.warranty_length]  : null,
+    ps.warranty?.warranty_details ? ['Warranty Details', ps.warranty.warranty_details] : null,
+  ].filter(Boolean) as [string, string][];
+
   // ── Shipping data ────────────────────────────────────────────────────────
   const ship = product.shipping || {};
   const shippingRows: [string, string][] = [
@@ -244,12 +288,36 @@ export function ProductSpecifications({ product }: ProductSpecificationsProps) {
 
           {/* Right: spec groups */}
           <div>
-            {allSpecRows.length > 0 && (
+            {/* Stone category: legacy single group */}
+            {isSemiPreciousStone && allSpecRows.length > 0 && (
               <SpecGroup title="Specifications" rows={allSpecRows} />
             )}
-            {dimRows.length > 0 && (
-              <SpecGroup title="Dimensions & Weight" rows={dimRows} />
+
+            {/* Non-stone: fixed sectioned specs */}
+            {!isSemiPreciousStone && (
+              <>
+                {psDetailRows.length > 0 && (
+                  <SpecGroup title="Details" rows={psDetailRows} />
+                )}
+                {psDimensionRows.length > 0 && (
+                  <SpecGroup title="Dimensions & Weight" rows={[...psDimensionRows, ...dimRows]} />
+                )}
+                {dimRows.length > 0 && psDimensionRows.length === 0 && (
+                  <SpecGroup title="Dimensions & Weight" rows={dimRows} />
+                )}
+                {psAssemblyRows.length > 0 && (
+                  <SpecGroup title="Assembly" rows={psAssemblyRows} />
+                )}
+                {psWarrantyRows.length > 0 && (
+                  <SpecGroup title="Warranty" rows={psWarrantyRows} />
+                )}
+                {/* Legacy furniture specs + custom specs */}
+                {(furnitureRows.length > 0 || customSpecRows.length > 0) && (
+                  <SpecGroup title="Additional Specifications" rows={[...furnitureRows, ...customSpecRows]} />
+                )}
+              </>
             )}
+
             {mfgRows.length > 0 && (
               <SpecGroup title="Manufacturing" rows={mfgRows} />
             )}

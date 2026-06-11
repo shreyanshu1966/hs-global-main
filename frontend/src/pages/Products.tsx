@@ -748,8 +748,8 @@ export default function Products() {
                 </motion.div>
               )}
 
-              {/* Products grid */}
-              {!error && visibleProducts.length > 0 && (
+              {/* Products grid — hidden during initial/filter load to prevent stale products showing alongside skeletons */}
+              {!error && visibleProducts.length > 0 && !(loading && page === 1) && (
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={`${activeCategory}:${activeSubcategory}`}

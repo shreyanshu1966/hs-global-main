@@ -94,6 +94,7 @@ const ProductDetails = () => {
       regionalPricing: dbProduct.regionalPricing,
       shipping: dbProduct.shipping,
       customSpecs: dbProduct.customSpecs,
+      productSpecifications: dbProduct.productSpecifications,
       manufacturing: dbProduct.manufacturing,
       dimensions: dbProduct.dimensions,
       weight: dbProduct.weight,

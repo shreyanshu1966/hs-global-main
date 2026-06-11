@@ -854,17 +854,15 @@ const HomePageManagement = () => {
                       return { ...prev, productCarousels: next };
                     });
                   }}
-                  maxItems={24}
                   className="md:col-span-3"
                 />
               )}
               <input
                 type="number"
                 min={1}
-                max={24}
                 value={carousel.limit || 10}
                 onChange={(e) => {
-                  const value = Math.min(24, Math.max(1, Number(e.target.value || 10)));
+                  const value = Math.max(1, Number(e.target.value || 10));
                   setConfig((prev) => {
                     const next = [...prev.productCarousels];
                     next[index] = { ...next[index], limit: value };
