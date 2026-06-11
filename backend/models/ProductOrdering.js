@@ -20,6 +20,12 @@ const productOrderingSchema = new mongoose.Schema(
       type: [String],
       default: [],
     },
+    // For category-only scopes (category=X, subcategory=null):
+    // defines the order in which subcategory groups are rendered.
+    subcategoryOrder: {
+      type: [String],
+      default: [],
+    },
   },
   { timestamps: true }
 );
