@@ -114,6 +114,7 @@ app.use('/api/delivery-analytics', require('./routes/deliveryAnalyticsRoutes'));
 app.use('/api/admin/delivery-analytics', require('./routes/deliveryAnalyticsRoutes')); // Admin read alias
 app.use('/api/coupons', require('./routes/couponRoutes')); // Coupon management
 app.use('/api/spec-keys', require('./routes/specKeyRoutes')); // Product spec key pool
+app.use('/api/field-options', require('./routes/fieldOptionRoutes')); // Custom dropdown option values
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
