@@ -6,6 +6,7 @@ import { getProductCloudinaryUrl } from '../../utils/productCloudinary';
 import { AddToCartButton } from '../AddToCartButton';
 import { getProductDisplayImages } from '../../modules/product/selectors';
 import { usePrice } from '../../hooks/usePrice';
+import { useCurrency } from '../../contexts/CurrencyContext';
 
 interface ProductCardProps {
     product: Product;
@@ -28,11 +29,15 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
     // ---- Pricing (centralized engine) ----
     const isSemiPreciousStone = product.category === 'semi-precious-stone';
     const price = usePrice(product);
+    const { formatPrice: formatCurrencyPrice, exchangeRates } = useCurrency();
     const hasValidPrice = price.baseUSD > 0;
     const showDiscount = price.hasDiscount && hasValidPrice && !isSemiPreciousStone;
     const displayPrice = price.formattedPrice;
     const originalDisplayPrice = price.originalFormattedPrice;
     const sqFtPrice = (product as any).pricePerSqFt as number | undefined;
+    const formattedSqFtPrice = sqFtPrice && sqFtPrice > 0 && exchangeRates.INR
+        ? formatCurrencyPrice(sqFtPrice / exchangeRates.INR)
+        : null;
     const wishlistId = String(product.productId || product._id || product.name);
     const isWishlisted = isInWishlist(wishlistId);
 
@@ -313,10 +318,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
                     })()}
 
                     {isSemiPreciousStone ? (
-                        sqFtPrice && sqFtPrice > 0 ? (
+                        formattedSqFtPrice ? (
                             <div className="space-y-0.5">
                                 <p className="text-[16px] sm:text-lg font-medium text-[#2B2B2B] leading-none">
-                                    ₹{sqFtPrice.toLocaleString('en-IN')}
+                                    {formattedSqFtPrice}
                                     <span className="text-sm font-normal text-[#6B7280] ml-1">/ sq.ft</span>
                                 </p>
                                 <p className="text-[10px] text-[#9ca3af] uppercase tracking-wide">Request quotation to buy</p>

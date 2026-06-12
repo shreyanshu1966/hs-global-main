@@ -90,14 +90,12 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
   const EMPTY_PRODUCT_SPECS: ProductSpecifications = {
     other_dimensions: { overall_dimensions: '', overall_product_weight: '' },
     details: {
-      table_top_shape: '', top_material: '', base_material: '',
-      natural_variation_type: '', seating_capacity: '', table_base_type: '',
-      custom_product: '', imported: '', weight_capacity: '', base_shape: '',
-      base_color: '', top_color: '', wood_species: '', wayfair_verified: '',
+      natural_variation_type: '', custom_product: '', imported: '',
+      weight_capacity: '', top_color: '', wood_species: '', wayfair_verified: '',
       mixed_materials: '', detailing: '', material: '', base_type: '', overall_shape: '',
     },
     assembly: { assembly_required: '' },
-    warranty: { product_warranty: '', warranty_length: '', warranty_details: '' },
+    warranty: { product_warranty: '', warranty_length: '' },
   };
 
   const [formData, setFormData] = useState({

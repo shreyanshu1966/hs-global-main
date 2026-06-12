@@ -105,6 +105,7 @@ function TabBtn({ active, onClick, icon, label }: {
 // ── Main component ────────────────────────────────────────────────────────────
 export function ProductSpecifications({ product }: ProductSpecificationsProps) {
   const [activeTab, setActiveTab] = React.useState<Tab>('details');
+  const [isDescriptionExpanded, setIsDescriptionExpanded] = React.useState(false);
 
   const description = (product.description || '').trim();
   const tags: string[] = (product.tags || []).filter(Boolean);
@@ -167,15 +168,13 @@ export function ProductSpecifications({ product }: ProductSpecificationsProps) {
 
   const DETAIL_LABELS: [string, string][] = [
     ['overall_shape', 'Overall Shape'], ['material', 'Material'],
-    ['top_material', 'Top Material'], ['base_material', 'Base Material'],
-    ['table_top_shape', 'Table Top Shape'], ['base_shape', 'Base Shape'],
-    ['table_base_type', 'Table Base Type'], ['base_type', 'Base Type'],
-    ['top_color', 'Top Color'], ['base_color', 'Base Color'],
+    ['base_type', 'Base Type'],
+    ['top_color', 'Color'],
     ['wood_species', 'Wood Species'], ['natural_variation_type', 'Natural Variation'],
     ['detailing', 'Detailing'], ['mixed_materials', 'Mixed Materials'],
-    ['seating_capacity', 'Seating Capacity'], ['weight_capacity', 'Weight Capacity'],
+    ['weight_capacity', 'Weight Capacity'],
     ['custom_product', 'Custom Product'], ['imported', 'Imported'],
-    ['wayfair_verified', 'Wayfair Verified'],
+    ['wayfair_verified', 'Eligible for Refund'],
   ];
 
   const psDetailRows: [string, string][] = DETAIL_LABELS
@@ -194,7 +193,6 @@ export function ProductSpecifications({ product }: ProductSpecificationsProps) {
   const psWarrantyRows: [string, string][] = [
     ps.warranty?.product_warranty ? ['Product Warranty', ps.warranty.product_warranty] : null,
     ps.warranty?.warranty_length  ? ['Warranty Length',  ps.warranty.warranty_length]  : null,
-    ps.warranty?.warranty_details ? ['Warranty Details', ps.warranty.warranty_details] : null,
   ].filter(Boolean) as [string, string][];
 
   const allAdditionalRows = [...furnitureRows, ...customSpecRows];
@@ -258,10 +256,21 @@ export function ProductSpecifications({ product }: ProductSpecificationsProps) {
           <div className="space-y-5">
             <div>
               <p className="text-[9.5px] font-bold uppercase tracking-[0.2em] text-[#bbb] mb-3">Description</p>
-              {description
-                ? <DescriptionBody text={description} />
-                : <p className="text-[13.5px] text-[#999] italic">No description provided.</p>
-              }
+              {description ? (
+                <>
+                  <div className={!isDescriptionExpanded ? 'line-clamp-4 lg:line-clamp-none' : undefined}>
+                    <DescriptionBody text={description} />
+                  </div>
+                  <button
+                    onClick={() => setIsDescriptionExpanded(prev => !prev)}
+                    className="lg:hidden mt-2 text-[12px] font-medium text-[#555] underline underline-offset-2"
+                  >
+                    {isDescriptionExpanded ? 'See less' : 'See more'}
+                  </button>
+                </>
+              ) : (
+                <p className="text-[13.5px] text-[#999] italic">No description provided.</p>
+              )}
             </div>
 
             {tags.length > 0 && (
@@ -313,19 +322,19 @@ export function ProductSpecifications({ product }: ProductSpecificationsProps) {
             {/* Non-stone: sectioned fixed specs */}
             {!isSemiPreciousStone && (
               <>
-                {psDetailRows.length > 0 && (
-                  <SpecGrid
-                    title="Details"
-                    icon={<FileText className="w-3.5 h-3.5" />}
-                    rows={psDetailRows}
-                  />
-                )}
-
                 {psDimensionRows.length > 0 && (
                   <SpecGrid
                     title="Dimensions & Weight"
                     icon={<Ruler className="w-3.5 h-3.5" />}
                     rows={psDimensionRows}
+                  />
+                )}
+
+                {psDetailRows.length > 0 && (
+                  <SpecGrid
+                    title="Details"
+                    icon={<FileText className="w-3.5 h-3.5" />}
+                    rows={psDetailRows}
                   />
                 )}
 

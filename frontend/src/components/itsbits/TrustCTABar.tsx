@@ -83,28 +83,30 @@ const TrustCTABar = () => (
       </p>
 
       {/* CTA grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-px bg-stone-200/60 rounded-2xl overflow-hidden border border-stone-200">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-px bg-stone-200/60 rounded-2xl overflow-hidden border border-stone-200">
         {ctas.map(({ href, label, sub, svg }) => (
           <a
             key={label}
             href={href}
-            className="group flex flex-col items-center gap-3 px-4 py-7 transition-colors duration-200 text-center hover:bg-stone-100/80"
+            className="group flex flex-row sm:flex-col items-center gap-4 sm:gap-3 px-4 py-4 sm:py-7 transition-colors duration-200 text-left sm:text-center hover:bg-stone-100/80"
             style={{ background: '#f4f3ec' }}
           >
             {/* Icon */}
-            <span className="text-stone-600 group-hover:text-stone-800 transition-colors duration-200">
+            <span className="text-stone-600 group-hover:text-stone-800 transition-colors duration-200 flex-shrink-0 [&>svg]:w-8 [&>svg]:h-8 sm:[&>svg]:w-10 sm:[&>svg]:h-10">
               {svg}
             </span>
 
-            {/* Thin divider */}
-            <span className="block w-6 h-px bg-stone-300 group-hover:bg-stone-400 transition-colors duration-200" />
+            {/* Thin divider — desktop only */}
+            <span className="hidden sm:block w-6 h-px bg-stone-300 group-hover:bg-stone-400 transition-colors duration-200" />
 
             {/* Text */}
-            <span className="text-stone-800 font-semibold text-sm leading-tight tracking-wide">
-              {label}
-            </span>
-            <span className="text-stone-400 text-[11px] leading-snug -mt-1">
-              {sub}
+            <span className="flex flex-col gap-0.5">
+              <span className="text-stone-800 font-semibold text-sm leading-tight tracking-wide">
+                {label}
+              </span>
+              <span className="text-stone-400 text-[11px] leading-snug">
+                {sub}
+              </span>
             </span>
           </a>
         ))}

@@ -6,6 +6,7 @@ import { useCart } from '../../contexts/CartContext';
 import { useTrackAddToCart } from '../../hooks/useProducts';
 import { AddToCartButton } from '../AddToCartButton';
 import { usePrice } from '../../hooks/usePrice';
+import { useCurrency } from '../../contexts/CurrencyContext';
 import { useWishlist } from '../../contexts/WishlistContext';
 import { useStoneQuotation } from '../../contexts/StoneQuotationContext';
 
@@ -36,6 +37,10 @@ export function ProductInfo({
 
     const isSemiPreciousStone = product.category === 'semi-precious-stone';
     const sqFtPrice = product.pricePerSqFt as number | undefined;
+    const { formatPrice: formatCurrencyPrice, exchangeRates } = useCurrency();
+    const formattedSqFtPrice = sqFtPrice && sqFtPrice > 0 && exchangeRates.INR
+        ? formatCurrencyPrice(sqFtPrice / exchangeRates.INR)
+        : null;
     const sellerRating = reviewStats.totalReviews > 0 ? reviewStats.averageRating.toFixed(1) : '5.0';
 
     // ── Variant state (must come before usePrice so we can pass the active price) ─
@@ -262,11 +267,11 @@ export function ProductInfo({
             {/* Price Area */}
             <div className="mb-4">
                 {isSemiPreciousStone ? (
-                    sqFtPrice && sqFtPrice > 0 ? (
+                    formattedSqFtPrice ? (
                         <div className="flex flex-col gap-1">
                             <div className="flex items-baseline gap-1.5">
                                 <span className="text-[28px] md:text-[32px] font-medium text-[#111827] leading-none">
-                                    ₹{sqFtPrice.toLocaleString('en-IN')}
+                                    {formattedSqFtPrice}
                                 </span>
                                 <span className="text-[15px] text-[#6b7280]">/ sq.ft</span>
                             </div>

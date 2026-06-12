@@ -16,17 +16,10 @@ export interface ProductSpecifications {
     overall_product_weight: string;
   };
   details: {
-    table_top_shape: string;
-    top_material: string;
-    base_material: string;
     natural_variation_type: string;
-    seating_capacity: string;
-    table_base_type: string;
     custom_product: string;
     imported: string;
     weight_capacity: string;
-    base_shape: string;
-    base_color: string;
     top_color: string;
     wood_species: string;
     wayfair_verified: string;
@@ -42,21 +35,18 @@ export interface ProductSpecifications {
   warranty: {
     product_warranty: string;
     warranty_length: string;
-    warranty_details: string;
   };
 }
 
 const EMPTY_SPECS: ProductSpecifications = {
   other_dimensions: { overall_dimensions: '', overall_product_weight: '' },
   details: {
-    table_top_shape: '', top_material: '', base_material: '',
-    natural_variation_type: '', seating_capacity: '', table_base_type: '',
-    custom_product: '', imported: '', weight_capacity: '', base_shape: '',
-    base_color: '', top_color: '', wood_species: '', wayfair_verified: '',
+    natural_variation_type: '', custom_product: '', imported: '',
+    weight_capacity: '', top_color: '', wood_species: '', wayfair_verified: '',
     mixed_materials: '', detailing: '', material: '', base_type: '', overall_shape: '',
   },
   assembly: { assembly_required: '' },
-  warranty: { product_warranty: '', warranty_length: '', warranty_details: '' },
+  warranty: { product_warranty: '', warranty_length: '' },
 };
 
 interface ProductSpecsEditorProps {
@@ -81,25 +71,18 @@ const OTHER_DIMENSION_FIELDS: FieldDef[] = [
 ];
 
 const DETAIL_FIELDS: FieldDef[] = [
-  { key: 'overall_shape',         label: 'Overall Shape',         type: 'select', options: ['Round', 'Square', 'Rectangle', 'Oval', 'L-shaped', 'Irregular', 'Custom'] },
-  { key: 'material',              label: 'Material',              type: 'text' },
-  { key: 'top_material',          label: 'Top Material',          type: 'text' },
-  { key: 'base_material',         label: 'Base Material',         type: 'text' },
-  { key: 'table_top_shape',       label: 'Table Top Shape',       type: 'select', options: ['Round', 'Square', 'Rectangle', 'Oval', 'Irregular', 'Custom'] },
-  { key: 'base_shape',            label: 'Base Shape',            type: 'select', options: ['Round', 'Square', 'Rectangle', 'X-base', 'Pedestal', 'Custom'] },
-  { key: 'table_base_type',       label: 'Table Base Type',       type: 'select', options: ['Pedestal', 'Trestle', '4-Leg', 'X-Base', 'Hairpin', 'Custom'] },
-  { key: 'base_type',             label: 'Base Type',             type: 'text' },
-  { key: 'top_color',             label: 'Top Color',             type: 'text' },
-  { key: 'base_color',            label: 'Base Color',            type: 'text' },
-  { key: 'wood_species',          label: 'Wood Species',          type: 'text' },
+  { key: 'overall_shape',          label: 'Overall Shape',          type: 'select', options: ['Round', 'Square', 'Rectangle', 'Oval', 'L-shaped', 'Irregular', 'Custom'] },
+  { key: 'material',               label: 'Material',               type: 'text' },
+  { key: 'base_type',              label: 'Base Type',              type: 'text' },
+  { key: 'top_color',              label: 'Color',                  type: 'text' },
+  { key: 'wood_species',           label: 'Wood Species',           type: 'text' },
   { key: 'natural_variation_type', label: 'Natural Variation Type', type: 'text' },
-  { key: 'detailing',             label: 'Detailing',             type: 'text' },
-  { key: 'mixed_materials',       label: 'Mixed Materials',       type: 'select', options: ['Yes', 'No'] },
-  { key: 'seating_capacity',      label: 'Seating Capacity',      type: 'text' },
-  { key: 'weight_capacity',       label: 'Weight Capacity',       type: 'text' },
-  { key: 'custom_product',        label: 'Custom Product',        type: 'select', options: ['Yes', 'No'] },
-  { key: 'imported',              label: 'Imported',              type: 'select', options: ['Yes', 'No'] },
-  { key: 'wayfair_verified',      label: 'Wayfair Verified',      type: 'select', options: ['Yes', 'No'] },
+  { key: 'detailing',              label: 'Detailing',              type: 'text' },
+  { key: 'mixed_materials',        label: 'Mixed Materials',        type: 'select', options: ['Yes', 'No'] },
+  { key: 'weight_capacity',        label: 'Weight Capacity',        type: 'text' },
+  { key: 'custom_product',         label: 'Custom Product',         type: 'select', options: ['Yes', 'No'] },
+  { key: 'imported',               label: 'Imported',               type: 'select', options: ['Yes', 'No'] },
+  { key: 'wayfair_verified',       label: 'Eligible for Refund',    type: 'select', options: ['Yes', 'No'] },
 ];
 
 const ASSEMBLY_FIELDS: FieldDef[] = [
@@ -107,9 +90,8 @@ const ASSEMBLY_FIELDS: FieldDef[] = [
 ];
 
 const WARRANTY_FIELDS: FieldDef[] = [
-  { key: 'product_warranty', label: 'Product Warranty',  type: 'select', options: ['Manufacturer Warranty', 'Limited Warranty', 'No Warranty'] },
-  { key: 'warranty_length',  label: 'Warranty Length',   type: 'text' },
-  { key: 'warranty_details', label: 'Warranty Details',  type: 'textarea' },
+  { key: 'product_warranty', label: 'Product Warranty', type: 'select', options: ['Manufacturer Warranty', 'Limited Warranty', 'No Warranty'] },
+  { key: 'warranty_length',  label: 'Warranty Length',  type: 'text' },
 ];
 
 // ─── Field renderer ───────────────────────────────────────────────────────────
@@ -118,14 +100,98 @@ function SectionField({
   field, value, onChange,
 }: { field: FieldDef; value: string; onChange: (v: string) => void }) {
   const base = 'w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent';
+
+  const hasCustomOpt = field.type === 'select' && (field.options?.includes('Custom') ?? false);
+
+  // Saved custom values fetched from the database for this field
+  const [extras, setExtras] = useState<string[]>([]);
+  const extrasRef = useRef<string[]>([]);
+  extrasRef.current = extras;
+
+  // Fetch saved custom values from the backend on mount
+  useEffect(() => {
+    if (!hasCustomOpt) return;
+    fetch(`${API_URL}/field-options/${field.key}`, { credentials: 'include' })
+      .then(r => r.json())
+      .then(d => { if (d.ok) setExtras(d.values); })
+      .catch(() => {});
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [field.key, hasCustomOpt]);
+
+  const stdOpts = field.options?.filter(o => o !== 'Custom') ?? [];
+  const knownOpts = [...stdOpts, ...extras];
+  const isRawCustom = hasCustomOpt && value !== '' && !knownOpts.includes(value);
+
+  const [showInput, setShowInput] = useState(false);
+  const [customText, setCustomText] = useState('');
+
+  // Sync when value changes externally (form reset / edit load)
+  useEffect(() => {
+    if (!hasCustomOpt) return;
+    const known = [...(field.options?.filter(o => o !== 'Custom') ?? []), ...extrasRef.current];
+    const raw = value !== '' && !known.includes(value);
+    setShowInput(raw);
+    setCustomText(raw ? value : '');
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value]);
+
+  const saveToDb = (text: string) => {
+    const t = text.trim();
+    if (!t || extrasRef.current.includes(t) || stdOpts.includes(t)) return;
+    fetch(`${API_URL}/field-options`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ fieldKey: field.key, value: t }),
+    })
+      .then(r => r.json())
+      .then(d => { if (d.ok) setExtras(prev => [...prev, t]); })
+      .catch(() => {});
+  };
+
+  const handleSelect = (v: string) => {
+    if (v === 'Custom') {
+      setShowInput(true);
+      setCustomText('');
+      onChange('');
+    } else {
+      setShowInput(false);
+      setCustomText('');
+      onChange(v);
+    }
+  };
+
+  const handleCustomBlur = () => {
+    if (customText.trim()) saveToDb(customText.trim());
+  };
+
+  const allOpts = hasCustomOpt ? [...knownOpts, 'Custom'] : (field.options ?? []);
+
   return (
     <div>
       <label className="block text-xs font-medium text-gray-600 mb-1">{field.label}</label>
       {field.type === 'select' ? (
-        <select value={value} onChange={e => onChange(e.target.value)} className={base}>
-          <option value="">Select {field.label}</option>
-          {field.options!.map(o => <option key={o} value={o}>{o}</option>)}
-        </select>
+        <div className="space-y-2">
+          <select
+            value={showInput || isRawCustom ? 'Custom' : value}
+            onChange={e => handleSelect(e.target.value)}
+            className={base}
+          >
+            <option value="">Select {field.label}</option>
+            {allOpts.map(o => <option key={o} value={o}>{o}</option>)}
+          </select>
+          {(showInput || isRawCustom) && (
+            <input
+              type="text"
+              value={customText}
+              onChange={e => { setCustomText(e.target.value); onChange(e.target.value); }}
+              onBlur={handleCustomBlur}
+              placeholder={`Type custom ${field.label.toLowerCase()}…`}
+              autoFocus={showInput && !isRawCustom}
+              className={`${base} border-blue-400 ring-1 ring-blue-400`}
+            />
+          )}
+        </div>
       ) : field.type === 'textarea' ? (
         <textarea
           value={value}
@@ -295,7 +361,7 @@ const ProductSpecsEditor: React.FC<ProductSpecsEditorProps> = ({
           />
 
           <SpecSection
-            title="Details"
+            title="Specification"
             color="bg-violet-500"
             fields={DETAIL_FIELDS}
             sectionData={localSpecs.details as unknown as Record<string, string>}

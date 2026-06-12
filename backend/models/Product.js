@@ -42,17 +42,10 @@ const productSpecificationsSchema = new mongoose.Schema({
         overall_product_weight: String,
     },
     details: {
-        table_top_shape:       String,
-        top_material:          String,
-        base_material:         String,
         natural_variation_type: String,
-        seating_capacity:      String,
-        table_base_type:       String,
         custom_product:        String,
         imported:              String,
         weight_capacity:       String,
-        base_shape:            String,
-        base_color:            String,
         top_color:             String,
         wood_species:          String,
         wayfair_verified:      String,
@@ -68,7 +61,6 @@ const productSpecificationsSchema = new mongoose.Schema({
     warranty: {
         product_warranty: String,
         warranty_length:  String,
-        warranty_details: String,
     },
 }, { _id: false });
 
