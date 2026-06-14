@@ -52,33 +52,33 @@ async function updateCarousels() {
                 sortOrder: "desc"
             },
             {
-                title: "Handicraft Collections",
-                viewAllLink: "/products?cat=handicraft",
+                title: "Handcrafted Collections",
+                viewAllLink: "/products?cat=handcrafted",
                 enabled: true,
                 sourceType: "category",
-                sourceCategory: "handicraft",
-                sourceSubcategory: "", // Empty means it pulls all handicraft products
+                sourceCategory: "handcrafted",
+                sourceSubcategory: "", // Empty means it pulls all handcrafted products
                 limit: 12,
                 sortBy: "createdAt",
                 sortOrder: "desc"
             },
             {
-                title: "Handicraft Tables",
-                viewAllLink: "/products?cat=handicraft",
+                title: "Handcrafted Tables",
+                viewAllLink: "/products?cat=handcrafted",
                 enabled: true,
                 sourceType: "category",
-                sourceCategory: "handicraft",
+                sourceCategory: "handcrafted",
                 sourceSubcategory: "coffee table,console table,dining table,side table",
                 limit: 12,
                 sortBy: "createdAt",
                 sortOrder: "desc"
             },
             {
-                title: "Handicraft Seating",
-                viewAllLink: "/products?cat=handicraft",
+                title: "Handcrafted Seating",
+                viewAllLink: "/products?cat=handcrafted",
                 enabled: true,
                 sourceType: "category",
-                sourceCategory: "handicraft",
+                sourceCategory: "handcrafted",
                 sourceSubcategory: "stool,sofa,chair,bench,seating", 
                 limit: 12,
                 sortBy: "createdAt",
