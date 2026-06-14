@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Category } from '../../services/productService';
+
+const CATEGORY_DISPLAY_NAMES: Record<string, string> = {
+  furniture: 'Marble Furniture',
+  handcrafted: 'Handcrafted Furniture',
+  leather: 'Leather Furniture',
+  'semi-precious-stone': 'Semi Precious Stone',
+};
+const getCatDisplayName = (cat: string) =>
+  CATEGORY_DISPLAY_NAMES[cat] ?? cat.replace(/-/g, ' ');
 import { ChevronDown, X } from 'lucide-react';
 import * as Accordion from '@radix-ui/react-accordion';
 import * as Slider from '@radix-ui/react-slider';
@@ -113,7 +122,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
                                                 }}
                                                 className={`block w-full text-left text-sm capitalize ${activeCategory === cat.category ? "text-gray-900 font-medium" : "text-gray-600 hover:text-black"}`}
                                             >
-                                                {cat.category.replace(/-/g, ' ')}
+                                                {getCatDisplayName(cat.category)}
                                             </button>
 
                                             {/* Subcategories */}
@@ -123,7 +132,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
                                                         onClick={() => onSubcategoryChange("")}
                                                         className={`block w-full text-left text-sm capitalize ${!activeSubcategory ? "text-gray-900 font-medium" : "text-gray-500 hover:text-black"}`}
                                                     >
-                                                        All in {cat.category.replace(/-/g, ' ')}
+                                                        All in {getCatDisplayName(cat.category)}
                                                     </button>
                                                     {cat.subcategories.map(sub => (
                                                         <button

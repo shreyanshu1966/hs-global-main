@@ -32,8 +32,8 @@ const Header = () => {
   const lastScrollYRef = useRef(0);
   const furnitureMegaOpenTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const furnitureMegaCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const handicraftMegaOpenTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const handicraftMegaCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const handcraftedMegaOpenTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const handcraftedMegaCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const leatherMegaOpenTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const leatherMegaCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const semiPreciousStoneMegaOpenTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -131,11 +131,11 @@ const Header = () => {
       if (furnitureMegaCloseTimerRef.current) {
         clearTimeout(furnitureMegaCloseTimerRef.current);
       }
-      if (handicraftMegaOpenTimerRef.current) {
-        clearTimeout(handicraftMegaOpenTimerRef.current);
+      if (handcraftedMegaOpenTimerRef.current) {
+        clearTimeout(handcraftedMegaOpenTimerRef.current);
       }
-      if (handicraftMegaCloseTimerRef.current) {
-        clearTimeout(handicraftMegaCloseTimerRef.current);
+      if (handcraftedMegaCloseTimerRef.current) {
+        clearTimeout(handcraftedMegaCloseTimerRef.current);
       }
       if (leatherMegaOpenTimerRef.current) {
         clearTimeout(leatherMegaOpenTimerRef.current);
@@ -215,7 +215,7 @@ const Header = () => {
   const navItems = [
     { label: 'Home', mobileLabel: 'Home', href: '/', active: true },
     { label: 'Marble Furniture', mobileLabel: 'Marble Furniture', href: '/products/furniture', megaMenuType: 'furniture' },
-    { label: 'Handicraft Furniture', mobileLabel: 'Handicraft Furniture', href: '/products/handicraft', megaMenuType: 'handicraft' },
+    { label: 'Handcrafted Furniture', mobileLabel: 'Handcrafted Furniture', href: '/products/handcrafted', megaMenuType: 'handcrafted' },
     { label: 'Leather Furniture', mobileLabel: 'Leather Furniture', href: '/products/leather', megaMenuType: 'leather' },
     { label: 'Semi Precious Stone', mobileLabel: 'Semi Precious Stone', href: '/products/semi-precious-stone', megaMenuType: 'semi-precious-stone' },
     { label: 'Gallery', mobileLabel: 'Gallery', href: '/gallery' },
@@ -267,31 +267,31 @@ const Header = () => {
     ];
   }, [navbarConfigs]);
 
-  const handicraftMegaItems = [
-    { label: 'All Handicrafts', href: '/products/handicraft' },
-    { label: 'coffee table', href: '/products/handicraft/coffee-table' },
-    { label: 'console table', href: '/products/handicraft/console-table' },
-    { label: 'dining table', href: '/products/handicraft/dining-table' },
-    { label: 'side table', href: '/products/handicraft/side-table' },
-    { label: 'sofa', href: '/products/handicraft/sofa' },
+  const handcraftedMegaItems = [
+    { label: 'All Handcrafted', href: '/products/handcrafted' },
+    { label: 'coffee table', href: '/products/handcrafted/coffee-table' },
+    { label: 'console table', href: '/products/handcrafted/console-table' },
+    { label: 'dining table', href: '/products/handcrafted/dining-table' },
+    { label: 'side table', href: '/products/handcrafted/side-table' },
+    { label: 'sofa', href: '/products/handcrafted/sofa' },
   ];
 
-  const handicraftMegaGroups = useMemo(() => {
-    const cfg = navbarConfigs['handicraft'];
+  const handcraftedMegaGroups = useMemo(() => {
+    const cfg = navbarConfigs['handcrafted'];
     if (cfg?.sections?.length) {
       return cfg.sections.map((sec) => ({
         title: sec.title,
-        items: sec.items.map((it) => ({ label: it.label, href: `/products/handicraft/${it.slug}` })),
+        items: sec.items.map((it) => ({ label: it.label, href: `/products/handcrafted/${it.slug}` })),
       }));
     }
     return [
       {
-        title: 'Handicraft Tables',
-        items: handicraftMegaItems.filter((item) => ['coffee table', 'console table', 'dining table', 'side table'].includes(item.label)),
+        title: 'Handcrafted Tables',
+        items: handcraftedMegaItems.filter((item) => ['coffee table', 'console table', 'dining table', 'side table'].includes(item.label)),
       },
       {
-        title: 'Handicraft Seating',
-        items: handicraftMegaItems.filter((item) => ['sofa'].includes(item.label)),
+        title: 'Handcrafted Seating',
+        items: handcraftedMegaItems.filter((item) => ['sofa'].includes(item.label)),
       },
     ];
   }, [navbarConfigs]);
@@ -384,35 +384,35 @@ const Header = () => {
     }, 280);
   };
 
-  const openHandicraftMega = () => {
-    if (handicraftMegaCloseTimerRef.current) {
-      clearTimeout(handicraftMegaCloseTimerRef.current);
-      handicraftMegaCloseTimerRef.current = null;
+  const openHandcraftedMega = () => {
+    if (handcraftedMegaCloseTimerRef.current) {
+      clearTimeout(handcraftedMegaCloseTimerRef.current);
+      handcraftedMegaCloseTimerRef.current = null;
     }
-    if (handicraftMegaOpenTimerRef.current) {
-      clearTimeout(handicraftMegaOpenTimerRef.current);
+    if (handcraftedMegaOpenTimerRef.current) {
+      clearTimeout(handcraftedMegaOpenTimerRef.current);
     }
-    handicraftMegaOpenTimerRef.current = setTimeout(() => {
+    handcraftedMegaOpenTimerRef.current = setTimeout(() => {
       setIsHandicraftMegaOpen(true);
       setIsFurnitureMegaOpen(false);
       setIsLeatherMegaOpen(false);
-      handicraftMegaOpenTimerRef.current = null;
+      handcraftedMegaOpenTimerRef.current = null;
     }, 80);
   };
 
-  const closeHandicraftMega = () => {
-    if (handicraftMegaOpenTimerRef.current) {
-      clearTimeout(handicraftMegaOpenTimerRef.current);
-      handicraftMegaOpenTimerRef.current = null;
+  const closeHandcraftedMega = () => {
+    if (handcraftedMegaOpenTimerRef.current) {
+      clearTimeout(handcraftedMegaOpenTimerRef.current);
+      handcraftedMegaOpenTimerRef.current = null;
     }
-    if (handicraftMegaCloseTimerRef.current) {
-      clearTimeout(handicraftMegaCloseTimerRef.current);
+    if (handcraftedMegaCloseTimerRef.current) {
+      clearTimeout(handcraftedMegaCloseTimerRef.current);
     }
-    handicraftMegaCloseTimerRef.current = setTimeout(() => {
+    handcraftedMegaCloseTimerRef.current = setTimeout(() => {
       if (!isHandicraftMegaHoveredRef.current) {
         setIsHandicraftMegaOpen(false);
       }
-      handicraftMegaCloseTimerRef.current = null;
+      handcraftedMegaCloseTimerRef.current = null;
     }, 280);
   };
 
@@ -707,11 +707,11 @@ const Header = () => {
                     <button
                       type="button"
                       className="w-full px-5 py-4 text-[17px] leading-[1.25] text-[#111] font-light flex items-center justify-between"
-                      aria-expanded={item.megaMenuType === 'furniture' ? isMobileFurnitureOpen : item.megaMenuType === 'handicraft' ? isMobileHandicraftOpen : item.megaMenuType === 'leather' ? isMobileLeatherOpen : isMobileSemiPreciousStoneOpen}
+                      aria-expanded={item.megaMenuType === 'furniture' ? isMobileFurnitureOpen : item.megaMenuType === 'handcrafted' ? isMobileHandicraftOpen : item.megaMenuType === 'leather' ? isMobileLeatherOpen : isMobileSemiPreciousStoneOpen}
                       aria-controls={`mobile-${item.megaMenuType}-submenu`}
                       onClick={() => {
                         if (item.megaMenuType === 'furniture') setIsMobileFurnitureOpen(prev => !prev);
-                        else if (item.megaMenuType === 'handicraft') setIsMobileHandicraftOpen(prev => !prev);
+                        else if (item.megaMenuType === 'handcrafted') setIsMobileHandicraftOpen(prev => !prev);
                         else if (item.megaMenuType === 'leather') setIsMobileLeatherOpen(prev => !prev);
                         else if (item.megaMenuType === 'semi-precious-stone') setIsMobileSemiPreciousStoneOpen(prev => !prev);
                       }}
@@ -720,11 +720,11 @@ const Header = () => {
                       <ChevronDown
                         width="18"
                         height="18"
-                        className={`transition-transform duration-200 ${(item.megaMenuType === 'furniture' ? isMobileFurnitureOpen : item.megaMenuType === 'handicraft' ? isMobileHandicraftOpen : item.megaMenuType === 'leather' ? isMobileLeatherOpen : isMobileSemiPreciousStoneOpen) ? 'rotate-180' : ''}`}
+                        className={`transition-transform duration-200 ${(item.megaMenuType === 'furniture' ? isMobileFurnitureOpen : item.megaMenuType === 'handcrafted' ? isMobileHandicraftOpen : item.megaMenuType === 'leather' ? isMobileLeatherOpen : isMobileSemiPreciousStoneOpen) ? 'rotate-180' : ''}`}
                       />
                     </button>
 
-                    {(item.megaMenuType === 'furniture' ? isMobileFurnitureOpen : item.megaMenuType === 'handicraft' ? isMobileHandicraftOpen : item.megaMenuType === 'leather' ? isMobileLeatherOpen : isMobileSemiPreciousStoneOpen) && (
+                    {(item.megaMenuType === 'furniture' ? isMobileFurnitureOpen : item.megaMenuType === 'handcrafted' ? isMobileHandicraftOpen : item.megaMenuType === 'leather' ? isMobileLeatherOpen : isMobileSemiPreciousStoneOpen) && (
                       <div
                         id={`mobile-${item.megaMenuType}-submenu`}
                         className="px-5 pb-4 space-y-4 bg-[#fafafa] border-t border-[#f1f1f1]"
@@ -735,7 +735,7 @@ const Header = () => {
                           className="inline-block mt-1 rounded-md border border-[#111827] bg-[#111827] px-3 py-2 uppercase text-white no-underline"
                           onClick={() => {
                             if (item.megaMenuType === 'furniture') setIsMobileFurnitureOpen(false);
-                            else if (item.megaMenuType === 'handicraft') setIsMobileHandicraftOpen(false);
+                            else if (item.megaMenuType === 'handcrafted') setIsMobileHandicraftOpen(false);
                             else if (item.megaMenuType === 'leather') setIsMobileLeatherOpen(false);
                             else if (item.megaMenuType === 'semi-precious-stone') setIsMobileSemiPreciousStoneOpen(false);
                             setIsMobileMenuOpen(false);
@@ -744,7 +744,7 @@ const Header = () => {
                           View All {item.label}
                         </a>
 
-                        {(item.megaMenuType === 'furniture' ? furnitureMegaGroups : item.megaMenuType === 'handicraft' ? handicraftMegaGroups : item.megaMenuType === 'leather' ? leatherMegaGroups : semiPreciousStoneMegaGroups).map((group) => (
+                        {(item.megaMenuType === 'furniture' ? furnitureMegaGroups : item.megaMenuType === 'handcrafted' ? handcraftedMegaGroups : item.megaMenuType === 'leather' ? leatherMegaGroups : semiPreciousStoneMegaGroups).map((group) => (
                           <div key={`mobile-group-${group.title}`} className="space-y-1.5">
                             <p style={{ fontSize: '9px', letterSpacing: '0.2em', fontWeight: 400 }} className="uppercase text-[#b4c0cc]">{group.title}</p>
                             <div className="space-y-0.5">
@@ -756,7 +756,7 @@ const Header = () => {
                                   className="block rounded-md px-2 py-2 leading-[1.35] text-[#1f2937] no-underline capitalize"
                                   onClick={() => {
                                     if (item.megaMenuType === 'furniture') setIsMobileFurnitureOpen(false);
-                                    else if (item.megaMenuType === 'handicraft') setIsMobileHandicraftOpen(false);
+                                    else if (item.megaMenuType === 'handcrafted') setIsMobileHandicraftOpen(false);
                                     else if (item.megaMenuType === 'leather') setIsMobileLeatherOpen(false);
                                     else if (item.megaMenuType === 'semi-precious-stone') setIsMobileSemiPreciousStoneOpen(false);
                                     setIsMobileMenuOpen(false);
@@ -897,13 +897,13 @@ const Header = () => {
                 className="relative"
                 onMouseEnter={() => {
                   if (item.megaMenuType === 'furniture') openFurnitureMega();
-                  else if (item.megaMenuType === 'handicraft') openHandicraftMega();
+                  else if (item.megaMenuType === 'handcrafted') openHandcraftedMega();
                   else if (item.megaMenuType === 'leather') openLeatherMega();
                   else if (item.megaMenuType === 'semi-precious-stone') openSemiPreciousStoneMega();
                 }}
                 onMouseLeave={() => {
                   if (item.megaMenuType === 'furniture') closeFurnitureMega();
-                  else if (item.megaMenuType === 'handicraft') closeHandicraftMega();
+                  else if (item.megaMenuType === 'handcrafted') closeHandcraftedMega();
                   else if (item.megaMenuType === 'leather') closeLeatherMega();
                   else if (item.megaMenuType === 'semi-precious-stone') closeSemiPreciousStoneMega();
                 }}
@@ -916,13 +916,13 @@ const Header = () => {
                     event.preventDefault();
                     event.stopPropagation();
                     if (item.megaMenuType === 'furniture') setIsFurnitureMegaOpen((prev) => !prev);
-                    else if (item.megaMenuType === 'handicraft') setIsHandicraftMegaOpen((prev) => !prev);
+                    else if (item.megaMenuType === 'handcrafted') setIsHandicraftMegaOpen((prev) => !prev);
                     else if (item.megaMenuType === 'leather') setIsLeatherMegaOpen((prev) => !prev);
                     else if (item.megaMenuType === 'semi-precious-stone') setIsSemiPreciousStoneMegaOpen((prev) => !prev);
                   }}
                   onFocus={() => {
                     if (item.megaMenuType === 'furniture') setIsFurnitureMegaOpen(true);
-                    else if (item.megaMenuType === 'handicraft') setIsHandicraftMegaOpen(true);
+                    else if (item.megaMenuType === 'handcrafted') setIsHandicraftMegaOpen(true);
                     else if (item.megaMenuType === 'leather') setIsLeatherMegaOpen(true);
                     else if (item.megaMenuType === 'semi-precious-stone') setIsSemiPreciousStoneMegaOpen(true);
                   }}
@@ -934,7 +934,7 @@ const Header = () => {
                   <span className="itsbits-nav-label-desktop">{item.label}</span>
                   <span className="itsbits-nav-label-mobile">{item.mobileLabel || item.label}</span>
                   {item.megaMenuType && (
-                    <span className={`ml-1 inline-block text-[10px] transition-transform ${(item.megaMenuType === 'furniture' ? isFurnitureMegaOpen : item.megaMenuType === 'handicraft' ? isHandicraftMegaOpen : item.megaMenuType === 'leather' ? isLeatherMegaOpen : isSemiPreciousStoneMegaOpen) ? 'rotate-180' : ''}`} aria-hidden="true">▼</span>
+                    <span className={`ml-1 inline-block text-[10px] transition-transform ${(item.megaMenuType === 'furniture' ? isFurnitureMegaOpen : item.megaMenuType === 'handcrafted' ? isHandicraftMegaOpen : item.megaMenuType === 'leather' ? isLeatherMegaOpen : isSemiPreciousStoneMegaOpen) ? 'rotate-180' : ''}`} aria-hidden="true">▼</span>
                   )}
                 </a>
               </li>
@@ -995,9 +995,9 @@ const Header = () => {
               className="absolute left-1/2 -translate-x-1/2 top-full pt-1 z-[120]"
               onMouseEnter={() => {
                 isHandicraftMegaHoveredRef.current = true;
-                if (handicraftMegaCloseTimerRef.current) {
-                  clearTimeout(handicraftMegaCloseTimerRef.current);
-                  handicraftMegaCloseTimerRef.current = null;
+                if (handcraftedMegaCloseTimerRef.current) {
+                  clearTimeout(handcraftedMegaCloseTimerRef.current);
+                  handcraftedMegaCloseTimerRef.current = null;
                 }
               }}
               onMouseLeave={() => {
@@ -1007,9 +1007,9 @@ const Header = () => {
             >
               <div className="w-[760px] bg-white border border-[#e5e7eb] shadow-[0_18px_46px_rgba(0,0,0,0.14)] rounded-2xl p-5">
                 <div className="flex items-center justify-between border-b border-[#eef2f7] pb-3 mb-4">
-                  <p style={{ fontSize: '10px', letterSpacing: '0.18em', fontWeight: 400 }} className="uppercase text-[#94a3b8]">Handicraft Collections</p>
+                  <p style={{ fontSize: '10px', letterSpacing: '0.18em', fontWeight: 400 }} className="uppercase text-[#94a3b8]">Handcrafted Collections</p>
                   <a
-                    href="/products/handicraft"
+                    href="/products/handcrafted"
                     style={{ fontSize: '11px', letterSpacing: '0.1em', fontWeight: 500 }}
                     className="uppercase text-[#0f172a] hover:text-black no-underline transition-colors"
                     onClick={() => setIsHandicraftMegaOpen(false)}
@@ -1018,7 +1018,7 @@ const Header = () => {
                   </a>
                 </div>
                 <div className="grid grid-cols-3 gap-5">
-                  {handicraftMegaGroups.map((group) => (
+                  {handcraftedMegaGroups.map((group) => (
                     <div key={group.title} className="space-y-0.5">
                       <p style={{ fontSize: '9px', letterSpacing: '0.2em', fontWeight: 400 }} className="uppercase text-[#b4c0cc] px-2 pb-2">{group.title}</p>
                       {group.items.map((megaItem) => (

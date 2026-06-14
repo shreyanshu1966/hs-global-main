@@ -217,7 +217,7 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
   // ─── Populate form when editing ────────────────────────────────────────────
   useEffect(() => {
     if (!editingProduct) return;
-    const validCategories = ['furniture', 'handicraft', 'leather', 'semi-precious-stone'];
+    const validCategories = ['furniture', 'handcrafted', 'leather', 'semi-precious-stone'];
     setFormData({
       productId:      editingProduct.productId    || '',
       name:           editingProduct.name         || '',
@@ -785,7 +785,7 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
                     onChange={e => { setFormData(prev => ({ ...prev, category: e.target.value, subcategory: '' })); setShowCustomSubcategory(false); setCustomSubcategory(''); }}
                     className={inputCls}>
                     <option value="furniture">Furniture</option>
-                    <option value="handicraft">Handicraft</option>
+                    <option value="handcrafted">Handcrafted</option>
                     <option value="leather">Leather</option>
                     <option value="semi-precious-stone">Semi Precious Stone</option>
                   </select>

@@ -63,13 +63,13 @@ const DEFAULTS: Record<string, NavCategoryConfig> = {
       },
     ],
   },
-  handicraft: {
-    categoryId: 'handicraft',
-    categoryName: 'Handicraft',
+  handcrafted: {
+    categoryId: 'handcrafted',
+    categoryName: 'Handcrafted Furniture',
     sections: [
       {
-        id: 'handicraft-tables',
-        title: 'Handicraft Tables',
+        id: 'handcrafted-tables',
+        title: 'Handcrafted Tables',
         items: [
           { id: 'coffee-table', label: 'coffee table', slug: 'coffee-table' },
           { id: 'console-table', label: 'console table', slug: 'console-table' },
@@ -78,15 +78,15 @@ const DEFAULTS: Record<string, NavCategoryConfig> = {
         ],
       },
       {
-        id: 'handicraft-seating',
-        title: 'Handicraft Seating',
+        id: 'handcrafted-seating',
+        title: 'Handcrafted Seating',
         items: [{ id: 'sofa', label: 'sofa', slug: 'sofa' }],
       },
     ],
   },
   leather: {
     categoryId: 'leather',
-    categoryName: 'Leather',
+    categoryName: 'Leather Furniture',
     sections: [
       {
         id: 'seating',
@@ -126,7 +126,7 @@ const DEFAULTS: Record<string, NavCategoryConfig> = {
   },
 };
 
-const CATEGORY_IDS = ['furniture', 'handicraft', 'leather', 'semi-precious-stone'];
+const CATEGORY_IDS = ['furniture', 'handcrafted', 'leather', 'semi-precious-stone'];
 
 // ---------- Small helper components ----------
 const inputCls =

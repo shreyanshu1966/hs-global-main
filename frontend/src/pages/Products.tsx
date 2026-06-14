@@ -15,7 +15,16 @@ import { SORT_OPTIONS, DEFAULT_SORT, getSortOptionLabel } from "../components/fi
 const toSlug = (v: string) => v.toLowerCase().trim().replace(/\s+/g, "-");
 const LIMIT = 12;
 
-// Subcategories that exist in both furniture AND handicraft
+const CATEGORY_DISPLAY_NAMES: Record<string, string> = {
+  furniture: 'Marble Furniture',
+  handcrafted: 'Handcrafted Furniture',
+  leather: 'Leather Furniture',
+  'semi-precious-stone': 'Semi Precious Stone',
+};
+const getCatDisplayName = (cat: string) =>
+  CATEGORY_DISPLAY_NAMES[cat] ?? cat.replace(/-/g, ' ');
+
+// Subcategories that exist in both furniture AND handcrafted
 const SHARED_SUBCATEGORY_SLUGS = new Set([
   "coffee-table",
   "console-table",
@@ -115,7 +124,7 @@ export default function Products() {
     return {
       category: rawCategory,
       subcategory: toSlug(paramSubcategory || ""),
-      categoryFilter: ((paramCategoryFilter || "") as "" | "furniture" | "handicraft"),
+      categoryFilter: ((paramCategoryFilter || "") as "" | "furniture" | "handcrafted"),
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -123,7 +132,7 @@ export default function Products() {
   // Filter state
   const [activeCategory, setActiveCategory] = useState(initParams.category);
   const [activeSubcategory, setActiveSubcategory] = useState(initParams.subcategory);
-  const [crossCategoryFilter, setCrossCategoryFilter] = useState<"" | "furniture" | "handicraft">(initParams.categoryFilter);
+  const [crossCategoryFilter, setCrossCategoryFilter] = useState<"" | "furniture" | "handcrafted">(initParams.categoryFilter);
   const [sortBy, setSortBy] = useState(DEFAULT_SORT.sortBy);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">(DEFAULT_SORT.sortOrder);
   const [page, setPage] = useState(1);
@@ -284,7 +293,7 @@ export default function Products() {
     setVisibleProducts([]);
   }, []);
 
-  const handleCrossFilter = useCallback((filter: "" | "furniture" | "handicraft") => {
+  const handleCrossFilter = useCallback((filter: "" | "furniture" | "handcrafted") => {
     setCrossCategoryFilter(filter);
     setPage(1);
     setVisibleProducts([]);
@@ -389,7 +398,7 @@ export default function Products() {
                         : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
                     }`}
                   >
-                    {cat.category ? cat.category.replace(/-/g, " ") : "All"}
+                    {cat.category ? getCatDisplayName(cat.category) : "All"}
                   </button>
                 ))}
               </div>
@@ -423,7 +432,7 @@ export default function Products() {
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                   }`}
                 >
-                  {cat.category ? cat.category.replace(/-/g, " ") : "All"}
+                  {cat.category ? getCatDisplayName(cat.category) : "All"}
                 </button>
               ))}
             </div>
@@ -470,7 +479,7 @@ export default function Products() {
               style={{ scrollbarWidth: "none" }}
             >
               <div className="flex gap-2 min-w-max">
-                {(["", "furniture", "handicraft"] as const).map((cf) => (
+                {(["", "furniture", "handcrafted"] as const).map((cf) => (
                   <button
                     key={cf || "all"}
                     onClick={() => handleCrossFilter(cf)}
@@ -480,7 +489,7 @@ export default function Products() {
                         : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                     }`}
                   >
-                    {cf === "" ? "All" : cf === "furniture" ? "Marble Furniture" : "Handicraft"}
+                    {cf === "" ? "All" : getCatDisplayName(cf)}
                   </button>
                 ))}
               </div>
@@ -594,7 +603,7 @@ export default function Products() {
                     Category
                   </p>
                   <nav className="space-y-0.5">
-                    {(["", "furniture", "handicraft"] as const).map((cf) => (
+                    {(["", "furniture", "handcrafted"] as const).map((cf) => (
                       <button
                         key={cf || "all"}
                         onClick={() => handleCrossFilter(cf)}
@@ -604,7 +613,7 @@ export default function Products() {
                             : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"
                         }`}
                       >
-                        {cf === "" ? "All" : cf === "furniture" ? "Marble Furniture" : "Handicraft"}
+                        {cf === "" ? "All" : getCatDisplayName(cf)}
                       </button>
                     ))}
                   </nav>
