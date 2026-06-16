@@ -1,0 +1,407 @@
+'use client';
+import React, { useState, useEffect, useRef } from 'react';
+import { X, Ruler, Layers, Send, Loader2, CheckCircle, User, Mail, Phone } from 'lucide-react';
+import { useSlabCustomization } from '../contexts/SlabCustomizationContext';
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
+
+const FINISHES = [
+  'Polish', 'Flaming', 'Sand Blast', 'Shot Blast',
+  'Bush Hammer', 'River Wash', 'Honed', 'Leather', 'Lepatora'
+];
+
+const THICKNESSES = ['12mm', '15mm', '18mm', '20mm', '25mm', '30mm'];
+
+export const SlabCustomizationModal: React.FC = () => {
+  const { isModalOpen, pendingProduct, customization, closeModal, setCustomization } = useSlabCustomization();
+
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [mobile, setMobile] = useState('');
+  const [finish, setFinish] = useState(customization.finish);
+  const [thickness, setThickness] = useState(customization.thickness);
+  const [requirement, setRequirement] = useState(customization.requirement);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+
+  // Animation Refs & State
+  const [isRendered, setIsRendered] = useState(false);
+  const [isToastRendered, setIsToastRendered] = useState(false);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const backdropRef = useRef<HTMLDivElement>(null);
+  const toastRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (isModalOpen && pendingProduct) setIsRendered(true);
+  }, [isModalOpen, pendingProduct]);
+
+  useEffect(() => {
+    if (showToast) setIsToastRendered(true);
+  }, [showToast]);
+
+  useGSAP(() => {
+    if (isModalOpen && isRendered && modalRef.current && backdropRef.current) {
+      gsap.fromTo(backdropRef.current, { opacity: 0 }, { opacity: 1, duration: 0.3 });
+      gsap.fromTo(modalRef.current, { opacity: 0, scale: 0.95, y: 20 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "power2.out" });
+    } else if (!isModalOpen && isRendered && modalRef.current && backdropRef.current) {
+      gsap.to(backdropRef.current, { opacity: 0, duration: 0.3 });
+      gsap.to(modalRef.current, {
+        opacity: 0,
+        scale: 0.95,
+        y: 20,
+        duration: 0.2,
+        ease: "power2.in",
+        onComplete: () => setIsRendered(false)
+      });
+    }
+  }, [isModalOpen, isRendered]);
+
+  useGSAP(() => {
+    if (showToast && isToastRendered && toastRef.current) {
+      gsap.fromTo(toastRef.current, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.3, ease: "back.out(1.7)" });
+    } else if (!showToast && isToastRendered && toastRef.current) {
+      gsap.to(toastRef.current, { opacity: 0, y: 50, duration: 0.3, onComplete: () => setIsToastRendered(false) });
+    }
+  }, [showToast, isToastRendered]);
+
+
+  useEffect(() => {
+    if (isModalOpen) {
+      setName('');
+      setEmail('');
+      setMobile('');
+      setFinish(customization.finish);
+      setThickness(customization.thickness);
+      setRequirement(customization.requirement);
+      setIsSuccess(false);
+    }
+  }, [isModalOpen, customization]);
+
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (isModalOpen) {
+      // Store original styles
+      const originalStyle = window.getComputedStyle(document.body).overflow;
+      const originalPaddingRight = window.getComputedStyle(document.body).paddingRight;
+
+      // Get scrollbar width
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+
+      // Apply styles to prevent body scroll
+      document.body.style.overflow = 'hidden';
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+
+      return () => {
+        document.body.style.overflow = originalStyle;
+        document.body.style.paddingRight = originalPaddingRight;
+      };
+    }
+  }, [isModalOpen]);
+
+  const handleSubmit = async () => {
+    if (!pendingProduct) return;
+
+    // Validation
+    if (!name.trim()) {
+      alert('Please enter your name');
+      return;
+    }
+
+    if (!email.trim()) {
+      alert('Please enter your email');
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      alert('Please enter a valid email address');
+      return;
+    }
+
+    if (!mobile.trim()) {
+      alert('Please enter your mobile number');
+      return;
+    }
+
+    if (!thickness) {
+      alert('Please select a thickness');
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || '/api';
+      const response = await fetch(`${API_URL}/quotations/submit`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: name.trim(),
+          email: email.trim(),
+          mobile: mobile.trim(),
+          productName: pendingProduct.name,
+          finish,
+          thickness,
+          requirement
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.ok) {
+        throw new Error(data.error || 'Failed to submit quotation request');
+      }
+
+      setCustomization({ finish, thickness, requirement });
+      setIsSuccess(true);
+      setShowToast(true);
+
+      setTimeout(() => {
+        setShowToast(false);
+      }, 3000); // Toast disappears after 3 seconds
+
+      setTimeout(() => {
+        closeModal();
+      }, 2500);
+
+    } catch (error) {
+      console.error('Quote request error:', error);
+      alert(error instanceof Error ? error.message : 'Failed to send quotation request. Please try again or contact us directly.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <>
+      {isRendered && pendingProduct && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <div
+            ref={backdropRef}
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+            onClick={closeModal}
+            style={{ opacity: 0 }}
+            onWheel={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }}
+            onTouchMove={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }}
+          />
+          <div
+            ref={modalRef}
+            className="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl max-h-[90vh] overflow-y-auto"
+            style={{ opacity: 0, transform: 'scale(0.95) translateY(20px)', overscrollBehavior: 'contain' }}
+            onClick={(e) => e.stopPropagation()}
+            onWheel={(e) => {
+              e.stopPropagation();
+              const element = e.currentTarget;
+              const { scrollTop, scrollHeight, clientHeight } = element;
+              const isAtTop = scrollTop === 0;
+              const isAtBottom = scrollTop + clientHeight >= scrollHeight;
+              if ((isAtTop && e.deltaY < 0) || (isAtBottom && e.deltaY > 0)) {
+                e.preventDefault();
+              }
+            }}
+            onTouchMove={(e) => e.stopPropagation()}
+          >
+            {isSuccess ? (
+              <div className="p-8 text-center">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-500 flex items-center justify-center">
+                  <CheckCircle className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-2xl font-semibold mb-2">Request Sent!</h3>
+                <p className="text-gray-600">We'll contact you shortly with pricing details at {email}</p>
+              </div>
+            ) : (
+              <>
+                {/* Header */}
+                <div className="flex items-center justify-between p-4 sm:p-6 border-b sticky top-0 bg-white z-10 rounded-t-2xl">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className="p-2 bg-black rounded-full flex-shrink-0">
+                      <Layers className="w-5 h-5 text-white" />
+                    </div>
+                    <div className="min-w-0">
+                      <h2 className="text-lg sm:text-xl font-semibold text-black">Request Quotation</h2>
+                      <p className="text-xs sm:text-sm text-gray-600 truncate">{pendingProduct.name}</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={closeModal}
+                    className="p-2 hover:bg-gray-100 rounded-full transition-colors flex-shrink-0"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+
+                {/* Content */}
+                <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
+                  {/* Name Input */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Name <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                      <input
+                        type="text"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        placeholder="Enter your full name"
+                        className="w-full pl-10 pr-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Email Input */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Email <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                      <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="your.email@example.com"
+                        className="w-full pl-10 pr-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Mobile Input */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Mobile Number <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                      <input
+                        type="tel"
+                        value={mobile}
+                        onChange={(e) => setMobile(e.target.value)}
+                        placeholder="+91 XXXXX XXXXX"
+                        className="w-full pl-10 pr-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Finish Selection */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Finish Type</label>
+                    <select
+                      value={finish}
+                      onChange={(e) => setFinish(e.target.value)}
+                      className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                    >
+                      {FINISHES.map((f) => (
+                        <option key={f} value={f}>{f}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Thickness Selection */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Thickness <span className="text-red-500">*</span>
+                    </label>
+                    <div className="grid grid-cols-3 gap-2">
+                      {THICKNESSES.map((t) => (
+                        <button
+                          key={t}
+                          onClick={() => setThickness(t)}
+                          className={`px-2 sm:px-4 py-2 text-sm sm:text-base rounded-lg font-medium transition-all ${thickness === t
+                            ? 'bg-black text-white'
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                            }`}
+                        >
+                          {t}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Requirement Input */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Requirement (sq ft)</label>
+                    <div className="relative">
+                      <Ruler className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                      <input
+                        type="number"
+                        min="1"
+                        value={requirement}
+                        onChange={(e) => setRequirement(Math.max(1, parseInt(e.target.value) || 1))}
+                        className="w-full pl-10 pr-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Summary */}
+                  <div className="bg-amber-50 rounded-lg p-3 sm:p-4 border border-amber-200">
+                    <h4 className="font-semibold mb-2 text-sm sm:text-base">Request Summary</h4>
+                    <div className="space-y-1 text-xs sm:text-sm text-gray-700">
+                      <div className="flex justify-between">
+                        <span>Product:</span>
+                        <span className="font-medium truncate ml-2 max-w-[60%]">{pendingProduct.name}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Finish:</span>
+                        <span className="font-medium">{finish}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Thickness:</span>
+                        <span className="font-medium">{thickness}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Quantity:</span>
+                        <span className="font-medium">{requirement} sq ft</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Footer */}
+                <div className="p-4 sm:p-6 border-t sticky bottom-0 bg-white rounded-b-2xl">
+                  <button
+                    onClick={handleSubmit}
+                    disabled={isSubmitting}
+                    className="w-full py-3 px-4 bg-black text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                        Sending...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-5 h-5" />
+                        Send Quote Request
+                      </>
+                    )}
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
+      {isToastRendered && (
+        <div
+          ref={toastRef}
+          className="fixed bottom-6 right-6 z-[110] bg-green-500 text-white px-4 py-3 rounded-lg shadow-lg flex items-center gap-2"
+          style={{ opacity: 0, transform: 'translateY(50px)' }}
+        >
+          <CheckCircle className="w-5 h-5" />
+          <span className="text-sm">Quote request sent successfully!</span>
+        </div>
+      )}
+    </>
+  );
+};

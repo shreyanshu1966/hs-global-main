@@ -5,12 +5,12 @@ const Home = () => {
   return (
     <>
       <Helmet>
-        <title>HS Global Export : Premium Granite &amp; Marble Solutions - Handcrafted Products Manufacturers with Free Delivery | USA | UK</title>
+        <title>HS Global Export : Premium Granite & Marble Solutions - Handcrafted Products Manufacturers with Free Delivery | USA | UK</title>
         <meta name="description" content="Hs Global Export – Best marble furniturers offering premium granite & marble solutions. Handcrafted products with free delivery to USA & UK and across world" />
-        <meta name="keywords" content="Premium Granite Furniture Exporter, Marble Furniture Manufacturer, Italian Onyx Furniture, Indian Marble Furniture Export, Beige and Grey Marble Furniture, Marble Sinks and Tiles Exporter, Global Granite & Marble Supplier, Luxury Marble Furniture, Custom Marble Furniture, High-Quality Marble Tiles Export, Premium Marble Sink Manufacturers, Marble Home Décor Exporter, Natural Stone Furniture Manufacturer, Marble Bathroom Sinks, Granite & Marble Export Worldwide, Onyx Marble Furniture Exporter, Luxury Stone Furniture for Export, Global Supplier of Marble Tiles, High-End Marble Furniture, Wholesale Marble Furniture Exporter" />
+        <meta name="keywords" content="Premium Granite Furniture Exporter, Marble Furniture Manufacturer, Italian Onyx Furniture, Indian Marble Furniture Export, Beige and Grey Marble Furniture, Marble Sinks and Tiles Exporter, Global Granite & Marble Supplier, Luxury Marble Furniture, Custom Marble Furniture, High-Quality Marble Tiles Export, Premium Marble Sink Manufacturers, Marble Home Décor Exporter, Natural Stone Furniture Manufacturer, Marble Bathroom Sinks, Granite & Marble Export Worldwide, Onyx Marble Furniture Exporter, Luxury Stone Furniture for Export, Global Supplier of Marble Tiles, High-End Marble Furniture, Wholesale Marble Furniture Exporter." />
         <meta name="author" content="HS Global Export" />
         <meta name="robots" content="index, follow" />
-        <link rel="canonical" href="https://www.hsglobalexport.com/" />
+        <link rel="canonical" href="Canonical Tag" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.hsglobalexport.com/" />
         <meta property="og:site_name" content="HS Global Export" />

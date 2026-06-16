@@ -1,0 +1,532 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --app-font-family: "Inter", sans-serif;
+}
+
+/* Performance optimizations */
+* {
+  box-sizing: border-box;
+  font-family: var(--app-font-family) !important;
+}
+
+*::before,
+*::after {
+  font-family: var(--app-font-family) !important;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* GPU acceleration for animations */
+.animate-spin-slow {
+  animation: spin 3s linear infinite;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.animate-slideUp {
+  animation: slideUp 0.3s ease-out forwards;
+}
+
+.animate-slideDown {
+  animation: slideDown 0.4s ease-out forwards;
+}
+
+[dir="rtl"] {
+  text-align: right;
+}
+
+[dir="ltr"] {
+  text-align: left;
+}
+
+/* Optimize image rendering */
+img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* Reduce layout thrashing */
+.will-change-transform {
+  will-change: transform;
+}
+
+.will-change-opacity {
+  will-change: opacity;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slideDown {
+  animation: slideDown 0.3s ease-out forwards;
+}
+
+/* Critical animations */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Content visibility for better performance */
+.content-visibility-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 1000px;
+}
+
+/* Compact black scrollbar for drawers */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #000;
+  border-radius: 8px;
+}
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #000 rgba(0, 0, 0, 0.05);
+}
+
+html {
+  overflow-x: clip;
+}
+
+body {
+  overflow-x: clip;
+  @apply bg-background text-text-primary;
+  font-family: var(--app-font-family) !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Container styles */
+.container {
+  @apply w-full mx-auto px-4;
+  max-width: 100%;
+}
+
+@screen sm {
+  .container {
+    max-width: 640px;
+  }
+}
+
+@screen md {
+  .container {
+    max-width: 768px;
+  }
+}
+
+@screen lg {
+  .container {
+    max-width: 1024px;
+  }
+}
+
+@screen xl {
+  .container {
+    max-width: 1280px;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-secondary;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-500 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-700;
+}
+
+/* Smooth transitions */
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+/* Loading animation */
+.loading-spinner {
+  @apply relative w-20 h-20;
+}
+
+.loading-spinner::before,
+.loading-spinner::after {
+  content: '';
+  @apply absolute inset-0 rounded-full border-4 border-transparent;
+}
+
+.loading-spinner::before {
+  @apply border-t-accent animate-spin;
+  animation-duration: 1s;
+}
+
+.loading-spinner::after {
+  @apply border-accent opacity-20;
+}
+
+/* Image hover effects */
+.image-hover {
+  @apply relative overflow-hidden;
+}
+
+.image-hover img {
+  @apply transition-transform duration-700 ease-in-out;
+}
+
+.image-hover:hover img {
+  @apply scale-110;
+}
+
+/* Text gradient */
+.text-gradient {
+  @apply bg-gradient-to-r from-accent to-accent2 bg-clip-text text-transparent;
+}
+
+/* Responsive typography */
+@layer base {
+  h1 {
+    @apply font-serif text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight;
+  }
+
+  h2 {
+    @apply font-serif text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight;
+  }
+
+  h3 {
+    @apply font-serif text-2xl md:text-3xl lg:text-4xl font-semibold;
+  }
+
+  h4 {
+    @apply font-serif text-xl md:text-2xl font-semibold;
+  }
+
+  p {
+    @apply font-sans text-base md:text-lg leading-relaxed text-gray-600;
+  }
+}
+
+/* Layout utilities */
+.section-padding {
+  @apply py-12 md:py-16 lg:py-20;
+}
+
+.section-margin {
+  @apply my-12 md:my-16 lg:my-20;
+}
+
+/* Mobile navigation */
+.mobile-nav {
+  @apply fixed inset-0 bg-white z-50;
+  height: 100vh;
+}
+
+/* Grid layouts */
+.responsive-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8;
+}
+
+.responsive-grid-4 {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8;
+}
+
+/* Flex layouts */
+.flex-center {
+  @apply flex items-center justify-center;
+}
+
+.flex-between {
+  @apply flex items-center justify-between;
+}
+
+/* Button styles */
+.btn {
+  @apply px-6 py-2 rounded-full transition-colors duration-300;
+}
+
+.btn-primary {
+  @apply btn bg-accent text-white hover:bg-accent/90;
+}
+
+/* Unified cart popup/drawer styles */
+.cart-panel-title {
+  font-family: var(--app-font-family);
+  font-size: 1.28rem;
+  line-height: 1.05;
+  letter-spacing: 0.01em;
+  color: #111111;
+}
+
+.cart-panel-count {
+  font-size: 11px;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.cart-item-title {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font-size: 0.97rem;
+  line-height: 1.3rem;
+  color: #111111;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.cart-item-title:hover {
+  text-decoration: underline;
+}
+
+.cart-action-primary,
+.cart-action-secondary {
+  height: 44px;
+  padding: 0 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.cart-action-primary {
+  border: 1px solid #111111;
+  background: #111111;
+  color: #ffffff;
+  font-size: 0.86rem;
+}
+
+.cart-action-primary:hover {
+  background: #2a2722;
+}
+
+.cart-action-secondary {
+  border: 1px solid #111111;
+  background: #ffffff;
+  color: #111111;
+  font-size: 0.73rem;
+  min-width: 7.25rem;
+}
+
+.cart-action-secondary:hover {
+  background: #f8f8f8;
+}
+
+.btn-secondary {
+  @apply btn bg-white text-accent border-2 border-accent hover:bg-accent hover:text-white;
+}
+
+@keyframes shine {
+  0% {
+    background-position: 100%;
+  }
+
+  100% {
+    background-position: -100%;
+  }
+}
+
+.animate-shine {
+  animation-name: shine;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+/* Responsive Scaling Utilities - Awwwards Style */
+/* These utilities maintain layout structure while scaling proportionally */
+
+/* Ensure smooth font rendering at all scales */
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+}
+
+/* Touch-friendly interactions for scaled layouts */
+.touch-manipulation {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Prevent text selection on interactive elements */
+.select-none-touch {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* Optimize transforms for scaled layouts */
+@layer utilities {
+  .gpu-accelerate {
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  .smooth-scroll {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+}
+
+/* Maintain aspect ratios in scaled grids */
+.aspect-maintain {
+  aspect-ratio: attr(data-aspect);
+}
+
+/* Responsive viewport units that work consistently */
+@supports (height: 100svh) {
+  .min-h-screen {
+    min-height: 100svh;
+  }
+}
+
+/* Ensure images scale properly */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Prevent layout shift during loading */
+.prevent-shift {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 500px;
+}
+
+/* Smooth transitions for scaled elements */
+.scale-smooth {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Touch feedback utilities */
+.active\:scale-95:active {
+  transform: scale(0.95);
+}
+
+.active\:scale-98:active {
+  transform: scale(0.98);
+}
+
+/* Mobile-first grid that maintains structure */
+.grid-scale-preserve {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+}
+
+/* Optimize for high DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2),
+(min-resolution: 192dpi) {
+  img {
+    image-rendering: -webkit-optimize-contrast;
+  }
+}
+
+/* Ensure proper spacing in scaled layouts */
+.spacing-fluid {
+  margin: clamp(1rem, 3vw, 2rem);
+  padding: clamp(1rem, 3vw, 2rem);
+}
+
+/* Performance optimization for scaled animations */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

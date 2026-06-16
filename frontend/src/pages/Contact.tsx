@@ -164,7 +164,7 @@ const Contact = () => {
         <meta name="robots" content="index, follow" />
 
         {/* Canonical URL */}
-        <link rel="canonical" href="https://www.hsglobalexport.com/contact" />
+        <link rel="canonical" href="https://www.hsglobalexport.com/blog" />
 
         {/* Open Graph */}
         <meta property="og:type" content="website" />

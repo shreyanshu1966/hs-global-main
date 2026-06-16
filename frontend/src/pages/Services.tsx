@@ -37,7 +37,7 @@ const Services: React.FC = () => {
         <meta name="robots" content="index, follow" />
 
         {/* Canonical URL */}
-        <link rel="canonical" href="https://www.hsglobalexport.com/services" />
+        <link rel="canonical" href="https://www.hsglobalexport.com/gallery" />
 
         {/* Open Graph */}
         <meta property="og:type" content="website" />

@@ -115,6 +115,7 @@ app.use('/api/admin/delivery-analytics', require('./routes/deliveryAnalyticsRout
 app.use('/api/coupons', require('./routes/couponRoutes')); // Coupon management
 app.use('/api/spec-keys', require('./routes/specKeyRoutes')); // Product spec key pool
 app.use('/api/field-options', require('./routes/fieldOptionRoutes')); // Custom dropdown option values
+app.use('/api/seo', require('./routes/seoRoutes')); // PageSeo + Redirect (301 map)
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
