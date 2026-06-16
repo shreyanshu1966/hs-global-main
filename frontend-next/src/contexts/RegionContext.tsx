@@ -78,26 +78,29 @@ const RegionContext = createContext<RegionContextType | undefined>(undefined);
 export const RegionProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const { location, loading: locationLoading } = useLocalization();
 
-    const [region, setRegionState] = useState<Region>(() => {
-        if (typeof window === 'undefined') return 'default'; // SSR-safe
-        // Priority 1: saved manual selection (but NOT 'default' — that means "auto-detect")
+    // Always start with 'default' so server HTML matches the initial client render
+    // (avoids hydration mismatch). Client-side detection runs in useEffect below.
+    const [region, setRegionState] = useState<Region>('default');
+    const [isAutoDetected, setIsAutoDetected] = useState(true);
+
+    // Priority 1 & 2: After hydration, apply localStorage preference or browser detection.
+    // Runs only on the client, after the first render, so SSR HTML is never mismatched.
+    useEffect(() => {
         const saved = localStorage.getItem(STORAGE_KEY);
         if (saved && saved !== 'default') {
             console.log(`[Region] Loaded from localStorage: ${saved}`);
-            return saved as Region;
+            setRegionState(saved as Region);
+            setIsAutoDetected(false);
+            return;
         }
-        // Priority 2: instant browser detection (timezone/language)
         const tz = typeof Intl !== 'undefined' ? Intl.DateTimeFormat().resolvedOptions().timeZone : '';
         const detected = detectRegionFromBrowser();
         console.log(`[Region] Browser timezone: ${tz} → detected: ${detected || 'default'}`);
-        return detected || 'default';
-    });
-
-    const [isAutoDetected, setIsAutoDetected] = useState(() => {
-        if (typeof window === 'undefined') return true; // SSR-safe
-        const saved = localStorage.getItem(STORAGE_KEY);
-        return !saved || saved === 'default';
-    });
+        if (detected) {
+            setRegionState(detected);
+            setIsAutoDetected(true);
+        }
+    }, []);
 
     // Priority 3: IP-based detection (async, most accurate — only overrides if no manual selection)
     useEffect(() => {

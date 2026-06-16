@@ -107,6 +107,10 @@ function DesktopSort({
 export default function Products({ initialProducts }: { initialProducts?: any[] } = {}) {
   const location = useLocation();
   const navigate = useNavigate();
+  // Stabilise navigate in a ref so the URL-sync effect doesn't re-fire every
+  // render when React Router recreates the navigate function reference.
+  const navigateRef = useRef(navigate);
+  useEffect(() => { navigateRef.current = navigate; });
   // Read path params from the matched route:
   //   /products                               → {}
   //   /products/:category                     → { category }
@@ -254,8 +258,8 @@ export default function Products({ initialProducts }: { initialProducts?: any[] 
       if (crossCategoryFilter) path += `/${crossCategoryFilter}`;
     }
 
-    navigate({ pathname: path }, { replace: true });
-  }, [activeCategory, activeSubcategory, crossCategoryFilter, navigate]);
+    navigateRef.current({ pathname: path }, { replace: true });
+  }, [activeCategory, activeSubcategory, crossCategoryFilter]);
 
   // Accumulate pages
   useEffect(() => {

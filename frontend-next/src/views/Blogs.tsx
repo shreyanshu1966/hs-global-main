@@ -181,12 +181,14 @@ const Blogs = ({ initialBlogs }: { initialBlogs?: Blog[] } = {}) => {
                                         style={{ animationDelay: `${index * 100}ms` }}
                                     >
                                         <Link to={`/blog/${blog.slug}`}>
-                                            <div className="relative h-64 overflow-hidden">
-                                                <img
-                                                    src={blog.featuredImage}
-                                                    alt={blog.title}
-                                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                                                />
+                                            <div className="relative h-64 overflow-hidden bg-gray-100">
+                                                {blog.featuredImage && (
+                                                    <img
+                                                        src={blog.featuredImage}
+                                                        alt={blog.title}
+                                                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                                    />
+                                                )}
                                                 <div className="absolute top-4 left-4">
                                                     <span className="px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full text-xs font-semibold text-gray-900">
                                                         {blog.category}
