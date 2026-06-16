@@ -166,13 +166,15 @@ const BlogDetail = ({ initialData }: { initialData?: { blog?: Blog; relatedBlogs
                         </div>
 
                         {/* Featured Image */}
-                        <div className="relative h-96 md:h-[500px] rounded-2xl overflow-hidden shadow-2xl">
-                            <img
-                                src={blog.featuredImage}
-                                alt={blog.title}
-                                className="w-full h-full object-cover"
-                            />
-                        </div>
+                        {blog.featuredImage && (
+                            <div className="relative h-96 md:h-[500px] rounded-2xl overflow-hidden shadow-2xl">
+                                <img
+                                    src={blog.featuredImage}
+                                    alt={blog.title}
+                                    className="w-full h-full object-cover"
+                                />
+                            </div>
+                        )}
                     </header>
 
                     {/* Article Content */}
@@ -214,12 +216,14 @@ const BlogDetail = ({ initialData }: { initialData?: { blog?: Blog; relatedBlogs
                                         to={`/blog/${relatedBlog.slug}`}
                                         className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
                                     >
-                                        <div className="relative h-48 overflow-hidden">
-                                            <img
-                                                src={relatedBlog.featuredImage}
-                                                alt={relatedBlog.title}
-                                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                                            />
+                                        <div className="relative h-48 overflow-hidden bg-gray-100">
+                                            {relatedBlog.featuredImage && (
+                                                <img
+                                                    src={relatedBlog.featuredImage}
+                                                    alt={relatedBlog.title}
+                                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                                />
+                                            )}
                                         </div>
 
                                         <div className="p-6">

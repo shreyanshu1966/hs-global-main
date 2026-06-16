@@ -55,17 +55,19 @@ const HeroSection = ({ slides = [], autoplayInterval = 5000 }: HeroSectionProps)
       style={{ minHeight: 'min(90vh, 720px)' }}
     >
       {/* Background images — all mounted, active one is visible */}
-      {slides.map((s, i) => (
-        <img
-          key={i}
-          src={s.backgroundImage || ''}
-          alt={s.heading || ''}
-          aria-hidden={i !== active}
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
-          style={{ opacity: i === active ? 1 : 0, zIndex: 0 }}
-          loading={i === 0 ? 'eager' : 'lazy'}
-        />
-      ))}
+      {slides.map((s, i) =>
+        s.backgroundImage ? (
+          <img
+            key={i}
+            src={s.backgroundImage}
+            alt={s.heading || ''}
+            aria-hidden={i !== active}
+            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
+            style={{ opacity: i === active ? 1 : 0, zIndex: 0 }}
+            loading={i === 0 ? 'eager' : 'lazy'}
+          />
+        ) : null
+      )}
 
       {/* Overlay */}
       <div

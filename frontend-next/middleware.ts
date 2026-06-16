@@ -24,12 +24,15 @@ async function getRedirects(): Promise<Map<string, string>> {
         (json.data || []).map((r: { from: string; to: string }) => [r.from, r.to])
       );
       lastFetch = Date.now();
+    } else {
+      // Non-OK response (4xx/5xx) — keep stale map or fall back to empty
+      redirectMap = redirectMap ?? new Map();
     }
   } catch {
-    // Keep the existing map if fetch fails (stale-while-revalidate)
+    // Network error — keep stale map or fall back to empty
     redirectMap = redirectMap ?? new Map();
   }
-  return redirectMap!;
+  return redirectMap;
 }
 
 export async function middleware(req: NextRequest) {

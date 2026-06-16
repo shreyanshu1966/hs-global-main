@@ -57,9 +57,13 @@ export const useProducts = (options: UseProductsOptions = {}): UseProductsReturn
     initialProducts,
   } = options;
 
-  const [products, setProducts] = useState<Product[]>(initialProducts ?? []);
+  // Capture initialProducts in a ref so it seeds state once on mount without
+  // ever becoming a reactive dep that triggers re-fetches on every render.
+  const initialProductsRef = useRef<Product[] | undefined>(initialProducts);
+
+  const [products, setProducts] = useState<Product[]>(initialProductsRef.current ?? []);
   // Seeded with server data → no skeleton on first paint (SSR-friendly).
-  const [loading, setLoading] = useState(initialProducts ? false : autoFetch);
+  const [loading, setLoading] = useState(initialProductsRef.current ? false : autoFetch);
   const [error, setError] = useState<string | null>(null);
   const [pagination, setPagination] = useState<{
     current: number;
