@@ -1,0 +1,89 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Canonical host: force non-www -> www (301) to consolidate SEO authority.
+  RewriteCond %{HTTP_HOST} ^hsglobalexport\.com$ [NC]
+  RewriteRule ^(.*)$ https://www.hsglobalexport.com/$1 [R=301,L]
+
+  # Serve build-time prerendered pages (dist/<route>/index.html) for clean URLs
+  # WITHOUT Apache's automatic trailing-slash redirect, so /about stays /about.
+  DirectorySlash Off
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteCond %{REQUEST_FILENAME}/index.html -f
+  RewriteRule ^(.+)$ /$1/index.html [L]
+
+  RewriteRule ^index\.html$ - [L]
+
+  # SPA fallback for all other routes (product pages, blog, etc.)
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME} !-l
+  RewriteRule . /index.html [L]
+</IfModule>
+
+# Enable GZIP compression
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json
+</IfModule>
+
+# Browser caching
+<IfModule mod_expires.c>
+  ExpiresActive On
+  
+  # Images - Long cache (1 year)
+  ExpiresByType image/jpg "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/gif "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType image/x-icon "access plus 1 year"
+  
+  # CSS - Long cache (1 year)
+  ExpiresByType text/css "access plus 1 year"
+
+  # JavaScript - Long cache (1 year)
+  # Covers all common JS mime types
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType application/x-javascript "access plus 1 year"
+  ExpiresByType text/javascript "access plus 1 year"
+  
+  # Fonts - Long cache (1 year)
+  ExpiresByType font/woff2 "access plus 1 year"
+  
+  # Others
+  ExpiresByType application/pdf "access plus 1 month"
+</IfModule>
+
+# Cache-Control Headers
+<IfModule mod_headers.c>
+  # Long cache for assets with hash in filename (these are cache-busted automatically)
+  <FilesMatch "\.(js|css|png|jpg|jpeg|gif|webp|svg|ico|woff2)$">
+    Header set Cache-Control "max-age=31536000, public, immutable"
+    Header set ETag ""
+  </FilesMatch>
+  
+  # HTML: short shared cache so Cloudflare can cache the Worker-rendered page
+  # (huge TTFB win) while browsers always revalidate. Hashed JS/CSS above are
+  # immutable, so new deploys propagate within minutes with no stale assets.
+  <FilesMatch "\.(html|htm)$">
+    Header set Cache-Control "public, max-age=0, s-maxage=300, must-revalidate"
+    Header unset Pragma
+    Header unset Expires
+  </FilesMatch>
+
+  # Security Headers
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set X-XSS-Protection "1; mode=block"
+</IfModule>
+
+# Prevent caching of any potential service worker files
+<FilesMatch "(sw|service-worker|workbox).*\.js$">
+  Header set Cache-Control "no-cache, no-store, must-revalidate"
+  Header set Pragma "no-cache"
+  Header set Expires "0"
+</FilesMatch>
+
+

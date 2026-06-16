@@ -30,6 +30,14 @@ const categorySchema = new mongoose.Schema({
         trim: true
     },
     customSubcategories: [subcategorySchema],
+    seo: {
+        metaTitle: String,
+        metaDescription: String,
+        h1: String,
+        keywords: [String],
+        ogImage: String,
+        canonicalUrl: String
+    },
     createdBy: {
         type: String,
         default: 'admin'
