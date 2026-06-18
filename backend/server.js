@@ -1,5 +1,7 @@
 const express = require('express');
 const cors = require('cors');
+const compression = require('compression');
+const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const path = require('path');
@@ -68,6 +70,15 @@ app.use(cors(corsOptions));
 
 // Handle preflight requests explicitly
 app.options('*', cors(corsOptions));
+
+// Compression — gzip all responses, ~60-70% bandwidth reduction
+app.use(compression());
+
+// Security headers — X-Frame-Options, X-Content-Type-Options, HSTS, CSP, etc.
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: 'cross-origin' },
+  contentSecurityPolicy: false, // Managed by frontend Next.js headers
+}));
 
 // Additional CORS headers middleware as fallback
 app.use((req, res, next) => {

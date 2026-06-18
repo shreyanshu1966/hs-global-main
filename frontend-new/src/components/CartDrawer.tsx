@@ -1,5 +1,6 @@
 'use client';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import Image from 'next/image';
 import { X, Plus, Minus, Trash2, MessageCircle, Tag, Loader2 } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { useNavigate } from 'react-router-dom';
@@ -202,11 +203,11 @@ export const CartDrawer: React.FC = () => {
                             }}
                             className="flex-shrink-0 w-20 h-20 bg-[#f8fafc] overflow-hidden border border-[#e5e7eb] block cursor-pointer relative"
                           >
-                            <img
-                              src={item.image}
-                              alt={item.name}
-                              className="absolute inset-0 w-full h-full object-cover"
-                            />
+                            {item.image && !item.image.startsWith('data:') ? (
+                              <Image fill src={item.image} alt={item.name} className="object-cover" sizes="80px" />
+                            ) : item.image ? (
+                              <img src={item.image} alt={item.name} className="absolute inset-0 w-full h-full object-cover" />
+                            ) : null}
                           </div>
 
                           <div className="flex-1 min-w-0 flex flex-col w-full">

@@ -61,9 +61,15 @@ const blogSchema = new mongoose.Schema({
         default: 5
     },
     seo: {
-        metaTitle: String,
-        metaDescription: String,
-        keywords: [String]
+        metaTitle:          String,
+        metaDescription:    String,
+        keywords:           [String],
+        ogTitle:            String,
+        ogDescription:      String,
+        ogImage:            String,
+        twitterTitle:       String,
+        twitterDescription: String,
+        twitterImage:       String,
     },
     publishedAt: {
         type: Date,

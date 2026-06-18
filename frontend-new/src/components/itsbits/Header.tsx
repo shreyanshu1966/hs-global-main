@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useMemo, useRef, useState } from "react";
+import Image from "next/image";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ChevronDown, Heart, Mail, Menu, Phone, Search, X } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
@@ -566,8 +567,10 @@ const Header = () => {
                     onClick={() => handleSelectProduct(product)}
                     className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-[#f8fafc] transition-colors"
                   >
-                    <div className="w-12 h-12 rounded-md overflow-hidden bg-[#f3f4f6] shrink-0">
-                      {product.image ? (
+                    <div className="w-12 h-12 rounded-md overflow-hidden bg-[#f3f4f6] shrink-0 relative">
+                      {product.image && !product.image.startsWith('data:') ? (
+                        <Image fill src={product.image} alt={product.name} className="object-cover rounded-md" sizes="48px" />
+                      ) : product.image ? (
                         <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
                       ) : null}
                     </div>
@@ -858,8 +861,10 @@ const Header = () => {
                   onClick={() => handleSelectProduct(product)}
                   className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-[#f8f8f8] transition-colors"
                 >
-                  <div className="w-10 h-10 rounded-md overflow-hidden bg-[#f3f4f6] shrink-0">
-                    {product.image ? (
+                  <div className="w-10 h-10 rounded-md overflow-hidden bg-[#f3f4f6] shrink-0 relative">
+                    {product.image && !product.image.startsWith('data:') ? (
+                      <Image fill src={product.image} alt={product.name} className="object-cover rounded-md" sizes="40px" />
+                    ) : product.image ? (
                       <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
                     ) : null}
                   </div>
