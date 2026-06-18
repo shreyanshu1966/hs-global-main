@@ -59,7 +59,7 @@ export default function Page() {
         as="image"
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore — React 18 types don't expose imageSrcSet/imageSizes yet
-        imageSrcSet="/_next/image?url=%2Fbanner4.webp&w=640&q=60 640w, /_next/image?url=%2Fbanner4.webp&w=828&q=60 828w, /_next/image?url=%2Fbanner4.webp&w=1200&q=60 1200w, /_next/image?url=%2Fbanner4.webp&w=1920&q=60 1920w"
+        imageSrcSet="/_next/image?url=%2Fbanner4.webp&w=640&q=75 640w, /_next/image?url=%2Fbanner4.webp&w=828&q=75 828w, /_next/image?url=%2Fbanner4.webp&w=1200&q=75 1200w, /_next/image?url=%2Fbanner4.webp&w=1920&q=75 1920w"
         imageSizes="100vw"
         fetchPriority="high"
       />
