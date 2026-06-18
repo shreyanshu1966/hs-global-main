@@ -27,16 +27,21 @@ const allowedOrigins = [
   'https://www.hsglobalexport.com',
   'https://hsglobalexport.com',
   'https://api.hsglobalexport.com',
-  
+
   // Development domains
-  'http://localhost:5173',
+  'http://localhost:5173',   // Vite / Next.js dev
   'http://localhost:5174',
   'http://localhost:3000',
+  'http://localhost:3001',   // Next.js production build local test
   'http://localhost:4173',
   'http://127.0.0.1:5173',
   'http://127.0.0.1:5174',
   'http://127.0.0.1:3000',
-  'http://127.0.0.1:4173'
+  'http://127.0.0.1:3001',
+  'http://127.0.0.1:4173',
+
+  // Extra origins from env (comma-separated), e.g. staging domains
+  ...((process.env.ALLOWED_ORIGINS || '').split(',').map(o => o.trim()).filter(Boolean)),
 ];
 
 console.log('🌍 CORS Configuration:');
