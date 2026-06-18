@@ -150,9 +150,13 @@ async function importSEOData() {
         continue;
       }
 
+      // hs_product_id column = pre-matched DB productId (added by the fuzzy-match tool)
+      const hsProductId = (row.hs_product_id || '').trim();
+
       validProducts.push({
         url,
         slug,
+        hsProductId,
         h1Tag,
         title,
         description,
@@ -168,17 +172,22 @@ async function importSEOData() {
     // Process each valid product
     for (const item of validProducts) {
       try {
-        // Try to find product by productId matching slug pattern
-        const product = await Product.findOne({
-          $or: [
-            { productId: item.slug },
-            { productId: new RegExp(item.slug.replace(/-/g, '\\s*[-\\s]\\s*'), 'i') },
-            { name: new RegExp(item.slug.replace(/-/g, ' '), 'i') }
-          ]
-        });
+        // 1. Exact match on pre-resolved hs_product_id column (fastest, most accurate)
+        // 2. Fallback: exact slug, regex on productId, regex on name
+        const query = item.hsProductId
+          ? { productId: item.hsProductId }
+          : {
+              $or: [
+                { productId: item.slug },
+                { productId: new RegExp(item.slug.replace(/-/g, '\\s*[-\\s]\\s*'), 'i') },
+                { name: new RegExp(item.slug.replace(/-/g, ' '), 'i') }
+              ]
+            };
+
+        const product = await Product.findOne(query);
 
         if (!product) {
-          console.log(`❌ Product not found for slug: ${item.slug}`);
+          console.log(`❌ Product not found for slug: ${item.slug}${item.hsProductId ? ` (hs_id: ${item.hsProductId})` : ''}`);
           notFoundCount++;
           continue;
         }
