@@ -1,8 +1,16 @@
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
+import { Inter } from 'next/font/google';
 import '@/index.css';
 import ClientProviders from '@/ClientProviders';
 import { SITE_NAME, SITE_URL } from '@/server/api';
+
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+  weight: ['400', '500', '600', '700'],
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -20,7 +28,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className={inter.variable}>
       <body>
         {/* Suspense boundary required because the router shim uses
             useSearchParams (CSR bailout) — keeps the rest statically renderable. */}

@@ -9,10 +9,6 @@ import axios from 'axios';
 import { HelmetProvider } from 'react-helmet-async';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
-import '@fontsource/inter';
-import '@fontsource/inter/500.css';
-import '@fontsource/inter/600.css';
-import '@fontsource/inter/700.css';
 import '@/i18n';
 
 import { LocalizationProvider } from '@/contexts/LocalizationContext';

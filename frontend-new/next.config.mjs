@@ -6,6 +6,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  experimental: {
+    optimizeCss: true,
+  },
   // Copied-from-Vite code: don't block the migration build on pre-existing
   // type/lint issues (the code already ran under Vite). Tighten later.
   typescript: { ignoreBuildErrors: true },
