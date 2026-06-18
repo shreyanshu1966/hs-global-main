@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "node gen-globs.mjs && next dev --port 5173",
     "prebuild": "node gen-globs.mjs",
-    "build": "node --max-old-space-size=4096 node_modules/next/dist/bin/next build",
+    "build": "next build",
     "start": "next start --port 5173",
     "lint": "next lint"
   },

@@ -5,8 +5,13 @@ import GalleryClient from './client';
 
 type Params = { params: Promise<{ id: string }> };
 
+// On-demand ISR: nothing pre-rendered at build; first request renders + caches.
+// GalleryClient is ssr:false so there is no server-rendered content to justify
+// pre-generating all 232 entries and blowing up the static worker's heap.
+export const revalidate = 86400;
+export const dynamicParams = true;
 export function generateStaticParams() {
-  return galaryDetails.map((d) => ({ id: String(d.id) }));
+  return [];
 }
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
