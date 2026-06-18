@@ -34,6 +34,8 @@ const nextConfig = {
       { protocol: 'https', hostname: 'www.hsglobalexport.com' },
     ],
     formats: ['image/avif', 'image/webp'],
+    quality: 60,
+    minimumCacheTTL: 86400,
   },
   async redirects() {
     return [

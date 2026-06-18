@@ -1,4 +1,6 @@
 'use client';
+import Image from 'next/image';
+
 interface JournalArticle {
   title: string;
   image: string;
@@ -42,11 +44,12 @@ const IntrospectiveMagazine = ({
         {first && (
         <a href={first.link} className="group itsbits-journal-article-link">
           <div className="itsbits-journal-landscape itsbits-journal-media-wrap">
-            <img 
+            <Image
+              fill
               src={first.image}
               alt={first.imageAlt || first.title}
               className="itsbits-journal-media group-hover:scale-105 transition-transform duration-500"
-              style={{ position: 'absolute', top: 0, left: 0 }}
+              sizes="(max-width: 768px) 100vw, 50vw"
             />
           </div>
           <h3 className="itsbits-journal-title itsbits-journal-title-base">
@@ -61,11 +64,12 @@ const IntrospectiveMagazine = ({
         {second && (
         <a href={second.link} className="group itsbits-journal-article-link">
           <div className="itsbits-journal-landscape itsbits-journal-media-wrap">
-            <img 
+            <Image
+              fill
               src={second.image}
               alt={second.imageAlt || second.title}
               className="itsbits-journal-media group-hover:scale-105 transition-transform duration-500"
-              style={{ position: 'absolute', top: 0, left: 0 }}
+              sizes="(max-width: 768px) 100vw, 50vw"
             />
           </div>
           <h3 className="itsbits-journal-title itsbits-journal-title-base">

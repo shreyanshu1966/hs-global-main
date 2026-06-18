@@ -29,6 +29,13 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={inter.variable}>
+      <head>
+        {/* Preconnect to origins used early in page load */}
+        <link rel="preconnect" href="https://ipapi.co" />
+        <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="" />
+        <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+        <link rel="preconnect" href="https://accounts.google.com" crossOrigin="" />
+      </head>
       <body>
         {/* Suspense boundary required because the router shim uses
             useSearchParams (CSR bailout) — keeps the rest statically renderable. */}
