@@ -1,4 +1,6 @@
 'use client';
+import Image from 'next/image';
+
 interface FeaturedBannerProps {
   title?: string;
   body?: string;
@@ -23,15 +25,16 @@ const FeaturedBanner = ({
       <div className="itsbits-featured-wrap itsbits-featured-section">
         
         {/* Image Side */}
-        <div className="itsbits-featured-image-wrap">
-          <img 
-            src={image}
-            alt={imageAlt}
-            className="itsbits-featured-image"
-            onError={(e) => {
-              e.currentTarget.src = fallbackImage;
-            }}
-          />
+        <div className="itsbits-featured-image-wrap relative">
+          {(image || fallbackImage) && (
+            <Image
+              fill
+              src={image || fallbackImage}
+              alt={imageAlt}
+              className="itsbits-featured-image object-cover"
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
+          )}
         </div>
 
         {/* Text Side */}

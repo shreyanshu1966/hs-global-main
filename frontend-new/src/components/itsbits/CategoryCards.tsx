@@ -1,4 +1,6 @@
 'use client';
+import Image from 'next/image';
+
 interface CategoryCard {
   title: string;
   subtitle: string;
@@ -30,10 +32,12 @@ const CategoryCards = ({ title = '', cards = [] }: CategoryCardsProps) => {
           >
             {/* Image */}
             {card.image ? (
-              <img
+              <Image
+                fill
                 src={card.image}
                 alt={card.title}
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                sizes="(max-width: 1024px) 50vw, 25vw"
               />
             ) : (
               <div className="absolute inset-0 bg-gray-200" />

@@ -1,4 +1,5 @@
 'use client';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useHorizontalCarousel } from './useHorizontalCarousel';
 
@@ -73,11 +74,13 @@ const SpotlightSection = ({ sectionTitle = '', cards: cardsProp = [] }: Spotligh
                   href={item.link || ''}
                   className="itsbits-track-item-no-shrink cursor-pointer group itsbits-spotlight-item"
                 >
-                  <div className="itsbits-spotlight-image-wrap">
-                    <img
+                  <div className="itsbits-spotlight-image-wrap relative">
+                    <Image
+                      fill
                       src={item.image}
                       alt={item.title}
-                      className="w-full group-hover:opacity-90 transition-opacity duration-200"
+                      className="object-cover group-hover:opacity-90 transition-opacity duration-200"
+                      sizes="(max-width: 640px) 86vw, (max-width: 1024px) 78vw, 340px"
                     />
                   </div>
                   <div className="dibs-header-medium text-[#222] itsbits-spotlight-item-title">

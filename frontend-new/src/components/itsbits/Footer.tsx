@@ -1,5 +1,6 @@
 'use client';
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { Mail, ArrowRight, Loader2, CheckCircle2 } from 'lucide-react';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
@@ -59,7 +60,7 @@ const Footer = () => {
           {/* Brand Logo (Moved to Left of Main Content) */}
           <div className="itsbits-footer-brand !mt-0 justify-start lg:w-[250px] shrink-0">
             <a href="/" className="hover:opacity-75 transition-opacity itsbits-footer-brand-link w-full">
-              <img src="/logo.webp" alt="HS Global Export" className="itsbits-footer-brand-image !w-full !h-auto object-contain object-left" />
+              <Image src="/logo.webp" alt="HS Global Export" width={250} height={250} className="itsbits-footer-brand-image !w-full !h-auto object-contain object-left" style={{ height: 'auto' }} />
             </a>
           </div>
 
