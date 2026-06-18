@@ -1,5 +1,6 @@
 'use client';
 import React, { useEffect, useMemo, useState, useRef } from 'react';
+import Image from 'next/image';
 import { Link } from 'react-router-dom';
 import { Product } from '../../services/productService';
 import { useWishlist } from '../../contexts/WishlistContext';
@@ -211,25 +212,43 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
                     )}
 
                     {/* Primary image */}
-                    <img
-                        src={primaryImage}
-                        alt={product.name}
-                        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${(showVideo && videoReady) || (imgHover && !showVideo && images.length > 1)
-                            ? 'opacity-0'
-                            : 'opacity-100'
-                            }`}
-                        loading="lazy"
-                    />
+                    {primaryImage && !primaryImage.startsWith('data:') ? (
+                        <Image
+                            fill
+                            src={primaryImage}
+                            alt={product.name}
+                            className={`object-cover transition-opacity duration-500 ${(showVideo && videoReady) || (imgHover && !showVideo && images.length > 1) ? 'opacity-0' : 'opacity-100'}`}
+                            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                            loading="lazy"
+                        />
+                    ) : primaryImage ? (
+                        <img
+                            src={primaryImage}
+                            alt={product.name}
+                            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${(showVideo && videoReady) || (imgHover && !showVideo && images.length > 1) ? 'opacity-0' : 'opacity-100'}`}
+                            loading="lazy"
+                        />
+                    ) : null}
 
                     {/* Secondary image (image-swap fallback when no video) */}
                     {!showVideo && images.length > 1 && (
-                        <img
-                            src={secondaryImage}
-                            alt={`${product.name} secondary view`}
-                            className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-105 ${imgHover ? 'opacity-100' : 'opacity-0'
-                                }`}
-                            loading="lazy"
-                        />
+                        secondaryImage && !secondaryImage.startsWith('data:') ? (
+                            <Image
+                                fill
+                                src={secondaryImage}
+                                alt={`${product.name} secondary view`}
+                                className={`object-cover transition-all duration-700 group-hover:scale-105 ${imgHover ? 'opacity-100' : 'opacity-0'}`}
+                                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                                loading="lazy"
+                            />
+                        ) : secondaryImage ? (
+                            <img
+                                src={secondaryImage}
+                                alt={`${product.name} secondary view`}
+                                className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-105 ${imgHover ? 'opacity-100' : 'opacity-0'}`}
+                                loading="lazy"
+                            />
+                        ) : null
                     )}
 
                     {/* VIDEO — rendered only when user has interacted and card is active */}

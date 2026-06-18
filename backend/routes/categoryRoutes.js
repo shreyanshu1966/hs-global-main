@@ -10,9 +10,14 @@ const {
 
 const { authMiddleware, adminMiddleware } = require('../middleware/authMiddleware');
 
+const publicCache = (req, res, next) => {
+    res.set('Cache-Control', 'public, max-age=3600, stale-while-revalidate=60');
+    next();
+};
+
 // Public routes - no authentication required for viewing categories
-router.get('/custom', getAllCustomCategories);
-router.get('/custom/:categoryId', getCustomSubcategories);
+router.get('/custom', publicCache, getAllCustomCategories);
+router.get('/custom/:categoryId', publicCache, getCustomSubcategories);
 
 // Admin routes - require authentication and admin privileges
 router.use(authMiddleware);

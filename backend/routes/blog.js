@@ -3,12 +3,17 @@ const router = express.Router();
 const blogController = require('../controllers/blogController');
 const { authMiddleware, adminMiddleware } = require('../middleware/authMiddleware');
 
+const publicCache = (req, res, next) => {
+    res.set('Cache-Control', 'public, max-age=3600, stale-while-revalidate=60');
+    next();
+};
+
 // Public routes
-router.get('/', blogController.getAllBlogs);
-router.get('/featured', blogController.getFeaturedBlogs);
-router.get('/categories', blogController.getCategories);
-router.get('/tags', blogController.getTags);
-router.get('/:slug', blogController.getBlogBySlug);
+router.get('/', publicCache, blogController.getAllBlogs);
+router.get('/featured', publicCache, blogController.getFeaturedBlogs);
+router.get('/categories', publicCache, blogController.getCategories);
+router.get('/tags', publicCache, blogController.getTags);
+router.get('/:slug', publicCache, blogController.getBlogBySlug);
 
 // Admin routes
 router.get('/admin/all', authMiddleware, adminMiddleware, blogController.getAllBlogsAdmin);

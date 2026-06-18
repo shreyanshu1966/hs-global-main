@@ -1,5 +1,6 @@
 'use client';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 
 interface HeroSlide {
   heading?: string;
@@ -57,15 +58,30 @@ const HeroSection = ({ slides = [], autoplayInterval = 5000 }: HeroSectionProps)
       {/* Background images — all mounted, active one is visible */}
       {slides.map((s, i) =>
         s.backgroundImage ? (
-          <img
+          <div
             key={i}
-            src={s.backgroundImage}
-            alt={s.heading || ''}
-            aria-hidden={i !== active}
-            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
+            className="absolute inset-0 transition-opacity duration-700"
             style={{ opacity: i === active ? 1 : 0, zIndex: 0 }}
-            loading={i === 0 ? 'eager' : 'lazy'}
-          />
+            aria-hidden={i !== active}
+          >
+            {!s.backgroundImage.startsWith('data:') ? (
+              <Image
+                fill
+                src={s.backgroundImage}
+                alt={s.heading || ''}
+                className="object-cover"
+                sizes="100vw"
+                priority={i === 0}
+              />
+            ) : (
+              <img
+                src={s.backgroundImage}
+                alt={s.heading || ''}
+                className="absolute inset-0 w-full h-full object-cover"
+                loading={i === 0 ? 'eager' : 'lazy'}
+              />
+            )}
+          </div>
         ) : null
       )}
 

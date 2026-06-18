@@ -1,5 +1,6 @@
 'use client';
 import React, { useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { Check, ShoppingCart } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { useCurrency } from '../contexts/CurrencyContext';
@@ -80,12 +81,12 @@ export const AddedToCartNotification: React.FC = () => {
           </div>
           
           <div className="flex items-center gap-3 mt-1">
-            <div className="flex-shrink-0 w-10 h-10 bg-gray-100 rounded-lg overflow-hidden">
-              <img
-                src={state.lastAddedItem.image}
-                alt={state.lastAddedItem.name}
-                className="w-full h-full object-cover"
-              />
+            <div className="flex-shrink-0 w-10 h-10 bg-gray-100 rounded-lg overflow-hidden relative">
+              {state.lastAddedItem.image && !state.lastAddedItem.image.startsWith('data:') ? (
+                <Image fill src={state.lastAddedItem.image} alt={state.lastAddedItem.name} className="object-cover rounded-lg" sizes="40px" />
+              ) : state.lastAddedItem.image ? (
+                <img src={state.lastAddedItem.image} alt={state.lastAddedItem.name} className="w-full h-full object-cover" />
+              ) : null}
             </div>
             
             <div className="flex-1 min-w-0">

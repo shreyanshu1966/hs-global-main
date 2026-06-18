@@ -1,5 +1,6 @@
 'use client';
 import { useState, type KeyboardEventHandler } from 'react';
+import Image from 'next/image';
 import { useWishlist } from '../../contexts/WishlistContext';
 import { useCart } from '../../contexts/CartContext';
 import { usePrice } from '../../hooks/usePrice';
@@ -100,16 +101,24 @@ const ProductCard = ({ id, image, title, designer, price, originalPrice, priceUS
     >
       {/* Image Container */}
       <div className="relative w-full aspect-[4/5] bg-[#f0efe8] mb-[10px] overflow-hidden transition-opacity duration-200 group-hover:opacity-90">
-        <img 
-          src={image} 
-          alt={title} 
-          loading="lazy"
-          decoding="async"
-          className="w-full h-full object-cover" 
-          onError={(e) => {
-            e.currentTarget.src = `https://placehold.co/400x500/f0efe8/aaa?text=${encodeURIComponent(title)}`;
-          }}
-        />
+        {image && !image.startsWith('data:') ? (
+          <Image
+            fill
+            src={image}
+            alt={title}
+            className="object-cover"
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            loading="lazy"
+          />
+        ) : (
+          <img
+            src={image || `https://placehold.co/400x500/f0efe8/aaa?text=${encodeURIComponent(title)}`}
+            alt={title}
+            loading="lazy"
+            decoding="async"
+            className="w-full h-full object-cover"
+          />
+        )}
 
         {showDiscount && (
           <span className="absolute top-[8px] left-[8px] z-10 bg-[#b91c1c] text-white text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.05em] px-2 sm:px-[10px] py-1 sm:py-[5px] rounded-full shadow-sm">
