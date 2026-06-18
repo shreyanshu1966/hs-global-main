@@ -1,8 +1,11 @@
 /**
  * CSV SEO Data Import Script - FIXED VERSION
- * 
+ *
  * Handles UTF-8 BOM and various CSV formats
+ * Pass --dry-run to preview changes without writing to DB
  */
+
+const DRY_RUN = process.argv.includes('--dry-run');
 
 const fs = require('fs');
 const path = require('path');
@@ -16,7 +19,7 @@ const Product = require('../models/Product');
 const MONGO_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/hsglobal';
 
 // CSV file path
-const CSV_FILE_PATH = path.join(__dirname, '../../All in One Hs Global & Etsy Data Update - All Pages.csv');
+const CSV_FILE_PATH = path.join(__dirname, '../../All in One HSGlobal & Etsy Data Update - Live Website HS Global Export_with_ids.csv');
 
 /**
  * Extract product slug/ID from URL
@@ -24,7 +27,7 @@ const CSV_FILE_PATH = path.join(__dirname, '../../All in One Hs Global & Etsy Da
 function extractSlugFromUrl(url) {
   if (!url) return null;
   
-  const match = url.match(/\/products\/([^\/\?#]+)/);
+  const match = url.match(/\/products?\/([^\/\?#]+)/);
   return match ? match[1] : null;
 }
 
@@ -66,7 +69,7 @@ async function connectDB() {
  * Import SEO data from CSV
  */
 async function importSEOData() {
-  console.log('\n📊 Starting CSV SEO Import...\n');
+  console.log(`\n📊 Starting CSV SEO Import${DRY_RUN ? ' [DRY RUN — no writes]' : ''}...\n`);
   console.log(`📁 Reading CSV from: ${CSV_FILE_PATH}\n`);
 
   if (!fs.existsSync(CSV_FILE_PATH)) {
@@ -130,15 +133,16 @@ async function importSEOData() {
       const ogImage = (row['IMg URL 2'] || row.image || row.Image || '').trim();
       const canonicalTag = (row['Canonical Tag'] || row.canonical || url).trim();
 
-      // Skip if no URL or if it's not a specific product URL
-      if (!url || !url.includes('/products/')) {
+      // Skip if no URL or if it's not a specific product URL (/product/ or /products/)
+      const isProductUrl = url.includes('/product/') || url.includes('/products/');
+      if (!url || !isProductUrl) {
         skippedCount++;
         continue;
       }
 
-      // Additional check: make sure it's a specific product, not just /products page
-      const urlParts = url.split('/products/');
-      if (urlParts.length < 2 || !urlParts[1] || urlParts[1].trim() === '') {
+      // Skip bare /products page (no slug after it)
+      const afterProducts = url.split(/\/products?\//)[1];
+      if (!afterProducts || afterProducts.trim() === '') {
         skippedCount++;
         continue;
       }
@@ -150,7 +154,7 @@ async function importSEOData() {
         continue;
       }
 
-      // hs_product_id column = pre-matched DB productId (added by the fuzzy-match tool)
+      // hs_product_id column = pre-matched DB productCode (e.g. HSMBTBE1)
       const hsProductId = (row.hs_product_id || '').trim();
 
       validProducts.push({
@@ -172,10 +176,10 @@ async function importSEOData() {
     // Process each valid product
     for (const item of validProducts) {
       try {
-        // 1. Exact match on pre-resolved hs_product_id column (fastest, most accurate)
+        // 1. Exact match on pre-resolved productCode (e.g. HSMBTBE1) — fastest, most accurate
         // 2. Fallback: exact slug, regex on productId, regex on name
         const query = item.hsProductId
-          ? { productId: item.hsProductId }
+          ? { productCode: item.hsProductId }
           : {
               $or: [
                 { productId: item.slug },
@@ -208,23 +212,30 @@ async function importSEOData() {
           slug: item.slug
         };
 
-        // Update the product
-        await Product.findByIdAndUpdate(
-          product._id,
-          {
-            $set: {
-              seo: seoData,
-              // Also update legacy fields for backward compatibility
-              seoTitle: seoData.metaTitle,
-              seoDescription: seoData.metaDescription,
-              seoKeywords: seoData.keywords
-            }
-          },
-          { new: true }
-        );
+        if (DRY_RUN) {
+          console.log(`  [DRY RUN] would update: ${product.name}`);
+          console.log(`            slug      : ${item.slug}`);
+          console.log(`            hs_id     : ${item.hsProductId || '(fallback match)'}`);
+          console.log(`            title     : ${seoData.metaTitle}`);
+          console.log(`            desc      : ${seoData.metaDescription.slice(0, 80)}...`);
+          console.log(`            keywords  : ${seoData.keywords.slice(0,3).join(', ')}`);
+        } else {
+          await Product.findByIdAndUpdate(
+            product._id,
+            {
+              $set: {
+                seo: seoData,
+                seoTitle: seoData.metaTitle,
+                seoDescription: seoData.metaDescription,
+                seoKeywords: seoData.keywords
+              }
+            },
+            { new: true }
+          );
+          console.log(`✅ Updated SEO for: ${product.name} (${item.slug})`);
+        }
 
         updatedCount++;
-        console.log(`✅ Updated SEO for: ${product.name} (${item.slug})`);
 
       } catch (error) {
         console.error(`❌ Error updating product ${item.slug}:`, error.message);
@@ -234,11 +245,12 @@ async function importSEOData() {
     console.log('\n' + '='.repeat(60));
     console.log('📊 IMPORT SUMMARY');
     console.log('='.repeat(60));
-    console.log(`Total CSV rows processed: ${records.length}`);
-    console.log(`Valid product entries: ${validProducts.length}`);
-    console.log(`Products updated: ${updatedCount}`);
-    console.log(`Products not found: ${notFoundCount}`);
-    console.log(`Rows skipped: ${skippedCount}`);
+    console.log(`Total CSV rows processed  : ${records.length}`);
+    console.log(`Valid product entries      : ${validProducts.length}`);
+    console.log(`Products ${DRY_RUN ? 'to update' : 'updated'}        : ${updatedCount}`);
+    console.log(`Products not found        : ${notFoundCount}`);
+    console.log(`Rows skipped              : ${skippedCount}`);
+    if (DRY_RUN) console.log('\n⚠️  DRY RUN — nothing was written to the database.');
     console.log('='.repeat(60) + '\n');
 
   } catch (error) {
