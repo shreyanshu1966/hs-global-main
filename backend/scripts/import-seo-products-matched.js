@@ -23,12 +23,15 @@ function parseKeywords(str) {
 }
 
 async function main() {
-  const matchesJson = process.env.MATCHES_JSON;
-  if (!matchesJson) {
-    console.error('MATCHES_JSON env var required');
+  let matches;
+  if (process.env.MATCHES_FILE) {
+    matches = JSON.parse(require('fs').readFileSync(process.env.MATCHES_FILE, 'utf8'));
+  } else if (process.env.MATCHES_JSON) {
+    matches = JSON.parse(process.env.MATCHES_JSON);
+  } else {
+    console.error('Set MATCHES_FILE or MATCHES_JSON env var');
     process.exit(1);
   }
-  const matches = JSON.parse(matchesJson);
 
   await mongoose.connect(MONGO_URI);
   console.log(`MongoDB connected — applying SEO to ${matches.length} products\n`);
