@@ -2,98 +2,111 @@
 'use strict';
 
 /**
- * Deploys frontend-new (Next.js) to the DigitalOcean VPS:
- *   1. SSHs into the VPS
- *   2. git pull (hard-reset to latest on branch)
- *   3. npm ci inside frontend-new/
- *   4. npm run build (next build)
- *   5. pm2 reload hs-frontend  (zero-downtime) or start fresh
+ * Deploys frontend-new (Next.js) to the VPS.
  *
- * Prerequisites on the VPS:
- *   - Git repo cloned at VPS_APP_PATH
- *   - Node.js + PM2 installed
- *   - frontend-new/.env.production present with production secrets
- *   - pm2 start ecosystem.config.js  (first time only)
+ *   1. SSH into the VPS (key auth preferred, password fallback via Python/paramiko)
+ *   2. git fetch + reset --hard to VPS_FRONTEND_BRANCH (default: Home)
+ *   3. npm ci --no-progress  inside frontend-new/
+ *   4. npm run build  (next build, optimizeCss enabled)
+ *   5. pm2 reload hs-frontend --update-env  (zero-downtime)
+ *
+ * NOTE: frontend-new/ lives on the Home branch, NOT main.
+ *       Use VPS_FRONTEND_BRANCH=Home (set in deploy/.env.deploy).
  *
  * Requires: deploy/.env.deploy
  * Run with: node deploy/deploy-frontend-vps.js
  */
 
-const path = require('path');
+const path      = require('path');
 const { spawnSync } = require('child_process');
-const fs = require('fs');
+const fs        = require('fs');
 
 loadEnv(path.join(__dirname, '.env.deploy'));
 
 function main() {
   const host       = required('VPS_HOST');
   const user       = required('VPS_USER');
-  const sshKeyPath = process.env.VPS_SSH_KEY_PATH || '';
+  const keyPath    = (process.env.VPS_SSH_KEY_PATH || '').trim().replace(/\\/g, '/');
+  const password   = (process.env.vps_pass || '').trim();
   const appPath    = required('VPS_APP_PATH');
-  const branch     = (process.env.VPS_GIT_BRANCH || 'main').trim();
+  // Frontend lives on Home branch; backend lives on main — they track separately
+  const branch     = (process.env.VPS_FRONTEND_BRANCH || 'Home').trim();
   const pm2Name    = 'hs-frontend';
-  const vpsPass    = process.env.vps_pass || '';
 
-  const remoteCommands = [
-    // Source nvm so node/npm/pm2 are in PATH
-    'export NVM_DIR="$HOME/.nvm"',
-    '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"',
+  const remoteScript = `
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+set -e
 
-    `cd ${appPath}`,
-    `git fetch origin ${branch}`,
-    `git reset --hard origin/${branch}`,
+echo ">>> Pulling ${branch}..."
+cd ${appPath}
+git fetch origin ${branch}
+git reset --hard origin/${branch}
 
-    // Install deps
-    `cd ${appPath}/frontend-new && npm ci --prefer-offline`,
+echo ">>> Installing dependencies..."
+cd ${appPath}/frontend-new
+npm ci --no-progress
 
-    // Build Next.js
-    `npm run build`,
+echo ">>> Building Next.js..."
+npm run build
 
-    // Start or reload PM2
-    `cd ${appPath}/frontend-new`,
-    `pm2 reload ${pm2Name} --update-env 2>/dev/null || pm2 start node_modules/.bin/next --name ${pm2Name} -- start --port 3001`,
-    `pm2 save`,
+echo ">>> Reloading PM2..."
+pm2 reload ${pm2Name} --update-env 2>/dev/null || \\
+  pm2 start node_modules/.bin/next --name ${pm2Name} -- start --port 3001
+pm2 save
 
-    `echo "Frontend deployed: $(cd ${appPath} && git log -1 --format='%h %s')"`,
-  ].join(' && ');
+echo "Frontend deployed: $(cd ${appPath} && git log -1 --format='%h %s')"
+`.trim();
 
-  console.log(`\n🚀  Deploying frontend-new to ${user}@${host}`);
+  console.log(`\n🚀  Deploying frontend-new → ${user}@${host}`);
   console.log(`    App path : ${appPath}/frontend-new`);
   console.log(`    Branch   : ${branch}`);
   console.log(`    PM2 app  : ${pm2Name}\n`);
 
-  // Build ssh args — prefer key auth, fall back to password hint
-  const sshArgs = [
-    '-o', 'StrictHostKeyChecking=no',
-    '-o', 'ConnectTimeout=30',
-  ];
-
-  if (sshKeyPath && fs.existsSync(sshKeyPath.replace(/\\/g, '/'))) {
-    sshArgs.unshift('-i', sshKeyPath.replace(/\\/g, '/'));
-  }
-
-  sshArgs.push(`${user}@${host}`, remoteCommands);
-
-  // sshpass for password auth when no key is available
-  let cmd = 'ssh';
-  let args = sshArgs;
-  if (vpsPass && (!sshKeyPath || !fs.existsSync(sshKeyPath.replace(/\\/g, '/')))) {
-    cmd = 'sshpass';
-    args = ['-p', vpsPass, 'ssh', ...sshArgs];
-  }
-
-  const result = spawnSync(cmd, args, { stdio: 'inherit' });
-
-  if (result.status !== 0) {
-    console.error('\n❌  SSH command failed (exit code ' + result.status + ')');
-    if (result.error) console.error('   ', result.error.message);
+  const ok = runViaSsh(host, user, keyPath, password, remoteScript);
+  if (!ok) {
+    console.error('\n❌  Frontend deploy failed.\n');
     process.exit(1);
   }
-
   console.log('\n✅  Frontend (Next.js) deployed to VPS!\n');
 }
 
-// ── Helpers ──────────────────────────────────────────────────────────────────
+// ── SSH runner ────────────────────────────────────────────────────────────────
+
+function runViaSsh(host, user, keyPath, password, script) {
+  const pythonHelper = path.join(__dirname, 'ssh-run.py');
+
+  if (!fs.existsSync(pythonHelper)) {
+    console.error(`Missing SSH helper: ${pythonHelper}`);
+    return false;
+  }
+
+  const env = { ...process.env };
+  if (keyPath && fs.existsSync(keyPath)) {
+    env.SSH_KEY_PATH = keyPath;
+  } else if (password) {
+    env.SSH_PASS = password;
+  } else {
+    console.error('No SSH key or password configured. Set VPS_SSH_KEY_PATH or vps_pass in .env.deploy');
+    return false;
+  }
+
+  const result = spawnSync('python', [pythonHelper, host, user], {
+    input: script,
+    stdio: ['pipe', 'inherit', 'inherit'],
+    env,
+  });
+
+  if (result.error) {
+    console.error('Failed to start Python SSH helper:', result.error.message);
+    console.error('Make sure Python + paramiko are installed: pip install paramiko');
+    return false;
+  }
+
+  return result.status === 0;
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
 
 function required(key) {
   const val = process.env[key];
