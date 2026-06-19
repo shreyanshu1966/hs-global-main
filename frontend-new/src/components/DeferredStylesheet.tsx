@@ -1,13 +1,20 @@
 'use client';
-import '../styles/itsbits-home-sections.css';
+import { useEffect } from 'react';
 
 /**
- * Imports the below-fold CSS for the itsbits layout.
- * Loaded via next/dynamic with ssr:false in Layout.tsx so this stylesheet
- * is not included in the server-rendered <head> and does not block the
- * initial render. The styles arrive after hydration, before the user can
- * interact with below-fold sections.
+ * Loads the below-fold itsbits section styles after hydration.
+ * The CSS is served from /public as a plain static file so webpack never
+ * bundles it — it does NOT appear in the server-rendered <head> and does
+ * not contribute to the render-blocking CSS budget.
  */
 export default function DeferredStylesheet() {
+  useEffect(() => {
+    if (document.querySelector('link[data-itsbits-sections]')) return;
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = '/styles/itsbits-home-sections.css';
+    link.dataset.itsbitsections = '1';
+    document.head.appendChild(link);
+  }, []);
   return null;
 }

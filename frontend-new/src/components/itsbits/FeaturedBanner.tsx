@@ -33,6 +33,7 @@ const FeaturedBanner = ({
               alt={imageAlt}
               className="itsbits-featured-image object-cover"
               sizes="(max-width: 768px) 100vw, 50vw"
+              quality={65}
             />
           )}
         </div>

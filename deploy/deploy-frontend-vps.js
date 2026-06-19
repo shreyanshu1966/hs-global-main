@@ -43,12 +43,21 @@ cd ${appPath}
 git fetch origin ${branch}
 git reset --hard origin/${branch}
 
+echo ">>> Ensuring swap space for build..."
+if ! swapon --show | grep -q '/swapfile'; then
+  if [ ! -f /swapfile ]; then
+    fallocate -l 2G /swapfile && chmod 600 /swapfile && mkswap /swapfile
+  fi
+  swapon /swapfile && echo "Swap enabled"
+fi
+free -h
+
 echo ">>> Installing dependencies..."
 cd ${appPath}/frontend-new
 npm ci --no-progress
 
 echo ">>> Building Next.js..."
-npm run build
+NODE_OPTIONS='--max-old-space-size=1536' npm run build
 
 echo ">>> Reloading PM2..."
 pm2 reload ${pm2Name} --update-env 2>/dev/null || \\

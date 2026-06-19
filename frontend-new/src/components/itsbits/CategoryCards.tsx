@@ -38,6 +38,7 @@ const CategoryCards = ({ title = '', cards = [] }: CategoryCardsProps) => {
                 alt={card.title}
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
                 sizes="(max-width: 1024px) 50vw, 25vw"
+                quality={65}
               />
             ) : (
               <div className="absolute inset-0 bg-gray-200" />

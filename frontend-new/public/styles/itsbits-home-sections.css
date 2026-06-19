@@ -1,0 +1,1022 @@
+/* Below-fold section styles — loaded asynchronously via DeferredStylesheet.
+   This file is NOT imported directly; it is fetched by the browser after
+   the initial paint so it does not block rendering. */
+
+.itsbits-home #mainContent > section {
+  animation: itsbits-fade-up 0.55s ease both;
+}
+
+.itsbits-home #mainContent > section:nth-of-type(1) {
+  animation-delay: 0.04s;
+}
+
+.itsbits-home #mainContent > section:nth-of-type(2) {
+  animation-delay: 0.08s;
+}
+
+.itsbits-home #mainContent > section:nth-of-type(3),
+.itsbits-home #mainContent > section:nth-of-type(4),
+.itsbits-home #mainContent > section:nth-of-type(5),
+.itsbits-home #mainContent > section:nth-of-type(6) {
+  animation-delay: 0.12s;
+}
+
+@keyframes itsbits-fade-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.itsbits-home .itsbits-header ul li a {
+  transition: color 0.2s ease;
+}
+
+.itsbits-home .itsbits-header ul li a:hover {
+  color: #000;
+}
+
+.itsbits-home .itsbits-product-card {
+  min-width: 0;
+}
+
+.itsbits-home .itsbits-product-title,
+.itsbits-home .itsbits-product-designer {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.itsbits-home .itsbits-product-title-text {
+  font-weight: 600;
+  font-family: var(--dibs-font-sans);
+}
+
+.itsbits-home .itsbits-product-designer-text {
+  font-weight: 300;
+  font-family: var(--dibs-font-sans);
+}
+
+.itsbits-home .itsbits-price-old {
+  font-weight: 300;
+}
+
+.itsbits-home .itsbits-price-new {
+  font-weight: 300;
+}
+
+.itsbits-home .itsbits-price-new-discount {
+  font-weight: 600;
+}
+
+.itsbits-home .itsbits-product-title {
+  -webkit-line-clamp: 2;
+}
+
+.itsbits-home .itsbits-product-designer {
+  -webkit-line-clamp: 1;
+}
+
+.itsbits-home .itsbits-track {
+  padding-bottom: 2px;
+}
+
+.itsbits-home .itsbits-rail-shell {
+  position: relative;
+}
+
+.itsbits-home .itsbits-rail-shell::before,
+.itsbits-home .itsbits-rail-shell::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 28px;
+  z-index: 2;
+  pointer-events: none;
+  display: none;
+}
+
+.itsbits-home .itsbits-rail-shell::before {
+  left: 0;
+  background: linear-gradient(90deg, #fff 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+.itsbits-home .itsbits-rail-shell::after {
+  right: 0;
+  background: linear-gradient(270deg, #fff 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+.itsbits-home .itsbits-swipe-cue {
+  display: none;
+  position: absolute;
+  right: 8px;
+  bottom: 2px;
+  z-index: 3;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(34, 34, 34, 0.14);
+  color: #555;
+  font-family: var(--dibs-font-sans);
+  font-size: 11px;
+  line-height: 1.3;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.itsbits-home .itsbits-section-rail {
+  width: 100%;
+  max-width: calc(var(--itsbits-content-max-width) + (var(--itsbits-page-gutter) * 2));
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--itsbits-page-gutter);
+  padding-right: var(--itsbits-page-gutter);
+  overflow-x: hidden;
+}
+
+.itsbits-home .itsbits-highlight-grid {
+  gap: var(--itsbits-highlight-gap);
+}
+
+.itsbits-home .itsbits-highlight-copy {
+  width: 220px;
+}
+
+.itsbits-home .itsbits-highlight-title {
+  margin: 0 0 8px;
+  font-family: var(--dibs-font-serif);
+  font-size: clamp(32px, 3vw, 40px);
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+  color: #222;
+}
+
+.itsbits-home .itsbits-highlight-cta {
+  font-size: 15px;
+  font-weight: 600;
+  color: #222;
+  border-bottom: 1px solid #222;
+  padding-bottom: 2px;
+  align-self: flex-start;
+  text-decoration: none;
+}
+
+.itsbits-home .itsbits-carousel-row {
+  gap: var(--itsbits-carousel-row-gap);
+}
+
+.itsbits-home .itsbits-spotlight-section {
+  margin: 36px 0;
+}
+
+.itsbits-home .itsbits-spotlight-title {
+  margin-bottom: 18px;
+}
+
+.itsbits-home .itsbits-spotlight-image-wrap {
+  margin-bottom: 14px;
+  width: 100%;
+  aspect-ratio: var(--itsbits-spotlight-image-ratio);
+  overflow: hidden;
+  background: #f4f3ec;
+}
+
+.itsbits-home .itsbits-spotlight-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.itsbits-home .itsbits-spotlight-item-title {
+  margin-bottom: 2px;
+  line-height: 1.2;
+}
+
+.itsbits-home .itsbits-spotlight-item-subtitle {
+  font-size: 16px;
+}
+
+.itsbits-home .itsbits-carousel-header {
+  text-align: center;
+}
+
+.itsbits-home .itsbits-carousel-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  color: #222;
+  margin-top: 5px;
+  font-size: 16px;
+  font-weight: 300;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.itsbits-home .itsbits-carousel-rail {
+  overflow: hidden;
+}
+
+.itsbits-home .itsbits-section-header {
+  margin: var(--itsbits-section-header-margin);
+}
+
+.itsbits-home .itsbits-section-subtitle {
+  margin: 8px 0 0;
+  font-family: var(--dibs-font-sans);
+  font-size: 16px;
+  line-height: 1.45;
+  font-weight: 300;
+  color: #444;
+}
+
+.itsbits-home .itsbits-personalized-wrap {
+  background: #f4f3ec;
+  width: calc(100% - (var(--itsbits-page-gutter) * 2));
+  max-width: var(--itsbits-content-max-width);
+  margin: 0 auto;
+  padding: 36px 0;
+}
+
+.itsbits-home .itsbits-personalized-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.itsbits-home .itsbits-personalized-header {
+  text-align: center;
+  margin-bottom: 26px;
+}
+
+.itsbits-home .itsbits-personalized-title {
+  margin: 0;
+  font-family: var(--dibs-font-serif);
+  font-size: 34px;
+  line-height: 1.2;
+  letter-spacing: -0.5px;
+  color: #222;
+  font-weight: 400;
+}
+
+.itsbits-home .itsbits-personalized-title em {
+  font-style: italic;
+  font-weight: 400;
+}
+
+.itsbits-home .itsbits-personalized-subtitle {
+  margin: 8px 0 0;
+  font-family: var(--dibs-font-sans);
+  font-size: 16px;
+  line-height: 1.45;
+  color: #222;
+  font-weight: 300;
+}
+
+.itsbits-home .itsbits-personalized-link {
+  display: inline-block;
+  margin-top: 10px;
+  font-family: var(--dibs-font-sans);
+  font-size: 16px;
+  line-height: 1.35;
+  font-weight: 300;
+  color: #222;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.itsbits-home .itsbits-personalized-item {
+  width: var(--itsbits-personalized-item-width);
+  min-width: var(--itsbits-personalized-item-width);
+}
+
+.itsbits-home .itsbits-rail-item {
+  width: var(--itsbits-rail-item-width);
+  min-width: var(--itsbits-rail-item-width);
+}
+
+.itsbits-home .itsbits-spotlight-item {
+  width: var(--itsbits-spotlight-item-width);
+  min-width: var(--itsbits-spotlight-item-width);
+}
+
+.itsbits-home .itsbits-featured-wrap {
+  display: flex;
+  width: auto;
+  height: 100%;
+  position: relative;
+  flex-direction: row-reverse;
+  background-color: #f4f2e3;
+}
+
+.itsbits-home .itsbits-featured-link {
+  display: block;
+  text-decoration: none;
+}
+
+.itsbits-home .itsbits-featured-section {
+  width: calc(100% - (var(--itsbits-page-gutter) * 2));
+  max-width: var(--itsbits-content-max-width);
+  margin: 36px auto;
+}
+
+.itsbits-home .itsbits-featured-image-wrap {
+  flex-basis: 50%;
+  height: auto;
+  aspect-ratio: var(--itsbits-featured-image-ratio);
+  overflow: hidden;
+}
+
+.itsbits-home .itsbits-featured-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.itsbits-home .itsbits-featured-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-basis: 50%;
+  padding: 0 36px;
+  gap: 9px;
+}
+
+.itsbits-home .itsbits-featured-title {
+  font-family: var(--dibs-font-serif);
+  font-size: min(3.6vw, 62px);
+  line-height: 1.1;
+  color: #222;
+}
+
+.itsbits-home .itsbits-featured-title-reset {
+  margin: 0;
+}
+
+.itsbits-home .itsbits-featured-body {
+  font-family: var(--dibs-font-sans);
+  font-size: min(1.4vw, 22px);
+  line-height: 1.4;
+  color: #222;
+  font-weight: 300;
+}
+
+.itsbits-home .itsbits-featured-body-spacing {
+  margin: 0 0 9px;
+}
+
+.itsbits-home .itsbits-featured-cta {
+  background-color: #222;
+  color: #fff;
+  padding: 15px 36px;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 14px;
+  display: inline-block;
+}
+
+.itsbits-home .itsbits-journal-grid {
+  display: flex;
+}
+
+.itsbits-home .itsbits-journal-section {
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.itsbits-home .itsbits-journal-header {
+  margin-top: 27px;
+  margin-bottom: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.itsbits-home .itsbits-journal-heading {
+  margin: 0;
+}
+
+.itsbits-home .itsbits-journal-heading-em {
+  font-style: italic;
+}
+
+.itsbits-home .itsbits-journal-grid-gap {
+  gap: 36px;
+}
+
+.itsbits-home .itsbits-journal-article-link {
+  text-decoration: none;
+  color: #222;
+  flex: 1 1 50%;
+  display: block;
+  margin-bottom: 27px;
+}
+
+.itsbits-home .itsbits-journal-media-wrap {
+  position: relative;
+  overflow: hidden;
+}
+
+.itsbits-home .itsbits-journal-media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.itsbits-home .itsbits-journal-title-base {
+  font-family: var(--dibs-font-serif);
+  font-size: 20px;
+  margin-top: 18px;
+  margin-bottom: 0;
+  color: #222;
+  line-height: 1.2;
+  font-weight: 400;
+}
+
+.itsbits-home .itsbits-journal-link-base {
+  font-family: var(--dibs-font-sans);
+  font-size: 14px;
+  margin-top: 9px;
+  text-decoration: underline;
+  color: #222;
+  font-weight: 300;
+}
+
+.itsbits-home .itsbits-collections-section {
+  margin: 36px 0;
+}
+
+.itsbits-home .itsbits-collections-title-base {
+  padding: 27px 0;
+  margin: 0;
+}
+
+.itsbits-home .itsbits-collections-card {
+  display: block;
+  text-decoration: none;
+}
+
+.itsbits-home .itsbits-collections-image-base {
+  width: 100%;
+  height: 300px;
+  margin-bottom: 14px;
+  overflow: hidden;
+  background-color: #f0efe8;
+}
+
+.itsbits-home .itsbits-collections-image-media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.itsbits-home .itsbits-collections-name-base {
+  font-family: var(--dibs-font-sans);
+  font-size: 16px;
+  font-weight: 600;
+  color: #222;
+  display: block;
+}
+
+.itsbits-home .itsbits-journal-landscape {
+  padding-top: 67.36%;
+}
+
+.itsbits-home .itsbits-journal-portrait {
+  padding-top: 137.26%;
+  max-width: 75%;
+  margin: 0 auto;
+}
+
+.itsbits-home .itsbits-journal-portrait-copy {
+  max-width: 75%;
+  margin: 0 auto;
+}
+
+.itsbits-home .itsbits-promise-wrap {
+  background-color: #f4f2e3;
+  width: calc(100% - (var(--itsbits-page-gutter) * 2));
+  max-width: var(--itsbits-content-max-width);
+  margin: 36px auto 0;
+  padding: 45px 36px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+}
+
+.itsbits-home .itsbits-promise-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(210px, 260px));
+}
+
+.itsbits-home .itsbits-promise-copy-base {
+  max-width: 560px;
+}
+
+.itsbits-home .itsbits-promise-title-base {
+  margin: 0 0 6px;
+  font-family: var(--dibs-font-sans);
+  font-size: 20px;
+  font-weight: 300;
+  color: #222;
+}
+
+.itsbits-home .itsbits-promise-title-em {
+  font-family: var(--dibs-font-serif);
+  font-style: italic;
+  font-size: 22px;
+}
+
+.itsbits-home .itsbits-promise-body-base {
+  margin: 6px 0 14px;
+  font-family: var(--dibs-font-serif);
+  font-size: 22px;
+  color: #222;
+  line-height: 1.2;
+}
+
+.itsbits-home .itsbits-promise-link {
+  display: inline-block;
+  font-family: var(--dibs-font-sans);
+  font-size: 16px;
+  font-weight: 300;
+  color: #222;
+  text-decoration: underline;
+}
+
+.itsbits-home .itsbits-promise-grid-base {
+  gap: 18px;
+  align-content: center;
+}
+
+.itsbits-home .itsbits-promise-item-base {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.itsbits-home .itsbits-promise-icon {
+  fill: #647167;
+}
+
+.itsbits-home .itsbits-promise-item-text-base {
+  font-family: var(--dibs-font-sans);
+  font-size: 18px;
+  color: #222;
+  font-weight: 300;
+}
+
+.itsbits-home .itsbits-footer {
+  background-color: #fff;
+  color: #222;
+  padding-top: 36px;
+  padding-bottom: 18px;
+  font-family: var(--dibs-font-sans);
+}
+
+.itsbits-home .itsbits-footer-top,
+.itsbits-home .itsbits-footer-bottom {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding-left: 36px;
+  padding-right: 36px;
+}
+
+.itsbits-home .itsbits-footer-top {
+  padding-bottom: 45px;
+  border-bottom: 1px solid #ddd;
+}
+
+.itsbits-home .itsbits-footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 27px;
+}
+
+.itsbits-home .itsbits-footer-group {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.itsbits-home .itsbits-footer-subgroup-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.itsbits-home .itsbits-footer-heading {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.itsbits-home .itsbits-footer-link-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.itsbits-home .itsbits-footer-link {
+  color: #222;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.itsbits-home .itsbits-footer-link-dark {
+  color: #000;
+}
+
+.itsbits-home .itsbits-footer-strong {
+  font-weight: 600;
+}
+
+.itsbits-home .itsbits-footer-bottom {
+  padding-top: 18px;
+}
+
+.itsbits-home .itsbits-footer-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+.itsbits-home .itsbits-footer-legal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  font-size: 12px;
+  font-weight: 300;
+}
+
+.itsbits-home .itsbits-footer-regions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  font-size: 12px;
+  font-weight: 300;
+  align-items: center;
+}
+
+.itsbits-home .itsbits-footer-disclaimer {
+  font-size: 12px;
+  font-weight: 300;
+  color: #666;
+  margin-top: 14px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.itsbits-home .itsbits-footer-disclaimer-link {
+  color: #666;
+  text-decoration: underline;
+}
+
+.itsbits-home .itsbits-footer-brand {
+  display: flex;
+  justify-content: center;
+  margin-top: 27px;
+}
+
+.itsbits-home .itsbits-footer-brand-link {
+  display: inline-flex;
+}
+
+.itsbits-home .itsbits-footer-brand-image {
+  width: 504px;
+  height: 150px;
+  object-fit: contain;
+}
+
+/* Responsive — sections only (header overrides are in itsbits-home-critical.css) */
+@media (max-width: 1024px) {
+  .itsbits-home .itsbits-highlight-grid {
+    flex-direction: column;
+    gap: 18px !important;
+  }
+
+  .itsbits-home .itsbits-highlight-copy {
+    width: 100% !important;
+    margin-top: 0 !important;
+  }
+
+  .itsbits-home .itsbits-highlight-title {
+    font-size: 34px !important;
+    margin-bottom: 10px !important;
+  }
+
+  .itsbits-home .itsbits-featured-wrap {
+    flex-direction: column;
+  }
+
+  .itsbits-home .itsbits-featured-image-wrap {
+    flex-basis: auto;
+    height: auto;
+    aspect-ratio: var(--itsbits-featured-image-ratio);
+  }
+
+  .itsbits-home .itsbits-featured-copy {
+    padding: 30px 24px;
+  }
+
+  .itsbits-home .itsbits-featured-title {
+    font-size: clamp(34px, 6vw, 52px);
+  }
+
+  .itsbits-home .itsbits-featured-body {
+    font-size: clamp(17px, 2.6vw, 21px);
+  }
+
+  .itsbits-home .itsbits-promise-wrap {
+    margin: 36px 24px 0;
+    padding: 36px 24px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .itsbits-home .itsbits-personalized-wrap {
+    padding: 30px 0;
+  }
+
+  .itsbits-home .itsbits-personalized-title {
+    font-size: 30px;
+  }
+
+  .itsbits-home .itsbits-promise-copy {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .itsbits-home .itsbits-promise-grid {
+    width: 100%;
+    grid-template-columns: repeat(2, minmax(180px, 1fr));
+  }
+
+  .itsbits-home .itsbits-journal-grid {
+    gap: 24px !important;
+  }
+
+  .itsbits-home .itsbits-footer-top,
+  .itsbits-home .itsbits-footer-bottom {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .itsbits-home .itsbits-footer-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+  }
+
+  .itsbits-home .itsbits-footer-legal {
+    gap: 12px;
+  }
+
+  .itsbits-home .itsbits-swipe-cue {
+    display: inline-flex;
+    align-items: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .itsbits-home .itsbits-highlight-title {
+    font-size: 28px !important;
+    line-height: 1.15 !important;
+    max-width: 15ch;
+  }
+
+  .itsbits-home .itsbits-carousel-row {
+    gap: 8px;
+    width: 100%;
+  }
+
+  .itsbits-home .itsbits-highlight-cta {
+    font-size: 14px !important;
+  }
+
+  .itsbits-home .itsbits-personalized-title {
+    font-size: 26px;
+  }
+
+  .itsbits-home .itsbits-personalized-subtitle,
+  .itsbits-home .itsbits-personalized-link {
+    font-size: 15px;
+  }
+
+  .itsbits-home .itsbits-journal-grid {
+    display: block;
+  }
+
+  .itsbits-home .itsbits-journal-header {
+    margin-top: 20px !important;
+    margin-bottom: 14px !important;
+  }
+
+  .itsbits-home .itsbits-journal-title {
+    font-size: 18px !important;
+    line-height: 1.25 !important;
+    margin-top: 14px !important;
+  }
+
+  .itsbits-home .itsbits-journal-link {
+    font-size: 13px !important;
+  }
+
+  .itsbits-home .itsbits-journal-portrait,
+  .itsbits-home .itsbits-journal-portrait-copy {
+    max-width: 100%;
+  }
+
+  .itsbits-home .itsbits-promise-wrap {
+    margin: 30px 20px 0;
+    padding: 24px 20px;
+    gap: 14px;
+  }
+
+  .itsbits-home .itsbits-promise-title {
+    font-size: 22px;
+    line-height: 1.3;
+  }
+
+  .itsbits-home .itsbits-promise-body {
+    font-size: 16px;
+    line-height: 1.45;
+    margin-bottom: 8px;
+  }
+
+  .itsbits-home .itsbits-promise-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    width: 100%;
+  }
+
+  .itsbits-home .itsbits-promise-item {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 6px;
+  }
+
+  .itsbits-home .itsbits-promise-item-text {
+    font-size: 11px;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+  }
+
+  .itsbits-home .itsbits-promise-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+
+  .itsbits-home .itsbits-collections-title {
+    padding: 18px 0 !important;
+  }
+
+  .itsbits-home .itsbits-collections-image {
+    height: min(62vw, 250px) !important;
+  }
+
+  .itsbits-home .itsbits-collections-name {
+    font-size: 15px !important;
+  }
+
+  .itsbits-home .itsbits-footer {
+    padding-top: 30px;
+    padding-bottom: 16px;
+  }
+
+  .itsbits-home .itsbits-footer-top,
+  .itsbits-home .itsbits-footer-bottom {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .itsbits-home .itsbits-footer-top {
+    padding-bottom: 30px;
+  }
+
+  .itsbits-home .itsbits-footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+
+  .itsbits-home .itsbits-footer-group,
+  .itsbits-home .itsbits-footer-subgroup-stack {
+    gap: 12px;
+  }
+
+  .itsbits-home .itsbits-footer-link-list {
+    gap: 6px;
+  }
+
+  .itsbits-home .itsbits-footer-meta-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .itsbits-home .itsbits-footer-legal,
+  .itsbits-home .itsbits-footer-regions {
+    gap: 10px;
+    line-height: 1.5;
+  }
+
+  .itsbits-home .itsbits-footer-brand {
+    margin-top: 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .itsbits-home .itsbits-highlight-title {
+    font-size: 24px !important;
+  }
+
+  .itsbits-home .itsbits-carousel-link {
+    font-size: 15px;
+  }
+
+  .itsbits-home .itsbits-featured-image-wrap {
+    height: auto;
+    aspect-ratio: var(--itsbits-featured-image-ratio);
+  }
+
+  .itsbits-home .itsbits-featured-copy {
+    padding: 22px 16px;
+  }
+
+  .itsbits-home .itsbits-featured-title {
+    font-size: clamp(28px, 9.2vw, 36px);
+  }
+
+  .itsbits-home .itsbits-featured-body {
+    font-size: 16px;
+  }
+
+  .itsbits-home .itsbits-featured-cta {
+    padding: 12px 22px;
+    font-size: 12px;
+  }
+
+  .itsbits-home .itsbits-promise-wrap {
+    margin: 26px 14px 0;
+    padding: 24px 14px;
+  }
+
+  .itsbits-home .itsbits-footer {
+    padding-top: 26px;
+  }
+
+  .itsbits-home .itsbits-footer-top,
+  .itsbits-home .itsbits-footer-bottom {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .itsbits-home .itsbits-footer-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .itsbits-home .itsbits-footer-heading {
+    font-size: 13px;
+  }
+
+  .itsbits-home .itsbits-footer-link-list {
+    font-size: 13px;
+  }
+
+  .itsbits-home .itsbits-footer-legal,
+  .itsbits-home .itsbits-footer-regions,
+  .itsbits-home .itsbits-footer-disclaimer {
+    font-size: 11px;
+  }
+
+  .itsbits-home .itsbits-footer-brand-image {
+    width: 408px;
+    height: 120px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .itsbits-home #mainContent > section {
+    animation: none !important;
+  }
+
+  .itsbits-home .itsbits-track {
+    scroll-behavior: auto !important;
+  }
+}

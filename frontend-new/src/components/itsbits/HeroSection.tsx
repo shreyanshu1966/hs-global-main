@@ -72,6 +72,7 @@ const HeroSection = ({ slides = [], autoplayInterval = 5000 }: HeroSectionProps)
                 className="object-cover"
                 sizes="100vw"
                 priority={i === 0}
+                quality={65}
               />
             ) : (
               <img

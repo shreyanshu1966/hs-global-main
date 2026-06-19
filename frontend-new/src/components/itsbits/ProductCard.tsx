@@ -109,6 +109,7 @@ const ProductCard = ({ id, image, title, designer, price, originalPrice, priceUS
             className="object-cover"
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             loading="lazy"
+            quality={65}
           />
         ) : (
           <img
