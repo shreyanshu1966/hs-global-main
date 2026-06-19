@@ -1,5 +1,6 @@
 'use client';
 import React, { useRef } from 'react';
+import dynamic from 'next/dynamic';
 import Header from './itsbits/Header';
 import Footer from './itsbits/Footer';
 import { useLocation } from 'react-router-dom';
@@ -18,7 +19,12 @@ import PageToastPopup from './PageToastPopup';
 import { useLeadCapturePopup } from '../hooks/useLeadCapturePopup';
 import { useExitIntentPopup } from '../hooks/useExitIntentPopup';
 import { usePageToastPopup } from '../hooks/usePageToastPopup';
-import '../styles/itsbits-home.css';
+// Critical CSS (header, CSS variables, font-face) is render-blocking on purpose.
+import '../styles/itsbits-home-critical.css';
+
+// Below-fold section styles (carousels, journal, footer) are loaded after
+// hydration via ssr:false so they do not block the initial paint.
+const DeferredStylesheet = dynamic(() => import('./DeferredStylesheet'), { ssr: false });
 
 interface LayoutProps {
     children: React.ReactNode;
@@ -49,6 +55,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
     return (
         <div className="itsbits-home min-h-screen flex flex-col">
+            <DeferredStylesheet />
             {!isAdminPage && <Header />}
             <main
                 ref={mainRef}

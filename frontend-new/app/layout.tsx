@@ -34,7 +34,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://ipapi.co" />
         <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="" />
         <link rel="dns-prefetch" href="https://res.cloudinary.com" />
-        <link rel="preconnect" href="https://accounts.google.com" crossOrigin="" />
+        {/* accounts.google.com removed: Google OAuth loads lazily on user
+            interaction, so this preconnect was unused and wasted a slot. */}
       </head>
       <body>
         {/* Suspense boundary required because the router shim uses

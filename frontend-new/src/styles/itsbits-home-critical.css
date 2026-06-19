@@ -1,0 +1,861 @@
+/* Critical above-fold styles: CSS variables, font-face, header.
+   This file is imported synchronously in Layout.tsx.
+   Below-fold section styles live in itsbits-home-sections.css (loaded deferred). */
+
+@font-face {
+  font-family: "Cardinal Classic Short";
+  src: url("/fonts/cardinalclshortw-regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Cardinal Classic Short";
+  src: url("/fonts/cardinalclshortw-italic.woff") format("woff");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+.itsbits-home {
+  --dibs-noir: #222;
+  --dibs-skeleton-start: #ddd;
+  --dibs-skeleton-mid: #f3f3f3;
+  --dibs-font-serif: "Cardinal Classic Short", Georgia, serif;
+  --dibs-font-sans: "proxima-nova", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  /* Phase 1 responsive baseline tokens */
+  --itsbits-header-top-height: 84px;
+  --itsbits-header-nav-height: 50px;
+  --itsbits-header-offset: calc(var(--itsbits-header-top-height) + var(--itsbits-header-nav-height) + 6px);
+  --itsbits-content-top-trim: 16px;
+  --itsbits-page-gutter: 36px;
+  --itsbits-section-header-margin: 45px;
+  --itsbits-section-title-size: 28px;
+  --itsbits-header-medium-size: 22px;
+  --itsbits-rail-item-width: clamp(220px, 21vw, 268px);
+  --itsbits-spotlight-item-width: clamp(260px, 28vw, 340px);
+  --itsbits-spotlight-image-ratio: 1 / 1;
+  --itsbits-featured-image-ratio: 3 / 2;
+  --itsbits-personalized-item-width: 20%;
+  --itsbits-highlight-gap: 27px;
+  --itsbits-carousel-row-gap: 12px;
+  --itsbits-content-max-width: 1440px;
+  overflow-x: clip;
+}
+
+@media (max-width: 767px) {
+  .itsbits-home {
+    --itsbits-header-offset: 146px;
+  }
+}
+
+.itsbits-home > main#mainContent {
+  margin-top: max(0px, calc(var(--itsbits-header-offset) - var(--itsbits-content-top-trim))) !important;
+}
+
+.itsbits-home .dibs-section-title {
+  font-family: var(--dibs-font-serif);
+  font-size: var(--itsbits-section-title-size);
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: -0.5px;
+  color: var(--dibs-noir);
+}
+
+.itsbits-home .dibs-header-medium {
+  font-family: var(--dibs-font-serif);
+  font-size: var(--itsbits-header-medium-size);
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: -0.5px;
+}
+
+.itsbits-home .dibs-body-light {
+  font-family: var(--dibs-font-sans);
+  font-weight: 300;
+}
+
+.itsbits-home .dibs-glass {
+  backdrop-filter: blur(3px);
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+@keyframes dibs-shimmer {
+  0% {
+    background-position: 50% 0;
+  }
+  100% {
+    background-position: -50% 0;
+  }
+}
+
+.itsbits-home .dibs-skeleton {
+  backface-visibility: hidden;
+  background-image: linear-gradient(90deg, var(--dibs-skeleton-start) 0%, var(--dibs-skeleton-mid) 50%, var(--dibs-skeleton-mid) 51%, var(--dibs-skeleton-start) 100%);
+  background-size: 400% 400%;
+  animation: dibs-shimmer 1.5s ease-in-out infinite alternate forwards;
+  transform: translateZ(0);
+}
+
+.itsbits-home .itsbits-track {
+  display: flex;
+  gap: var(--itsbits-track-gap, 18px);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-snap-type: x mandatory;
+  scroll-padding-left: 8px;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-inline: contain;
+}
+
+.itsbits-home .itsbits-track::-webkit-scrollbar {
+  display: none;
+}
+
+.itsbits-home .itsbits-track > * {
+  scroll-snap-align: start;
+}
+
+.itsbits-home .itsbits-track-standard {
+  --itsbits-track-gap: 18px;
+}
+
+.itsbits-home .itsbits-track-tight {
+  --itsbits-track-gap: 12px;
+}
+
+.itsbits-home .itsbits-track-item-no-shrink {
+  flex-shrink: 0;
+}
+
+.itsbits-home .itsbits-arrow {
+  position: absolute;
+  top: 40%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(34, 34, 34, 0.18);
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.86);
+  color: #222;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(2px);
+}
+
+.itsbits-home .itsbits-arrow:hover {
+  background: #fff;
+  border-color: rgba(34, 34, 34, 0.45);
+}
+
+.itsbits-home .itsbits-arrow:focus-visible {
+  outline: 2px solid #222;
+  outline-offset: 2px;
+}
+
+.itsbits-home .itsbits-arrow:disabled {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.itsbits-home .itsbits-arrow-left {
+  left: -8px;
+}
+
+.itsbits-home .itsbits-arrow-right {
+  right: -8px;
+}
+
+.itsbits-home .itsbits-arrow-pad-left {
+  padding: 9px 0 9px 9px;
+}
+
+.itsbits-home .itsbits-arrow-pad-right {
+  padding: 9px 9px 9px 0;
+}
+
+.itsbits-home .itsbits-arrivals-arrow {
+  display: inline-flex;
+}
+
+.itsbits-home .itsbits-header {
+  border-bottom: 1px solid #efefef;
+}
+
+.itsbits-home .itsbits-header-root {
+  font-family: var(--dibs-font-sans);
+  -webkit-transform: translateZ(0);
+}
+
+.itsbits-home .itsbits-top-bar {
+  height: var(--itsbits-header-top-height);
+  box-shadow: 0 2px 8px transparent;
+  border-bottom: 1px solid #efefef;
+}
+
+.itsbits-home .itsbits-header-inner {
+  max-width: 1440px;
+  width: calc(100% - 72px);
+}
+
+.itsbits-home .itsbits-logo-wrap {
+  flex-basis: 261px;
+  position: relative;
+}
+
+.itsbits-home .itsbits-mobile-menu-trigger {
+  display: none;
+  background: #f3f3f3;
+  border: 1px solid #ddd;
+}
+
+.itsbits-home .itsbits-logo {
+  width: 170px;
+  text-align: left;
+  line-height: 1;
+}
+
+.itsbits-home .itsbits-logo-main-text {
+  font-family: Garamond, "Times New Roman", serif;
+  font-size: 15px;
+  letter-spacing: 0.34em;
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.itsbits-home .itsbits-logo-sub-text {
+  font-family: var(--dibs-font-sans);
+  font-size: 10px;
+  letter-spacing: 0.5em;
+  font-weight: 400;
+  color: #6b7280;
+  margin-top: 4px;
+  line-height: 1;
+}
+
+.itsbits-home .itsbits-logo-mobile-full {
+  display: none;
+}
+
+.itsbits-home .itsbits-search-shell {
+  border: 1.5px solid #222;
+  border-radius: 9999px;
+  height: 44px;
+}
+
+.itsbits-home .itsbits-search-input {
+  padding-left: 18px;
+}
+
+.itsbits-home .itsbits-search-input-text {
+  font-family: var(--dibs-font-sans);
+  font-size: 16px;
+  font-weight: 300;
+}
+
+.itsbits-home .itsbits-search-submit {
+  padding: 0 9px;
+  min-width: 45px;
+  max-width: 45px;
+}
+
+.itsbits-home .itsbits-right-icons {
+  flex-basis: 261px;
+  gap: 10px;
+}
+
+.itsbits-home .itsbits-top-action {
+  min-width: 34px;
+  min-height: 34px;
+}
+
+.itsbits-home .itsbits-top-action-text {
+  padding: 0 6px;
+}
+
+.itsbits-home .itsbits-top-action-cart .relative {
+  padding: 0;
+}
+
+.itsbits-home .itsbits-top-action-cart button {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.itsbits-home .itsbits-top-action-cart svg {
+  width: 17px;
+  height: 17px;
+}
+
+.itsbits-home .itsbits-currency-wrap {
+  display: inline-flex;
+  align-items: center;
+}
+
+.itsbits-home .itsbits-currency-desktop-only {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .itsbits-home .itsbits-currency-desktop-only {
+    display: inline-flex;
+  }
+}
+
+.itsbits-home .itsbits-currency-wrap > div > button {
+  height: 34px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.itsbits-home .itsbits-icon-link {
+  width: 18px;
+  height: 18px;
+  margin: 0 9px;
+}
+
+.itsbits-home .itsbits-mobile-search-toggle {
+  width: 36px;
+  height: 36px;
+  border-radius: 9999px;
+  border: 1px solid rgba(34, 34, 34, 0.18);
+  background: #fff;
+  color: #222;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.itsbits-home .itsbits-mobile-search {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  border-bottom: 1px solid transparent;
+  transition: max-height 0.25s ease, opacity 0.2s ease;
+  background: #fff;
+}
+
+.itsbits-home .itsbits-mobile-search.is-open {
+  max-height: 420px;
+  opacity: 1;
+  border-bottom-color: #efefef;
+}
+
+.itsbits-home .itsbits-mobile-search-inner {
+  width: calc(100% - 24px);
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 10px 0;
+}
+
+.itsbits-home .itsbits-mobile-search-shell {
+  border: 1.5px solid #222;
+  border-radius: 9999px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  background: #fff;
+}
+
+.itsbits-home .itsbits-mobile-search-input {
+  flex: 1;
+  height: 100%;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: #222;
+  padding: 0 14px;
+  font-family: var(--dibs-font-sans);
+  font-size: 15px;
+  font-weight: 300;
+}
+
+.itsbits-home .itsbits-mobile-search-submit {
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 9999px;
+  background: transparent;
+  color: #222;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.itsbits-home .itsbits-bottom-nav {
+  max-height: var(--itsbits-header-nav-height);
+  opacity: 1;
+  overflow: hidden;
+  border-bottom: 1px solid #ddd;
+  transform: translate3d(0, 0, 0);
+  transition: max-height 0.35s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.22s ease, transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: max-height, opacity, transform;
+}
+
+.itsbits-home .itsbits-bottom-nav.is-hidden {
+  max-height: 0;
+  opacity: 0;
+  border-bottom-color: transparent;
+  transform: translate3d(0, -10px, 0);
+  pointer-events: none;
+}
+
+.itsbits-home .itsbits-bottom-nav.is-visible {
+  max-height: var(--itsbits-header-nav-height);
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.itsbits-home .itsbits-nav-list {
+  gap: 18px;
+}
+
+.itsbits-home .itsbits-nav-link {
+  min-height: 36px;
+  display: inline-flex;
+  align-items: flex-start;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: var(--dibs-font-sans);
+  font-size: 14px;
+  padding-top: 9px;
+  text-decoration: none;
+}
+
+.itsbits-home .itsbits-nav-link-cta {
+  background: #111;
+  color: #fff;
+  border-radius: 9999px;
+  padding: 8px 14px;
+  min-height: 34px;
+  align-items: center;
+  font-size: 12px;
+  letter-spacing: 0.09em;
+}
+
+.itsbits-home .itsbits-nav-link-cta:hover {
+  background: #000;
+  color: #fff;
+}
+
+.itsbits-home .itsbits-nav-link-cta::after {
+  display: none;
+}
+
+.itsbits-home .itsbits-top-action-wishlist {
+  position: relative;
+}
+
+.itsbits-home .itsbits-wishlist-count {
+  position: absolute;
+  top: -5px;
+  right: -7px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 9999px;
+  background: #8b3a3a;
+  color: #fff;
+  font-size: 10px;
+  line-height: 16px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.itsbits-home .itsbits-nav-label-mobile {
+  display: none;
+}
+
+.itsbits-home .itsbits-nav-label-desktop {
+  display: inline;
+}
+
+@keyframes itsbits-header-fade-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -12px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes itsbits-logo-word-mark-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0);
+    letter-spacing: 0.42em;
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    letter-spacing: 0.34em;
+  }
+}
+
+@keyframes itsbits-logo-sub-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 6px, 0);
+    letter-spacing: 0.62em;
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    letter-spacing: 0.5em;
+  }
+}
+
+.itsbits-home .itsbits-header {
+  animation: itsbits-header-fade-in 0.45s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  will-change: transform, opacity;
+}
+
+.itsbits-home .itsbits-logo {
+  display: inline-block;
+}
+
+.itsbits-home .itsbits-logo-main {
+  animation: itsbits-logo-word-mark-in 0.52s cubic-bezier(0.2, 0.65, 0.25, 1) 0.08s both;
+}
+
+.itsbits-home .itsbits-logo-sub {
+  animation: itsbits-logo-sub-in 0.5s cubic-bezier(0.2, 0.65, 0.25, 1) 0.15s both;
+}
+
+.itsbits-home .itsbits-logo:hover .itsbits-logo-main {
+  letter-spacing: 0.38em;
+  transition: letter-spacing 0.25s ease;
+}
+
+.itsbits-home .itsbits-logo:hover .itsbits-logo-sub {
+  color: #3f3f46;
+  transition: color 0.25s ease;
+}
+
+.itsbits-home .itsbits-nav-link {
+  transition: color 0.2s ease;
+}
+
+.itsbits-home .itsbits-nav-link:hover {
+  color: #111;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .itsbits-home .itsbits-header,
+  .itsbits-home .itsbits-logo-main,
+  .itsbits-home .itsbits-logo-sub {
+    animation: none;
+  }
+
+  .itsbits-home .itsbits-bottom-nav,
+  .itsbits-home .itsbits-bottom-nav.is-hidden,
+  .itsbits-home .itsbits-bottom-nav.is-visible {
+    transition: none;
+    transform: none;
+    max-height: var(--itsbits-header-nav-height);
+    opacity: 1;
+  }
+
+  .itsbits-home .itsbits-nav-link,
+  .itsbits-home .itsbits-logo:hover .itsbits-logo-main,
+  .itsbits-home .itsbits-logo:hover .itsbits-logo-sub {
+    transition: none;
+  }
+}
+
+/* Header responsive overrides */
+@media (max-width: 1024px) {
+  .itsbits-home {
+    --itsbits-header-nav-height: 46px;
+    --itsbits-header-offset: calc(var(--itsbits-header-top-height) + var(--itsbits-header-nav-height));
+    --itsbits-page-gutter: 24px;
+    --itsbits-personalized-item-width: 32%;
+  }
+
+  .itsbits-home .itsbits-header .itsbits-header-inner {
+    width: calc(100% - 44px) !important;
+  }
+
+  .itsbits-home .itsbits-logo-wrap,
+  .itsbits-home .itsbits-right-icons {
+    flex-basis: 220px;
+  }
+
+  .itsbits-home .itsbits-logo {
+    width: 158px;
+  }
+
+  .itsbits-home .itsbits-arrow {
+    display: none !important;
+  }
+
+  .itsbits-home .itsbits-arrivals-arrow {
+    display: inline-flex !important;
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .itsbits-home .itsbits-arrow {
+    display: none !important;
+  }
+
+  .itsbits-home .itsbits-arrivals-arrow {
+    display: inline-flex !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .itsbits-home {
+    --itsbits-header-nav-height: 48px;
+    --itsbits-header-offset: calc(var(--itsbits-header-top-height) + var(--itsbits-header-nav-height));
+    --itsbits-page-gutter: 20px;
+    --itsbits-section-header-margin: 34px 20px;
+    --itsbits-section-title-size: 24px;
+    --itsbits-rail-item-width: min(72vw, 268px);
+    --itsbits-personalized-item-width: min(72vw, 268px);
+    --itsbits-spotlight-item-width: min(78vw, 340px);
+  }
+
+  .itsbits-home .itsbits-header .itsbits-header-inner {
+    width: calc(100% - 24px) !important;
+  }
+
+  .itsbits-home .itsbits-top-bar {
+    height: var(--itsbits-header-top-height);
+  }
+
+  .itsbits-home .itsbits-logo-wrap,
+  .itsbits-home .itsbits-right-icons {
+    flex-basis: auto;
+  }
+
+  .itsbits-home .itsbits-right-icons {
+    margin-left: auto;
+    min-width: auto;
+    justify-content: flex-end !important;
+    gap: 6px;
+  }
+
+  .itsbits-home .itsbits-mobile-menu-trigger {
+    display: inline-flex;
+    position: absolute;
+    left: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 6;
+    width: 32px;
+    height: 32px;
+    border-radius: 9999px;
+    border: 1px solid #ddd;
+    background: #f3f3f3;
+  }
+
+  .itsbits-home .itsbits-logo-wrap {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding-left: 44px;
+  }
+
+  .itsbits-home .itsbits-top-inner {
+    justify-content: space-between;
+  }
+
+  .itsbits-home .itsbits-currency-wrap > div > button {
+    height: 28px;
+    padding-left: 6px;
+    padding-right: 6px;
+    border-radius: 9999px;
+  }
+
+  .itsbits-home .itsbits-currency-wrap > div > button span {
+    font-size: 11px;
+  }
+
+  .itsbits-home .itsbits-top-action-text {
+    font-size: 10px !important;
+    letter-spacing: 0.1em !important;
+    padding: 0 2px;
+  }
+
+  .itsbits-home .itsbits-logo {
+    width: 148px;
+    text-align: center;
+  }
+
+  .itsbits-home .itsbits-logo-main {
+    font-size: 14px !important;
+    letter-spacing: 0.3em !important;
+  }
+
+  .itsbits-home .itsbits-logo-sub {
+    display: none !important;
+  }
+
+  .itsbits-home .itsbits-logo-main {
+    display: none !important;
+  }
+
+  .itsbits-home .itsbits-logo-mobile-full {
+    display: block;
+    font-size: 11px !important;
+    letter-spacing: 0.11em !important;
+    line-height: 1.2;
+  }
+
+  .itsbits-home .itsbits-top-action {
+    min-width: 30px;
+    min-height: 30px;
+  }
+
+  .itsbits-home .itsbits-top-action svg {
+    width: 17px;
+    height: 17px;
+  }
+
+  .itsbits-home .itsbits-icon-link {
+    margin: 0 6px;
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .itsbits-home .itsbits-mobile-search-toggle {
+    margin-right: 6px;
+  }
+
+  .itsbits-home .itsbits-mobile-search-inner {
+    width: calc(100% - 16px);
+    padding: 10px 0 8px;
+  }
+
+  .itsbits-home .itsbits-mobile-search-shell {
+    height: 40px;
+    border-radius: 9999px;
+  }
+
+  .itsbits-home .itsbits-header nav {
+    align-items: stretch;
+  }
+
+  .itsbits-home .dibs-section-title {
+    line-height: 1.2;
+  }
+
+  .itsbits-home .itsbits-header .itsbits-nav-list {
+    overflow-x: auto;
+    justify-content: flex-start !important;
+    gap: 12px !important;
+    padding: 0 6px 4px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    white-space: nowrap;
+    flex-wrap: nowrap;
+    scroll-snap-type: x proximity;
+    scroll-padding-left: 6px;
+  }
+
+  .itsbits-home .itsbits-header .itsbits-nav-list li {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+  }
+
+  .itsbits-home .itsbits-nav-link {
+    min-height: 34px;
+    font-size: 13px !important;
+    padding-top: 8px !important;
+    align-items: center;
+    letter-spacing: 0.06em !important;
+  }
+
+  .itsbits-home .itsbits-nav-link-cta {
+    padding: 7px 12px;
+    min-height: 30px;
+    font-size: 11px !important;
+  }
+
+  .itsbits-home .itsbits-nav-label-desktop {
+    display: none;
+  }
+
+  .itsbits-home .itsbits-nav-label-mobile {
+    display: inline;
+  }
+
+  .itsbits-home .itsbits-header .itsbits-nav-list::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .itsbits-home {
+    --itsbits-header-top-height: 80px;
+    --itsbits-header-nav-height: 46px;
+    --itsbits-header-offset: calc(var(--itsbits-header-top-height) + var(--itsbits-header-nav-height));
+    --itsbits-page-gutter: 14px;
+    --itsbits-section-header-margin: 26px 14px;
+    --itsbits-section-title-size: 22px;
+    --itsbits-rail-item-width: min(82vw, 248px);
+    --itsbits-personalized-item-width: min(82vw, 248px);
+    --itsbits-spotlight-item-width: min(86vw, 300px);
+  }
+
+  .itsbits-home .itsbits-header .itsbits-header-inner {
+    width: calc(100% - 16px) !important;
+  }
+
+  .itsbits-home .itsbits-logo {
+    width: 148px;
+  }
+
+  .itsbits-home .itsbits-right-icons {
+    min-width: auto;
+    gap: 4px;
+  }
+
+  .itsbits-home .itsbits-logo-main {
+    font-size: 12px !important;
+    letter-spacing: 0.27em !important;
+  }
+
+  .itsbits-home .itsbits-logo-mobile-full {
+    font-size: 11px !important;
+    letter-spacing: 0.11em !important;
+  }
+
+  .itsbits-home .itsbits-mobile-search-inner {
+    width: calc(100% - 12px);
+  }
+
+  .itsbits-home .itsbits-currency-wrap > div > button {
+    height: 26px;
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  .itsbits-home .itsbits-currency-wrap > div > button span {
+    font-size: 10px;
+  }
+
+  .itsbits-home .itsbits-nav-link {
+    font-size: 12px !important;
+    letter-spacing: 0.08em !important;
+  }
+}

@@ -53,14 +53,16 @@ const websiteLd = {
 export default function Page() {
   return (
     <>
-      {/* Preload LCP hero image so the browser fetches it with high priority */}
+      {/* Preload LCP hero image — href is required for fetchpriority to apply.
+          imageSrcSet is React 19-only and silently dropped in React 18, so we
+          use a single representative width (828 px covers most mobile viewports)
+          with fetchPriority="high" which React 18 maps to the fetchpriority attr. */}
       <link
         rel="preload"
         as="image"
+        href="/_next/image?url=%2Fbanner4.webp&w=828&q=75"
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore — React 18 types don't expose imageSrcSet/imageSizes yet
-        imageSrcSet="/_next/image?url=%2Fbanner4.webp&w=640&q=75 640w, /_next/image?url=%2Fbanner4.webp&w=828&q=75 828w, /_next/image?url=%2Fbanner4.webp&w=1200&q=75 1200w, /_next/image?url=%2Fbanner4.webp&w=1920&q=75 1920w"
-        imageSizes="100vw"
+        // @ts-ignore — React 18 types don't include fetchPriority on <link>
         fetchPriority="high"
       />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationLd) }} />
