@@ -33,7 +33,11 @@ const ProductSearchSelector = ({
   const [selectedProducts, setSelectedProducts] = useState<Product[]>([]);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
 
-  const selectedIdSet = useMemo(() => new Set(selectedProductIds), [selectedProductIds]);
+  // Stable string key derived from the IDs — avoids re-firing when the parent
+  // passes a new `[]` literal every render (e.g. `manualProductIds || []`).
+  const selectedIdsKey = JSON.stringify(selectedProductIds);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const selectedIdSet = useMemo(() => new Set(selectedProductIds), [selectedIdsKey]);
 
   useEffect(() => {
     let active = true;
@@ -55,6 +59,7 @@ const ProductSearchSelector = ({
               }
               return null;
             } catch {
+              // Product not found (404) — silently skip instead of crashing
               return null;
             }
           })
@@ -87,7 +92,7 @@ const ProductSearchSelector = ({
     return () => {
       active = false;
     };
-  }, [selectedProductIds]);
+  }, [selectedIdsKey]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     let active = true;
@@ -131,7 +136,7 @@ const ProductSearchSelector = ({
       active = false;
       clearTimeout(timer);
     };
-  }, [search, selectedIdSet]);
+  }, [search, selectedIdsKey]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const addProduct = (productId: string) => {
     if (selectedIdSet.has(productId) || selectedProductIds.length >= maxItems) {

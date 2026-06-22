@@ -76,6 +76,9 @@ export interface ProductV2 {
   } | null;
   createdAt: string;
   updatedAt: string;
+  productType?: string;
+  variantAttributes?: { name: string; values: string[] }[];
+  variants?: any[];
 }
 
 export interface V2Pagination {

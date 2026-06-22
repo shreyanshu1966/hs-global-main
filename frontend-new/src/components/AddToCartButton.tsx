@@ -44,7 +44,7 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
 
   // Helper to get the product's primary image
   const getProductImage = (): string => {
-    return product.image || (product.images && product.images[0]) || '/demo2.webp';
+    return product.image || (product.images && product.images[0]) || '/products-hero.webp';
   };
 
   // Helper to get raw INR price as number

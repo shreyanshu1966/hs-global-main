@@ -419,10 +419,13 @@ const productSchema = new mongoose.Schema({
         attributes: { type: Map, of: String }, // e.g. { Color: "Red", Size: "Small" }
         // If priceUSD is set it overrides the product base price; otherwise base price is used
         priceUSD: { type: Number, default: null },
+        // compareAtPriceUSD: shown as strikethrough "was" price for this variant
+        compareAtPriceUSD: { type: Number, default: null },
         stockQuantity: { type: Number, default: 0 },
         sku: { type: String, default: '' },
         images: [{ type: String }],
         available: { type: Boolean, default: true },
+        position: { type: Number, default: 0 },
         _id: false,
     }],
 

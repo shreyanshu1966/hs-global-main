@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
 
@@ -46,11 +46,15 @@ const BulkRegionalPricing: React.FC<BulkRegionalPricingProps> = ({ categories })
     fetchOverview();
   }, [result]);
 
+  // Stringify the categories so this effect only re-runs when category data
+  // actually changes, not just because the parent passed a new array reference.
+  const categoriesKey = useMemo(() => JSON.stringify(categories), [categories]);
+
   useEffect(() => {
     const cat = categories.find(c => c.category === selectedCategory);
     setAvailableSubcategories(cat?.subcategories || []);
     setSelectedSubcategory('');
-  }, [selectedCategory, categories]);
+  }, [selectedCategory, categoriesKey]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const updateRegion = (region: RegionKey, field: string, value: any) => {
     setRegionalPricing(prev => ({ ...prev, [region]: { ...prev[region], [field]: value } }));

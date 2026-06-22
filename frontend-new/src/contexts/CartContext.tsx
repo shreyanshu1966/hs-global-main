@@ -22,6 +22,8 @@ export interface CartItem {
   selectedVariant?: {
     attributes: Record<string, string>;
     sku?: string | null;
+    compareAtPriceUSD?: number | null;
+    images?: string[];
   };
   discount?: {
     enabled: boolean;

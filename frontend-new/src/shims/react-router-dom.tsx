@@ -14,7 +14,7 @@ import {
   useParams as useNextParams,
   useSearchParams as useNextSearchParams,
 } from 'next/navigation';
-import React, { useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 
 type To = string | { pathname?: string; search?: string; hash?: string };
 
@@ -43,16 +43,19 @@ export const NavLink = Link;
 
 export function useNavigate() {
   const router = useRouter();
-  return (to: To | number, options?: { replace?: boolean }) => {
-    if (typeof to === 'number') {
-      if (to < 0) router.back();
-      else router.forward();
-      return;
-    }
-    const href = toHref(to);
-    if (options?.replace) router.replace(href);
-    else router.push(href);
-  };
+  return useCallback(
+    (to: To | number, options?: { replace?: boolean }) => {
+      if (typeof to === 'number') {
+        if (to < 0) router.back();
+        else router.forward();
+        return;
+      }
+      const href = toHref(to);
+      if (options?.replace) router.replace(href);
+      else router.push(href);
+    },
+    [router]
+  );
 }
 
 export function useLocation() {

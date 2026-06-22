@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Star, Package, Share2, MessageCircle, FileText, Heart, Truck, Gem } from 'lucide-react';
 import DeliveryChecker from './DeliveryChecker';
 import { useNavigate, Link } from 'react-router-dom';
@@ -20,6 +20,8 @@ interface ProductInfoProps {
     isInCart: boolean;
     handleShare: () => void;
     reviewsRef: React.RefObject<HTMLDivElement>;
+    /** Notifies the parent so the main gallery can swap to the selected variant's photos */
+    onVariantImagesChange?: (images: string[] | null) => void;
 }
 
 export function ProductInfo({
@@ -28,6 +30,7 @@ export function ProductInfo({
     isInCart,
     handleShare,
     reviewsRef,
+    onVariantImagesChange,
 }: ProductInfoProps) {
     const navigate = useNavigate();
     const { addItem } = useCart();
@@ -50,10 +53,27 @@ export function ProductInfo({
     const variantSkus: {
       attributes: Record<string, string>;
       priceUSD: number | null;
+      compareAtPriceUSD?: number | null;
       stockQuantity: number;
       sku?: string | null;
+      images?: string[];
       available: boolean;
     }[] = product.variants || [];
+
+    // CSS color map for swatch rendering
+    const COLOR_MAP: Record<string, string> = {
+      red: '#ef4444', blue: '#3b82f6', green: '#22c55e', black: '#111827',
+      white: '#f8fafc', yellow: '#eab308', orange: '#f97316', purple: '#a855f7',
+      pink: '#ec4899', gray: '#9ca3af', grey: '#9ca3af', brown: '#92400e',
+      gold: '#d97706', silver: '#9ca3af', navy: '#1e3a8a', teal: '#14b8a6',
+      beige: '#d4b896', cream: '#fef3c7', ivory: '#f5f0e8', indigo: '#6366f1',
+      maroon: '#7f1d1d', olive: '#65a30d', coral: '#f87171', turquoise: '#06b6d4',
+      lime: '#84cc16', violet: '#7c3aed', magenta: '#d946ef', cyan: '#22d3ee',
+    };
+    const getSwatchColor = (value: string): string | null =>
+      COLOR_MAP[value.toLowerCase()] ?? null;
+    const isColorOption = (name: string): boolean =>
+      /^color|colour$/i.test(name.trim());
 
     const [selectedAttrs, setSelectedAttrs] = useState<Record<string, string>>(() => {
       const first: Record<string, string> = {};
@@ -71,6 +91,13 @@ export function ProductInfo({
       }) ?? null;
     }, [isConfigurable, variantSkus, selectedAttrs]);
 
+    // Push the selected variant's images up so the gallery can swap (null = use product gallery)
+    useEffect(() => {
+      if (!onVariantImagesChange) return;
+      const imgs = selectedVariant?.images;
+      onVariantImagesChange(imgs && imgs.length > 0 ? imgs : null);
+    }, [selectedVariant, onVariantImagesChange]);
+
     const isValueAvailable = (attrName: string, value: string) => {
       if (variantSkus.length === 0) return false;
       const tentative = { ...selectedAttrs, [attrName]: value };
@@ -84,6 +111,7 @@ export function ProductInfo({
     // the product's base price before feeding into usePrice. This way regional adjustments,
     // discounts, currency formatting all flow through the same engine with no special-casing.
     const variantPriceUSD = selectedVariant?.priceUSD ?? null;
+    const variantCompareAtUSD = selectedVariant?.compareAtPriceUSD ?? null;
     const productForPrice = useMemo(
       () => variantPriceUSD != null ? { ...product, priceUSD: variantPriceUSD } : product,
       [product, variantPriceUSD]
@@ -95,12 +123,22 @@ export function ProductInfo({
     const hasDiscount = price.hasDiscount && !isSemiPreciousStone;
     const discountPercentage = Math.round(price.discountPercentage);
 
+    // Variant compare-at price (shown as strikethrough "was" price when set)
+    const compareAtProductForPrice = useMemo(
+      () => variantCompareAtUSD != null ? { ...product, priceUSD: variantCompareAtUSD } : null,
+      [product, variantCompareAtUSD]
+    );
+    const compareAtPrice = usePrice(compareAtProductForPrice ?? product);
+    const showVariantCompareAt = variantCompareAtUSD != null && !hasDiscount;
+
     const getProductId = (): string => {
         return product.productId || product._id || product.id || '';
     };
 
     const getProductImage = (): string => {
-        return product.image || (product.images && product.images[0]) || '/demo2.webp';
+        // Use the first variant-specific image if assigned, else fall back to product gallery
+        if (selectedVariant?.images && selectedVariant.images.length > 0) return selectedVariant.images[0];
+        return product.image || (product.images && product.images[0]) || '/products-hero.webp';
     };
 
     const buildVariantCartId = (baseId: string) => {
@@ -131,7 +169,7 @@ export function ProductInfo({
                 subcategory: product.subcategory || '',
                 discount: product.discount,
                 selectedVariant: selectedVariant
-                    ? { attributes: selectedAttrs, sku: selectedVariant.sku }
+                    ? { attributes: selectedAttrs, sku: selectedVariant.sku, compareAtPriceUSD: selectedVariant.compareAtPriceUSD, images: selectedVariant.images }
                     : undefined,
             });
             trackAddToCart(resolvedId);
@@ -218,42 +256,77 @@ export function ProductInfo({
 
             {/* Variant Selector */}
             {isConfigurable && variantAttributes.length > 0 && (
-                <div className="mb-4 space-y-3">
-                    {variantAttributes.map(attr => (
-                        <div key={attr.name}>
-                            <p className="text-[11px] uppercase tracking-[0.12em] text-[#888] mb-2 font-medium">
-                                {attr.name}
-                                {selectedAttrs[attr.name] && (
-                                    <span className="ml-1.5 normal-case text-[#111] font-semibold tracking-normal">
-                                        — {selectedAttrs[attr.name]}
-                                    </span>
-                                )}
-                            </p>
-                            <div className="flex flex-wrap gap-2">
-                                {attr.values.map(value => {
-                                    const active = selectedAttrs[attr.name] === value;
-                                    const avail = isValueAvailable(attr.name, value);
-                                    return (
-                                        <button
-                                            key={value}
-                                            type="button"
-                                            onClick={() => avail && setSelectedAttrs(prev => ({ ...prev, [attr.name]: value }))}
-                                            className={[
-                                                'px-3 py-1.5 text-[12px] font-medium border rounded-md transition-all duration-150',
-                                                active
-                                                    ? 'border-[#111827] bg-[#111827] text-white'
-                                                    : avail
-                                                    ? 'border-[#d1d5db] text-[#374151] hover:border-[#111827]'
-                                                    : 'border-[#e5e7eb] text-[#d1d5db] cursor-not-allowed line-through',
-                                            ].join(' ')}
-                                        >
-                                            {value}
-                                        </button>
-                                    );
-                                })}
+                <div className="mb-4 space-y-4">
+                    {variantAttributes.map(attr => {
+                        const isColor = isColorOption(attr.name);
+                        return (
+                            <div key={attr.name}>
+                                <p className="text-[11px] uppercase tracking-[0.12em] text-[#888] mb-2 font-medium">
+                                    {attr.name}
+                                    {selectedAttrs[attr.name] && (
+                                        <span className="ml-1.5 normal-case text-[#111] font-semibold tracking-normal">
+                                            — {selectedAttrs[attr.name]}
+                                        </span>
+                                    )}
+                                </p>
+                                <div className="flex flex-wrap gap-2">
+                                    {attr.values.map(value => {
+                                        const active = selectedAttrs[attr.name] === value;
+                                        const avail = isValueAvailable(attr.name, value);
+                                        const swatchColor = isColor ? getSwatchColor(value) : null;
+                                        if (swatchColor) {
+                                            return (
+                                                <button
+                                                    key={value}
+                                                    type="button"
+                                                    title={value}
+                                                    onClick={() => avail && setSelectedAttrs(prev => ({ ...prev, [attr.name]: value }))}
+                                                    className={[
+                                                        'w-8 h-8 rounded-full border-2 transition-all duration-150 relative',
+                                                        active
+                                                            ? 'border-[#111827] ring-2 ring-[#111827] ring-offset-2'
+                                                            : avail
+                                                            ? 'border-[#d1d5db] hover:border-[#9ca3af]'
+                                                            : 'border-[#e5e7eb] cursor-not-allowed opacity-40',
+                                                    ].join(' ')}
+                                                    style={{ backgroundColor: swatchColor }}
+                                                >
+                                                    {!avail && (
+                                                        <span className="absolute inset-0 flex items-center justify-center">
+                                                            <svg className="w-4 h-4 text-gray-500 opacity-70" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path strokeLinecap="round" strokeWidth={2} d="M6 18L18 6" /></svg>
+                                                        </span>
+                                                    )}
+                                                </button>
+                                            );
+                                        }
+                                        return (
+                                            <button
+                                                key={value}
+                                                type="button"
+                                                onClick={() => avail && setSelectedAttrs(prev => ({ ...prev, [attr.name]: value }))}
+                                                className={[
+                                                    'px-3 py-1.5 text-[12px] font-medium border rounded-md transition-all duration-150',
+                                                    active
+                                                        ? 'border-[#111827] bg-[#111827] text-white'
+                                                        : avail
+                                                        ? 'border-[#d1d5db] text-[#374151] hover:border-[#111827]'
+                                                        : 'border-[#e5e7eb] text-[#d1d5db] cursor-not-allowed line-through',
+                                                ].join(' ')}
+                                            >
+                                                {value}
+                                            </button>
+                                        );
+                                    })}
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        );
+                    })}
+                    {/* Stock indicator */}
+                    {selectedVariant && selectedVariant.stockQuantity > 0 && selectedVariant.stockQuantity <= 5 && (
+                        <p className="text-[11px] font-semibold text-amber-600">
+                            Only {selectedVariant.stockQuantity} left in stock
+                        </p>
+                    )}
                     {selectedVariant?.sku && (
                         <p className="text-[10px] tracking-[0.12em] text-[#aaa] uppercase">
                             SKU · {selectedVariant.sku}
@@ -312,6 +385,11 @@ export function ProductInfo({
                                     )}
                                 </>
                             )}
+                            {showVariantCompareAt && (
+                                <span className="text-[13px] text-[#757575] line-through mb-[2px]">
+                                    {compareAtPrice.formattedPrice}
+                                </span>
+                            )}
                         </div>
                         <p className="text-[10px] text-[#757575] uppercase tracking-wide">
                             Free shipping
@@ -364,7 +442,7 @@ export function ProductInfo({
                                         category: product.category,
                                         subcategory: product.subcategory || '',
                                         discount: product.discount,
-                                        selectedVariant: { attributes: selectedAttrs, sku: selectedVariant.sku },
+                                        selectedVariant: { attributes: selectedAttrs, sku: selectedVariant.sku, compareAtPriceUSD: selectedVariant.compareAtPriceUSD, images: selectedVariant.images },
                                     });
                                     trackAddToCart(resolvedId);
                                 }}

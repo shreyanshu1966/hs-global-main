@@ -14,7 +14,7 @@ export function SimilarProducts({ similarProducts }: SimilarProductsProps) {
     p.productId || p._id || p.id || '';
 
   const getImage = (p: any): string =>
-    (p.images && p.images[0]) || p.image || '/demo2.webp';
+    (p.images && p.images[0]) || p.image || '/products-hero.webp';
 
   const getName = (p: any): string => p.name || '';
 

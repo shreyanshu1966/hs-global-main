@@ -53,9 +53,10 @@ router.post('/preview',
     ]), 
     previewProduct
 );
-router.post('/', 
+router.post('/',
     uploadMedia.fields([
         { name: 'images', maxCount: 10 },
+        { name: 'variantImages', maxCount: 50 },
         { name: 'video', maxCount: 1 }
     ]),
     sanitizeDiscountData,
@@ -63,9 +64,10 @@ router.post('/',
     checkExpiredDiscountMiddleware,
     createProductWithImages
 );
-router.put('/:id', 
+router.put('/:id',
     uploadMedia.fields([
         { name: 'images', maxCount: 10 },
+        { name: 'variantImages', maxCount: 50 },
         { name: 'video', maxCount: 1 }
     ]),
     sanitizeDiscountData,

@@ -14,7 +14,7 @@ interface CompactCarouselProps {
 function toCardProps(p: any) {
   const id = String(p.productId || p._id || p.id || '');
   const image =
-    (p.images && p.images[0]) || p.image || '/demo2.webp';
+    (p.images && p.images[0]) || p.image || '/products-hero.webp';
   const title = p.name || '';
   const designer =
     p.category

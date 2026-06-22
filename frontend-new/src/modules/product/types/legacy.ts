@@ -92,6 +92,9 @@ export interface LegacyProduct {
   } | null;
   createdAt: string;
   updatedAt: string;
+  productType?: string;
+  variantAttributes?: { name: string; values: string[] }[];
+  variants?: any[];
 }
 
 export interface LegacyCategory {

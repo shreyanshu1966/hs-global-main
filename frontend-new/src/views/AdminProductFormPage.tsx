@@ -41,14 +41,24 @@ export default function AdminProductFormPage() {
   const handleSave = async (productData: any, images: any[], _customSpecs: any[], video?: File | null) => {
     setProductLoading(true);
     try {
-      const newImageFiles     = images.filter(i => i.file && !i.isExisting).map(i => i.file!);
-      const existingImageUrls = images.filter(i => i.isExisting && i.url).map(i => i.url);
-      const finalData         = { ...productData, existingImages: existingImageUrls };
+      // New gallery files and per-variant files travel in separate FormData fields,
+      // each with a token manifest (index-aligned to the files) so the backend can
+      // resolve token references in variants[].images to final Cloudinary URLs.
+      const galleryNew = images.filter(i => i.file && !i.isExisting && !i.variantOnly);
+      const variantNew = images.filter(i => i.file && !i.isExisting && i.variantOnly);
+
+      const newImageFiles      = galleryNew.map(i => i.file!);
+      const variantImageFiles  = variantNew.map(i => i.file!);
+      const imageTokens        = galleryNew.map(i => i.token ?? '');
+      const variantImageTokens = variantNew.map(i => i.token ?? '');
+      const existingImageUrls  = images.filter(i => i.isExisting && !i.variantOnly && i.url).map(i => i.url);
+
+      const finalData = { ...productData, existingImages: existingImageUrls, imageTokens, variantImageTokens };
 
       if (!isNew && editingProduct) {
-        await adminProductApi.updateProduct(editingProduct.productId, finalData, newImageFiles, video || null, !video);
+        await adminProductApi.updateProduct(editingProduct.productId, finalData, newImageFiles, video || null, !video, variantImageFiles);
       } else {
-        await adminProductApi.createProduct(finalData, newImageFiles, video || null);
+        await adminProductApi.createProduct(finalData, newImageFiles, video || null, variantImageFiles);
       }
       goBack();
     } catch (err) {

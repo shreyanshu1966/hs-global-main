@@ -26,6 +26,10 @@ interface ProductImage {
   isMain?: boolean;
   isExisting?: boolean;
   isNew?: boolean;
+  /** Stable reference for new files so variants can point at them before upload */
+  token?: string;
+  /** True for files uploaded for a specific variant — excluded from the main gallery */
+  variantOnly?: boolean;
 }
 
 interface VideoFile {
@@ -61,14 +65,17 @@ const SECTION_TABS = [
 ] as const;
 type SectionId = typeof SECTION_TABS[number]['id'];
 
-interface VariantAttribute { name: string; values: string[] }
+const OPTION_PRESETS = ['Color', 'Size', 'Material', 'Style', 'Pattern', 'Finish', 'Weight'];
+
+interface VariantOption { name: string; values: string[] }
 interface VariantSku {
   attributes: Record<string, string>;
-  /** null = use product base price; a number = custom price in INR (display) */
   priceINR: string;
+  compareAtPriceINR: string;
   stockQuantity: number;
   sku: string;
   available: boolean;
+  images: string[];
 }
 
 const defaultRegionalPricing = (): Record<RegionKey, { enabled: boolean; adjustmentType: AdjustmentType; adjustmentValue: number }> => ({
@@ -135,9 +142,14 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
   const [excludeSearch, setExcludeSearch] = useState('');
   const [similarProductIds, setSimilarProductIds] = useState<string[]>([]);
   const [productTypeField, setProductTypeField]   = useState<'simple' | 'configurable'>('simple');
-  const [variantAttributes, setVariantAttributes] = useState<VariantAttribute[]>([]);
+  const [variantOptions, setVariantOptions]       = useState<VariantOption[]>([]);
   const [variantSkus, setVariantSkus]             = useState<VariantSku[]>([]);
-  const [attrValueInputs, setAttrValueInputs]     = useState<string[]>([]); // raw comma-input per attribute
+  const [variantDraftInput, setVariantDraftInput] = useState<string[]>([]);
+  const [drawerIdx, setDrawerIdx]                 = useState<number | null>(null);
+  const [selectedRows, setSelectedRows]           = useState<Set<number>>(new Set());
+  const [bulkPriceInput, setBulkPriceInput]       = useState('');
+  const [bulkStockInput, setBulkStockInput]       = useState('');
+  const [activeBulkField, setActiveBulkField]     = useState<'price' | 'stock' | null>(null);
   const [simSearch, setSimSearch]         = useState('');
   const [simResults, setSimResults]       = useState<any[]>([]);
   const [simSearching, setSimSearching]   = useState(false);
@@ -145,6 +157,7 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
   const [formSubmitting, setFormSubmitting]       = useState(false);
   const [unifiedDragOver, setUnifiedDragOver]     = useState(false);
   const unifiedInputRef = useRef<HTMLInputElement>(null);
+  const variantFileInputRef = useRef<HTMLInputElement>(null);
   const descTextareaRef = useRef<HTMLTextAreaElement>(null);
 
   const isFormDisabled = validationLoading || formSubmitting || loading || previewLoading || videoUploading;
@@ -154,7 +167,8 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
     const videoFiles = files.filter(f => f.type.startsWith('video/'));
 
     if (imageFiles.length > 0) {
-      const remaining = 10 - images.length;
+      const galleryCount = images.filter(i => !i.variantOnly).length;
+      const remaining = 10 - galleryCount;
       const validImages = imageFiles.slice(0, remaining).filter(f => f.size <= 5 * 1024 * 1024);
       if (validImages.length > 0) {
         const results = await Promise.all(validImages.map(file =>
@@ -166,10 +180,10 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
           })
         ));
         setImages(prev => {
-          const hasNone = prev.length === 0;
+          const hasNone = prev.filter(i => !i.variantOnly).length === 0;
           const newImgs: ProductImage[] = results.map((r, i) => ({
             id: r.id, file: r.file, url: r.url,
-            isMain: hasNone && i === 0, isNew: true,
+            isMain: hasNone && i === 0, isNew: true, token: `new:${r.id}`,
           }));
           return [...prev, ...newImgs];
         });
@@ -282,16 +296,18 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
       setProductTypeField('configurable');
     }
     if (Array.isArray(editingProduct.variantAttributes) && editingProduct.variantAttributes.length > 0) {
-      setVariantAttributes(editingProduct.variantAttributes);
-      setAttrValueInputs(editingProduct.variantAttributes.map((a: any) => (a.values || []).join(', ')));
+      setVariantOptions(editingProduct.variantAttributes);
+      setVariantDraftInput(editingProduct.variantAttributes.map(() => ''));
     }
     if (Array.isArray(editingProduct.variants) && editingProduct.variants.length > 0) {
       setVariantSkus(editingProduct.variants.map((v: any) => ({
         attributes: v.attributes instanceof Map ? Object.fromEntries(v.attributes) : (v.attributes || {}),
         priceINR: v.priceUSD != null ? String(Math.round(v.priceUSD * liveRate('INR'))) : '',
+        compareAtPriceINR: v.compareAtPriceUSD != null ? String(Math.round(v.compareAtPriceUSD * liveRate('INR'))) : '',
         stockQuantity: v.stockQuantity || 0,
         sku: v.sku || '',
         available: v.available !== false,
+        images: v.images || [],
       })));
     }
     if (editingProduct.hasVideo && editingProduct.videoUrl) {
@@ -423,16 +439,21 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
         similarProducts: similarProductIds, regionalPricing: regionalPricingForSave,
         shipping: { shipsWorldwide: shippingConfig.shipsWorldwide, excludedCountries: shippingConfig.excludedCountries },
         productType: productTypeField,
-        variantAttributes: productTypeField === 'configurable' ? variantAttributes : [],
+        variantAttributes: productTypeField === 'configurable' ? variantOptions : [],
         variants: productTypeField === 'configurable'
-          ? variantSkus.map(v => ({
+          ? variantSkus.map((v, i) => ({
               attributes: v.attributes,
               priceUSD: v.priceINR && parseFloat(v.priceINR) > 0
                 ? parseFloat(v.priceINR) / liveRate('INR')
                 : null,
+              compareAtPriceUSD: v.compareAtPriceINR && parseFloat(v.compareAtPriceINR) > 0
+                ? parseFloat(v.compareAtPriceINR) / liveRate('INR')
+                : null,
               stockQuantity: v.stockQuantity,
               sku: v.sku,
               available: v.available,
+              images: v.images || [],
+              position: i,
             }))
           : [],
       }, images, customSpecs, video && !video.isExisting ? video.file : null);
@@ -487,53 +508,154 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
   const labelCls = 'block text-sm font-medium text-gray-700 mb-1.5';
 
   // ─── Variant helpers ───────────────────────────────────────────────────────
-  const addAttribute = () => {
-    setVariantAttributes(prev => [...prev, { name: '', values: [] }]);
-    setAttrValueInputs(prev => [...prev, '']);
-  };
 
-  const removeAttribute = (idx: number) => {
-    setVariantAttributes(prev => prev.filter((_, i) => i !== idx));
-    setAttrValueInputs(prev => prev.filter((_, i) => i !== idx));
-    setVariantSkus([]);
-  };
-
-  const updateAttributeName = (idx: number, name: string) => {
-    setVariantAttributes(prev => prev.map((a, i) => i === idx ? { ...a, name } : a));
-    setVariantSkus([]);
-  };
-
-  const updateAttributeValues = (idx: number, raw: string) => {
-    setAttrValueInputs(prev => prev.map((v, i) => i === idx ? raw : v));
-    const values = raw.split(',').map(s => s.trim()).filter(Boolean);
-    setVariantAttributes(prev => prev.map((a, i) => i === idx ? { ...a, values } : a));
-    setVariantSkus([]);
-  };
-
-  const generateCombinations = () => {
-    const validAttrs = variantAttributes.filter(a => a.name.trim() && a.values.length > 0);
-    if (validAttrs.length === 0) return;
+  const computeCombinations = (options: VariantOption[]): Record<string, string>[] => {
+    const valid = options.filter(o => o.name.trim() && o.values.length > 0);
+    if (valid.length === 0) return [];
     const combos: Record<string, string>[] = [{}];
-    for (const attr of validAttrs) {
+    for (const opt of valid) {
       const next: Record<string, string>[] = [];
-      for (const existing of combos) {
-        for (const val of attr.values) {
-          next.push({ ...existing, [attr.name]: val });
-        }
+      for (const c of combos) {
+        for (const val of opt.values) next.push({ ...c, [opt.name]: val });
       }
       combos.splice(0, combos.length, ...next);
     }
-    setVariantSkus(combos.map(attributes => ({
-      attributes,
-      priceINR: '',
-      stockQuantity: 0,
-      sku: '',
-      available: true,
-    })));
+    return combos;
+  };
+
+  const mergeIntoCombinations = (combos: Record<string, string>[], existing: VariantSku[]): VariantSku[] =>
+    combos.map(attrs => {
+      const match = existing.find(e => {
+        const keys = Object.keys(attrs);
+        return keys.length === Object.keys(e.attributes).length && keys.every(k => e.attributes[k] === attrs[k]);
+      });
+      return match ?? { attributes: attrs, priceINR: '', compareAtPriceINR: '', stockQuantity: 0, sku: '', available: true, images: [] };
+    });
+
+  const addOption = () => {
+    if (variantOptions.length >= 3) return;
+    setVariantOptions(prev => [...prev, { name: '', values: [] }]);
+    setVariantDraftInput(prev => [...prev, '']);
+  };
+
+  const removeOption = (idx: number) => {
+    setVariantOptions(prev => {
+      const updated = prev.filter((_, i) => i !== idx);
+      setVariantSkus(existing => mergeIntoCombinations(computeCombinations(updated), existing));
+      return updated;
+    });
+    setVariantDraftInput(prev => prev.filter((_, i) => i !== idx));
+    setSelectedRows(new Set());
+  };
+
+  const updateOptionName = (idx: number, name: string) => {
+    setVariantOptions(prev => {
+      const updated = prev.map((o, i) => i === idx ? { ...o, name } : o);
+      setVariantSkus(existing => mergeIntoCombinations(computeCombinations(updated), existing));
+      return updated;
+    });
+  };
+
+  const addOptionValue = (optIdx: number, value: string) => {
+    const trimmed = value.trim();
+    if (!trimmed) return;
+    setVariantOptions(prev => {
+      const updated = prev.map((o, i) =>
+        i === optIdx && !o.values.includes(trimmed) ? { ...o, values: [...o.values, trimmed] } : o
+      );
+      setVariantSkus(existing => mergeIntoCombinations(computeCombinations(updated), existing));
+      return updated;
+    });
+    setVariantDraftInput(prev => prev.map((v, i) => i === optIdx ? '' : v));
+    setSelectedRows(new Set());
+  };
+
+  const removeOptionValue = (optIdx: number, valIdx: number) => {
+    setVariantOptions(prev => {
+      const updated = prev.map((o, i) =>
+        i === optIdx ? { ...o, values: o.values.filter((_, vi) => vi !== valIdx) } : o
+      );
+      setVariantSkus(existing => mergeIntoCombinations(computeCombinations(updated), existing));
+      return updated;
+    });
+    setSelectedRows(new Set());
+  };
+
+  const removeVariant = (idx: number) => {
+    setVariantSkus(prev => prev.filter((_, i) => i !== idx));
+    setSelectedRows(prev => {
+      const next = new Set<number>();
+      prev.forEach(r => { if (r < idx) next.add(r); else if (r > idx) next.add(r - 1); });
+      return next;
+    });
   };
 
   const updateVariantSku = (idx: number, field: keyof VariantSku, value: any) => {
     setVariantSkus(prev => prev.map((v, i) => i === idx ? { ...v, [field]: value } : v));
+  };
+
+  // ─── Variant image helpers ───────────────────────────────────────────────────
+  // A variant stores stable references: existing images by URL, new files by token.
+  const imgRef = (img: ProductImage): string => (img.isExisting ? img.url : (img.token ?? img.url));
+  // Resolve a stored reference back to a previewable URL (token → local data-URL, else the URL itself).
+  const resolveRef = (ref: string): string => {
+    const match = images.find(i => imgRef(i) === ref);
+    return match ? match.url : ref;
+  };
+
+  // Upload new photos scoped to a single variant: added to the image pool as
+  // `variantOnly` (so they stay out of the main gallery) and auto-assigned.
+  const handleVariantFiles = async (variantIdx: number, files: File[]) => {
+    const imageFiles = files.filter(f => f.type.startsWith('image/') && f.size <= 5 * 1024 * 1024);
+    if (imageFiles.length === 0) return;
+    const results = await Promise.all(imageFiles.map(file =>
+      new Promise<ProductImage>(resolve => {
+        const id = `${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+        const reader = new FileReader();
+        reader.onload = ev => resolve({
+          id, file, url: ev.target?.result as string,
+          isNew: true, variantOnly: true, token: `new:${id}`,
+        });
+        reader.readAsDataURL(file);
+      })
+    ));
+    setImages(prev => [...prev, ...results]);
+    setVariantSkus(prev => prev.map((v, i) =>
+      i === variantIdx ? { ...v, images: [...v.images, ...results.map(imgRef)] } : v
+    ));
+  };
+
+  const toggleRow = (idx: number) => {
+    setSelectedRows(prev => {
+      const next = new Set(prev);
+      next.has(idx) ? next.delete(idx) : next.add(idx);
+      return next;
+    });
+  };
+
+  const toggleAllRows = () => {
+    setSelectedRows(prev => prev.size === variantSkus.length ? new Set() : new Set(variantSkus.map((_, i) => i)));
+  };
+
+  const applyBulkPrice = () => {
+    const parsed = parseFloat(bulkPriceInput);
+    if (!isNaN(parsed) && parsed >= 0) {
+      setVariantSkus(prev => prev.map((v, i) => selectedRows.has(i) ? { ...v, priceINR: String(parsed) } : v));
+    }
+    setBulkPriceInput(''); setActiveBulkField(null);
+  };
+
+  const applyBulkStock = () => {
+    const parsed = parseInt(bulkStockInput);
+    if (!isNaN(parsed) && parsed >= 0) {
+      setVariantSkus(prev => prev.map((v, i) => selectedRows.has(i) ? { ...v, stockQuantity: parsed } : v));
+    }
+    setBulkStockInput(''); setActiveBulkField(null);
+  };
+
+  const deleteSelectedRows = () => {
+    setVariantSkus(prev => prev.filter((_, i) => !selectedRows.has(i)));
+    setSelectedRows(new Set());
   };
 
   // ─── Section anchor helper ─────────────────────────────────────────────────
@@ -669,8 +791,11 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
                 <p className="text-xs text-gray-400 mt-1">Images: JPG, PNG, WebP up to 5 MB · Video: MP4, MOV up to 100 MB</p>
               </div>
 
-              {/* Image grid */}
-              <ProductImageManager images={images} onImagesChange={setImages} onMainImageChange={() => {}} aspectRatio={1} allowCrop maxImages={10} hideUploadZone />
+              {/* Image grid — only the shared gallery; per-variant photos live in the Variants section */}
+              <ProductImageManager
+                images={images.filter(i => !i.variantOnly)}
+                onImagesChange={next => setImages([...next, ...images.filter(i => i.variantOnly)])}
+                onMainImageChange={() => {}} aspectRatio={1} allowCrop maxImages={10} hideUploadZone />
               {uploadProgress.images > 0 && uploadProgress.images < 100 && (
                 <div className="rounded-xl bg-orange-50 border border-orange-100 p-3">
                   <div className="flex justify-between text-xs text-orange-700 mb-1.5"><span>Uploading images…</span><span>{uploadProgress.images}%</span></div>
@@ -1068,10 +1193,11 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
           <div ref={secRef('variants')} id="variants" className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
             <div className="px-6 py-4 border-b border-gray-50">
               <h2 className="font-semibold text-gray-900 text-[15px]">Variants</h2>
-              <p className="text-xs text-gray-400 mt-0.5">Add options like Color or Size. Each combination becomes a purchasable SKU.</p>
+              <p className="text-xs text-gray-400 mt-0.5">Add options like Color or Size. Each combination becomes a separate purchasable SKU.</p>
             </div>
-            <div className="px-6 py-5 space-y-5">
-              {/* Product type toggle */}
+            <div className="px-6 py-5 space-y-6">
+
+              {/* ── Product type toggle ── */}
               <div className="flex gap-3">
                 {(['simple', 'configurable'] as const).map(pt => (
                   <button key={pt} type="button"
@@ -1089,122 +1215,401 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
 
               {productTypeField === 'configurable' && (
                 <>
-                  {/* Attribute definitions */}
+                  {/* ── Options panel ── */}
                   <div className="space-y-3">
-                    <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Attributes</p>
-                    {variantAttributes.map((attr, idx) => (
-                      <div key={idx} className="flex gap-2 items-start">
-                        <div className="flex-1 grid grid-cols-2 gap-2">
+                    <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Options</p>
+
+                    {variantOptions.map((opt, optIdx) => (
+                      <div key={optIdx} className="border border-gray-200 rounded-xl p-4 space-y-3 bg-gray-50/50">
+                        {/* Option name row */}
+                        <div className="flex items-center gap-2">
+                          <select
+                            value={OPTION_PRESETS.includes(opt.name) ? opt.name : '__custom'}
+                            onChange={e => {
+                              const val = e.target.value;
+                              updateOptionName(optIdx, val === '__custom' ? '' : val);
+                            }}
+                            disabled={isFormDisabled}
+                            className="px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white focus:ring-2 focus:ring-orange-400 focus:border-transparent"
+                          >
+                            {OPTION_PRESETS.map(p => <option key={p} value={p}>{p}</option>)}
+                            <option value="__custom">Custom…</option>
+                          </select>
+                          {(!OPTION_PRESETS.includes(opt.name)) && (
+                            <input
+                              type="text"
+                              value={opt.name}
+                              onChange={e => updateOptionName(optIdx, e.target.value)}
+                              placeholder="Option name"
+                              disabled={isFormDisabled}
+                              className="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-orange-400 focus:border-transparent"
+                            />
+                          )}
+                          <button type="button" onClick={() => removeOption(optIdx)} disabled={isFormDisabled}
+                            className="ml-auto text-gray-400 hover:text-red-500 transition-colors p-1 rounded-lg hover:bg-red-50">
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                          </button>
+                        </div>
+
+                        {/* Value chips */}
+                        <div className="flex flex-wrap gap-1.5 items-center min-h-[32px]">
+                          {opt.values.map((val, valIdx) => (
+                            <span key={valIdx}
+                              className="inline-flex items-center gap-1 px-2.5 py-1 bg-white border border-gray-200 rounded-full text-xs font-medium text-gray-700 shadow-sm">
+                              {val}
+                              <button type="button" onClick={() => removeOptionValue(optIdx, valIdx)} disabled={isFormDisabled}
+                                className="text-gray-400 hover:text-red-500 transition-colors ml-0.5 leading-none">
+                                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" /></svg>
+                              </button>
+                            </span>
+                          ))}
+                          {/* Inline value input */}
                           <input
                             type="text"
-                            placeholder="Name (e.g. Color)"
-                            value={attr.name}
-                            onChange={e => updateAttributeName(idx, e.target.value)}
+                            value={variantDraftInput[optIdx] ?? ''}
+                            onChange={e => setVariantDraftInput(prev => prev.map((v, i) => i === optIdx ? e.target.value : v))}
+                            onKeyDown={e => {
+                              if ((e.key === 'Enter' || e.key === ',') && variantDraftInput[optIdx]?.trim()) {
+                                e.preventDefault();
+                                addOptionValue(optIdx, variantDraftInput[optIdx]);
+                              }
+                            }}
+                            onBlur={() => { if (variantDraftInput[optIdx]?.trim()) addOptionValue(optIdx, variantDraftInput[optIdx]); }}
                             disabled={isFormDisabled}
-                            className={inputCls}
-                          />
-                          <input
-                            type="text"
-                            placeholder="Values, comma separated (e.g. Red, Blue)"
-                            value={attrValueInputs[idx] ?? ''}
-                            onChange={e => updateAttributeValues(idx, e.target.value)}
-                            disabled={isFormDisabled}
-                            className={inputCls}
+                            placeholder={opt.values.length === 0 ? 'Add value, press Enter' : 'Add another…'}
+                            className="px-2 py-1 text-xs border-0 border-b border-dashed border-gray-300 bg-transparent focus:outline-none focus:border-orange-400 min-w-[120px]"
                           />
                         </div>
-                        <button type="button" onClick={() => removeAttribute(idx)}
-                          className="mt-2 text-gray-300 hover:text-red-500 transition-colors text-lg leading-none shrink-0">×</button>
                       </div>
                     ))}
-                    <button type="button" onClick={addAttribute} disabled={isFormDisabled}
-                      className="text-sm text-orange-500 hover:text-orange-600 font-medium transition-colors">
-                      + Add attribute
-                    </button>
+
+                    {variantOptions.length < 3 && (
+                      <button type="button" onClick={addOption} disabled={isFormDisabled}
+                        className="text-sm text-orange-500 hover:text-orange-600 font-medium transition-colors flex items-center gap-1.5">
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
+                        Add {variantOptions.length === 0 ? 'an option' : 'another option'}
+                        {variantOptions.length > 0 && <span className="text-gray-400 font-normal">({3 - variantOptions.length} remaining)</span>}
+                      </button>
+                    )}
                   </div>
 
-                  {variantAttributes.some(a => a.name && a.values.length > 0) && (
-                    <button type="button" onClick={generateCombinations} disabled={isFormDisabled}
-                      className="w-full py-2.5 rounded-xl border border-orange-300 bg-orange-50 text-orange-600 text-sm font-semibold hover:bg-orange-100 transition-colors">
-                      Generate all combinations ({variantAttributes.filter(a => a.name && a.values.length > 0).reduce((n, a) => n * a.values.length, 1)} SKUs)
-                    </button>
-                  )}
-
-                  {/* SKU table */}
+                  {/* ── Variants table ── */}
                   {variantSkus.length > 0 && (
-                    <div className="border border-gray-100 rounded-xl overflow-hidden">
-                      <table className="w-full text-sm">
-                        <thead className="bg-gray-50 border-b border-gray-100">
-                          <tr>
-                            <th className="px-4 py-2.5 text-left text-xs font-semibold text-gray-500">Variant</th>
-                            <th className="px-4 py-2.5 text-left text-xs font-semibold text-gray-500">
-                              Price (₹)
-                              <span className="ml-1 font-normal text-gray-400 normal-case">blank = base price</span>
-                            </th>
-                            <th className="px-4 py-2.5 text-left text-xs font-semibold text-gray-500">Stock</th>
-                            <th className="px-4 py-2.5 text-left text-xs font-semibold text-gray-500">SKU</th>
-                            <th className="px-4 py-2.5 text-center text-xs font-semibold text-gray-500">Avail</th>
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-gray-50">
-                          {variantSkus.map((sku, idx) => (
-                            <tr key={idx} className={!sku.available ? 'opacity-50' : ''}>
-                              <td className="px-4 py-2.5">
-                                <span className="text-xs text-gray-700 font-medium">
-                                  {Object.values(sku.attributes).join(' / ')}
-                                </span>
-                              </td>
-                              <td className="px-4 py-2.5">
-                                <div className="relative w-28">
-                                  <span className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none">₹</span>
-                                  <input
-                                    type="number"
-                                    min="0"
-                                    value={sku.priceINR}
-                                    onChange={e => updateVariantSku(idx, 'priceINR', e.target.value)}
-                                    placeholder={priceINR || '—'}
-                                    disabled={isFormDisabled}
-                                    className="w-full pl-5 pr-2 py-1.5 border border-gray-200 rounded-lg text-xs focus:ring-1 focus:ring-orange-400 focus:border-transparent"
-                                  />
-                                </div>
-                              </td>
-                              <td className="px-4 py-2.5">
-                                <input
-                                  type="number" min="0"
-                                  value={sku.stockQuantity}
-                                  onChange={e => updateVariantSku(idx, 'stockQuantity', parseInt(e.target.value) || 0)}
-                                  disabled={isFormDisabled}
-                                  className="w-20 px-2 py-1.5 border border-gray-200 rounded-lg text-xs focus:ring-1 focus:ring-orange-400 focus:border-transparent"
-                                />
-                              </td>
-                              <td className="px-4 py-2.5">
-                                <input
-                                  type="text"
-                                  value={sku.sku}
-                                  onChange={e => updateVariantSku(idx, 'sku', e.target.value)}
-                                  disabled={isFormDisabled}
-                                  placeholder="e.g. CHR-R-S"
-                                  className="w-28 px-2 py-1.5 border border-gray-200 rounded-lg text-xs focus:ring-1 focus:ring-orange-400 focus:border-transparent"
-                                />
-                              </td>
-                              <td className="px-4 py-2.5 text-center">
-                                <input
-                                  type="checkbox"
-                                  checked={sku.available}
-                                  onChange={e => updateVariantSku(idx, 'available', e.target.checked)}
-                                  disabled={isFormDisabled}
-                                  className="w-4 h-4 text-orange-500 rounded border-gray-300"
-                                />
-                              </td>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                          Variants <span className="font-normal text-gray-400 normal-case">({variantSkus.length} SKU{variantSkus.length !== 1 ? 's' : ''})</span>
+                        </p>
+                      </div>
+
+                      {/* Bulk action bar */}
+                      {selectedRows.size > 0 && (
+                        <div className="flex items-center gap-2 px-3 py-2 bg-orange-50 border border-orange-200 rounded-lg">
+                          <span className="text-xs font-medium text-orange-700">{selectedRows.size} selected</span>
+                          <div className="flex items-center gap-1.5 ml-auto">
+                            {activeBulkField === 'price' ? (
+                              <div className="flex items-center gap-1">
+                                <span className="text-xs text-gray-500">₹</span>
+                                <input type="number" min="0" value={bulkPriceInput} onChange={e => setBulkPriceInput(e.target.value)}
+                                  className="w-24 px-2 py-1 border border-orange-300 rounded text-xs focus:outline-none focus:ring-1 focus:ring-orange-400"
+                                  placeholder="Set price" autoFocus
+                                  onKeyDown={e => { if (e.key === 'Enter') applyBulkPrice(); if (e.key === 'Escape') setActiveBulkField(null); }} />
+                                <button type="button" onClick={applyBulkPrice} className="px-2 py-1 bg-orange-500 text-white rounded text-xs font-medium">Apply</button>
+                                <button type="button" onClick={() => setActiveBulkField(null)} className="text-gray-400 hover:text-gray-600 text-xs">Cancel</button>
+                              </div>
+                            ) : activeBulkField === 'stock' ? (
+                              <div className="flex items-center gap-1">
+                                <input type="number" min="0" value={bulkStockInput} onChange={e => setBulkStockInput(e.target.value)}
+                                  className="w-24 px-2 py-1 border border-orange-300 rounded text-xs focus:outline-none focus:ring-1 focus:ring-orange-400"
+                                  placeholder="Set stock" autoFocus
+                                  onKeyDown={e => { if (e.key === 'Enter') applyBulkStock(); if (e.key === 'Escape') setActiveBulkField(null); }} />
+                                <button type="button" onClick={applyBulkStock} className="px-2 py-1 bg-orange-500 text-white rounded text-xs font-medium">Apply</button>
+                                <button type="button" onClick={() => setActiveBulkField(null)} className="text-gray-400 hover:text-gray-600 text-xs">Cancel</button>
+                              </div>
+                            ) : (
+                              <>
+                                <button type="button" onClick={() => setActiveBulkField('price')}
+                                  className="px-2.5 py-1 border border-gray-300 rounded text-xs text-gray-600 hover:border-orange-400 hover:text-orange-600 transition-colors">Set price</button>
+                                <button type="button" onClick={() => setActiveBulkField('stock')}
+                                  className="px-2.5 py-1 border border-gray-300 rounded text-xs text-gray-600 hover:border-orange-400 hover:text-orange-600 transition-colors">Set stock</button>
+                                <button type="button" onClick={() => {
+                                  setVariantSkus(prev => prev.map((v, i) => selectedRows.has(i) ? { ...v, available: true } : v));
+                                  setSelectedRows(new Set());
+                                }} className="px-2.5 py-1 border border-gray-300 rounded text-xs text-gray-600 hover:border-green-400 hover:text-green-600 transition-colors">Enable</button>
+                                <button type="button" onClick={() => {
+                                  setVariantSkus(prev => prev.map((v, i) => selectedRows.has(i) ? { ...v, available: false } : v));
+                                  setSelectedRows(new Set());
+                                }} className="px-2.5 py-1 border border-gray-300 rounded text-xs text-gray-600 hover:border-gray-400 hover:text-gray-700 transition-colors">Disable</button>
+                                <button type="button" onClick={deleteSelectedRows}
+                                  className="px-2.5 py-1 border border-red-200 rounded text-xs text-red-500 hover:bg-red-50 transition-colors">Delete</button>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="border border-gray-100 rounded-xl overflow-hidden">
+                        <table className="w-full text-sm">
+                          <thead className="bg-gray-50 border-b border-gray-100">
+                            <tr>
+                              <th className="px-3 py-2.5 w-8">
+                                <input type="checkbox"
+                                  checked={selectedRows.size === variantSkus.length && variantSkus.length > 0}
+                                  onChange={toggleAllRows}
+                                  className="w-3.5 h-3.5 text-orange-500 rounded border-gray-300 cursor-pointer" />
+                              </th>
+                              <th className="px-3 py-2.5 text-left text-xs font-semibold text-gray-500">Variant</th>
+                              <th className="px-3 py-2.5 text-left text-xs font-semibold text-gray-500">
+                                Price ₹ <span className="font-normal text-gray-400">(blank = base)</span>
+                              </th>
+                              <th className="px-3 py-2.5 text-left text-xs font-semibold text-gray-500">Compare ₹</th>
+                              <th className="px-3 py-2.5 text-left text-xs font-semibold text-gray-500">Stock</th>
+                              <th className="px-3 py-2.5 text-left text-xs font-semibold text-gray-500">SKU</th>
+                              <th className="px-3 py-2.5 text-center text-xs font-semibold text-gray-500">On</th>
+                              <th className="px-3 py-2.5 w-8"></th>
                             </tr>
-                          ))}
-                        </tbody>
-                      </table>
+                          </thead>
+                          <tbody className="divide-y divide-gray-50">
+                            {variantSkus.map((sku, idx) => (
+                              <tr key={idx} className={`transition-colors hover:bg-gray-50/80 ${!sku.available ? 'opacity-50' : ''} ${selectedRows.has(idx) ? 'bg-orange-50/40' : ''}`}>
+                                <td className="px-3 py-2 text-center">
+                                  <input type="checkbox" checked={selectedRows.has(idx)} onChange={() => toggleRow(idx)}
+                                    className="w-3.5 h-3.5 text-orange-500 rounded border-gray-300 cursor-pointer" />
+                                </td>
+                                <td className="px-3 py-2">
+                                  <button type="button" onClick={() => setDrawerIdx(idx)}
+                                    className="text-xs text-gray-800 font-medium hover:text-orange-600 transition-colors text-left">
+                                    {Object.values(sku.attributes).join(' / ')}
+                                    {sku.images.length > 0 && <span className="ml-1.5 text-[10px] text-gray-400">📷{sku.images.length}</span>}
+                                  </button>
+                                </td>
+                                <td className="px-3 py-2">
+                                  <div className="relative w-24">
+                                    <span className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none">₹</span>
+                                    <input type="number" min="0" value={sku.priceINR}
+                                      onChange={e => updateVariantSku(idx, 'priceINR', e.target.value)}
+                                      placeholder={priceINR || '—'} disabled={isFormDisabled}
+                                      className="w-full pl-5 pr-1.5 py-1.5 border border-gray-200 rounded-lg text-xs focus:ring-1 focus:ring-orange-400 focus:border-transparent" />
+                                  </div>
+                                </td>
+                                <td className="px-3 py-2">
+                                  <div className="relative w-24">
+                                    <span className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none">₹</span>
+                                    <input type="number" min="0" value={sku.compareAtPriceINR}
+                                      onChange={e => updateVariantSku(idx, 'compareAtPriceINR', e.target.value)}
+                                      placeholder="—" disabled={isFormDisabled}
+                                      className="w-full pl-5 pr-1.5 py-1.5 border border-gray-200 rounded-lg text-xs focus:ring-1 focus:ring-orange-400 focus:border-transparent" />
+                                  </div>
+                                </td>
+                                <td className="px-3 py-2">
+                                  <input type="number" min="0" value={sku.stockQuantity}
+                                    onChange={e => updateVariantSku(idx, 'stockQuantity', parseInt(e.target.value) || 0)}
+                                    disabled={isFormDisabled}
+                                    className="w-16 px-2 py-1.5 border border-gray-200 rounded-lg text-xs focus:ring-1 focus:ring-orange-400 focus:border-transparent text-center" />
+                                </td>
+                                <td className="px-3 py-2">
+                                  <input type="text" value={sku.sku}
+                                    onChange={e => updateVariantSku(idx, 'sku', e.target.value)}
+                                    disabled={isFormDisabled} placeholder="SKU-001"
+                                    className="w-24 px-2 py-1.5 border border-gray-200 rounded-lg text-xs focus:ring-1 focus:ring-orange-400 focus:border-transparent" />
+                                </td>
+                                <td className="px-3 py-2 text-center">
+                                  <button type="button" onClick={() => updateVariantSku(idx, 'available', !sku.available)} disabled={isFormDisabled}
+                                    className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none ${sku.available ? 'bg-green-500' : 'bg-gray-200'}`}>
+                                    <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow-sm transition-transform ${sku.available ? 'translate-x-5' : 'translate-x-0.5'}`} />
+                                  </button>
+                                </td>
+                                <td className="px-3 py-2">
+                                  <div className="flex items-center gap-1">
+                                    <button type="button" onClick={() => setDrawerIdx(idx)} title="Edit"
+                                      className="p-1 text-gray-400 hover:text-orange-500 transition-colors rounded">
+                                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                                    </button>
+                                    <button type="button" onClick={() => removeVariant(idx)} title="Delete"
+                                      className="p-1 text-gray-400 hover:text-red-500 transition-colors rounded">
+                                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                    </button>
+                                  </div>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
                   )}
                 </>
               )}
             </div>
           </div>
+
+          {/* ── Variant Detail Drawer ── */}
+          {drawerIdx !== null && variantSkus[drawerIdx] && (() => {
+            const v = variantSkus[drawerIdx];
+            const label = Object.values(v.attributes).join(' / ');
+            return (
+              <div className="fixed inset-0 z-50 flex">
+                <div className="flex-1 bg-black/40 backdrop-blur-sm" onClick={() => setDrawerIdx(null)} />
+                <div className="w-full max-w-sm bg-white shadow-2xl flex flex-col overflow-hidden">
+                  {/* Header */}
+                  <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+                    <div>
+                      <p className="text-[10px] uppercase tracking-wider text-gray-400 font-medium">Variant</p>
+                      <h3 className="font-semibold text-gray-900 text-[15px]">{label}</h3>
+                    </div>
+                    <button type="button" onClick={() => setDrawerIdx(null)}
+                      className="p-2 text-gray-400 hover:text-gray-700 transition-colors rounded-lg hover:bg-gray-100">
+                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                  </div>
+
+                  <div className="flex-1 overflow-y-auto px-5 py-4 space-y-5">
+                    {/* Photos for this variant — upload dedicated images + assign from gallery */}
+                    <div>
+                      <div className="flex items-center justify-between mb-2.5">
+                        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                          Variant photos <span className="font-normal text-gray-400 normal-case">({v.images.length})</span>
+                        </p>
+                        <button type="button" onClick={() => variantFileInputRef.current?.click()}
+                          className="inline-flex items-center gap-1 text-xs font-medium text-orange-600 hover:text-orange-700 transition-colors">
+                          <Upload className="w-3.5 h-3.5" /> Upload
+                        </button>
+                      </div>
+                      <input ref={variantFileInputRef} type="file" accept="image/*" multiple className="hidden"
+                        onChange={e => {
+                          const files = Array.from(e.target.files || []);
+                          if (files.length) handleVariantFiles(drawerIdx, files);
+                          e.target.value = '';
+                        }} />
+
+                      {v.images.length > 0 ? (
+                        <div className="grid grid-cols-4 gap-2">
+                          {v.images.map((ref: string) => (
+                            <div key={ref} className="relative aspect-square rounded-lg overflow-hidden border-2 border-orange-500 shadow-sm group">
+                              <img src={resolveRef(ref)} alt="" className="w-full h-full object-cover" />
+                              <button type="button"
+                                onClick={() => updateVariantSku(drawerIdx, 'images', v.images.filter((u: string) => u !== ref))}
+                                className="absolute top-0.5 right-0.5 w-4 h-4 bg-black/60 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                                title="Remove">
+                                <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" /></svg>
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <button type="button" onClick={() => variantFileInputRef.current?.click()}
+                          className="w-full py-5 border-2 border-dashed border-gray-200 rounded-xl text-xs text-gray-400 hover:border-orange-300 hover:text-orange-500 transition-colors flex flex-col items-center gap-1.5">
+                          <Upload className="w-5 h-5" />
+                          Upload photos for this variant
+                        </button>
+                      )}
+
+                      {/* Assign from the shared product gallery */}
+                      {images.filter(i => !i.variantOnly).length > 0 && (
+                        <div className="mt-3">
+                          <p className="text-[11px] text-gray-400 mb-1.5">Or assign from product gallery (tap to toggle)</p>
+                          <div className="grid grid-cols-4 gap-2">
+                            {images.filter(i => !i.variantOnly).map(img => {
+                              const ref = imgRef(img);
+                              const assigned = v.images.includes(ref);
+                              return (
+                                <button key={img.id} type="button"
+                                  onClick={() => updateVariantSku(drawerIdx, 'images',
+                                    assigned ? v.images.filter((u: string) => u !== ref) : [...v.images, ref]
+                                  )}
+                                  className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-all ${
+                                    assigned ? 'border-orange-500 shadow-md' : 'border-transparent opacity-60 hover:opacity-90'
+                                  }`}>
+                                  <img src={img.url} alt="" className="w-full h-full object-cover" />
+                                  {assigned && (
+                                    <span className="absolute top-0.5 right-0.5 w-4 h-4 bg-orange-500 rounded-full flex items-center justify-center">
+                                      <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
+                                    </span>
+                                  )}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Pricing */}
+                    <div>
+                      <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2.5">Pricing</p>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <label className="text-xs text-gray-500 mb-1 block">Price (₹)</label>
+                          <div className="relative">
+                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs">₹</span>
+                            <input type="number" min="0" value={v.priceINR}
+                              onChange={e => updateVariantSku(drawerIdx, 'priceINR', e.target.value)}
+                              placeholder={priceINR || 'Base price'}
+                              className="w-full pl-6 pr-3 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-orange-400 focus:border-transparent" />
+                          </div>
+                        </div>
+                        <div>
+                          <label className="text-xs text-gray-500 mb-1 block">Compare-at (₹)</label>
+                          <div className="relative">
+                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs">₹</span>
+                            <input type="number" min="0" value={v.compareAtPriceINR}
+                              onChange={e => updateVariantSku(drawerIdx, 'compareAtPriceINR', e.target.value)}
+                              placeholder="Strikethrough"
+                              className="w-full pl-6 pr-3 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-orange-400 focus:border-transparent" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Inventory */}
+                    <div>
+                      <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2.5">Inventory</p>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <label className="text-xs text-gray-500 mb-1 block">Stock quantity</label>
+                          <input type="number" min="0" value={v.stockQuantity}
+                            onChange={e => updateVariantSku(drawerIdx, 'stockQuantity', parseInt(e.target.value) || 0)}
+                            className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-orange-400 focus:border-transparent" />
+                        </div>
+                        <div>
+                          <label className="text-xs text-gray-500 mb-1 block">SKU</label>
+                          <input type="text" value={v.sku}
+                            onChange={e => updateVariantSku(drawerIdx, 'sku', e.target.value)}
+                            placeholder="e.g. CHR-R-S"
+                            className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-orange-400 focus:border-transparent" />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Availability */}
+                    <div className="flex items-center justify-between py-2.5 px-3 bg-gray-50 rounded-xl">
+                      <div>
+                        <p className="text-sm font-medium text-gray-700">Available for purchase</p>
+                        <p className="text-xs text-gray-400">When off, variant is hidden from customers</p>
+                      </div>
+                      <button type="button" onClick={() => updateVariantSku(drawerIdx, 'available', !v.available)}
+                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${v.available ? 'bg-green-500' : 'bg-gray-200'}`}>
+                        <span className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-sm transition-transform ${v.available ? 'translate-x-6' : 'translate-x-1'}`} />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Footer */}
+                  <div className="px-5 py-4 border-t border-gray-100 flex items-center justify-between gap-3">
+                    <button type="button" onClick={() => { removeVariant(drawerIdx); setDrawerIdx(null); }}
+                      className="text-sm text-red-500 hover:text-red-600 font-medium transition-colors flex items-center gap-1.5">
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                      Delete variant
+                    </button>
+                    <button type="button" onClick={() => setDrawerIdx(null)}
+                      className="flex-1 py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-sm font-semibold transition-colors">
+                      Done
+                    </button>
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
 
           {/* ⑦ Similar Products */}
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">

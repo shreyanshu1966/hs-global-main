@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
@@ -295,27 +295,27 @@ const Admin = () => {
         name: string;
     } | null>(null);
 
-    // Search debouncing
-    const [searchDebounceTimer, setSearchDebounceTimer] = useState<NodeJS.Timeout | null>(null);
+    // Search debouncing — use useRef so setting the timer doesn't cause a re-render
+    const searchDebounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
     // Debounced search effect
     useEffect(() => {
-        if (searchDebounceTimer) {
-            clearTimeout(searchDebounceTimer);
+        if (searchDebounceTimerRef.current) {
+            clearTimeout(searchDebounceTimerRef.current);
         }
 
-        const timer = setTimeout(() => {
+        searchDebounceTimerRef.current = setTimeout(() => {
             if (activeTab === 'products') {
                 loadData();
             }
         }, 300); // 300ms debounce
 
-        setSearchDebounceTimer(timer);
-
         return () => {
-            if (timer) clearTimeout(timer);
+            if (searchDebounceTimerRef.current) {
+                clearTimeout(searchDebounceTimerRef.current);
+            }
         };
-    }, [productsSearch]);
+    }, [productsSearch]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         if (!user || user.role !== 'admin') {
@@ -323,7 +323,7 @@ const Admin = () => {
             return;
         }
         loadData();
-    }, [user, navigate, activeTab, usersPage, ordersPage, usersSearch, usersRoleFilter, ordersSearch, ordersStatusFilter, ordersDeliveryFilter, blogsPage, contactsPage, contactsStatusFilter, quotationsPage, quotationsStatusFilter, productsPage, productsCategoryFilter, productsSubcategoryFilter, productsStatusFilter, reviewsPage, reviewsStatusFilter]);
+    }, [user, activeTab, usersPage, ordersPage, usersSearch, usersRoleFilter, ordersSearch, ordersStatusFilter, ordersDeliveryFilter, blogsPage, contactsPage, contactsStatusFilter, quotationsPage, quotationsStatusFilter, productsPage, productsCategoryFilter, productsSubcategoryFilter, productsStatusFilter, reviewsPage, reviewsStatusFilter]); // eslint-disable-line react-hooks/exhaustive-deps
 
     // Lock body scroll when any modal is open
     // Lock body scroll when any modal is open

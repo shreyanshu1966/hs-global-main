@@ -184,7 +184,7 @@ const VideoProductCarousel = ({
     return () => {
       isActive = false;
     };
-  }, [sourceType, manualIdsKey, sourceCategory, sourceTag, limit, sortBy, sortOrder, manualProductIds]);
+  }, [sourceType, manualIdsKey, sourceCategory, sourceTag, limit, sortBy, sortOrder]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const items = videos;
 

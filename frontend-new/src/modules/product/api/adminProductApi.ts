@@ -45,13 +45,18 @@ export const adminProductApi = {
   async createProduct(
     productData: ProductFormData,
     images: File[],
-    video?: File | null
+    video?: File | null,
+    variantImages?: File[]
   ): Promise<{ success: boolean; data: Product; message: string }> {
     const formData = new FormData();
     formData.append('productData', JSON.stringify(productData));
 
     images.forEach((image) => {
       formData.append('images', image);
+    });
+
+    (variantImages || []).forEach((image) => {
+      formData.append('variantImages', image);
     });
 
     if (video) {
@@ -74,7 +79,8 @@ export const adminProductApi = {
     productData: Partial<ProductFormData> & { preserveExistingImages?: boolean; removeVideo?: boolean },
     images?: File[],
     video?: File | null,
-    removeVideo?: boolean
+    removeVideo?: boolean,
+    variantImages?: File[]
   ): Promise<{ success: boolean; data: Product; message: string }> {
     const formData = new FormData();
     const dataToSend = { ...productData };
@@ -90,6 +96,10 @@ export const adminProductApi = {
         formData.append('images', image);
       });
     }
+
+    (variantImages || []).forEach((image) => {
+      formData.append('variantImages', image);
+    });
 
     if (video) {
       formData.append('video', video);

@@ -55,6 +55,9 @@ export const toLegacyProduct = (product: ProductV2): LegacyProduct => ({
   productCode: (product as any).productCode || '',
   subDescription: (product as any).subDescription || '',
   regionalPricing: product.regionalPricing || null,
+  productType: product.productType,
+  variantAttributes: product.variantAttributes,
+  variants: product.variants,
   createdAt: product.createdAt,
   updatedAt: product.updatedAt,
 });

@@ -122,10 +122,12 @@ const toProductDto = (product) => {
                         : (v.attributes || {}),
                     // null = use product base price; a number = variant-specific price in USD
                     priceUSD: v.priceUSD != null ? Number(v.priceUSD) : null,
+                    compareAtPriceUSD: v.compareAtPriceUSD != null ? Number(v.compareAtPriceUSD) : null,
                     stockQuantity: Number(v.stockQuantity || 0),
                     sku: v.sku || null,
                     images: Array.isArray(v.images) ? v.images : [],
                     available: v.available !== false,
+                    position: Number(v.position || 0),
                 }))
             : [],
         createdAt: product.createdAt,

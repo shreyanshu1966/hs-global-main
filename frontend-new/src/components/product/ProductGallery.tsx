@@ -36,9 +36,11 @@ interface ProductGalleryProps {
     };
     /** Ref to the tall scroll-space wrapper in ProductDetails */
     scrollWrapperRef: React.RefObject<HTMLDivElement>;
+    /** When set, overrides the gallery with the selected variant's photos */
+    variantImages?: string[] | null;
 }
 
-export function ProductGallery({ product, scrollWrapperRef }: ProductGalleryProps) {
+export function ProductGallery({ product, scrollWrapperRef, variantImages }: ProductGalleryProps) {
     const [activeIndex, setActiveIndex] = useState(0);
     const [direction, setDirection] = useState<1 | -1>(1);
     const [isImageZoomed, setIsImageZoomed] = useState(false);
@@ -51,7 +53,15 @@ export function ProductGallery({ product, scrollWrapperRef }: ProductGalleryProp
     const touchStartY = useRef<number | null>(null);
 
     const galleryImages = getProductDisplayImages(product as any);
-    const images = galleryImages.length > 0 ? galleryImages : product.images;
+    const images = (variantImages && variantImages.length > 0)
+        ? variantImages
+        : (galleryImages.length > 0 ? galleryImages : product.images);
+
+    // Reset to the first frame whenever the active image set changes (e.g. variant switch)
+    useEffect(() => {
+        setActiveIndex(0);
+        setZoomedImageIndex(0);
+    }, [variantImages]);
     const hasDiscountFlag = hasActiveDiscount(product as any) && Boolean(product.priceUSD && product.priceUSD > 0);
     const discountPercentage = getDiscountPercentage(product as any);
 

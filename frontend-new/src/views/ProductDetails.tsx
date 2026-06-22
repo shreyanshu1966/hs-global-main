@@ -34,6 +34,8 @@ const ProductDetails = ({ initialData }: { initialData?: any } = {}) => {
   const reviewsRef = useRef<HTMLDivElement>(null);
   // Tall scroll-space wrapper — drives image transitions inside
   const heroWrapperRef = useRef<HTMLDivElement>(null);
+  // Images for the currently selected variant (null = show the shared product gallery)
+  const [variantImages, setVariantImages] = useState<string[] | null>(null);
 
   // Fetch product from database
   const { product: dbProduct, relatedProducts: dbRelatedProducts, similarProducts: dbSimilarProducts, loading, error, refetch } = useProduct(id, initialData);
@@ -47,7 +49,7 @@ const ProductDetails = ({ initialData }: { initialData?: any } = {}) => {
       ? dbProduct.images
       : dbProduct.image
         ? [dbProduct.image]
-        : ["/demo2.webp"];
+        : ["/products-hero.webp"];
 
     const category = dbProduct.category || "furniture";
     const subcategory = dbProduct.subcategory || "marble";
@@ -100,6 +102,9 @@ const ProductDetails = ({ initialData }: { initialData?: any } = {}) => {
       dimensions: dbProduct.dimensions,
       weight: dbProduct.weight,
       tags: dbProduct.tags,
+      productType: dbProduct.productType,
+      variantAttributes: dbProduct.variantAttributes,
+      variants: dbProduct.variants,
     };
   }, [dbProduct, dbRelatedProducts, dbSimilarProducts]);
 
@@ -384,14 +389,14 @@ const ProductDetails = ({ initialData }: { initialData?: any } = {}) => {
         <div
           ref={heroWrapperRef}
           className="pd-hero-wrapper"
-          style={{ height: `${Math.max(2, product.images.length) * 100}vh` }}
+          style={{ height: `${Math.max(2, (variantImages && variantImages.length > 0 ? variantImages.length : product.images.length)) * 100}vh` }}
         >
           {/* Sticky panel — stays pinned while outer wrapper scrolls */}
           <div className="pd-sticky">
 
             {/* LEFT: gallery (images transition based on scroll) */}
             <div className="pd-gallery-col">
-              <ProductGallery product={product} scrollWrapperRef={heroWrapperRef} />
+              <ProductGallery product={product} variantImages={variantImages} scrollWrapperRef={heroWrapperRef} />
             </div>
 
             {/* RIGHT: product info — completely frozen */}
@@ -403,6 +408,7 @@ const ProductDetails = ({ initialData }: { initialData?: any } = {}) => {
                   isInCart={isInCart}
                   handleShare={handleShare}
                   reviewsRef={reviewsRef}
+                  onVariantImagesChange={setVariantImages}
                 />
               </div>
             </div>

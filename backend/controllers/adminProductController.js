@@ -9,6 +9,62 @@ const {
 } = require('../utils/imageProcessor');
 
 /**
+ * Upload variant-only image files and resolve token references inside
+ * productData.variants[].images to their final Cloudinary URLs.
+ *
+ * A variant image reference is one of:
+ *   • an existing http(s) URL  → kept as-is
+ *   • a "new:<token>" token     → replaced with the matching uploaded URL
+ * Anything that can't be resolved to an http(s) URL (e.g. a stray base64
+ * data-URL or an unmatched token) is dropped, so blobs never reach the DB.
+ *
+ * Mutates productData in place and strips the manifest fields afterwards.
+ *
+ * @param {Object} productData   parsed payload (mutated)
+ * @param {Array}  galleryUrls   uploaded gallery URLs, index-aligned to productData.imageTokens
+ * @param {Array}  variantFiles  multer files from the `variantImages` field
+ * @param {String} folder        cloudinary destination folder
+ */
+const remapVariantImages = async (productData, galleryUrls, variantFiles, folder) => {
+    const tokenMap = {};
+
+    // Gallery uploads: imageTokens[i] ↔ galleryUrls[i]
+    const galleryTokens = Array.isArray(productData.imageTokens) ? productData.imageTokens : [];
+    galleryTokens.forEach((token, i) => {
+        if (token && galleryUrls[i]) tokenMap[token] = galleryUrls[i];
+    });
+
+    // Variant-only uploads: variantImageTokens[i] ↔ uploaded URL[i]
+    const variantTokens = Array.isArray(productData.variantImageTokens) ? productData.variantImageTokens : [];
+    if (variantFiles && variantFiles.length > 0) {
+        for (let i = 0; i < variantFiles.length; i++) {
+            try {
+                const result = await uploadToCloudinary(variantFiles[i].buffer, folder);
+                if (variantTokens[i]) tokenMap[variantTokens[i]] = result.secure_url;
+                console.log('Uploaded variant image:', result.secure_url);
+            } catch (err) {
+                console.error('Error uploading variant image:', err);
+            }
+        }
+    }
+
+    if (productData.productType === 'configurable' && Array.isArray(productData.variants)) {
+        productData.variants = productData.variants.map(v => ({
+            ...v,
+            images: Array.isArray(v.images)
+                ? v.images
+                    .map(ref => tokenMap[ref] || ref)
+                    .filter(url => typeof url === 'string' && /^https?:\/\//.test(url))
+                : [],
+        }));
+    }
+
+    // Never persist the client-side manifest fields
+    delete productData.imageTokens;
+    delete productData.variantImageTokens;
+};
+
+/**
  * Get all products for admin (includes inactive and draft products)
  * Admin version - shows all products regardless of status
  */
@@ -123,6 +179,14 @@ const createProductWithImages = async (req, res) => {
             productData.images = uploadedImages; // All images
             productData.sortedImages = uploadedImages; // Same as images initially
         }
+
+        // Upload per-variant images and resolve token references in variants[].images
+        await remapVariantImages(
+            productData,
+            uploadedImages,
+            req.files?.variantImages || [],
+            `hs-global/products/${productData.category}/${productData.subcategory}`
+        );
 
         // Handle video upload if present
         const videoFiles = req.files?.video || [];
@@ -268,6 +332,15 @@ const updateProductWithImages = async (req, res) => {
             productData.sortedImages = newImages;
             productData.image = newImages[0];
         }
+
+        // Upload per-variant images and resolve token references in variants[].images.
+        // Gallery tokens map to the just-uploaded `newImages` (index-aligned to imageTokens).
+        await remapVariantImages(
+            productData,
+            newImages,
+            req.files?.variantImages || [],
+            `hs-global/products/${productData.category || existingProduct.category}/${productData.subcategory || existingProduct.subcategory}`
+        );
 
         // Clean up deleted images from Cloudinary ONLY if we have an explicit list of new existing images
         // This calculates which images were present before but are NOT in the new list
