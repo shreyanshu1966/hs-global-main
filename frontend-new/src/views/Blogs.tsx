@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Calendar, Clock, ArrowRight, Search, Tag, Filter } from 'lucide-react';
 import blogService, { Blog } from '../services/blogService';
+import { filterStaticBlogs } from '../data/staticBlogs';
 
 const Blogs = ({ initialBlogs }: { initialBlogs?: Blog[] } = {}) => {
     const [blogs, setBlogs] = useState<Blog[]>(initialBlogs ?? []);
@@ -61,6 +62,13 @@ const Blogs = ({ initialBlogs }: { initialBlogs?: Blog[] } = {}) => {
             day: 'numeric'
         });
     };
+
+    // Pin static (non-DB) posts at the top of page 1, respecting active filters.
+    const staticMatches = currentPage === 1 ? filterStaticBlogs(selectedCategory, searchQuery) : [];
+    const displayBlogs = [
+        ...staticMatches,
+        ...blogs.filter((b) => !staticMatches.some((s) => s.slug === b.slug)),
+    ];
 
     return (
         <>
@@ -167,14 +175,14 @@ const Blogs = ({ initialBlogs }: { initialBlogs?: Blog[] } = {}) => {
                                 </div>
                             ))}
                         </div>
-                    ) : blogs.length === 0 ? (
+                    ) : displayBlogs.length === 0 ? (
                         <div className="text-center py-20">
                             <p className="text-xl text-gray-600">No blogs found</p>
                         </div>
                     ) : (
                         <>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                                {blogs.map((blog, index) => (
+                                {displayBlogs.map((blog, index) => (
                                     <article
                                         key={blog._id}
                                         className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
