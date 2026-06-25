@@ -27,16 +27,22 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     title: { absolute: title },
     description,
     alternates: { canonical },
-    openGraph: { title, description, url: canonical, images: [{ url: image, width: 1200, height: 630, alt: label }] },
+    openGraph: { type: 'website', siteName: SITE_NAME, title, description, url: canonical, images: [{ url: image, width: 1200, height: 630, alt: label }] },
     twitter: { card: 'summary_large_image', title, description, images: [{ url: image, alt: label }] },
   };
 }
 
 export default async function Page({ params }: Params) {
   const { category } = await params;
+  const label = categoryLabel(category);
   const all = await getAllProducts();
   const products = all
     .filter((p) => p.category === category && p.available !== false && p.status !== 'draft')
     .slice(0, 48);
-  return <ProductsClient initialProducts={products} />;
+  return (
+    <>
+      <h1 className="sr-only">{label} — Marble &amp; Granite Collection by HS Global Export</h1>
+      <ProductsClient initialProducts={products} />
+    </>
+  );
 }

@@ -16,7 +16,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: { absolute: title },
     description,
     alternates: { canonical },
-    openGraph: { title, description, url: canonical, images: [{ url: image, width: 1200, height: 630, alt: SITE_NAME }] },
+    openGraph: { type: 'website', siteName: SITE_NAME, title, description, url: canonical, images: [{ url: image, width: 1200, height: 630, alt: SITE_NAME }] },
     twitter: { card: 'summary_large_image', title, description, images: [{ url: image, alt: SITE_NAME }] },
   };
 }
@@ -45,6 +45,7 @@ export default function Page() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessLd) }} />
+      <h1 className="sr-only">Contact HS Global Export — Get in Touch</h1>
       <Client />
     </>
   );
