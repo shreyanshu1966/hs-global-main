@@ -19,6 +19,8 @@ import { SimilarProducts } from "../components/product/SimilarProducts";
 import { ProductFAQ } from "../components/product/ProductFAQ";
 import { CompactCarousel } from "../components/product/CompactCarousel";
 
+const toSlug = (v: string) => v.toLowerCase().trim().replace(/\s+/g, "-");
+
 const ProductDetails = ({ initialData }: { initialData?: any } = {}) => {
   const { id }: { id?: string } = useParams<{ id?: string }>();
   const [reviews, setReviews] = useState([]);
@@ -26,9 +28,9 @@ const ProductDetails = ({ initialData }: { initialData?: any } = {}) => {
   const [reviewsLoading, setReviewsLoading] = useState(true);
 
   // Extra carousel data
-  const [categoryProducts, setCategoryProducts] = useState<any[]>([]);
-  const [newArrivals, setNewArrivals]           = useState<any[]>([]);
-  const [trending, setTrending]                 = useState<any[]>([]);
+  const [featuredProducts, setFeaturedProducts] = useState<any[]>([]);
+  const [subcategoryProducts, setSubcategoryProducts] = useState<Record<string, any[]>>({});
+  const [subcategories, setSubcategories] = useState<string[]>([]);
 
   const { state: cartState } = useCart();
   const reviewsRef = useRef<HTMLDivElement>(null);
@@ -175,32 +177,52 @@ const ProductDetails = ({ initialData }: { initialData?: any } = {}) => {
     const exclude = (list: any[]) =>
       list.filter(p => String(p.productId || p._id || p.id || '') !== currentId).slice(0, 16);
 
-    // 1. More in same category
-    fetchCategoryProducts(product.category, { limit: 20, sortBy: 'createdAt', sortOrder: 'desc' })
-      .then(res => {
-        if (res.success && res.data && 'products' in res.data) {
-          setCategoryProducts(exclude(res.data.products as any[]));
-        }
-      })
-      .catch(() => {});
-
-    // 2. New arrivals (all categories, newest first)
-    fetchProductList({ limit: 16, sortBy: 'createdAt', sortOrder: 'desc' })
-      .then(res => {
-        if (res.success && Array.isArray(res.data)) {
-          setNewArrivals(exclude(res.data as any[]));
-        }
-      })
-      .catch(() => {});
-
-    // 3. Trending / featured
+    // 1. Fetch Featured Products
     fetchFeaturedProducts(16)
       .then(res => {
         if (res.success && Array.isArray(res.data)) {
-          setTrending(exclude(res.data as any[]));
+          setFeaturedProducts(exclude(res.data as any[]));
         }
       })
       .catch(() => {});
+
+    // 2. Fetch Subcategory Carousels if category is furniture
+    if (product.category === 'furniture') {
+      fetchCategoryProducts('furniture', { limit: 1 })
+        .then(async (res) => {
+          if (res.success && res.data && Array.isArray(res.data.subcategories)) {
+            const subcats = res.data.subcategories;
+            setSubcategories(subcats);
+
+            const subcatProductsMap: Record<string, any[]> = {};
+            await Promise.all(
+              subcats.map(async (subcat) => {
+                try {
+                  const subRes = await fetchCategoryProducts('furniture', {
+                    subcategory: subcat,
+                    limit: 12,
+                    sortBy: 'createdAt',
+                    sortOrder: 'desc'
+                  });
+                  if (subRes.success && subRes.data && Array.isArray(subRes.data.products)) {
+                    const filtered = exclude(subRes.data.products);
+                    if (filtered.length > 0) {
+                      subcatProductsMap[subcat] = filtered;
+                    }
+                  }
+                } catch (err) {
+                  console.error(`Failed to load products for subcategory ${subcat}:`, err);
+                }
+              })
+            );
+            setSubcategoryProducts(subcatProductsMap);
+          }
+        })
+        .catch(() => {});
+    } else {
+      setSubcategories([]);
+      setSubcategoryProducts({});
+    }
   }, [product?.category, product?.productId, product?._id]);
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -546,52 +568,27 @@ const ProductDetails = ({ initialData }: { initialData?: any } = {}) => {
         {/* FAQ */}
         <ProductFAQ />
 
-        {/* Similar Products carousel — below FAQ */}
-        {product.similarProducts && product.similarProducts.length > 0 && (
+        {/* Featured Products Carousel */}
+        {featuredProducts.length > 0 && (
           <div className="border-t border-[#e2e8f0]">
-            <CompactCarousel title="Explore Similar" products={product.similarProducts} />
+            <CompactCarousel title="Featured Products" products={featuredProducts} />
           </div>
         )}
 
-        {/* Related Products carousel */}
-        {product.relatedProducts && product.relatedProducts.length > 0 && (
-          <div className="border-t border-[#e2e8f0]">
-            <RelatedProducts relatedProducts={product.relatedProducts} />
-          </div>
-        )}
-
-        {/* More in same category */}
-        {categoryProducts.length > 0 && (
-          <div className="border-t border-[#e2e8f0]">
-            <CompactCarousel
-              title={`More in ${product.category}`}
-              products={categoryProducts}
-              viewAllLink={`/products/${product.category?.toLowerCase()}`}
-            />
-          </div>
-        )}
-
-        {/* New Arrivals */}
-        {newArrivals.length > 0 && (
-          <div className="border-t border-[#e2e8f0]">
-            <CompactCarousel
-              title="New Arrivals"
-              products={newArrivals}
-              viewAllLink="/products"
-            />
-          </div>
-        )}
-
-        {/* Trending */}
-        {trending.length > 0 && (
-          <div className="border-t border-[#e2e8f0]">
-            <CompactCarousel
-              title="Trending Now"
-              products={trending}
-              viewAllLink="/products"
-            />
-          </div>
-        )}
+        {/* Subcategory Carousels (for category furniture) */}
+        {product.category === 'furniture' && subcategories.map((subcat) => {
+          const productsForSubcat = subcategoryProducts[subcat];
+          if (!productsForSubcat || productsForSubcat.length === 0) return null;
+          return (
+            <div key={subcat} className="border-t border-[#e2e8f0]">
+              <CompactCarousel
+                title={`${subcat}`}
+                products={productsForSubcat}
+                viewAllLink={`/products/furniture/${toSlug(subcat)}`}
+              />
+            </div>
+          );
+        })}
 
         {/* Reviews */}
         <section className="bg-white py-14 lg:py-16 border-y border-[#e2e8f0]">

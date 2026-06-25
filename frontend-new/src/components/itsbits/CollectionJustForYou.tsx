@@ -33,15 +33,6 @@ const CollectionJustForYou = ({
           marbleFurnitureOnly: true,
         });
 
-        if (items.length === 0) {
-          items = await fetchItsbitsProducts({
-            limit: 10,
-            sortBy: 'viewCount',
-            sortOrder: 'desc',
-            marbleFurnitureOnly: true,
-          });
-        }
-
         if (!isActive) {
           return;
         }

@@ -227,39 +227,39 @@ const normalizeConfig = (config?: Partial<HomePageConfig> | null): HomePageConfi
   ...defaultConfig,
   ...config,
   hero: {
-    slides: Array.isArray(config?.hero?.slides) ? config!.hero!.slides : defaultConfig.hero.slides,
+    slides: Array.isArray(config?.hero?.slides) && config.hero.slides.length > 0 ? config.hero.slides : defaultConfig.hero.slides,
     autoplayInterval: config?.hero?.autoplayInterval ?? defaultConfig.hero.autoplayInterval,
   },
   categoryCards: {
     ...defaultConfig.categoryCards,
     ...(config?.categoryCards || {}),
-    cards: Array.isArray(config?.categoryCards?.cards) ? config!.categoryCards!.cards : defaultConfig.categoryCards.cards,
+    cards: Array.isArray(config?.categoryCards?.cards) && config.categoryCards.cards.length > 0 ? config.categoryCards.cards : defaultConfig.categoryCards.cards,
   },
   newArrivals: { ...defaultConfig.newArrivals, ...(config?.newArrivals || {}) },
   personalizedCollection: { ...defaultConfig.personalizedCollection, ...(config?.personalizedCollection || {}) },
   spotlight: {
     ...defaultConfig.spotlight,
     ...(config?.spotlight || {}),
-    cards: Array.isArray(config?.spotlight?.cards) ? config!.spotlight!.cards : defaultConfig.spotlight.cards,
+    cards: Array.isArray(config?.spotlight?.cards) && config.spotlight.cards.length > 0 ? config.spotlight.cards : defaultConfig.spotlight.cards,
   },
   collections: {
     ...defaultConfig.collections,
     ...(config?.collections || {}),
-    cards: Array.isArray(config?.collections?.cards) ? config!.collections!.cards : defaultConfig.collections.cards,
+    cards: Array.isArray(config?.collections?.cards) && config.collections.cards.length > 0 ? config.collections.cards : defaultConfig.collections.cards,
   },
   videoCarousel: { ...defaultConfig.videoCarousel, ...(config?.videoCarousel || {}) },
   featuredBanner: { ...defaultConfig.featuredBanner, ...(config?.featuredBanner || {}) },
   journal: {
     ...defaultConfig.journal,
     ...(config?.journal || {}),
-    articles: Array.isArray(config?.journal?.articles) ? config!.journal!.articles : defaultConfig.journal.articles,
+    articles: Array.isArray(config?.journal?.articles) && config.journal.articles.length > 0 ? config.journal.articles : defaultConfig.journal.articles,
   },
   promise: {
     ...defaultConfig.promise,
     ...(config?.promise || {}),
-    items: Array.isArray(config?.promise?.items) ? config!.promise!.items : defaultConfig.promise.items,
+    items: Array.isArray(config?.promise?.items) && config.promise.items.length > 0 ? config.promise.items : defaultConfig.promise.items,
   },
-  productCarousels: Array.isArray(config?.productCarousels) ? config!.productCarousels! : defaultConfig.productCarousels,
+  productCarousels: Array.isArray(config?.productCarousels) && config.productCarousels.length > 0 ? config.productCarousels : defaultConfig.productCarousels,
 });
 
 export const homePageConfigService = {
