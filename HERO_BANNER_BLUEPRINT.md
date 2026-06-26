@@ -209,38 +209,105 @@ All banners should feature one or more of these materials prominently:
 
 ---
 
-## Part 6 — Typography (If Baking Text Into the Image)
+## Part 6 — Typography, Logo & UI Elements (Mandatory)
 
-> **Preferred approach:** Don't bake text into the image — let the CMS control it. But if your banner design includes text as part of the image:
+> **Every banner must include** the brand logo, a headline, a subheadline, and supporting UI elements baked directly into the image. The site does not render text on top — what you design is exactly what the visitor sees.
 
-| Element | Style |
-|---|---|
-| **Brand name** | Cormorant Garamond / Playfair Display, 18–24pt, letter-spacing +0.15em |
-| **Tagline** | Same serif, italic, 14–16pt |
-| **Headline** | Cormorant Garamond Bold, 60–80pt |
-| **Subheadline** | Inter Regular, 16–20pt |
-| **Rule / divider** | 1px white or `#C9A96E` horizontal line |
+### Required Elements on Every Banner
 
-**Colors:** White (`#FFFFFF`) or warm gold (`#C9A96E`) only. Never black text on a light image — it reads as amateur.
+| # | Element | Placement | Notes |
+|---|---|---|---|
+| 1 | **HS Global Export logo** (icon + wordmark) | Top-left of text panel | Inside safe zone |
+| 2 | **Tagline** beneath logo | Below wordmark, italic | e.g. *Luxury : A Lifetime Investment* |
+| 3 | **Headline** | Center-left, large | Primary message |
+| 4 | **Subheadline / body line** | Below headline | 1–2 lines max |
+| 5 | **Horizontal rule** | Between headline and icons | Thin 1px line, 60–80px wide |
+| 6 | **3 feature icons + labels** | Bottom of text panel | e.g. Premium Quality · Timeless Design · Worldwide Export |
+
+### Typography Specs
+
+| Element | Font | Size (at 1920px canvas) | Weight | Color |
+|---|---|---|---|---|
+| **Logo wordmark** | Cormorant Garamond | 22–26 pt | Regular | `#FFFFFF` |
+| **Tagline** | Cormorant Garamond | 13–15 pt | Italic | `#FFFFFF` / 80% opacity |
+| **Headline line 1** | Cormorant Garamond | 72–90 pt | Light (300) | `#FFFFFF` |
+| **Headline line 2** | Cormorant Garamond | 72–90 pt | Bold (700) | `#FFFFFF` |
+| **Subheadline** | Inter | 16–20 pt | Regular (400) | `#FFFFFF` / 85% opacity |
+| **Divider rule** | — | 1 px × 60 px | — | `#FFFFFF` / 60% opacity |
+| **Icon labels** | Inter | 10–12 pt | Medium (500) | `#FFFFFF` |
+
+**Text colors:** White only (`#FFFFFF`). Use opacity variants (80–90%) for secondary elements. Never use black or dark text — it fights the photography.
+
+### Icon Style
+- Thin-stroke outline icons (1.5–2px stroke, no fill)
+- Size: 28–36 px circle at 1920px canvas
+- Style: circular border with icon inside — matches current site aesthetic
+- Labels: ALL CAPS, letter-spacing +0.12em, below icon
+
+### Text Panel Layout (Template A — Split)
+```
+ ┌──────────────────────────┐
+ │  [Logo icon]             │  ← y ~200
+ │  HS GLOBAL EXPORT        │
+ │  Luxury : A Lifetime...  │  ← tagline italic
+ │                          │
+ │  Headline Word           │  ← y ~380, large
+ │  Bold Second Word        │  ← same size, bold
+ │                          │
+ │  Subheadline copy that   │  ← y ~560, 2 lines
+ │  spans one or two lines  │
+ │  ────────────            │  ← thin rule
+ │                          │
+ │  ◎        ◎        ◎    │  ← y ~720, icons
+ │  PREMIUM  TIMELESS WORLD │
+ │  QUALITY  DESIGN  EXPORT │
+ └──────────────────────────┘
+  x ≥ 554            x ≤ 940
+```
+
+### Anti-Patterns to Avoid
+- ❌ Text bleeding outside `x: 554–1366` — will crop on mobile
+- ❌ Text at `y < 160` or `y > 920` — will crop on desktop
+- ❌ Semi-transparent text boxes / frosted glass panels as backgrounds
+- ❌ More than 3 feature icons — feels crowded
+- ❌ Mixing more than 2 fonts
 
 ---
 
 ## Part 7 — AI Generation Prompts
 
-### Universal Base Prompt (Modify for Each Category)
+> **Two-step approach:**
+> 1. Generate the **background scene** (no text) using the photo prompt
+> 2. Composite the **text, logo, and icons** over it in Photoshop / Figma / Canva following Part 6 specs
+
+### Step 1 — Background Photo Prompt (Universal Base)
 
 ```
-Ultra-wide editorial lifestyle photograph for a luxury stone and marble export 
-brand, 21:9 aspect ratio. [INSERT PRODUCT AND SCENE BELOW].
+Ultra-wide editorial lifestyle photograph for a luxury stone and marble 
+export brand, 21:9 aspect ratio. [INSERT PRODUCT AND SCENE BELOW].
+
+Leave the LEFT 35% of the frame as open, breathable negative space 
+(wall, ambient shadow, or soft background) — this area will hold 
+brand text and logo in post-production.
 
 Lighting: soft natural window light from upper right, warm ambient tone.
 Environment: minimal luxury interior — travertine floors, white or warm grey walls.
 Mood: Architectural Digest editorial, timeless, serene, high-end.
 Camera: slightly elevated 3/4 angle, shallow depth of field.
-Style: no text, no watermarks, no overlays, no vignette.
+No text, no UI, no watermarks, no overlays, no vignette.
 Color temperature: warm (4500–5500K).
 Quality: photorealistic, 8K texture detail, magazine cover quality.
 ```
+
+### Step 2 — Text & Logo Composite Checklist
+After generating the background, overlay in your design tool:
+- [ ] HS Global Export logo (icon + wordmark) at top-left of text area
+- [ ] Italic tagline beneath logo
+- [ ] Large headline (2 lines, light + bold weight)
+- [ ] Subheadline body copy (1–2 lines)
+- [ ] 1px horizontal rule
+- [ ] 3 outline icons with ALL CAPS labels
+- [ ] All elements within `x: 554–1366, y: 160–920` safe zone
 
 ### Category-Specific Scene Inserts
 
@@ -292,15 +359,23 @@ open-plan space with floor-to-ceiling windows and golden afternoon light.
 - [ ] Color profile is **sRGB**
 
 ### Composition
-- [ ] All critical content is within **x: 554–1366, y: 128–951**
+- [ ] All critical content is within **x: 554–1366, y: 160–920**
 - [ ] Focal product has clear visual weight — not lost in the scene
-- [ ] Adequate negative space — image doesn't feel cluttered
+- [ ] Left 35% of frame has open space for text panel
 - [ ] Light source is consistent and warm
+
+### Text & Logo (Required)
+- [ ] HS Global Export **logo icon + wordmark** present, top of text panel
+- [ ] Italic **tagline** beneath logo
+- [ ] **Headline** in Cormorant Garamond, 2 lines, light + bold treatment
+- [ ] **Subheadline** body copy in Inter, 1–2 lines
+- [ ] Thin **horizontal rule** between body and icons
+- [ ] **3 feature icons** (circle outline) + ALL CAPS labels
+- [ ] All text is **white** — no dark or colored text
 
 ### Brand
 - [ ] Mood matches **Architectural Digest / Robb Report** quality
-- [ ] No dark overlay, gradient overlay, or vignette baked in
-- [ ] No visible watermarks, stock photo borders, or UI elements
+- [ ] No unwanted gradients or vignettes on the photo background
 - [ ] Colors align with the **Warm Stone** or **Charcoal Luxury** palette
 
 ### Preview Test
