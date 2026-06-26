@@ -142,7 +142,7 @@ const defaultConfig: HomePageConfig = {
         subheading: 'Discover our exquisite collection of marble, granite, and natural stone products crafted for architects, designers, and global buyers.',
         ctaText: 'Explore Products',
         ctaLink: '/products',
-        backgroundImage: '/banner1.png',
+        backgroundImage: 'https://res.cloudinary.com/dynd1aan0/image/upload/f_auto,q_auto/hs-global/public/banner1',
         overlayOpacity: 0.5,
       },
       {
@@ -150,7 +150,7 @@ const defaultConfig: HomePageConfig = {
         subheading: 'Artisanal coffee tables, consoles, and bespoke pieces designed to elevate luxury interiors.',
         ctaText: 'View Furniture',
         ctaLink: '/products?cat=furniture',
-        backgroundImage: '/banner2.png',
+        backgroundImage: 'https://res.cloudinary.com/dynd1aan0/image/upload/f_auto,q_auto/hs-global/public/banner2',
         overlayOpacity: 0.5,
       },
       {
@@ -158,7 +158,7 @@ const defaultConfig: HomePageConfig = {
         subheading: 'Exceptional quality granite slabs and tiles, custom finished and ready for global export.',
         ctaText: 'Explore Granite',
         ctaLink: '/products?cat=granite',
-        backgroundImage: '/banner3.png',
+        backgroundImage: 'https://res.cloudinary.com/dynd1aan0/image/upload/f_auto,q_auto/hs-global/public/banner3',
         overlayOpacity: 0.5,
       },
       {
@@ -166,7 +166,7 @@ const defaultConfig: HomePageConfig = {
         subheading: 'From in-house manufacturing to secure container loading and shipping, we deliver worldwide.',
         ctaText: 'Our Services',
         ctaLink: '/services',
-        backgroundImage: '/banner4.webp',
+        backgroundImage: 'https://res.cloudinary.com/dynd1aan0/image/upload/f_auto,q_auto/hs-global/public/banner4',
         overlayOpacity: 0.5,
       },
     ],
@@ -292,7 +292,11 @@ export const homePageConfigService = {
   },
 
   async getPublicConfig(): Promise<HomePageConfig> {
+    // Always revalidate so admin edits to the homepage (hero banners, etc.)
+    // appear immediately instead of being masked by the browser's HTTP cache
+    // (the API sends Cache-Control: max-age=3600).
     const response = await fetch(`${API_URL}/homepage`, {
+      cache: 'no-store',
       headers: {
         'Content-Type': 'application/json',
       },

@@ -60,7 +60,7 @@ export default function Page() {
       <link
         rel="preload"
         as="image"
-        href="/_next/image?url=%2Fbanner4.webp&w=828&q=75"
+        href="/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdynd1aan0%2Fimage%2Fupload%2Ff_auto%2Cq_auto%2Fhs-global%2Fpublic%2Fbanner1&w=828&q=65"
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore — React 18 types don't include fetchPriority on <link>
         fetchPriority="high"

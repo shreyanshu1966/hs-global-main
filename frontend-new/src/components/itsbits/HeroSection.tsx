@@ -18,27 +18,30 @@ interface HeroSectionProps {
 
 const HeroSection = ({ slides = [], autoplayInterval = 5000 }: HeroSectionProps) => {
   const [active, setActive] = useState(0);
+  const [prev, setPrev] = useState<number | null>(null);
   const [transitioning, setTransitioning] = useState(false);
+  const [hovered, setHovered] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const count = slides.length;
 
   const goTo = useCallback(
     (index: number) => {
-      if (transitioning || count <= 1) return;
+      if (transitioning || count <= 1 || index === active) return;
       setTransitioning(true);
+      setPrev(active);
+      setActive(index);
       setTimeout(() => {
-        setActive(index);
+        setPrev(null);
         setTransitioning(false);
-      }, 400);
+      }, 900);
     },
-    [transitioning, count]
+    [transitioning, count, active]
   );
 
   const next = useCallback(() => goTo((active + 1) % count), [active, count, goTo]);
-  const prev = useCallback(() => goTo((active - 1 + count) % count), [active, count, goTo]);
+  const prevSlide = useCallback(() => goTo((active - 1 + count) % count), [active, count, goTo]);
 
-  // Autoplay
   useEffect(() => {
     if (count <= 1 || autoplayInterval <= 0) return;
     timerRef.current = setTimeout(next, autoplayInterval);
@@ -47,38 +50,36 @@ const HeroSection = ({ slides = [], autoplayInterval = 5000 }: HeroSectionProps)
 
   if (count === 0) return null;
 
-  const slide = slides[active] || {};
-  const overlay = `rgba(0,0,0,${Math.min(1, Math.max(0, slide.overlayOpacity ?? 0.5))})`;
-
   return (
     <section
-      className="relative w-full flex items-center justify-center overflow-hidden"
-      style={{ minHeight: 'min(90vh, 720px)' }}
+      className="hero-section"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      aria-label="Hero banner"
     >
-      {/* Background images — all mounted, active one is visible */}
+      {/* Slides */}
       {slides.map((s, i) =>
         s.backgroundImage ? (
           <div
             key={i}
-            className="absolute inset-0 transition-opacity duration-700"
-            style={{ opacity: i === active ? 1 : 0, zIndex: 0 }}
+            className={`hero-slide ${i === active ? 'hero-slide--active' : ''} ${i === prev ? 'hero-slide--prev' : ''}`}
             aria-hidden={i !== active}
           >
             {!s.backgroundImage.startsWith('data:') ? (
               <Image
                 fill
                 src={s.backgroundImage}
-                alt={s.heading || ''}
-                className="object-cover"
-                sizes="100vw"
+                alt={s.heading || 'HS Global Export banner'}
+                className="hero-image"
+                sizes="(max-width: 768px) 100vw, (max-width: 1920px) 100vw, 1920px"
                 priority={i === 0}
-                quality={65}
+                quality={100}
               />
             ) : (
               <img
                 src={s.backgroundImage}
-                alt={s.heading || ''}
-                className="absolute inset-0 w-full h-full object-cover"
+                alt={s.heading || 'HS Global Export banner'}
+                className="hero-image-fallback"
                 loading={i === 0 ? 'eager' : 'lazy'}
               />
             )}
@@ -86,83 +87,192 @@ const HeroSection = ({ slides = [], autoplayInterval = 5000 }: HeroSectionProps)
         ) : null
       )}
 
-      {/* Overlay */}
-      <div
-        className="absolute inset-0 transition-all duration-700"
-        style={{ background: overlay, zIndex: 1 }}
-        aria-hidden="true"
-      />
-
-      {/* Content */}
-      <div
-        className="relative w-full max-w-4xl mx-auto px-6 md:px-12 text-center py-20"
-        style={{
-          zIndex: 2,
-          opacity: transitioning ? 0 : 1,
-          transition: 'opacity 0.4s ease',
-        }}
-      >
-        {slide.heading && (
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight tracking-tight drop-shadow-lg">
-            {slide.heading}
-          </h1>
-        )}
-        {slide.subheading && (
-          <p className="mt-5 text-base md:text-lg text-white/85 max-w-2xl mx-auto leading-relaxed drop-shadow">
-            {slide.subheading}
-          </p>
-        )}
-        {slide.ctaText && slide.ctaLink && (
-          <div className="mt-8">
-            <a
-              href={slide.ctaLink}
-              className="inline-block px-8 py-3.5 bg-white text-gray-900 font-semibold text-sm rounded-full hover:bg-gray-100 transition-colors shadow-lg"
-            >
-              {slide.ctaText}
-            </a>
-          </div>
-        )}
-      </div>
-
-      {/* Prev / Next arrows — only when multiple slides */}
+      {/* Arrows — appear on hover, only when multiple slides */}
       {count > 1 && (
         <>
           <button
-            onClick={prev}
+            onClick={prevSlide}
             aria-label="Previous slide"
-            className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-black/30 hover:bg-black/50 flex items-center justify-center text-white transition-colors backdrop-blur-sm"
+            className={`hero-arrow hero-arrow--left ${hovered ? 'hero-arrow--visible' : ''}`}
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="15 18 9 12 15 6" />
             </svg>
           </button>
           <button
             onClick={next}
             aria-label="Next slide"
-            className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-black/30 hover:bg-black/50 flex items-center justify-center text-white transition-colors backdrop-blur-sm"
+            className={`hero-arrow hero-arrow--right ${hovered ? 'hero-arrow--visible' : ''}`}
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="9 18 15 12 9 6" />
             </svg>
           </button>
         </>
       )}
 
-      {/* Dot indicators */}
+      {/* Dot / pill indicators */}
       {count > 1 && (
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex items-center gap-2">
+        <div className="hero-dots">
           {slides.map((_, i) => (
             <button
               key={i}
               onClick={() => goTo(i)}
               aria-label={`Go to slide ${i + 1}`}
-              className={`rounded-full transition-all duration-300 ${
-                i === active ? 'w-6 h-2.5 bg-white' : 'w-2.5 h-2.5 bg-white/50 hover:bg-white/80'
-              }`}
+              className={`hero-dot ${i === active ? 'hero-dot--active' : ''}`}
             />
           ))}
         </div>
       )}
+
+      <style>{`
+        .hero-section {
+          position: relative;
+          width: 100%;
+          /* 21:9 cinematic ratio — industry standard for wide e-commerce banners.
+             At 1540px wide  →  660px tall  (~84% of a 788px viewport). Perfect.
+             At 1920px wide  →  823px tall. Still fits comfortably. */
+          aspect-ratio: 21 / 9;
+          /* Hard ceiling so it never overflows on any screen */
+          max-height: 85vh;
+          overflow: hidden;
+          background: #0a0a0a;
+        }
+
+        /* Mobile: 4:3 feels natural on portrait phones */
+        @media (max-width: 640px) {
+          .hero-section {
+            aspect-ratio: 4 / 3;
+            max-height: 75vw;
+          }
+        }
+
+        /* ---- Slides — clean crossfade only, no zoom/pan ---- */
+        .hero-slide {
+          position: absolute;
+          inset: 0;
+          opacity: 0;
+          z-index: 0;
+          transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+          will-change: opacity;
+        }
+
+        .hero-slide--active {
+          opacity: 1;
+          z-index: 1;
+        }
+
+        .hero-slide--prev {
+          opacity: 0;
+          z-index: 0;
+        }
+
+        /* ---- Images ---- */
+        .hero-image {
+          object-fit: cover;
+          object-position: center center;
+        }
+
+        .hero-image-fallback {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center center;
+        }
+
+        /* ---- Arrows ---- */
+        .hero-arrow {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          z-index: 20;
+          width: 48px;
+          height: 48px;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.15);
+          border: 1px solid rgba(255, 255, 255, 0.35);
+          color: #fff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
+          opacity: 0;
+          transition: opacity 0.3s ease, background 0.25s ease, transform 0.25s ease;
+          pointer-events: none;
+        }
+
+        .hero-arrow--visible {
+          opacity: 1;
+          pointer-events: auto;
+        }
+
+        .hero-arrow--left {
+          left: clamp(12px, 3vw, 40px);
+        }
+
+        .hero-arrow--right {
+          right: clamp(12px, 3vw, 40px);
+        }
+
+        .hero-arrow:hover {
+          background: rgba(255, 255, 255, 0.28);
+          transform: translateY(-50%) scale(1.08);
+        }
+
+        .hero-arrow:active {
+          transform: translateY(-50%) scale(0.95);
+        }
+
+        /* ---- Dots ---- */
+        .hero-dots {
+          position: absolute;
+          bottom: clamp(14px, 3vh, 28px);
+          left: 50%;
+          transform: translateX(-50%);
+          z-index: 20;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .hero-dot {
+          border-radius: 100px;
+          background: rgba(255, 255, 255, 0.45);
+          border: none;
+          cursor: pointer;
+          transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                      background 0.35s ease,
+                      height 0.35s ease;
+          width: 8px;
+          height: 8px;
+        }
+
+        .hero-dot--active {
+          width: 28px;
+          height: 8px;
+          background: #ffffff;
+        }
+
+        .hero-dot:hover:not(.hero-dot--active) {
+          background: rgba(255, 255, 255, 0.75);
+        }
+
+        /* ---- Mobile ---- */
+        @media (max-width: 640px) {
+          .hero-arrow {
+            width: 38px;
+            height: 38px;
+          }
+
+          .hero-dot--active {
+            width: 20px;
+          }
+        }
+      `}</style>
     </section>
   );
 };
