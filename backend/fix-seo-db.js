@@ -28,7 +28,7 @@ async function fixSeoRecords() {
   const homeDoc = await col.findOne({ path: '/' });
   if (homeDoc) {
     const updateFields = {};
-    if (homeDoc.canonical && homeDoc.canonical.includes('/Old')) {
+    if (homeDoc.canonical && (homeDoc.canonical.includes('/Old') || homeDoc.canonical === 'Old')) {
       updateFields.canonical = 'https://www.hsglobalexport.com/';
     }
     if (!homeDoc.title || homeDoc.title.trim() === '') {

@@ -33,6 +33,25 @@ const localBusinessLd = {
   description:
     'Contact HS Global Export for premium granite and marble solutions. Call +91 81071 15116 or email inquiry@hsglobalexport.com. Worldwide shipping available.',
   areaServed: ['US', 'GB', 'IN', 'Worldwide'],
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'C-108, Titanium Business Park, Makarba',
+    addressLocality: 'Ahmedabad',
+    postalCode: '380051',
+    addressRegion: 'Gujarat',
+    addressCountry: 'IN',
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: '23.0225',
+    longitude: '72.5714',
+  },
+  openingHoursSpecification: {
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+    opens: '09:00',
+    closes: '18:00',
+  },
   contactPoint: {
     '@type': 'ContactPoint',
     telephone: '+91-81071-15116',

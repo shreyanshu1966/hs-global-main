@@ -1,7 +1,6 @@
 'use client';
 import { useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
 import { Globe, Award, Target, Users } from "lucide-react";
 import { getResponsiveImage, getSrcSet } from "../utils/responsive-image-helper";
@@ -16,64 +15,6 @@ const About = () => {
 
   return (
     <div ref={containerRef} className="bg-[#FFFFFF] text-gray-900 selection:bg-black selection:text-white overflow-x-hidden">
-
-      <Helmet>
-        {/* Basic SEO */}
-        <title>Best Marble Sink, Marble Decor, Granite Sink, Tiles - USA, UK and Across Worldwide</title>
-        <meta name="description" content="HS Global Export offers premium marble sinks, granite sinks, tiles, and marble décor, supplying high-quality natural stone products across the USA, UK, and worldwide." />
-        <meta name="keywords" content="About Us, Best Marble Sink, Marble Decor, Granite Sink, Marble Tiles Exporter, Granite Tiles Supplier, Marble Sink Manufacturer, Luxury Marble Decor, Natural Stone Sinks, Premium Granite Sink, Marble Tiles USA, Marble Tiles UK, Granite & Marble Tiles Worldwide, Marble Products Exporter, Global Marble Supplier, Marble & Granite Export Worldwide, High-Quality Marble Tiles, Custom Marble Sink, Stone Decor Manufacturer, International Marble Exporter" />
-        <meta name="author" content="HS Global Export" />
-        <meta name="robots" content="index, follow" />
-
-        {/* Canonical URL */}
-        <link rel="canonical" href="https://www.hsglobalexport.com/about" />
-
-        {/* Open Graph */}
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://www.hsglobalexport.com/about" />
-        <meta property="og:site_name" content="HS Global Export" />
-        <meta property="og:title" content="Best Marble Sink, Marble Decor, Granite Sink, Tiles - USA, UK and Across Worldwide" />
-        <meta property="og:description" content="HS Global Export offers premium marble sinks, granite sinks, tiles, and marble décor, supplying high-quality natural stone products across the USA, UK, and worldwide." />
-        <meta property="og:image" content="https://www.hsglobalexport.com/og-image.jpg" />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-        <meta property="og:image:alt" content="HS Global Export - About Our Company" />
-        <meta property="og:locale" content="en_US" />
-
-        {/* Twitter Card */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content="https://www.hsglobalexport.com/about" />
-        <meta name="twitter:title" content="Best Marble Sink, Marble Decor, Granite Sink, Tiles - USA, UK and Across Worldwide" />
-        <meta name="twitter:description" content="HS Global Export offers premium marble sinks, granite sinks, tiles, and marble décor, supplying high-quality natural stone products across the USA, UK, and worldwide." />
-        <meta name="twitter:image" content="https://www.hsglobalexport.com/og-image.jpg" />
-        <meta name="twitter:image:alt" content="HS Global Export - About Our Company" />
-
-        {/* Schema.org AboutPage */}
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "AboutPage",
-            "name": "About HS Global Export",
-            "description": "Learn about HS Global Export's heritage in handcrafted premium marble supply",
-            "url": "https://hsglobalexport.com/about",
-            "mainEntity": {
-              "@type": "Organization",
-              "name": "HS Global Export",
-              "foundingDate": "1985",
-              "foundingLocation": {
-                "@type": "Place",
-                "address": {
-                  "@type": "PostalAddress",
-                  "addressLocality": "Ahmedabad",
-                  "addressRegion": "Gujarat",
-                  "addressCountry": "IN"
-                }
-              },
-              "description": "Premium marble furniture and handcrafted natural stone products manufacturer with nearly 50 years of family heritage."
-            }
-          })}
-        </script>
-      </Helmet>
 
       {/* 1. SCROLLYTELLING: Origin Story - Unified Scaled Layout */}
       <StickyStorySection />

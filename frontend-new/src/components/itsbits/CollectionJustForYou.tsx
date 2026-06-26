@@ -28,9 +28,6 @@ const CollectionJustForYou = ({
         let items = await fetchItsbitsProducts({
           limit: 10,
           featured: true,
-          sortBy: 'viewCount',
-          sortOrder: 'desc',
-          marbleFurnitureOnly: true,
         });
 
         if (!isActive) {

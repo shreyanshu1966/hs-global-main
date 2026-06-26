@@ -25,6 +25,9 @@ async function importCsv() {
 
   let pageUpdates = 0;
   let productUpdates = 0;
+  
+  const seenProducts = new Set();
+  const seenPages = new Set();
 
   for (const record of records) {
     const rawUrl = record.url || '';
@@ -59,6 +62,11 @@ async function importCsv() {
 
     if (isProduct) {
       const oldSlug = pathname.replace('/product/', '').replace(/\/$/, '');
+      const uniqueKey = hsProductId || newSlug || oldSlug;
+      if (uniqueKey) {
+        if (seenProducts.has(uniqueKey)) continue;
+        seenProducts.add(uniqueKey);
+      }
       
       const query = { $or: [] };
       if (hsProductId) query.$or.push({ productCode: hsProductId });
@@ -81,8 +89,13 @@ async function importCsv() {
           updateFields['seo.keywords'] = keywords;
         }
 
+        if (hsProductId === 'HSMCETWH37') {
+           console.log('DEBUG: Updating HSMCETWH37 with:', updateFields);
+        }
+
         // We only update if it already exists, no need to change productId
-        await productsCol.updateOne({ _id: product._id }, { $set: updateFields });
+        const res = await productsCol.updateOne({ _id: product._id }, { $set: updateFields });
+        if (hsProductId === 'HSMCETWH37') console.log('DEBUG: Result:', res);
         productUpdates++;
       } else {
         console.log(`Product not found for: hs_product_id=${hsProductId}, newSlug=${newSlug}, oldSlug=${oldSlug}`);
@@ -95,6 +108,9 @@ async function importCsv() {
          newPath = new URL(newUrl).pathname;
          if (newPath === '') newPath = '/';
       }
+      
+      if (seenPages.has(newPath)) continue;
+      seenPages.add(newPath);
       
       const pageDoc = await pageseoCol.findOne({ $or: [{ path: pagePath }, { path: newPath }] });
       

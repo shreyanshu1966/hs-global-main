@@ -1,7 +1,6 @@
 'use client';
 import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import {
   ArrowRight,
@@ -28,94 +27,6 @@ const Services: React.FC = () => {
 
   return (
     <div ref={containerRef} className="bg-white text-gray-900 selection:bg-black selection:text-white overflow-x-hidden">
-
-      <Helmet>
-        {/* Basic SEO */}
-        <title>Shipping - Global Stone Logistics | HS Global Export</title>
-        <meta name="description" content="Worldwide shipping for granite and marble: export logistics, secure packaging, customs support, and reliable delivery for stone products." />
-        <meta name="keywords" content="stone shipping, export logistics, global freight, stone packaging, customs clearance, international delivery" />
-        <meta name="author" content="HS Global Export" />
-        <meta name="robots" content="index, follow" />
-
-        {/* Canonical URL */}
-        <link rel="canonical" href="https://www.hsglobalexport.com/services" />
-
-        {/* Open Graph */}
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://www.hsglobalexport.com/services" />
-        <meta property="og:site_name" content="HS Global Export" />
-        <meta property="og:title" content="Shipping - Global Stone Logistics | HS Global Export" />
-        <meta property="og:description" content="Export logistics, secure packaging, and reliable delivery for stone products worldwide." />
-        <meta property="og:image" content="https://www.hsglobalexport.com/og-image.jpg" />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-        <meta property="og:image:alt" content="HS Global Export - Shipping" />
-        <meta property="og:locale" content="en_US" />
-
-        {/* Twitter Card */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content="https://www.hsglobalexport.com/services" />
-        <meta name="twitter:title" content="Shipping - Global Stone Logistics | HS Global Export" />
-        <meta name="twitter:description" content="Export logistics, secure packaging, and reliable delivery for stone products worldwide." />
-        <meta name="twitter:image" content="https://www.hsglobalexport.com/og-image.jpg" />
-        <meta name="twitter:image:alt" content="HS Global Export - Shipping" />
-
-        {/* Schema.org Service */}
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Service",
-            "serviceType": "International Shipping and Export Logistics",
-            "provider": {
-              "@type": "Organization",
-              "name": "HS Global Export",
-              "url": "https://hsglobalexport.com"
-            },
-            "areaServed": {
-              "@type": "Place",
-              "name": "Worldwide"
-            },
-            "hasOfferCatalog": {
-              "@type": "OfferCatalog",
-              "name": "Shipping Services",
-              "itemListElement": [
-                {
-                  "@type": "Offer",
-                  "itemOffered": {
-                    "@type": "Service",
-                    "name": "Export Packaging",
-                    "description": "Secure crating and packaging for international transit"
-                  }
-                },
-                {
-                  "@type": "Offer",
-                  "itemOffered": {
-                    "@type": "Service",
-                    "name": "Freight Coordination",
-                    "description": "Sea and air freight coordination with trusted partners"
-                  }
-                },
-                {
-                  "@type": "Offer",
-                  "itemOffered": {
-                    "@type": "Service",
-                    "name": "Customs Support",
-                    "description": "Documentation and clearance assistance for exports"
-                  }
-                },
-                {
-                  "@type": "Offer",
-                  "itemOffered": {
-                    "@type": "Service",
-                    "name": "Delivery Assurance",
-                    "description": "Tracking, insurance, and delivery updates"
-                  }
-                }
-              ]
-            }
-          })}
-        </script>
-      </Helmet>
 
       {/* 1. MARQUEE SEPARATOR */}
       <div className="py-[clamp(2rem,4vw,3rem)] border-y border-gray-100 bg-black text-white">

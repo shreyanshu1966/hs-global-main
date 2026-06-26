@@ -2,189 +2,18 @@
 import { useState } from "react";
 import { ChevronDown, Truck, CreditCard, Globe, ClipboardCheck, Award, Building2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { FAQ_CATEGORIES, type FAQItem } from "../../data/productFaqs";
 
-interface FAQItem {
-  question: string;
-  answer: string | string[];
-}
-
-interface FAQCategory {
-  id: string;
-  label: string;
-  icon: React.ReactNode;
-  items: FAQItem[];
-}
-
-const FAQ_CATEGORIES: FAQCategory[] = [
-  {
-    id: "shipping",
-    label: "Shipping & Logistics",
-    icon: <Truck className="w-4 h-4" strokeWidth={1.8} />,
-    items: [
-      {
-        question: "What shipping methods do you offer?",
-        answer:
-          "We offer both FCL (Full Container Load) and LCL (Less than Container Load) international shipping from major Indian ports to destinations worldwide.",
-      },
-      {
-        question: "How are marble slabs and furniture protected during transit?",
-        answer:
-          "All stone slabs, luxury furniture, and marble products are packed in ISPM-15 certified heat-treated wooden crates with heavy foam padding to prevent movement and breakage during sea transit.",
-      },
-      {
-        question: "Can I track my shipment?",
-        answer:
-          "Yes. Once your container is shipped, we provide the Bill of Lading (B/L) and shipment tracking credentials so you can monitor your cargo in real time.",
-      },
-      {
-        question: "Is transit insurance included?",
-        answer:
-          "Yes. Every shipment is covered by comprehensive marine transit insurance to protect your investment against severe transit damage.",
-      },
-    ],
-  },
-  {
-    id: "payment",
-    label: "Payment & Transactions",
-    icon: <CreditCard className="w-4 h-4" strokeWidth={1.8} />,
-    items: [
-      {
-        question: "What payment methods do you accept?",
-        answer: [
-          "Bank Wire Transfers (T/T)",
-          "Irrevocable Letters of Credit (L/C) for bulk orders",
-        ],
-      },
-      {
-        question: "Are your bank transactions secure?",
-        answer:
-          "Yes. Payments are made directly to our verified corporate bank account in Ahmedabad, India, and are supported with official Proforma Invoices.",
-      },
-      {
-        question: "Do you accept Letters of Credit (L/C)?",
-        answer:
-          "Yes. For high-volume and bulk container orders, we accept 100% Irrevocable Letters of Credit at sight issued by prime international banks.",
-      },
-      {
-        question: "What documents are provided with shipments?",
-        answer: [
-          "Commercial Invoice",
-          "Packing List",
-          "Certificate of Origin",
-          "Shipping Bill",
-        ],
-      },
-    ],
-  },
-  {
-    id: "customs",
-    label: "Customs & Duties",
-    icon: <Globe className="w-4 h-4" strokeWidth={1.8} />,
-    items: [
-      {
-        question: "Which Incoterms do you support?",
-        answer:
-          "We primarily operate under FOB (Free on Board) and CIF (Cost, Insurance, and Freight) international trade terms.",
-      },
-      {
-        question: "Who handles customs clearance and import duties?",
-        answer:
-          "Import duties, taxes, and destination brokerage fees are generally handled by the buyer or their local clearing agent.",
-      },
-      {
-        question: "Do you provide customs documentation?",
-        answer:
-          "Yes. We provide fully compliant export paperwork tailored to your country's import regulations to help speed up customs clearance.",
-      },
-      {
-        question: "Can you recommend a local customs broker?",
-        answer:
-          "Yes. If needed, our team can help recommend trusted local customs brokers for smoother clearance.",
-      },
-    ],
-  },
-  {
-    id: "inspection",
-    label: "Inspection & Returns",
-    icon: <ClipboardCheck className="w-4 h-4" strokeWidth={1.8} />,
-    items: [
-      {
-        question: "Do you offer a pre-shipment inspection?",
-        answer:
-          "Yes. Before shipment, we provide high-resolution videos, detailed photos, and exact measurements of your products for final approval.",
-      },
-      {
-        question: "Is there an inspection period after delivery?",
-        answer:
-          "Yes. We offer a 30-day inspection window starting from the date your shipment clears your local port.",
-      },
-      {
-        question: "What should I do if products arrive damaged or incorrect?",
-        answer:
-          "Please document the issue with photos or videos within 30 days. We will arrange a priority replacement or provide a proportional refund/credit based on the issue.",
-      },
-      {
-        question: "What types of issues qualify for claims?",
-        answer: [
-          "Structural defects",
-          "Transit damage",
-          "Products not matching approved technical specifications",
-        ],
-      },
-    ],
-  },
-  {
-    id: "quality",
-    label: "Quality Assurance",
-    icon: <Award className="w-4 h-4" strokeWidth={1.8} />,
-    items: [
-      {
-        question: "How do you ensure product quality?",
-        answer:
-          "We follow strict quality control procedures, from quarry selection to final finishing, to meet international luxury standards.",
-      },
-      {
-        question: "Where are your stones sourced from?",
-        answer:
-          "Our natural stones are hand-selected from premium quarries to ensure consistent color, veining, and structural integrity.",
-      },
-      {
-        question: "Do you offer custom dimensions and finishes?",
-        answer: [
-          "High-gloss diamond polish",
-          "Matte honed finishes",
-        ],
-      },
-      {
-        question: "Are your products durable for long-term use?",
-        answer:
-          "Yes. Our multi-stage finishing process is designed to maximize durability against weathering, stains, and daily wear.",
-      },
-    ],
-  },
-  {
-    id: "company",
-    label: "Company & Support",
-    icon: <Building2 className="w-4 h-4" strokeWidth={1.8} />,
-    items: [
-      {
-        question: "Where is your corporate office located?",
-        answer:
-          "C-108, Titanium Business Park, Near Railway Under Bridge, Makarba, Ahmedabad, Gujarat, 380051, India.",
-      },
-      {
-        question: "How can I contact your export support team?",
-        answer:
-          "You can contact us via direct phone, WhatsApp, or official corporate email for wholesale inquiries and RFQs.",
-      },
-      {
-        question: "How quickly do you respond to inquiries?",
-        answer:
-          "We respond to all wholesale requests, material inquiries, and custom RFQs within 12 business hours.",
-      },
-    ],
-  },
-];
+// Icons live with the component (keep the shared data module JSX-free so the
+// product page server component can import it for FAQPage JSON-LD).
+const CATEGORY_ICONS: Record<string, React.ReactNode> = {
+  shipping: <Truck className="w-4 h-4" strokeWidth={1.8} />,
+  payment: <CreditCard className="w-4 h-4" strokeWidth={1.8} />,
+  customs: <Globe className="w-4 h-4" strokeWidth={1.8} />,
+  inspection: <ClipboardCheck className="w-4 h-4" strokeWidth={1.8} />,
+  quality: <Award className="w-4 h-4" strokeWidth={1.8} />,
+  company: <Building2 className="w-4 h-4" strokeWidth={1.8} />,
+};
 
 function FAQAccordionItem({ item, isOpen, onToggle }: { item: FAQItem; isOpen: boolean; onToggle: () => void }) {
   return (
@@ -269,7 +98,7 @@ export function ProductFAQ() {
                   }`}
               >
                 <span className={activeCategory === cat.id ? "text-white" : "text-[#888]"}>
-                  {cat.icon}
+                  {CATEGORY_ICONS[cat.id]}
                 </span>
                 {cat.label}
               </button>

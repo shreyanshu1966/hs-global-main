@@ -22,9 +22,35 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
+const aboutLd = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  name: `About ${SITE_NAME}`,
+  description: `Learn about ${SITE_NAME}'s craftsmanship in handcrafted premium marble and granite supply.`,
+  url: `${SITE_URL}/about`,
+  mainEntity: {
+    '@type': 'Organization',
+    name: SITE_NAME,
+    url: SITE_URL,
+    foundingDate: '2024',
+    foundingLocation: {
+      '@type': 'Place',
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Ahmedabad',
+        addressRegion: 'Gujarat',
+        addressCountry: 'IN',
+      },
+    },
+    description:
+      'Manufacturer and exporter of premium marble furniture and handcrafted natural stone products, shipping worldwide.',
+  },
+};
+
 export default function Page() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutLd) }} />
       <h1 className="sr-only">About HS Global Export — Our Story, Vision &amp; Heritage</h1>
       <Client />
     </>

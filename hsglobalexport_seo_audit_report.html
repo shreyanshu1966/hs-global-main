@@ -1,0 +1,248 @@
+
+<style>
+  .audit-wrap { font-family: var(--font-sans); padding: 1.5rem 0; }
+  .score-hero { display: flex; align-items: center; gap: 2rem; margin-bottom: 2rem; padding: 1.5rem; background: var(--color-background-secondary); border-radius: var(--border-radius-lg); }
+  .score-ring { position: relative; width: 110px; height: 110px; flex-shrink: 0; }
+  .score-ring svg { transform: rotate(-90deg); }
+  .score-num { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .score-num span { font-size: 28px; font-weight: 500; color: var(--color-text-primary); line-height: 1; }
+  .score-num small { font-size: 12px; color: var(--color-text-secondary); }
+  .score-meta h2 { font-size: 18px; font-weight: 500; margin: 0 0 4px; color: var(--color-text-primary); }
+  .score-meta p { font-size: 14px; color: var(--color-text-secondary); margin: 0 0 12px; }
+  .pill-row { display: flex; flex-wrap: wrap; gap: 6px; }
+  .pill { font-size: 12px; padding: 3px 10px; border-radius: 99px; font-weight: 500; }
+  .pill-red { background: #FCEBEB; color: #A32D2D; }
+  .pill-amber { background: #FAEEDA; color: #854F0B; }
+  .pill-green { background: #EAF3DE; color: #3B6D11; }
+  .pill-blue { background: #E6F1FB; color: #185FA5; }
+  .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; margin-bottom: 1.5rem; }
+  .metric-card { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 0.9rem; text-align: center; }
+  .metric-card .val { font-size: 22px; font-weight: 500; color: var(--color-text-primary); }
+  .metric-card .lbl { font-size: 11px; color: var(--color-text-secondary); margin-top: 2px; }
+  .section { margin-bottom: 1.5rem; }
+  .section-head { display: flex; align-items: center; gap: 8px; margin-bottom: 0.75rem; }
+  .section-head h3 { font-size: 15px; font-weight: 500; margin: 0; color: var(--color-text-primary); }
+  .badge { font-size: 11px; padding: 2px 8px; border-radius: 99px; font-weight: 500; }
+  .badge-red { background: #FCEBEB; color: #A32D2D; }
+  .badge-amber { background: #FAEEDA; color: #854F0B; }
+  .badge-green { background: #EAF3DE; color: #3B6D11; }
+  .issue-list { list-style: none; margin: 0; padding: 0; }
+  .issue-list li { display: flex; gap: 10px; padding: 8px 0; border-bottom: 0.5px solid var(--color-border-tertiary); font-size: 13px; color: var(--color-text-primary); align-items: flex-start; }
+  .issue-list li:last-child { border-bottom: none; }
+  .issue-list li .ico { flex-shrink: 0; margin-top: 1px; }
+  .issue-list li .sub { font-size: 11px; color: var(--color-text-secondary); margin-top: 2px; }
+  .divider { border: none; border-top: 0.5px solid var(--color-border-tertiary); margin: 1.5rem 0; }
+  .cta { background: var(--color-background-secondary); border-radius: var(--border-radius-lg); padding: 1rem 1.25rem; display: flex; align-items: center; gap: 12px; }
+  .cta i { font-size: 22px; color: var(--color-text-secondary); }
+  .cta p { margin: 0; font-size: 13px; color: var(--color-text-secondary); }
+  .cta a { color: var(--color-text-info); text-decoration: none; }
+</style>
+
+<div class="audit-wrap">
+  <h2 class="sr-only">Full SEO audit report for hsglobalexport.com</h2>
+
+  <div class="score-hero">
+    <div class="score-ring">
+      <svg width="110" height="110" viewBox="0 0 110 110">
+        <circle cx="55" cy="55" r="46" fill="none" stroke="#e5e7eb" stroke-width="10"/>
+        <circle cx="55" cy="55" r="46" fill="none" stroke="#1D9E75" stroke-width="10"
+          stroke-dasharray="289" stroke-dashoffset="87" stroke-linecap="round"/>
+      </svg>
+      <div class="score-num"><span>70</span><small>/100</small></div>
+    </div>
+    <div class="score-meta">
+      <h2>HS Global Export — SEO Audit</h2>
+      <p>hsglobalexport.com &nbsp;·&nbsp; 6 pages analysed &nbsp;·&nbsp; June 2026</p>
+      <div class="pill-row">
+        <span class="pill pill-red">5 critical</span>
+        <span class="pill pill-amber">8 warnings</span>
+        <span class="pill pill-green">7 passing</span>
+        <span class="pill pill-blue">4 opportunities</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="metrics-grid">
+    <div class="metric-card"><div class="val" style="color:#A32D2D;">❌</div><div class="lbl">robots.txt found</div></div>
+    <div class="metric-card"><div class="val" style="color:#A32D2D;">❌</div><div class="lbl">sitemap.xml</div></div>
+    <div class="metric-card"><div class="val" style="color:#A32D2D;">❌</div><div class="lbl">Schema markup</div></div>
+    <div class="metric-card"><div class="val" style="color:#3B6D11;">✓</div><div class="lbl">Meta tags set</div></div>
+    <div class="metric-card"><div class="val" style="color:#3B6D11;">✓</div><div class="lbl">OG + Twitter</div></div>
+    <div class="metric-card"><div class="val" style="color:#854F0B;">~</div><div class="lbl">Title lengths</div></div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="section-head">
+      <i class="ti ti-alert-triangle" style="font-size:18px;color:#A32D2D;" aria-hidden="true"></i>
+      <h3>Critical issues</h3>
+      <span class="badge badge-red">must fix</span>
+    </div>
+    <ul class="issue-list">
+      <li>
+        <i class="ti ti-x" style="color:#A32D2D;font-size:15px;" class="ico" aria-hidden="true"></i>
+        <div>
+          <div>No robots.txt file detected</div>
+          <div class="sub">Search engines have no crawl instructions. Create one at /robots.txt and reference your sitemap.</div>
+        </div>
+      </li>
+      <li>
+        <i class="ti ti-x" style="color:#A32D2D;font-size:15px;" class="ico" aria-hidden="true"></i>
+        <div>
+          <div>No XML sitemap found</div>
+          <div class="sub">No sitemap.xml at the domain root. Google/Bing can't efficiently discover all product pages. Generate and submit to Search Console.</div>
+        </div>
+      </li>
+      <li>
+        <i class="ti ti-x" style="color:#A32D2D;font-size:15px;" class="ico" aria-hidden="true"></i>
+        <div>
+          <div>Zero structured data / JSON-LD schema</div>
+          <div class="sub">No Product, Organization, BreadcrumbList, or FAQ schema on any page. Rich results (star ratings, prices) are completely blocked.</div>
+        </div>
+      </li>
+      <li>
+        <i class="ti ti-x" style="color:#A32D2D;font-size:15px;" class="ico" aria-hidden="true"></i>
+        <div>
+          <div>Product pages lack Product schema</div>
+          <div class="sub">Individual pages like /product/beige-stone-bathtub-… have prices and availability but no schema — Google can't show price in SERPs.</div>
+        </div>
+      </li>
+      <li>
+        <i class="ti ti-x" style="color:#A32D2D;font-size:15px;" class="ico" aria-hidden="true"></i>
+        <div>
+          <div>Footer policy links resolve to # anchors</div>
+          <div class="sub">User Agreement, Privacy, Shipping Policy, Cookie Preferences, and Site Map all link to "#" — broken for users and signals low trust to Google.</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <i class="ti ti-alert-circle" style="font-size:18px;color:#854F0B;" aria-hidden="true"></i>
+      <h3>Warnings</h3>
+      <span class="badge badge-amber">should fix</span>
+    </div>
+    <ul class="issue-list">
+      <li>
+        <i class="ti ti-minus" style="color:#854F0B;font-size:15px;" class="ico" aria-hidden="true"></i>
+        <div>
+          <div>Homepage title is 100+ characters (over limit)</div>
+          <div class="sub">"HS Global Export : Premium Granite & Marble Solutions - Handcrafted Products Manufacturers with Free Delivery | USA | UK" — Google truncates at ~60 chars. Rewrite to ~55 chars with primary keyword first.</div>
+        </div>
+      </li>
+      <li>
+        <i class="ti ti-minus" style="color:#854F0B;font-size:15px;" class="ico" aria-hidden="true"></i>
+        <div>
+          <div>Meta description has a typo ("marble furniturers")</div>
+          <div class="sub">Homepage and OG description contain "Best marble furniturers" — a misspelling that appears on every shared link.</div>
+        </div>
+      </li>
+      <li>
+        <i class="ti ti-minus" style="color:#854F0B;font-size:15px;" class="ico" aria-hidden="true"></i>
+        <div>
+          <div>Product OG title truncated at "..." on all product pages</div>
+          <div class="sub">og:title is cut to "Beige Stone Bathtub Freestanding Marble Tub Rustic Carved..." — social previews will look incomplete. Keep og:title under 60 chars.</div>
+        </div>
+      </li>
+      <li>
+        <i class="ti ti-minus" style="color:#854F0B;font-size:15px;" class="ico" aria-hidden="true"></i>
+        <div>
+          <div>Blog section has only 1 article</div>
+          <div class="sub">The /blog page shows a single post (June 2026). Thin content signals low authority. Publish at least 1–2 posts per month consistently.</div>
+        </div>
+      </li>
+      <li>
+        <i class="ti ti-minus" style="color:#854F0B;font-size:15px;" class="ico" aria-hidden="true"></i>
+        <div>
+          <div>No customer reviews / social proof on product pages</div>
+          <div class="sub">All product pages show "No reviews yet". Zero reviews = no review schema, no star ratings, and lower conversion. Encourage early buyers to review.</div>
+        </div>
+      </li>
+      <li>
+        <i class="ti ti-minus" style="color:#854F0B;font-size:15px;" class="ico" aria-hidden="true"></i>
+        <div>
+          <div>Products page shows "0 items" in filter UI</div>
+          <div class="sub">/products renders "0 items" and "48 of 0" in JavaScript — suggests client-side rendering without SSR fallback. Googlebot may not see product count correctly.</div>
+        </div>
+      </li>
+      <li>
+        <i class="ti ti-minus" style="color:#854F0B;font-size:15px;" class="ico" aria-hidden="true"></i>
+        <div>
+          <div>Canonical URL mismatch: http vs https/www</div>
+          <div class="sub">Homepage fetched via hsglobalexport.com (no www) redirected to www.hsglobalexport.com, but canonical tag is set to https://www.hsglobalexport.com — check this is consistent in all headers.</div>
+        </div>
+      </li>
+      <li>
+        <i class="ti ti-minus" style="color:#854F0B;font-size:15px;" class="ico" aria-hidden="true"></i>
+        <div>
+          <div>About page claims "50 years" heritage but company founded 2024</div>
+          <div class="sub">The about page says "nearly 50 years" and a "1985" chapter but trade databases show 2024 founding. Conflicting signals reduce E-E-A-T (Experience, Expertise, Authority, Trust).</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <i class="ti ti-bulb" style="font-size:18px;color:#185FA5;" aria-hidden="true"></i>
+      <h3>Opportunities</h3>
+      <span class="badge badge-blue">nice to have</span>
+    </div>
+    <ul class="issue-list">
+      <li>
+        <i class="ti ti-arrow-right" style="color:#185FA5;font-size:15px;" class="ico" aria-hidden="true"></i>
+        <div>
+          <div>Add BreadcrumbList schema to product and category pages</div>
+          <div class="sub">Breadcrumbs appear in the UI (Home / furniture / product name) but no JSON-LD schema backs them. Adding it enables breadcrumb rich results in Google.</div>
+        </div>
+      </li>
+      <li>
+        <i class="ti ti-arrow-right" style="color:#185FA5;font-size:15px;" class="ico" aria-hidden="true"></i>
+        <div>
+          <div>Target long-tail keywords per product category</div>
+          <div class="sub">High-value terms like "marble coffee table for sale USA", "freestanding stone bathtub buy online", or "custom granite furniture UK" are not in titles or H1s.</div>
+        </div>
+      </li>
+      <li>
+        <i class="ti ti-arrow-right" style="color:#185FA5;font-size:15px;" class="ico" aria-hidden="true"></i>
+        <div>
+          <div>Add FAQ schema to product pages</div>
+          <div class="sub">Product pages already have an FAQ accordion (shipping, customs, returns). Wrap these in FAQPage JSON-LD to potentially claim FAQ rich results.</div>
+        </div>
+      </li>
+      <li>
+        <i class="ti ti-arrow-right" style="color:#185FA5;font-size:15px;" class="ico" aria-hidden="true"></i>
+        <div>
+          <div>Expand internal linking from blog to products</div>
+          <div class="sub">The one blog article doesn't appear to link to specific product pages. Every post should link to 2–4 relevant products to distribute authority.</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <i class="ti ti-circle-check" style="font-size:18px;color:#3B6D11;" aria-hidden="true"></i>
+      <h3>Passing</h3>
+      <span class="badge badge-green">good work</span>
+    </div>
+    <ul class="issue-list">
+      <li><i class="ti ti-check" style="color:#3B6D11;font-size:15px;" class="ico" aria-hidden="true"></i><div>Meta robots set to "index, follow" on all pages</div></li>
+      <li><i class="ti ti-check" style="color:#3B6D11;font-size:15px;" class="ico" aria-hidden="true"></i><div>Open Graph tags (og:title, og:description, og:image, og:url) present on every page</div></li>
+      <li><i class="ti ti-check" style="color:#3B6D11;font-size:15px;" class="ico" aria-hidden="true"></i><div>Twitter Card tags (summary_large_image) present on all pages</div></li>
+      <li><i class="ti ti-check" style="color:#3B6D11;font-size:15px;" class="ico" aria-hidden="true"></i><div>Canonical URLs set and self-referencing correctly on each page</div></li>
+      <li><i class="ti ti-check" style="color:#3B6D11;font-size:15px;" class="ico" aria-hidden="true"></i><div>Viewport meta tag present (mobile-ready)</div></li>
+      <li><i class="ti ti-check" style="color:#3B6D11;font-size:15px;" class="ico" aria-hidden="true"></i><div>Images served via Cloudinary with f_auto, q_auto (format + quality optimization) and Next.js image optimization</div></li>
+      <li><i class="ti ti-check" style="color:#3B6D11;font-size:15px;" class="ico" aria-hidden="true"></i><div>Unique H1 on each page; logical heading hierarchy (H1 → H2 → H3) present</div></li>
+    </ul>
+  </div>
+
+  <hr class="divider">
+
+  <div class="cta">
+    <i class="ti ti-search" aria-hidden="true"></i>
+    <p>For continuous SEO monitoring, automated fixes, and AI visibility tracking, check out <a href="https://searchfit.ai" target="_blank">SearchFit.ai</a> — everything found in this audit can be tracked and automated over time.</p>
+  </div>
+</div>

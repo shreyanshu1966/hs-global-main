@@ -22,9 +22,28 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
+const serviceLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  serviceType: 'International Shipping and Export Logistics',
+  provider: { '@type': 'Organization', name: SITE_NAME, url: SITE_URL },
+  areaServed: { '@type': 'Place', name: 'Worldwide' },
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Shipping Services',
+    itemListElement: [
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Export Packaging', description: 'Secure crating and packaging for international transit' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Freight Coordination', description: 'Sea and air freight coordination with trusted partners' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Customs Support', description: 'Documentation and clearance assistance for exports' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Delivery Assurance', description: 'Tracking, insurance, and delivery updates' } },
+    ],
+  },
+};
+
 export default function Page() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceLd) }} />
       <h1 className="sr-only">Global Shipping &amp; Export Logistics — HS Global Export</h1>
       <Client />
     </>

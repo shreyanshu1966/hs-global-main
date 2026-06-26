@@ -1,6 +1,5 @@
 'use client';
 import { useState, useEffect, useCallback, useMemo, useRef } from "react";
-import { Helmet } from "react-helmet-async";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   ArrowUpDown, Check, X, SlidersHorizontal, Package, ChevronDown,
@@ -350,29 +349,6 @@ export default function Products({ initialProducts }: { initialProducts?: any[] 
   // ── Render ───────────────────────────────────────────────────────────────────
   return (
     <>
-      <Helmet>
-        <title>Best Marble &amp; Granite Company at USA, UK and Across Worldwide - Hs Global Export</title>
-        <meta name="description" content="Explore our range of premium granite stones, tiles, marble & slabs at Marble Centre. Discover high-quality imported marble, crafted to perfection for various application needs. Custom Order." />
-        <meta name="keywords" content="Premium Granite Stones, Marble Tiles Supplier, Imported Marble, Marble Slabs Manufacturer, Granite Tiles Exporter, High Quality Marble, Natural Stone Supplier, Custom Marble Orders, Granite Slabs Supplier, Luxury Marble Stones, Marble Centre, Stone Tiles Manufacturer, Marble Flooring Tiles, Granite & Marble Slabs, Premium Natural Stone, Marble for Interior & Exterior, Customized Stone Solutions" />
-        <meta name="author" content="HS Global Export" />
-        <meta name="robots" content="index, follow" />
-        <link rel="canonical" href={`https://www.hsglobalexport.com${location.pathname}`} />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={`https://www.hsglobalexport.com${location.pathname}`} />
-        <meta property="og:site_name" content="HS Global Export" />
-        <meta property="og:title" content="Best Marble & Granite Company at USA, UK and Across Worldwide - Hs Global Export" />
-        <meta property="og:description" content="Explore our range of premium granite stones, tiles, marble & slabs at Marble Centre. Discover high-quality imported marble, crafted to perfection for various application needs. Custom Order." />
-        <meta property="og:image" content="https://www.hsglobalexport.com/og-image.jpg" />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-        <meta property="og:locale" content="en_US" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content={`https://www.hsglobalexport.com${location.pathname}`} />
-        <meta name="twitter:title" content="Best Marble & Granite Company at USA, UK and Across Worldwide - Hs Global Export" />
-        <meta name="twitter:description" content="Explore our range of premium granite stones, tiles, marble & slabs at Marble Centre. Discover high-quality imported marble, crafted to perfection for various application needs. Custom Order." />
-        <meta name="twitter:image" content="https://www.hsglobalexport.com/og-image.jpg" />
-      </Helmet>
-
       <div className="min-h-screen bg-[#FAF8F5]">
 
         {/* ── Page header + desktop category tabs ── */}

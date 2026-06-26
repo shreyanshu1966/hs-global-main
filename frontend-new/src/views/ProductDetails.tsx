@@ -186,9 +186,10 @@ const ProductDetails = ({ initialData }: { initialData?: any } = {}) => {
       })
       .catch(() => {});
 
-    // 2. Fetch Subcategory Carousels if category is furniture
-    if (product.category === 'furniture') {
-      fetchCategoryProducts('furniture', { limit: 1 })
+    // 2. Fetch Subcategory Carousels for the current product's category
+    const category = product.category;
+    if (category) {
+      fetchCategoryProducts(category, { limit: 1 })
         .then(async (res) => {
           if (res.success && res.data && Array.isArray(res.data.subcategories)) {
             const subcats = res.data.subcategories;
@@ -198,7 +199,7 @@ const ProductDetails = ({ initialData }: { initialData?: any } = {}) => {
             await Promise.all(
               subcats.map(async (subcat) => {
                 try {
-                  const subRes = await fetchCategoryProducts('furniture', {
+                  const subRes = await fetchCategoryProducts(category, {
                     subcategory: subcat,
                     limit: 12,
                     sortBy: 'createdAt',
@@ -575,8 +576,8 @@ const ProductDetails = ({ initialData }: { initialData?: any } = {}) => {
           </div>
         )}
 
-        {/* Subcategory Carousels (for category furniture) */}
-        {product.category === 'furniture' && subcategories.map((subcat) => {
+        {/* Subcategory Carousels (for the current product's category) */}
+        {subcategories.map((subcat) => {
           const productsForSubcat = subcategoryProducts[subcat];
           if (!productsForSubcat || productsForSubcat.length === 0) return null;
           return (
@@ -584,7 +585,7 @@ const ProductDetails = ({ initialData }: { initialData?: any } = {}) => {
               <CompactCarousel
                 title={`${subcat}`}
                 products={productsForSubcat}
-                viewAllLink={`/products/furniture/${toSlug(subcat)}`}
+                viewAllLink={`/products/${toSlug(product.category)}/${toSlug(subcat)}`}
               />
             </div>
           );

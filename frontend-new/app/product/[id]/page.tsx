@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { getProduct, absoluteImage, SITE_NAME, SITE_URL } from '@/server/api';
+import { ALL_FAQ_ITEMS, faqAnswerToText } from '@/data/productFaqs';
 import Client from './client';
 
 type Params = { params: Promise<{ id: string }> };
@@ -106,22 +107,40 @@ export default async function Page({ params }: Params) {
     };
   }
 
+  // Breadcrumb trail ending on the product itself (Google recommends the last
+  // item be the current page).
+  const breadcrumbItems = [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+    { '@type': 'ListItem', position: 2, name: 'Products', item: `${SITE_URL}/products` },
+    ...(product.category
+      ? [{ '@type': 'ListItem', position: 3, name: product.category, item: `${SITE_URL}/products/${product.category}` }]
+      : []),
+  ];
   const breadcrumbLd = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
-      { '@type': 'ListItem', position: 2, name: 'Products', item: `${SITE_URL}/products` },
-      ...(product.category
-        ? [{ '@type': 'ListItem', position: 3, name: product.category, item: `${SITE_URL}/products/${product.category}` }]
-        : []),
+      ...breadcrumbItems,
+      { '@type': 'ListItem', position: breadcrumbItems.length + 1, name: product.name, item: url },
     ],
+  };
+
+  // FAQ accordion shown on every product page → FAQPage rich-result eligibility.
+  const faqLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: ALL_FAQ_ITEMS.map((f) => ({
+      '@type': 'Question',
+      name: f.question,
+      acceptedAnswer: { '@type': 'Answer', text: faqAnswerToText(f.answer) },
+    })),
   };
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
       <Client initialData={data} />
     </>
   );

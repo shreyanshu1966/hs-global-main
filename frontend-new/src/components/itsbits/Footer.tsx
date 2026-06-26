@@ -41,11 +41,11 @@ const Footer = () => {
   };
 
   const legalLinks = [
-    'User Agreement',
-    'Privacy',
-    'Shipping Policy',
-    'Cookie Preferences',
-    'Site Map'
+    { label: 'User Agreement', href: '/terms' },
+    { label: 'Privacy', href: '/privacy' },
+    { label: 'Shipping Policy', href: '/shipping' },
+    { label: 'Cookie Preferences', href: '/cookies' },
+    { label: 'Site Map', href: '/sitemap.xml' },
   ];
 
   const regions = ['USA', 'UK', 'UAE', 'Europe'];
@@ -199,22 +199,22 @@ const Footer = () => {
           <div className="itsbits-footer-legal">
             <span>© 2026 HS Global Export.</span>
             {legalLinks.map((link, i) => (
-              <a key={i} href="#" className="itsbits-footer-link hover:underline">{link}</a>
+              <a key={i} href={link.href} className="itsbits-footer-link hover:underline">{link.label}</a>
             ))}
           </div>
 
           <div className="itsbits-footer-regions">
             <span className="itsbits-footer-strong">Export Regions:</span>
             {regions.map((country, i) => (
-              <a key={i} href="#" className="itsbits-footer-link hover:underline">{country}</a>
+              <a key={i} href="/contact" className="itsbits-footer-link hover:underline">{country}</a>
             ))}
-            <a href="#" className="itsbits-footer-link itsbits-footer-link-dark itsbits-footer-strong hover:underline">India HQ</a>
+            <a href="/contact" className="itsbits-footer-link itsbits-footer-link-dark itsbits-footer-strong hover:underline">India HQ</a>
           </div>
 
         </div>
 
         <div className="itsbits-footer-disclaimer">
-          This site is protected by reCAPTCHA and the Google <a href="#" className="itsbits-footer-disclaimer-link">Privacy Policy</a> and <a href="#" className="itsbits-footer-disclaimer-link">Terms of Service</a> apply.
+          This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="itsbits-footer-disclaimer-link">Privacy Policy</a> and <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" className="itsbits-footer-disclaimer-link">Terms of Service</a> apply.
         </div>
 
       </div>
