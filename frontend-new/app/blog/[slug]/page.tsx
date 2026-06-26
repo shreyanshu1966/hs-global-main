@@ -30,6 +30,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
       description,
       url: canonical,
       type: 'article',
+      siteName: SITE_NAME,
       publishedTime: blog.publishedAt,
       modifiedTime: blog.updatedAt,
       authors: [blog.author.name],

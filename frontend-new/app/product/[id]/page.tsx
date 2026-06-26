@@ -52,6 +52,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
       description: ogDescription,
       url: canonical,
       type: 'website',
+      siteName: SITE_NAME,
       images: [{ url: ogImage, width: 1200, height: 630, alt: product.name }],
     },
     twitter: {

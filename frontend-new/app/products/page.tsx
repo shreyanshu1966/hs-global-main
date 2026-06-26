@@ -7,17 +7,17 @@ export const revalidate = 3600;
 export async function generateMetadata(): Promise<Metadata> {
   const seo = await getPageSeo('/products');
   const title =
-    seo?.title ?? 'Best Marble & Granite Company at USA, UK and Across Worldwide';
+    seo?.title || 'Best Marble & Granite Company at USA, UK & Worldwide | HS Global Export';
   const description =
-    seo?.description ??
+    seo?.description ||
     'Explore premium granite, marble, semi-precious stone, leather and handcrafted furniture from HS Global Export. Custom orders welcome.';
-  const canonical = seo?.canonical ?? `${SITE_URL}/products`;
+  const canonical = seo?.canonical || `${SITE_URL}/products`;
   const image = seo?.image ? absoluteImage(seo.image) : `${SITE_URL}/og-image.jpg`;
   return {
     title: { absolute: title },
     description,
     alternates: { canonical },
-    openGraph: { title, description, url: canonical, images: [{ url: image, width: 1200, height: 630, alt: SITE_NAME }] },
+    openGraph: { type: 'website', siteName: SITE_NAME, title, description, url: canonical, images: [{ url: image, width: 1200, height: 630, alt: SITE_NAME }] },
     twitter: { card: 'summary_large_image', title, description, images: [{ url: image, alt: SITE_NAME }] },
   };
 }
@@ -29,5 +29,10 @@ export default async function Page() {
   const visible = products
     .filter((p) => p.available !== false && p.status !== 'draft')
     .slice(0, 48);
-  return <Client initialProducts={visible} />;
+  return (
+    <>
+      <h1 className="sr-only">Marble &amp; Granite Furniture — Full Collection</h1>
+      <Client initialProducts={visible} />
+    </>
+  );
 }

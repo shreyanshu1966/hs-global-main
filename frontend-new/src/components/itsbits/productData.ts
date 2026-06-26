@@ -162,7 +162,7 @@ export const fetchItsbitsProducts = async (options: {
     return items.filter(isMarbleFurniture);
   };
 
-  if (requiredCategory) {
+  if (requiredCategory && !featured) {
     const response = await productService.getProductsByCategory(requiredCategory, {
       limit,
       subcategory: subcategory || undefined,
@@ -178,7 +178,15 @@ export const fetchItsbitsProducts = async (options: {
   }
 
   const response = featured
-    ? await productService.getFeaturedProducts(limit)
+    ? await productService.getAllProducts({
+        limit,
+        featured: true,
+        ...(requiredCategory ? { category: requiredCategory } : {}),
+        ...(subcategory ? { subcategory } : {}),
+        ...(tag ? { tag } : {}),
+        sortBy,
+        sortOrder,
+      })
     : await productService.getAllProducts({
         limit,
         ...(category ? { category } : {}),

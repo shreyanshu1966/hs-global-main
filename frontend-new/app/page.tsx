@@ -7,11 +7,11 @@ export const revalidate = 3600;
 export async function generateMetadata(): Promise<Metadata> {
   const seo = await getPageSeo('/');
   const title =
-    seo?.title ?? 'Marble & Granite Furniture Manufacturer & Exporter | HS Global Export';
+    seo?.title || 'Marble & Granite Furniture Manufacturer & Exporter | HS Global Export';
   const description =
-    seo?.description ??
+    seo?.description ||
     'HS Global Export — premium granite & marble solutions. Handcrafted products with worldwide delivery to the USA, UK and beyond.';
-  const canonical = seo?.canonical ?? SITE_URL;
+  const canonical = seo?.canonical || SITE_URL;
   const image = seo?.image ? absoluteImage(seo.image) : `${SITE_URL}/og-image.jpg`;
   return {
     title: { absolute: title },

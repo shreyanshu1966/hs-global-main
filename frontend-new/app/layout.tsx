@@ -21,21 +21,38 @@ export const metadata: Metadata = {
   description:
     'HS Global Export — premium granite & marble solutions. Handcrafted products with worldwide delivery to the USA, UK and beyond.',
   alternates: { canonical: '/' },
-  openGraph: { type: 'website', siteName: SITE_NAME, url: SITE_URL, images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: SITE_NAME }] },
-  twitter: { card: 'summary_large_image', images: [{ url: '/og-image.jpg', alt: SITE_NAME }] },
+  openGraph: {
+    type: 'website',
+    siteName: SITE_NAME,
+    url: SITE_URL,
+    title: 'Marble & Granite Furniture Manufacturer & Exporter | HS Global Export',
+    description: 'HS Global Export — premium granite & marble solutions. Handcrafted products with worldwide delivery to the USA, UK and beyond.',
+    images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: SITE_NAME }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Marble & Granite Furniture Manufacturer & Exporter | HS Global Export',
+    description: 'HS Global Export — premium granite & marble solutions. Handcrafted products with worldwide delivery to the USA, UK and beyond.',
+    images: [{ url: '/og-image.jpg', alt: SITE_NAME }],
+  },
   robots: { index: true, follow: true },
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/apple-touch-icon.png',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={inter.variable}>
       <head>
-        {/* Preconnect to origins used early in page load */}
-        <link rel="preconnect" href="https://ipapi.co" />
+        {/* Preconnect only to origins that load resources in the critical path */}
         <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="" />
         <link rel="dns-prefetch" href="https://res.cloudinary.com" />
-        {/* accounts.google.com removed: Google OAuth loads lazily on user
-            interaction, so this preconnect was unused and wasted a slot. */}
+        {/* ipapi.co removed: geolocation is loaded lazily on user interaction,
+            not in the critical path — preconnecting wasted a slot and could
+            add latency if the external service is slow. */}
       </head>
       <body>
         {/* Suspense boundary required because the router shim uses
