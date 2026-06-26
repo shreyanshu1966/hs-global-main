@@ -40,19 +40,25 @@ function ImagePlaceholder({
   ratio?: string;
   className?: string;
 }) {
+  const isPlaceholder = src.startsWith('/blog/') && !src.includes('hero-marble-dining-table.jpg') && !src.includes('dining-table.png');
+
   return (
     <figure className={className}>
-      <div
-        className={`relative ${ratio} w-full overflow-hidden bg-[#f4f3ec]`}
-        data-image-src={src}
-        role="img"
-        aria-label={alt}
-      >
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 p-8 text-center">
-          <span className="text-[11px] font-medium uppercase tracking-[0.24em] text-[#9a9582]">Image</span>
-          <span className="max-w-md text-[13px] font-light leading-relaxed text-[#8a8676]">{alt}</span>
-          <code className="mt-1 text-[11px] tracking-wide text-[#b3ae9c]">{src}</code>
-        </div>
+      <div className={`relative ${ratio} w-full overflow-hidden bg-[#f4f3ec]`}>
+        {isPlaceholder ? (
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 p-8 text-center">
+            <span className="text-[11px] font-medium uppercase tracking-[0.24em] text-[#9a9582]">Image</span>
+            <span className="max-w-md text-[13px] font-light leading-relaxed text-[#8a8676]">{alt}</span>
+            <code className="mt-1 text-[11px] tracking-wide text-[#b3ae9c]">{src}</code>
+          </div>
+        ) : (
+          <img
+            src={src}
+            alt={alt}
+            className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            loading="lazy"
+          />
+        )}
       </div>
       {caption && (
         <figcaption className="mt-3 text-[13px] font-light italic text-[#8a8676]">{caption}</figcaption>
@@ -78,7 +84,7 @@ const ADVANTAGES: { title: string; text: string }[] = [
 ];
 
 const PRODUCTS: { img: string; alt: string; title: string; text: string; bestFor: string }[] = [
-  { img: `${IMG_BASE}/dining-table.jpg`, alt: 'Makrana white marble dining table seating eight in a luxury dining room', title: 'Marble Dining Tables', text: 'The crown jewel of any luxury home — from intimate four-seaters to grand twelve-seat banquet tables on stone or metal bases.', bestFor: 'Luxury homes · fine dining · hotel lobbies' },
+  { img: `${IMG_BASE}/dining-table.png`, alt: 'Makrana white marble dining table seating eight in a luxury dining room', title: 'Marble Dining Tables', text: 'The crown jewel of any luxury home — from intimate four-seaters to grand twelve-seat banquet tables on stone or metal bases.', bestFor: 'Luxury homes · fine dining · hotel lobbies' },
   { img: `${IMG_BASE}/coffee-table.jpg`, alt: 'Round white marble coffee table with brushed brass base in a quiet-luxury living room', title: 'Marble Coffee Tables', text: 'The most sought-after accent in “quiet luxury” interiors — round, oval, hexagonal or slab-top, with brass or pedestal bases.', bestFor: 'Living rooms · hotel suites · apartments' },
   { img: `${IMG_BASE}/side-table.jpg`, alt: 'Pair of sculptural marble side tables flanking a bed', title: 'Side & End Tables', text: 'Versatile sculptural pieces that signal refined taste without a full room overhaul — a fast-growing décor segment.', bestFor: 'Bedrooms · living rooms · entryways' },
   { img: `${IMG_BASE}/console-table.jpg`, alt: 'Carved marble console table in a grand entryway hall', title: 'Console Tables', text: 'A statement of architecture, not just furniture — carved detailing and ornate legs anchor entryways and hallways.', bestFor: 'Entryways · hallways · behind-sofa styling' },
@@ -283,14 +289,6 @@ export default function Article({
         </div>
       </section>
 
-      <div className="mx-auto mt-16 max-w-6xl px-6">
-        <ImagePlaceholder
-          src={`${IMG_BASE}/makrana-marble-quarry-artisan.jpg`}
-          alt="Indian master artisan hand-polishing a Makrana white marble slab in a stone workshop"
-          caption="Master artisans hand-finish each slab — craftsmanship passed down through generations."
-          ratio="aspect-[2/1]"
-        />
-      </div>
 
       {/* Product types */}
       <section className="mx-auto mt-20 max-w-6xl px-6">
@@ -390,14 +388,6 @@ export default function Article({
         </ol>
       </section>
 
-      <div className="mx-auto mt-16 max-w-6xl px-6">
-        <ImagePlaceholder
-          src={`${IMG_BASE}/export-grade-marble-crating.jpg`}
-          alt="Marble furniture packed in foam-lined export-grade wooden crates for worldwide shipping"
-          caption="Export-grade, foam-lined crating ensures every piece arrives intact — anywhere in the world."
-          ratio="aspect-[2/1]"
-        />
-      </div>
 
       {/* Stone guide */}
       <section className="mx-auto mt-20 max-w-5xl px-6">
