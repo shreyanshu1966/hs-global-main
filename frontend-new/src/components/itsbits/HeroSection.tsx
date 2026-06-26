@@ -1,5 +1,5 @@
 'use client';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
 
 interface HeroSlide {
@@ -8,6 +8,7 @@ interface HeroSlide {
   ctaText?: string;
   ctaLink?: string;
   backgroundImage?: string;
+  mobileBackgroundImage?: string;
   overlayOpacity?: number;
 }
 
@@ -16,263 +17,112 @@ interface HeroSectionProps {
   autoplayInterval?: number;
 }
 
-const HeroSection = ({ slides = [], autoplayInterval = 5000 }: HeroSectionProps) => {
+const HeroSection = ({ slides: _slides = [], autoplayInterval = 5000 }: HeroSectionProps) => {
+  const slides = [
+    { 
+      backgroundImage: '/jgjhg.png', 
+      mobileBackgroundImage: '/mobile.png',
+      heading: 'HS Global Export' 
+    }
+  ];
+  
   const [active, setActive] = useState(0);
-  const [prev, setPrev] = useState<number | null>(null);
-  const [transitioning, setTransitioning] = useState(false);
-  const [hovered, setHovered] = useState(false);
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
   const count = slides.length;
 
-  const goTo = useCallback(
-    (index: number) => {
-      if (transitioning || count <= 1 || index === active) return;
-      setTransitioning(true);
-      setPrev(active);
-      setActive(index);
-      setTimeout(() => {
-        setPrev(null);
-        setTransitioning(false);
-      }, 900);
-    },
-    [transitioning, count, active]
-  );
+  const nextSlide = useCallback(() => {
+    setActive((prev) => (prev + 1) % count);
+  }, [count]);
 
-  const next = useCallback(() => goTo((active + 1) % count), [active, count, goTo]);
-  const prevSlide = useCallback(() => goTo((active - 1 + count) % count), [active, count, goTo]);
+  const prevSlide = useCallback(() => {
+    setActive((prev) => (prev - 1 + count) % count);
+  }, [count]);
 
   useEffect(() => {
     if (count <= 1 || autoplayInterval <= 0) return;
-    timerRef.current = setTimeout(next, autoplayInterval);
-    return () => { if (timerRef.current) clearTimeout(timerRef.current); };
-  }, [active, count, autoplayInterval, next]);
+    const timer = setInterval(nextSlide, autoplayInterval);
+    return () => clearInterval(timer);
+  }, [count, autoplayInterval, nextSlide]);
 
   if (count === 0) return null;
 
   return (
-    <section
-      className="hero-section"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      aria-label="Hero banner"
-    >
-      {/* Slides */}
-      {slides.map((s, i) =>
-        s.backgroundImage ? (
+    <section className="relative w-full overflow-hidden bg-black flex items-center justify-center mt-12 md:mt-0">
+      {/* 
+        Dual-Banner Layout.
+        Zero Cropping. Desktop image is visible on md+, Mobile image is visible on < md.
+        Images naturally dictate height via h-auto w-full.
+      */}
+      <div className="relative w-full flex items-center justify-center">
+        {slides.map((slide, index) => (
           <div
-            key={i}
-            className={`hero-slide ${i === active ? 'hero-slide--active' : ''} ${i === prev ? 'hero-slide--prev' : ''}`}
-            aria-hidden={i !== active}
+            key={index}
+            className={`w-full transition-opacity duration-1000 ease-in-out ${
+              index === active ? 'opacity-100 relative z-10' : 'opacity-0 absolute inset-0 z-0'
+            }`}
           >
-            {!s.backgroundImage.startsWith('data:') ? (
-              <Image
-                fill
-                src={s.backgroundImage}
-                alt={s.heading || 'HS Global Export banner'}
-                className="hero-image"
-                sizes="(max-width: 768px) 100vw, (max-width: 1920px) 100vw, 1920px"
-                priority={i === 0}
-                quality={100}
-              />
-            ) : (
-              <img
-                src={s.backgroundImage}
-                alt={s.heading || 'HS Global Export banner'}
-                className="hero-image-fallback"
-                loading={i === 0 ? 'eager' : 'lazy'}
-              />
-            )}
+            {/* DESKTOP IMAGE (Hidden on mobile) */}
+            <Image
+              src={slide.backgroundImage || ''}
+              alt={slide.heading || 'HS Global Export Desktop'}
+              width={1920}
+              height={640}
+              className="hidden md:block w-full h-auto object-contain select-none"
+              priority={index === 0}
+              quality={100}
+            />
+            {/* MOBILE IMAGE (Hidden on desktop) */}
+            <Image
+              src={slide.mobileBackgroundImage || slide.backgroundImage || ''}
+              alt={slide.heading || 'HS Global Export Mobile'}
+              width={1122}
+              height={1402}
+              className="block md:hidden w-full h-auto object-contain select-none"
+              priority={index === 0}
+              quality={100}
+            />
           </div>
-        ) : null
-      )}
+        ))}
+      </div>
 
-      {/* Arrows — appear on hover, only when multiple slides */}
+      {/* Navigation Controls (Arrows & Dots) - Only show if there's more than 1 slide */}
       {count > 1 && (
         <>
-          <button
+          <button 
             onClick={prevSlide}
+            className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-black/20 text-white backdrop-blur-md border border-white/10 hover:bg-black/40 transition-all hover:scale-110 active:scale-95"
             aria-label="Previous slide"
-            className={`hero-arrow hero-arrow--left ${hovered ? 'hero-arrow--visible' : ''}`}
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="15 18 9 12 15 6" />
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M15 18l-6-6 6-6"/>
             </svg>
           </button>
-          <button
-            onClick={next}
+          
+          <button 
+            onClick={nextSlide}
+            className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-black/20 text-white backdrop-blur-md border border-white/10 hover:bg-black/40 transition-all hover:scale-110 active:scale-95"
             aria-label="Next slide"
-            className={`hero-arrow hero-arrow--right ${hovered ? 'hero-arrow--visible' : ''}`}
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="9 18 15 12 9 6" />
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M9 18l6-6-6-6"/>
             </svg>
           </button>
+
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-3">
+            {slides.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setActive(i)}
+                aria-label={`Go to slide ${i + 1}`}
+                className={`transition-all duration-300 ease-out rounded-full ${
+                  i === active 
+                    ? 'w-8 h-2 bg-white' 
+                    : 'w-2 h-2 bg-white/50 hover:bg-white/80'
+                }`}
+              />
+            ))}
+          </div>
         </>
       )}
-
-      {/* Dot / pill indicators */}
-      {count > 1 && (
-        <div className="hero-dots">
-          {slides.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => goTo(i)}
-              aria-label={`Go to slide ${i + 1}`}
-              className={`hero-dot ${i === active ? 'hero-dot--active' : ''}`}
-            />
-          ))}
-        </div>
-      )}
-
-      <style>{`
-        .hero-section {
-          position: relative;
-          width: 100%;
-          /* 21:9 cinematic ratio — industry standard for wide e-commerce banners.
-             At 1540px wide  →  660px tall  (~84% of a 788px viewport). Perfect.
-             At 1920px wide  →  823px tall. Still fits comfortably. */
-          aspect-ratio: 21 / 9;
-          /* Hard ceiling so it never overflows on any screen */
-          max-height: 85vh;
-          overflow: hidden;
-          background: #0a0a0a;
-        }
-
-        /* Mobile: 4:3 feels natural on portrait phones */
-        @media (max-width: 640px) {
-          .hero-section {
-            aspect-ratio: 4 / 3;
-            max-height: 75vw;
-          }
-        }
-
-        /* ---- Slides — clean crossfade only, no zoom/pan ---- */
-        .hero-slide {
-          position: absolute;
-          inset: 0;
-          opacity: 0;
-          z-index: 0;
-          transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-          will-change: opacity;
-        }
-
-        .hero-slide--active {
-          opacity: 1;
-          z-index: 1;
-        }
-
-        .hero-slide--prev {
-          opacity: 0;
-          z-index: 0;
-        }
-
-        /* ---- Images ---- */
-        .hero-image {
-          object-fit: cover;
-          object-position: center center;
-        }
-
-        .hero-image-fallback {
-          position: absolute;
-          inset: 0;
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          object-position: center center;
-        }
-
-        /* ---- Arrows ---- */
-        .hero-arrow {
-          position: absolute;
-          top: 50%;
-          transform: translateY(-50%);
-          z-index: 20;
-          width: 48px;
-          height: 48px;
-          border-radius: 50%;
-          background: rgba(255, 255, 255, 0.15);
-          border: 1px solid rgba(255, 255, 255, 0.35);
-          color: #fff;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          backdrop-filter: blur(8px);
-          -webkit-backdrop-filter: blur(8px);
-          opacity: 0;
-          transition: opacity 0.3s ease, background 0.25s ease, transform 0.25s ease;
-          pointer-events: none;
-        }
-
-        .hero-arrow--visible {
-          opacity: 1;
-          pointer-events: auto;
-        }
-
-        .hero-arrow--left {
-          left: clamp(12px, 3vw, 40px);
-        }
-
-        .hero-arrow--right {
-          right: clamp(12px, 3vw, 40px);
-        }
-
-        .hero-arrow:hover {
-          background: rgba(255, 255, 255, 0.28);
-          transform: translateY(-50%) scale(1.08);
-        }
-
-        .hero-arrow:active {
-          transform: translateY(-50%) scale(0.95);
-        }
-
-        /* ---- Dots ---- */
-        .hero-dots {
-          position: absolute;
-          bottom: clamp(14px, 3vh, 28px);
-          left: 50%;
-          transform: translateX(-50%);
-          z-index: 20;
-          display: flex;
-          align-items: center;
-          gap: 8px;
-        }
-
-        .hero-dot {
-          border-radius: 100px;
-          background: rgba(255, 255, 255, 0.45);
-          border: none;
-          cursor: pointer;
-          transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-                      background 0.35s ease,
-                      height 0.35s ease;
-          width: 8px;
-          height: 8px;
-        }
-
-        .hero-dot--active {
-          width: 28px;
-          height: 8px;
-          background: #ffffff;
-        }
-
-        .hero-dot:hover:not(.hero-dot--active) {
-          background: rgba(255, 255, 255, 0.75);
-        }
-
-        /* ---- Mobile ---- */
-        @media (max-width: 640px) {
-          .hero-arrow {
-            width: 38px;
-            height: 38px;
-          }
-
-          .hero-dot--active {
-            width: 20px;
-          }
-        }
-      `}</style>
     </section>
   );
 };
