@@ -7,11 +7,11 @@ export const revalidate = 3600;
 export async function generateMetadata(): Promise<Metadata> {
   const seo = await getPageSeo('/shipping');
   const title =
-    seo?.title ?? `Worldwide Shipping & Export Logistics | ${SITE_NAME}`;
+    seo?.title || `Worldwide Shipping & Export Logistics | ${SITE_NAME}`;
   const description =
-    seo?.description ??
+    seo?.description ||
     'Worldwide shipping for granite and marble: export logistics, secure packaging, customs support and reliable delivery to the USA, UK and beyond.';
-  const canonical = seo?.canonical ?? `${SITE_URL}/shipping`;
+  const canonical = seo?.canonical || `${SITE_URL}/shipping`;
   const image = seo?.image ? absoluteImage(seo.image) : `${SITE_URL}/og-image.jpg`;
   return {
     title: { absolute: title },

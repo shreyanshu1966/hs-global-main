@@ -7,11 +7,11 @@ export const revalidate = 3600;
 export async function generateMetadata(): Promise<Metadata> {
   const seo = await getPageSeo('/about');
   const title =
-    seo?.title ?? `About Us | Premium Marble & Granite Manufacturer — ${SITE_NAME}`;
+    seo?.title || `About Us | Premium Marble & Granite Manufacturer — ${SITE_NAME}`;
   const description =
-    seo?.description ??
+    seo?.description ||
     `${SITE_NAME} is a leading manufacturer and exporter of premium marble and granite products, delivering handcrafted stone solutions to the USA, UK and worldwide since our founding in India.`;
-  const canonical = seo?.canonical ?? `${SITE_URL}/about`;
+  const canonical = seo?.canonical || `${SITE_URL}/about`;
   const image = seo?.image ? absoluteImage(seo.image) : `${SITE_URL}/og-image.jpg`;
   return {
     title: { absolute: title },

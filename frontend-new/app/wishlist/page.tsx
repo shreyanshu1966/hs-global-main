@@ -5,5 +5,10 @@ export const dynamic = 'force-dynamic';
 export const metadata: Metadata = { robots: { index: false, follow: false } };
 
 export default function Page() {
-  return <Client />;
+  return (
+    <>
+      <h1 className="sr-only">Your Wishlist</h1>
+      <Client />
+    </>
+  );
 }

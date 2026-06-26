@@ -6,11 +6,11 @@ export const revalidate = 3600;
 
 export async function generateMetadata(): Promise<Metadata> {
   const seo = await getPageSeo('/contact');
-  const title = seo?.title ?? `Contact Us | ${SITE_NAME}`;
+  const title = seo?.title || `Contact Us | ${SITE_NAME}`;
   const description =
-    seo?.description ??
+    seo?.description ||
     'Contact HS Global Export for premium granite and marble solutions. Call +91 81071 15116 or email inquiry@hsglobalexport.com. Worldwide shipping available.';
-  const canonical = seo?.canonical ?? `${SITE_URL}/contact`;
+  const canonical = seo?.canonical || `${SITE_URL}/contact`;
   const image = seo?.image ? absoluteImage(seo.image) : `${SITE_URL}/og-image.jpg`;
   return {
     title: { absolute: title },

@@ -19,6 +19,15 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   };
 }
 
-export default function Page() {
-  return <ProductsClient />;
+export default async function Page({ params }: Params) {
+  const { category, subcategory } = await params;
+  const cat = categoryLabel(category);
+  const sub = titleCase(subcategory);
+  
+  return (
+    <>
+      <h1 className="sr-only">{sub} {cat} Collection</h1>
+      <ProductsClient />
+    </>
+  );
 }

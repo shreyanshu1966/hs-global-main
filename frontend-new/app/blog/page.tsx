@@ -7,11 +7,11 @@ export const revalidate = 3600;
 export async function generateMetadata(): Promise<Metadata> {
   const seo = await getPageSeo('/blog');
   const title =
-    seo?.title ?? `Marble & Granite Blog — Design Trends & Industry Insights | ${SITE_NAME}`;
+    seo?.title || `Marble & Granite Blog — Design Trends & Industry Insights | ${SITE_NAME}`;
   const description =
-    seo?.description ??
+    seo?.description ||
     'Expert articles on marble and granite design trends, stone care tips, export insights and product updates from HS Global Export.';
-  const canonical = seo?.canonical ?? `${SITE_URL}/blog`;
+  const canonical = seo?.canonical || `${SITE_URL}/blog`;
   const image = seo?.image ? absoluteImage(seo.image) : `${SITE_URL}/og-image.jpg`;
   return {
     title: { absolute: title },

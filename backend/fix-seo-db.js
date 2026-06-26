@@ -24,13 +24,25 @@ async function fixSeoRecords() {
   console.log('\nExisting PageSeo records:');
   all.forEach(r => console.log(' path:', r.path, '| title:', (r.title || '').substring(0, 70), '| canonical:', r.canonical));
 
-  // Fix 1: Homepage canonical pointing to /Old
+  // Fix 1: Homepage canonical pointing to /Old and missing title/description
   const homeDoc = await col.findOne({ path: '/' });
-  if (homeDoc && homeDoc.canonical && homeDoc.canonical.includes('/Old')) {
-    const r = await col.updateOne({ path: '/' }, { $set: { canonical: 'https://www.hsglobalexport.com/' } });
-    console.log('\nHomepage canonical fix: updated', r.modifiedCount, 'doc(s)');
-  } else {
-    console.log('\nHomepage canonical:', homeDoc?.canonical, '(no fix needed or doc not found)');
+  if (homeDoc) {
+    const updateFields = {};
+    if (homeDoc.canonical && homeDoc.canonical.includes('/Old')) {
+      updateFields.canonical = 'https://www.hsglobalexport.com/';
+    }
+    if (!homeDoc.title || homeDoc.title.trim() === '') {
+      updateFields.title = 'Marble & Granite Furniture Manufacturer & Exporter | HS Global Export';
+    }
+    if (!homeDoc.description || homeDoc.description.trim() === '') {
+      updateFields.description = 'HS Global Export — premium granite & marble solutions. Handcrafted products with worldwide delivery to the USA, UK and beyond.';
+    }
+    if (Object.keys(updateFields).length > 0) {
+      const r = await col.updateOne({ path: '/' }, { $set: updateFields });
+      console.log('\nHomepage fix: updated', r.modifiedCount, 'doc(s)');
+    } else {
+      console.log('\nHomepage: no fix needed');
+    }
   }
 
   // Fix 2: Gallery typo 'Galarry'
@@ -72,6 +84,25 @@ async function fixSeoRecords() {
   }
 
   // Show updated records
+  
+  // Fix 5: Remove hardcoded ellipses '...' from any PageSeo title
+  const docsWithEllipses = await col.find({ title: { $regex: /\.\.\./ } }).toArray();
+  for (const doc of docsWithEllipses) {
+    const newTitle = doc.title.replace(/\.\.\./g, '').trim();
+    await col.updateOne({ _id: doc._id }, { $set: { title: newTitle } });
+  }
+  console.log(`\nRemoved ellipses from ${docsWithEllipses.length} PageSeo records`);
+
+  // Fix 6: Remove hardcoded ellipses '...' from products collection
+  const productsCol = client.db().collection('products');
+  if (productsCol) {
+    const productsWithEllipses = await productsCol.find({ "seo.metaTitle": { $regex: /\.\.\./ } }).toArray();
+    for (const p of productsWithEllipses) {
+      const newTitle = p.seo.metaTitle.replace(/\.\.\./g, '').trim();
+      await productsCol.updateOne({ _id: p._id }, { $set: { "seo.metaTitle": newTitle } });
+    }
+    console.log(`Removed ellipses from ${productsWithEllipses.length} Product records`);
+  }
   const updated = await col.find({}, { projection: { path: 1, title: 1, canonical: 1 } }).toArray();
   console.log('\nFinal PageSeo records:');
   updated.forEach(r => console.log(' path:', r.path, '| title:', (r.title || '').substring(0, 70)));

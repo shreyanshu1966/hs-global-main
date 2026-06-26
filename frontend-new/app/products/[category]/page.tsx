@@ -13,12 +13,12 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const label = categoryLabel(category);
 
   const title =
-    cat?.seo?.metaTitle ?? `${label} — Marble & Granite Export to USA, UK & Worldwide`;
+    cat?.seo?.metaTitle || `${label} — Marble & Granite Export to USA, UK & Worldwide`;
   const description =
-    cat?.seo?.metaDescription ??
+    cat?.seo?.metaDescription ||
     `Shop premium ${label.toLowerCase()} from ${SITE_NAME}. Handcrafted marble & granite ${label.toLowerCase()} with worldwide export to the USA, UK and beyond. Custom orders welcome.`;
   const canonical =
-    cat?.seo?.canonicalUrl ?? `${SITE_URL}/products/${category}`;
+    cat?.seo?.canonicalUrl || `${SITE_URL}/products/${category}`;
   const image = cat?.seo?.ogImage
     ? absoluteImage(cat.seo.ogImage)
     : `${SITE_URL}/og-image.jpg`;
