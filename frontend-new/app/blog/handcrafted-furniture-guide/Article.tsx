@@ -28,7 +28,7 @@ function ImagePlaceholder({
   ratio?: string;
   className?: string;
 }) {
-  const isPlaceholder = src.startsWith('/blog/') && !src.includes('handcrafted-teak-dining-table.jpg');
+  const isPlaceholder = src.startsWith('/blog/') && !src.includes('handcrafted-teak-dining-table.jpg') && !src.includes('handcrafted-coffee-table.jpg') && !src.includes('handcrafted-console-table.jpg') && !src.includes('handcrafted-dining-table.jpg') && !src.includes('handcrafted-side-table.jpg');
 
   return (
     <figure className={className}>
@@ -72,10 +72,10 @@ const ADVANTAGES: { title: string; text: string }[] = [
 ];
 
 const PRODUCTS: { img: string; alt: string; title: string; text: string; bestFor: string }[] = [
-  { img: 'https://res.cloudinary.com/dpztytsoz/image/upload/v1766923665/hs-global/gallery/Coffee%20Table/IMG-20250525-WA0096.jpg', alt: 'Handcrafted wooden coffee table in a modern living room', title: 'Handcrafted Coffee Tables', text: 'A functional piece that defines the style of a living room and creates a strong visual anchor for the seating area. Available in rustic, modern, minimalist, or luxury styles.', bestFor: 'Living rooms · lounges · apartments' },
-  { img: 'https://res.cloudinary.com/dpztytsoz/image/upload/v1766927983/hs-global/products/furnitures/Tables/Console%20Table/Exotic%20White%20Marble%20Arch%20Console%20Table/2.jpg', alt: 'Handcrafted wooden console table in an elegant entryway', title: 'Handcrafted Console Tables', text: 'A versatile piece for entryways, hallways, or living rooms. Slim and refined designs transform narrow spaces into visually appealing areas without cluttering.', bestFor: 'Entryways · hallways · behind-sofa styling' },
-  { img: 'https://res.cloudinary.com/dpztytsoz/image/upload/v1766923669/hs-global/gallery/Dining%20Table/IMG-20250116-WA0181.jpg', alt: 'Handcrafted wooden dining table in a spacious dining area', title: 'Handcrafted Dining Tables', text: 'The heart of the home, offering strong construction and custom sizing. Available in classic solid wood designs to contemporary silhouettes with clean lines.', bestFor: 'Dining rooms · formal dining spaces · hospitality' },
-  { img: 'https://res.cloudinary.com/dpztytsoz/image/upload/v1766928000/hs-global/products/furnitures/Tables/Side%20Table/Banswara%20White%20Marble%20Side%20Table/2.jpg', alt: 'Handcrafted wooden side table next to a bed or sofa', title: 'Handcrafted Side Tables', text: 'Compact but impactful, these tables add convenience next to sofas, beds, or reading corners. Introduce texture and detail without changing the entire layout.', bestFor: 'Bedrooms · reading corners · living rooms' },
+  { img: `${IMG_BASE}/handcrafted-coffee-table.jpg`, alt: 'Handcrafted wooden coffee table in a modern living room', title: 'Handcrafted Coffee Tables', text: 'A functional piece that defines the style of a living room and creates a strong visual anchor for the seating area. Available in rustic, modern, minimalist, or luxury styles.', bestFor: 'Living rooms · lounges · apartments' },
+  { img: `${IMG_BASE}/handcrafted-console-table.jpg`, alt: 'Handcrafted wooden console table in an elegant entryway', title: 'Handcrafted Console Tables', text: 'A versatile piece for entryways, hallways, or living rooms. Slim and refined designs transform narrow spaces into visually appealing areas without cluttering.', bestFor: 'Entryways · hallways · behind-sofa styling' },
+  { img: `${IMG_BASE}/handcrafted-dining-table.jpg`, alt: 'Handcrafted wooden dining table in a spacious dining area', title: 'Handcrafted Dining Tables', text: 'The heart of the home, offering strong construction and custom sizing. Available in classic solid wood designs to contemporary silhouettes with clean lines.', bestFor: 'Dining rooms · formal dining spaces · hospitality' },
+  { img: `${IMG_BASE}/handcrafted-side-table.jpg`, alt: 'Handcrafted wooden side table next to a bed or sofa', title: 'Handcrafted Side Tables', text: 'Compact but impactful, these tables add convenience next to sofas, beds, or reading corners. Introduce texture and detail without changing the entire layout.', bestFor: 'Bedrooms · reading corners · living rooms' },
   { img: 'https://res.cloudinary.com/dynd1aan0/image/upload/v1779285360/hs-global/leather/etsy/HSLSOGR1/il_1588xN.8010286042_iajq.webp', alt: 'Handcrafted upholstered sofa with solid wood frame', title: 'Handcrafted Seating & Sofas', text: 'Combining comfort with design excellence, featuring stronger frames, premium upholstery options, and meticulous hand-finishing details.', bestFor: 'Upscale living rooms · luxury hotel lobbies' },
 ];
 

@@ -28,7 +28,17 @@ function ImagePlaceholder({
   ratio?: string;
   className?: string;
 }) {
-  const isPlaceholder = src.startsWith('/blog/') && !src.includes('semi-precious-stone-slabs.png');
+  const isPlaceholder =
+    src.startsWith('/blog/') &&
+    !src.includes('semi-precious-stone-slabs.png') &&
+    !src.includes('agate-slabs.jpg') &&
+    !src.includes('amethyst-slabs.jpg') &&
+    !src.includes('quartz-slabs.jpg') &&
+    !src.includes('amazonite-slabs.jpg') &&
+    !src.includes('jasper-slabs.jpg') &&
+    !src.includes('tiger-eye-slabs.jpg') &&
+    !src.includes('mother-of-pearl-slabs.jpg') &&
+    !src.includes('petrified-wood-slabs.jpg');
 
   return (
     <figure className={className}>
