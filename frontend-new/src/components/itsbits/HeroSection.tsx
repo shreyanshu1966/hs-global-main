@@ -18,12 +18,28 @@ interface HeroSectionProps {
 }
 
 const HeroSection = ({ slides: _slides = [], autoplayInterval = 5000 }: HeroSectionProps) => {
+  const CLOUDINARY_BASE = 'https://res.cloudinary.com/dynd1aan0/image/upload/hs-global/hero';
   const slides = [
-    { 
-      backgroundImage: '/jgjhg.png', 
-      mobileBackgroundImage: '/mobile.png',
-      heading: 'HS Global Export' 
-    }
+    {
+      backgroundImage: `${CLOUDINARY_BASE}/Banner1-des.webp`,
+      mobileBackgroundImage: `${CLOUDINARY_BASE}/Banner1-mob.webp`,
+      heading: 'HS Global Export',
+    },
+    {
+      backgroundImage: `${CLOUDINARY_BASE}/Banner2-des.webp`,
+      mobileBackgroundImage: `${CLOUDINARY_BASE}/Banner2-mob.webp`,
+      heading: 'HS Global Export',
+    },
+    {
+      backgroundImage: `${CLOUDINARY_BASE}/Banner3-des.webp`,
+      mobileBackgroundImage: `${CLOUDINARY_BASE}/Banner3-mob.webp`,
+      heading: 'HS Global Export',
+    },
+    {
+      backgroundImage: `${CLOUDINARY_BASE}/Banner4-des.webp`,
+      mobileBackgroundImage: `${CLOUDINARY_BASE}/Banner4-mob.webp`,
+      heading: 'HS Global Export',
+    },
   ];
   
   const [active, setActive] = useState(0);

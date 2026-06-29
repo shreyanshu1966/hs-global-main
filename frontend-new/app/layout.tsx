@@ -3,6 +3,7 @@ import { Suspense } from 'react';
 import { Inter } from 'next/font/google';
 import '@/index.css';
 import ClientProviders from '@/ClientProviders';
+import { GoogleAnalytics } from '@next/third-parties/google';
 import { SITE_NAME, SITE_URL } from '@/server/api';
 
 const inter = Inter({
@@ -37,9 +38,9 @@ export const metadata: Metadata = {
   },
   robots: { index: true, follow: true },
   icons: {
-    icon: '/favicon.ico',
-    shortcut: '/favicon.ico',
-    apple: '/apple-touch-icon.png',
+    icon: '/logo.svg',
+    shortcut: '/logo.svg',
+    apple: '/logo.svg',
   },
 };
 
@@ -61,6 +62,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <ClientProviders>{children}</ClientProviders>
         </Suspense>
       </body>
+      <GoogleAnalytics gaId="G-LDEFWLFCYY" />
     </html>
   );
 }

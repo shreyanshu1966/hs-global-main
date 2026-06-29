@@ -1,0 +1,79 @@
+{
+  "generated": "2026-06-27T16:31:29.013Z",
+  "cloudName": "dynd1aan0",
+  "folder": "hs-global/hero",
+  "urls": {
+    "Banner1-des.png": {
+      "original": "Banner1-des.png",
+      "cloudinary": "https://res.cloudinary.com/dynd1aan0/image/upload/v1782577874/hs-global/hero/Banner1-des.webp",
+      "publicId": "hs-global/hero/Banner1-des",
+      "format": "webp",
+      "width": 1920,
+      "height": 640,
+      "bytes": 126446
+    },
+    "Banner1-mob.png": {
+      "original": "Banner1-mob.png",
+      "cloudinary": "https://res.cloudinary.com/dynd1aan0/image/upload/v1782577876/hs-global/hero/Banner1-mob.webp",
+      "publicId": "hs-global/hero/Banner1-mob",
+      "format": "webp",
+      "width": 1122,
+      "height": 1402,
+      "bytes": 159508
+    },
+    "Banner2-des.png": {
+      "original": "Banner2-des.png",
+      "cloudinary": "https://res.cloudinary.com/dynd1aan0/image/upload/v1782577878/hs-global/hero/Banner2-des.webp",
+      "publicId": "hs-global/hero/Banner2-des",
+      "format": "webp",
+      "width": 1920,
+      "height": 640,
+      "bytes": 131308
+    },
+    "Banner2-mob.png": {
+      "original": "Banner2-mob.png",
+      "cloudinary": "https://res.cloudinary.com/dynd1aan0/image/upload/v1782577882/hs-global/hero/Banner2-mob.webp",
+      "publicId": "hs-global/hero/Banner2-mob",
+      "format": "webp",
+      "width": 1122,
+      "height": 1402,
+      "bytes": 155816
+    },
+    "Banner3-des.png": {
+      "original": "Banner3-des.png",
+      "cloudinary": "https://res.cloudinary.com/dynd1aan0/image/upload/v1782577883/hs-global/hero/Banner3-des.webp",
+      "publicId": "hs-global/hero/Banner3-des",
+      "format": "webp",
+      "width": 1920,
+      "height": 640,
+      "bytes": 180682
+    },
+    "Banner3-mob.png": {
+      "original": "Banner3-mob.png",
+      "cloudinary": "https://res.cloudinary.com/dynd1aan0/image/upload/v1782577885/hs-global/hero/Banner3-mob.webp",
+      "publicId": "hs-global/hero/Banner3-mob",
+      "format": "webp",
+      "width": 1122,
+      "height": 1402,
+      "bytes": 228368
+    },
+    "Banner4-des.png": {
+      "original": "Banner4-des.png",
+      "cloudinary": "https://res.cloudinary.com/dynd1aan0/image/upload/v1782577886/hs-global/hero/Banner4-des.webp",
+      "publicId": "hs-global/hero/Banner4-des",
+      "format": "webp",
+      "width": 1920,
+      "height": 640,
+      "bytes": 243962
+    },
+    "Banner4-mob.png": {
+      "original": "Banner4-mob.png",
+      "cloudinary": "https://res.cloudinary.com/dynd1aan0/image/upload/v1782577888/hs-global/hero/Banner4-mob.webp",
+      "publicId": "hs-global/hero/Banner4-mob",
+      "format": "webp",
+      "width": 1122,
+      "height": 1402,
+      "bytes": 224736
+    }
+  }
+}
