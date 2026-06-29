@@ -11,9 +11,9 @@ import Article from './Article';
 const SLUG = 'semi-precious-stone-slabs-luxury-interiors';
 const CANONICAL = `${SITE_URL}/blog/${SLUG}`;
 
-const TITLE = 'Luxury Semi Precious Stone Slabs for Premium Interior Applications';
+const TITLE = 'Semi Precious Stone Slabs for Luxury Interiors';
 const DESCRIPTION =
-  'Discover HS Global Export\'s premium semi precious stone slabs including Agate, Amethyst, Quartz, Amazonite, Jasper, Tiger Eye, Mother of Pearl, and Petrified Wood.';
+  'Premium semi precious stone slabs — Agate, Amethyst, Quartz, Jasper, Tiger Eye, Mother of Pearl & Petrified Wood — handcrafted by HS Global Export.';
 
 const KEYWORDS = [
   'Semi Precious Stone Slabs',
@@ -88,6 +88,11 @@ export default function Page() {
     description: DESCRIPTION,
     image: [HERO_IMAGE],
     author: { '@type': 'Organization', name: SITE_NAME, url: SITE_URL },
+    publisher: {
+      '@type': 'Organization',
+      name: SITE_NAME,
+      logo: { '@type': 'ImageObject', url: `${SITE_URL}/og-image.jpg` },
+    },
     datePublished: PUBLISHED_AT,
     dateModified: MODIFIED_AT,
     mainEntityOfPage: { '@type': 'WebPage', '@id': CANONICAL },

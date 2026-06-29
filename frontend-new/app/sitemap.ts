@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { getAllProducts, getAllBlogs, SITE_URL } from '@/server/api';
+import { STATIC_BLOGS } from '@/data/staticBlogs';
 import galaryDetails from '@/static/galaryDetail';
 
 export const revalidate = 3600;
@@ -45,11 +46,30 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.6,
     }));
 
+  // Hand-authored static blog routes (not DB-seeded), so they must be added
+  // to the sitemap explicitly — getAllBlogs() only returns DB blogs.
+  const dbBlogSlugs = new Set(blogs.map((b) => b.slug));
+  const staticBlogRoutes: MetadataRoute.Sitemap = STATIC_BLOGS
+    .filter((b) => b.status === 'published' && !dbBlogSlugs.has(b.slug))
+    .map((b) => ({
+      url: `${SITE_URL}/blog/${b.slug}`,
+      lastModified: b.updatedAt || b.publishedAt,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    }));
+
   const galleryRoutes: MetadataRoute.Sitemap = galaryDetails.map((d) => ({
     url: `${SITE_URL}/gallery/${d.id}`,
     changeFrequency: 'yearly',
     priority: 0.4,
   }));
 
-  return [...staticRoutes, ...categoryRoutes, ...productRoutes, ...blogRoutes, ...galleryRoutes];
+  return [
+    ...staticRoutes,
+    ...categoryRoutes,
+    ...productRoutes,
+    ...blogRoutes,
+    ...staticBlogRoutes,
+    ...galleryRoutes,
+  ];
 }

@@ -33,12 +33,14 @@ function ImagePlaceholder({
   caption,
   ratio = 'aspect-[16/9]',
   className = '',
+  priority = false,
 }: {
   src: string;
   alt: string;
   caption?: string;
   ratio?: string;
   className?: string;
+  priority?: boolean;
 }) {
   const isPlaceholder =
     src.startsWith('/blog/') &&
@@ -64,7 +66,9 @@ function ImagePlaceholder({
             src={src}
             alt={alt}
             className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-            loading="lazy"
+            loading={priority ? 'eager' : 'lazy'}
+            fetchPriority={priority ? 'high' : 'auto'}
+            decoding="async"
           />
         )}
       </div>
@@ -91,13 +95,13 @@ const ADVANTAGES: { title: string; text: string }[] = [
   { title: 'Naturally sustainable', text: 'A single quarried slab outlasts generations of fast furniture — the original sustainable material.' },
 ];
 
-const PRODUCTS: { img: string; alt: string; title: string; text: string; bestFor: string }[] = [
-  { img: `${IMG_BASE}/dining-table.png`, alt: 'Makrana white marble dining table seating eight in a luxury dining room', title: 'Marble Dining Tables', text: 'The crown jewel of any luxury home — from intimate four-seaters to grand twelve-seat banquet tables on stone or metal bases.', bestFor: 'Luxury homes · fine dining · hotel lobbies' },
-  { img: `${IMG_BASE}/coffee-table.jpg`, alt: 'Round white marble coffee table with brushed brass base in a quiet-luxury living room', title: 'Marble Coffee Tables', text: 'The most sought-after accent in “quiet luxury” interiors — round, oval, hexagonal or slab-top, with brass or pedestal bases.', bestFor: 'Living rooms · hotel suites · apartments' },
-  { img: `${IMG_BASE}/side-table.jpg`, alt: 'Pair of sculptural marble side tables flanking a bed', title: 'Side & End Tables', text: 'Versatile sculptural pieces that signal refined taste without a full room overhaul — a fast-growing décor segment.', bestFor: 'Bedrooms · living rooms · entryways' },
-  { img: `${IMG_BASE}/console-table.jpg`, alt: 'Carved marble console table in a grand entryway hall', title: 'Console Tables', text: 'A statement of architecture, not just furniture — carved detailing and ornate legs anchor entryways and hallways.', bestFor: 'Entryways · hallways · behind-sofa styling' },
-  { img: `${IMG_BASE}/vanity.jpg`, alt: 'Hand-carved marble bathroom vanity with matching basin in a spa-style bathroom', title: 'Bathroom Vanities & Sinks', text: 'Hand-carved vanity tops and basins driving the spa-style renovation and floor-to-ceiling “stone drenching” trend of 2026.', bestFor: 'Primary baths · powder rooms · spas' },
-  { img: `${IMG_BASE}/accents.jpg`, alt: 'Collection of decorative marble accents — bowls, candle holders and coasters', title: 'Decorative Accents', text: 'Bookends, fruit bowls, candle holders, coasters and tabletop sculptures to layer natural stone throughout a space.', bestFor: 'Designers layering material & texture' },
+const PRODUCTS: { img: string; alt: string; title: string; text: string; bestFor: string; href: string }[] = [
+  { img: `${IMG_BASE}/dining-table.png`, alt: 'Makrana white marble dining table seating eight in a luxury dining room', title: 'Marble Dining Tables', text: 'The crown jewel of any luxury home — from intimate four-seaters to grand twelve-seat banquet tables on stone or metal bases.', bestFor: 'Luxury homes · fine dining · hotel lobbies', href: '/products/furniture/dining-table' },
+  { img: `${IMG_BASE}/coffee-table.jpg`, alt: 'Round white marble coffee table with brushed brass base in a quiet-luxury living room', title: 'Marble Coffee Tables', text: 'The most sought-after accent in “quiet luxury” interiors — round, oval, hexagonal or slab-top, with brass or pedestal bases.', bestFor: 'Living rooms · hotel suites · apartments', href: '/products/furniture/coffee-table' },
+  { img: `${IMG_BASE}/side-table.jpg`, alt: 'Pair of sculptural marble side tables flanking a bed', title: 'Side & End Tables', text: 'Versatile sculptural pieces that signal refined taste without a full room overhaul — a fast-growing décor segment.', bestFor: 'Bedrooms · living rooms · entryways', href: '/products/furniture/side-table' },
+  { img: `${IMG_BASE}/console-table.jpg`, alt: 'Carved marble console table in a grand entryway hall', title: 'Console Tables', text: 'A statement of architecture, not just furniture — carved detailing and ornate legs anchor entryways and hallways.', bestFor: 'Entryways · hallways · behind-sofa styling', href: '/products/furniture/console-table' },
+  { img: `${IMG_BASE}/vanity.jpg`, alt: 'Hand-carved marble bathroom vanity with matching basin in a spa-style bathroom', title: 'Bathroom Vanities & Sinks', text: 'Hand-carved vanity tops and basins driving the spa-style renovation and floor-to-ceiling “stone drenching” trend of 2026.', bestFor: 'Primary baths · powder rooms · spas', href: '/products/furniture/pedestal-sink' },
+  { img: `${IMG_BASE}/accents.jpg`, alt: 'Collection of decorative marble accents — bowls, candle holders and coasters', title: 'Decorative Accents', text: 'Bookends, fruit bowls, candle holders, coasters and tabletop sculptures to layer natural stone throughout a space.', bestFor: 'Designers layering material & texture', href: '/products/furniture' },
 ];
 
 const VS_TABLE: { material: string; lifespan: string; weakness: string; verdict: string; highlight?: boolean }[] = [
@@ -192,11 +196,11 @@ export default function Article({
         <div className="mx-auto max-w-3xl px-6 pb-14 pt-32 text-center">
           <nav aria-label="Breadcrumb" className="mb-10 text-[12px] uppercase tracking-[0.16em] text-[#9a9582]">
             <ol className="flex flex-wrap items-center justify-center gap-2">
-              <li><a href="/" className="transition-colors hover:text-[#222]">Home</a></li>
-              <li aria-hidden="true">·</li>
-              <li><a href="/blog" className="transition-colors hover:text-[#222]">Journal</a></li>
-              <li aria-hidden="true">·</li>
-              <li className="text-[#647167]">Marble Furniture</li>
+              <li><a href="/" className="hover:text-[#647167]">Home</a></li>
+              <li aria-hidden="true" className="text-[#ece9dd]">/</li>
+              <li><a href="/blog" className="hover:text-[#647167]">Blog</a></li>
+              <li aria-hidden="true" className="text-[#ece9dd]">/</li>
+              <li aria-current="page" className="text-[#647167]">Marble Furniture</li>
             </ol>
           </nav>
 
@@ -228,6 +232,7 @@ export default function Article({
           alt="Handcrafted Indian white Makrana marble dining table styled in a bright luxury dining room"
           caption="A handcrafted Makrana white marble dining table — the crown jewel of a luxury home."
           ratio="aspect-[2/1]"
+          priority
         />
       </div>
 
@@ -310,12 +315,17 @@ export default function Article({
         <div className="grid gap-x-9 gap-y-14 md:grid-cols-2 lg:grid-cols-3">
           {PRODUCTS.map((p) => (
             <article key={p.title} className="group">
-              <ImagePlaceholder src={p.img} alt={p.alt} ratio="aspect-[4/3]" />
-              <h3 className={`${SERIF} mt-5 text-[22px] text-[#222]`}>{p.title}</h3>
+              <a href={p.href} aria-label={`Browse ${p.title}`} className="block">
+                <ImagePlaceholder src={p.img} alt={p.alt} ratio="aspect-[4/3]" />
+                <h3 className={`${SERIF} mt-5 text-[22px] text-[#222] transition-colors group-hover:text-[#647167]`}>{p.title}</h3>
+              </a>
               <p className="mt-2 text-[15px] font-light leading-[1.65] text-[#555]">{p.text}</p>
               <p className="mt-4 text-[11px] uppercase tracking-[0.14em] text-[#9a9582]">
                 <span className="text-[#647167]">Best for</span> — {p.bestFor}
               </p>
+              <a href={p.href} className="mt-4 inline-block text-[12px] uppercase tracking-[0.14em] text-[#647167] transition-colors hover:text-[#222]">
+                View collection →
+              </a>
             </article>
           ))}
         </div>

@@ -11,7 +11,7 @@ import Article from './Article';
 const SLUG = 'premium-leather-furniture-luxury-interiors';
 const CANONICAL = `${SITE_URL}/blog/${SLUG}`;
 
-const TITLE = 'Premium Leather Furniture: Modern Luxury Interiors | HS Global Export';
+const TITLE = 'Premium Leather Furniture for Luxury Interiors';
 const DESCRIPTION =
   'Discover handcrafted luxury leather furniture including sofas, armchairs, beds, coffee tables, dressers, mirrors, and storage solutions by HS Global Export.';
 
@@ -88,6 +88,11 @@ export default function Page() {
     description: DESCRIPTION,
     image: [HERO_IMAGE],
     author: { '@type': 'Organization', name: SITE_NAME, url: SITE_URL },
+    publisher: {
+      '@type': 'Organization',
+      name: SITE_NAME,
+      logo: { '@type': 'ImageObject', url: `${SITE_URL}/og-image.jpg` },
+    },
     datePublished: PUBLISHED_AT,
     dateModified: MODIFIED_AT,
     mainEntityOfPage: { '@type': 'WebPage', '@id': CANONICAL },

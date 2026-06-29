@@ -11,7 +11,7 @@ import Article from './Article';
 const SLUG = 'handcrafted-furniture-guide';
 const CANONICAL = `${SITE_URL}/blog/${SLUG}`;
 
-const TITLE = 'Handcrafted Furniture Guide: Artisan, Handmade & Custom Wood Pieces';
+const TITLE = 'Handcrafted Furniture Guide: Artisan & Custom Wood';
 const DESCRIPTION =
   'Discover the beauty of handcrafted furniture. Learn how to choose, care for, and buy quality handmade wooden furniture for every room.';
 
@@ -88,6 +88,11 @@ export default function Page() {
     description: DESCRIPTION,
     image: [HERO_IMAGE],
     author: { '@type': 'Organization', name: SITE_NAME, url: SITE_URL },
+    publisher: {
+      '@type': 'Organization',
+      name: SITE_NAME,
+      logo: { '@type': 'ImageObject', url: `${SITE_URL}/og-image.jpg` },
+    },
     datePublished: PUBLISHED_AT,
     dateModified: MODIFIED_AT,
     mainEntityOfPage: { '@type': 'WebPage', '@id': CANONICAL },

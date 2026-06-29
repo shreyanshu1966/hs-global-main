@@ -21,12 +21,14 @@ function ImagePlaceholder({
   caption,
   ratio = 'aspect-[16/9]',
   className = '',
+  priority = false,
 }: {
   src: string;
   alt: string;
   caption?: string;
   ratio?: string;
   className?: string;
+  priority?: boolean;
 }) {
   const isPlaceholder =
     src.includes('/blog/') &&
@@ -52,7 +54,9 @@ function ImagePlaceholder({
             src={src}
             alt={alt}
             className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-            loading="lazy"
+            loading={priority ? 'eager' : 'lazy'}
+            fetchPriority={priority ? 'high' : 'auto'}
+            decoding="async"
           />
         )}
       </div>
@@ -79,16 +83,16 @@ const ADVANTAGES: { title: string; text: string }[] = [
   { title: 'Versatile applications', text: 'Perfect for residential villas, luxury hotels, executive offices, and commercial spaces.' },
 ];
 
-const SEATING_PRODUCTS: { img: string; alt: string; title: string; text: string; bestFor: string }[] = [
-  { img: `${IMG_BASE}/leather-sofa.jpg`, alt: 'Luxury leather sofa in a premium living room', title: 'Luxury Leather Sofas', text: 'The centerpiece of any living room. Crafted with premium upholstery, superior cushioning, and elegant silhouettes that elevate modern interiors.', bestFor: 'Luxury homes · villas · hotel lounges' },
-  { img: `${IMG_BASE}/leather-armchair.jpg`, alt: 'Premium leather armchair with wooden frame', title: 'Premium Leather Armchairs', text: 'Ergonomic support meets sophisticated finish. Perfect for creating comfortable reading corners, lounge areas, and lobby spaces.', bestFor: 'Living rooms · study areas · office suites' },
-  { img: `${IMG_BASE}/leather-ottoman.jpg`, alt: 'Luxury leather ottoman styled next to a coffee table', title: 'Leather Ottomans & Benches', text: 'Versatile additions that function as seating, footrests, or decorative entry table statements. Combining comfort with clean aesthetics.', bestFor: 'Entryways · bedrooms · dining areas' },
+const SEATING_PRODUCTS: { img: string; alt: string; title: string; text: string; bestFor: string; href: string }[] = [
+  { img: `${IMG_BASE}/leather-sofa.jpg`, alt: 'Luxury leather sofa in a premium living room', title: 'Luxury Leather Sofas', text: 'The centerpiece of any living room. Crafted with premium upholstery, superior cushioning, and elegant silhouettes that elevate modern interiors.', bestFor: 'Luxury homes · villas · hotel lounges', href: '/products/leather/sofa' },
+  { img: `${IMG_BASE}/leather-armchair.jpg`, alt: 'Premium leather armchair with wooden frame', title: 'Premium Leather Armchairs', text: 'Ergonomic support meets sophisticated finish. Perfect for creating comfortable reading corners, lounge areas, and lobby spaces.', bestFor: 'Living rooms · study areas · office suites', href: '/products/leather/chair' },
+  { img: `${IMG_BASE}/leather-ottoman.jpg`, alt: 'Luxury leather ottoman styled next to a coffee table', title: 'Leather Ottomans & Benches', text: 'Versatile additions that function as seating, footrests, or decorative entry table statements. Combining comfort with clean aesthetics.', bestFor: 'Entryways · bedrooms · dining areas', href: '/products/leather/bench' },
 ];
 
-const BED_TABLES_PRODUCTS: { img: string; alt: string; title: string; text: string; bestFor: string }[] = [
-  { img: `${IMG_BASE}/leather-bed.jpg`, alt: 'Luxury leather upholstered bed in a master suite', title: 'Luxury Leather Beds', text: 'Transform your bedroom into a luxurious retreat. Handcrafted leather beds featuring premium headboards, durable frames, and refined detailing.', bestFor: 'Master bedrooms · boutique hotel suites' },
-  { img: `${IMG_BASE}/leather-coffee-table.jpg`, alt: 'Handcrafted leather coffee table in a modern loft', title: 'Leather Tables (Coffee, Side, Console)', text: 'Statement tables combining premium materials and expert craftsmanship. Bring a unique, tactile element to living rooms and entryways.', bestFor: 'Living rooms · hallways · entryways' },
-  { img: `${IMG_BASE}/leather-dresser.jpg`, alt: 'Leather clad dresser with brass details', title: 'Storage & Décor (Dressers, Mirrors)', text: 'Leather dressers and leather-framed mirrors offering sophisticated storage and texturing to reflect light and expand space.', bestFor: 'Primary bedrooms · dressing rooms · luxury retail' },
+const BED_TABLES_PRODUCTS: { img: string; alt: string; title: string; text: string; bestFor: string; href: string }[] = [
+  { img: `${IMG_BASE}/leather-bed.jpg`, alt: 'Luxury leather upholstered bed in a master suite', title: 'Luxury Leather Beds', text: 'Transform your bedroom into a luxurious retreat. Handcrafted leather beds featuring premium headboards, durable frames, and refined detailing.', bestFor: 'Master bedrooms · boutique hotel suites', href: '/products/leather/bed' },
+  { img: `${IMG_BASE}/leather-coffee-table.jpg`, alt: 'Handcrafted leather coffee table in a modern loft', title: 'Leather Tables (Coffee, Side, Console)', text: 'Statement tables combining premium materials and expert craftsmanship. Bring a unique, tactile element to living rooms and entryways.', bestFor: 'Living rooms · hallways · entryways', href: '/products/leather/side-table' },
+  { img: `${IMG_BASE}/leather-dresser.jpg`, alt: 'Leather clad dresser with brass details', title: 'Storage & Décor (Dressers, Mirrors)', text: 'Leather dressers and leather-framed mirrors offering sophisticated storage and texturing to reflect light and expand space.', bestFor: 'Primary bedrooms · dressing rooms · luxury retail', href: '/products/leather/dresser' },
 ];
 
 const PROCESS: { step: string; title: string; text: string }[] = [
@@ -160,6 +164,7 @@ export default function Article({
           alt="Premium handcrafted leather sofa styled in a bright modern penthouse living room"
           caption="Our handcrafted leather sofas represent the ultimate fusion of comfort, quality, and modern sophistication."
           ratio="aspect-[2/1]"
+          priority
         />
       </div>
 
@@ -230,12 +235,17 @@ export default function Article({
         <div className="grid gap-x-9 gap-y-14 md:grid-cols-2 lg:grid-cols-3">
           {SEATING_PRODUCTS.map((p) => (
             <article key={p.title} className="group">
-              <ImagePlaceholder src={p.img} alt={p.alt} ratio="aspect-[4/3]" />
-              <h3 className={`${SERIF} mt-5 text-[22px] text-[#222]`}>{p.title}</h3>
+              <a href={p.href} aria-label={`Browse ${p.title}`} className="block">
+                <ImagePlaceholder src={p.img} alt={p.alt} ratio="aspect-[4/3]" />
+                <h3 className={`${SERIF} mt-5 text-[22px] text-[#222] transition-colors group-hover:text-[#647167]`}>{p.title}</h3>
+              </a>
               <p className="mt-2 text-[15px] font-light leading-[1.65] text-[#555]">{p.text}</p>
               <p className="mt-4 text-[11px] uppercase tracking-[0.14em] text-[#9a9582]">
                 <span className="text-[#647167]">Best for</span> — {p.bestFor}
               </p>
+              <a href={p.href} className="mt-4 inline-block text-[12px] uppercase tracking-[0.14em] text-[#647167] transition-colors hover:text-[#222]">
+                View collection →
+              </a>
             </article>
           ))}
         </div>
@@ -253,12 +263,17 @@ export default function Article({
         <div className="grid gap-x-9 gap-y-14 md:grid-cols-2 lg:grid-cols-3">
           {BED_TABLES_PRODUCTS.map((p) => (
             <article key={p.title} className="group">
-              <ImagePlaceholder src={p.img} alt={p.alt} ratio="aspect-[4/3]" />
-              <h3 className={`${SERIF} mt-5 text-[22px] text-[#222]`}>{p.title}</h3>
+              <a href={p.href} aria-label={`Browse ${p.title}`} className="block">
+                <ImagePlaceholder src={p.img} alt={p.alt} ratio="aspect-[4/3]" />
+                <h3 className={`${SERIF} mt-5 text-[22px] text-[#222] transition-colors group-hover:text-[#647167]`}>{p.title}</h3>
+              </a>
               <p className="mt-2 text-[15px] font-light leading-[1.65] text-[#555]">{p.text}</p>
               <p className="mt-4 text-[11px] uppercase tracking-[0.14em] text-[#9a9582]">
                 <span className="text-[#647167]">Best for</span> — {p.bestFor}
               </p>
+              <a href={p.href} className="mt-4 inline-block text-[12px] uppercase tracking-[0.14em] text-[#647167] transition-colors hover:text-[#222]">
+                View collection →
+              </a>
             </article>
           ))}
         </div>
@@ -365,10 +380,10 @@ export default function Article({
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
             <a
-              href="/products/furniture"
+              href="/products/leather"
               className="inline-block bg-[#222] px-9 py-4 text-[13px] font-light uppercase tracking-[1.5px] text-white transition-colors hover:bg-black"
             >
-              Browse the Furniture Collection
+              Browse the Leather Collection
             </a>
             <a
               href="/contact"

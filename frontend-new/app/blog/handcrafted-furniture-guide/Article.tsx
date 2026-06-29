@@ -21,12 +21,14 @@ function ImagePlaceholder({
   caption,
   ratio = 'aspect-[16/9]',
   className = '',
+  priority = false,
 }: {
   src: string;
   alt: string;
   caption?: string;
   ratio?: string;
   className?: string;
+  priority?: boolean;
 }) {
   const isPlaceholder = src.startsWith('/blog/') && !src.includes('handcrafted-teak-dining-table.jpg') && !src.includes('handcrafted-coffee-table.jpg') && !src.includes('handcrafted-console-table.jpg') && !src.includes('handcrafted-dining-table.jpg') && !src.includes('handcrafted-side-table.jpg');
 
@@ -44,7 +46,9 @@ function ImagePlaceholder({
             src={src}
             alt={alt}
             className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-            loading="lazy"
+            loading={priority ? 'eager' : 'lazy'}
+            fetchPriority={priority ? 'high' : 'auto'}
+            decoding="async"
           />
         )}
       </div>
@@ -71,12 +75,12 @@ const ADVANTAGES: { title: string; text: string }[] = [
   { title: 'Naturally sustainable', text: 'Made using reclaimed or responsibly sourced wood, with low-waste production where artisans repurpose offcuts.' },
 ];
 
-const PRODUCTS: { img: string; alt: string; title: string; text: string; bestFor: string }[] = [
-  { img: `${IMG_BASE}/handcrafted-coffee-table.jpg`, alt: 'Handcrafted wooden coffee table in a modern living room', title: 'Handcrafted Coffee Tables', text: 'A functional piece that defines the style of a living room and creates a strong visual anchor for the seating area. Available in rustic, modern, minimalist, or luxury styles.', bestFor: 'Living rooms · lounges · apartments' },
-  { img: `${IMG_BASE}/handcrafted-console-table.jpg`, alt: 'Handcrafted wooden console table in an elegant entryway', title: 'Handcrafted Console Tables', text: 'A versatile piece for entryways, hallways, or living rooms. Slim and refined designs transform narrow spaces into visually appealing areas without cluttering.', bestFor: 'Entryways · hallways · behind-sofa styling' },
-  { img: `${IMG_BASE}/handcrafted-dining-table.jpg`, alt: 'Handcrafted wooden dining table in a spacious dining area', title: 'Handcrafted Dining Tables', text: 'The heart of the home, offering strong construction and custom sizing. Available in classic solid wood designs to contemporary silhouettes with clean lines.', bestFor: 'Dining rooms · formal dining spaces · hospitality' },
-  { img: `${IMG_BASE}/handcrafted-side-table.jpg`, alt: 'Handcrafted wooden side table next to a bed or sofa', title: 'Handcrafted Side Tables', text: 'Compact but impactful, these tables add convenience next to sofas, beds, or reading corners. Introduce texture and detail without changing the entire layout.', bestFor: 'Bedrooms · reading corners · living rooms' },
-  { img: 'https://res.cloudinary.com/dynd1aan0/image/upload/v1779285360/hs-global/leather/etsy/HSLSOGR1/il_1588xN.8010286042_iajq.webp', alt: 'Handcrafted upholstered sofa with solid wood frame', title: 'Handcrafted Seating & Sofas', text: 'Combining comfort with design excellence, featuring stronger frames, premium upholstery options, and meticulous hand-finishing details.', bestFor: 'Upscale living rooms · luxury hotel lobbies' },
+const PRODUCTS: { img: string; alt: string; title: string; text: string; bestFor: string; href: string }[] = [
+  { img: `${IMG_BASE}/handcrafted-coffee-table.jpg`, alt: 'Handcrafted wooden coffee table in a modern living room', title: 'Handcrafted Coffee Tables', text: 'A functional piece that defines the style of a living room and creates a strong visual anchor for the seating area. Available in rustic, modern, minimalist, or luxury styles.', bestFor: 'Living rooms · lounges · apartments', href: '/products/handcrafted/coffee-table' },
+  { img: `${IMG_BASE}/handcrafted-console-table.jpg`, alt: 'Handcrafted wooden console table in an elegant entryway', title: 'Handcrafted Console Tables', text: 'A versatile piece for entryways, hallways, or living rooms. Slim and refined designs transform narrow spaces into visually appealing areas without cluttering.', bestFor: 'Entryways · hallways · behind-sofa styling', href: '/products/handcrafted/console-table' },
+  { img: `${IMG_BASE}/handcrafted-dining-table.jpg`, alt: 'Handcrafted wooden dining table in a spacious dining area', title: 'Handcrafted Dining Tables', text: 'The heart of the home, offering strong construction and custom sizing. Available in classic solid wood designs to contemporary silhouettes with clean lines.', bestFor: 'Dining rooms · formal dining spaces · hospitality', href: '/products/handcrafted/dining-table' },
+  { img: `${IMG_BASE}/handcrafted-side-table.jpg`, alt: 'Handcrafted wooden side table next to a bed or sofa', title: 'Handcrafted Side Tables', text: 'Compact but impactful, these tables add convenience next to sofas, beds, or reading corners. Introduce texture and detail without changing the entire layout.', bestFor: 'Bedrooms · reading corners · living rooms', href: '/products/handcrafted/side-table' },
+  { img: 'https://res.cloudinary.com/dynd1aan0/image/upload/v1779285360/hs-global/leather/etsy/HSLSOGR1/il_1588xN.8010286042_iajq.webp', alt: 'Handcrafted upholstered sofa with solid wood frame', title: 'Handcrafted Seating & Sofas', text: 'Combining comfort with design excellence, featuring stronger frames, premium upholstery options, and meticulous hand-finishing details.', bestFor: 'Upscale living rooms · luxury hotel lobbies', href: '/products/handcrafted/sofa' },
 ];
 
 const VS_TABLE: { factor: string; handcrafted: string; massproduced: string; highlight?: boolean }[] = [
@@ -172,6 +176,7 @@ export default function Article({
           alt="Handcrafted teak wood dining table styled in a bright luxury dining room"
           caption="A beautiful handcrafted teak dining table — solid, timeless, and sustainably made."
           ratio="aspect-[2/1]"
+          priority
         />
       </div>
 
@@ -240,12 +245,17 @@ export default function Article({
         <div className="grid gap-x-9 gap-y-14 md:grid-cols-2 lg:grid-cols-3">
           {PRODUCTS.map((p) => (
             <article key={p.title} className="group">
-              <ImagePlaceholder src={p.img} alt={p.alt} ratio="aspect-[4/3]" />
-              <h3 className={`${SERIF} mt-5 text-[22px] text-[#222]`}>{p.title}</h3>
+              <a href={p.href} aria-label={`Browse ${p.title}`} className="block">
+                <ImagePlaceholder src={p.img} alt={p.alt} ratio="aspect-[4/3]" />
+                <h3 className={`${SERIF} mt-5 text-[22px] text-[#222] transition-colors group-hover:text-[#647167]`}>{p.title}</h3>
+              </a>
               <p className="mt-2 text-[15px] font-light leading-[1.65] text-[#555]">{p.text}</p>
               <p className="mt-4 text-[11px] uppercase tracking-[0.14em] text-[#9a9582]">
                 <span className="text-[#647167]">Best for</span> — {p.bestFor}
               </p>
+              <a href={p.href} className="mt-4 inline-block text-[12px] uppercase tracking-[0.14em] text-[#647167] transition-colors hover:text-[#222]">
+                View collection →
+              </a>
             </article>
           ))}
         </div>
@@ -473,7 +483,7 @@ export default function Article({
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
             <a
-              href="/products/furniture"
+              href="/products/handcrafted"
               className="inline-block bg-[#222] px-9 py-4 text-[13px] font-light uppercase tracking-[1.5px] text-white transition-colors hover:bg-black"
             >
               Browse the Furniture Collection

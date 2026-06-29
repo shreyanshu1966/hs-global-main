@@ -21,12 +21,14 @@ function ImagePlaceholder({
   caption,
   ratio = 'aspect-[16/9]',
   className = '',
+  priority = false,
 }: {
   src: string;
   alt: string;
   caption?: string;
   ratio?: string;
   className?: string;
+  priority?: boolean;
 }) {
   const isPlaceholder =
     src.startsWith('/blog/') &&
@@ -54,7 +56,9 @@ function ImagePlaceholder({
             src={src}
             alt={alt}
             className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-            loading="lazy"
+            loading={priority ? 'eager' : 'lazy'}
+            fetchPriority={priority ? 'high' : 'auto'}
+            decoding="async"
           />
         )}
       </div>
@@ -81,21 +85,21 @@ const ADVANTAGES: { title: string; text: string }[] = [
   { title: 'High-end architectural value', text: 'Adds massive aesthetic and monetary value to luxury penthouses, boutique hotels, lobbies, and executive suites.' },
 ];
 
-const CLASSIC_GEMSTONES: { img: string; alt: string; title: string; text: string; bestFor: string }[] = [
-  { img: `${IMG_BASE}/agate-slabs.jpg`, alt: 'Backlit blue agate semi precious stone slab feature wall', title: 'Agate Slabs', text: 'Agate slabs are among the most sought-after semi precious stones due to their vibrant bands, translucent properties, and striking natural patterns.', bestFor: 'Feature walls · bar fronts · reception counters · luxury tabletops' },
-  { img: `${IMG_BASE}/amethyst-slabs.jpg`, alt: 'Luxury purple amethyst crystalline stone slab', title: 'Amethyst Slabs', text: 'Captivating deep purple tones bringing elegance and sophistication to premium interiors. Rich crystalline surfaces reflect depth and status.', bestFor: 'Accent walls · decorative columns · high-end hotel lounges' },
-  { img: `${IMG_BASE}/quartz-slabs.jpg`, alt: 'Crystalline white quartz slab surface cladding', title: 'Quartz Slabs', text: 'Offers timeless mineral beauty, crystalline structures, and versatility. Blends seamlessly into both contemporary and classic designs.', bestFor: 'Luxury vanity tops · accent walls · decorative countertops' },
+const CLASSIC_GEMSTONES: { img: string; alt: string; title: string; text: string; bestFor: string; href: string }[] = [
+  { img: `${IMG_BASE}/agate-slabs.jpg`, alt: 'Backlit blue agate semi precious stone slab feature wall', title: 'Agate Slabs', text: 'Agate slabs are among the most sought-after semi precious stones due to their vibrant bands, translucent properties, and striking natural patterns.', bestFor: 'Feature walls · bar fronts · reception counters · luxury tabletops', href: '/products/semi-precious-stone/agate' },
+  { img: `${IMG_BASE}/amethyst-slabs.jpg`, alt: 'Luxury purple amethyst crystalline stone slab', title: 'Amethyst Slabs', text: 'Captivating deep purple tones bringing elegance and sophistication to premium interiors. Rich crystalline surfaces reflect depth and status.', bestFor: 'Accent walls · decorative columns · high-end hotel lounges', href: '/products/semi-precious-stone/amethyst' },
+  { img: `${IMG_BASE}/quartz-slabs.jpg`, alt: 'Crystalline white quartz slab surface cladding', title: 'Quartz Slabs', text: 'Offers timeless mineral beauty, crystalline structures, and versatility. Blends seamlessly into both contemporary and classic designs.', bestFor: 'Luxury vanity tops · accent walls · decorative countertops', href: '/products/semi-precious-stone/quartz' },
 ];
 
-const EXOTIC_GEMSTONES: { img: string; alt: string; title: string; text: string; bestFor: string }[] = [
-  { img: `${IMG_BASE}/amazonite-slabs.jpg`, alt: 'Amazonite blue-green exotic stone slab', title: 'Amazonite Slabs', text: 'Admired for its stunning blue-green coloration and natural elegance. Sourced directly to create calming, sophisticated architectural features.', bestFor: 'Bathroom feature walls · fireplace surrounds · luxury vanity units' },
-  { img: `${IMG_BASE}/jasper-slabs.jpg`, alt: 'Rich patterned earthy red jasper slab', title: 'Jasper Slabs', text: 'Rich earthy tones and intricate, organic patterns that add warmth, depth, and character to custom high-end interior spaces.', bestFor: 'Accent panels · study table tops · custom hotel lobbies' },
-  { img: `${IMG_BASE}/tiger-eye-slabs.jpg`, alt: 'Shimmering golden tiger eye stone slab', title: 'Tiger Eye Slabs', text: 'Renowned for its dramatic chatoyancy and shimmering golden-brown layers. Reflects light beautifully, showcasing intense depth.', bestFor: 'Luxury wall cladding · feature lobby columns · bespoke bar fronts' },
+const EXOTIC_GEMSTONES: { img: string; alt: string; title: string; text: string; bestFor: string; href: string }[] = [
+  { img: `${IMG_BASE}/amazonite-slabs.jpg`, alt: 'Amazonite blue-green exotic stone slab', title: 'Amazonite Slabs', text: 'Admired for its stunning blue-green coloration and natural elegance. Sourced directly to create calming, sophisticated architectural features.', bestFor: 'Bathroom feature walls · fireplace surrounds · luxury vanity units', href: '/products/semi-precious-stone/amazonite' },
+  { img: `${IMG_BASE}/jasper-slabs.jpg`, alt: 'Rich patterned earthy red jasper slab', title: 'Jasper Slabs', text: 'Rich earthy tones and intricate, organic patterns that add warmth, depth, and character to custom high-end interior spaces.', bestFor: 'Accent panels · study table tops · custom hotel lobbies', href: '/products/semi-precious-stone/jasper' },
+  { img: `${IMG_BASE}/tiger-eye-slabs.jpg`, alt: 'Shimmering golden tiger eye stone slab', title: 'Tiger Eye Slabs', text: 'Renowned for its dramatic chatoyancy and shimmering golden-brown layers. Reflects light beautifully, showcasing intense depth.', bestFor: 'Luxury wall cladding · feature lobby columns · bespoke bar fronts', href: '/products/semi-precious-stone/tiger-eye' },
 ];
 
-const ORGANIC_TREASURES: { img: string; alt: string; title: string; text: string; bestFor: string }[] = [
-  { img: `${IMG_BASE}/mother-of-pearl-slabs.jpg`, alt: 'Iridescent white mother of pearl slab tiling', title: 'Mother of Pearl Slabs', text: 'Unmatched elegance through natural iridescence and luminosity. Captures ambient light, providing an opulent shell-glow finish.', bestFor: 'Furniture inlays · luxury powder room walls · decorative panel accents' },
-  { img: `${IMG_BASE}/petrified-wood-slabs.jpg`, alt: 'Fossilized petrified wood slab detailing', title: 'Petrified Wood Slabs', text: 'Extraordinary natural treasures formed over millions of years. Combines the historic beauty of organic wood grain with stone durability.', bestFor: 'Executive conference tables · entryway focal slabs · statement coffee tables' },
+const ORGANIC_TREASURES: { img: string; alt: string; title: string; text: string; bestFor: string; href: string }[] = [
+  { img: `${IMG_BASE}/mother-of-pearl-slabs.jpg`, alt: 'Iridescent white mother of pearl slab tiling', title: 'Mother of Pearl Slabs', text: 'Unmatched elegance through natural iridescence and luminosity. Captures ambient light, providing an opulent shell-glow finish.', bestFor: 'Furniture inlays · luxury powder room walls · decorative panel accents', href: '/products/semi-precious-stone/mother-of-pearl' },
+  { img: `${IMG_BASE}/petrified-wood-slabs.jpg`, alt: 'Fossilized petrified wood slab detailing', title: 'Petrified Wood Slabs', text: 'Extraordinary natural treasures formed over millions of years. Combines the historic beauty of organic wood grain with stone durability.', bestFor: 'Executive conference tables · entryway focal slabs · statement coffee tables', href: '/products/semi-precious-stone/petrified-wood' },
 ];
 
 const PROCESS: { step: string; title: string; text: string }[] = [
@@ -167,6 +171,7 @@ export default function Article({
           alt="Backlit blue Agate semi precious stone slab feature wall glowing in luxury hotel lobby"
           caption="Translucent Agate and Quartz slabs can be backlit with LEDs to create spectacular, glowing installations."
           ratio="aspect-[2/1]"
+          priority
         />
       </div>
 
@@ -236,12 +241,17 @@ export default function Article({
         <div className="grid gap-x-9 gap-y-14 md:grid-cols-2 lg:grid-cols-3">
           {CLASSIC_GEMSTONES.map((p) => (
             <article key={p.title} className="group">
-              <ImagePlaceholder src={p.img} alt={p.alt} ratio="aspect-[4/3]" />
-              <h3 className={`${SERIF} mt-5 text-[22px] text-[#222]`}>{p.title}</h3>
+              <a href={p.href} aria-label={`Browse ${p.title}`} className="block">
+                <ImagePlaceholder src={p.img} alt={p.alt} ratio="aspect-[4/3]" />
+                <h3 className={`${SERIF} mt-5 text-[22px] text-[#222] transition-colors group-hover:text-[#647167]`}>{p.title}</h3>
+              </a>
               <p className="mt-2 text-[15px] font-light leading-[1.65] text-[#555]">{p.text}</p>
               <p className="mt-4 text-[11px] uppercase tracking-[0.14em] text-[#9a9582]">
                 <span className="text-[#647167]">Best for</span> — {p.bestFor}
               </p>
+              <a href={p.href} className="mt-4 inline-block text-[12px] uppercase tracking-[0.14em] text-[#647167] transition-colors hover:text-[#222]">
+                View collection →
+              </a>
             </article>
           ))}
         </div>
@@ -259,12 +269,17 @@ export default function Article({
         <div className="grid gap-x-9 gap-y-14 md:grid-cols-2 lg:grid-cols-3">
           {EXOTIC_GEMSTONES.map((p) => (
             <article key={p.title} className="group">
-              <ImagePlaceholder src={p.img} alt={p.alt} ratio="aspect-[4/3]" />
-              <h3 className={`${SERIF} mt-5 text-[22px] text-[#222]`}>{p.title}</h3>
+              <a href={p.href} aria-label={`Browse ${p.title}`} className="block">
+                <ImagePlaceholder src={p.img} alt={p.alt} ratio="aspect-[4/3]" />
+                <h3 className={`${SERIF} mt-5 text-[22px] text-[#222] transition-colors group-hover:text-[#647167]`}>{p.title}</h3>
+              </a>
               <p className="mt-2 text-[15px] font-light leading-[1.65] text-[#555]">{p.text}</p>
               <p className="mt-4 text-[11px] uppercase tracking-[0.14em] text-[#9a9582]">
                 <span className="text-[#647167]">Best for</span> — {p.bestFor}
               </p>
+              <a href={p.href} className="mt-4 inline-block text-[12px] uppercase tracking-[0.14em] text-[#647167] transition-colors hover:text-[#222]">
+                View collection →
+              </a>
             </article>
           ))}
         </div>
@@ -282,12 +297,17 @@ export default function Article({
         <div className="grid gap-x-9 gap-y-14 md:grid-cols-2 lg:grid-cols-3">
           {ORGANIC_TREASURES.map((p) => (
             <article key={p.title} className="group">
-              <ImagePlaceholder src={p.img} alt={p.alt} ratio="aspect-[4/3]" />
-              <h3 className={`${SERIF} mt-5 text-[22px] text-[#222]`}>{p.title}</h3>
+              <a href={p.href} aria-label={`Browse ${p.title}`} className="block">
+                <ImagePlaceholder src={p.img} alt={p.alt} ratio="aspect-[4/3]" />
+                <h3 className={`${SERIF} mt-5 text-[22px] text-[#222] transition-colors group-hover:text-[#647167]`}>{p.title}</h3>
+              </a>
               <p className="mt-2 text-[15px] font-light leading-[1.65] text-[#555]">{p.text}</p>
               <p className="mt-4 text-[11px] uppercase tracking-[0.14em] text-[#9a9582]">
                 <span className="text-[#647167]">Best for</span> — {p.bestFor}
               </p>
+              <a href={p.href} className="mt-4 inline-block text-[12px] uppercase tracking-[0.14em] text-[#647167] transition-colors hover:text-[#222]">
+                View collection →
+              </a>
             </article>
           ))}
         </div>
@@ -394,7 +414,7 @@ export default function Article({
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
             <a
-              href="/products"
+              href="/products/semi-precious-stone"
               className="inline-block bg-[#222] px-9 py-4 text-[13px] font-light uppercase tracking-[1.5px] text-white transition-colors hover:bg-black"
             >
               Browse our Collections

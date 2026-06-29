@@ -11,7 +11,7 @@ import Article from './Article';
 const SLUG = 'indian-marble-furniture-luxury-homes';
 const CANONICAL = `${SITE_URL}/blog/${SLUG}`;
 
-const TITLE = 'Indian Marble Furniture – Luxury Handcrafted Pieces';
+const TITLE = 'Indian Marble Furniture for Luxury Homes';
 const DESCRIPTION =
   'Discover why handcrafted Indian marble furniture is dominating luxury homes in the USA & UK. Explore custom pieces from HS Global Export — worldwide delivery.';
 
