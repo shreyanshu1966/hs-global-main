@@ -52,33 +52,33 @@ async function updateCarousels() {
                 sortOrder: "desc"
             },
             {
-                title: "Handcrafted Collections",
-                viewAllLink: "/products?cat=handcrafted",
+                title: "Wooden Furniture Collections",
+                viewAllLink: "/products?cat=wooden-furniture",
                 enabled: true,
                 sourceType: "category",
-                sourceCategory: "handcrafted",
-                sourceSubcategory: "", // Empty means it pulls all handcrafted products
+                sourceCategory: "wooden-furniture",
+                sourceSubcategory: "", // Empty means it pulls all wooden-furniture products
                 limit: 12,
                 sortBy: "createdAt",
                 sortOrder: "desc"
             },
             {
-                title: "Handcrafted Tables",
-                viewAllLink: "/products?cat=handcrafted",
+                title: "Wooden Tables",
+                viewAllLink: "/products?cat=wooden-furniture",
                 enabled: true,
                 sourceType: "category",
-                sourceCategory: "handcrafted",
+                sourceCategory: "wooden-furniture",
                 sourceSubcategory: "coffee table,console table,dining table,side table",
                 limit: 12,
                 sortBy: "createdAt",
                 sortOrder: "desc"
             },
             {
-                title: "Handcrafted Seating",
-                viewAllLink: "/products?cat=handcrafted",
+                title: "Wooden Seating",
+                viewAllLink: "/products?cat=wooden-furniture",
                 enabled: true,
                 sourceType: "category",
-                sourceCategory: "handcrafted",
+                sourceCategory: "wooden-furniture",
                 sourceSubcategory: "stool,sofa,chair,bench,seating", 
                 limit: 12,
                 sortBy: "createdAt",

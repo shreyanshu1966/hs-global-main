@@ -119,7 +119,7 @@ const productSchema = new mongoose.Schema({
     category: {
         type: String,
         required: true,
-        enum: ['furniture', 'handcrafted', 'leather', 'semi-precious-stone'],
+        enum: ['furniture', 'wooden-furniture', 'leather', 'semi-precious-stone'],
         trim: true
     },
     subcategory: {

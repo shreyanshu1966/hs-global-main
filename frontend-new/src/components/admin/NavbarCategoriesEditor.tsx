@@ -64,13 +64,13 @@ const DEFAULTS: Record<string, NavCategoryConfig> = {
       },
     ],
   },
-  handcrafted: {
-    categoryId: 'handcrafted',
-    categoryName: 'Handcrafted Furniture',
+  'wooden-furniture': {
+    categoryId: 'wooden-furniture',
+    categoryName: 'Wooden Furniture',
     sections: [
       {
-        id: 'handcrafted-tables',
-        title: 'Handcrafted Tables',
+        id: 'wooden-furniture-tables',
+        title: 'Wooden Tables',
         items: [
           { id: 'coffee-table', label: 'coffee table', slug: 'coffee-table' },
           { id: 'console-table', label: 'console table', slug: 'console-table' },
@@ -79,8 +79,8 @@ const DEFAULTS: Record<string, NavCategoryConfig> = {
         ],
       },
       {
-        id: 'handcrafted-seating',
-        title: 'Handcrafted Seating',
+        id: 'wooden-furniture-seating',
+        title: 'Wooden Seating',
         items: [{ id: 'sofa', label: 'sofa', slug: 'sofa' }],
       },
     ],
@@ -127,7 +127,7 @@ const DEFAULTS: Record<string, NavCategoryConfig> = {
   },
 };
 
-const CATEGORY_IDS = ['furniture', 'handcrafted', 'leather', 'semi-precious-stone'];
+const CATEGORY_IDS = ['furniture', 'wooden-furniture', 'leather', 'semi-precious-stone'];
 
 // ---------- Small helper components ----------
 const inputCls =

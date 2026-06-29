@@ -2,7 +2,7 @@
 
 type Faq = { q: string; a: string };
 
-const IMG_BASE = '/blog/handcrafted-furniture-guide';
+const IMG_BASE = '/blog/wooden-furniture-guide';
 
 // Cardinal Classic Short, forced past the global Inter !important rule.
 const SERIF = "![font-family:var(--dibs-font-serif)]";
@@ -67,8 +67,8 @@ const STATS = [
 ];
 
 const ADVANTAGES: { title: string; text: string }[] = [
-  { title: 'Quality over convenience', text: 'Unlike factory-made furniture, handcrafted pieces are created with greater attention to materials, finishing, and structural strength.' },
-  { title: 'One-of-a-kind uniqueness', text: 'Every handcrafted item carries its own grain patterns, textures, and subtle details, making each piece unique.' },
+  { title: 'Quality over convenience', text: 'Unlike factory-made furniture, handmade wooden pieces are created with greater attention to materials, finishing, and structural strength.' },
+  { title: 'One-of-a-kind uniqueness', text: 'Every wooden piece carries its own grain patterns, textures, and subtle details, making each one unique.' },
   { title: 'Bespoke customization', text: 'Tailor collections in terms of finish, dimensions, wood selection, upholstery, and design details to fit your space perfectly.' },
   { title: 'Solid wood construction', text: 'Built exclusively with solid hardwoods like oak, teak, walnut, and sheesham. No particle board or veneer shortcuts.' },
   { title: 'Traditional joinery', text: 'Mortise-and-tenon, dovetail, and dowel joints are used to deliver exceptional structural integrity and lasting strength.' },
@@ -76,11 +76,11 @@ const ADVANTAGES: { title: string; text: string }[] = [
 ];
 
 const PRODUCTS: { img: string; alt: string; title: string; text: string; bestFor: string; href: string }[] = [
-  { img: `${IMG_BASE}/handcrafted-coffee-table.jpg`, alt: 'Handcrafted wooden coffee table in a modern living room', title: 'Handcrafted Coffee Tables', text: 'A functional piece that defines the style of a living room and creates a strong visual anchor for the seating area. Available in rustic, modern, minimalist, or luxury styles.', bestFor: 'Living rooms · lounges · apartments', href: '/products/handcrafted/coffee-table' },
-  { img: `${IMG_BASE}/handcrafted-console-table.jpg`, alt: 'Handcrafted wooden console table in an elegant entryway', title: 'Handcrafted Console Tables', text: 'A versatile piece for entryways, hallways, or living rooms. Slim and refined designs transform narrow spaces into visually appealing areas without cluttering.', bestFor: 'Entryways · hallways · behind-sofa styling', href: '/products/handcrafted/console-table' },
-  { img: `${IMG_BASE}/handcrafted-dining-table.jpg`, alt: 'Handcrafted wooden dining table in a spacious dining area', title: 'Handcrafted Dining Tables', text: 'The heart of the home, offering strong construction and custom sizing. Available in classic solid wood designs to contemporary silhouettes with clean lines.', bestFor: 'Dining rooms · formal dining spaces · hospitality', href: '/products/handcrafted/dining-table' },
-  { img: `${IMG_BASE}/handcrafted-side-table.jpg`, alt: 'Handcrafted wooden side table next to a bed or sofa', title: 'Handcrafted Side Tables', text: 'Compact but impactful, these tables add convenience next to sofas, beds, or reading corners. Introduce texture and detail without changing the entire layout.', bestFor: 'Bedrooms · reading corners · living rooms', href: '/products/handcrafted/side-table' },
-  { img: 'https://res.cloudinary.com/dynd1aan0/image/upload/v1779285360/hs-global/leather/etsy/HSLSOGR1/il_1588xN.8010286042_iajq.webp', alt: 'Handcrafted upholstered sofa with solid wood frame', title: 'Handcrafted Seating & Sofas', text: 'Combining comfort with design excellence, featuring stronger frames, premium upholstery options, and meticulous hand-finishing details.', bestFor: 'Upscale living rooms · luxury hotel lobbies', href: '/products/handcrafted/sofa' },
+  { img: `${IMG_BASE}/handcrafted-coffee-table.jpg`, alt: 'Wooden coffee table in a modern living room', title: 'Wooden Coffee Tables', text: 'A functional piece that defines the style of a living room and creates a strong visual anchor for the seating area. Available in rustic, modern, minimalist, or luxury styles.', bestFor: 'Living rooms · lounges · apartments', href: '/products/wooden-furniture/coffee-table' },
+  { img: `${IMG_BASE}/handcrafted-console-table.jpg`, alt: 'Wooden console table in an elegant entryway', title: 'Wooden Console Tables', text: 'A versatile piece for entryways, hallways, or living rooms. Slim and refined designs transform narrow spaces into visually appealing areas without cluttering.', bestFor: 'Entryways · hallways · behind-sofa styling', href: '/products/wooden-furniture/console-table' },
+  { img: `${IMG_BASE}/handcrafted-dining-table.jpg`, alt: 'Wooden dining table in a spacious dining area', title: 'Wooden Dining Tables', text: 'The heart of the home, offering strong construction and custom sizing. Available in classic solid wood designs to contemporary silhouettes with clean lines.', bestFor: 'Dining rooms · formal dining spaces · hospitality', href: '/products/wooden-furniture/dining-table' },
+  { img: `${IMG_BASE}/handcrafted-side-table.jpg`, alt: 'Wooden side table next to a bed or sofa', title: 'Wooden Side Tables', text: 'Compact but impactful, these tables add convenience next to sofas, beds, or reading corners. Introduce texture and detail without changing the entire layout.', bestFor: 'Bedrooms · reading corners · living rooms', href: '/products/wooden-furniture/side-table' },
+  { img: 'https://res.cloudinary.com/dynd1aan0/image/upload/v1779285360/hs-global/leather/etsy/HSLSOGR1/il_1588xN.8010286042_iajq.webp', alt: 'Wooden-framed upholstered sofa with solid wood frame', title: 'Wooden Seating & Sofas', text: 'Combining comfort with design excellence, featuring stronger frames, premium upholstery options, and meticulous hand-finishing details.', bestFor: 'Upscale living rooms · luxury hotel lobbies', href: '/products/wooden-furniture/sofa' },
 ];
 
 const VS_TABLE: { factor: string; handcrafted: string; massproduced: string; highlight?: boolean }[] = [
@@ -100,9 +100,9 @@ const WOOD_TABLE: { type: string; color: string; use: string; mood: string; swat
 ];
 
 const IDENTIFY_STEPS: { step: string; title: string; text: string }[] = [
-  { step: '01', title: 'Solid wood throughout', text: 'Check drawer bottoms, backs, and hidden surfaces. True handcrafted furniture avoids engineered wood/veneer shortcuts.' },
+  { step: '01', title: 'Solid wood throughout', text: 'Check drawer bottoms, backs, and hidden surfaces. True solid wood furniture avoids engineered wood/veneer shortcuts.' },
   { step: '02', title: 'Traditional joinery', text: 'Look for dovetail joints on drawers and mortise-and-tenon or dowel joints on frames for lasting strength.' },
-  { step: '03', title: 'Smooth, even finishes', text: 'Feel the surfaces. Premium handcrafted pieces boast smooth, hand-finished staining, polishing, and sealing without drips.' },
+  { step: '03', title: 'Smooth, even finishes', text: 'Feel the surfaces. Premium wooden pieces boast smooth, hand-finished staining, polishing, and sealing without drips.' },
   { step: '04', title: 'Weight & density', text: 'Solid hardwood is noticeably heavier and more dense than hollow or engineered MDF alternatives.' },
   { step: '05', title: 'Provenance & transparency', text: 'Reputable makers share details of their wood species, sourcing, finishes, and the location of their artisan workshop.' },
 ];
@@ -115,12 +115,12 @@ const CARE_TIPS = [
 ];
 
 const TAGS = [
-  'Handcrafted Furniture',
+  'Wooden Furniture',
   'Handmade Wooden Furniture',
   'Artisan Furniture',
   'Custom Wood Furniture',
-  'Sustainable Handcrafted Furniture',
-  'Handcrafted Furniture India',
+  'Sustainable Wooden Furniture',
+  'Wooden Furniture India',
 ];
 
 const BODY = 'text-[17px] font-light leading-[1.8] text-[#444]';
@@ -146,16 +146,16 @@ export default function Article({
               <li aria-hidden="true" className="text-[#ece9dd]">/</li>
               <li><a href="/blog" className="hover:text-[#647167]">Blog</a></li>
               <li aria-hidden="true" className="text-[#ece9dd]">/</li>
-              <li aria-current="page" className="text-[#647167]">Handcrafted Furniture Guide</li>
+              <li aria-current="page" className="text-[#647167]">Wooden Furniture Guide</li>
             </ol>
           </nav>
 
           <h1 className={`${SERIF} text-[clamp(28px,4.5vw,48px)] font-normal leading-[1.1] tracking-[-1px] text-[#222]`}>
-            Handcrafted Furniture: The Complete Guide to Timeless Artisan Pieces for Your Home
+            Wooden Furniture: The Complete Guide to Timeless Artisan Pieces for Your Home
           </h1>
 
           <p className="mx-auto mt-7 max-w-xl text-[17px] font-light leading-[1.7] text-[#555]">
-            Handcrafted furniture brings warmth, character, and durability that mass-produced pieces simply cannot match.
+            Wooden furniture brings warmth, character, and durability that mass-produced pieces simply cannot match.
             Learn how to choose, care for, and invest in timeless artisan pieces.
           </p>
 
@@ -173,8 +173,8 @@ export default function Article({
       <div className="mx-auto max-w-6xl px-6 pt-10">
         <ImagePlaceholder
           src={heroImage}
-          alt="Handcrafted teak wood dining table styled in a bright luxury dining room"
-          caption="A beautiful handcrafted teak dining table — solid, timeless, and sustainably made."
+          alt="Solid teak wood dining table styled in a bright luxury dining room"
+          caption="A beautiful solid teak dining table — handmade, timeless, and sustainably made."
           ratio="aspect-[2/1]"
           priority
         />
@@ -207,10 +207,10 @@ export default function Article({
         </p>
 
         <h2 className={`${SERIF} mb-5 mt-14 text-[clamp(26px,3.4vw,38px)] font-normal leading-[1.15] tracking-[-0.5px] text-[#222]`}>
-          What Is Handcrafted Furniture?
+          What Is Wooden Furniture?
         </h2>
         <p className={BODY}>
-          Handcrafted furniture refers to pieces made primarily by skilled artisans using traditional woodworking techniques, 
+          Wooden furniture refers to pieces made primarily by skilled artisans using traditional woodworking techniques,
           hand tools, and careful attention to detail. Unlike factory-made furniture, each handmade piece carries subtle 
           variations that reflect the maker's expertise and the natural beauty of the wood.
         </p>
@@ -220,7 +220,7 @@ export default function Article({
       <section className="mx-auto mt-16 max-w-5xl px-6">
         <Eyebrow>Why it leads the world</Eyebrow>
         <h2 className={`${SERIF} mb-12 max-w-2xl text-[clamp(26px,3.4vw,38px)] leading-[1.15] tracking-[-0.5px] text-[#222]`}>
-          Key advantages of handcrafted furniture
+          Key advantages of wooden furniture
         </h2>
         <div className="grid gap-x-12 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
           {ADVANTAGES.map(({ title, text }, i) => (
@@ -265,7 +265,7 @@ export default function Article({
       <section className="mx-auto mt-20 max-w-4xl px-6">
         <blockquote className="border-y border-[#ece9dd] py-14 text-center">
           <p className={`${SERIF} mx-auto max-w-3xl text-[clamp(24px,3.4vw,38px)] font-normal italic leading-[1.3] text-[#222]`}>
-            “Handcrafted furniture is an investment — not just in your home, but in sustainability and supporting skilled trades that preserve centuries-old artistic legacies.”
+            “Wooden furniture is an investment — not just in your home, but in sustainability and supporting skilled trades that preserve centuries-old artistic legacies.”
           </p>
           <cite className="mt-7 block text-[12px] uppercase not-italic tracking-[0.18em] text-[#9a9582]">
             HS Global Export
@@ -275,7 +275,7 @@ export default function Article({
 
       {/* Comparison table */}
       <section className="mx-auto mt-20 max-w-5xl px-6">
-        <Eyebrow>Handcrafted vs. Mass-produced</Eyebrow>
+        <Eyebrow>Wooden vs. Mass-produced</Eyebrow>
         <h2 className={`${SERIF} mb-4 max-w-2xl text-[clamp(26px,3.4vw,38px)] leading-[1.15] tracking-[-0.5px] text-[#222]`}>
           Why Choose Handmade Wooden Furniture?
         </h2>
@@ -287,7 +287,7 @@ export default function Article({
           <table className="w-full border-collapse text-left">
             <thead>
               <tr className="border-y border-[#222]">
-                {['Factor', 'Handcrafted Furniture', 'Mass-Produced Furniture'].map((h) => (
+                {['Factor', 'Wooden Furniture', 'Mass-Produced Furniture'].map((h) => (
                   <th key={h} className="px-4 py-4 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#222]">{h}</th>
                 ))}
               </tr>
@@ -343,7 +343,7 @@ export default function Article({
       <section className="mx-auto mt-20 max-w-3xl px-6">
         <Eyebrow>Artisan Verification</Eyebrow>
         <h2 className={`${SERIF} mb-12 text-[clamp(26px,3.4vw,38px)] leading-[1.15] tracking-[-0.5px] text-[#222]`}>
-          How to identify quality handcrafted furniture
+          How to identify quality wooden furniture
         </h2>
         <ol className="border-t border-[#ece9dd]">
           {IDENTIFY_STEPS.map(({ step, title, text }) => (
@@ -362,10 +362,10 @@ export default function Article({
       <section className="mx-auto mt-20 max-w-3xl px-6">
         <Eyebrow>Eco-Friendly Design</Eyebrow>
         <h2 className={`${SERIF} mb-5 text-[clamp(26px,3.4vw,38px)] leading-[1.15] tracking-[-0.5px] text-[#222]`}>
-          Sustainable handcrafted furniture: why it matters
+          Sustainable wooden furniture: why it matters
         </h2>
         <p className={`mt-6 ${BODY}`}>
-          Sustainability is a growing priority for furniture buyers worldwide. Handcrafted furniture supports this in several ways:
+          Sustainability is a growing priority for furniture buyers worldwide. Wooden furniture supports this in several ways:
         </p>
         <ul className="mt-6 space-y-4 text-[16px] font-light leading-[1.7] text-[#555]">
           <li><strong>Reclaimed wood:</strong> Salvaged timber from old buildings, railway sleepers, or retired furniture gets a second life.</li>
@@ -379,11 +379,11 @@ export default function Article({
       <section className="mx-auto mt-20 max-w-3xl px-6">
         <Eyebrow>Global Craft</Eyebrow>
         <h2 className={`${SERIF} mb-5 text-[clamp(26px,3.4vw,38px)] leading-[1.15] tracking-[-0.5px] text-[#222]`}>
-          Handcrafted furniture from India: a global tradition
+          Wooden furniture from India: a global tradition
         </h2>
         <p className={BODY}>
           India has a centuries-old tradition of woodworking, with regional styles ranging from the intricate carvings of Rajasthan 
-          to the clean, minimalist lines of contemporary Jodhpur workshops. Today, Indian artisans supply handcrafted furniture 
+          to the clean, minimalist lines of contemporary Jodhpur workshops. Today, Indian artisans supply wooden furniture
           to retailers, developers, and homeowners across the USA, UK, Europe, and beyond.
         </p>
         <p className={`mt-4 ${BODY}`}>
@@ -474,7 +474,7 @@ export default function Article({
         <div className="mx-auto max-w-3xl px-6 py-20 text-center">
           <Eyebrow>Begin your project</Eyebrow>
           <h2 className={`${SERIF} mb-5 text-[clamp(28px,4vw,46px)] leading-[1.1] tracking-[-0.5px] text-[#222]`}>
-            Ready to transform your space with handcrafted furniture?
+            Ready to transform your space with wooden furniture?
           </h2>
           <p className="mx-auto mb-10 max-w-xl text-[16px] font-light leading-[1.7] text-[#555]">
             Whether you are a designer sourcing a luxury project, a homeowner building your dream living room, or a
@@ -483,7 +483,7 @@ export default function Article({
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
             <a
-              href="/products/handcrafted"
+              href="/products/wooden-furniture"
               className="inline-block bg-[#222] px-9 py-4 text-[13px] font-light uppercase tracking-[1.5px] text-white transition-colors hover:bg-black"
             >
               Browse the Furniture Collection
@@ -505,7 +505,7 @@ export default function Article({
           <div>
             <p className={`${SERIF} text-[20px] text-[#222]`}>HS Global Export</p>
             <p className="mt-1 text-[14px] font-light leading-[1.6] text-[#555]">
-              Premium handcrafted furniture &amp; natural-stone manufacturer and worldwide exporter — serving the USA, UK, Europe and the
+              Premium wooden furniture &amp; natural-stone manufacturer and worldwide exporter — serving the USA, UK, Europe and the
               Middle East with exceptional bespoke design.
             </p>
           </div>

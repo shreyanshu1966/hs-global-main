@@ -10,7 +10,7 @@ export async function generateMetadata(): Promise<Metadata> {
     seo?.title || 'Best Marble & Granite Company at USA, UK & Worldwide | HS Global Export';
   const description =
     seo?.description ||
-    'Explore premium granite, marble, semi-precious stone, leather and handcrafted furniture from HS Global Export. Custom orders welcome.';
+    'Explore premium granite, marble, semi-precious stone, leather and wooden furniture from HS Global Export. Custom orders welcome.';
   const canonical = seo?.canonical || `${SITE_URL}/products`;
   const image = seo?.image ? absoluteImage(seo.image) : `${SITE_URL}/og-image.jpg`;
   return {

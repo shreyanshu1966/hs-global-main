@@ -32,8 +32,8 @@ export const CATEGORIES: CategoryDef[] = [
     ],
   },
   {
-    slug: 'handcrafted',
-    label: 'Handcrafted',
+    slug: 'wooden-furniture',
+    label: 'Wooden Furniture',
     subcategories: ['Coffee Table', 'Console Table', 'Dining Table', 'Side Table', 'Sofa'],
   },
 ];

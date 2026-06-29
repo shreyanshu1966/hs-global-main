@@ -17,14 +17,14 @@ const LIMIT = 12;
 
 const CATEGORY_DISPLAY_NAMES: Record<string, string> = {
   furniture: 'Marble Furniture',
-  handcrafted: 'Handcrafted Furniture',
+  'wooden-furniture': 'Wooden Furniture',
   leather: 'Leather Furniture',
   'semi-precious-stone': 'Semi Precious Stone',
 };
 const getCatDisplayName = (cat: string) =>
   CATEGORY_DISPLAY_NAMES[cat] ?? cat.replace(/-/g, ' ');
 
-// Subcategories that exist in both furniture AND handcrafted
+// Subcategories that exist in both furniture AND wooden-furniture
 const SHARED_SUBCATEGORY_SLUGS = new Set([
   "coffee-table",
   "console-table",
@@ -128,7 +128,7 @@ export default function Products({ initialProducts }: { initialProducts?: any[] 
     return {
       category: rawCategory,
       subcategory: toSlug(paramSubcategory || ""),
-      categoryFilter: ((paramCategoryFilter || "") as "" | "furniture" | "handcrafted"),
+      categoryFilter: ((paramCategoryFilter || "") as "" | "furniture" | "wooden-furniture"),
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -136,7 +136,7 @@ export default function Products({ initialProducts }: { initialProducts?: any[] 
   // Filter state
   const [activeCategory, setActiveCategory] = useState(initParams.category);
   const [activeSubcategory, setActiveSubcategory] = useState(initParams.subcategory);
-  const [crossCategoryFilter, setCrossCategoryFilter] = useState<"" | "furniture" | "handcrafted">(initParams.categoryFilter);
+  const [crossCategoryFilter, setCrossCategoryFilter] = useState<"" | "furniture" | "wooden-furniture">(initParams.categoryFilter);
   const [sortBy, setSortBy] = useState(DEFAULT_SORT.sortBy);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">(DEFAULT_SORT.sortOrder);
   const [page, setPage] = useState(1);
@@ -298,7 +298,7 @@ export default function Products({ initialProducts }: { initialProducts?: any[] 
     setVisibleProducts([]);
   }, []);
 
-  const handleCrossFilter = useCallback((filter: "" | "furniture" | "handcrafted") => {
+  const handleCrossFilter = useCallback((filter: "" | "furniture" | "wooden-furniture") => {
     setCrossCategoryFilter(filter);
     setPage(1);
     setVisibleProducts([]);
@@ -461,7 +461,7 @@ export default function Products({ initialProducts }: { initialProducts?: any[] 
               style={{ scrollbarWidth: "none" }}
             >
               <div className="flex gap-2 min-w-max">
-                {(["", "furniture", "handcrafted"] as const).map((cf) => (
+                {(["", "furniture", "wooden-furniture"] as const).map((cf) => (
                   <button
                     key={cf || "all"}
                     onClick={() => handleCrossFilter(cf)}
@@ -585,7 +585,7 @@ export default function Products({ initialProducts }: { initialProducts?: any[] 
                     Category
                   </p>
                   <nav className="space-y-0.5">
-                    {(["", "furniture", "handcrafted"] as const).map((cf) => (
+                    {(["", "furniture", "wooden-furniture"] as const).map((cf) => (
                       <button
                         key={cf || "all"}
                         onClick={() => handleCrossFilter(cf)}

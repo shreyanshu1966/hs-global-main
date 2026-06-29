@@ -40,6 +40,30 @@ const nextConfig = {
     return [
       // Old /products/<id> (plural) detail links → canonical singular, if any exist.
       // Add real legacy redirects here during cutover as needed.
+
+      // Category rename: handcrafted → wooden-furniture
+      {
+        source: '/products/handcrafted',
+        destination: '/products/wooden-furniture',
+        permanent: true,
+      },
+      {
+        source: '/products/handcrafted/:sub*',
+        destination: '/products/wooden-furniture/:sub*',
+        permanent: true,
+      },
+
+      // Blog rename: handcrafted-furniture-guide → wooden-furniture-guide
+      {
+        source: '/blog/handcrafted-furniture-guide',
+        destination: '/blog/wooden-furniture-guide',
+        permanent: true,
+      },
+      {
+        source: '/blog/handcrafted-furniture-guide/:path*',
+        destination: '/blog/wooden-furniture-guide/:path*',
+        permanent: true,
+      },
     ];
   },
 };

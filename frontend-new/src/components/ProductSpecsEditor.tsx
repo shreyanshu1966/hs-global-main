@@ -344,7 +344,7 @@ const ProductSpecsEditor: React.FC<ProductSpecsEditorProps> = ({
   const availableKeys = (rowIndex: number) =>
     savedKeys.filter(k => !rows.some((r, i) => i !== rowIndex && r.label === k));
 
-  const NON_STONE_CATEGORIES = ['furniture', 'handcrafted', 'leather'];
+  const NON_STONE_CATEGORIES = ['furniture', 'wooden-furniture', 'leather'];
   const isNonStone = NON_STONE_CATEGORIES.includes(category);
 
   return (

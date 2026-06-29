@@ -1,7 +1,7 @@
 /**
  * update-carousels-to-categories.js
  *
- * Configures exactly 4 product carousels, one for each category (Furniture, Handcrafted, Leather, Semi-Precious Stone),
+ * Configures exactly 4 product carousels, one for each category (Furniture, Wooden Furniture, Leather, Semi-Precious Stone),
  * in the HomePageConfig.productCarousels array.
  *
  * Usage:
@@ -27,12 +27,12 @@ const newCarousels = [
     sortOrder: "desc"
   },
   {
-    title: "Handcrafted Furniture",
-    viewAllLink: "/products?cat=handcrafted",
+    title: "Wooden Furniture",
+    viewAllLink: "/products?cat=wooden-furniture",
     enabled: true,
     sourceType: "category",
     manualProductIds: [],
-    sourceCategory: "handcrafted",
+    sourceCategory: "wooden-furniture",
     sourceSubcategory: "",
     sourceTag: "",
     limit: 12,

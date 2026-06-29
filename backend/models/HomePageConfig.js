@@ -197,7 +197,7 @@ homePageConfigSchema.statics.getDefaultConfig = function getDefaultConfig() {
     },
     productCarousels: [
       { title: 'Marble Furniture', viewAllLink: '/products?cat=furniture', enabled: true, sourceType: 'category', manualProductIds: [], sourceCategory: 'furniture', sourceSubcategory: '', sourceTag: '', limit: 12, sortBy: 'createdAt', sortOrder: 'desc' },
-      { title: 'Handcrafted Furniture', viewAllLink: '/products?cat=handcrafted', enabled: true, sourceType: 'category', manualProductIds: [], sourceCategory: 'handcrafted', sourceSubcategory: '', sourceTag: '', limit: 12, sortBy: 'createdAt', sortOrder: 'desc' },
+      { title: 'Wooden Furniture', viewAllLink: '/products?cat=wooden-furniture', enabled: true, sourceType: 'category', manualProductIds: [], sourceCategory: 'wooden-furniture', sourceSubcategory: '', sourceTag: '', limit: 12, sortBy: 'createdAt', sortOrder: 'desc' },
       { title: 'Leather Furniture', viewAllLink: '/products?cat=leather', enabled: true, sourceType: 'category', manualProductIds: [], sourceCategory: 'leather', sourceSubcategory: '', sourceTag: '', limit: 12, sortBy: 'createdAt', sortOrder: 'desc' },
       { title: 'Semi Precious Stone', viewAllLink: '/products?cat=semi-precious-stone', enabled: true, sourceType: 'category', manualProductIds: [], sourceCategory: 'semi-precious-stone', sourceSubcategory: '', sourceTag: '', limit: 12, sortBy: 'createdAt', sortOrder: 'desc' },
     ],

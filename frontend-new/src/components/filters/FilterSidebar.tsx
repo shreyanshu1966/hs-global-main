@@ -4,7 +4,7 @@ import { Category } from '../../services/productService';
 
 const CATEGORY_DISPLAY_NAMES: Record<string, string> = {
   furniture: 'Marble Furniture',
-  handcrafted: 'Handcrafted Furniture',
+  'wooden-furniture': 'Wooden Furniture',
   leather: 'Leather Furniture',
   'semi-precious-stone': 'Semi Precious Stone',
 };
