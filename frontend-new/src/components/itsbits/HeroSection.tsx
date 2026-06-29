@@ -31,8 +31,8 @@ const HeroSection = ({ slides: _slides = [], autoplayInterval = 5000 }: HeroSect
       heading: 'HS Global Export',
     },
     {
-      backgroundImage: `${CLOUDINARY_BASE}/Banner3-des.webp`,
-      mobileBackgroundImage: `${CLOUDINARY_BASE}/Banner3-mob.webp`,
+      backgroundImage: `${CLOUDINARY_BASE}/Banner3-des.webp?v=1782749386`,
+      mobileBackgroundImage: `${CLOUDINARY_BASE}/Banner3-mob.webp?v=1782749387`,
       heading: 'HS Global Export',
     },
     {
