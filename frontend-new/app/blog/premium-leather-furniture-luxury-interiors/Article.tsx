@@ -28,19 +28,33 @@ function ImagePlaceholder({
   ratio?: string;
   className?: string;
 }) {
+  const isPlaceholder =
+    src.includes('/blog/') &&
+    !src.includes('premium-leather-sofa.jpg') &&
+    !src.includes('leather-sofa.jpg') &&
+    !src.includes('leather-ottoman.jpg') &&
+    !src.includes('leather-bed.jpg') &&
+    !src.includes('leather-coffee-table.jpg') &&
+    !src.includes('leather-dresser.jpg') &&
+    !src.includes('leather-armchair.jpg');
+
   return (
     <figure className={className}>
-      <div
-        className={`relative ${ratio} w-full overflow-hidden bg-[#f4f3ec]`}
-        data-image-src={src}
-        role="img"
-        aria-label={alt}
-      >
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 p-8 text-center">
-          <span className="text-[11px] font-medium uppercase tracking-[0.24em] text-[#9a9582]">Image</span>
-          <span className="max-w-md text-[13px] font-light leading-relaxed text-[#8a8676]">{alt}</span>
-          <code className="mt-1 text-[11px] tracking-wide text-[#b3ae9c]">{src}</code>
-        </div>
+      <div className={`relative ${ratio} w-full overflow-hidden bg-[#f4f3ec]`}>
+        {isPlaceholder ? (
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 p-8 text-center">
+            <span className="text-[11px] font-medium uppercase tracking-[0.24em] text-[#9a9582]">Image</span>
+            <span className="max-w-md text-[13px] font-light leading-relaxed text-[#8a8676]">{alt}</span>
+            <code className="mt-1 text-[11px] tracking-wide text-[#b3ae9c]">{src}</code>
+          </div>
+        ) : (
+          <img
+            src={src}
+            alt={alt}
+            className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            loading="lazy"
+          />
+        )}
       </div>
       {caption && (
         <figcaption className="mt-3 text-[13px] font-light italic text-[#8a8676]">{caption}</figcaption>

@@ -40,7 +40,15 @@ function ImagePlaceholder({
   ratio?: string;
   className?: string;
 }) {
-  const isPlaceholder = src.startsWith('/blog/') && !src.includes('hero-marble-dining-table.jpg') && !src.includes('dining-table.png');
+  const isPlaceholder =
+    src.startsWith('/blog/') &&
+    !src.includes('hero-marble-dining-table.jpg') &&
+    !src.includes('dining-table.png') &&
+    !src.includes('coffee-table.jpg') &&
+    !src.includes('side-table.jpg') &&
+    !src.includes('console-table.jpg') &&
+    !src.includes('vanity.jpg') &&
+    !src.includes('accents.jpg');
 
   return (
     <figure className={className}>
