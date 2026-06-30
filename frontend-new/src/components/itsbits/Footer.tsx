@@ -43,7 +43,7 @@ const Footer = () => {
   const legalLinks = [
     { label: 'User Agreement', href: '/terms' },
     { label: 'Privacy', href: '/privacy' },
-    { label: 'Shipping Policy', href: '/shipping' },
+    { label: 'Shipping Policy', href: '/shipping-policy' },
     { label: 'Cookie Preferences', href: '/cookies' },
     { label: 'Site Map', href: '/sitemap.xml' },
   ];

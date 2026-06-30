@@ -3,7 +3,7 @@ import { Suspense } from 'react';
 import { Inter } from 'next/font/google';
 import '@/index.css';
 import ClientProviders from '@/ClientProviders';
-import { GoogleAnalytics } from '@next/third-parties/google';
+import CookieConsent from '@/components/CookieConsent';
 import { SITE_NAME, SITE_URL } from '@/server/api';
 
 const inter = Inter({
@@ -61,8 +61,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Suspense>
           <ClientProviders>{children}</ClientProviders>
         </Suspense>
+        <CookieConsent gaId="G-LDEFWLFCYY" />
       </body>
-      <GoogleAnalytics gaId="G-LDEFWLFCYY" />
     </html>
   );
 }

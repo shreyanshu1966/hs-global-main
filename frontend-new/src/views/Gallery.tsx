@@ -2,11 +2,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState, memo } from "react";
 import { Search, X, CheckCircle2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { getResponsiveImage } from '../utils/responsive-image-helper';
+import { getResponsiveImage, getImagesByCategory } from '../utils/responsive-image-helper';
 import { GalleryItem, GalleryModal } from '../components/GalleryModal';
-
-import galleryFilesJson from '@/data/_glob-gallery.json';
-const galleryFiles = galleryFilesJson as Record<string, string>;
 
 const toTitle = (s: string) =>
   decodeURIComponent(s.replace(/\+/g, ' '))
@@ -21,15 +18,15 @@ const buildGallery = () => {
   type Item = { id: string; title: string; category: string; image: string; code: string };
   const interim: { path: string; title: string; category: string; image: string }[] = [];
 
-  Object.entries(galleryFiles).forEach(([absPath, url]) => {
-    const rel = absPath.replace(/^..\/..\/public\//, '').replace(/^\//, '');
+  const galleryPaths = getImagesByCategory('gallery') as string[];
+  galleryPaths.forEach((rel) => {
     const parts = rel.split('/').filter(Boolean);
     const idx = parts.indexOf('gallery');
     if (idx === -1 || !parts[idx + 1]) return;
     const category = toTitle(parts[idx + 1]);
     const file = parts[parts.length - 1];
     const base = toTitle(file.replace(/\.(webp|jpg|jpeg|png)$/i, ''));
-    const responsiveUrl = getResponsiveImage(rel, 'mobile') || (url as string);
+    const responsiveUrl = getResponsiveImage(rel, 'mobile') || getResponsiveImage(rel, 'desktop') || getResponsiveImage(rel, 'tablet') || rel;
     interim.push({ path: rel, title: base, category, image: responsiveUrl });
   });
 

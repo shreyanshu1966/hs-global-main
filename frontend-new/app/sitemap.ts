@@ -19,6 +19,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/privacy`, changeFrequency: 'yearly', priority: 0.2 },
     { url: `${SITE_URL}/terms`, changeFrequency: 'yearly', priority: 0.2 },
     { url: `${SITE_URL}/cookies`, changeFrequency: 'yearly', priority: 0.2 },
+    { url: `${SITE_URL}/shipping-policy`, changeFrequency: 'yearly', priority: 0.2 },
   ];
 
   const categories = [...new Set(products.map((p) => p.category).filter(Boolean))];
