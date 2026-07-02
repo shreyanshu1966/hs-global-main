@@ -183,21 +183,21 @@ const ProductCard = ({ id, image, title, designer, price, originalPrice, priceUS
           {designer}
         </div>
         
-        {/* Rating Section — only shown when real reviews exist (mirrors detail page) */}
-        {typeof averageRating === 'number' && averageRating > 0 && typeof totalReviews === 'number' && totalReviews > 0 && (
-          <div className="flex items-center gap-1 mb-[6px]">
+        {/* Rating Section — identical logic to products-page ProductCard */}
+        {(averageRating || 0) > 0 && (totalReviews || 0) > 0 && (
+          <div className="flex items-center gap-1.5 mb-[6px]">
             <div className="flex text-[#f59e0b]">
               {[1, 2, 3, 4, 5].map((star) => (
                 <svg
                   key={star}
-                  className={`w-3.5 h-3.5 ${star <= Math.round(averageRating) ? 'fill-current' : 'fill-transparent stroke-current stroke-[1.5]'}`}
+                  className={`w-3.5 h-3.5 ${star <= Math.round(averageRating || 0) ? 'fill-current' : 'fill-transparent stroke-current stroke-[1.5]'}`}
                   viewBox="0 0 24 24"
                 >
                   <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                 </svg>
               ))}
             </div>
-            <span className="text-[12px] text-[#666]">
+            <span className="text-[13px] text-[#6B6B6B]">
               ({totalReviews})
             </span>
           </div>
