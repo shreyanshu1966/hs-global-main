@@ -36,14 +36,6 @@ const ProductCard = ({ id, image, title, designer, price, originalPrice, priceUS
     priceUSD != null ? { priceUSD, regionalPricing, discount } : null
   );
 
-  const getFallbackReviews = (idStr: string) => {
-    let hash = 0;
-    for (let i = 0; i < idStr.length; i++) {
-      hash = idStr.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    return Math.abs(hash % 40) + 15;
-  };
-
   const resolvedPrice = priceLabel || (priceUSD != null ? computed.formattedPrice : (price || 'Request Quote'));
   const resolvedOriginalPrice = (priceUSD != null && computed.hasDiscount) ? computed.originalFormattedPrice : originalPrice;
   const hasValidPrice = (priceUSD != null && priceUSD > 0) || (typeof originalPriceUSD === 'number' && originalPriceUSD > 0);
@@ -191,23 +183,25 @@ const ProductCard = ({ id, image, title, designer, price, originalPrice, priceUS
           {designer}
         </div>
         
-        {/* Rating Section */}
-        <div className="flex items-center gap-1 mb-[6px]">
-          <div className="flex text-[#f59e0b]">
-            {[1, 2, 3, 4, 5].map((star) => (
-              <svg 
-                key={star} 
-                className={`w-3.5 h-3.5 ${star <= (averageRating || 5) ? 'fill-current' : 'fill-transparent stroke-current stroke-[1.5]'}`} 
-                viewBox="0 0 24 24"
-              >
-                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-              </svg>
-            ))}
+        {/* Rating Section — only shown when real reviews exist (mirrors detail page) */}
+        {typeof averageRating === 'number' && averageRating > 0 && typeof totalReviews === 'number' && totalReviews > 0 && (
+          <div className="flex items-center gap-1 mb-[6px]">
+            <div className="flex text-[#f59e0b]">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <svg
+                  key={star}
+                  className={`w-3.5 h-3.5 ${star <= Math.round(averageRating) ? 'fill-current' : 'fill-transparent stroke-current stroke-[1.5]'}`}
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                </svg>
+              ))}
+            </div>
+            <span className="text-[12px] text-[#666]">
+              ({totalReviews})
+            </span>
           </div>
-          <span className="text-[12px] text-[#666]">
-            ({totalReviews || getFallbackReviews(wishlistId)})
-          </span>
-        </div>
+        )}
         {showPrice && (
           showDiscount ? (
             <div className="mt-auto space-y-1.5">

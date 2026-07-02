@@ -1,0 +1,42 @@
+[
+  { "n": "fu-001", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural Marble", "base_type": "Triple Sphere Marble Base",
+    "top_color": "Beige / Brown Marble", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Round Top on Triple Sphere Base",
+    "mixed_materials": "No" } } },
+  { "n": "fu-002", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural Marble", "base_type": "Sphere Marble Base",
+    "top_color": "White with Black Veining", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Round Top on Sphere Base",
+    "mixed_materials": "No" } } },
+  { "n": "fu-003", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural White Marble", "base_type": "Sculptural Sphere Marble Base",
+    "top_color": "White with Grey Veining", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Round Top on Sculptural Sphere Base",
+    "mixed_materials": "No" } } },
+  { "n": "fu-004", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural Marble", "base_type": "Sculptural Stone Pedestal Base",
+    "top_color": "Grey / Multicolor Marble", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining & Color Variation", "detailing": "Round Top on Sculptural Pedestal Base",
+    "mixed_materials": "No" } } },
+  { "n": "fu-005", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural Green Marble", "base_type": "Triple Sphere Marble Base",
+    "top_color": "Dark Green Marble", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Round Top on Triple Sphere Base",
+    "mixed_materials": "No" } } },
+  { "n": "fu-006", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural Green Marble", "base_type": "Three Block Leg Base",
+    "top_color": "Green Marble", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Round Top on Three Block Legs",
+    "mixed_materials": "No" } } },
+  { "n": "fu-007", "productSpecifications": { "details": {
+    "overall_shape": "Oval", "material": "Natural Green Marble", "base_type": "Sculptural Wave / Lobed Marble Base",
+    "top_color": "Green Marble", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Oval Top on Sculptural Wave Base",
+    "mixed_materials": "No" } } },
+  { "n": "fu-008", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural Marble", "base_type": "Triple Sphere Marble Base",
+    "top_color": "Brown / Multicolor Marble", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining & Color Variation", "detailing": "Round Top on Triple Sphere Base",
+    "mixed_materials": "No" } } }
+]

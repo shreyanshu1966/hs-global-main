@@ -1,0 +1,32 @@
+[
+  { "n": "fu-057", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural Green Marble", "base_type": "Stacked Drum (Bobbin) Base",
+    "top_color": "Green Marble", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Stacked Drum Cylindrical Form",
+    "mixed_materials": "No" } } },
+  { "n": "fu-058", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural Green Marble with Travertine Top", "base_type": "Sculptural Wave Base",
+    "top_color": "Green Marble with Travertine Top", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Round Travertine Top on Green Marble Wave Base",
+    "mixed_materials": "No" } } },
+  { "n": "fu-059", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural White & Green Marble", "base_type": "Twin Half-Column Legs",
+    "top_color": "White with Green Veining", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Round Top on Twin Column Legs",
+    "mixed_materials": "No" } } },
+  { "n": "fu-060", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural Green Marble with Travertine Pedestal", "base_type": "Cylindrical Travertine Pedestal",
+    "top_color": "Green Marble with Travertine Base", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Scalloped Round Top on Cylindrical Pedestal",
+    "mixed_materials": "No" } } },
+  { "n": "fu-061", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural White Marble", "base_type": "Curved Slab Base",
+    "top_color": "White with Grey Veining", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Round Top on Curved Slab Base",
+    "mixed_materials": "No" } } },
+  { "n": "fu-062", "productSpecifications": { "details": {
+    "overall_shape": "Irregular", "material": "Natural White Marble", "base_type": "Cylindrical Cluster Base",
+    "top_color": "White with Lilac Veining", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Sculptural Cluster of Cylinders",
+    "mixed_materials": "No" } } }
+]

@@ -1,0 +1,69 @@
+[
+  {
+    "productId": "green-tufted-upholstered-bed-frame-modern-luxury-bed",
+    "productSpecifications": { "details": {
+      "overall_shape": "Rectangle",
+      "material": "Leather Upholstery over Solid Wood Frame",
+      "base_type": "Wooden Frame with Tapered Legs",
+      "top_color": "Olive / Dark Green",
+      "natural_variation_type": "No Natural Variation",
+      "detailing": "Diamond Button-Tufted Chesterfield Headboard & Footboard",
+      "mixed_materials": "Yes"
+    } } },
+  {
+    "productId": "modern-green-upholstered-bench-entryway-bedroom-seat",
+    "productSpecifications": { "details": {
+      "overall_shape": "Rectangle",
+      "material": "Leather Upholstery over Solid Wood Frame",
+      "base_type": "Tapered Wooden Legs with Brass Caps",
+      "top_color": "Olive / Dark Green",
+      "natural_variation_type": "No Natural Variation",
+      "detailing": "Vertical Channel-Tufted Seat",
+      "mixed_materials": "Yes"
+    } } },
+  {
+    "productId": "modern-upholstered-storage-bench-ottoman-entryway-seat",
+    "productSpecifications": { "details": {
+      "overall_shape": "Rectangle",
+      "material": "Leather Upholstery with Metal Legs",
+      "base_type": "Splayed Gold Metal Legs",
+      "top_color": "Beige / Cream",
+      "natural_variation_type": "No Natural Variation",
+      "detailing": "Panel-Stitched Upholstery with Storage",
+      "mixed_materials": "Yes"
+    } } },
+  {
+    "productId": "luxury-leather-jewelry-box-organizer-vintage-storage-chest",
+    "productSpecifications": { "details": {
+      "overall_shape": "Rectangle",
+      "material": "Crocodile-Embossed Leather",
+      "base_type": "Flat Tabletop Base",
+      "top_color": "Dark Brown with Tan Trim",
+      "natural_variation_type": "No Natural Variation",
+      "detailing": "Croc Texture with Leather Strap Handles",
+      "mixed_materials": "Yes"
+    } },
+    "customSpecs": [ { "label": "Drawers", "value": "4" } ] },
+  {
+    "productId": "vintage-trunk-storage-cabinet-leather-accent-chest",
+    "productSpecifications": { "details": {
+      "overall_shape": "Rectangle",
+      "material": "Leather & Canvas over Wood Frame",
+      "base_type": "Flat Base",
+      "top_color": "Black with Cognac Leather Trim",
+      "natural_variation_type": "No Natural Variation",
+      "detailing": "Steamer-Trunk Style with Brass Studs & Latch",
+      "mixed_materials": "Yes"
+    } } },
+  {
+    "productId": "chesterfield-wingback-leather-accent-chair-classic-armchair",
+    "productSpecifications": { "details": {
+      "overall_shape": "Wingback",
+      "material": "Leather Upholstery over Solid Wood Frame",
+      "base_type": "Cabriole Wooden Front Legs",
+      "top_color": "Chestnut / Antique Brown",
+      "natural_variation_type": "No Natural Variation",
+      "detailing": "Diamond Button-Tufted with Nailhead Trim",
+      "mixed_materials": "Yes"
+    } } }
+]

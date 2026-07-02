@@ -7,10 +7,10 @@ export const revalidate = 3600;
 export async function generateMetadata(): Promise<Metadata> {
   const seo = await getPageSeo('/about');
   const title =
-    seo?.title || `About Us | Premium Marble & Granite Manufacturer — ${SITE_NAME}`;
+    seo?.title || `About Us | Furniture & Semi-Precious Stone Exporter — ${SITE_NAME}`;
   const description =
     seo?.description ||
-    `${SITE_NAME} is a leading manufacturer and exporter of premium marble and granite products, delivering handcrafted stone solutions to the USA, UK and worldwide since our founding in India.`;
+    `${SITE_NAME} is a manufacturer and exporter of wooden, marble and leather furniture and semi-precious stone products, handcrafted in Ahmedabad, India and shipped worldwide.`;
   const canonical = seo?.canonical || `${SITE_URL}/about`;
   const image = seo?.image ? absoluteImage(seo.image) : `${SITE_URL}/og-image.jpg`;
   return {
@@ -26,7 +26,7 @@ const aboutLd = {
   '@context': 'https://schema.org',
   '@type': 'AboutPage',
   name: `About ${SITE_NAME}`,
-  description: `Learn about ${SITE_NAME}'s craftsmanship in handcrafted premium marble and granite supply.`,
+  description: `Learn about ${SITE_NAME}'s craftsmanship in handcrafted wooden, marble and leather furniture and semi-precious stone products.`,
   url: `${SITE_URL}/about`,
   mainEntity: {
     '@type': 'Organization',
@@ -43,7 +43,7 @@ const aboutLd = {
       },
     },
     description:
-      'Manufacturer and exporter of premium marble furniture and handcrafted natural stone products, shipping worldwide.',
+      'Manufacturer and exporter of wooden, marble and leather furniture and semi-precious stone products, shipping worldwide.',
   },
 };
 

@@ -19,9 +19,41 @@ run-seed-reviews.bat
 # Navigate to backend folder  
 cd backend
 
-# Run the script
-node seed-reviews.js
+# Preview WITHOUT writing anything (recommended first step)
+node seed-reviews.js --dry-run   # or: npm run seed-reviews:dry
+
+# Run for real
+node seed-reviews.js             # or: npm run seed-reviews
+
+# Recompute product ratings from EXISTING reviews (no re-seeding)
+node seed-reviews.js --ratings-only   # or: npm run update-ratings
 ```
+
+> **One script, one source of truth.** Ratings are always derived from reviews.
+> `seed-reviews.js` seeds reviews *and* recomputes each product's
+> `averageRating`/`totalReviews` at the end. Use `--ratings-only` to just resync
+> ratings (e.g. after approving/rejecting reviews in the admin panel). The old
+> `update-product-ratings.js` / `scripts/updateProductRatings.js` were removed.
+
+### Dry run
+`--dry-run` (or `DRY_RUN=true`) connects to the database, generates all reviews
+in memory and prints a full summary — how many reviews would be deleted/inserted,
+the projected rating distribution and average, and one sample review per product
+category — **without deleting or inserting anything.** Always dry-run first.
+
+### Configuration
+Tuning lives in `review-config.env` (loaded automatically; your real `.env`
+wins on conflicts). Keys: `REVIEWS_PER_PRODUCT_MIN/MAX`, `RATING_5_STAR_PERCENT`,
+`VERIFIED_REVIEW_PERCENT`, `APPROVED_REVIEW_PERCENT`, `OLDEST_REVIEW_DAYS`,
+`NEWEST_REVIEW_DAYS`, `CLEAR_EXISTING_REVIEWS`.
+
+### Product system / categories
+The script reads every spec shape the current `Product` schema supports —
+`furnitureSpecs`, `stoneSpecs` (semi-precious-stone), `productSpecifications`,
+`customSpecs`, and legacy `slabSpecs` — and falls back to the subcategory/name.
+It works for all live categories: `furniture`, `wooden-furniture`,
+`handcrafted` (legacy), `leather`, and `semi-precious-stone`. It connects with
+`dbName: 'hs_global_export'`, matching the live server.
 
 ## ✨ Features
 
@@ -37,7 +69,7 @@ node seed-reviews.js
   - Hotel Owners
 
 ### 🎯 **Smart Review Generation**
-- **3-8 reviews per product** (randomly distributed)
+- **Reviews per product** configurable via `review-config.env` (default 100–150)
 - **Intelligent rating distribution (ONLY GOOD REVIEWS):**
   - 70% → 5-star reviews
   - 30% → 4-star reviews  
@@ -46,7 +78,7 @@ node seed-reviews.js
 - **Realistic timestamps** (1 week to 3 months old)
 
 ### 📝 **Authentic Review Content**
-- **Product-specific templates** for furniture vs. slabs
+- **Product-specific templates** across all categories (furniture, wooden-furniture, handcrafted, leather, semi-precious-stone)
 - **Buyer-type specific language** (architect vs. homeowner tone)
 - **Material-aware content** (mentions granite, marble, etc.)
 - **Regional context** (shipping to different countries)

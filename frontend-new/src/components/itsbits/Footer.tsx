@@ -80,12 +80,6 @@ const Footer = () => {
 
             <div className="itsbits-footer-subgroup-stack">
               <div className="itsbits-footer-group">
-                <h3 className="itsbits-footer-heading">For Trade</h3>
-                <div className="itsbits-footer-link-list">
-                  <a href="/contact" className="itsbits-footer-link hover:underline">Architect & Designer Program</a>
-                </div>
-              </div>
-              <div className="itsbits-footer-group">
                 <h3 className="itsbits-footer-heading">Global Buyers</h3>
                 <div className="itsbits-footer-link-list">
                   <a href="/contact" className="itsbits-footer-link hover:underline">Bulk Inquiry</a>

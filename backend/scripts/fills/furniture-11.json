@@ -1,0 +1,32 @@
+[
+  { "n": "fu-077", "productSpecifications": { "details": {
+    "overall_shape": "Rectangle", "material": "Natural Beige Marble", "base_type": "Countertop Vessel Basin",
+    "top_color": "Beige Marble", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Hand-Carved Rectangular Vessel Basin",
+    "mixed_materials": "No" } } },
+  { "n": "fu-078", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural White Marble", "base_type": "Countertop Vessel Basin",
+    "top_color": "White with Grey Veining", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Hand-Carved Egg-and-Dart Decorative Vessel Basin",
+    "mixed_materials": "No" } } },
+  { "n": "fu-079", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural White Marble", "base_type": "Countertop Vessel Basin",
+    "top_color": "White with Grey Veining", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Fluted Round Vessel Basin",
+    "mixed_materials": "No" } } },
+  { "n": "fu-080", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural White Marble", "base_type": "Countertop Vessel Basin",
+    "top_color": "White with Grey Veining", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Hand-Carved Scalloped Ruffle Vessel Basin",
+    "mixed_materials": "No" } } },
+  { "n": "fu-081", "productSpecifications": { "details": {
+    "overall_shape": "Rectangle", "material": "Natural Green Marble", "base_type": "Countertop Vessel Basin",
+    "top_color": "Green with White Veining", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Fluted Rectangular Vessel Basin",
+    "mixed_materials": "No" } } },
+  { "n": "fu-082", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural Green Marble", "base_type": "Countertop Vessel Basin",
+    "top_color": "Dark Green with Veining", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Smooth Round Vessel Basin",
+    "mixed_materials": "No" } } }
+]

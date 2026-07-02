@@ -1,0 +1,42 @@
+[
+  { "n": "fu-017", "productSpecifications": { "details": {
+    "overall_shape": "Rectangle", "material": "Natural Travertine Stone", "base_type": "Sculptural Wave Base",
+    "top_color": "Grey Travertine", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Travertine Texture & Veining", "detailing": "Infinity Wave Sculptural Base",
+    "mixed_materials": "No" } } },
+  { "n": "fu-018", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural Travertine Stone", "base_type": "Triple Sphere Base",
+    "top_color": "Beige / Cream Travertine", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Travertine Texture & Veining", "detailing": "Round Top on Triple Sphere Base",
+    "mixed_materials": "No" } } },
+  { "n": "fu-019", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural White Marble", "base_type": "Block Leg Base",
+    "top_color": "White with Grey Veining", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Round Top on Block Legs",
+    "mixed_materials": "No" } } },
+  { "n": "fu-020", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural White Marble", "base_type": "Cylindrical Pedestal Base",
+    "top_color": "White with Grey Veining", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Sculptural Bowl Top on Pedestal",
+    "mixed_materials": "No" } } },
+  { "n": "fu-021", "productSpecifications": { "details": {
+    "overall_shape": "Rectangle", "material": "Natural Black Marble", "base_type": "Twin Conical Pedestal Legs",
+    "top_color": "Black with White Veining", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Rounded-End Top on Twin Cone Bases",
+    "mixed_materials": "No" } } },
+  { "n": "fu-022", "productSpecifications": { "details": {
+    "overall_shape": "Oval", "material": "Natural Green Marble", "base_type": "Twin Conical Pedestal Legs",
+    "top_color": "Green with White Veining", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Racetrack Top on Twin Tapered Bases",
+    "mixed_materials": "No" } } },
+  { "n": "fu-023", "productSpecifications": { "details": {
+    "overall_shape": "Oval", "material": "Natural Green Marble", "base_type": "Twin Tapered Pedestal Legs",
+    "top_color": "Green with White Veining", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Racetrack Top on Twin Tapered Bases",
+    "mixed_materials": "No" } } },
+  { "n": "fu-024", "productSpecifications": { "details": {
+    "overall_shape": "Oval", "material": "Natural Green Marble", "base_type": "Sculptural Teardrop Base",
+    "top_color": "Green with White Veining", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Oval Top on Sculptural Wishbone Base",
+    "mixed_materials": "No" } } }
+]

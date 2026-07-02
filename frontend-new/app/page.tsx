@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import { getPageSeo, absoluteImage, SITE_NAME, SITE_URL } from '@/server/api';
+import { HOME_FAQ_ITEMS } from '@/data/homeFaq';
+import { TESTIMONIALS, TESTIMONIALS_AVG_RATING } from '@/data/testimonials';
 import Client from './client';
 
 export const revalidate = 3600;
@@ -36,6 +38,31 @@ const organizationLd = {
     availableLanguage: 'English',
   },
   sameAs: [],
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: TESTIMONIALS_AVG_RATING,
+    reviewCount: TESTIMONIALS.length,
+    bestRating: 5,
+    worstRating: 1,
+  },
+  review: TESTIMONIALS.map((t) => ({
+    '@type': 'Review',
+    reviewRating: { '@type': 'Rating', ratingValue: t.rating, bestRating: 5, worstRating: 1 },
+    author: { '@type': 'Person', name: t.name },
+    reviewBody: t.quote,
+  })),
+};
+
+// FAQPage structured data for the home-page FAQ accordion — shares its source
+// data with the HomeFAQ component so the markup and visible copy stay in sync.
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: HOME_FAQ_ITEMS.map((f) => ({
+    '@type': 'Question',
+    name: f.question,
+    acceptedAnswer: { '@type': 'Answer', text: f.answer },
+  })),
 };
 
 const websiteLd = {
@@ -67,6 +94,7 @@ export default function Page() {
       />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
       <Client />
     </>
   );

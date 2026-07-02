@@ -1,0 +1,32 @@
+[
+  { "n": "fu-071", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural Travertine Stone", "base_type": "Column Pedestal with Ball Feet",
+    "top_color": "Beige / Cream Travertine", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Travertine Texture & Veining", "detailing": "Round Top on Column with Ball Feet & Round Plinth",
+    "mixed_materials": "No" } } },
+  { "n": "fu-072", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural Travertine Stone", "base_type": "Twin Curved Slab Legs",
+    "top_color": "Beige Travertine", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Travertine Texture & Veining", "detailing": "Round Tray Top on Twin Curved Legs",
+    "mixed_materials": "No" } } },
+  { "n": "fu-073", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural Travertine Stone", "base_type": "Sculptural U-Shaped Slab Base",
+    "top_color": "Beige / Cream Travertine", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Travertine Texture & Veining", "detailing": "Round Top on Sculptural U-Shape Base",
+    "mixed_materials": "No" } } },
+  { "n": "fu-074", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural White Marble", "base_type": "Twisted Stacked Spiral Base",
+    "top_color": "White", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Twisted Stacked Spiral Sculptural Form",
+    "mixed_materials": "No" } } },
+  { "n": "fu-075", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural White Marble", "base_type": "Stacked Geometric Totem Base",
+    "top_color": "White with Grey Veining", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Round Top on Stacked Geometric Totem",
+    "mixed_materials": "No" } } },
+  { "n": "fu-076", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural White Onyx", "base_type": "Fluted Cylindrical Column Pedestal",
+    "top_color": "White with Grey Veining", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Onyx Veining", "detailing": "Round Top on Fluted Column Pedestal",
+    "mixed_materials": "No" } } }
+]

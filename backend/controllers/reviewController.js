@@ -2,6 +2,19 @@ const Review = require('../models/Review');
 const Product = require('../models/Product');
 const mongoose = require('mongoose');
 
+// Resolve the canonical productId from either a custom productId or a Mongo _id.
+// Reviews are always stored keyed by the product's `productId` string, so read
+// endpoints must resolve _id → productId or their aggregate returns nothing.
+const resolveProductId = async (idOrProductId) => {
+    if (mongoose.Types.ObjectId.isValid(idOrProductId) && /^[0-9a-fA-F]{24}$/.test(idOrProductId)) {
+        const product = await Product.findOne({
+            $or: [{ productId: idOrProductId }, { _id: idOrProductId }]
+        }).select('productId');
+        return product ? product.productId : idOrProductId;
+    }
+    return idOrProductId;
+};
+
 // Helper function to update product rating statistics
 const updateProductRatingStats = async (productId) => {
     try {
@@ -25,8 +38,8 @@ const updateProductRatingStats = async (productId) => {
 // Get reviews for a product
 exports.getProductReviews = async (req, res) => {
     try {
-        const { productId } = req.params;
         const { limit = 10, skip = 0, status = 'approved' } = req.query;
+        const productId = await resolveProductId(req.params.productId);
 
         const reviews = await Review.find({ productId, status })
             .sort({ createdAt: -1 })
@@ -54,7 +67,7 @@ exports.getProductReviews = async (req, res) => {
 // Get review statistics for a product
 exports.getProductReviewStats = async (req, res) => {
     try {
-        const { productId } = req.params;
+        const productId = await resolveProductId(req.params.productId);
 
         const stats = await Review.getProductStats(productId);
 

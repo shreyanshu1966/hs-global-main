@@ -1,0 +1,27 @@
+[
+  { "n": "fu-095", "productSpecifications": { "details": {
+    "overall_shape": "Rectangle", "material": "Natural Brown Marble", "base_type": "Countertop Vessel Basin",
+    "top_color": "Brown / Grey with Veining", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining & Color Variation", "detailing": "Fluted Rectangular Vessel Basin",
+    "mixed_materials": "No" } } },
+  { "n": "fu-096", "productSpecifications": { "details": {
+    "overall_shape": "Rectangle", "material": "Natural White & Black Marble", "base_type": "Integrated Countertop Basin",
+    "top_color": "White with Black Striations", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Smooth Rectangular Integrated Basin",
+    "mixed_materials": "No" } } },
+  { "n": "fu-097", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural Red Travertine", "base_type": "Cylindrical Pedestal Column",
+    "top_color": "Red / Terracotta Travertine", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Travertine Texture & Veining", "detailing": "Round Basin on Cylindrical Pedestal Column",
+    "mixed_materials": "No" } } },
+  { "n": "fu-098", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural White Marble", "base_type": "Square Block Base",
+    "top_color": "White with Grey Veining", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Round Basin on Square Block Base",
+    "mixed_materials": "No" } } },
+  { "n": "fu-099", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural White Marble", "base_type": "Countertop Vessel Basin",
+    "top_color": "White with Grey Veining", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Hand-Carved Ribbed Urn Vessel Basin",
+    "mixed_materials": "No" } } }
+]

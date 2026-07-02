@@ -22,7 +22,7 @@ const About = () => {
       {/* 3. MARQUEE SEPARATOR */}
       <div className="py-[clamp(2rem,4vw,3rem)] border-y border-gray-100 bg-black text-white">
         <VelocityScroll
-          items={["Handcrafted", "Heritage", "Natural Stone", "Global Exporter", "Artisanal", "Timeless"]}
+          items={["Wooden Furniture", "Marble Furniture", "Leather Furniture", "Semi-Precious Stone", "Handcrafted", "Global Exporter"]}
           default_velocity={3}
           className="font-serif text-[clamp(2rem,6vw,4rem)] opacity-80"
         />
@@ -34,7 +34,7 @@ const About = () => {
           <div className="mb-[clamp(3rem,8vw,6rem)] grid grid-cols-1 md:grid-cols-2 gap-[clamp(2rem,4vw,3rem)] items-end">
             <div>
               <ShinyText
-                text="The Art of Stone"
+                text="The Art of Craftsmanship"
                 className="text-[clamp(0.625rem,1.2vw,0.875rem)] tracking-[0.2em] uppercase mb-[clamp(0.75rem,1.5vw,1rem)] block text-gray-500"
                 speed={3}
               />
@@ -51,7 +51,7 @@ const About = () => {
                 containerClassName=""
                 textClassName="text-gray-600 leading-relaxed text-[clamp(0.875rem,1.8vw,1.125rem)] font-normal"
               >
-                Each sink and piece of furniture we create is more than just a fixture—it's a work of art shaped by generations of craftsmanship in White Marble, Green Marble, Onyx, and beyond.
+                Every piece we create is more than just furniture—it's a work of art shaped by generations of craftsmanship across wooden furniture, marble furniture, leather furniture, and semi-precious stone.
               </ScrollReveal>
             </div>
           </div>
@@ -92,7 +92,7 @@ const About = () => {
             containerClassName="mb-[clamp(2rem,4vw,3rem)]"
             textClassName="text-[clamp(1.5rem,5vw,3rem)] font-serif leading-tight text-gray-900 font-normal"
           >
-            If you’re looking to bring the timeless beauty of real marble into your space, you’re in the right place. Your satisfaction and quality are always our top priorities. I always welcome your visit to my shop.
+            If you’re looking to bring timeless, handcrafted pieces into your space, you’re in the right place. Your satisfaction and quality are always our top priorities. I always welcome your visit to my shop.
           </ScrollReveal>
           <div className="flex flex-col items-center">
             <div className="w-[clamp(3rem,8vw,4rem)] h-[2px] bg-black mb-[clamp(1rem,2vw,1.5rem)]"></div>
@@ -121,13 +121,13 @@ const StickyStorySection = () => {
     {
       title: "Global Vision",
       year: "2000s",
-      desc: "Vaibhav Solanki established HS Global Export as the most recognized marble brand. His directional orientation expanded our reach, importing quality marble from around the world to become a true global trendsetter.",
+      desc: "Vaibhav Solanki established HS Global Export, growing it from marble craftsmanship into a recognized name for premium wooden, marble and leather furniture and semi-precious stone. His vision expanded our reach to buyers around the world.",
       img: "marble-solutions.webp"
     },
     {
       title: "Artisanal Craft",
       year: "Today",
-      desc: "Every piece is entirely handmade by experienced artisans. We cut, sand, and polish it ourselves. No mass production, no copy-paste designs. We respect the soul of natural stone and blend it with clean, modern lines.",
+      desc: "Every piece is entirely handmade by experienced artisans. We cut, sand, and finish it ourselves. No mass production, no copy-paste designs. We respect the soul of every material and blend it with clean, modern lines.",
       img: "granite-solutions.webp"
     }
   ];
@@ -184,7 +184,7 @@ const PhilosophyGrid = () => {
   const items = [
     {
       title: "Handmade Artisanship",
-      desc: "Each piece is carefully handcrafted, celebrating the natural beauty of stone.",
+      desc: "Each piece is carefully handcrafted, celebrating the natural beauty of wood, marble, leather, and stone.",
       icon: <Award className="w-[clamp(1.5rem,3vw,2rem)] h-[clamp(1.5rem,3vw,2rem)] text-white" />,
       col: "md:col-span-2",
       img: "about-premium-quality.png"

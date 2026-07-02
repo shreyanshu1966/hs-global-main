@@ -1,0 +1,70 @@
+[
+  {
+    "productId": "luxury-leather-accent-armchair-modern-dining-chair",
+    "productSpecifications": { "details": {
+      "overall_shape": "Armchair",
+      "material": "Leather Upholstery over Solid Wood Frame",
+      "base_type": "Tapered Leather-Wrapped Legs",
+      "top_color": "Cognac / Red-Brown",
+      "natural_variation_type": "No Natural Variation",
+      "detailing": "Vertical Channel-Tufted Back & Arms",
+      "mixed_materials": "Yes"
+    } } },
+  {
+    "productId": "modern-leather-accent-armchair-luxury-lounge-chair",
+    "productSpecifications": { "details": {
+      "overall_shape": "Armchair",
+      "material": "Leather Upholstery with Metal Legs",
+      "base_type": "Splayed Gold Metal Legs",
+      "top_color": "Cognac / Tan",
+      "natural_variation_type": "No Natural Variation",
+      "detailing": "Track-Arm Club Design with Loose Cushions",
+      "mixed_materials": "Yes"
+    } } },
+  {
+    "productId": "luxury-leather-coffee-table-modern-brass-accent-table",
+    "productSpecifications": { "details": {
+      "overall_shape": "Square",
+      "material": "Crocodile-Embossed Leather over Wood with Brass",
+      "base_type": "Tapered Wooden Legs with Brass Caps & Stretcher",
+      "top_color": "Brown Croc with Brass",
+      "natural_variation_type": "No Natural Variation",
+      "detailing": "Waterfall Croc Leather Top with Brass Edge Trim",
+      "mixed_materials": "Yes"
+    } } },
+  {
+    "productId": "luxury-marble-top-coffee-table-with-storage-drawer",
+    "productSpecifications": { "details": {
+      "overall_shape": "Rectangle",
+      "material": "Marble Top with Leather-Wrapped Body & Metal Base",
+      "base_type": "Gold Metal Frame Base",
+      "top_color": "Cream Marble with Dark Green Body",
+      "natural_variation_type": "Natural Marble Veining (Top)",
+      "detailing": "Fluted Leather Drawer Front with Brass Knob",
+      "mixed_materials": "Yes"
+    } },
+    "customSpecs": [ { "label": "Drawers", "value": "1" } ] },
+  {
+    "productId": "luxury-console-table-green-entryway-accent-table",
+    "productSpecifications": { "details": {
+      "overall_shape": "Rectangle",
+      "material": "Leather-Wrapped Top with Metal Legs",
+      "base_type": "Splayed Gold Metal Legs",
+      "top_color": "Emerald Green with Brass",
+      "natural_variation_type": "No Natural Variation",
+      "detailing": "Textured Leather Drawer with Brass Knob",
+      "mixed_materials": "Yes"
+    } },
+    "customSpecs": [ { "label": "Drawers", "value": "1" } ] },
+  {
+    "productId": "luxury-console-table-leather-entryway-sofa-table",
+    "productSpecifications": { "details": {
+      "overall_shape": "Rectangle",
+      "material": "Crocodile-Embossed Leather over Wood with Brass",
+      "base_type": "Tapered Wooden Legs with Brass Caps & Stretcher",
+      "top_color": "Brown Croc with Tan Trim",
+      "natural_variation_type": "No Natural Variation",
+      "detailing": "Waterfall Croc Leather Top",
+      "mixed_materials": "Yes"
+    } } }
+]

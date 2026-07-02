@@ -1,0 +1,106 @@
+[
+  {
+    "productId": "luxury-nesting-side-tables-leather-accent-table-set",
+    "productSpecifications": { "details": {
+      "overall_shape": "Square",
+      "material": "Leather-Wrapped Top over Wood",
+      "base_type": "Tapered Wooden Legs with Brass Caps",
+      "top_color": "Tan / Brown",
+      "natural_variation_type": "No Natural Variation",
+      "detailing": "Leather-Wrapped Tops, Nesting Stool Set",
+      "mixed_materials": "Yes"
+    } },
+    "customSpecs": [ { "label": "Set Includes", "value": "2 Tables" } ] },
+  {
+    "productId": "luxury-tray-side-table-black-croc-accent-table",
+    "productSpecifications": { "details": {
+      "overall_shape": "Rectangle",
+      "material": "Crocodile-Embossed Leather Tray with Metal Frame",
+      "base_type": "Folding X-Frame Metal Legs",
+      "top_color": "Black Croc",
+      "natural_variation_type": "No Natural Variation",
+      "detailing": "Removable Croc Tray Top on Butler Folding Stand",
+      "mixed_materials": "Yes"
+    } } },
+  {
+    "productId": "modern-black-tray-side-table-gold-accent-end-table",
+    "productSpecifications": { "details": {
+      "overall_shape": "Rectangle",
+      "material": "Crocodile-Embossed Leather Trays with Metal Frame",
+      "base_type": "Gold Metal Frame",
+      "top_color": "Black Croc with Brass",
+      "natural_variation_type": "No Natural Variation",
+      "detailing": "Two-Tier Croc Leather Trays",
+      "mixed_materials": "Yes"
+    } },
+    "customSpecs": [ { "label": "Tiers", "value": "2" } ] },
+  {
+    "productId": "modern-nesting-side-table-set-gold-accent-end-tables",
+    "productSpecifications": { "details": {
+      "overall_shape": "Square",
+      "material": "Crocodile-Embossed Leather Top with Metal Frame",
+      "base_type": "Gold Metal Z-Frame",
+      "top_color": "Brown Croc with Gold",
+      "natural_variation_type": "No Natural Variation",
+      "detailing": "Croc Leather Tops, Nesting Z-Frame Set",
+      "mixed_materials": "Yes"
+    } },
+    "customSpecs": [ { "label": "Set Includes", "value": "3 Tables" } ] },
+  {
+    "productId": "modern-nesting-side-tables-wood-metal-accent-tables-set",
+    "productSpecifications": { "details": {
+      "overall_shape": "Square",
+      "material": "Wood Tray Top with Metal Frame",
+      "base_type": "Bronze Metal C-Frame",
+      "top_color": "Dark Walnut Brown",
+      "natural_variation_type": "Natural Wood Grain Variation",
+      "detailing": "Wood Tray Tops, Nesting C-Table Set",
+      "mixed_materials": "Yes"
+    } },
+    "customSpecs": [ { "label": "Set Includes", "value": "2 Tables" } ] },
+  {
+    "productId": "chesterfield-green-leather-sofa-luxury-living-room-couch",
+    "productSpecifications": { "details": {
+      "overall_shape": "Rectangle",
+      "material": "Leather Upholstery over Solid Wood Frame",
+      "base_type": "Turned Wooden Bun Feet with Brass Caps",
+      "top_color": "Olive / Dark Green",
+      "natural_variation_type": "No Natural Variation",
+      "detailing": "Diamond Button-Tufted Chesterfield with Nailhead Trim",
+      "mixed_materials": "Yes"
+    } } },
+  {
+    "productId": "chesterfield-leather-sofa-classic-tufted-loveseat",
+    "productSpecifications": { "details": {
+      "overall_shape": "Rectangle",
+      "material": "Leather Upholstery over Solid Wood Frame",
+      "base_type": "Turned Wooden Bun Feet with Brass Caps",
+      "top_color": "Chestnut / Dark Brown",
+      "natural_variation_type": "No Natural Variation",
+      "detailing": "Diamond Button-Tufted Chesterfield Loveseat with Nailhead Trim",
+      "mixed_materials": "Yes"
+    } },
+    "customSpecs": [ { "label": "Seats", "value": "2" } ] },
+  {
+    "productId": "green-leather-ottoman-luxury-accent-stool",
+    "productSpecifications": { "details": {
+      "overall_shape": "Round",
+      "material": "Leather Upholstery with Metal Base",
+      "base_type": "Gold Metal Ring Base",
+      "top_color": "Dark Green",
+      "natural_variation_type": "No Natural Variation",
+      "detailing": "Vertical Channel-Fluted Body with Brass Base",
+      "mixed_materials": "Yes"
+    } } },
+  {
+    "productId": "luxury-leather-ottoman-round-accent-stool",
+    "productSpecifications": { "details": {
+      "overall_shape": "Round",
+      "material": "Leather Upholstery with Metal Base",
+      "base_type": "Gold Metal Ring Base",
+      "top_color": "Cognac / Tan Brown",
+      "natural_variation_type": "No Natural Variation",
+      "detailing": "Vertical Channel-Fluted Body with Brass Base",
+      "mixed_materials": "Yes"
+    } } }
+]

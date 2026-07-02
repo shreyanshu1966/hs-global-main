@@ -1,0 +1,42 @@
+[
+  { "n": "fu-025", "productSpecifications": { "details": {
+    "overall_shape": "Rectangle", "material": "Natural Travertine Stone", "base_type": "Arched Arcade Base",
+    "top_color": "Beige / Cream Travertine", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Travertine Texture & Veining", "detailing": "Roman Arch Arcade Base",
+    "mixed_materials": "No" } } },
+  { "n": "fu-026", "productSpecifications": { "details": {
+    "overall_shape": "Rectangle", "material": "Natural White Marble", "base_type": "Arched Arcade Base",
+    "top_color": "White with Grey Veining", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Roman Arch Arcade Base",
+    "mixed_materials": "No" } } },
+  { "n": "fu-027", "productSpecifications": { "details": {
+    "overall_shape": "Rectangle", "material": "Natural White Marble", "base_type": "Cylindrical & Fluted Pillar Legs",
+    "top_color": "White with Grey Veining", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Fluted Pillar Base",
+    "mixed_materials": "No" } } },
+  { "n": "fu-028", "productSpecifications": { "details": {
+    "overall_shape": "Rectangle", "material": "Natural Travertine Stone", "base_type": "Twin Cylindrical Pillar Legs",
+    "top_color": "Beige / Cream Travertine", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Travertine Texture & Veining", "detailing": "Rounded-End Top on Twin Pillars",
+    "mixed_materials": "No" } } },
+  { "n": "fu-029", "productSpecifications": { "details": {
+    "overall_shape": "Rectangle", "material": "Natural Marble (Two-Tone)", "base_type": "Twin Waterfall Marble Legs",
+    "top_color": "White with Black Marble Legs", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Two-Tone Waterfall Legs",
+    "mixed_materials": "No" } } },
+  { "n": "fu-030", "productSpecifications": { "details": {
+    "overall_shape": "Rectangle", "material": "Natural Travertine Stone", "base_type": "Stacked Sphere (Bobbin) Legs",
+    "top_color": "Beige / Cream Travertine", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Travertine Texture & Veining", "detailing": "Bobbin Stacked-Ball Legs",
+    "mixed_materials": "No" } } },
+  { "n": "fu-031", "productSpecifications": { "details": {
+    "overall_shape": "Rectangle", "material": "Natural White Marble", "base_type": "Waterfall Slab Legs",
+    "top_color": "White with Grey Veining", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Minimalist Parsons Waterfall Design",
+    "mixed_materials": "No" } } },
+  { "n": "fu-032", "productSpecifications": { "details": {
+    "overall_shape": "Rectangle", "material": "Natural White Marble", "base_type": "Four Conical Pillar Legs",
+    "top_color": "White with Grey Veining", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Sculptural Conical Pillar Legs",
+    "mixed_materials": "No" } } }
+]

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { getAllProducts, getPageSeo, absoluteImage, SITE_NAME, SITE_URL } from '@/server/api';
+import { getAllProducts, getPageSeo, absoluteImage, productUrl, SITE_NAME, SITE_URL } from '@/server/api';
 import Client from './client';
 
 export const revalidate = 3600;
@@ -29,8 +29,41 @@ export default async function Page() {
   const visible = products
     .filter((p) => p.available !== false && p.status !== 'draft')
     .slice(0, 48);
+
+  // CollectionPage + ItemList structured data for the SSR'd first page of the
+  // catalog — gives crawlers an itemized list of products with names/images/URLs.
+  const collectionLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Marble & Granite Furniture — Full Collection',
+    url: `${SITE_URL}/products`,
+    isPartOf: { '@type': 'WebSite', name: SITE_NAME, url: SITE_URL },
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: visible.length,
+      itemListElement: visible.map((p, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        url: `${SITE_URL}${productUrl(p)}`,
+        name: p.name,
+        image: absoluteImage(p.image),
+      })),
+    },
+  };
+
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+      { '@type': 'ListItem', position: 2, name: 'Products', item: `${SITE_URL}/products` },
+    ],
+  };
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       <h1 className="sr-only">Marble &amp; Granite Furniture — Full Collection</h1>
       <Client initialProducts={visible} />
     </>
