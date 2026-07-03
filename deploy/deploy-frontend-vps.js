@@ -29,7 +29,7 @@ function main() {
   const keyPath    = (process.env.VPS_SSH_KEY_PATH || '').trim().replace(/\\/g, '/');
   const password   = (process.env.vps_pass || '').trim();
   const appPath    = required('VPS_APP_PATH');
-  // Frontend lives on Home branch; backend lives on main — they track separately
+  // Both frontend and backend deploy from the Home branch (VPS_*_BRANCH=Home)
   const branch     = (process.env.VPS_FRONTEND_BRANCH || 'Home').trim();
   const pm2Name    = 'hs-frontend';
 
@@ -41,6 +41,7 @@ set -e
 echo ">>> Pulling ${branch}..."
 cd ${appPath}
 git fetch origin ${branch}
+git checkout -B ${branch} origin/${branch}
 git reset --hard origin/${branch}
 
 echo ">>> Ensuring swap space for build..."
