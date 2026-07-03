@@ -26,7 +26,7 @@ function main() {
   const password = (process.env.vps_pass || '').trim();
   const appPath  = required('VPS_APP_PATH');
   const branch   = (process.env.VPS_GIT_BRANCH || 'main').trim();
-  const pm2Name  = 'hs-backend-api';
+  const pm2Name  = 'project-backend';
 
   const remoteScript = `
 export NVM_DIR="$HOME/.nvm"
