@@ -1,0 +1,74 @@
+{
+  "connectedHost": "localhost",
+  "dbName": "hs_global_export",
+  "modelCollection": "products",
+  "totalViaModel": 92,
+  "totalViaColl": 92,
+  "collections": [
+    "blogs",
+    "categories",
+    "contacts",
+    "coupons",
+    "currencies",
+    "deliverycheckanalytics",
+    "fieldoptions",
+    "homepageconfigs",
+    "leadcaptures",
+    "navbarconfigs",
+    "orders",
+    "otps",
+    "pageseos",
+    "popupconfigs",
+    "productorderings",
+    "products",
+    "quotations",
+    "redirects",
+    "reviews",
+    "speckeys",
+    "users"
+  ],
+  "byCategory": [
+    {
+      "_id": "furniture",
+      "count": 85
+    },
+    {
+      "_id": "semi-precious-stone",
+      "count": 7
+    }
+  ],
+  "specsFileEntries": 312,
+  "specsFileIdsExistingInDb": 92,
+  "sample": [
+    {
+      "id": "beige-marble-bathtub-freestanding-stone-tub-textured-oval-bath-handmade",
+      "found": true,
+      "cat": "furniture",
+      "detMat": "Natural Stone / Marble"
+    },
+    {
+      "id": "beige-stone-bathtub-freestanding-marble-tub-rustic-carved-oval-bath",
+      "found": true,
+      "cat": "furniture",
+      "detMat": "Natural Travertine Stone / Marble Stone"
+    },
+    {
+      "id": "black-marble-bathtub-freestanding-stone-soaking-tub",
+      "found": true,
+      "cat": "furniture",
+      "detMat": "Natural Black Marble"
+    },
+    {
+      "id": "calcutta-viola-marble-freestanding-bathtub-solid-natural-stone",
+      "found": true,
+      "cat": "furniture",
+      "detMat": "Natural Marble"
+    },
+    {
+      "id": "handmade-calacatta-viola-marble-bathtub",
+      "found": true,
+      "cat": "furniture",
+      "detMat": "Natural Marble Stone"
+    }
+  ]
+}

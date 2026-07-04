@@ -3,6 +3,8 @@
  * Visual language matches the homepage editorial system.
  */
 
+import { AuthorBio, SocialShare, RelatedProducts, type RelatedProduct } from '../_components/ArticleFooter';
+
 type Faq = { q: string; a: string };
 
 const IMG_BASE = '/blog/indian-marble-furniture';
@@ -90,6 +92,13 @@ const TAGS = [
   'Buyer\'s Guide',
   'Interior Design',
   'Home Decor',
+];
+
+// Products referenced throughout this buying guide.
+const RELATED: RelatedProduct[] = [
+  { title: 'Marble Dining Tables', text: 'Custom sizes, edge profiles and honed, polished or leathered finishes — cut and crated in-house for worldwide export.', href: '/products/furniture/dining-table' },
+  { title: 'Marble Console Tables', text: 'Architectural entryway and hallway pieces in Carrara, Calacatta, Statuario and more.', href: '/products/furniture/console-table' },
+  { title: 'Marble Furniture Collection', text: 'The full range of handcrafted natural-stone furniture, fully customizable in stone, dimension and base.', href: '/products/furniture' },
 ];
 
 const BODY = 'text-[17px] font-light leading-[1.8] text-[#444]';
@@ -564,17 +573,18 @@ export default function Article({
         </div>
       </section>
 
-      {/* Author + tags */}
+      {/* You might also like */}
+      <RelatedProducts products={RELATED} />
+
+      {/* Share · Author · tags */}
       <section className="mx-auto max-w-3xl px-6 py-16">
-        <div className="flex flex-col gap-5 border-y border-[#ece9dd] py-8 sm:flex-row sm:items-center">
-          <span className={`${SERIF} grid h-16 w-16 flex-shrink-0 place-items-center rounded-full bg-[#222] text-[18px] text-white`}>HS</span>
-          <div>
-            <p className={`${SERIF} text-[20px] text-[#222]`}>HS Global Export</p>
-            <p className="mt-1 text-[14px] font-light leading-[1.6] text-[#555]">
-              Premium marble &amp; granite manufacturer and worldwide exporter — serving the USA, UK, Europe and the
-              Middle East with handcrafted natural-stone furniture.
-            </p>
-          </div>
+        <SocialShare
+          url={canonical}
+          title="Marble Dining Table Buying Guide: Sizes, Edges & Finishes (2026)"
+        />
+
+        <div className="mt-10">
+          <AuthorBio />
         </div>
 
         <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-[12px] uppercase tracking-[0.14em] text-[#9a9582]">

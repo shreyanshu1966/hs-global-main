@@ -1,0 +1,22 @@
+{
+  "effectiveUri": "mongodb://localhost:27017/hs_global_export",
+  "connectedName": "hs_global_export",
+  "dbs": [
+    {
+      "name": "admin",
+      "products": "-"
+    },
+    {
+      "name": "config",
+      "products": "-"
+    },
+    {
+      "name": "hs_global_export",
+      "products": 92
+    },
+    {
+      "name": "local",
+      "products": "-"
+    }
+  ]
+}

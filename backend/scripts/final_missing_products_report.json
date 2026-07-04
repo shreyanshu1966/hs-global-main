@@ -1,0 +1,424 @@
+{
+  "wooden": {
+    "targetCategory": "wooden-furniture",
+    "csvUniqueCodes": 31,
+    "dbProductsInCategory": 15,
+    "dbResolvedCodes": 14,
+    "matchedCount": 14,
+    "missingCount": 17,
+    "missing": [
+      {
+        "code": "HCBSTBR3",
+        "subcategory": "SIDE TABLE",
+        "title": "Brass Inlay Curved Chest of Drawers Vintage Accent Table",
+        "etsyUrl": "https://www.etsy.com/listing/4498094746/brass-inlay-curved-chest-of-drawers?click_key=0e975eaff964516daa970bc2eaf909352cedc236%3A4498094746&click_sum=23ea10d7&sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_10&frs=1"
+      },
+      {
+        "code": "HCFCABBR1",
+        "subcategory": "CABINET",
+        "title": "Rustic Distressed Wood Cabinet Vintage Storage Armoire",
+        "etsyUrl": "https://www.etsy.com/listing/4511514063/rustic-distressed-wood-cabinet-vintage?sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_1&pro=1&frs=1&logging_key=35acfed35eeb3388773fe4d0b690b50e00773189%3A4511514063"
+      },
+      {
+        "code": "HCFBSBR1",
+        "subcategory": "BOOKSHELF",
+        "title": "Hand Carved Wooden Bookshelf Rustic Display Bookcase",
+        "etsyUrl": "https://www.etsy.com/listing/4511522423/hand-carved-wooden-bookshelf-rustic?sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_1&pro=1&frs=1&logging_key=5ed7f96afe093f1756a04e74ac6a867b37bdb3fa%3A4511522423"
+      },
+      {
+        "code": "HCFCABBR2",
+        "subcategory": "CABINET",
+        "title": "Hand Carved Wooden Chest of Drawers Rustic Storage Cabinet",
+        "etsyUrl": "https://www.etsy.com/listing/4511526361/hand-carved-wooden-chest-of-drawers?sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_1&pro=1&frs=1&logging_key=0ea9b45c4a0d450536d46321882e4eae21c3525b%3A4511526361"
+      },
+      {
+        "code": "HCFCABBR3",
+        "subcategory": "CABINET",
+        "title": "Hand Carved Rustic Wooden Sideboard Storage Cabinet",
+        "etsyUrl": "https://www.etsy.com/listing/4511533260/hand-carved-rustic-wooden-sideboard?sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_1&pro=1&frs=1&logging_key=04e3d48bc10036b4c0c68b9dd7b2c31187d82c39%3A4511533260"
+      },
+      {
+        "code": "HCFDOBR1",
+        "subcategory": "DOOR",
+        "title": "Antique Carved Teak Wood Door Vintage Architectural Door",
+        "etsyUrl": "etsy.com/listing/4511541149/antique-carved-teak-wood-door-vintage?click_key=fe3ebff98f0fce44b5dc625dfe1bf2c7011a8224%3A4511541149&click_sum=c6f389a9&sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_1&pro=1&frs=1"
+      },
+      {
+        "code": "HCFCABBR4",
+        "subcategory": "CABINET",
+        "title": "Handcrafted Wooden Home Temple Prayer Cabinet Shrine",
+        "etsyUrl": "etsy.com/listing/4511545452/handcrafted-wooden-home-temple-prayer?click_key=63337087a09d0a5e384a00f7c34e5b684c7e4113%3A4511545452&click_sum=c102c3c3&sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_1&pro=1&frs=1"
+      },
+      {
+        "code": "HCFTRBU1",
+        "subcategory": "TRUNK",
+        "title": "Antique Damchiya Storage Box Vintage Wooden Chest",
+        "etsyUrl": "https://www.etsy.com/listing/4511563394/antique-damchiya-storage-box-vintage?sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_1&pro=1&frs=1&logging_key=f3faa95e7e963dbdaf5b51af4b08615c905df5d8%3A4511563394"
+      },
+      {
+        "code": "HCFCABBU5",
+        "subcategory": "CABINET",
+        "title": "Vintage 4 Door Sideboard Rustic Wooden Buffet Cabinet",
+        "etsyUrl": "etsy.com/listing/4511566125/vintage-4-door-sideboard-rustic-wooden?click_key=7122f321909f69090a9eee26b90a087ea58c6d1e%3A4511566125&click_sum=4669ca1e&sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_1&pro=1&frs=1"
+      },
+      {
+        "code": "HCFBSBR2",
+        "subcategory": "BOOKSHELF",
+        "title": "Solid Wood Bookrack Tall Display Bookshelf Storage Unit.",
+        "etsyUrl": "https://www.etsy.com/listing/4511546555/solid-wood-bookrack-tall-display?sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_3&pro=1&frs=1&logging_key=ae484e8105a77790aa078cd83bb2760c8ab69730%3A4511546555"
+      },
+      {
+        "code": "HCFCABBR6",
+        "subcategory": "CABINET",
+        "title": "Rustic Reclaimed Wood Sideboard Cabinet 4 Door 4 Drawer",
+        "etsyUrl": "https://www.etsy.com/listing/4512031042/rustic-reclaimed-wood-sideboard-cabinet?sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_1&pro=1&frs=1&logging_key=c71b2cf3c0d9bf0d3ba7be4fe8c32b0007d58a4e%3A4512031042"
+      },
+      {
+        "code": "HCFCABBU7",
+        "subcategory": "CABINET",
+        "title": "Rustic Glass Door Wooden Almirah Cabinet 2 Drawer",
+        "etsyUrl": "etsy.com/listing/4512036652/rustic-glass-door-wooden-almirah-cabinet?click_key=2a26c6dc0ab11fd256359d8ec5b426ebff35998a%3A4512036652&click_sum=51154607&sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_1&pro=1&frs=1"
+      },
+      {
+        "code": "HCFARGR1",
+        "subcategory": "ARMOIRE",
+        "title": "Hand Carved Wooden Armoire Cabinet Rustic Green Storage",
+        "etsyUrl": "etsy.com/listing/4512040855/hand-carved-wooden-armoire-cabinet?click_key=e4b18e84ebff7f7506284babbb536430f875cf75%3A4512040855&click_sum=ab8d08b4&sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_1&pro=1&frs=1"
+      },
+      {
+        "code": "HCFDOBR2",
+        "subcategory": "DOOR",
+        "title": "Antique Metal Fitted Wooden Double Door Rustic Entry Door",
+        "etsyUrl": "https://www.etsy.com/listing/4512065954/antique-metal-fitted-wooden-double-door?sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_1&pro=1&frs=1&logging_key=8f6aa5f7727d2335ab458f4f39eb272f421a45a9%3A4512065954"
+      },
+      {
+        "code": "HCFDOBR3",
+        "subcategory": "DOOR",
+        "title": "Antique Teak Wood Double Entry Door Hand Carved Rustic Door",
+        "etsyUrl": "etsy.com/listing/4512068373/antique-teak-wood-double-entry-door-hand?click_key=3fb585c1a01c30cc4be087da46b213e2edd1433c%3A4512068373&click_sum=b90273ef&sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_1&pro=1&frs=1"
+      },
+      {
+        "code": "HCFCABBR8",
+        "subcategory": "CABINET",
+        "title": "Antique Wooden Display Cabinet Rustic Glass Storage Cabinet",
+        "etsyUrl": "https://www.etsy.com/listing/4512075354/antique-wooden-display-cabinet-rustic?sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_1&pro=1&frs=1&logging_key=e2811e01c9623b2f80ad02d216731a7fb6a05ce6%3A4512075354"
+      },
+      {
+        "code": "HCFCABBR9",
+        "subcategory": "CABINET",
+        "title": "Handcrafted Damchiya Storage Sideboard Rustic Wooden Console",
+        "etsyUrl": "https://www.etsy.com/listing/4512077747/handcrafted-damchiya-storage-sideboard?click_key=e01a58f61b1032627b9be59f385a7283fa49be61%3A4512077747&click_sum=0c9443ed&sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_1&pro=1&frs=1"
+      }
+    ]
+  },
+  "marble": {
+    "targetCategory": "furniture",
+    "csvUniqueCodes": 236,
+    "dbProductsInCategory": 196,
+    "dbResolvedCodes": 187,
+    "matchedCount": 186,
+    "missingCount": 50,
+    "missing": [
+      {
+        "code": "HSMSTGR1",
+        "subcategory": "SIDE TABLE",
+        "title": "Natural Green Marble Pedestal Coffee Table: Modern Bohemian Side Table | Sculptural Column Base Home Decor by Design for Ages",
+        "etsyUrl": "https://www.etsy.com/listing/4471346304/handmade-green-marble-pedestal-side"
+      },
+      {
+        "code": "HSMCTBE1",
+        "subcategory": "CONSOLE TABLE",
+        "title": "Handmade Mediterranean Style Entryway Table | Reclaimed Oak Beam Console Table | Modern Vintage Console Table | Handcrafted Rustic Entryway Furnitureby Design For Ages",
+        "etsyUrl": "https://www.etsy.com/in-en/listing/4471336512/mediterranean-style-entryway-table"
+      },
+      {
+        "code": "HSMPSBE1",
+        "subcategory": "PEDESTAL SINK",
+        "title": "Hand Carved Travertine Pedestal Sink Fluted Stone Bathroom Basin | Custom Vessel Sink by Design For Ages",
+        "etsyUrl": "https://www.etsy.com/in-en/listing/4471802232/travertine-pedestal-sink-fluted-stone"
+      },
+      {
+        "code": "HSMSTBR2",
+        "subcategory": "SIDE TABLE",
+        "title": "Natural Marble Pedestal Side Table | Sculptural Stone Accent Nightstand | Vintage Round Parlor Table",
+        "etsyUrl": "https://www.etsy.com/in-en/listing/4471809867/marble-pedestal-side-table-sculptural"
+      },
+      {
+        "code": "HSMPSWH2",
+        "subcategory": "PEDESTAL SINK",
+        "title": "Hand Carved Marble Pedestal Sink | Fluted Modern Stone Bathroom Washbasin | White Round Natural Stone Bathroom & Kitchen",
+        "etsyUrl": "https://www.etsy.com/in-en/listing/4471813869/marble-pedestal-sink-modern-stone"
+      },
+      {
+        "code": "HSMCETWH1",
+        "subcategory": "COFFEE TABLE",
+        "title": "Sculptural Marble Coffee Table: Modern White and Dark Stone Side Table | Luxury Home Decor Furniture",
+        "etsyUrl": "https://www.etsy.com/in-en/listing/4471816631/marble-coffee-table-sculptural-modern"
+      },
+      {
+        "code": "HSMPSWH3",
+        "subcategory": "PEDESTAL SINK",
+        "title": "Fluted Marble Pedestal Sink | Modern White Bathroom Basin, Hand Carved Stonework - Round White Basin, Luxury Bathroom Freestanding Sink",
+        "etsyUrl": "https://www.etsy.com/in-en/listing/4471819553/fluted-marble-pedestal-sink-modern"
+      },
+      {
+        "code": "HSMPSWHPU4",
+        "subcategory": "PEDESTAL SINK",
+        "title": "Hand Carved Purple Vein Marble Pedestal Sink | Luxury Bathroom Vanity Stone Basin | Custom Size",
+        "etsyUrl": "https://www.etsy.com/in-en/listing/4471828630/purple-vein-marble-pedestal-sink-luxury"
+      },
+      {
+        "code": "HSMPSBL5",
+        "subcategory": "PEDESTAL SINK",
+        "title": "Hademade Black Marble Pedestal Sink, Luxury Fluted Stone Bathroom Basin, Luxury Modern Design | Wall Marble Sink,  Custom Size",
+        "etsyUrl": "https://www.etsy.com/in-en/listing/4471827571/black-marble-pedestal-sink-fluted-stone"
+      },
+      {
+        "code": "HSMCETGR5",
+        "subcategory": "COFFEE TABLE",
+        "title": "Luxury Round Green Marble Coffee Table - Handcrafted Sculptural Oval Stone Center Table | Modern Design for Living Room",
+        "etsyUrl": "https://www.etsy.com/in-en/listing/4472709649/green-marble-coffee-table-sculptural"
+      },
+      {
+        "code": "HSMSPI3",
+        "subcategory": "SINK",
+        "title": "Handcrafted Pink Marble Vessel Sink: Round Stone Bathroom Basin | Circular Stone Basin | Custom Sizes Available",
+        "etsyUrl": "https://www.etsy.com/in-en/listing/4473789641/pink-marble-vessel-sink-round-stone"
+      },
+      {
+        "code": "HSMBTBL2",
+        "subcategory": "BATHTUB",
+        "title": "Handmade Black Marble Bathtub Freestanding Stone Tub Modern Oval Bath |  Calacatta Viola Marble Bathtub, Medium Size  by Design For Ages",
+        "etsyUrl": "https://www.etsy.com/in-en/listing/4473808791/black-marble-bathtub-freestanding-stone"
+      },
+      {
+        "code": "HSMFRWH1",
+        "subcategory": "FRAME",
+        "title": "Handcrafted 3D Wall Sculpture | Modern Textured Relief Art Panel, Minimalist Wall Hanging for Bedroom or Office",
+        "etsyUrl": "https://www.etsy.com/in-en/listing/4473877998/handcrafted-3d-wall-carving-decorative?variation0=6416222314"
+      },
+      {
+        "code": "HSMPSBL9",
+        "subcategory": "PEDESTAL SINK",
+        "title": "Marble Drum Pedestal Sink  | Dark Marble Pedestal Sink Luxury Stone Basin | Fully Customize",
+        "etsyUrl": "https://www.etsy.com/in-en/listing/4479121882/dark-marble-pedestal-sink-luxury-stone"
+      },
+      {
+        "code": "HSMSTWH10",
+        "subcategory": "SIDE TABLE",
+        "title": "White Marble Side Table Modern Sculptural Accent Table | DesignForAges",
+        "etsyUrl": "Buy White Marble Side Table Modern Sculptural Accent Table | Designforages Online in India - Etsy"
+      },
+      {
+        "code": "HSMSTBL17",
+        "subcategory": "SIDE TABLE",
+        "title": "Black Marble Side Table Modern Sculptural Accent Table | DesignForAges",
+        "etsyUrl": "https://www.etsy.com/in-en/listing/4479983519/black-marble-side-table-modern"
+      },
+      {
+        "code": "HSMSTGR18",
+        "subcategory": "SIDE TABLE",
+        "title": "Green Marble Side Table Modern Stone Accent Table | DesignForAges",
+        "etsyUrl": "https://www.etsy.com/in-en/listing/4479989355/green-marble-side-table-modern-stone"
+      },
+      {
+        "code": "HSMSTBE19",
+        "subcategory": "SIDE TABLE",
+        "title": "Travertine Side Table Sculptural Stone Accent Table | DesignForAges",
+        "etsyUrl": "https://www.etsy.com/in-en/listing/4479997972/travertine-side-table-sculptural-stone"
+      },
+      {
+        "code": "HSMSWH27",
+        "subcategory": "SINK",
+        "title": "White Marble Carved Bathroom Sink Luxury Vessel Basin",
+        "etsyUrl": "https://www.etsy.com/your/shops/me/listing-editor/edit/4499660791"
+      },
+      {
+        "code": "HSMPSWH14",
+        "subcategory": "PEDESTAL SINK",
+        "title": "Marble Pedestal Sink Modern Stone Bathroom Basin",
+        "etsyUrl": "https://www.etsy.com/your/shops/me/listing-editor/edit/4499664607"
+      },
+      {
+        "code": "HSMSRE28",
+        "subcategory": "SINK",
+        "title": "Natural Stone Marble Vessel Sink Rustic Bathroom Basin",
+        "etsyUrl": "https://www.etsy.com/your/shops/me/listing-editor/edit/4499677804"
+      },
+      {
+        "code": "HSMPSRE15",
+        "subcategory": "PEDESTAL SINK",
+        "title": "Red Marble Pedestal Sink Luxury Bathroom Basin",
+        "etsyUrl": "https://www.etsy.com/your/shops/me/listing-editor/edit/4499670063"
+      },
+      {
+        "code": "HSMPSMU16",
+        "subcategory": "PEDESTAL SINK",
+        "title": "Brown Marble Pedestal Sink Luxury Stone Bathroom Basin",
+        "etsyUrl": "https://www.etsy.com/your/shops/me/listing-editor/edit/4499681810"
+      },
+      {
+        "code": "HSMSBE29",
+        "subcategory": "SINK",
+        "title": "Heart Shaped Marble Sink Hand Carved Bathroom Basin",
+        "etsyUrl": "https://www.etsy.com/your/shops/me/listing-editor/edit/4499707264"
+      },
+      {
+        "code": "HSMSBR30",
+        "subcategory": "SINK",
+        "title": "Round Stone Vessel Sink Rustic Bathroom Basin",
+        "etsyUrl": "https://www.etsy.com/listing/4499709592/round-stone-vessel-sink-rustic-bathroom?sr_prefetch=1&pf_from=shop_home&ga_search_query=Round%2BStone%2BVessel%2BSink%2BRustic%2BBathroom%2BBasin&ref=shop_items_search_1&pro=1&frs=1&logging_key=92d463a404546c9c93966a329dd2bf49f3d20c56%3A4499709592"
+      },
+      {
+        "code": "HSMSBL31",
+        "subcategory": "SINK",
+        "title": "Black Marble Vessel Sink Natural Stone Basin",
+        "etsyUrl": "https://www.etsy.com/your/shops/me/listing-editor/edit/4499703009"
+      },
+      {
+        "code": "HSMPSBLWH17",
+        "subcategory": "PEDESTAL SINK",
+        "title": "Black White Pedestal Sink Modern Marble Basin",
+        "etsyUrl": "https://www.etsy.com/your/shops/me/listing-editor/edit/4499705853"
+      },
+      {
+        "code": "HSMSBE32",
+        "subcategory": "SINK",
+        "title": "Beige Marble Rectangular Vessel Sink Fluted Basin",
+        "etsyUrl": "https://www.etsy.com/your/shops/me/listing-editor/edit/4499718240"
+      },
+      {
+        "code": "HSMSTBE29",
+        "subcategory": "Side Table",
+        "title": "Travertine Coffee Table Modern Stone Living Room Table",
+        "etsyUrl": "https://www.etsy.com/listing/4500274173/travertine-coffee-table-modern-stone?click_key=b3ab79ed9a38ea35d66703b3610f289aae0a8a47%3A4500274173&click_sum=ce42717a&sr_prefetch=1&pf_from=shop_home&ga_search_query=Travertine%2BCoffee%2BTable%2BModern%2BStone%2BLiving%2BRoom%2BTable&ref=shop_items_search_8&pro=1&frs=1"
+      },
+      {
+        "code": "HSMCOBE13",
+        "subcategory": "Console table",
+        "title": "Travertine Console Table Modern Stone Entryway Table",
+        "etsyUrl": "etsy.com/listing/4500294317/travertine-console-table-modern-stone?click_key=ef817eba1f882e42865745da4a3f86654e6f1d17%3A4500294317&click_sum=6776445f&sr_prefetch=1&pf_from=shop_home&ga_search_query=Travertine%2BConsole%2BTable%2BModern%2BStone%2BEntryway%2BTable&ref=shop_items_search_6&pro=1&frs=1"
+      },
+      {
+        "code": "HSMCOBE14",
+        "subcategory": "Console table",
+        "title": "Travertine Console Table Minimal Stone Entryway Table",
+        "etsyUrl": "etsy.com/listing/4500295701/travertine-console-table-minimal-stone?click_key=129cae17eebf5f146afcb6062b489fde69045594%3A4500295701&click_sum=c2b7586c&sr_prefetch=1&pf_from=shop_home&ga_search_query=Travertine%2BConsole%2BTable%2BMinimal%2BStone%2BEntryway%2BTable&ref=shop_items_search_1&pro=1&frs=1"
+      },
+      {
+        "code": "HSMCETGE20",
+        "subcategory": "Coffee Table",
+        "title": "Round Travertine Coffee Table Sculptural Stone Table",
+        "etsyUrl": "https://www.etsy.com/listing/4500298983/round-travertine-coffee-table-sculptural?click_key=d45602b1ecbe053e9a10d02d088a204484d754bc%3A4500298983&click_sum=b1f3ac1f&sr_prefetch=1&pf_from=shop_home&ga_search_query=Round%2BTravertine%2BCoffee%2BTable%2BSculptural%2BStone%2BTable&ref=shop_items_search_1&pro=1&frs=1"
+      },
+      {
+        "code": "HSMPSNBL18",
+        "subcategory": "PEDESTAL SINK",
+        "title": "Black Marble Pedestal Sink Luxury Stone Basin",
+        "etsyUrl": "https://www.etsy.com/listing/4500216702/black-marble-pedestal-sink-luxury-stone?click_key=418b6a2a307912f66a3f66a5d37a5df9e2a72c7d%3A4500216702&click_sum=10f5001c&sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_16&pro=1&frs=1"
+      },
+      {
+        "code": "HSMSWH33",
+        "subcategory": "SINK",
+        "title": "White Marble Ripple Vessel Sink Artistic Basin",
+        "etsyUrl": "https://www.etsy.com/listing/4500211029/white-marble-ripple-vessel-sink-artistic?click_key=ff6868b1596097ce105d051d995a99731b21adb2%3A4500211029&click_sum=1f1512b2&sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_15&pro=1&frs=1"
+      },
+      {
+        "code": "HSMPSWH19",
+        "subcategory": "PEDESTAL SINK",
+        "title": "White Marble Pedestal Sink Modern Stone Basin",
+        "etsyUrl": "https://www.etsy.com/listing/4500225558/white-marble-pedestal-sink-modern-stone?click_key=ddb074fc0b55b8387acd87b25d52e256c3c1d47d%3A4500225558&click_sum=304fb8a6&sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_14&pro=1&frs=1"
+      },
+      {
+        "code": "HSMCETRE21",
+        "subcategory": "Coffee Table",
+        "title": "Red Marble Coffee Table Set Modern Living Room Tables",
+        "etsyUrl": "https://www.etsy.com/listing/4500464199/red-marble-coffee-table-set-modern?click_key=84fe4d074e0f9bc34146e1aa31ab00989f8fe34a%3A4500464199&click_sum=b2983b9b&sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_7&pro=1&frs=1"
+      },
+      {
+        "code": "HSMCETGE22",
+        "subcategory": "Coffee Table",
+        "title": "Organic Marble Coffee Table Set Sculptural Living Tables",
+        "etsyUrl": "https://www.etsy.com/listing/4500465323/organic-marble-coffee-table-set?click_key=2623e6767ad0e446225f23c9f1b6e235fe1f9e66%3A4500465323&click_sum=144059aa&sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_6&pro=1&frs=1"
+      },
+      {
+        "code": "HSMCETGE24",
+        "subcategory": "Coffee table",
+        "title": "Sculptural Travertine Coffee Table Modern Wave Stone Table",
+        "etsyUrl": "https://www.etsy.com/listing/4500829748/sculptural-travertine-coffee-table?sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_1&pro=1&frs=1&logging_key=7eb1a35e9893a7cc966623260287b118af610b62%3A4500829748"
+      },
+      {
+        "code": "HSMSTGE39",
+        "subcategory": "SIDE TABLE",
+        "title": "Modern Travertine Side Table Geometric Stone Accent Table",
+        "etsyUrl": "https://www.etsy.com/listing/4500838834/modern-travertine-side-table-geometric?click_key=69e01adf9a26c276e0e5f610888261162df529c8%3A4500838834&click_sum=7c1b4e06&sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_1&pro=1&frs=1"
+      },
+      {
+        "code": "HSMSTGRWH40",
+        "subcategory": "SIDE TABLE",
+        "title": "Floral Marble Side Table Luxury Stone Accent Table",
+        "etsyUrl": "etsy.com/listing/4500840621/floral-marble-side-table-luxury-stone?click_key=c5a2b231b64545d85dbd38f8d23e97b493cb7e85%3A4500840621&click_sum=d2f52ef5&sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_1&pro=1&frs=1"
+      },
+      {
+        "code": "HSMCETGRWH25",
+        "subcategory": "COFFEE TABLE",
+        "title": "Floral Marble Coffee Table Luxury Stone Center Table",
+        "etsyUrl": "https://www.etsy.com/listing/4500853354/floral-marble-coffee-table-luxury-stone?sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_1&pro=1&frs=1&logging_key=08b2d1f816ffd91bf5248f05ac60c3fc1e6450a4%3A4500853354"
+      },
+      {
+        "code": "HS2MSTWHBL42",
+        "subcategory": "SIDE TABLE",
+        "title": "Sculptural Marble Side Table Modern Stone Accent Table",
+        "etsyUrl": "https://www.etsy.com/listing/4500916070/sculptural-marble-side-table-modern?sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_1&pro=1&frs=1&logging_key=3ea31aed6775f3bf1edc1e456c1e4f451df4ada4%3A4500916070"
+      },
+      {
+        "code": "HSMSTWHRE43",
+        "subcategory": "SIDE TABLE",
+        "title": "Modern Marble Side Table Luxury Stone Accent Table",
+        "etsyUrl": "https://www.etsy.com/listing/4500924830/modern-marble-side-table-luxury-stone?sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_1&pro=1&frs=1&logging_key=1dec01bafd18c725fb478dc5e4bcd3aec245d3bc%3A4500924830"
+      },
+      {
+        "code": "HSMCOWHBL16",
+        "subcategory": "CONSOLE TABLE",
+        "title": "Modern Marble Console Table Sculptural Entryway Table",
+        "etsyUrl": "https://www.etsy.com/listing/4500918061/modern-marble-console-table-sculptural?sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_1&pro=1&frs=1&logging_key=b450a696a4949f13a0a20dc6e179e5bf9a0abf36%3A4500918061"
+      },
+      {
+        "code": "HSMSTWH44",
+        "subcategory": "SIDE TABLE",
+        "title": "Sculptural Marble Side Table Modern Stone Pedestal",
+        "etsyUrl": "https://www.etsy.com/listing/4500923431/sculptural-marble-side-table-modern?sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_1&pro=1&frs=1&logging_key=fcbfc16a4a27ae6476bbb8894f3153e012a8ac0a%3A4500923431"
+      },
+      {
+        "code": "HSMLAWH4",
+        "subcategory": "LAMP",
+        "title": "Marble Table Lamp Sculptural Stone Lighting Decor",
+        "etsyUrl": "https://www.etsy.com/listing/4501004785/marble-table-lamp-sculptural-stone?click_key=b74228d5f882dd5c1b3cca7b7fc07c53bda17625%3A4501004785&click_sum=186ecede&sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_10&pro=1&frs=1"
+      },
+      {
+        "code": "HSMLAWH5",
+        "subcategory": "LAMP",
+        "title": "Alabaster Marble Table Lamp Modern Sculptural Bedside Light",
+        "etsyUrl": "https://www.etsy.com/listing/4501015572/alabaster-marble-table-lamp-modern?click_key=9348cb2d2f59760858145b157f44f805bb3c09de%3A4501015572&click_sum=6ad55ad5&sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_9&pro=1&frs=1"
+      },
+      {
+        "code": "HSMLABE6",
+        "subcategory": "LAMP",
+        "title": "Travertine Mushroom Table Lamp Organic Stone Lighting",
+        "etsyUrl": "etsy.com/listing/4501395209/travertine-mushroom-table-lamp-organic?click_key=40dcfb4add1877941c2673bf4018302f226a3ed0%3A4501395209&click_sum=aa17b58b&sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_1&pro=1&frs=1"
+      },
+      {
+        "code": "HSMLABR7",
+        "subcategory": "LAMP",
+        "title": "Brown Marble Table Lamp Modern Bedside Lighting",
+        "etsyUrl": "https://www.etsy.com/listing/4501953154/brown-marble-table-lamp-modern-bedside?click_key=5586fa2da9aad6c1f532123ecad7fe4af04ec70e%3A4501953154&click_sum=358fe1b0&sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_1&pro=1&frs=1"
+      },
+      {
+        "code": "HSMLABR8",
+        "subcategory": "lamp",
+        "title": "Marble Table Lamp Modern Sculptural Bedroom Lighting",
+        "etsyUrl": "etsy.com/listing/4501950043/marble-table-lamp-modern-sculptural?click_key=3c62cdfa57e601c3288f8d82d933ebaed2e609ac%3A4501950043&click_sum=dfe33389&sr_prefetch=1&pf_from=shop_home&ref=shop_home_active_1&pro=1&frs=1"
+      }
+    ]
+  }
+}

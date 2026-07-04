@@ -1,0 +1,2151 @@
+[
+  {
+    "productId": "post-done",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMDTWH1",
+    "expectedImages": 4,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "round-travertine-dining-table-sculptural-stone-base-organic-modern-furniture",
+    "category": "furniture",
+    "folder": "hs-global/products/furniture/Dining%20Table",
+    "expectedImages": 4,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "sculptural-marble-coffee-table-handmade",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCETWH2",
+    "expectedImages": 1,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "custom-round-marble-coffee-table-sculptural-sphere-legs",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCETWH3",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "handmade-black-marble-coffee-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCETBL4",
+    "expectedImages": 3,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "travertine-marble-coffee-table-handmade-sculptural-sphere-base",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCETBE6",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "custom-round-multicolor-marble-coffee-table-with-sculptural-stone",
+    "category": "furniture",
+    "folder": "hs-global/products/furniture/Coffee%20Table",
+    "expectedImages": 3,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "round-travertine-coffee-table-with-sphere-base",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCETBE8",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "handmade-white-marble-side-table-sculptural-stone-end-table-stone-coffee-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTWH3",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "custom-handmade-white-marble-pedestal-side-table-modern-round-stone-end-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTWH4",
+    "expectedImages": 4,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "white-onyx-coffee-table-custom-fluted-pedestal-table-handmade",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTWH5",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "handmade-scalloped-marble-side-table-modern-round-accent-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTGR6",
+    "expectedImages": 4,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "custom-stone-cone-pedestal-table-handmade-marble-side-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTBR7",
+    "expectedImages": 4,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "alabaster-marble-table-lamp-custom-luxury-white-marbling-table-lamp",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMLAMU1",
+    "expectedImages": 4,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "natural-alabaster-table-lamp-luxury-marble-lamp",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMLABE2",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "luxury-marble-pedestal-sink-modern-bathroom-basin-bathroom-sink-marble",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMPSWHBL6",
+    "expectedImages": 4,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "handmad-classic-marble-urn-vase-decorative-accent-onyx-memory",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMVAWH1",
+    "expectedImages": 4,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "handcrafted-marble-fluted-ruffle-bowl-scalloped-fruit-bowl",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMBOBERE1",
+    "expectedImages": 4,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "handcrafted-white-marble-fluted-bowl",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMBOWH2",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "handcrafted-marble-bowl-for-decoration",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMBOWH3",
+    "expectedImages": 4,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "natural-stone-clock-rustic-rock-table-decor-living-room-decor",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCLBE1",
+    "expectedImages": 4,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "pebble-stone-wall-clock-natural-rock-decor-home-decoration",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCLBR2",
+    "expectedImages": 4,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "handmade-custom-natural-marble-vessel-sink-luxury-round-organic-stone",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSPI1",
+    "expectedImages": 4,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "handmade-fluted-marble-vessel-sink-modern-living-room-design",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSPIWH2",
+    "expectedImages": 1,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "handcrafted-makarana-pink-marble-vessel-sink-rustic-stone-basin",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSPI4",
+    "expectedImages": 4,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "handcrafted-round-marble-vessel-sink-italian-marble-fluted-ring-design-basin",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSWH5",
+    "expectedImages": 4,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "handmade-rectangular-marble-sink-luxury-fluted-front-bathroom-basin-custom-size",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSWH6",
+    "expectedImages": 4,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "handmade-calacatta-viola-marble-bathtub",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMBTBE1",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "beige-marble-bathtub-freestanding-stone-tub-textured-oval-bath-handmade",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMBTBE3",
+    "expectedImages": 4,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "beige-stone-bathtub-freestanding-marble-tub-rustic-carved-oval-bath",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMBTBE4",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "handmade-natural-white-marble-bathtub-freestanding-oval-stone-tub",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMBTWH5",
+    "expectedImages": 8,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "custom-white-marble-table-lamp-fabric-shade",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMLAWH3",
+    "expectedImages": 4,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "handcrafted-white-marble-vessel-sink-bathroom-basin",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSWH7",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "leaf-carved-marble-floor-mirror-pink-stone-full-length-mirror",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMMFPI1",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "green-marble-coffee-table-modern-stone-center-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCTGR2",
+    "expectedImages": 8,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "green-marble-lounge-chair-modern-stone-chaise-chair",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCCGR1",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "black-marble-bathtub-freestanding-stone-soaking-tub",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMBTBL6",
+    "expectedImages": 4,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "calcutta-viola-marble-freestanding-bathtub-solid-natural-stone",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMBTGE7",
+    "expectedImages": 6,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "white-marble-shell-bathtub-luxury-sculptural-soaking-tub",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMBTWH8",
+    "expectedImages": 6,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "luxury-red-marble-fluted-sink-handcrafted-stone-basin-for-bathroom",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSRE8",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "white-marble-bathtub",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMBTWH9",
+    "expectedImages": 6,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "marble-side-table-modern-stone-end-table-decor",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTMU8",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "marble-full-length-mirror-wavy-frame-floor-mirror-silver-framed",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMMFWH2",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "hand-printed-neon-cartoon-mirror-frame-gen-z-decor-wave-mirror",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMMFNE3",
+    "expectedImages": 3,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "green-marble-coffee-table-modern-block-stone-center-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCTGR3",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "green-marble-console-table-modern-stone-entryway-table-handcrafted-statement-furniture",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCOTGR4",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "green-marble-console-table-modern-stone-entryway-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCOTGR6",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "black-marble-console-table-modern-sculptural-entry-table-handcrafted-statement-furniture-fully-customize",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCOTBL8",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "white-marble-console-table-sculptural-pillar-entry-table-fully-customize-handcrafted-and-luxury-furniture",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCOTWH9",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "green-marble-console-table-sculptural-base-entryway-table-green-coffee-table-fully-customize",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCOTGR10",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "marble-console-table-modern-two-tone-entryway-table-luxurious-modern-table-design-fully-customize",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCOTWHBL11",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "marble-console-table-fluted-base-modern-entryway-table-entryway-console-table-fluted-column-legs-handmade-and-luxury-hallway-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCOTWH12",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "marble-pedestal-sink-modern-bathroom-wash-basin-round-wash-basin",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMPSWH7",
+    "expectedImages": 6,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "green-marble-pedestal-sink-modern-stone-wash-basin-luxurious-bathroom",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMPSGR8",
+    "expectedImages": 6,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "white-marble-pedestal-sink-fluted-stone-basin-fully-customize",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMPSWH10",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "green-marble-side-table-modern-sculptural-accent-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTGR23",
+    "expectedImages": 12,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "green-marble-fluted-side-table-modern-stone-accent-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTGR24",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "marble-side-table-modern-sculptural-cylinder-accent-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTWH26",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "marble-cluster-side-table-sculptural-modern-accent-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTWH27",
+    "expectedImages": 1,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "twisted-marble-side-table-modern-sculptural-accent-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTWH28",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "marble-pedestal-sink-sculptural-stone-wash-basin",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMPSWH12",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "rectangular-marble-sink-fluted-stone-vessel-basin",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSWHBR10",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "beige-marble-vessel-sink-rectangular-stone-basin",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSBE11",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "carved-marble-vessel-sink-decorative-round-basin",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSWH12",
+    "expectedImages": 6,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "green-marble-vessel-sink-round-stone-basin",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSGR13",
+    "expectedImages": 6,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "marble-flower-vessel-sink-hand-carved-stone-basin",
+    "category": "furniture",
+    "folder": "hs-global/products/furniture/Sink",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "hand-carved-marble-flower-sink-luxury-vessel-basin",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSBE15",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "green-marble-vessel-sink-round-stone-bathroom-basin",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSGR16",
+    "expectedImages": 7,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "organic-marble-sink-natural-edge-stone-vessel-basin",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSWH17",
+    "expectedImages": 6,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "fluted-marble-vessel-sink-round-stone-bathroom-basin",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSWH18",
+    "expectedImages": 3,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "green-marble-rectangular-vessel-sink-fluted-stone-basin",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSGR19",
+    "expectedImages": 1,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "fluted-marble-vessel-sink-round-stone-wash-basin",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSWH20",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "rectangular-marble-sink-modern-stone-bathroom-basin",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSWHBL21",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "round-marble-vessel-sink-modern-stone-bathroom-basin",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSWH23",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "green-marble-console-table-modern-entryway-accent-table",
+    "category": "furniture",
+    "folder": "hs-global/products/furniture/Side%20Table",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "marble-side-table-modern-accent-table-black-stone-top",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTBL32",
+    "expectedImages": 5,
+    "status": "Phase 1 Partial"
+  },
+  {
+    "productId": "organic-marble-coffee-table-natural-edge-stone-table",
+    "category": "furniture",
+    "folder": "hs-global/products/furniture/Side%20Table",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "organic-marble-pedestal-sink-sculptural-bathroom-basin",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMPSBR21",
+    "expectedImages": 5,
+    "status": "Phase 1 Partial"
+  },
+  {
+    "productId": "pink-marble-coffee-table-modern-stone-living-room-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCETBE23",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "red-travertine-pedestal-sink-modern-stone-bathroom-basin",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSRE35",
+    "expectedImages": 6,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "modern-marble-side-table-minimalist-z-shape-accent-table",
+    "category": "furniture",
+    "folder": "hs-global/products/furniture/Side%20Table",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "modern-travertine-side-table-wood-accent-end-table",
+    "category": "furniture",
+    "folder": "hs-global/products/furniture/Side%20Table",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "travertine-console-table-sculptural-stone-entryway-table",
+    "category": "furniture",
+    "folder": "hs-global/products/furniture/Console%20Table",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "round-travertine-side-table-modern-stone-accent-table",
+    "category": "furniture",
+    "folder": "hs-global/products/furniture/Side%20Table",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "black-marble-pedestal-side-table-luxury-accent-table",
+    "category": "furniture",
+    "folder": "hs-global/products/furniture/Side%20Table",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "African-Carnelian",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Agate",
+    "expectedImages": 6,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "Black-Agate",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Agate",
+    "expectedImages": 6,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "Blue-Agate",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Agate%20Slabs",
+    "expectedImages": 7,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "Brown-Agate",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Agate",
+    "expectedImages": 6,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "crystal-agate",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Agate",
+    "expectedImages": 6,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "Crystal-Agate-With-Golden-Glitter",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Agate",
+    "expectedImages": 6,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "Golden-Hematite",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Quartz",
+    "expectedImages": 7,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "Yellow-Agate",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Agate",
+    "expectedImages": 6,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "black-marble-console-table-modern-entryway-furniture",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCOBL20",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "organic-marble-coffee-table-set-sculptural-living-tables",
+    "category": "furniture",
+    "folder": "hs-global/products/furniture/Coffee%20Table",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "oval-marble-coffee-table-modern-minimalist-stone-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCETWH18",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "white-marble-coffee-table-round-stone-ball-base-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCETWHBL28",
+    "expectedImages": 6,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "Rose-Quartz-Slabs",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Quartz",
+    "expectedImages": 6,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "chesterfield-wingback-leather-accent-chair-classic-armchair",
+    "category": "leather",
+    "folder": "hs-global/leather/etsy/HSLCHBR1",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "modern-marble-c-shape-side-table-minimal-accent-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTGE59",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "marble-coffee-table-set-modern-nested-stone-tables",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCETWHBR16",
+    "expectedImages": 8,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "Black-Petrified-Wood-Retro-Slab",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/petrified%20wood",
+    "expectedImages": 6,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "Earth-Agate",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Agate",
+    "expectedImages": 6,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "Malachite-Flower-Slabs",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Gemstone",
+    "expectedImages": 6,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "luxury-3-piece-nesting-tables-gold-accent-side-table-set",
+    "category": "leather",
+    "folder": "hs-global/leather/etsy/HSLSTBR3",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "White-Quartz-with-Sparkle",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Quartz",
+    "expectedImages": 6,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "modern-travertine-side-table-red-accent-end-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTBERE51",
+    "expectedImages": 6,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "Green-Abalone",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Mother%20Of%20Pearl",
+    "expectedImages": 7,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "Malachite",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Gemstone",
+    "expectedImages": 7,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "chesterfield-leather-sofa-classic-tufted-loveseat",
+    "category": "leather",
+    "folder": "hs-global/leather/etsy/HSLSOBR3",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "White-MOP",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Quartz",
+    "expectedImages": 7,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "black-marble-side-table-modern-sculptural-accent-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTBL21",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "sculptural-marble-side-table-modern-stone-pedestal",
+    "category": "furniture",
+    "folder": "hs-global/products/furniture/Side%20Table",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "Banded-Agate-Slab",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Agate%20Slabs",
+    "expectedImages": 7,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "black-marble-side-table-modern-round-stone-accent-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTBL14",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "Red-Jasper",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Jasper",
+    "expectedImages": 1,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "Ruby-Agate",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Agate",
+    "expectedImages": 6,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "round-wooden-coffee-table-brass-inlay-accent-table",
+    "category": "wooden-furniture",
+    "folder": "hs-global/handicraft/etsy/HCBSTBR7",
+    "expectedImages": 6,
+    "status": "Phase 1 Partial"
+  },
+  {
+    "productId": "large-wooden-dining-table-set-brass-inlay-6-chairs",
+    "category": "wooden-furniture",
+    "folder": "hs-global/handicraft/etsy/HCBDTBR1",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "marble-side-table-modern-stone-nightstand-accent-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTMU38",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "modern-glass-coffee-table-sculptural-wood-base",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCETWH37",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "green-leather-ottoman-luxury-accent-stool",
+    "category": "leather",
+    "folder": "hs-global/leather/etsy/HSLSTOGR2",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "Lace-Agate",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Agate",
+    "expectedImages": 6,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "green-marble-side-table-fluted-stone-accent-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTGR65",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "Crystal-Agate",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Agate",
+    "expectedImages": 6,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "brass-inlay-5-drawer-bedside-chest-wooden-storage-table",
+    "category": "wooden-furniture",
+    "folder": "hs-global/handicraft/etsy/HCBSTBR4",
+    "expectedImages": 6,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "green-marble-side-table-round-stone-accent-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTGR11",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "marble-nesting-coffee-tables-modern-stone-table-set",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCETGR32",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "luxury-nesting-side-tables-leather-accent-table-set",
+    "category": "leather",
+    "folder": "hs-global/leather/etsy/HSLSTBR7",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "floral-marble-side-table-luxury-stone-accent-table",
+    "category": "furniture",
+    "folder": "hs-global/products/furniture/Side%20Table",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "natural-marble-rock-sink-rustic-stone-vessel-basin",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSWH22",
+    "expectedImages": 6,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "Sodalite-Blue",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Gemstone",
+    "expectedImages": 6,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "green-marble-console-table-sculptural-arch-design-entry-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCOGR18",
+    "expectedImages": 6,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "round-marble-side-table-minimalist-stone-accent-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTWH52",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "round-marble-coffee-table-modern-stone-center-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCETBE17",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "modern-leather-accent-armchair-luxury-lounge-chair",
+    "category": "leather",
+    "folder": "hs-global/leather/etsy/HSLSOBR2",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "modern-marble-glass-coffee-table-sculptural-living-room-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCETBLWH33",
+    "expectedImages": 4,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "Fossil-Agate",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Agate",
+    "expectedImages": 7,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "White-Petrified-Wood",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/petrified%20wood",
+    "expectedImages": 6,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "brass-embossed-bedside-cabinet-vintage-storage-table",
+    "category": "wooden-furniture",
+    "folder": "hs-global/handicraft/etsy/HCBSTGO2",
+    "expectedImages": 7,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "travertine-coffee-table-modern-sculptural-stone-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCETBE36",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "red-marble-side-table-modern-stone-accent-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTRE61",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "fluted-marble-pedestal-sink-pink-stone-bathroom-basin",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMPSWH25",
+    "expectedImages": 1,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "Smoky-Quartz-Dark",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Quartz",
+    "expectedImages": 6,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "elephant-brass-inlay-wooden-sideboard-cabinet-large-storage",
+    "category": "wooden-furniture",
+    "folder": "hs-global/handicraft/etsy/HCBCOBR3",
+    "expectedImages": 6,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "freestanding-marble-pedestal-sink-sculptural-stone-basin",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMPSGE13",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "luxury-leather-coffee-table-modern-brass-accent-table",
+    "category": "leather",
+    "folder": "hs-global/leather/etsy/HSLCETBR3",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "modern-black-tray-side-table-gold-accent-end-table",
+    "category": "leather",
+    "folder": "hs-global/leather/etsy/HSLSTBL4",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "black-white-marble-side-table-geometric-accent-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTWHBL12",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "green-tufted-upholstered-bed-frame-modern-luxury-bed",
+    "category": "leather",
+    "folder": "hs-global/leather/etsy/HSLBEGR1",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "round-travertine-dining-table-modern-stone-pedestal-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMDTBE6",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "smoky-quartz-dark",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Quartz",
+    "expectedImages": 7,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "Golden Mop",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Mother%20Of%20Pearl",
+    "expectedImages": 7,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "modern-marble-side-table-luxury-stone-accent-table",
+    "category": "furniture",
+    "folder": "hs-global/products/furniture/Side%20Table",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "Brown-Petrified-Wood-Slabs",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/petrified%20wood",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "modern-travertine-side-table-geometric-stone-accent-table",
+    "category": "furniture",
+    "folder": "hs-global/products/furniture/Side%20Table",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "scalloped-marble-console-table-modern-stone-entryway-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCOBE25",
+    "expectedImages": 6,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "black-marble-coffee-table-modern-stone",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCTBL4",
+    "expectedImages": 6,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "Jamaican-Jasper-Slabs",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Jasper",
+    "expectedImages": 6,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "black-marble-side-table-sculptural-modern-accent-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTWHBL16",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "Obsidian-Black-with-Gold",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Quartz",
+    "expectedImages": 1,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "black-marble-console-table-modern-entryway-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCOBL28",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "carved-marble-pedestal-sink-modern-diamond-pattern-basin",
+    "category": "furniture",
+    "folder": "hs-global/products/furniture/Pedestal%20Sink",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "sculptural-travertine-coffee-table-modern-wave-stone-table",
+    "category": "furniture",
+    "folder": "hs-global/products/furniture/Coffee%20Table",
+    "expectedImages": 4,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "Orange-Quartz",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Quartz",
+    "expectedImages": 1,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "modern-green-upholstered-bench-entryway-bedroom-seat",
+    "category": "leather",
+    "folder": "hs-global/leather/etsy/HSLBENGR1",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "Angel-Jasper",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Jasper",
+    "expectedImages": 2,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "brass-inlay-console-table-wooden-entryway-desk-4-drawer",
+    "category": "wooden-furniture",
+    "folder": "hs-global/handicraft/etsy/HCBCOBR4",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "fluted-marble-pedestal-sink-beige-stone-bathroom-basin",
+    "category": "furniture",
+    "folder": "hs-global/products/furniture/Pedestal%20Sink",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "marble-coffee-table-sculptural-pebble-stone",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCETWH15",
+    "expectedImages": 6,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "faceted-marble-vessel-sink-geometric-bathroom-basin",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSWH24",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "modern-black-marble-pedestal-side-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTBL58",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "black-marble-vessel-sink-round-stone-bathroom-basin",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSBL25",
+    "expectedImages": 6,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "round-wooden-dining-table-set-brass-inlay-4-chairs",
+    "category": "wooden-furniture",
+    "folder": "hs-global/handicraft/etsy/HCBDTBR1",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "travertine-coffee-table-tiered-stone-living-room-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCETBE29",
+    "expectedImages": 6,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "Green-Quartz",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Quartz",
+    "expectedImages": 8,
+    "status": "Phase 1 Partial"
+  },
+  {
+    "productId": "white-marble-oval-coffee-table-sculptural-stone-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCETWH13",
+    "expectedImages": 8,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "Brazilian-Green-Agate",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Agate",
+    "expectedImages": 1,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "red-marble-side-table-modern-round-accent-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTRE54",
+    "expectedImages": 6,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "clover-marble-side-table-luxury-stone-accent-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTRE63",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "luxury-leather-ottoman-round-accent-stool",
+    "category": "leather",
+    "folder": "hs-global/leather/etsy/HSLSTOBR1",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "modern-marble-dining-table-white-stone-with-black-veining",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMDTWHBL8",
+    "expectedImages": 4,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "Septaria-Yellow",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Quartz",
+    "expectedImages": 6,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "Amazonite",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Amazonite",
+    "expectedImages": 7,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "marble-brass-side-table-modern-accent-end-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTRE64",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "modern-marble-console-table-minimal-entryway-furniture",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCOBE22",
+    "expectedImages": 6,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "Rose-Quartz",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Gemstone",
+    "expectedImages": 6,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "Mix-Agate-Slabs",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Agate",
+    "expectedImages": 6,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "green-marble-vessel-sink-oval-bathroom-stone-basin",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSGR38",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "red-marble-coffee-table-modern-round-stone-center-table",
+    "category": "furniture",
+    "folder": "hs-global/products/furniture/Coffee%20Table",
+    "expectedImages": 6,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "wooden-brass-inlay-sofa-bench-traditional-accent-sofa",
+    "category": "wooden-furniture",
+    "folder": "hs-global/handicraft/etsy/HCBSOBR1",
+    "expectedImages": 6,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "gray-marble-side-table-sculptural-stone-accent-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTGE13",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "red-marble-side-table-modern-pedestal-accent-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTRE62",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "modern-nesting-side-tables-wood-metal-accent-tables-set",
+    "category": "leather",
+    "folder": "hs-global/leather/etsy/HSLSTBR1",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "vintage-brass-inlay-wooden-chest-of-drawers-table",
+    "category": "wooden-furniture",
+    "folder": "hs-global/handicraft/etsy/HCBSTBR1",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "white-marble-side-table-spiral-base-modern-accent-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTWH48",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "luxury-console-table-green-entryway-accent-table",
+    "category": "leather",
+    "folder": "hs-global/leather/etsy/HSLCOTGR1",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "travertine-side-table-sculptural-stone-accent-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTWH25",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "white-modern-marble-console-table-with-metal-legs-entryway-table-for-entryways-hallways",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCOTWH3",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "burgundy-marble-console-table-sculptural-entryway-decor",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCORE21",
+    "expectedImages": 6,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "green-marble-side-table-sculptural-stone-accent-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTGR46",
+    "expectedImages": 7,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "vintage-trunk-storage-cabinet-leather-accent-chest",
+    "category": "leather",
+    "folder": "hs-global/leather/etsy/HSLCABBL1",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "modern-marble-wave-coffee-table-sculptural-center-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCETGE35",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "Black-MOP",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Mother%20Of%20Pearl",
+    "expectedImages": 7,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "Mix-Agate",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Agate",
+    "expectedImages": 7,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "Golden-Hematite-Quartz-Slab",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Quartz",
+    "expectedImages": 7,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "Mockite-Jasper",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Jasper",
+    "expectedImages": 8,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "green-marble-coffee-table-round-stone-living-room-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCETGR26",
+    "expectedImages": 6,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "white-marble-console-table-minimalist-stone-entry-table-modern-stone-side-table-fully-customize",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCOTWH7",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "vintage-storage-trunk-coffee-table-green-faux-leather-chest",
+    "category": "furniture",
+    "folder": "hs-global/leather/etsy/HSLCETGR1",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "sculptural-marble-face-sink-artistic-bathroom-vessel-basin",
+    "category": "furniture",
+    "folder": "hs-global/products/furniture/Sink",
+    "expectedImages": 6,
+    "status": "Phase 1 Partial"
+  },
+  {
+    "productId": "luxury-nesting-side-tables-faux-leather-accent-table-se",
+    "category": "leather",
+    "folder": "hs-global/leather/etsy/HSLSTBR2",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "Brazilian-Black-Agate",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Agate",
+    "expectedImages": 1,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "luxury-leather-dresser-crocodile-texture-storage-cabinet",
+    "category": "leather",
+    "folder": "hs-global/leather/etsy/HSLDRBR2",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "oval-marble-dining-table-luxury-stone-dining-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMDTWH3",
+    "expectedImages": 6,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "round-leather-wall-mirror-luxury-accent-mirror",
+    "category": "leather",
+    "folder": "hs-global/leather/etsy/HSLMFBR2",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "Dendrite-Agate",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Agate",
+    "expectedImages": 8,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "Lapis-Lazulli",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Gemstone",
+    "expectedImages": 7,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "Moss-Agate",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Agate",
+    "expectedImages": 8,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "luxury-marble-top-coffee-table-with-storage-drawer",
+    "category": "leather",
+    "folder": "hs-global/leather/etsy/HSLCETCR2",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "travertine-oval-coffee-table-for-living-room",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMDTBE3",
+    "expectedImages": 14,
+    "status": "Phase 1 Partial"
+  },
+  {
+    "productId": "white-marble-side-table-modern-sculptural-accent-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTWH15",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "modern-marble-spiral-side-table-sculptural-accent-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTGE60",
+    "expectedImages": 4,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "brass-inlay-console-table-wooden-entryway-table-3-drawer",
+    "category": "wooden-furniture",
+    "folder": "hs-global/handicraft/etsy/HCBCOBR2",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "red-marble-vessel-sink-oval-stone-bathroom-basin",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSRE26",
+    "expectedImages": 6,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "wooden-coffee-table-brass-inlay-rustic-center-table",
+    "category": "wooden-furniture",
+    "folder": "hs-global/handicraft/etsy/HCBCETBR1",
+    "expectedImages": 4,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "Golden-Quartz",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Quartz",
+    "expectedImages": 6,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "handcrafted-marble-side-table-sculptural-pedestal-table",
+    "category": "furniture",
+    "folder": "hs-global/products/furniture/Side%20Table",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "luxury-leather-jewelry-box-organizer-vintage-storage-chest",
+    "category": "leather",
+    "folder": "hs-global/leather/etsy/HSLBOBR1",
+    "expectedImages": 4,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "travertine-vessel-sink-textured-stone-bathroom-basin",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSBE39",
+    "expectedImages": 3,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "brass-inlay-wooden-coffee-table-vintage-accent-table",
+    "category": "wooden-furniture",
+    "folder": "hs-global/handicraft/etsy/HCBCETBR2",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "Labradorite",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Gemstone",
+    "expectedImages": 8,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "travertine-coffee-table-organic-stone-living-room-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCETBE34",
+    "expectedImages": 6,
+    "status": "Phase 1 Partial"
+  },
+  {
+    "productId": "green-marble-coffee-table-geometric-stone-square-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCETGR27",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "travertine-round-side-table-minimal-stone-pedestal",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTBE20",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "marble-arch-console-table-modern-stone-entryway-table-fully-customization",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCOTBE2",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "modern-marble-console-table-black-stone-entryway-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCOBLWH24",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "modern-red-marble-pedestal-side-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTRE55",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "white-marble-coffee-table-round-modern-stone-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCETWH19",
+    "expectedImages": 11,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "beige-marble-side-table-round-stone-pedestal-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTBE22",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "green-marble-side-table-modern-accent-end-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTGR30",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "Green-Fluorite",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Semiprecious%20Stone",
+    "expectedImages": 1,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "chesterfield-green-leather-sofa-luxury-living-room-couch",
+    "category": "leather",
+    "folder": "hs-global/leather/etsy/HSLSOGR1",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "handcrafted-marble-vessel-sink-modern-bathroom-basin",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSWH36",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "red-marble-accent-side-table-sculptural-design",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTRE56",
+    "expectedImages": 7,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "White-Quartz",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Agate",
+    "expectedImages": 6,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "green-marble-coffee-table-modern-round-center-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCETGR9",
+    "expectedImages": 8,
+    "status": "Phase 1 Partial"
+  },
+  {
+    "productId": "Red-Tiger-Eye",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Tiger%20eye",
+    "expectedImages": 2,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "black-white-marble-coffee-table-modern-round-center-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCETBLWH11",
+    "expectedImages": 10,
+    "status": "Phase 1 Partial"
+  },
+  {
+    "productId": "green-marble-side-table-modern-stone-accent-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTGR53",
+    "expectedImages": 6,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "brass-inlay-wooden-side-table-vintage-accent-nightstand",
+    "category": "wooden-furniture",
+    "folder": "hs-global/handicraft/etsy/HCBSTBR6",
+    "expectedImages": 6,
+    "status": "Phase 1 Partial"
+  },
+  {
+    "productId": "travertine-console-table-minimalist-stone-entryway-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCOBE27",
+    "expectedImages": 4,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "floral-marble-coffee-table-luxury-stone-center-table",
+    "category": "furniture",
+    "folder": "hs-global/products/furniture/Coffee%20Table",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "black-marble-pedestal-sink-modern-sculptural-bathroom-basin",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMPSBL26",
+    "expectedImages": 6,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "Hemotied-Quartz",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Quartz",
+    "expectedImages": 7,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "white-marble-vessel-sink-carved-bathroom-basin",
+    "category": "furniture",
+    "folder": "hs-global/products/furniture/Sink",
+    "expectedImages": 8,
+    "status": "Phase 1 Partial"
+  },
+  {
+    "productId": "Red-Carnelian-Agate-Slabs",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Semiprecious%20Stone",
+    "expectedImages": 7,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "Emerald-quartz",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Gemstone",
+    "expectedImages": 6,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "hand-carved-marble-pedestal-sink-luxury-bathroom-basin",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMPSWH23",
+    "expectedImages": 7,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "Tiger-Eye-Retro",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Tiger%20eye",
+    "expectedImages": 7,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "luxury-console-table-leather-entryway-sofa-table",
+    "category": "leather",
+    "folder": "hs-global/leather/etsy/HSLCOTBR2",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "modern-marble-dining-table-luxury-stone-dining-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMDTWH5",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "Green-Jasper",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Jasper",
+    "expectedImages": 7,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "grey-agate",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Agate",
+    "expectedImages": 7,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "hand-carved-wooden-sideboard-peacock-cabinet",
+    "category": "wooden-furniture",
+    "folder": "hs-global/handicraft/etsy/HCBCOBR1",
+    "expectedImages": 6,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "modern-wall-mirror-minimalist-rectangular-vanity-mirror",
+    "category": "leather",
+    "folder": "hs-global/leather/etsy/HSLMFBE1",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "green-marble-pedestal-side-table-sculptural-accent-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTGR50",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "green-marble-side-table-minimalist-stone-accent-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTGR49",
+    "expectedImages": 6,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "modern-upholstered-storage-bench-ottoman-entryway-seat",
+    "category": "leather",
+    "folder": "hs-global/leather/etsy/HSLBENBE2",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "travertine-side-table-modern-stone-bedside-table-handmade-fully-customize",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTBE9",
+    "expectedImages": 13,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "BRAZILIAN-BLUE-AGATE",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Agate",
+    "expectedImages": 6,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "Blue-Calcite",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Quartz",
+    "expectedImages": 2,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "Brown-Petrified-Wood-Retro-Slabs",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/petrified%20wood",
+    "expectedImages": 6,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "Obsidian-Black-with-Silver",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Quartz",
+    "expectedImages": 7,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "modern-marble-side-table-minimalist-stone-end-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTGE41",
+    "expectedImages": 6,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "oval-marble-coffee-table-modern-stone-living-room-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCETWH30",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "black-marble-side-table-modern-round-accent-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTBL57",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "green-marble-round-coffee-table-modern-stone-table",
+    "category": "furniture",
+    "folder": "hs-global/products/furniture/Coffee%20Table",
+    "expectedImages": 7,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "white-marble-pedestal-sink-textured-stone-basin",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMPSWH11",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "Brazilian-Red-Agate",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Agate",
+    "expectedImages": 2,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "Beige-Petrified-Wood-Slab",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/petrified%20wood",
+    "expectedImages": 7,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "marble-console-table-modern-entryway-stone-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCOTBE1",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "modern-marble-console-table-sculptural-entryway-table",
+    "category": "furniture",
+    "folder": "hs-global/products/furniture/Console%20Table",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "red-travertine-console-table-modern-stone-entryway-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCORE29",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "green-marble-sideboard-cabinet-fluted-luxury-storage-unit",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCOGR17",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "Polychrome-Jasper",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Jasper",
+    "expectedImages": 1,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "green-marble-side-table-sculptural-pedestal-accent-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMSTGR47",
+    "expectedImages": 6,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "modern-nesting-side-table-set-gold-accent-end-tables",
+    "category": "leather",
+    "folder": "hs-global/products/leather/Side%20Table",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "red-marble-console-table-modern-luxury-entryway-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCORE19",
+    "expectedImages": 5,
+    "status": "Phase 1 Partial"
+  },
+  {
+    "productId": "Tiger-Eye-Blue",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Tiger%20eye",
+    "expectedImages": 7,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "black-marble-console-table-luxury-entryway-furniture",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCOBL23",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "Amethyst",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Amethyst",
+    "expectedImages": 8,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "white-marble-pedestal-sink-modern-round-basin",
+    "category": "furniture",
+    "folder": "hs-global/products/furniture/Pedestal%20Sink",
+    "expectedImages": 6,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "luxury-brown-marble-coffee-table-round-designer-center-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCETBR12",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "Tiger-Eye",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Tiger%20eye",
+    "expectedImages": 6,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "modern-6-drawer-dresser-beige-storage-cabinet",
+    "category": "leather",
+    "folder": "hs-global/leather/etsy/HSLDRBE1",
+    "expectedImages": 4,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "travertine-dining-table-oval-stone-pedestal-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMDTBE7",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "crystal-quartz-with-rose-gold",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Quartz",
+    "expectedImages": 6,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "luxury-leather-accent-armchair-modern-dining-chair",
+    "category": "leather",
+    "folder": "hs-global/leather/etsy/HSLCHRE2",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "pink-marble-dining-table-modern-oval-stone-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMDTMU4",
+    "expectedImages": 7,
+    "status": "Phase 1 Partial"
+  },
+  {
+    "productId": "travertine-console-table-fluted-stone-entryway-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCOBE26",
+    "expectedImages": 1,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "beige-marble-coffee-table-round-luxury-center-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCETBE10",
+    "expectedImages": 6,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "Straight-Line",
+    "category": "semi-precious-stone",
+    "folder": "hs-global/products/semi-precious-stone/Agate",
+    "expectedImages": 1,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "luxury-tray-side-table-black-croc-accent-table",
+    "category": "leather",
+    "folder": "hs-global/leather/etsy/HSLSTBL6",
+    "expectedImages": 5,
+    "status": "Missing Cloudinary"
+  },
+  {
+    "productId": "marble-arch-console-table-modern-stone-entryway-table",
+    "category": "furniture",
+    "folder": "hs-global/furniture/etsy/HSMCOTWH5",
+    "expectedImages": 5,
+    "status": "Phase 1 Perfect"
+  },
+  {
+    "productId": "white-marble-ripple-vessel-sink-artistic-basin",
+    "category": "furniture",
+    "folder": "hs-global/products/furniture/Sink",
+    "expectedImages": 6,
+    "status": "Phase 1 Partial"
+  },
+  {
+    "productId": "brass-inlay-wooden-bedside-table-3-drawer-nightstand",
+    "category": "wooden-furniture",
+    "folder": "hs-global/handicraft/etsy/HCBSTBR5",
+    "expectedImages": 6,
+    "status": "Missing Cloudinary"
+  }
+]

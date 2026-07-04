@@ -1,0 +1,452 @@
+[
+  {
+    "productId": "round-travertine-dining-table-sculptural-stone-base-organic-modern-furniture",
+    "folder": "hs-global/products/furniture/Dining%20Table",
+    "expectedImages": 4
+  },
+  {
+    "productId": "custom-round-multicolor-marble-coffee-table-with-sculptural-stone",
+    "folder": "hs-global/products/furniture/Coffee%20Table",
+    "expectedImages": 3
+  },
+  {
+    "productId": "green-marble-console-table-modern-entryway-accent-table",
+    "folder": "hs-global/products/furniture/Side%20Table",
+    "expectedImages": 5
+  },
+  {
+    "productId": "organic-marble-coffee-table-natural-edge-stone-table",
+    "folder": "hs-global/products/furniture/Side%20Table",
+    "expectedImages": 5
+  },
+  {
+    "productId": "modern-marble-side-table-minimalist-z-shape-accent-table",
+    "folder": "hs-global/products/furniture/Side%20Table",
+    "expectedImages": 5
+  },
+  {
+    "productId": "modern-travertine-side-table-wood-accent-end-table",
+    "folder": "hs-global/products/furniture/Side%20Table",
+    "expectedImages": 5
+  },
+  {
+    "productId": "travertine-console-table-sculptural-stone-entryway-table",
+    "folder": "hs-global/products/furniture/Console%20Table",
+    "expectedImages": 5
+  },
+  {
+    "productId": "round-travertine-side-table-modern-stone-accent-table",
+    "folder": "hs-global/products/furniture/Side%20Table",
+    "expectedImages": 5
+  },
+  {
+    "productId": "black-marble-pedestal-side-table-luxury-accent-table",
+    "folder": "hs-global/products/furniture/Side%20Table",
+    "expectedImages": 5
+  },
+  {
+    "productId": "Blue-Agate",
+    "folder": "hs-global/products/semi-precious-stone/Agate%20Slabs",
+    "expectedImages": 7
+  },
+  {
+    "productId": "organic-marble-coffee-table-set-sculptural-living-tables",
+    "folder": "hs-global/products/furniture/Coffee%20Table",
+    "expectedImages": 5
+  },
+  {
+    "productId": "chesterfield-wingback-leather-accent-chair-classic-armchair",
+    "folder": "hs-global/leather/etsy/HSLCHBR1",
+    "expectedImages": 5
+  },
+  {
+    "productId": "Black-Petrified-Wood-Retro-Slab",
+    "folder": "hs-global/products/semi-precious-stone/petrified%20wood",
+    "expectedImages": 6
+  },
+  {
+    "productId": "Malachite-Flower-Slabs",
+    "folder": "hs-global/products/semi-precious-stone/Gemstone",
+    "expectedImages": 6
+  },
+  {
+    "productId": "luxury-3-piece-nesting-tables-gold-accent-side-table-set",
+    "folder": "hs-global/leather/etsy/HSLSTBR3",
+    "expectedImages": 5
+  },
+  {
+    "productId": "Green-Abalone",
+    "folder": "hs-global/products/semi-precious-stone/Mother%20Of%20Pearl",
+    "expectedImages": 7
+  },
+  {
+    "productId": "Malachite",
+    "folder": "hs-global/products/semi-precious-stone/Gemstone",
+    "expectedImages": 7
+  },
+  {
+    "productId": "chesterfield-leather-sofa-classic-tufted-loveseat",
+    "folder": "hs-global/leather/etsy/HSLSOBR3",
+    "expectedImages": 5
+  },
+  {
+    "productId": "sculptural-marble-side-table-modern-stone-pedestal",
+    "folder": "hs-global/products/furniture/Side%20Table",
+    "expectedImages": 5
+  },
+  {
+    "productId": "Banded-Agate-Slab",
+    "folder": "hs-global/products/semi-precious-stone/Agate%20Slabs",
+    "expectedImages": 7
+  },
+  {
+    "productId": "Red-Jasper",
+    "folder": "hs-global/products/semi-precious-stone/Jasper",
+    "expectedImages": 1
+  },
+  {
+    "productId": "large-wooden-dining-table-set-brass-inlay-6-chairs",
+    "folder": "hs-global/handicraft/etsy/HCBDTBR1",
+    "expectedImages": 5
+  },
+  {
+    "productId": "green-leather-ottoman-luxury-accent-stool",
+    "folder": "hs-global/leather/etsy/HSLSTOGR2",
+    "expectedImages": 5
+  },
+  {
+    "productId": "luxury-nesting-side-tables-leather-accent-table-set",
+    "folder": "hs-global/leather/etsy/HSLSTBR7",
+    "expectedImages": 5
+  },
+  {
+    "productId": "floral-marble-side-table-luxury-stone-accent-table",
+    "folder": "hs-global/products/furniture/Side%20Table",
+    "expectedImages": 5
+  },
+  {
+    "productId": "Sodalite-Blue",
+    "folder": "hs-global/products/semi-precious-stone/Gemstone",
+    "expectedImages": 6
+  },
+  {
+    "productId": "modern-leather-accent-armchair-luxury-lounge-chair",
+    "folder": "hs-global/leather/etsy/HSLSOBR2",
+    "expectedImages": 5
+  },
+  {
+    "productId": "White-Petrified-Wood",
+    "folder": "hs-global/products/semi-precious-stone/petrified%20wood",
+    "expectedImages": 6
+  },
+  {
+    "productId": "brass-embossed-bedside-cabinet-vintage-storage-table",
+    "folder": "hs-global/handicraft/etsy/HCBSTGO2",
+    "expectedImages": 7
+  },
+  {
+    "productId": "elephant-brass-inlay-wooden-sideboard-cabinet-large-storage",
+    "folder": "hs-global/handicraft/etsy/HCBCOBR3",
+    "expectedImages": 6
+  },
+  {
+    "productId": "luxury-leather-coffee-table-modern-brass-accent-table",
+    "folder": "hs-global/leather/etsy/HSLCETBR3",
+    "expectedImages": 5
+  },
+  {
+    "productId": "modern-black-tray-side-table-gold-accent-end-table",
+    "folder": "hs-global/leather/etsy/HSLSTBL4",
+    "expectedImages": 5
+  },
+  {
+    "productId": "green-tufted-upholstered-bed-frame-modern-luxury-bed",
+    "folder": "hs-global/leather/etsy/HSLBEGR1",
+    "expectedImages": 5
+  },
+  {
+    "productId": "Golden Mop",
+    "folder": "hs-global/products/semi-precious-stone/Mother%20Of%20Pearl",
+    "expectedImages": 7
+  },
+  {
+    "productId": "modern-marble-side-table-luxury-stone-accent-table",
+    "folder": "hs-global/products/furniture/Side%20Table",
+    "expectedImages": 5
+  },
+  {
+    "productId": "Brown-Petrified-Wood-Slabs",
+    "folder": "hs-global/products/semi-precious-stone/petrified%20wood",
+    "expectedImages": 5
+  },
+  {
+    "productId": "modern-travertine-side-table-geometric-stone-accent-table",
+    "folder": "hs-global/products/furniture/Side%20Table",
+    "expectedImages": 5
+  },
+  {
+    "productId": "Jamaican-Jasper-Slabs",
+    "folder": "hs-global/products/semi-precious-stone/Jasper",
+    "expectedImages": 6
+  },
+  {
+    "productId": "carved-marble-pedestal-sink-modern-diamond-pattern-basin",
+    "folder": "hs-global/products/furniture/Pedestal%20Sink",
+    "expectedImages": 5
+  },
+  {
+    "productId": "sculptural-travertine-coffee-table-modern-wave-stone-table",
+    "folder": "hs-global/products/furniture/Coffee%20Table",
+    "expectedImages": 4
+  },
+  {
+    "productId": "modern-green-upholstered-bench-entryway-bedroom-seat",
+    "folder": "hs-global/leather/etsy/HSLBENGR1",
+    "expectedImages": 5
+  },
+  {
+    "productId": "Angel-Jasper",
+    "folder": "hs-global/products/semi-precious-stone/Jasper",
+    "expectedImages": 2
+  },
+  {
+    "productId": "brass-inlay-console-table-wooden-entryway-desk-4-drawer",
+    "folder": "hs-global/handicraft/etsy/HCBCOBR4",
+    "expectedImages": 5
+  },
+  {
+    "productId": "fluted-marble-pedestal-sink-beige-stone-bathroom-basin",
+    "folder": "hs-global/products/furniture/Pedestal%20Sink",
+    "expectedImages": 5
+  },
+  {
+    "productId": "round-wooden-dining-table-set-brass-inlay-4-chairs",
+    "folder": "hs-global/handicraft/etsy/HCBDTBR1",
+    "expectedImages": 5
+  },
+  {
+    "productId": "luxury-leather-ottoman-round-accent-stool",
+    "folder": "hs-global/leather/etsy/HSLSTOBR1",
+    "expectedImages": 5
+  },
+  {
+    "productId": "Amazonite",
+    "folder": "hs-global/products/semi-precious-stone/Amazonite",
+    "expectedImages": 7
+  },
+  {
+    "productId": "Rose-Quartz",
+    "folder": "hs-global/products/semi-precious-stone/Gemstone",
+    "expectedImages": 6
+  },
+  {
+    "productId": "red-marble-coffee-table-modern-round-stone-center-table",
+    "folder": "hs-global/products/furniture/Coffee%20Table",
+    "expectedImages": 6
+  },
+  {
+    "productId": "wooden-brass-inlay-sofa-bench-traditional-accent-sofa",
+    "folder": "hs-global/handicraft/etsy/HCBSOBR1",
+    "expectedImages": 6
+  },
+  {
+    "productId": "modern-nesting-side-tables-wood-metal-accent-tables-set",
+    "folder": "hs-global/leather/etsy/HSLSTBR1",
+    "expectedImages": 5
+  },
+  {
+    "productId": "vintage-brass-inlay-wooden-chest-of-drawers-table",
+    "folder": "hs-global/handicraft/etsy/HCBSTBR1",
+    "expectedImages": 5
+  },
+  {
+    "productId": "luxury-console-table-green-entryway-accent-table",
+    "folder": "hs-global/leather/etsy/HSLCOTGR1",
+    "expectedImages": 5
+  },
+  {
+    "productId": "vintage-trunk-storage-cabinet-leather-accent-chest",
+    "folder": "hs-global/leather/etsy/HSLCABBL1",
+    "expectedImages": 5
+  },
+  {
+    "productId": "Black-MOP",
+    "folder": "hs-global/products/semi-precious-stone/Mother%20Of%20Pearl",
+    "expectedImages": 7
+  },
+  {
+    "productId": "Mockite-Jasper",
+    "folder": "hs-global/products/semi-precious-stone/Jasper",
+    "expectedImages": 8
+  },
+  {
+    "productId": "vintage-storage-trunk-coffee-table-green-faux-leather-chest",
+    "folder": "hs-global/leather/etsy/HSLCETGR1",
+    "expectedImages": 5
+  },
+  {
+    "productId": "luxury-nesting-side-tables-faux-leather-accent-table-se",
+    "folder": "hs-global/leather/etsy/HSLSTBR2",
+    "expectedImages": 5
+  },
+  {
+    "productId": "luxury-leather-dresser-crocodile-texture-storage-cabinet",
+    "folder": "hs-global/leather/etsy/HSLDRBR2",
+    "expectedImages": 5
+  },
+  {
+    "productId": "round-leather-wall-mirror-luxury-accent-mirror",
+    "folder": "hs-global/leather/etsy/HSLMFBR2",
+    "expectedImages": 5
+  },
+  {
+    "productId": "Lapis-Lazulli",
+    "folder": "hs-global/products/semi-precious-stone/Gemstone",
+    "expectedImages": 7
+  },
+  {
+    "productId": "luxury-marble-top-coffee-table-with-storage-drawer",
+    "folder": "hs-global/leather/etsy/HSLCETCR2",
+    "expectedImages": 5
+  },
+  {
+    "productId": "handcrafted-marble-side-table-sculptural-pedestal-table",
+    "folder": "hs-global/products/furniture/Side%20Table",
+    "expectedImages": 5
+  },
+  {
+    "productId": "luxury-leather-jewelry-box-organizer-vintage-storage-chest",
+    "folder": "hs-global/leather/etsy/HSLBOBR1",
+    "expectedImages": 4
+  },
+  {
+    "productId": "brass-inlay-wooden-coffee-table-vintage-accent-table",
+    "folder": "hs-global/handicraft/etsy/HCBCETBR2",
+    "expectedImages": 5
+  },
+  {
+    "productId": "Labradorite",
+    "folder": "hs-global/products/semi-precious-stone/Gemstone",
+    "expectedImages": 8
+  },
+  {
+    "productId": "Green-Fluorite",
+    "folder": "hs-global/products/semi-precious-stone/Semiprecious%20Stone",
+    "expectedImages": 1
+  },
+  {
+    "productId": "chesterfield-green-leather-sofa-luxury-living-room-couch",
+    "folder": "hs-global/leather/etsy/HSLSOGR1",
+    "expectedImages": 5
+  },
+  {
+    "productId": "Red-Tiger-Eye",
+    "folder": "hs-global/products/semi-precious-stone/Tiger%20eye",
+    "expectedImages": 2
+  },
+  {
+    "productId": "floral-marble-coffee-table-luxury-stone-center-table",
+    "folder": "hs-global/products/furniture/Coffee%20Table",
+    "expectedImages": 5
+  },
+  {
+    "productId": "Red-Carnelian-Agate-Slabs",
+    "folder": "hs-global/products/semi-precious-stone/Semiprecious%20Stone",
+    "expectedImages": 7
+  },
+  {
+    "productId": "Emerald-quartz",
+    "folder": "hs-global/products/semi-precious-stone/Gemstone",
+    "expectedImages": 6
+  },
+  {
+    "productId": "Tiger-Eye-Retro",
+    "folder": "hs-global/products/semi-precious-stone/Tiger%20eye",
+    "expectedImages": 7
+  },
+  {
+    "productId": "luxury-console-table-leather-entryway-sofa-table",
+    "folder": "hs-global/leather/etsy/HSLCOTBR2",
+    "expectedImages": 5
+  },
+  {
+    "productId": "Green-Jasper",
+    "folder": "hs-global/products/semi-precious-stone/Jasper",
+    "expectedImages": 7
+  },
+  {
+    "productId": "modern-wall-mirror-minimalist-rectangular-vanity-mirror",
+    "folder": "hs-global/leather/etsy/HSLMFBE1",
+    "expectedImages": 5
+  },
+  {
+    "productId": "Brown-Petrified-Wood-Retro-Slabs",
+    "folder": "hs-global/products/semi-precious-stone/petrified%20wood",
+    "expectedImages": 6
+  },
+  {
+    "productId": "green-marble-round-coffee-table-modern-stone-table",
+    "folder": "hs-global/products/furniture/Coffee%20Table",
+    "expectedImages": 7
+  },
+  {
+    "productId": "Beige-Petrified-Wood-Slab",
+    "folder": "hs-global/products/semi-precious-stone/petrified%20wood",
+    "expectedImages": 7
+  },
+  {
+    "productId": "modern-marble-console-table-sculptural-entryway-table",
+    "folder": "hs-global/products/furniture/Console%20Table",
+    "expectedImages": 5
+  },
+  {
+    "productId": "Polychrome-Jasper",
+    "folder": "hs-global/products/semi-precious-stone/Jasper",
+    "expectedImages": 1
+  },
+  {
+    "productId": "modern-nesting-side-table-set-gold-accent-end-tables",
+    "folder": "hs-global/products/leather/Side%20Table",
+    "expectedImages": 5
+  },
+  {
+    "productId": "Tiger-Eye-Blue",
+    "folder": "hs-global/products/semi-precious-stone/Tiger%20eye",
+    "expectedImages": 7
+  },
+  {
+    "productId": "Amethyst",
+    "folder": "hs-global/products/semi-precious-stone/Amethyst",
+    "expectedImages": 8
+  },
+  {
+    "productId": "white-marble-pedestal-sink-modern-round-basin",
+    "folder": "hs-global/products/furniture/Pedestal%20Sink",
+    "expectedImages": 6
+  },
+  {
+    "productId": "Tiger-Eye",
+    "folder": "hs-global/products/semi-precious-stone/Tiger%20eye",
+    "expectedImages": 6
+  },
+  {
+    "productId": "modern-6-drawer-dresser-beige-storage-cabinet",
+    "folder": "hs-global/leather/etsy/HSLDRBE1",
+    "expectedImages": 4
+  },
+  {
+    "productId": "luxury-leather-accent-armchair-modern-dining-chair",
+    "folder": "hs-global/leather/etsy/HSLCHRE2",
+    "expectedImages": 5
+  },
+  {
+    "productId": "luxury-tray-side-table-black-croc-accent-table",
+    "folder": "hs-global/leather/etsy/HSLSTBL6",
+    "expectedImages": 5
+  },
+  {
+    "productId": "brass-inlay-wooden-bedside-table-3-drawer-nightstand",
+    "folder": "hs-global/handicraft/etsy/HCBSTBR5",
+    "expectedImages": 6
+  }
+]
