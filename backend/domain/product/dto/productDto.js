@@ -22,8 +22,8 @@ const getDiscountStatus = (product) => {
     return { state: 'active', isActive: true, startDate, endDate };
 };
 
-const getEffectivePriceUSD = (product, discountStatus) => {
-    const base = Number(product.priceUSD || 0);
+const getEffectivePriceINR = (product, discountStatus) => {
+    const base = Number(product.priceINR || 0);
     if (!base) {
         return 0;
     }
@@ -39,8 +39,8 @@ const getEffectivePriceUSD = (product, discountStatus) => {
 
 const toProductDto = (product) => {
     const discountStatus = getDiscountStatus(product);
-    const basePriceUSD = Number(product.priceUSD || 0);
-    const effectivePriceUSD = getEffectivePriceUSD(product, discountStatus);
+    const basePriceINR = Number(product.priceINR || 0);
+    const effectivePriceINR = getEffectivePriceINR(product, discountStatus);
 
     const galleryImages = Array.isArray(product.images) ? product.images.filter(Boolean) : [];
     const sortedImages = Array.isArray(product.sortedImages) ? product.sortedImages.filter(Boolean) : [];
@@ -66,9 +66,9 @@ const toProductDto = (product) => {
             tags: Array.isArray(product.tags) ? product.tags : []
         },
         pricing: {
-            currency: 'USD',
-            basePriceUSD,
-            effectivePriceUSD,
+            currency: 'INR',
+            basePriceINR,
+            effectivePriceINR,
             pricePerSqFt: product.pricePerSqFt != null ? Number(product.pricePerSqFt) : undefined,
             discountStatus: discountStatus.state,
             discount: {
@@ -120,9 +120,9 @@ const toProductDto = (product) => {
                     attributes: v.attributes instanceof Map
                         ? Object.fromEntries(v.attributes)
                         : (v.attributes || {}),
-                    // null = use product base price; a number = variant-specific price in USD
-                    priceUSD: v.priceUSD != null ? Number(v.priceUSD) : null,
-                    compareAtPriceUSD: v.compareAtPriceUSD != null ? Number(v.compareAtPriceUSD) : null,
+                    // null = use product base price; a number = variant-specific price in INR
+                    priceINR: v.priceINR != null ? Number(v.priceINR) : null,
+                    compareAtPriceINR: v.compareAtPriceINR != null ? Number(v.compareAtPriceINR) : null,
                     stockQuantity: Number(v.stockQuantity || 0),
                     sku: v.sku || null,
                     images: Array.isArray(v.images) ? v.images : [],

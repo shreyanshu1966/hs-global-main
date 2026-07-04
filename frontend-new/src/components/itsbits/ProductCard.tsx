@@ -13,8 +13,8 @@ interface ProductCardProps {
   designer: string;
   price?: string;
   originalPrice?: string;
-  priceUSD?: number;
-  originalPriceUSD?: number;
+  priceINR?: number;
+  originalPriceINR?: number;
   priceLabel?: string;
   productLink?: string;
   showPrice?: boolean;
@@ -24,7 +24,7 @@ interface ProductCardProps {
   discount?: Product['discount'];
 }
 
-const ProductCard = ({ id, image, title, designer, price, originalPrice, priceUSD, originalPriceUSD, priceLabel, productLink, showPrice = true, averageRating, totalReviews, regionalPricing, discount }: ProductCardProps) => {
+const ProductCard = ({ id, image, title, designer, price, originalPrice, priceINR, originalPriceINR, priceLabel, productLink, showPrice = true, averageRating, totalReviews, regionalPricing, discount }: ProductCardProps) => {
   const { isInWishlist, toggleWishlist } = useWishlist();
   const { addItem } = useCart();
   const [isAdded, setIsAdded] = useState(false);
@@ -33,12 +33,12 @@ const ProductCard = ({ id, image, title, designer, price, originalPrice, priceUS
 
   // Build minimal product shape so usePrice applies regional + discount logic correctly
   const computed = usePrice(
-    priceUSD != null ? { priceUSD, regionalPricing, discount } : null
+    priceINR != null ? { priceINR, regionalPricing, discount } : null
   );
 
-  const resolvedPrice = priceLabel || (priceUSD != null ? computed.formattedPrice : (price || 'Request Quote'));
-  const resolvedOriginalPrice = (priceUSD != null && computed.hasDiscount) ? computed.originalFormattedPrice : originalPrice;
-  const hasValidPrice = (priceUSD != null && priceUSD > 0) || (typeof originalPriceUSD === 'number' && originalPriceUSD > 0);
+  const resolvedPrice = priceLabel || (priceINR != null ? computed.formattedPrice : (price || 'Request Quote'));
+  const resolvedOriginalPrice = (priceINR != null && computed.hasDiscount) ? computed.originalFormattedPrice : originalPrice;
+  const hasValidPrice = (priceINR != null && priceINR > 0) || (typeof originalPriceINR === 'number' && originalPriceINR > 0);
   const showDiscount = hasValidPrice && computed.hasDiscount;
   const discountPercentage = computed.hasDiscount ? computed.discountPercentage : null;
 
@@ -49,7 +49,7 @@ const ProductCard = ({ id, image, title, designer, price, originalPrice, priceUS
   };
 
   const handleAddToCart = () => {
-    if (!(typeof priceUSD === 'number' && priceUSD > 0)) {
+    if (!(typeof priceINR === 'number' && priceINR > 0)) {
       return;
     }
 
@@ -60,7 +60,7 @@ const ProductCard = ({ id, image, title, designer, price, originalPrice, priceUS
       productId: resolvedId,
       name: title,
       image,
-      priceUSD,
+      priceINR,
       category: 'furniture',
       subcategory: designer,
       regionalPricing,
@@ -144,16 +144,16 @@ const ProductCard = ({ id, image, title, designer, price, originalPrice, priceUS
         <button
           type="button"
           className="absolute top-[47px] right-[9px] w-[32px] h-[32px] rounded-full flex items-center justify-center transition-all shadow-sm z-10 border border-white/70 bg-white/95 text-[#111827] hover:bg-white disabled:bg-white/80 disabled:text-[#9ca3af] disabled:cursor-not-allowed"
-          disabled={!(typeof priceUSD === 'number' && priceUSD > 0)}
+          disabled={!(typeof priceINR === 'number' && priceINR > 0)}
           onClick={(event) => {
             event.preventDefault();
             event.stopPropagation();
             handleAddToCart();
           }}
-          aria-label={typeof priceUSD === 'number' && priceUSD > 0 ? `Add ${title} to cart` : `${title} is available on request`}
-          title={typeof priceUSD === 'number' && priceUSD > 0 ? (isAdded ? 'Added to cart' : 'Add to cart') : 'Price on request'}
+          aria-label={typeof priceINR === 'number' && priceINR > 0 ? `Add ${title} to cart` : `${title} is available on request`}
+          title={typeof priceINR === 'number' && priceINR > 0 ? (isAdded ? 'Added to cart' : 'Add to cart') : 'Price on request'}
         >
-          {typeof priceUSD === 'number' && priceUSD > 0 ? (
+          {typeof priceINR === 'number' && priceINR > 0 ? (
             isAdded ? (
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <polyline points="20 6 9 17 4 12" />

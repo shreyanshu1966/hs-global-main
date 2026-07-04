@@ -57,8 +57,7 @@ import contactService, { Contact, ContactStats } from '../services/contactServic
 import quotationService, { Quotation, QuotationStats } from '../services/quotationService';
 import { adminProductApi } from '../modules/product/api';
 import type { AdminProduct as Product, AdminProductFormData as ProductFormData } from '../modules/product/types';
-import { formatAdminINR, DEFAULT_RATES } from '../utils/pricing';
-import { useCurrency } from '../contexts/CurrencyContext';
+import { formatAdminINR } from '../utils/pricing';
 import reviewService, { Review } from '../services/reviewService';
 import {
     fetchCustomCategories,
@@ -683,7 +682,7 @@ const Admin = () => {
                 category: product.category,
                 subcategory: product.subcategory,
                 description: product.description,
-                priceUSD: product.priceUSD,
+                priceINR: product.priceINR,
                 available: product.available,
                 featured: product.featured || false,
                 hasVideo: product.hasVideo,
@@ -1022,7 +1021,7 @@ const Admin = () => {
                     category: categoryId,
                     subcategory,
                     description: product.description,
-                    priceUSD: product.priceUSD,
+                    priceINR: product.priceINR,
                     available: product.available,
                     status: product.status,
                     featured: product.featured,
@@ -1066,7 +1065,7 @@ const Admin = () => {
                     category: 'uncategorized',
                     subcategory: 'general',
                     description: product.description,
-                    priceUSD: product.priceUSD,
+                    priceINR: product.priceINR,
                     available: product.available,
                     status: product.status,
                     featured: product.featured,
@@ -1126,7 +1125,7 @@ const Admin = () => {
                     category: product.category,
                     subcategory: product.subcategory,
                     description: product.description,
-                    priceUSD: product.priceUSD,
+                    priceINR: product.priceINR,
                     available: product.available,
                     status: product.status,
                     featured: product.featured,
@@ -1173,9 +1172,6 @@ const Admin = () => {
             setBulkDiscountLoading(false);
         }
     };
-
-    const { exchangeRates } = useCurrency();
-    const inrRate = (exchangeRates['INR'] as number | undefined) || DEFAULT_RATES.INR;
 
     const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
     const authHeaders = () => ({ 'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('authToken')}` });
@@ -1259,7 +1255,7 @@ const Admin = () => {
 
         // Compute the original value for this field so we can detect no-op edits
         const originalVal = field === 'priceINR'
-            ? (original.priceUSD ? String(Math.round(original.priceUSD * inrRate)) : '')
+            ? (original.priceINR ? String(Math.round(original.priceINR)) : '')
             : String((original as any)[field] ?? '');
 
         setBulkEditChanges(prev => {
@@ -1287,9 +1283,9 @@ const Admin = () => {
                 const original = products.find(p => p.productId === productId);
                 if (!original) return Promise.resolve();
 
-                const newPriceUSD = changes.priceINR !== undefined
-                    ? Math.max(0.01, parseFloat(changes.priceINR) / inrRate)
-                    : original.priceUSD;
+                const newPriceINR = changes.priceINR !== undefined
+                    ? Math.max(0.01, parseFloat(changes.priceINR))
+                    : original.priceINR;
 
                 return adminProductApi.updateProduct(productId, {
                     productId:      original.productId,
@@ -1298,7 +1294,7 @@ const Admin = () => {
                     subcategory:    changes.subcategory    ?? original.subcategory,
                     description:    original.description,
                     subDescription: original.subDescription || '',
-                    priceUSD:       newPriceUSD,
+                    priceINR:       newPriceINR,
                     status:         changes.status          ?? original.status,
                     featured:       changes.featured        ?? (original.featured || false),
                     available:      original.available,
@@ -3094,7 +3090,7 @@ const Admin = () => {
                                                     const ch = bulkEditChanges[product.productId] || {};
                                                     const isDirty = Object.keys(ch).length > 0;
                                                     const displayName    = ch.name     ?? product.name;
-                                                    const displayPriceINR = ch.priceINR ?? (product.priceUSD ? String(Math.round(product.priceUSD * inrRate)) : '');
+                                                    const displayPriceINR = ch.priceINR ?? (product.priceINR ? String(Math.round(product.priceINR)) : '');
                                                     const displayStatus  = ch.status   ?? product.status;
                                                     const displayFeatured = ch.featured ?? (product.featured || false);
                                                     const displayCategory = ch.category ?? (product.category || '');
@@ -3331,14 +3327,14 @@ const Admin = () => {
                                                         <p className="text-xs text-gray-400 mb-2 capitalize">{product.subcategory}</p>
                                                         <div className="flex items-end justify-between gap-1">
                                                             <div>
-                                                                {product.priceUSD ? (
+                                                                {product.priceINR ? (
                                                                     discountActive ? (
                                                                         <div>
-                                                                            <p className="text-sm font-bold text-gray-900">{formatAdminINR(product.priceUSD * (1 - product.discount!.percentage / 100))}</p>
-                                                                            <p className="text-xs text-gray-400 line-through leading-none">{formatAdminINR(product.priceUSD)}</p>
+                                                                            <p className="text-sm font-bold text-gray-900">{formatAdminINR(product.priceINR * (1 - product.discount!.percentage / 100))}</p>
+                                                                            <p className="text-xs text-gray-400 line-through leading-none">{formatAdminINR(product.priceINR)}</p>
                                                                         </div>
                                                                     ) : (
-                                                                        <p className="text-sm font-bold text-gray-900">{formatAdminINR(product.priceUSD)}</p>
+                                                                        <p className="text-sm font-bold text-gray-900">{formatAdminINR(product.priceINR)}</p>
                                                                     )
                                                                 ) : <p className="text-xs text-gray-400 italic">Price on request</p>}
                                                             </div>
@@ -3873,18 +3869,18 @@ const Admin = () => {
                                                         <span className="text-sm text-gray-900 capitalize">{previewProduct.subcategory}</span>
                                                     </div>
 
-                                                    {previewProduct.priceUSD && (
+                                                    {previewProduct.priceINR && (
                                                         <div className="flex items-center justify-between">
                                                             <span className="text-sm font-medium text-gray-500">Price:</span>
                                                             <div className="text-right">
                                                                 {previewProduct.discount?.enabled && previewProduct.discount?.percentage ? (
                                                                     <>
                                                                         <span className="text-lg font-bold text-gray-900">
-                                                                            {formatAdminINR(Math.round(previewProduct.priceUSD * (1 - (previewProduct.discount.percentage / 100)) * 100) / 100)}
+                                                                            {formatAdminINR(Math.round(previewProduct.priceINR * (1 - (previewProduct.discount.percentage / 100)) * 100) / 100)}
                                                                         </span>
                                                                         <br />
                                                                         <span className="text-sm text-gray-500 line-through">
-                                                                            {formatAdminINR(previewProduct.priceUSD)}
+                                                                            {formatAdminINR(previewProduct.priceINR)}
                                                                         </span>
                                                                         <span className="ml-2 px-2 py-1 bg-red-100 text-red-700 text-xs rounded-full">
                                                                             {previewProduct.discount.percentage}% OFF
@@ -3892,7 +3888,7 @@ const Admin = () => {
                                                                     </>
                                                                 ) : (
                                                                     <span className="text-lg font-bold text-gray-900">
-                                                                        {formatAdminINR(previewProduct.priceUSD)}
+                                                                        {formatAdminINR(previewProduct.priceINR)}
                                                                     </span>
                                                                 )}
                                                             </div>

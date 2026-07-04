@@ -1,7 +1,7 @@
 'use client';
 import { LegacyProduct } from '../types';
 
-type PriceLike = Pick<LegacyProduct, 'priceUSD' | 'discount'>;
+type PriceLike = Pick<LegacyProduct, 'priceINR' | 'discount'>;
 
 const isDiscountActive = (item: PriceLike): boolean => {
   const discount = item.discount;
@@ -24,7 +24,7 @@ const isDiscountActive = (item: PriceLike): boolean => {
   return true;
 };
 
-export const getbasePriceUSD = (item: PriceLike): number => item.priceUSD || 0;
+export const getbasePriceINR = (item: PriceLike): number => item.priceINR || 0;
 
 export const getDiscountPercentage = (item: PriceLike): number => {
   if (!isDiscountActive(item)) {
@@ -33,8 +33,8 @@ export const getDiscountPercentage = (item: PriceLike): number => {
   return item.discount?.percentage || 0;
 };
 
-export const geteffectivePriceUSD = (item: PriceLike): number => {
-  const base = getbasePriceUSD(item);
+export const geteffectivePriceINR = (item: PriceLike): number => {
+  const base = getbasePriceINR(item);
   const discount = getDiscountPercentage(item);
   if (!base || !discount) {
     return base;

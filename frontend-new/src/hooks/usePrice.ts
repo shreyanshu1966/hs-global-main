@@ -1,7 +1,7 @@
 'use client';
 import { useRegion } from '../contexts/RegionContext';
 import { useCurrency } from '../contexts/CurrencyContext';
-import { computePrice, formatUSDInRegion, type PriceResult } from '../utils/pricing';
+import { computePrice, formatINRInRegion, type PriceResult } from '../utils/pricing';
 
 const DEV = (process.env.NODE_ENV !== 'production');
 
@@ -11,15 +11,15 @@ export function usePrice(product: any): PriceResult {
   const result = computePrice(product, region, exchangeRates);
   if (DEV && product?.productId) {
     console.log(
-      `[usePrice] ${product.productId} | region=${region} | priceUSD=${product.priceUSD} | regionalPricing=${JSON.stringify(product.regionalPricing)} | result=${result.formattedPrice}`
+      `[usePrice] ${product.productId} | region=${region} | priceINR=${product.priceINR} | regionalPricing=${JSON.stringify(product.regionalPricing)} | result=${result.formattedPrice}`
     );
   }
   return result;
 }
 
-// Returns a function that formats any USD amount in the user's regional display currency
-export function useFormatPrice(): (amountUSD: number) => string {
+// Returns a function that formats any canonical INR amount in the user's regional display currency
+export function useFormatPrice(): (amountINR: number) => string {
   const { region } = useRegion();
   const { exchangeRates } = useCurrency();
-  return (amountUSD: number) => formatUSDInRegion(amountUSD, region, exchangeRates);
+  return (amountINR: number) => formatINRInRegion(amountINR, region, exchangeRates);
 }

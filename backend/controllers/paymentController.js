@@ -48,14 +48,19 @@ const getPayPalAccessToken = async () => {
 exports.calculateCartTotal = async (req, res) => {
     try {
         const { items, currency = 'USD', region = 'default', couponCode } = req.body;
-        const { getRegionalPriceUSD } = require('../utils/pricingCalculator');
+        const { getRegionalPriceINR, getLiveINRRate } = require('../utils/pricingCalculator');
 
         if (!items || items.length === 0) {
             return res.status(400).json({ ok: false, error: 'Cart items are required' });
         }
 
+        // Live rate fetched once per request — the only place a conversion
+        // happens, and only for the USD amount PayPal will actually charge.
+        const inrRate = await getLiveINRRate();
+
         const Product = require('../models/Product');
         const validatedItems = [];
+        let totalINR = 0;
         let totalUSD = 0;
 
         for (const item of items) {
@@ -84,27 +89,29 @@ exports.calculateCartTotal = async (req, res) => {
                 });
             }
 
-            // Get actual price from database (in USD), apply regional adjustment
-            const baseUSD = product.priceUSD;
-            const actualPriceUSD = getRegionalPriceUSD(product, region);
+            // Get actual price from database (canonical INR), apply regional adjustment
+            const baseINR = product.priceINR;
+            const actualPriceINR = getRegionalPriceINR(product, region);
 
             // Check if discount is actually active (server-side validation)
             const isDiscountActive = product.isDiscountActive();
             const discountPercentage = isDiscountActive ? product.discount.percentage : 0;
-            const discountAmount = isDiscountActive ? Math.round((actualPriceUSD * discountPercentage) / 100 * 100) / 100 : 0;
-            const finalPriceUSD = parseFloat((actualPriceUSD - discountAmount).toFixed(2));
+            const discountAmountINR = isDiscountActive ? Math.round((actualPriceINR * discountPercentage) / 100 * 100) / 100 : 0;
+            const finalPriceINR = parseFloat((actualPriceINR - discountAmountINR).toFixed(2));
+            const finalPriceUSD = parseFloat((finalPriceINR / inrRate).toFixed(2));
 
             const quantity = item.quantity || 1;
-            const itemTotalUSD = finalPriceUSD * quantity;
 
-            totalUSD += itemTotalUSD;
+            totalINR += finalPriceINR * quantity;
+            totalUSD += finalPriceUSD * quantity;
 
             validatedItems.push({
                 requestedId,
                 productId: product.productId,
                 name: product.name,
-                priceUSD: baseUSD,
-                regionalPriceUSD: actualPriceUSD,
+                priceINR: baseINR,
+                regionalPriceINR: actualPriceINR,
+                finalPriceINR: finalPriceINR,
                 finalPriceUSD: finalPriceUSD,
                 quantity: quantity,
                 discountPercentage: discountPercentage,
@@ -116,7 +123,7 @@ exports.calculateCartTotal = async (req, res) => {
             });
         }
 
-        // Validate and apply coupon if provided
+        // Validate and apply coupon if provided (coupon math stays USD-denominated, unchanged from prior behavior)
         let couponDiscount = null;
         let finalTotalUSD = totalUSD;
 
@@ -147,6 +154,7 @@ exports.calculateCartTotal = async (req, res) => {
             region,
             couponDiscount,
             totals: {
+                INR: parseFloat(totalINR.toFixed(2)),
                 USD: parseFloat(finalTotalUSD.toFixed(2)),
                 subtotalUSD: parseFloat(totalUSD.toFixed(2))
             }
@@ -167,7 +175,7 @@ exports.calculateCartTotal = async (req, res) => {
 exports.createOrder = async (req, res) => {
     try {
         const { amount, currency = 'USD', receipt, items, shippingAddress, customer, region = 'default', couponCode } = req.body;
-        const { getRegionalPriceUSD } = require('../utils/pricingCalculator');
+        const { getRegionalPriceINR, getLiveINRRate } = require('../utils/pricingCalculator');
 
         // Enhanced validation with comprehensive security checks
         if (!amount || amount <= 0) {
@@ -221,9 +229,14 @@ exports.createOrder = async (req, res) => {
             // NEVER trust prices from frontend - always fetch from database
             console.log('🔒 Validating prices from database...');
 
+            // Live rate fetched once per request — the only place a conversion
+            // happens, and only for the USD amount PayPal will actually charge.
+            const inrRate = await getLiveINRRate();
+
             const Product = require('../models/Product');
             const validatedItems = [];
             let serverCalculatedTotal = 0;
+            let serverCalculatedTotalINR = 0;
 
             for (const item of items) {
                 // Fetch product from database
@@ -242,11 +255,11 @@ exports.createOrder = async (req, res) => {
                     });
                 }
 
-                // Get actual price from database, apply regional adjustment
-                const baseUSD = product.priceUSD;
-                const actualPriceUSD = getRegionalPriceUSD(product, region);
+                // Get actual price from database (canonical INR), apply regional adjustment
+                const baseINR = product.priceINR;
+                const actualPriceINR = getRegionalPriceINR(product, region);
 
-                if (!baseUSD) {
+                if (!baseINR) {
                     return res.status(400).json({
                         ok: false,
                         error: `Product ${item.name} does not have a price`,
@@ -257,8 +270,10 @@ exports.createOrder = async (req, res) => {
                 // Check if discount is actually active (server-side validation)
                 const isDiscountActive = product.isDiscountActive();
                 const discountPercentage = isDiscountActive ? product.discount.percentage : 0;
-                const discountAmount = isDiscountActive ? Math.round((actualPriceUSD * discountPercentage) / 100 * 100) / 100 : 0;
-                const finalPriceUSD = parseFloat((actualPriceUSD - discountAmount).toFixed(2));
+                const discountAmountINR = isDiscountActive ? Math.round((actualPriceINR * discountPercentage) / 100 * 100) / 100 : 0;
+                const finalPriceINR = parseFloat((actualPriceINR - discountAmountINR).toFixed(2));
+                // Converted once, server-side, purely for the PayPal charge amount
+                const finalPriceUSD = parseFloat((finalPriceINR / inrRate).toFixed(2));
 
                 // Validate quantity
                 if (!item.quantity || item.quantity < 1) {
@@ -269,18 +284,19 @@ exports.createOrder = async (req, res) => {
                     });
                 }
 
-                const itemTotal = finalPriceUSD * item.quantity;
-                serverCalculatedTotal += itemTotal;
+                serverCalculatedTotal += finalPriceUSD * item.quantity;
+                serverCalculatedTotalINR += finalPriceINR * item.quantity;
 
                 validatedItems.push({
                     productId: product.productId,
                     name: product.name,
                     quantity: item.quantity,
-                    priceUSD: baseUSD,
-                    regionalPriceUSD: actualPriceUSD,
-                    originalPrice: actualPriceUSD,
+                    priceINR: baseINR,
+                    regionalPriceINR: actualPriceINR,
+                    originalPrice: actualPriceINR,
                     discountPercentage: discountPercentage,
-                    discountAmount: discountAmount,
+                    discountAmount: discountAmountINR,
+                    finalPriceINR: finalPriceINR,
                     finalPriceUSD: finalPriceUSD,
                     image: product.image,
                     category: product.category,
@@ -293,7 +309,7 @@ exports.createOrder = async (req, res) => {
                     } : undefined
                 });
 
-                console.log(`✅ Validated: ${product.name} - Base: $${baseUSD}, Regional (${region}): $${actualPriceUSD}, Discount: ${discountPercentage}%, Final: $${finalPriceUSD}`);
+                console.log(`✅ Validated: ${product.name} - Base: ₹${baseINR}, Regional (${region}): ₹${actualPriceINR}, Discount: ${discountPercentage}%, Final: ₹${finalPriceINR} ($${finalPriceUSD})`);
             }
 
             // Round to 2 decimal places
@@ -475,8 +491,9 @@ exports.createOrder = async (req, res) => {
                         productId: item.productId,
                         name: item.name,
                         quantity: item.quantity,
-                        price: item.finalPriceUSD, // Server-validated final price in USD
-                        priceUSD: item.priceUSD,
+                        price: item.finalPriceUSD, // Server-validated final price actually charged, in USD
+                        priceUSD: item.finalPriceUSD, // Amount actually charged (audit trail — PayPal only accepts USD)
+                        priceINR: item.priceINR, // Canonical INR sale price at time of purchase
                         originalPrice: item.originalPrice,
                         discountPercentage: item.discountPercentage,
                         discountAmount: item.discountAmount,

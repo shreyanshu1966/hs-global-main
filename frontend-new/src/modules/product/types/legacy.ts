@@ -9,7 +9,7 @@ export interface LegacyProduct {
   image: string;
   images: string[];
   sortedImages?: string[];
-  priceUSD?: number;
+  priceINR?: number;
   pricePerSqFt?: number;
   available: boolean;
   discount?: {

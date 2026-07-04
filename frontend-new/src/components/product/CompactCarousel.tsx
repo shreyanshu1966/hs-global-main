@@ -28,7 +28,7 @@ function toCardProps(p: any) {
     title,
     designer,
     productLink,
-    priceUSD: p.priceUSD,
+    priceINR: p.priceINR,
     regionalPricing: p.regionalPricing,
     discount: p.discount,
     averageRating: p.averageRating,

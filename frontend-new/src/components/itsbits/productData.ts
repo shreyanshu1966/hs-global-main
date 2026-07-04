@@ -9,8 +9,8 @@ export interface ItsbitsCardItem {
   designer: string;
   price?: string;
   originalPrice?: string;
-  priceUSD?: number;
-  originalPriceUSD?: number;
+  priceINR?: number;
+  originalPriceINR?: number;
   priceLabel?: string;
   href: string;
   createdAt?: string;
@@ -42,24 +42,24 @@ export const getItsbitsProductImage = (product: Product): string => {
 // Price computation is deferred to the card component via usePrice() so regional
 // adjustments are applied correctly at render time.
 const getPriceLabels = (product: Product): {
-  priceUSD?: number;
+  priceINR?: number;
   priceLabel?: string;
 } => {
-  const basePrice = product.priceUSD || 0;
+  const basePrice = product.priceINR || 0;
   if (basePrice <= 0) return { priceLabel: 'Request Quote' };
-  return { priceUSD: basePrice };
+  return { priceINR: basePrice };
 };
 
 export const mapProductToItsbitsCard = (product: Product): ItsbitsCardItem => {
   const categoryLabel = toTitleCase(product.subcategory || product.category || 'HS Global Collection');
-  const { priceUSD, priceLabel } = getPriceLabels(product);
+  const { priceINR, priceLabel } = getPriceLabels(product);
 
   return {
     id: product.productId || product._id,
     image: getItsbitsProductImage(product),
     title: product.name,
     designer: categoryLabel,
-    priceUSD,
+    priceINR,
     priceLabel,
     href: `/product/${product.productId || product._id}`,
     createdAt: product.createdAt,

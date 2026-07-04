@@ -176,16 +176,16 @@ export default function AdminProductFormPage() {
                         <dd className="text-gray-900 capitalize text-right">{val || '—'}</dd>
                       </div>
                     ))}
-                    {previewProduct.priceUSD && (
+                    {previewProduct.priceINR && (
                       <div className="flex justify-between gap-4 border-b border-gray-50 pb-2">
                         <dt className="text-gray-500 font-medium">Price</dt>
                         <dd className="text-gray-900 font-semibold">
                           {previewProduct.discount?.enabled && previewProduct.discount.percentage > 0 ? (
                             <span>
-                              <span className="text-green-600">{formatAdminINR(previewProduct.priceUSD * (1 - previewProduct.discount.percentage / 100))}</span>
-                              <span className="ml-2 text-gray-400 line-through text-xs">{formatAdminINR(previewProduct.priceUSD)}</span>
+                              <span className="text-green-600">{formatAdminINR(previewProduct.priceINR * (1 - previewProduct.discount.percentage / 100))}</span>
+                              <span className="ml-2 text-gray-400 line-through text-xs">{formatAdminINR(previewProduct.priceINR)}</span>
                             </span>
-                          ) : formatAdminINR(previewProduct.priceUSD)}
+                          ) : formatAdminINR(previewProduct.priceINR)}
                         </dd>
                       </div>
                     )}

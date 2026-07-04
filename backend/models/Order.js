@@ -114,9 +114,10 @@ const orderSchema = new mongoose.Schema({
         price: {
             type: Number,
             required: true
-        }, // Final price (after discount if applicable)
-        priceUSD: Number, // Original base price in USD for audit trail
-        originalPrice: Number, // Original price before discount
+        }, // Final price actually charged, in USD (after discount if applicable)
+        priceUSD: Number, // Amount actually charged in USD — audit trail (PayPal only accepts USD)
+        priceINR: Number, // Canonical INR sale price at time of purchase
+        originalPrice: Number, // Original price before discount (INR)
         discountPercentage: Number, // Discount percentage applied
         discountAmount: Number, // Actual discount amount
         image: String,

@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { X, Plus, Minus, Trash2, MessageCircle, Tag, Loader2 } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { useNavigate } from 'react-router-dom';
-import { useCurrency } from '../contexts/CurrencyContext';
+import { useCurrency, DEFAULT_RATES } from '../contexts/CurrencyContext';
 import { useAuth } from '../contexts/AuthContext';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
@@ -12,10 +12,10 @@ import { useGSAP } from '@gsap/react';
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
 
 export const CartDrawer: React.FC = () => {
-  const { formatPrice } = useCurrency();
+  const { formatPrice, exchangeRates } = useCurrency();
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
-  const { state, updateQuantity, removeItem, closeCart, getTotalItems, getRegionalEffectivePriceUSD, getRegionalBasePriceUSD, applyCoupon, removeCoupon } = useCart();
+  const { state, updateQuantity, removeItem, closeCart, getTotalItems, getRegionalEffectivePriceINR, getRegionalBasePriceINR, applyCoupon, removeCoupon } = useCart();
 
   const [isRendered, setIsRendered] = useState(false);
   const [couponInput, setCouponInput] = useState('');
@@ -60,16 +60,24 @@ export const CartDrawer: React.FC = () => {
     }
   }, [state.isCartOpen]);
 
-  const subtotalUSD = useMemo(() => {
-    return state.items.reduce((sum, item) => sum + getRegionalEffectivePriceUSD(item) * item.quantity, 0);
-  }, [state.items, getRegionalEffectivePriceUSD]);
+  const subtotalINR = useMemo(() => {
+    return state.items.reduce((sum, item) => sum + getRegionalEffectivePriceINR(item) * item.quantity, 0);
+  }, [state.items, getRegionalEffectivePriceINR]);
+
+  // Coupon API validates against a USD cart total (Coupon model is USD-denominated at the source)
+  const subtotalUSDForCoupon = useMemo(() => {
+    const inrRate = exchangeRates.INR || DEFAULT_RATES.INR;
+    return subtotalINR / inrRate;
+  }, [subtotalINR, exchangeRates]);
 
   const totalAmount = useMemo(() => {
     if (state.appliedCoupon) {
-      return Math.max(0, subtotalUSD - state.appliedCoupon.discountAmountUSD);
+      const inrRate = exchangeRates.INR || DEFAULT_RATES.INR;
+      const discountAmountINR = state.appliedCoupon.discountAmountUSD * inrRate;
+      return Math.max(0, subtotalINR - discountAmountINR);
     }
-    return subtotalUSD;
-  }, [subtotalUSD, state.appliedCoupon]);
+    return subtotalINR;
+  }, [subtotalINR, state.appliedCoupon, exchangeRates]);
 
   const handleClose = () => closeCart();
 
@@ -110,7 +118,7 @@ export const CartDrawer: React.FC = () => {
       const res = await fetch(`${API_URL}/coupons/validate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code: couponInput.trim(), cartTotalUSD: subtotalUSD })
+        body: JSON.stringify({ code: couponInput.trim(), cartTotalUSD: subtotalUSDForCoupon })
       });
       const data = await res.json();
       if (!data.ok) {
@@ -189,9 +197,9 @@ export const CartDrawer: React.FC = () => {
               ) : (
                 <div className="space-y-0">
                   {state.items.map((item) => {
-                    const effectivePriceUSD = getRegionalEffectivePriceUSD(item);
-                    const basePriceUSD = getRegionalBasePriceUSD(item);
-                    const hasDiscount = effectivePriceUSD < basePriceUSD;
+                    const effectivePriceINR = getRegionalEffectivePriceINR(item);
+                    const basePriceINR = getRegionalBasePriceINR(item);
+                    const hasDiscount = effectivePriceINR < basePriceINR;
 
                     return (
                       <div key={item.id} className="px-6 py-4 border-b border-[#eceff1]">
@@ -223,9 +231,9 @@ export const CartDrawer: React.FC = () => {
                             </div>
 
                             <div className="mt-1 flex items-center gap-2 flex-wrap">
-                              <span className="text-sm font-bold text-gray-900">{formatPrice(effectivePriceUSD)}</span>
+                              <span className="text-sm font-bold text-gray-900">{formatPrice(effectivePriceINR)}</span>
                               {hasDiscount && (
-                                <span className="text-xs text-gray-500 line-through">{formatPrice(basePriceUSD)}</span>
+                                <span className="text-xs text-gray-500 line-through">{formatPrice(basePriceINR)}</span>
                               )}
                             </div>
 
@@ -274,7 +282,7 @@ export const CartDrawer: React.FC = () => {
                     <div className="flex items-center gap-2 text-green-800 text-sm">
                       <Tag className="w-4 h-4" />
                       <span className="font-semibold">{state.appliedCoupon.code}</span>
-                      <span className="text-green-600">−{formatPrice(state.appliedCoupon.discountAmountUSD)}</span>
+                      <span className="text-green-600">−{formatPrice(state.appliedCoupon.discountAmountUSD * (exchangeRates.INR || DEFAULT_RATES.INR))}</span>
                     </div>
                     <button onClick={() => removeCoupon()} className="text-green-700 hover:text-red-600 transition-colors text-xs font-medium">Remove</button>
                   </div>

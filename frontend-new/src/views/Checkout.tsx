@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useCart } from '../contexts/CartContext';
-import { useCurrency } from '../contexts/CurrencyContext';
+import { useCurrency, DEFAULT_RATES } from '../contexts/CurrencyContext';
 import { useRegion } from '../contexts/RegionContext';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
@@ -11,8 +11,8 @@ import { Country, State, City } from 'country-state-city';
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
 
 const Checkout: React.FC = () => {
-  const { state, removeItem, updateQuantity, getRegionalEffectivePriceUSD, applyCoupon, removeCoupon } = useCart();
-  const { formatPrice, getCurrencySymbol, convertFromUSD, currency } = useCurrency();
+  const { state, removeItem, updateQuantity, getRegionalEffectivePriceINR, applyCoupon, removeCoupon } = useCart();
+  const { formatPrice, getCurrencySymbol, convertFromINR, exchangeRates, currency } = useCurrency();
   const { region: pricingRegion } = useRegion();
   const { user } = useAuth();
 
@@ -90,9 +90,9 @@ const Checkout: React.FC = () => {
           setBackendPrices(data);
 
           // Emit telemetry when local cart math diverges from backend authoritative totals.
-          const localTotalUSD = state.items.reduce((sum, item) => sum + (item.priceUSD * item.quantity), 0);
-          const backendTotalUSD = Number(data?.totals?.USD || 0);
-          const deltaINR = Number((backendTotalUSD - localTotalUSD).toFixed(2));
+          const localTotalINR = state.items.reduce((sum, item) => sum + (item.priceINR * item.quantity), 0);
+          const backendTotalINR = Number(data?.totals?.INR || 0);
+          const deltaINR = Number((backendTotalINR - localTotalINR).toFixed(2));
 
           const lineMismatches = (data?.items || [])
             .map((backendItem: any) => {
@@ -104,12 +104,12 @@ const Checkout: React.FC = () => {
                 return {
                   productId: backendItem.productId,
                   reason: 'missing-local-item',
-                  backendFinalPriceUSD: backendItem.finalPriceUSD
+                  backendFinalPriceINR: backendItem.finalPriceINR
                 };
               }
 
-              const localUnitPrice = Number(localItem.priceUSD || 0);
-              const backendUnitPrice = Number(backendItem.finalPriceUSD || 0);
+              const localUnitPrice = Number(localItem.priceINR || 0);
+              const backendUnitPrice = Number(backendItem.finalPriceINR || 0);
               const unitDelta = Number((backendUnitPrice - localUnitPrice).toFixed(2));
 
               if (Math.abs(unitDelta) <= 0.01) {
@@ -118,8 +118,8 @@ const Checkout: React.FC = () => {
 
               return {
                 productId: backendItem.productId,
-                localUnitPriceUSD: localUnitPrice,
-                backendUnitPriceUSD: backendUnitPrice,
+                localUnitPriceINR: localUnitPrice,
+                backendUnitPriceINR: backendUnitPrice,
                 unitDeltaINR: unitDelta
               };
             })
@@ -133,8 +133,8 @@ const Checkout: React.FC = () => {
               body: JSON.stringify({
                 severity: 'warning',
                 source: 'checkout-page',
-                localTotalUSD,
-                backendTotalUSD,
+                localTotalINR,
+                backendTotalINR,
                 deltaINR,
                 itemCount: state.items.length,
                 lineMismatches
@@ -229,13 +229,17 @@ const Checkout: React.FC = () => {
     }
   }, [state.phoneNumber, state.isPhoneVerified, phone]);
 
-  // Backend returns totals.USD (regional + product discounts applied; coupon also applied if provided)
+  // Backend returns totals.INR (canonical, pre-coupon) and totals.subtotalUSD (pre-coupon, for the coupon API)
   const subtotalBeforeCouponUSD = useMemo(() => {
     if (hasAuthoritativePricing && backendPrices?.totals?.subtotalUSD !== undefined) {
       return Number(backendPrices.totals.subtotalUSD);
     }
-    if (hasAuthoritativePricing && backendPrices?.totals?.USD !== undefined) {
-      return Number(backendPrices.totals.USD);
+    return 0;
+  }, [backendPrices, hasAuthoritativePricing]);
+
+  const subtotalBeforeCouponINR = useMemo(() => {
+    if (hasAuthoritativePricing && backendPrices?.totals?.INR !== undefined) {
+      return Number(backendPrices.totals.INR);
     }
     return 0;
   }, [backendPrices, hasAuthoritativePricing]);
@@ -244,21 +248,24 @@ const Checkout: React.FC = () => {
     return backendPrices?.couponDiscount?.discountAmountUSD ?? 0;
   }, [backendPrices]);
 
-  const subtotalUSD = useMemo(() => {
-    if (hasAuthoritativePricing && backendPrices?.totals?.USD !== undefined) {
-      return Number(backendPrices.totals.USD);
-    }
-    return 0;
-  }, [backendPrices, hasAuthoritativePricing]);
+  // Coupons are USD-denominated at the source (Coupon model); converted once for display alongside the canonical INR subtotal.
+  const couponDiscountINR = useMemo(() => {
+    if (!couponDiscountUSD) return 0;
+    const inrRate = exchangeRates.INR || DEFAULT_RATES.INR;
+    return Math.round(couponDiscountUSD * inrRate * 100) / 100;
+  }, [couponDiscountUSD, exchangeRates]);
 
-  // Convert to regional display currency
-  const subtotal = useMemo(() => convertFromUSD(subtotalUSD), [subtotalUSD, convertFromUSD]);
+  // Convert the canonical INR total (post-coupon) to the region's display currency
+  const subtotal = useMemo(
+    () => convertFromINR(Math.max(0, subtotalBeforeCouponINR - couponDiscountINR)),
+    [subtotalBeforeCouponINR, couponDiscountINR, convertFromINR]
+  );
   const totalAmount = subtotal;
 
   // Get standardized payment currency details from Context
   const { currency: paymentCurrency } = useCurrency().getPaymentCurrency();
 
-  // Use backend-calculated payment amount (always in USD)
+  // Use backend-calculated payment amount (the actual PayPal charge — always in USD)
   const paymentAmount = useMemo(() => {
     if (hasAuthoritativePricing && backendPrices?.totals?.USD !== undefined) {
       return Number(backendPrices.totals.USD).toFixed(2);
@@ -293,7 +300,7 @@ const Checkout: React.FC = () => {
           name: item.name,
           quantity: item.quantity,
           price: Number(backendItem.finalPriceUSD).toFixed(2),
-          priceUSD: Number(backendItem.priceUSD),
+          priceINR: Number(backendItem.priceINR),
           image: item.image,
           category: item.category || 'Natural Stone',
           discount: backendItem.discount || null
@@ -660,15 +667,15 @@ const Checkout: React.FC = () => {
                         {backendItemMap.get(getCheckoutItemId(item))?.discountPercentage > 0 ? (
                           <div className="space-y-0.5">
                             <div className="flex items-center gap-2">
-                              <p className="text-sm font-bold text-green-600">{formatPrice(Number(backendItemMap.get(getCheckoutItemId(item))?.finalPriceUSD || 0))}</p>
+                              <p className="text-sm font-bold text-green-600">{formatPrice(Number(backendItemMap.get(getCheckoutItemId(item))?.finalPriceINR || 0))}</p>
                               <span className="px-1.5 py-0.5 bg-red-500 text-white rounded text-xs font-bold">
                                 {backendItemMap.get(getCheckoutItemId(item))?.discountPercentage || 0}% OFF
                               </span>
                             </div>
-                            <p className="text-xs text-gray-500 line-through">{formatPrice(Number(backendItemMap.get(getCheckoutItemId(item))?.priceUSD || 0))}</p>
+                            <p className="text-xs text-gray-500 line-through">{formatPrice(Number(backendItemMap.get(getCheckoutItemId(item))?.priceINR || 0))}</p>
                           </div>
                         ) : (
-                          <p className="text-sm text-gray-500">{formatPrice(Number(backendItemMap.get(getCheckoutItemId(item))?.priceUSD || 0))}</p>
+                          <p className="text-sm text-gray-500">{formatPrice(Number(backendItemMap.get(getCheckoutItemId(item))?.priceINR || 0))}</p>
                         )}
                       </div>
                       <div className="flex items-center gap-3">
@@ -691,7 +698,7 @@ const Checkout: React.FC = () => {
                     </div>
                     <div className="text-right">
                       <p className="text-sm font-semibold text-black">
-                        {formatPrice(Number(backendItemMap.get(getCheckoutItemId(item))?.finalPriceUSD || 0) * item.quantity)}
+                        {formatPrice(Number(backendItemMap.get(getCheckoutItemId(item))?.finalPriceINR || 0) * item.quantity)}
                       </p>
                     </div>
                   </div>
@@ -754,12 +761,12 @@ const Checkout: React.FC = () => {
               <div className="mt-4 pt-4 border-t border-gray-100 space-y-3">
                 <div className="flex justify-between text-sm text-gray-600">
                   <span>Subtotal</span>
-                  <span>{getCurrencySymbol()}{convertFromUSD(subtotalBeforeCouponUSD).toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
+                  <span>{getCurrencySymbol()}{convertFromINR(subtotalBeforeCouponINR).toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
                 </div>
-                {couponDiscountUSD > 0 && (
+                {couponDiscountINR > 0 && (
                   <div className="flex justify-between text-sm text-green-700 font-medium">
                     <span className="flex items-center gap-1.5"><Tag className="w-3.5 h-3.5" />{backendPrices?.couponDiscount?.code}</span>
-                    <span>−{getCurrencySymbol()}{convertFromUSD(couponDiscountUSD).toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
+                    <span>−{getCurrencySymbol()}{convertFromINR(couponDiscountINR).toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
                   </div>
                 )}
                 <div className="flex justify-between text-sm text-gray-600">

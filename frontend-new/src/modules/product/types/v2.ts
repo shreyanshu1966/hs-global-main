@@ -1,8 +1,8 @@
 'use client';
 export interface ProductPricingV2 {
-  currency: 'USD';
-  basePriceUSD: number;
-  effectivePriceUSD: number;
+  currency: 'INR';
+  basePriceINR: number;
+  effectivePriceINR: number;
   pricePerSqFt?: number;
   discountStatus: 'none' | 'scheduled' | 'active' | 'expired';
   discount: {

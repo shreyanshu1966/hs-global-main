@@ -25,7 +25,7 @@ interface ProductGalleryProps {
         images: string[];
         sortedImages?: string[];
         image?: string;
-        priceUSD?: number;
+        priceINR?: number;
         discount?: {
             enabled: boolean;
             percentage: number;
@@ -62,7 +62,7 @@ export function ProductGallery({ product, scrollWrapperRef, variantImages }: Pro
         setActiveIndex(0);
         setZoomedImageIndex(0);
     }, [variantImages]);
-    const hasDiscountFlag = hasActiveDiscount(product as any) && Boolean(product.priceUSD && product.priceUSD > 0);
+    const hasDiscountFlag = hasActiveDiscount(product as any) && Boolean(product.priceINR && product.priceINR > 0);
     const discountPercentage = getDiscountPercentage(product as any);
 
     // ─── MOBILE DETECTION ────────────────────────────────────

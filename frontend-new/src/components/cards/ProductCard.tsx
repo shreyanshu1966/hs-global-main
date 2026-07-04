@@ -31,14 +31,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
     // ---- Pricing (centralized engine) ----
     const isSemiPreciousStone = product.category === 'semi-precious-stone';
     const price = usePrice(product);
-    const { formatPrice: formatCurrencyPrice, exchangeRates } = useCurrency();
-    const hasValidPrice = price.baseUSD > 0;
+    const { formatPrice: formatCurrencyPrice } = useCurrency();
+    const hasValidPrice = price.baseINR > 0;
     const showDiscount = price.hasDiscount && hasValidPrice && !isSemiPreciousStone;
     const displayPrice = price.formattedPrice;
     const originalDisplayPrice = price.originalFormattedPrice;
     const sqFtPrice = (product as any).pricePerSqFt as number | undefined;
-    const formattedSqFtPrice = sqFtPrice && sqFtPrice > 0 && exchangeRates.INR
-        ? formatCurrencyPrice(sqFtPrice / exchangeRates.INR)
+    const formattedSqFtPrice = sqFtPrice && sqFtPrice > 0
+        ? formatCurrencyPrice(sqFtPrice)
         : null;
     const wishlistId = String(product.productId || product._id || product.name);
     const isWishlisted = isInWishlist(wishlistId);

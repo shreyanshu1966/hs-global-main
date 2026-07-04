@@ -113,7 +113,7 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
     subcategory: '',
     description: '',
     subDescription: '',
-    priceUSD: '',
+    priceINR: '',
     status: 'active',
     available: true,
     featured: false,
@@ -240,7 +240,7 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
       subcategory:    editingProduct.subcategory  || '',
       description:    editingProduct.description  || '',
       subDescription: editingProduct.subDescription || '',
-      priceUSD:       editingProduct.priceUSD     || '',
+      priceINR:       editingProduct.priceINR     || '',
       status:         editingProduct.status       || 'active',
       available:      editingProduct.available    !== false,
       featured:       editingProduct.featured     || false,
@@ -261,17 +261,16 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
 
     if (editingProduct.regionalPricing) {
       const def = defaultRegionalPricing();
-      const cvt = (rp: any) => !rp ? null : { ...rp, adjustmentValue: rp.adjustmentType === 'fixed' ? Math.round(rp.adjustmentValue * liveRate('INR')) : rp.adjustmentValue };
       setRegionalPricing({
-        UAE:    cvt(editingProduct.regionalPricing.UAE)    || def.UAE,
-        Europe: cvt(editingProduct.regionalPricing.Europe) || def.Europe,
-        India:  cvt(editingProduct.regionalPricing.India)  || def.India,
-        USA:    cvt(editingProduct.regionalPricing.USA)    || def.USA,
-        UK:     cvt(editingProduct.regionalPricing.UK)     || def.UK,
+        UAE:    editingProduct.regionalPricing.UAE    || def.UAE,
+        Europe: editingProduct.regionalPricing.Europe || def.Europe,
+        India:  editingProduct.regionalPricing.India  || def.India,
+        USA:    editingProduct.regionalPricing.USA    || def.USA,
+        UK:     editingProduct.regionalPricing.UK     || def.UK,
       });
     }
 
-    setPriceINR(editingProduct.priceUSD ? String(Math.round(editingProduct.priceUSD * liveRate('INR'))) : '');
+    setPriceINR(editingProduct.priceINR ? String(editingProduct.priceINR) : '');
     setPricePerSqFtINR(editingProduct.pricePerSqFt ? String(editingProduct.pricePerSqFt) : '');
     if (editingProduct.stoneSpecs) {
       setStoneSpecs({
@@ -302,8 +301,8 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
     if (Array.isArray(editingProduct.variants) && editingProduct.variants.length > 0) {
       setVariantSkus(editingProduct.variants.map((v: any) => ({
         attributes: v.attributes instanceof Map ? Object.fromEntries(v.attributes) : (v.attributes || {}),
-        priceINR: v.priceUSD != null ? String(Math.round(v.priceUSD * liveRate('INR'))) : '',
-        compareAtPriceINR: v.compareAtPriceUSD != null ? String(Math.round(v.compareAtPriceUSD * liveRate('INR'))) : '',
+        priceINR: v.priceINR != null ? String(v.priceINR) : '',
+        compareAtPriceINR: v.compareAtPriceINR != null ? String(v.compareAtPriceINR) : '',
         stockQuantity: v.stockQuantity || 0,
         sku: v.sku || '',
         available: v.available !== false,
@@ -378,8 +377,7 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
 
   const handlePriceINRChange = (rawVal: string) => {
     setPriceINR(rawVal);
-    const n = parseFloat(rawVal);
-    handleInputChange('priceUSD', rawVal && !isNaN(n) ? String(n / liveRate('INR')) : '');
+    handleInputChange('priceINR', rawVal);
   };
 
   const handleSpecsChange = (productSpecifications: ProductSpecifications, customSpecsData: any[]) => {
@@ -407,13 +405,6 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
       setValidationLoading(false);
       setFormSubmitting(true);
 
-      const cvtSave = (rp: { enabled: boolean; adjustmentType: AdjustmentType; adjustmentValue: number }) => ({
-        ...rp, adjustmentValue: rp.adjustmentType === 'fixed' ? rp.adjustmentValue / liveRate('INR') : rp.adjustmentValue,
-      });
-      const regionalPricingForSave = Object.fromEntries(
-        (Object.entries(regionalPricing) as [RegionKey, typeof regionalPricing[RegionKey]][]).map(([k, v]) => [k, cvtSave(v)])
-      );
-
       const formattedCustomSpecs = customSpecs
         .filter((s: any) => s.label && s.label.trim())
         .map((s: any, i: number) => ({
@@ -428,7 +419,7 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
         productId: formData.productId, name: formData.name, category: formData.category,
         subcategory: finalSubcategory, description: formData.description,
         subDescription: formData.subDescription || '',
-        priceUSD: formData.category === 'semi-precious-stone' ? undefined : (formData.priceUSD ? parseFloat(formData.priceUSD.toString()) : undefined),
+        priceINR: formData.category === 'semi-precious-stone' ? undefined : (formData.priceINR ? parseFloat(formData.priceINR.toString()) : undefined),
         pricePerSqFt: formData.category === 'semi-precious-stone' && pricePerSqFtINR ? parseFloat(pricePerSqFtINR) : undefined,
         status: formData.status, available: formData.available, featured: formData.featured,
         furnitureSpecs: formData.furnitureSpecs,
@@ -436,18 +427,18 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
         discount: formData.discount, hasVideo: !!video,
         stoneSpecs: formData.category === 'semi-precious-stone' ? stoneSpecs : undefined,
         customSpecs: formattedCustomSpecs,
-        similarProducts: similarProductIds, regionalPricing: regionalPricingForSave,
+        similarProducts: similarProductIds, regionalPricing,
         shipping: { shipsWorldwide: shippingConfig.shipsWorldwide, excludedCountries: shippingConfig.excludedCountries },
         productType: productTypeField,
         variantAttributes: productTypeField === 'configurable' ? variantOptions : [],
         variants: productTypeField === 'configurable'
           ? variantSkus.map((v, i) => ({
               attributes: v.attributes,
-              priceUSD: v.priceINR && parseFloat(v.priceINR) > 0
-                ? parseFloat(v.priceINR) / liveRate('INR')
+              priceINR: v.priceINR && parseFloat(v.priceINR) > 0
+                ? parseFloat(v.priceINR)
                 : null,
-              compareAtPriceUSD: v.compareAtPriceINR && parseFloat(v.compareAtPriceINR) > 0
-                ? parseFloat(v.compareAtPriceINR) / liveRate('INR')
+              compareAtPriceINR: v.compareAtPriceINR && parseFloat(v.compareAtPriceINR) > 0
+                ? parseFloat(v.compareAtPriceINR)
                 : null,
               stockQuantity: v.stockQuantity,
               sku: v.sku,
@@ -479,7 +470,7 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
         productId: formData.productId, name: formData.name, category: formData.category,
         subcategory: finalSubcategory, description: formData.description,
         subDescription: formData.subDescription || '',
-        priceUSD: formData.category === 'semi-precious-stone' ? undefined : (formData.priceUSD ? parseFloat(formData.priceUSD.toString()) : undefined),
+        priceINR: formData.category === 'semi-precious-stone' ? undefined : (formData.priceINR ? parseFloat(formData.priceINR.toString()) : undefined),
         pricePerSqFt: formData.category === 'semi-precious-stone' && pricePerSqFtINR ? parseFloat(pricePerSqFtINR) : undefined,
         status: formData.status, available: formData.available, featured: formData.featured,
         furnitureSpecs: formData.furnitureSpecs,
@@ -980,7 +971,7 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
                       className={`${inputCls} pl-8`} placeholder="e.g. 83500" />
                   </div>
                   {priceINR && parseFloat(priceINR) > 0 && (
-                    <p className="text-xs text-gray-400 mt-1.5">≈ ${(parseFloat(priceINR) / liveRate('INR')).toFixed(2)} USD</p>
+                    <p className="text-xs text-gray-400 mt-1.5">≈ ${(parseFloat(priceINR) / liveRate('INR')).toFixed(2)} USD (estimate)</p>
                   )}
                 </div>
               )}
@@ -1035,13 +1026,13 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
                       <p className="text-xs text-red-600 bg-red-50 rounded-lg px-3 py-2">⚠️ Start date must be before end date</p>
                     )}
                     {/* Discount preview */}
-                    {formData.discount.percentage > 0 && formData.priceUSD && (
+                    {formData.discount.percentage > 0 && formData.priceINR && (
                       <div className="bg-orange-50 border border-orange-100 rounded-xl p-4 grid grid-cols-2 gap-3 text-sm">
                         {[
-                          { label: 'Original', val: `₹${Math.round(parseFloat(formData.priceUSD) * liveRate('INR')).toLocaleString('en-IN')}`, cls: 'text-gray-700' },
+                          { label: 'Original', val: `₹${Math.round(parseFloat(formData.priceINR)).toLocaleString('en-IN')}`, cls: 'text-gray-700' },
                           { label: 'Discount', val: `−${formData.discount.percentage}%`, cls: 'text-red-500' },
-                          { label: 'Final Price', val: `₹${Math.round(parseFloat(formData.priceUSD) * (1 - formData.discount.percentage / 100) * liveRate('INR')).toLocaleString('en-IN')}`, cls: 'text-orange-600 font-bold' },
-                          { label: 'You Save', val: `₹${Math.round(parseFloat(formData.priceUSD) * formData.discount.percentage / 100 * liveRate('INR')).toLocaleString('en-IN')}`, cls: 'text-green-600' },
+                          { label: 'Final Price', val: `₹${Math.round(parseFloat(formData.priceINR) * (1 - formData.discount.percentage / 100)).toLocaleString('en-IN')}`, cls: 'text-orange-600 font-bold' },
+                          { label: 'You Save', val: `₹${Math.round(parseFloat(formData.priceINR) * formData.discount.percentage / 100).toLocaleString('en-IN')}`, cls: 'text-green-600' },
                         ].map(({ label, val, cls }) => (
                           <div key={label}>
                             <p className="text-xs text-gray-400">{label}</p>
@@ -1063,21 +1054,20 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
                 <div className="space-y-2">
                   {ALL_REGIONS.map(region => {
                     const rp = regionalPricing[region];
-                    const basePrice    = parseFloat(formData.priceUSD?.toString() || '0') || 0;
-                    let   previewPrice = basePrice;
+                    const basePriceINR = parseFloat(formData.priceINR?.toString() || '0') || 0;
+                    let   premiumPriceINR = basePriceINR;
                     if (rp.enabled && rp.adjustmentValue) {
-                      previewPrice = rp.adjustmentType === 'percentage'
-                        ? basePrice * (1 + rp.adjustmentValue / 100)
-                        : basePrice + rp.adjustmentValue / liveRate('INR');
-                      previewPrice = Math.max(0, Math.round(previewPrice * 100) / 100);
+                      premiumPriceINR = rp.adjustmentType === 'percentage'
+                        ? basePriceINR * (1 + rp.adjustmentValue / 100)
+                        : basePriceINR + rp.adjustmentValue;
+                      premiumPriceINR = Math.max(0, Math.round(premiumPriceINR * 100) / 100);
                     }
-                    const basePriceINR    = Math.round(basePrice    * liveRate('INR'));
-                    const premiumPriceINR = Math.round(previewPrice * liveRate('INR'));
                     const code            = REGION_CURRENCY_CODE[region];
                     const sym             = REGION_CURRENCY_SYMBOL[region];
                     const regionRate      = liveRate(code);
-                    const basePriceReg    = parseFloat((basePrice    * regionRate).toFixed(2));
-                    const premiumPriceReg = parseFloat((previewPrice * regionRate).toFixed(2));
+                    const inrRate         = liveRate('INR');
+                    const basePriceReg    = parseFloat((basePriceINR    / inrRate * regionRate).toFixed(2));
+                    const premiumPriceReg = parseFloat((premiumPriceINR / inrRate * regionRate).toFixed(2));
 
                     return (
                       <div key={region} className={`rounded-xl border p-3.5 transition-colors ${rp.enabled ? 'border-orange-200 bg-orange-50' : 'border-gray-100 bg-gray-50'}`}>
@@ -1091,7 +1081,7 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
                               <p className="text-xs text-gray-400">{REGION_DISPLAY_CURRENCY[region]}</p>
                             </div>
                           </div>
-                          {basePrice > 0 && (
+                          {basePriceINR > 0 && (
                             <div className="text-right text-xs space-y-0.5">
                               <div className="text-gray-500">
                                 <span className="text-gray-400">Base: </span>

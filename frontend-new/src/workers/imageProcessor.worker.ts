@@ -50,8 +50,8 @@ function filterProducts(products: any[], criteria: any): any[] {
     return products.filter(product => {
         if (criteria.category && product.category !== criteria.category) return false;
         if (criteria.available !== undefined && product.available !== criteria.available) return false;
-        if (criteria.minPrice && product.priceUSD < criteria.minPrice) return false;
-        if (criteria.maxPrice && product.priceUSD > criteria.maxPrice) return false;
+        if (criteria.minPrice && product.priceINR < criteria.minPrice) return false;
+        if (criteria.maxPrice && product.priceINR > criteria.maxPrice) return false;
         return true;
     });
 }
