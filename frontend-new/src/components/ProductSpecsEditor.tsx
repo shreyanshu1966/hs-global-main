@@ -347,6 +347,11 @@ const ProductSpecsEditor: React.FC<ProductSpecsEditorProps> = ({
   const NON_STONE_CATEGORIES = ['furniture', 'wooden-furniture', 'leather'];
   const isNonStone = NON_STONE_CATEGORIES.includes(category);
 
+  // Furniture is predominantly marble/stone, so relabel its species field.
+  const detailFields: FieldDef[] = category === 'furniture'
+    ? DETAIL_FIELDS.map(f => f.key === 'wood_species' ? { ...f, label: 'Marble / Stone Species' } : f)
+    : DETAIL_FIELDS;
+
   return (
     <div className="space-y-8">
 
@@ -364,7 +369,7 @@ const ProductSpecsEditor: React.FC<ProductSpecsEditorProps> = ({
           <SpecSection
             title="Specification"
             color="bg-violet-500"
-            fields={DETAIL_FIELDS}
+            fields={detailFields}
             sectionData={localSpecs.details as unknown as Record<string, string>}
             onSectionChange={(k, v) => handleSectionChange('details', k, v)}
           />
