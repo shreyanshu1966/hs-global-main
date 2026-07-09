@@ -1306,7 +1306,6 @@ const Admin = () => {
             }));
             await loadData();
             setBulkEditChanges({});
-            setBulkEditMode(false);
         } catch (err: any) {
             alert(err.message || 'Failed to save changes');
         } finally {

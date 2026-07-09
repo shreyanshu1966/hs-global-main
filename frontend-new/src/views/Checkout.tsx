@@ -647,9 +647,9 @@ const Checkout: React.FC = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                   <div className="flex-1">
-                    <p className="text-sm font-medium text-blue-900">Shipping charges not included</p>
+                    <p className="text-sm font-medium text-blue-900">Delivery charges are paid separately</p>
                     <p className="text-xs text-blue-700 mt-1">
-                      Shipping costs will be calculated and sent to you separately after order placement.
+                      This payment covers your order only. Delivery charges are calculated based on your address and will be shared with you after the order is placed, to be paid separately.
                     </p>
                   </div>
                 </div>
@@ -770,11 +770,11 @@ const Checkout: React.FC = () => {
                   </div>
                 )}
                 <div className="flex justify-between text-sm text-gray-600">
-                  <span>Shipping</span>
-                  <span className="text-gray-700 font-medium">Not Included</span>
+                  <span>Delivery</span>
+                  <span className="text-gray-700 font-medium">Paid Separately</span>
                 </div>
                 <div className="text-xs text-gray-500 -mt-2 text-right">
-                  Shipping charges will be sent separately
+                  Delivery charges will be shared with you separately
                 </div>
                 <div className="flex justify-between text-lg font-bold text-black pt-3 border-t border-gray-100">
                   <span>Total</span>

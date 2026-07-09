@@ -391,9 +391,6 @@ export function ProductInfo({
                                 </span>
                             )}
                         </div>
-                        <p className="text-[10px] text-[#757575] uppercase tracking-wide">
-                            Free shipping
-                        </p>
                     </div>
                 ) : (
                     <div className="text-[24px] font-medium text-[#111827]">

@@ -22,6 +22,7 @@ export default function AdminProductFormPage() {
   const [previewLoading, setPreviewLoading]   = useState(false);
   const [previewProduct, setPreviewProduct]   = useState<any>(null);
   const [showPreview, setShowPreview]         = useState(false);
+  const [saveMessage, setSaveMessage]         = useState<string | null>(null);
 
   // If editing but product wasn't passed in nav state, fetch it
   useEffect(() => {
@@ -37,6 +38,13 @@ export default function AdminProductFormPage() {
   }, [isNew, productId, editingProduct]);
 
   const goBack = () => navigate('/admin', { state: { tab: 'products' } });
+
+  // Auto-dismiss the post-save confirmation banner
+  useEffect(() => {
+    if (!saveMessage) return;
+    const t = setTimeout(() => setSaveMessage(null), 4000);
+    return () => clearTimeout(t);
+  }, [saveMessage]);
 
   const handleSave = async (productData: any, images: any[], _customSpecs: any[], video?: File | null) => {
     setProductLoading(true);
@@ -55,12 +63,22 @@ export default function AdminProductFormPage() {
 
       const finalData = { ...productData, existingImages: existingImageUrls, imageTokens, variantImageTokens };
 
+      let saved;
       if (!isNew && editingProduct) {
-        await adminProductApi.updateProduct(editingProduct.productId, finalData, newImageFiles, video || null, !video, variantImageFiles);
+        saved = await adminProductApi.updateProduct(editingProduct.productId, finalData, newImageFiles, video || null, !video, variantImageFiles);
       } else {
-        await adminProductApi.createProduct(finalData, newImageFiles, video || null, variantImageFiles);
+        saved = await adminProductApi.createProduct(finalData, newImageFiles, video || null, variantImageFiles);
       }
-      goBack();
+
+      const savedProduct = saved?.data ?? { ...finalData };
+      setEditingProduct(savedProduct);
+      setSaveMessage(isNew ? 'Product created successfully.' : 'Product updated successfully.');
+
+      // A newly created product must switch to edit mode so a further save
+      // updates it instead of creating a duplicate.
+      if (isNew && savedProduct?.productId) {
+        navigate(`/admin/products/${savedProduct.productId}/edit`, { replace: true, state: { product: savedProduct } });
+      }
     } catch (err) {
       console.error('Error saving product:', err);
       throw err;
@@ -98,6 +116,12 @@ export default function AdminProductFormPage() {
 
   return (
     <>
+      {saveMessage && (
+        <div className="fixed top-4 right-4 z-[10000] px-4 py-3 bg-green-600 text-white text-sm font-medium rounded-lg shadow-lg">
+          {saveMessage}
+        </div>
+      )}
+
       <EnhancedProductForm
         editingProduct={isNew ? undefined : editingProduct}
         loading={productLoading}

@@ -69,7 +69,7 @@
           "material": "Natural Stone / Marble",
           "base_type": "Integrated Stone Base",
           "top_color": "White / Ivory Stone Finish",
-          "wood_species": "Not Applicable",
+          "wood_species": "Stone / Marble",
           "natural_variation_type": "Natural Stone Texture & Veining Variation",
           "detailing": "Hand Carved Twisted Rope Edge Design",
           "mixed_materials": "No",
@@ -112,7 +112,7 @@
           "material": "Natural Travertine Stone / Marble Stone",
           "base_type": "Integrated Stone Base",
           "top_color": "Beige Cream Natural Stone Color",
-          "wood_species": "Not Applicable",
+          "wood_species": "Travertine Stone / Marble Stone",
           "natural_variation_type": "Natural Stone Texture & Veining",
           "detailing": "Rough Exterior Stone Texture with Smooth Interior Bowl",
           "mixed_materials": "No",
@@ -155,7 +155,7 @@
           "material": "Natural Black Marble",
           "base_type": "Integrated Marble Base",
           "top_color": "Black with White Grey Natural Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "Black Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Hand Carved Smooth Stone Body with Polished Interior",
           "mixed_materials": "No",
@@ -198,7 +198,7 @@
           "material": "Natural Marble",
           "base_type": "Marble Base",
           "top_color": "Grey White with Natural Veining",
-          "wood_species": "N/A",
+          "wood_species": "Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Hand Carved Stone Texture with Smooth Interior",
           "mixed_materials": "No",
@@ -241,7 +241,7 @@
           "material": "Natural Marble Stone",
           "base_type": "Integrated Stone Base",
           "top_color": "Cream Beige / Ivory Stone Finish",
-          "wood_species": "Not Applicable",
+          "wood_species": "Marble Stone",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Smooth Rounded Edge Design",
           "mixed_materials": "No",
@@ -284,7 +284,7 @@
           "material": "Natural White Marble",
           "base_type": "Integrated Marble Base",
           "top_color": "White with Grey Natural Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble",
           "natural_variation_type": "Natural Marble Veining ",
           "detailing": "Smooth Rounded Edge Design with Polished Surface",
           "mixed_materials": "No",
@@ -327,7 +327,7 @@
           "material": "Natural White Marble",
           "base_type": " Marble Base",
           "top_color": "White with Black Grey Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble",
           "natural_variation_type": "Natural Marble Veining & Color Variation",
           "detailing": "Smooth Carved Oval Body with Raised Bottom Plinth",
           "mixed_materials": "No",
@@ -370,7 +370,7 @@
           "material": "Natural White Marble",
           "base_type": "Marble Base",
           "top_color": "White with Grey Natural Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble",
           "natural_variation_type": "Natural Marble Veining & Color Variation",
           "detailing": "Hand-Carved Wave Fluted Exterior Design",
           "mixed_materials": "Yes",
@@ -413,7 +413,7 @@
           "material": "Natural White Marble",
           "base_type": "Pedestal Base",
           "top_color": "White",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble",
           "natural_variation_type": "Natural Stone Color Variation",
           "detailing": "Hand Carved Floral Pattern",
           "mixed_materials": "No",
@@ -456,7 +456,7 @@
           "material": "Natural Marble",
           "base_type": "Flat Bottom Base",
           "top_color": "Beige / Cream / Terracotta",
-          "wood_species": "Not Applicable",
+          "wood_species": "Marble",
           "natural_variation_type": "Natural Stone Color Variation",
           "detailing": "Hand Carved Scalloped Fluted Edge Design",
           "mixed_materials": "No",
@@ -499,7 +499,7 @@
           "material": "Natural White Marble",
           "base_type": "Flat Bottom Base",
           "top_color": "White",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble",
           "natural_variation_type": "Natural Stone Color Variation",
           "detailing": "Hand Carved Fluted Ribbed Design",
           "mixed_materials": "No",
@@ -542,7 +542,7 @@
           "material": "Natural Black Marble",
           "base_type": "Flat Base",
           "top_color": "Black",
-          "wood_species": "Not Applicable",
+          "wood_species": "Black Marble",
           "natural_variation_type": "Natural Stone Veining",
           "detailing": "Solid Marble Construction with Matching Lid",
           "mixed_materials": "No",
@@ -585,7 +585,7 @@
           "material": "Natural Green Marble",
           "base_type": "Flat Base",
           "top_color": "Green",
-          "wood_species": "Not Applicable",
+          "wood_species": "Green Marble",
           "natural_variation_type": "Natural Stone Veining",
           "detailing": "Solid Marble Construction with Fitted Lid",
           "mixed_materials": "No",
@@ -628,7 +628,7 @@
           "material": "Natural Green Marble",
           "base_type": "Solid Marble",
           "top_color": "Forest Green",
-          "wood_species": "N/A",
+          "wood_species": "Green Marble",
           "natural_variation_type": "Natural Stone Veining",
           "detailing": "Organic Oval Top with Sculptural Sphere Marble Base",
           "mixed_materials": "No",
@@ -671,7 +671,7 @@
           "material": "Natural Green Marble",
           "base_type": "Integrated Curved Marble Base",
           "top_color": "Forest Green",
-          "wood_species": "Not Applicable",
+          "wood_species": "Green Marble",
           "natural_variation_type": "Natural Stone Veining",
           "detailing": "Slatted Marble Seat and Backrest Design",
           "mixed_materials": "No",
@@ -714,7 +714,7 @@
           "material": "Natural River Stone",
           "base_type": "Stone Pedestal Base",
           "top_color": "Natural Beige",
-          "wood_species": "Not Applicable",
+          "wood_species": "River Stone",
           "natural_variation_type": "Natural Stone Color and Texture Variation",
           "detailing": "Handcrafted Stone Clock with Decorative Pebble Base",
           "mixed_materials": "Yes",
@@ -757,7 +757,7 @@
           "material": "Natural Stone and Resin Composite",
           "base_type": "Wall Mounted",
           "top_color": "Multi Color Natural Stone",
-          "wood_species": "Not Applicable",
+          "wood_species": "Stone and Resin Composite",
           "natural_variation_type": "Natural Stone Color and Texture Variation",
           "detailing": "Handcrafted Pebble Stone Mosaic Design",
           "mixed_materials": "Yes",
@@ -792,15 +792,15 @@
       "subcategory": "Coffee Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "900 Dia × 400 H mm",
+          "overall_product_weight": "130 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural Marble",
           "base_type": "Triple Sphere Marble Base",
           "top_color": "Beige / Brown Marble",
-          "wood_species": "Not Applicable",
+          "wood_species": "Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Round Top on Triple Sphere Base",
           "mixed_materials": "No",
@@ -835,15 +835,15 @@
       "subcategory": "Coffee Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "900 Dia × 400 H mm",
+          "overall_product_weight": "130 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural Marble",
           "base_type": "Sphere Marble Base",
           "top_color": "White with Black Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Round Top on Sphere Base",
           "mixed_materials": "No",
@@ -878,15 +878,15 @@
       "subcategory": "Coffee Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "900 Dia × 400 H mm",
+          "overall_product_weight": "130 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural White Marble",
           "base_type": "Sculptural Sphere Marble Base",
           "top_color": "White with Grey Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Round Top on Sculptural Sphere Base",
           "mixed_materials": "No",
@@ -921,15 +921,15 @@
       "subcategory": "Coffee Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "900 Dia × 400 H mm",
+          "overall_product_weight": "130 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural Marble",
           "base_type": "Sculptural Stone Pedestal Base",
           "top_color": "Grey / Multicolor Marble",
-          "wood_species": "Not Applicable",
+          "wood_species": "Marble",
           "natural_variation_type": "Natural Marble Veining & Color Variation",
           "detailing": "Round Top on Sculptural Pedestal Base",
           "mixed_materials": "No",
@@ -972,7 +972,7 @@
           "material": "Natural Marble",
           "base_type": "Pedestal Base",
           "top_color": "Green Marble Top / White Marble Base",
-          "wood_species": "N/A",
+          "wood_species": "Marble",
           "natural_variation_type": "Natural Marble Veining and Color Variation",
           "detailing": "Floral CNC-Cut Marble Top with White Marble Inlay and Cylindrical Marble Pedestal Base",
           "mixed_materials": "Yes",
@@ -1015,7 +1015,7 @@
           "material": "Natural Dark Green Marble",
           "base_type": "Solid Marble Base",
           "top_color": "Forest Green",
-          "wood_species": "N/A",
+          "wood_species": "Dark Green Marble",
           "natural_variation_type": "Natural Marble Variation",
           "detailing": "Geometric Faceted Carved Surface",
           "mixed_materials": "No",
@@ -1050,15 +1050,15 @@
       "subcategory": "Coffee Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "900 Dia × 400 H mm",
+          "overall_product_weight": "130 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural Green Marble",
           "base_type": "Triple Sphere Marble Base",
           "top_color": "Dark Green Marble",
-          "wood_species": "Not Applicable",
+          "wood_species": "Green Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Round Top on Triple Sphere Base",
           "mixed_materials": "No",
@@ -1101,7 +1101,7 @@
           "material": "Natural Green Marble",
           "base_type": "Sphere Base",
           "top_color": "Light Green with White Natural Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "Green Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Solid Marble Top with Hand-Polished Marble Sphere Supports",
           "mixed_materials": "No",
@@ -1136,15 +1136,15 @@
       "subcategory": "Coffee Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "900 Dia × 400 H mm",
+          "overall_product_weight": "130 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural Green Marble",
           "base_type": "Three Block Leg Base",
           "top_color": "Green Marble",
-          "wood_species": "Not Applicable",
+          "wood_species": "Green Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Round Top on Three Block Legs",
           "mixed_materials": "No",
@@ -1179,15 +1179,15 @@
       "subcategory": "Coffee Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "900 Dia × 400 H mm",
+          "overall_product_weight": "130 kg"
         },
         "details": {
           "overall_shape": "Oval",
           "material": "Natural Green Marble",
           "base_type": "Sculptural Wave / Lobed Marble Base",
           "top_color": "Green Marble",
-          "wood_species": "Not Applicable",
+          "wood_species": "Green Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Oval Top on Sculptural Wave Base",
           "mixed_materials": "No",
@@ -1222,15 +1222,15 @@
       "subcategory": "Coffee Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "900 Dia × 400 H mm",
+          "overall_product_weight": "130 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural Marble",
           "base_type": "Triple Sphere Marble Base",
           "top_color": "Brown / Multicolor Marble",
-          "wood_species": "Not Applicable",
+          "wood_species": "Marble",
           "natural_variation_type": "Natural Marble Veining & Color Variation",
           "detailing": "Round Top on Triple Sphere Base",
           "mixed_materials": "No",
@@ -1265,15 +1265,15 @@
       "subcategory": "Coffee Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "900 Dia × 400 H mm",
+          "overall_product_weight": "130 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural White Marble with Glass Top",
           "base_type": "Marble Pebble Cluster Base",
           "top_color": "White Marble with Glass Top",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble with Glass Top",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Sculptural Pebble Cluster Base under Round Glass Top",
           "mixed_materials": "Yes",
@@ -1308,15 +1308,15 @@
       "subcategory": "Coffee Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "1080 Dia × 400 H mm",
+          "overall_product_weight": "208 kg"
         },
         "details": {
           "overall_shape": "Oval",
           "material": "Natural Marble / Onyx with Metal Legs",
           "base_type": "Bronze Metal Cylinder Legs",
           "top_color": "White & Black Marble",
-          "wood_species": "Not Applicable",
+          "wood_species": "Marble / Onyx with Metal Legs",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Nested Two-Table Set",
           "mixed_materials": "Yes",
@@ -1363,7 +1363,7 @@
           "material": "Marble",
           "base_type": "Multi-Pedestal Base",
           "top_color": "Green",
-          "wood_species": "N/A",
+          "wood_species": "Marble",
           "natural_variation_type": "Natural Stone Color Variation",
           "detailing": "Two-Tier Sculptural Marble Design",
           "mixed_materials": "No",
@@ -1449,7 +1449,7 @@
           "material": "Glass and Marble",
           "base_type": "Sculptural Marble Base with Sphere Support",
           "top_color": "Clear",
-          "wood_species": "N/A",
+          "wood_species": "Glass and Marble",
           "natural_variation_type": "Natural Stone Color Variation",
           "detailing": "Modern Sculptural Design with Tempered Glass Top",
           "mixed_materials": "Yes",
@@ -1492,7 +1492,7 @@
           "material": "Natural Travertine Stone",
           "base_type": "Sculptural Wave Base",
           "top_color": "Gray",
-          "wood_species": "N/A",
+          "wood_species": "Travertine Stone",
           "natural_variation_type": "Natural Stone Variation",
           "detailing": "Curved Wave Base, Waterfall-Inspired Design, Continuous Stone Form",
           "mixed_materials": "No",
@@ -1527,15 +1527,15 @@
       "subcategory": "Coffee Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "1080 Dia × 400 H mm",
+          "overall_product_weight": "208 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural Travertine Stone",
           "base_type": "Cylindrical Pedestal Legs",
           "top_color": "Grey Travertine",
-          "wood_species": "Not Applicable",
+          "wood_species": "Travertine Stone",
           "natural_variation_type": "Natural Travertine Texture & Veining",
           "detailing": "Organic Nested Three-Table Set",
           "mixed_materials": "No",
@@ -1574,15 +1574,15 @@
       "subcategory": "Coffee Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "900 Dia × 400 H mm",
+          "overall_product_weight": "130 kg"
         },
         "details": {
           "overall_shape": "Oval",
           "material": "Natural White Marble",
           "base_type": "Oval Marble Pedestal Base",
           "top_color": "White with Grey Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Oval Top on Pedestal Base",
           "mixed_materials": "No",
@@ -1625,7 +1625,7 @@
           "material": "Natural White Marble",
           "base_type": "Dual Pedestal Marble Base",
           "top_color": "White Marble with Grey Natural Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble",
           "natural_variation_type": "Natural Marble Veining & Color Variation",
           "detailing": "Rounded Oval Marble Top with Sculptural Solid Marble Legs",
           "mixed_materials": "No",
@@ -1660,15 +1660,15 @@
       "subcategory": "Coffee Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "1200 W × 700 D × 400 H mm",
+          "overall_product_weight": "130 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
           "material": "Natural Pink Marble",
           "base_type": "Slab Marble Legs",
           "top_color": "Pink / Rust Marble",
-          "wood_species": "Not Applicable",
+          "wood_species": "Pink Marble",
           "natural_variation_type": "Natural Marble Veining & Color Variation",
           "detailing": "Rectangular Top on Slab Legs",
           "mixed_materials": "No",
@@ -1711,7 +1711,7 @@
           "material": "Natural Red Marble / Stone",
           "base_type": "Center Pedestal Marble Base",
           "top_color": "Burgundy Red with White Natural Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "Red Marble / Stone",
           "natural_variation_type": "Natural Marble Veining & Color Variation",
           "detailing": "Rounded Oval Top, Smooth Polished Surface, Solid Marble Pedestal Base",
           "mixed_materials": "No",
@@ -1746,15 +1746,15 @@
       "subcategory": "Coffee Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "900 Dia × 400 H mm",
+          "overall_product_weight": "130 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural Marble",
           "base_type": "Three Cylindrical Pedestal Legs",
           "top_color": "Cream / Beige",
-          "wood_species": "Not Applicable",
+          "wood_species": "Marble",
           "natural_variation_type": "Natural Stone Veining",
           "detailing": "Round Top on Three Cylinder Legs",
           "mixed_materials": "No",
@@ -1789,15 +1789,15 @@
       "subcategory": "Coffee Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "900 Dia × 400 H mm",
+          "overall_product_weight": "130 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural Travertine Stone",
           "base_type": "Triple Sphere Base",
           "top_color": "Beige Travertine",
-          "wood_species": "Not Applicable",
+          "wood_species": "Travertine Stone",
           "natural_variation_type": "Natural Travertine Texture & Veining",
           "detailing": "Round Top on Triple Sphere Base",
           "mixed_materials": "No",
@@ -1832,15 +1832,15 @@
       "subcategory": "Coffee Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "1200 W × 700 D × 400 H mm",
+          "overall_product_weight": "130 kg"
         },
         "details": {
           "overall_shape": "Irregular",
           "material": "Natural Marble with Textured Stone Base",
           "base_type": "Tapered Cone Stone Legs",
           "top_color": "White Marble with Textured Stone",
-          "wood_species": "Not Applicable",
+          "wood_species": "Marble with Textured Stone Base",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Organic Cloud Top with Rough-Textured Edge",
           "mixed_materials": "No",
@@ -1875,15 +1875,15 @@
       "subcategory": "Coffee Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "1200 W × 700 D × 400 H mm",
+          "overall_product_weight": "130 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
           "material": "Natural Travertine Stone",
           "base_type": "Sculptural Wave Base",
           "top_color": "Grey Travertine",
-          "wood_species": "Not Applicable",
+          "wood_species": "Travertine Stone",
           "natural_variation_type": "Natural Travertine Texture & Veining",
           "detailing": "Infinity Wave Sculptural Base",
           "mixed_materials": "No",
@@ -1926,7 +1926,7 @@
           "material": "Natural Travertine Stone",
           "base_type": "Sculptural Panel Base",
           "top_color": "Beige",
-          "wood_species": "N/A",
+          "wood_species": "Travertine Stone",
           "natural_variation_type": "Natural Stone Variation",
           "detailing": "Honed Finish, Rounded Edges, Sculptural Design",
           "mixed_materials": "No",
@@ -1969,7 +1969,7 @@
           "material": "Travertine",
           "base_type": "Triple Pedestal Base",
           "top_color": "Natural Beige",
-          "wood_species": "N/A",
+          "wood_species": "Travertine",
           "natural_variation_type": "Natural Stone Color Variation",
           "detailing": "Sculptural Organic Design",
           "mixed_materials": "No",
@@ -2012,7 +2012,7 @@
           "material": "Natural Travertine Stone / Beige Marble",
           "base_type": "Cylindrical Stone Legs",
           "top_color": "Beige / Cream Stone with Natural Texture",
-          "wood_species": "Not Applicable",
+          "wood_species": "Travertine Stone / Beige Marble",
           "natural_variation_type": "Natural Stone Veining, Pores & Color Variation",
           "detailing": "Multi-Level Floating Oval Tops with Rounded Edges",
           "mixed_materials": "No",
@@ -2047,15 +2047,15 @@
       "subcategory": "Coffee Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "900 Dia × 400 H mm",
+          "overall_product_weight": "130 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural Travertine Stone",
           "base_type": "Triple Sphere Base",
           "top_color": "Beige / Cream Travertine",
-          "wood_species": "Not Applicable",
+          "wood_species": "Travertine Stone",
           "natural_variation_type": "Natural Travertine Texture & Veining",
           "detailing": "Round Top on Triple Sphere Base",
           "mixed_materials": "No",
@@ -2133,15 +2133,15 @@
       "subcategory": "Coffee Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "900 Dia × 400 H mm",
+          "overall_product_weight": "130 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural White Marble",
           "base_type": "Block Leg Base",
           "top_color": "White with Grey Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Round Top on Block Legs",
           "mixed_materials": "No",
@@ -2184,7 +2184,7 @@
           "material": "Natural White Marble",
           "base_type": "Double Sphere Marble Pedestal Base",
           "top_color": "White Marble with Dark Grey Natural Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble",
           "natural_variation_type": "Natural Marble Veining, Pattern & Color Variation",
           "detailing": "Smooth Round Marble Top with Sculptural Ball-Shaped Supports",
           "mixed_materials": "No",
@@ -2219,15 +2219,15 @@
       "subcategory": "Coffee Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "900 Dia × 400 H mm",
+          "overall_product_weight": "130 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural White Marble",
           "base_type": "Cylindrical Pedestal Base",
           "top_color": "White with Grey Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Sculptural Bowl Top on Pedestal",
           "mixed_materials": "No",
@@ -2270,7 +2270,7 @@
           "material": "Engineered Marble",
           "base_type": "Twin Pedestal Base",
           "top_color": "Black",
-          "wood_species": "Not Applicable",
+          "wood_species": "Engineered Marble",
           "natural_variation_type": "Natural Stone Color Variation",
           "detailing": "Bold Marble Veining Pattern",
           "mixed_materials": "No",
@@ -2313,7 +2313,7 @@
           "material": "Marble",
           "base_type": "Triple Arch Pedestal Base",
           "top_color": "Black",
-          "wood_species": "N/A",
+          "wood_species": "Marble",
           "natural_variation_type": "Natural Stone Color Variation",
           "detailing": "Sculptural Triple Arch Marble Base",
           "mixed_materials": "No",
@@ -2356,7 +2356,7 @@
           "material": "Stone",
           "base_type": "Triple Cylindrical Pedestal",
           "top_color": "Dark Brown Marble",
-          "wood_species": "N/A",
+          "wood_species": "Stone",
           "natural_variation_type": "Natural Stone Color Variation",
           "detailing": "Three Cylindrical Marble Columns, Rounded Corners",
           "mixed_materials": "No",
@@ -2391,15 +2391,15 @@
       "subcategory": "Console Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "1200 W × 400 D × 800 H mm",
+          "overall_product_weight": "140 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
           "material": "Natural Black Marble",
           "base_type": "Twin Conical Pedestal Legs",
           "top_color": "Black with White Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "Black Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Rounded-End Top on Twin Cone Bases",
           "mixed_materials": "No",
@@ -2442,7 +2442,7 @@
           "material": "Engineered Marble",
           "base_type": "Twin Sculptural Pedestal Base",
           "top_color": "Burgundy Red",
-          "wood_species": "Not Applicable",
+          "wood_species": "Engineered Marble",
           "natural_variation_type": "Natural Stone Color Variation",
           "detailing": "Decorative Scalloped Apron Edge",
           "mixed_materials": "No",
@@ -2477,15 +2477,15 @@
       "subcategory": "Console Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "1200 W × 400 D × 800 H mm",
+          "overall_product_weight": "140 kg"
         },
         "details": {
           "overall_shape": "Oval",
           "material": "Natural Green Marble",
           "base_type": "Twin Conical Pedestal Legs",
           "top_color": "Green with White Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "Green Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Racetrack Top on Twin Tapered Bases",
           "mixed_materials": "No",
@@ -2520,15 +2520,15 @@
       "subcategory": "Console Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "1200 W × 400 D × 800 H mm",
+          "overall_product_weight": "140 kg"
         },
         "details": {
           "overall_shape": "Oval",
           "material": "Natural Green Marble",
           "base_type": "Twin Tapered Pedestal Legs",
           "top_color": "Green with White Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "Green Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Racetrack Top on Twin Tapered Bases",
           "mixed_materials": "No",
@@ -2571,7 +2571,7 @@
           "material": "Marble",
           "base_type": "Arch Base",
           "top_color": "Green Marble",
-          "wood_species": "N/A",
+          "wood_species": "Marble",
           "natural_variation_type": "Natural Stone Color & Veining Variation",
           "detailing": "Four Arched Openings with Polished Marble Finish",
           "mixed_materials": "No",
@@ -2606,15 +2606,15 @@
       "subcategory": "Console Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "1200 W × 400 D × 800 H mm",
+          "overall_product_weight": "140 kg"
         },
         "details": {
           "overall_shape": "Oval",
           "material": "Natural Green Marble",
           "base_type": "Sculptural Teardrop Base",
           "top_color": "Green with White Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "Green Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Oval Top on Sculptural Wishbone Base",
           "mixed_materials": "No",
@@ -2692,15 +2692,15 @@
       "subcategory": "Console Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "1200 W × 400 D × 800 H mm",
+          "overall_product_weight": "140 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
           "material": "Natural Travertine Stone",
           "base_type": "Arched Arcade Base",
           "top_color": "Beige / Cream Travertine",
-          "wood_species": "Not Applicable",
+          "wood_species": "Travertine Stone",
           "natural_variation_type": "Natural Travertine Texture & Veining",
           "detailing": "Roman Arch Arcade Base",
           "mixed_materials": "No",
@@ -2735,15 +2735,15 @@
       "subcategory": "Console Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "1200 W × 400 D × 800 H mm",
+          "overall_product_weight": "140 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
           "material": "Natural White Marble",
           "base_type": "Arched Arcade Base",
           "top_color": "White with Grey Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Roman Arch Arcade Base",
           "mixed_materials": "No",
@@ -2778,15 +2778,15 @@
       "subcategory": "Console Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "1200 W × 400 D × 800 H mm",
+          "overall_product_weight": "140 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
           "material": "Natural White Marble",
           "base_type": "Cylindrical & Fluted Pillar Legs",
           "top_color": "White with Grey Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Fluted Pillar Base",
           "mixed_materials": "No",
@@ -2821,15 +2821,15 @@
       "subcategory": "Console Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "1200 W × 400 D × 800 H mm",
+          "overall_product_weight": "140 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
           "material": "Natural Travertine Stone",
           "base_type": "Twin Cylindrical Pillar Legs",
           "top_color": "Beige / Cream Travertine",
-          "wood_species": "Not Applicable",
+          "wood_species": "Travertine Stone",
           "natural_variation_type": "Natural Travertine Texture & Veining",
           "detailing": "Rounded-End Top on Twin Pillars",
           "mixed_materials": "No",
@@ -2864,15 +2864,15 @@
       "subcategory": "Console Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "1200 W × 400 D × 800 H mm",
+          "overall_product_weight": "140 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
           "material": "Natural Marble (Two-Tone)",
           "base_type": "Twin Waterfall Marble Legs",
           "top_color": "White with Black Marble Legs",
-          "wood_species": "Not Applicable",
+          "wood_species": "Marble (Two-Tone)",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Two-Tone Waterfall Legs",
           "mixed_materials": "No",
@@ -2958,7 +2958,7 @@
           "material": "Engineered Marble",
           "base_type": "Dual Curved Pedestal Base",
           "top_color": "Beige",
-          "wood_species": "Not Applicable",
+          "wood_species": "Engineered Marble",
           "natural_variation_type": "Natural Stone Color Variation",
           "detailing": "Curved Architectural End Panels",
           "mixed_materials": "No",
@@ -3001,7 +3001,7 @@
           "material": "Natural Black & White Marble",
           "base_type": "Double Pedestal Base",
           "top_color": "White with Black Marble Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "Black & White Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Geometric Marble Blocks Combined with Sculptural Marble Sphere Supports",
           "mixed_materials": "No",
@@ -3044,7 +3044,7 @@
           "material": "Marble",
           "base_type": "Double Pedestal",
           "top_color": "Red Marble",
-          "wood_species": "N/A",
+          "wood_species": "Marble",
           "natural_variation_type": "Natural Stone Color & Veining Variation",
           "detailing": "Polished Marble Finish with White Veining",
           "mixed_materials": "No",
@@ -3087,7 +3087,7 @@
           "material": "Stone",
           "base_type": "Cylindrical Pedestal",
           "top_color": "Terracotta Red",
-          "wood_species": "N/A",
+          "wood_species": "Stone",
           "natural_variation_type": "Natural Stone Color Variation",
           "detailing": "Monolithic Design, Rounded Edges",
           "mixed_materials": "No",
@@ -3130,7 +3130,7 @@
           "material": "Engineered Stone / Cast Stone Composite",
           "base_type": "Trestle Base",
           "top_color": "Beige",
-          "wood_species": "N/A",
+          "wood_species": "Engineered Stone / Cast Stone Composite",
           "natural_variation_type": "No Natural Variation",
           "detailing": "Scalloped Apron Edge, Sculptural Double Pedestal Design, Organic Textured Surface",
           "mixed_materials": "No",
@@ -3173,7 +3173,7 @@
           "material": "Stone",
           "base_type": "Double Fluted Pedestal",
           "top_color": "Beige",
-          "wood_species": "N/A",
+          "wood_species": "Stone",
           "natural_variation_type": "Natural Stone Color Variation",
           "detailing": "Fluted Edge Apron, Fluted Pedestal Legs, Rounded Corners",
           "mixed_materials": "No",
@@ -3216,7 +3216,7 @@
           "material": "Stone",
           "base_type": "Triple Cylindrical Pedestal",
           "top_color": "Beige",
-          "wood_species": "N/A",
+          "wood_species": "Stone",
           "natural_variation_type": "Natural Stone Color Variation",
           "detailing": "Rounded Corners, Three Cylindrical Fluted Supports",
           "mixed_materials": "No",
@@ -3251,15 +3251,15 @@
       "subcategory": "Console Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "1200 W × 400 D × 800 H mm",
+          "overall_product_weight": "140 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
           "material": "Natural Travertine Stone",
           "base_type": "Stacked Sphere (Bobbin) Legs",
           "top_color": "Beige / Cream Travertine",
-          "wood_species": "Not Applicable",
+          "wood_species": "Travertine Stone",
           "natural_variation_type": "Natural Travertine Texture & Veining",
           "detailing": "Bobbin Stacked-Ball Legs",
           "mixed_materials": "No",
@@ -3294,15 +3294,15 @@
       "subcategory": "Console Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "1200 W × 400 D × 800 H mm",
+          "overall_product_weight": "140 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
           "material": "Natural White Marble",
           "base_type": "Waterfall Slab Legs",
           "top_color": "White with Grey Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Minimalist Parsons Waterfall Design",
           "mixed_materials": "No",
@@ -3337,15 +3337,15 @@
       "subcategory": "Console Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "1200 W × 400 D × 800 H mm",
+          "overall_product_weight": "140 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
           "material": "Natural White Marble",
           "base_type": "Four Conical Pillar Legs",
           "top_color": "White with Grey Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Sculptural Conical Pillar Legs",
           "mixed_materials": "No",
@@ -3380,15 +3380,15 @@
       "subcategory": "Console Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "1200 W × 400 D × 800 H mm",
+          "overall_product_weight": "140 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
           "material": "Natural White Marble with Metal Legs",
           "base_type": "Black Metal U-Legs",
           "top_color": "White with Grey Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble with Metal Legs",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Marble Top on Black Metal Frame",
           "mixed_materials": "Yes",
@@ -3431,7 +3431,7 @@
           "material": "Natural Marble Stone",
           "base_type": "Double Pedestal Base",
           "top_color": "White",
-          "wood_species": "N/A",
+          "wood_species": "Marble Stone",
           "natural_variation_type": "Natural Stone Variation",
           "detailing": "Fluted Pedestal Base, Bookmatched Marble Veining",
           "mixed_materials": "No",
@@ -3474,7 +3474,7 @@
           "material": "Marble, Stone",
           "base_type": "Double Pedestal",
           "top_color": "White Marble",
-          "wood_species": "N/A",
+          "wood_species": "Marble, Stone",
           "natural_variation_type": "Natural Stone Color Variation",
           "detailing": "Bookmatched Marble Veining, Dual Pedestal Base",
           "mixed_materials": "No",
@@ -3517,7 +3517,7 @@
           "material": "Natural Marble Stone",
           "base_type": "Double Fluted Pedestal Base",
           "top_color": "White Marble",
-          "wood_species": "N/A",
+          "wood_species": "Marble Stone",
           "natural_variation_type": "Natural Stone Variation",
           "detailing": "Fluted Cylindrical Pedestals, Thick Oval Marble Top, Natural Grey & Gold Veining",
           "mixed_materials": "No",
@@ -3560,7 +3560,7 @@
           "material": "Natural Marble Stone",
           "base_type": "Double Pedestal Base",
           "top_color": "White / Burgundy Veined",
-          "wood_species": "N/A",
+          "wood_species": "Marble Stone",
           "natural_variation_type": "Natural Stone Variation",
           "detailing": "Rounded Oval Top, Dual Slab Pedestals, Continuous Veining Pattern",
           "mixed_materials": "No",
@@ -3603,7 +3603,7 @@
           "material": "Stone",
           "base_type": "Quad Fluted Pedestal",
           "top_color": "Beige",
-          "wood_species": "N/A",
+          "wood_species": "Stone",
           "natural_variation_type": "Natural Stone Color Variation",
           "detailing": "Four Fluted Cylindrical Columns, Thick Bullnose Edge",
           "mixed_materials": "No",
@@ -3646,7 +3646,7 @@
           "material": "Natural Travertine Stone",
           "base_type": "Single Cylindrical Stone Base",
           "top_color": "Ivory Beige / Natural Stone Color",
-          "wood_species": "Not Applicable",
+          "wood_species": "Travertine Stone",
           "natural_variation_type": "Natural Stone Texture Variation",
           "detailing": "Rough Chiseled Stone Base, Smooth Rounded Tabletop Edge",
           "mixed_materials": "No",
@@ -3689,7 +3689,7 @@
           "material": "Stone",
           "base_type": "Double Fluted Pedestal",
           "top_color": "Beige",
-          "wood_species": "N/A",
+          "wood_species": "Stone",
           "natural_variation_type": "Natural Stone Color Variation",
           "detailing": "Fluted Pedestal Bases, Rounded Bullnose Edge",
           "mixed_materials": "No",
@@ -3732,7 +3732,7 @@
           "material": "Natural Travertine Marble",
           "base_type": "Double Cylindrical Marble Base",
           "top_color": "Beige / Natural Stone Color",
-          "wood_species": "Not Applicable",
+          "wood_species": "Travertine Marble",
           "natural_variation_type": "Natural Marble Texture & Veining",
           "detailing": "Vertical Fluted Column Design on Base, Smooth Rounded Edge Tabletop",
           "mixed_materials": "No",
@@ -3775,7 +3775,7 @@
           "material": "Natural Marble / Stone",
           "base_type": "Double Cylindrical Pedestal Base",
           "top_color": "White / Ivory Stone Finish",
-          "wood_species": "Not Applicable",
+          "wood_species": "Marble / Stone",
           "natural_variation_type": "Natural Stone Texture Variation",
           "detailing": "Vertical Fluted Base Design, Smooth Rounded Tabletop Edge",
           "mixed_materials": "No",
@@ -3818,7 +3818,7 @@
           "material": "Natural White Marble + Metal",
           "base_type": "Cylindrical Marble Base",
           "top_color": "White Marble with Grey Veining + Brass Gold Accent",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble + Metal",
           "natural_variation_type": "Natural Marble Veining & Color Variation",
           "detailing": "Sculptural Dome Shade with Ribbed Marble Pattern and Brass Connector Detail",
           "mixed_materials": "Yes",
@@ -3861,7 +3861,7 @@
           "material": "Natural Stone / Marble Shade Material",
           "base_type": "Cylindrical Stone Base",
           "top_color": "Brown Amber Stone Shade with Cream Base",
-          "wood_species": "Not Applicable",
+          "wood_species": "Stone / Marble Shade Material",
           "natural_variation_type": "Natural Stone Pattern Variation",
           "detailing": "Translucent Stone Lampshade with Minimal Luxury Design",
           "mixed_materials": "Yes",
@@ -3904,7 +3904,7 @@
           "material": "Marble Stone, Fabric, Metal",
           "base_type": "Turned Pedestal Base",
           "top_color": "Beige",
-          "wood_species": "N/A",
+          "wood_species": "Marble Stone, Fabric, Metal",
           "natural_variation_type": "Natural Stone Variation",
           "detailing": "Turned Marble Base, Drum Shade, Brass Hardware Accent",
           "mixed_materials": "Yes",
@@ -3947,7 +3947,7 @@
           "material": "Natural Marble + Fabric Shade",
           "base_type": "Marble Round Base",
           "top_color": "White Marble with White Fabric Shade",
-          "wood_species": "Not Applicable",
+          "wood_species": "Marble + Fabric Shade",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Minimal Modern Design with Brass Accent Rod",
           "mixed_materials": "Yes",
@@ -3990,7 +3990,7 @@
           "material": "Marble Stone, Fabric, Metal",
           "base_type": "Stacked Sphere Base",
           "top_color": "Multicolor",
-          "wood_species": "N/A",
+          "wood_species": "Marble Stone, Fabric, Metal",
           "natural_variation_type": "Natural Stone Variation",
           "detailing": "Stacked Marble Spheres, Patterned Drum Shade",
           "mixed_materials": "Yes",
@@ -4033,7 +4033,7 @@
           "material": "Natural White Marble + Electrical Components",
           "base_type": "Cylindrical Marble Base",
           "top_color": "White Marble with Grey Natural Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble + Electrical Components",
           "natural_variation_type": "Natural Marble Veining & Color Variation",
           "detailing": "Pleated Fluted Dome Shade with Sculptural Fold Pattern",
           "mixed_materials": "Yes",
@@ -4076,7 +4076,7 @@
           "material": "Natural Marble + Stone Shade Diffuser",
           "base_type": "Tapered Marble Base",
           "top_color": "Beige Marble with Warm White Light Diffuser",
-          "wood_species": "Not Applicable",
+          "wood_species": "Marble + Stone Shade Diffuser",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Fluted Decorative Light Shade Design",
           "mixed_materials": "Yes",
@@ -4119,7 +4119,7 @@
           "material": "Travertine Stone, Glass",
           "base_type": "Conical Base",
           "top_color": "Beige",
-          "wood_species": "Not Applicable",
+          "wood_species": "Travertine Stone, Glass",
           "natural_variation_type": "Natural Stone Color Variation",
           "detailing": "Mushroom Inspired Sculptural Design",
           "mixed_materials": "Yes",
@@ -4154,15 +4154,15 @@
       "subcategory": "Mirror Frame",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "800 W × 40 D × 1100 H mm",
+          "overall_product_weight": "35 kg"
         },
         "details": {
           "overall_shape": "Irregular",
           "material": "Printed Acrylic with LED Neon",
           "base_type": "Wall Mounted",
           "top_color": "Multicolor / Neon",
-          "wood_species": "Not Applicable",
+          "wood_species": "Printed Acrylic with LED Neon",
           "natural_variation_type": "No Natural Variation",
           "detailing": "Hand-Printed Cartoon Figure with LED Backlight",
           "mixed_materials": "Yes",
@@ -4197,15 +4197,15 @@
       "subcategory": "Mirror Frame",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "800 W × 40 D × 1100 H mm",
+          "overall_product_weight": "35 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
           "material": "Natural Pink Onyx / Marble Frame",
           "base_type": "Floor Standing / Leaning",
           "top_color": "Pink Onyx / Marble",
-          "wood_species": "Not Applicable",
+          "wood_species": "Pink Onyx / Marble Frame",
           "natural_variation_type": "Natural Marble Veining & Color Variation",
           "detailing": "Hand-Carved Leaf / Feather Frame",
           "mixed_materials": "No",
@@ -4240,15 +4240,15 @@
       "subcategory": "Mirror Frame",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "800 W × 40 D × 1100 H mm",
+          "overall_product_weight": "35 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
           "material": "Natural White Marble Frame",
           "base_type": "Floor Standing / Leaning",
           "top_color": "White with Grey Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble Frame",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Wavy Scalloped Marble Frame",
           "mixed_materials": "No",
@@ -4291,7 +4291,7 @@
           "material": "Marble",
           "base_type": "Pedestal",
           "top_color": "Black Marble",
-          "wood_species": "N/A",
+          "wood_species": "Marble",
           "natural_variation_type": "Natural Stone Color & Veining Variation",
           "detailing": "Polished Marble Finish with White Veining",
           "mixed_materials": "No",
@@ -4334,7 +4334,7 @@
           "material": "Natural White Marble",
           "base_type": "Freestanding Pedestal Base",
           "top_color": "White Marble with Grey Natural Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble",
           "natural_variation_type": "Natural Marble Veining & Color Variation",
           "detailing": "Diamond Geometric Carved Exterior Pattern",
           "mixed_materials": "No",
@@ -4377,7 +4377,7 @@
           "material": "Natural Beige Marble / Travertine Stone",
           "base_type": "Integrated Pedestal Base",
           "top_color": "Beige / Taupe Stone with Natural Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "Beige Marble / Travertine Stone",
           "natural_variation_type": "Natural Stone Veining, Texture & Color Variation",
           "detailing": "Vertical Fluted Carved Exterior with Matching Pedestal Column",
           "mixed_materials": "No",
@@ -4420,7 +4420,7 @@
           "material": "Natural White Marble",
           "base_type": "Freestanding Pedestal Base",
           "top_color": "White / Ivory Marble with Grey Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble",
           "natural_variation_type": "Natural Marble Veining & Color Variation",
           "detailing": "Vertical Fluted Marble Exterior Carving, Smooth Inner Bowl Finish",
           "mixed_materials": "No",
@@ -4455,15 +4455,15 @@
       "subcategory": "Pedestal Sink",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "500 Dia × 850 H mm",
+          "overall_product_weight": "90 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural White Marble",
           "base_type": "Fluted Column Pedestal",
           "top_color": "White with Grey Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Rough-Carved Organic Basin on Fluted Column",
           "mixed_materials": "No",
@@ -4498,15 +4498,15 @@
       "subcategory": "Pedestal Sink",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "500 Dia × 850 H mm",
+          "overall_product_weight": "90 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural Green Marble",
           "base_type": "Tapered Cylindrical Pedestal",
           "top_color": "Green with White Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "Green Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Round Basin on Cantilevered Pedestal",
           "mixed_materials": "No",
@@ -4549,7 +4549,7 @@
           "material": "Natural White Marble",
           "base_type": "Freestanding Pedestal Base",
           "top_color": "White Marble with Light Grey Natural Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble",
           "natural_variation_type": "Natural Marble Veining & Color Variation",
           "detailing": "Hand-Carved Woven Basket Pattern with Decorative Floral Border",
           "mixed_materials": "No",
@@ -4584,15 +4584,15 @@
       "subcategory": "Pedestal Sink",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "500 Dia × 850 H mm",
+          "overall_product_weight": "90 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural White & Black Marble",
           "base_type": "Cylindrical Pedestal",
           "top_color": "White with Black Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White & Black Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Bowl Basin on Cylindrical Column",
           "mixed_materials": "No",
@@ -4627,15 +4627,15 @@
       "subcategory": "Pedestal Sink",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "500 Dia × 850 H mm",
+          "overall_product_weight": "90 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural White Marble",
           "base_type": "Ribbed Cylindrical Pedestal",
           "top_color": "White with Grey Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Round Basin on Ribbed Column",
           "mixed_materials": "No",
@@ -4670,15 +4670,15 @@
       "subcategory": "Pedestal Sink",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "500 Dia × 850 H mm",
+          "overall_product_weight": "90 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural White Marble",
           "base_type": "Pedestal Base",
           "top_color": "White with Grey Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Carved Concentric Ripple Basin",
           "mixed_materials": "No",
@@ -4713,15 +4713,15 @@
       "subcategory": "Pedestal Sink",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "500 W × 500 D × 850 H mm",
+          "overall_product_weight": "90 kg"
         },
         "details": {
           "overall_shape": "Irregular",
           "material": "Natural Brown Marble",
           "base_type": "Tapered Pedestal",
           "top_color": "Brown / Rust Marble",
-          "wood_species": "Not Applicable",
+          "wood_species": "Brown Marble",
           "natural_variation_type": "Natural Marble Veining & Color Variation",
           "detailing": "Organic Natural-Edge Basin on Pedestal",
           "mixed_materials": "No",
@@ -4756,15 +4756,15 @@
       "subcategory": "Pedestal Sink",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "500 Dia × 850 H mm",
+          "overall_product_weight": "90 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural White Marble with Brass Band",
           "base_type": "Fluted Column Pedestal",
           "top_color": "White with Grey Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble with Brass Band",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Fluted Round Basin with Brass Band on Fluted Column",
           "mixed_materials": "Yes",
@@ -4799,15 +4799,15 @@
       "subcategory": "Pedestal Sink",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "500 Dia × 850 H mm",
+          "overall_product_weight": "90 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural White Marble",
           "base_type": "Tapered Conical Pedestal",
           "top_color": "White with Grey Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Round Basin on Conical Pedestal",
           "mixed_materials": "No",
@@ -4842,15 +4842,15 @@
       "subcategory": "Pedestal Sink",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "500 Dia × 850 H mm",
+          "overall_product_weight": "90 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural White Marble Mosaic",
           "base_type": "Cylindrical Pedestal",
           "top_color": "White / Cream",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble Mosaic",
           "natural_variation_type": "Natural Stone Texture",
           "detailing": "Mosaic Textured Cylindrical Pedestal",
           "mixed_materials": "No",
@@ -4885,15 +4885,15 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "450 Dia × 550 H mm",
+          "overall_product_weight": "35 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural Marble",
           "base_type": "Tapered Cylindrical Pedestal",
           "top_color": "Beige / Brown Marble",
-          "wood_species": "Not Applicable",
+          "wood_species": "Marble",
           "natural_variation_type": "Natural Marble Veining & Color Variation",
           "detailing": "Round Top on Tapered Pedestal",
           "mixed_materials": "No",
@@ -4928,15 +4928,15 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "450 Dia × 550 H mm",
+          "overall_product_weight": "35 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural Black Marble",
           "base_type": "Turned Baluster Pedestal Base",
           "top_color": "Black with White Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "Black Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Round Top on Turned Baluster Column",
           "mixed_materials": "No",
@@ -4979,7 +4979,7 @@
           "material": "Natural Marble Stone",
           "base_type": "Tapered Pedestal Base",
           "top_color": "Black",
-          "wood_species": "N/A",
+          "wood_species": "Marble Stone",
           "natural_variation_type": "Natural Stone Variation",
           "detailing": "Thick Marble Top, High-Contrast White Veining, Sculptural Tapered Pedestal",
           "mixed_materials": "No",
@@ -5014,15 +5014,15 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "450 Dia × 550 H mm",
+          "overall_product_weight": "35 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural Black & White Marble",
           "base_type": "Tapered Conical Pedestal",
           "top_color": "Black with White Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "Black & White Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Round Top on Conical Pedestal",
           "mixed_materials": "No",
@@ -5057,15 +5057,15 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "450 Dia × 550 H mm",
+          "overall_product_weight": "35 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural Black Marble",
           "base_type": "Cylindrical Base with Arch Cutout",
           "top_color": "Black with White Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "Black Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Cylindrical Body with Arch Cutout",
           "mixed_materials": "No",
@@ -5100,15 +5100,15 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "450 Dia × 550 H mm",
+          "overall_product_weight": "35 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural Black & White Marble",
           "base_type": "Stacked Cone & Sphere Totem Base",
           "top_color": "Black with White Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "Black & White Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Sculptural Hourglass Totem Form",
           "mixed_materials": "No",
@@ -5143,15 +5143,15 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "500 W × 450 D × 550 H mm",
+          "overall_product_weight": "35 kg"
         },
         "details": {
           "overall_shape": "Square",
           "material": "Natural Black & White Marble",
           "base_type": "Cube / Block Base",
           "top_color": "Black & White Stripe",
-          "wood_species": "Not Applicable",
+          "wood_species": "Black & White Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Geometric Sunburst Striped Cube",
           "mixed_materials": "No",
@@ -5194,7 +5194,7 @@
           "material": "Natural Marble Stone",
           "base_type": "Tapered Pedestal Base",
           "top_color": "Burgundy",
-          "wood_species": "N/A",
+          "wood_species": "Marble Stone",
           "natural_variation_type": "Natural Stone Variation",
           "detailing": "Clover-Shaped Top, Tapered Marble Pedestal, White Veining",
           "mixed_materials": "No",
@@ -5229,15 +5229,15 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "450 Dia × 550 H mm",
+          "overall_product_weight": "35 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural White Marble",
           "base_type": "Tapered Conical Pedestal",
           "top_color": "White with Grey Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Round Top on Conical Pedestal",
           "mixed_materials": "No",
@@ -5272,15 +5272,15 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "450 Dia × 550 H mm",
+          "overall_product_weight": "35 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural Travertine Stone",
           "base_type": "Tapered Cone Pedestal",
           "top_color": "Brown / Beige Travertine",
-          "wood_species": "Not Applicable",
+          "wood_species": "Travertine Stone",
           "natural_variation_type": "Natural Travertine Texture & Veining",
           "detailing": "Round Top on Cone Pedestal",
           "mixed_materials": "No",
@@ -5323,7 +5323,7 @@
           "material": "Natural Marble",
           "base_type": "Cluster Pedestal Base",
           "top_color": "White Marble Top / Green Marble Base",
-          "wood_species": "N/A",
+          "wood_species": "Marble",
           "natural_variation_type": "Natural Marble Veining and Color Variation",
           "detailing": "Scalloped Flower-Shaped Marble Top with Contrasting Floral Inlay and Cylindrical Marble Column Base",
           "mixed_materials": "Yes",
@@ -5358,15 +5358,15 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "450 Dia × 550 H mm",
+          "overall_product_weight": "35 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural Grey Marble",
           "base_type": "Chiseled Fluted Pedestal",
           "top_color": "Grey",
-          "wood_species": "Not Applicable",
+          "wood_species": "Grey Marble",
           "natural_variation_type": "Natural Stone Texture & Veining",
           "detailing": "Round Top on Chiseled Fluted Column",
           "mixed_materials": "No",
@@ -5401,15 +5401,15 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "500 W × 450 D × 550 H mm",
+          "overall_product_weight": "35 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
           "material": "Natural Green Marble",
           "base_type": "Waterfall Slab Leg",
           "top_color": "Dark Green with Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "Green Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Rectangular Top on Slab Leg",
           "mixed_materials": "No",
@@ -5444,15 +5444,15 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "500 W × 450 D × 550 H mm",
+          "overall_product_weight": "35 kg"
         },
         "details": {
           "overall_shape": "Square",
           "material": "Natural Green Marble",
           "base_type": "Fluted Rectangular Pedestal",
           "top_color": "Dark Green with Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "Green Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Square Top on Fluted Pedestal",
           "mixed_materials": "No",
@@ -5495,7 +5495,7 @@
           "material": "Natural Marble",
           "base_type": "Sculptural Fluted Base",
           "top_color": "Green Marble",
-          "wood_species": "Not Applicable",
+          "wood_species": "Marble",
           "natural_variation_type": "Natural Stone Color Variation",
           "detailing": "Fluted Sculptural Pedestal Design",
           "mixed_materials": "No",
@@ -5538,7 +5538,7 @@
           "material": "Natural Marble",
           "base_type": "Fluted Column Base",
           "top_color": "Dark Green",
-          "wood_species": "N/A",
+          "wood_species": "Marble",
           "natural_variation_type": "Natural Stone Color Variation",
           "detailing": "Fluted Pedestal Base, Polished Marble Surface",
           "mixed_materials": "No",
@@ -5581,7 +5581,7 @@
           "material": "Natural Marble",
           "base_type": "Cylinder Base",
           "top_color": "Green Marble",
-          "wood_species": "Not Applicable",
+          "wood_species": "Marble",
           "natural_variation_type": "Natural Stone Color Variation",
           "detailing": "Monolithic Marble Construction",
           "mixed_materials": "No",
@@ -5616,15 +5616,15 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "450 Dia × 550 H mm",
+          "overall_product_weight": "35 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural Green Marble",
           "base_type": "Stacked Drum (Bobbin) Base",
           "top_color": "Green Marble",
-          "wood_species": "Not Applicable",
+          "wood_species": "Green Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Stacked Drum Cylindrical Form",
           "mixed_materials": "No",
@@ -5659,15 +5659,15 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "450 Dia × 550 H mm",
+          "overall_product_weight": "35 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural Green Marble with Travertine Top",
           "base_type": "Sculptural Wave Base",
           "top_color": "Green Marble with Travertine Top",
-          "wood_species": "Not Applicable",
+          "wood_species": "Green Marble with Travertine Top",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Round Travertine Top on Green Marble Wave Base",
           "mixed_materials": "No",
@@ -5702,15 +5702,15 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "450 Dia × 550 H mm",
+          "overall_product_weight": "35 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural White & Green Marble",
           "base_type": "Twin Half-Column Legs",
           "top_color": "White with Green Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White & Green Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Round Top on Twin Column Legs",
           "mixed_materials": "No",
@@ -5745,15 +5745,15 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "450 Dia × 550 H mm",
+          "overall_product_weight": "35 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural Green Marble with Travertine Pedestal",
           "base_type": "Cylindrical Travertine Pedestal",
           "top_color": "Green Marble with Travertine Base",
-          "wood_species": "Not Applicable",
+          "wood_species": "Green Marble with Travertine Pedestal",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Scalloped Round Top on Cylindrical Pedestal",
           "mixed_materials": "No",
@@ -5796,7 +5796,7 @@
           "material": "Natural Dark Green Marble",
           "base_type": "Single Pedestal Column Base",
           "top_color": "Deep Green with Natural White Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "Dark Green Marble",
           "natural_variation_type": "Natural Marble Veining, Color & Texture Variation",
           "detailing": "Sculpted Rounded Pedestal Base with Floating Round Top",
           "mixed_materials": "No",
@@ -5839,7 +5839,7 @@
           "material": "Natural Green Marble",
           "base_type": "Pedestal Base",
           "top_color": "Green with Natural Brown and Black Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "Green Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Solid Marble Construction with Decorative Sphere Supports",
           "mixed_materials": "No",
@@ -5882,7 +5882,7 @@
           "material": "Natural White Marble",
           "base_type": "Pedestal Base",
           "top_color": "White",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Sculptural Hourglass Pedestal Design",
           "mixed_materials": "No",
@@ -5917,15 +5917,15 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "450 Dia × 550 H mm",
+          "overall_product_weight": "35 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural White Marble",
           "base_type": "Curved Slab Base",
           "top_color": "White with Grey Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Round Top on Curved Slab Base",
           "mixed_materials": "No",
@@ -5960,15 +5960,15 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "500 W × 450 D × 550 H mm",
+          "overall_product_weight": "35 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
           "material": "Natural White Marble",
           "base_type": "Curved Slab Base",
           "top_color": "White with Grey Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Sculptural Curved Slab Base",
           "mixed_materials": "No",
@@ -6011,7 +6011,7 @@
           "material": "Marble Stone, Stainless Steel",
           "base_type": "Ball Pedestal Base",
           "top_color": "Burgundy",
-          "wood_species": "N/A",
+          "wood_species": "Marble Stone, Stainless Steel",
           "natural_variation_type": "Natural Stone Variation",
           "detailing": "Spherical Marble Base, Brass Finish Stem",
           "mixed_materials": "Yes",
@@ -6046,15 +6046,15 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "500 W × 450 D × 550 H mm",
+          "overall_product_weight": "35 kg"
         },
         "details": {
           "overall_shape": "Irregular",
           "material": "Natural White Marble",
           "base_type": "Cylindrical Cluster Base",
           "top_color": "White with Lilac Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Sculptural Cluster of Cylinders",
           "mixed_materials": "No",
@@ -6089,15 +6089,15 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "500 W × 450 D × 550 H mm",
+          "overall_product_weight": "35 kg"
         },
         "details": {
           "overall_shape": "Irregular",
           "material": "Natural Black Marble",
           "base_type": "Conical Pedestal",
           "top_color": "Black with White Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "Black Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Organic Kidney Top on Conical Pedestal",
           "mixed_materials": "No",
@@ -6132,15 +6132,15 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "450 Dia × 550 H mm",
+          "overall_product_weight": "35 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural White Marble",
           "base_type": "Clustered Cylinder Base",
           "top_color": "White with Grey Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Clustered Half-Cylinder Form",
           "mixed_materials": "No",
@@ -6175,15 +6175,15 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "450 Dia × 550 H mm",
+          "overall_product_weight": "35 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural Marble",
           "base_type": "Hourglass (Diabolo) Base",
           "top_color": "Brown / Green Marble",
-          "wood_species": "Not Applicable",
+          "wood_species": "Marble",
           "natural_variation_type": "Natural Marble Veining & Color Variation",
           "detailing": "Sculptural Hourglass Diabolo Form",
           "mixed_materials": "No",
@@ -6226,7 +6226,7 @@
           "material": "Natural Travertine / Marble",
           "base_type": "Pedestal Base",
           "top_color": "Brown Beige Stone",
-          "wood_species": "N/A",
+          "wood_species": "Travertine / Marble",
           "natural_variation_type": "Natural Stone Variation",
           "detailing": "Minimal Sculptural Stone Design",
           "mixed_materials": "No",
@@ -6269,7 +6269,7 @@
           "material": "Natural Marble Stone",
           "base_type": "Tapered Pedestal Base",
           "top_color": "Black",
-          "wood_species": "N/A",
+          "wood_species": "Marble Stone",
           "natural_variation_type": "Natural Stone Variation",
           "detailing": "High-Contrast White Veining, Monolithic Marble Design, Tapered Pedestal",
           "mixed_materials": "No",
@@ -6312,7 +6312,7 @@
           "material": "Natural Travertine Stone",
           "base_type": "C-Shaped Base",
           "top_color": "Gray",
-          "wood_species": "N/A",
+          "wood_species": "Travertine Stone",
           "natural_variation_type": "Natural Stone Variation",
           "detailing": "Waterfall Edge Design, Monolithic Construction, Curved Continuous Profile",
           "mixed_materials": "No",
@@ -6355,7 +6355,7 @@
           "material": "Natural Marble",
           "base_type": "Dual Pedestal Base",
           "top_color": "White and Red Marble",
-          "wood_species": "Not Applicable",
+          "wood_species": "Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Contrasting Two-Tone Marble Design with Decorative Marble Inlay Top",
           "mixed_materials": "Yes",
@@ -6398,7 +6398,7 @@
           "material": "Natural Black Marble",
           "base_type": "Tripod Pedestal Base",
           "top_color": "Black with Grey Natural Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "Black Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Architectural Three-Leg Marble Base with Circular Top",
           "mixed_materials": "No",
@@ -6433,15 +6433,15 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "500 W × 450 D × 550 H mm",
+          "overall_product_weight": "35 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
           "material": "Natural Travertine Stone",
           "base_type": "Z-Shaped Base",
           "top_color": "Grey Travertine",
-          "wood_species": "Not Applicable",
+          "wood_species": "Travertine Stone",
           "natural_variation_type": "Natural Travertine Texture & Veining",
           "detailing": "Minimalist Z-Shape Cantilever",
           "mixed_materials": "No",
@@ -6484,7 +6484,7 @@
           "material": "Natural Travertine Stone",
           "base_type": "Spiral Pedestal Base",
           "top_color": "Gray ",
-          "wood_species": "N/A",
+          "wood_species": "Travertine Stone",
           "natural_variation_type": "Natural Stone Variation",
           "detailing": "Spiral Sculptural Base, Curved Waterfall Side, Architectural Design",
           "mixed_materials": "No",
@@ -6527,7 +6527,7 @@
           "material": "Natural Marble Stone",
           "base_type": "Sculptural Pedestal Base",
           "top_color": "Burgundy",
-          "wood_species": "N/A",
+          "wood_species": "Marble Stone",
           "natural_variation_type": "Natural Stone Variation",
           "detailing": "Stacked Geometric Marble Forms, Cylindrical Construction, Designer Architectural Profile",
           "mixed_materials": "No",
@@ -6648,8 +6648,8 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "500 W × 450 D × 550 H mm",
+          "overall_product_weight": "35 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
@@ -6691,15 +6691,15 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "500 W × 450 D × 550 H mm",
+          "overall_product_weight": "35 kg"
         },
         "details": {
           "overall_shape": "Square",
           "material": "Natural Marble",
           "base_type": "Block Leg Base",
           "top_color": "Brown / Multicolor Marble",
-          "wood_species": "Not Applicable",
+          "wood_species": "Marble",
           "natural_variation_type": "Natural Marble Veining & Color Variation",
           "detailing": "Natural-Edge Organic Top on Block Legs",
           "mixed_materials": "No",
@@ -6742,7 +6742,7 @@
           "material": "Natural Marble Stone",
           "base_type": "Urn Pedestal Base",
           "top_color": "Burgundy",
-          "wood_species": "N/A",
+          "wood_species": "Marble Stone",
           "natural_variation_type": "Natural Stone Variation",
           "detailing": "Rounded Marble Top, Sculptural Urn-Shaped Base, White Veining Pattern",
           "mixed_materials": "No",
@@ -6785,7 +6785,7 @@
           "material": "Natural Marble Stone",
           "base_type": "Tapered Pedestal Base",
           "top_color": "Burgundy",
-          "wood_species": "N/A",
+          "wood_species": "Marble Stone",
           "natural_variation_type": "Natural Stone Variation",
           "detailing": "Thick Bullnose Top, Monolithic Marble Construction, Tapered Pedestal",
           "mixed_materials": "No",
@@ -6828,7 +6828,7 @@
           "material": "Natural Marble Stone",
           "base_type": "Cylinder Pedestal Base",
           "top_color": "Burgundy",
-          "wood_species": "N/A",
+          "wood_species": "Marble Stone",
           "natural_variation_type": "Natural Stone Variation",
           "detailing": "Thick Round Marble Top, Cylindrical Pedestal Base, Rich White Veining Pattern",
           "mixed_materials": "No",
@@ -6871,7 +6871,7 @@
           "material": "Natural Marble Stone",
           "base_type": "Cross Pedestal Base",
           "top_color": "Burgundy",
-          "wood_species": "N/A",
+          "wood_species": "Marble Stone",
           "natural_variation_type": "Natural Stone Variation",
           "detailing": "Bullnose Edge Top, Cross Panel Base, White Marble Veining",
           "mixed_materials": "No",
@@ -6914,7 +6914,7 @@
           "material": "Natural Marble Stone",
           "base_type": "Sculptural Pedestal Base",
           "top_color": "White Marble",
-          "wood_species": "N/A",
+          "wood_species": "Marble Stone",
           "natural_variation_type": "Natural Stone Variation",
           "detailing": "Open Arch Pedestal Design, Round Marble Top, Sculptural Contemporary Form",
           "mixed_materials": "No",
@@ -6949,15 +6949,15 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "450 Dia × 550 H mm",
+          "overall_product_weight": "35 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural Travertine Stone",
           "base_type": "Sphere-on-Cube Pedestal",
           "top_color": "Beige Travertine",
-          "wood_species": "Not Applicable",
+          "wood_species": "Travertine Stone",
           "natural_variation_type": "Natural Travertine Texture & Veining",
           "detailing": "Round Top on Sphere & Cube Base",
           "mixed_materials": "No",
@@ -7000,7 +7000,7 @@
           "material": "Natural White Marble",
           "base_type": "Pedestal Base",
           "top_color": "White",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Stacked Geometric Marble Forms with Bowl Top Design",
           "mixed_materials": "No",
@@ -7035,15 +7035,15 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "450 Dia × 550 H mm",
+          "overall_product_weight": "35 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural Travertine Stone",
           "base_type": "Column Pedestal with Ball Feet",
           "top_color": "Beige / Cream Travertine",
-          "wood_species": "Not Applicable",
+          "wood_species": "Travertine Stone",
           "natural_variation_type": "Natural Travertine Texture & Veining",
           "detailing": "Round Top on Column with Ball Feet & Round Plinth",
           "mixed_materials": "No",
@@ -7078,15 +7078,15 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "450 Dia × 550 H mm",
+          "overall_product_weight": "35 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural Travertine Stone",
           "base_type": "Twin Curved Slab Legs",
           "top_color": "Beige Travertine",
-          "wood_species": "Not Applicable",
+          "wood_species": "Travertine Stone",
           "natural_variation_type": "Natural Travertine Texture & Veining",
           "detailing": "Round Tray Top on Twin Curved Legs",
           "mixed_materials": "No",
@@ -7121,15 +7121,15 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "450 Dia × 550 H mm",
+          "overall_product_weight": "35 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural Travertine Stone",
           "base_type": "Sculptural U-Shaped Slab Base",
           "top_color": "Beige / Cream Travertine",
-          "wood_species": "Not Applicable",
+          "wood_species": "Travertine Stone",
           "natural_variation_type": "Natural Travertine Texture & Veining",
           "detailing": "Round Top on Sculptural U-Shape Base",
           "mixed_materials": "No",
@@ -7164,15 +7164,15 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "450 Dia × 550 H mm",
+          "overall_product_weight": "35 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural White Marble",
           "base_type": "Twisted Stacked Spiral Base",
           "top_color": "White",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Twisted Stacked Spiral Sculptural Form",
           "mixed_materials": "No",
@@ -7207,15 +7207,15 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "450 Dia × 550 H mm",
+          "overall_product_weight": "35 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural White Marble",
           "base_type": "Stacked Geometric Totem Base",
           "top_color": "White with Grey Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Round Top on Stacked Geometric Totem",
           "mixed_materials": "No",
@@ -7258,7 +7258,7 @@
           "material": "Natural White Marble",
           "base_type": "Sculptural Spiral Pedestal Base",
           "top_color": "White Marble with Grey Natural Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble",
           "natural_variation_type": "Natural Marble Veining & Color Variation",
           "detailing": "Twisted Spiral Carved Base with Round Marble Top",
           "mixed_materials": "No",
@@ -7293,15 +7293,15 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "450 Dia × 550 H mm",
+          "overall_product_weight": "35 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural White Onyx",
           "base_type": "Fluted Cylindrical Column Pedestal",
           "top_color": "White with Grey Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Onyx",
           "natural_variation_type": "Natural Onyx Veining",
           "detailing": "Round Top on Fluted Column Pedestal",
           "mixed_materials": "No",
@@ -7336,15 +7336,15 @@
       "subcategory": "Sink",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "600 W × 400 D × 150 H mm",
+          "overall_product_weight": "30 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
           "material": "Natural Beige Marble",
           "base_type": "Countertop Vessel Basin",
           "top_color": "Beige Marble",
-          "wood_species": "Not Applicable",
+          "wood_species": "Beige Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Hand-Carved Rectangular Vessel Basin",
           "mixed_materials": "No",
@@ -7422,15 +7422,15 @@
       "subcategory": "Sink",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "450 Dia × 150 H mm",
+          "overall_product_weight": "30 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural White Marble",
           "base_type": "Countertop Vessel Basin",
           "top_color": "White with Grey Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Hand-Carved Egg-and-Dart Decorative Vessel Basin",
           "mixed_materials": "No",
@@ -7473,7 +7473,7 @@
           "material": "Natural Marble",
           "base_type": "Vessel Sink Base",
           "top_color": "White",
-          "wood_species": "N/A",
+          "wood_species": "Marble",
           "natural_variation_type": "Natural Marble Veining & Color Variation",
           "detailing": "Geometric Faceted Exterior Design",
           "mixed_materials": "No",
@@ -7508,15 +7508,15 @@
       "subcategory": "Sink",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "450 Dia × 150 H mm",
+          "overall_product_weight": "30 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural White Marble",
           "base_type": "Countertop Vessel Basin",
           "top_color": "White with Grey Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Fluted Round Vessel Basin",
           "mixed_materials": "No",
@@ -7551,15 +7551,15 @@
       "subcategory": "Sink",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "450 Dia × 150 H mm",
+          "overall_product_weight": "30 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural White Marble",
           "base_type": "Countertop Vessel Basin",
           "top_color": "White with Grey Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Hand-Carved Scalloped Ruffle Vessel Basin",
           "mixed_materials": "No",
@@ -7594,15 +7594,15 @@
       "subcategory": "Sink",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "600 W × 400 D × 150 H mm",
+          "overall_product_weight": "30 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
           "material": "Natural Green Marble",
           "base_type": "Countertop Vessel Basin",
           "top_color": "Green with White Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "Green Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Fluted Rectangular Vessel Basin",
           "mixed_materials": "No",
@@ -7645,7 +7645,7 @@
           "material": "Natural Green Marble",
           "base_type": "Vessel Sink",
           "top_color": "Dark Green with White Natural Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "Green Marble",
           "natural_variation_type": "Natural Marble Veining and Color Variation",
           "detailing": "Hand-Carved Fluted Exterior with Polished Interior Surface",
           "mixed_materials": "Yes",
@@ -7680,15 +7680,15 @@
       "subcategory": "Sink",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "450 Dia × 150 H mm",
+          "overall_product_weight": "30 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural Green Marble",
           "base_type": "Countertop Vessel Basin",
           "top_color": "Dark Green with Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "Green Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Smooth Round Vessel Basin",
           "mixed_materials": "No",
@@ -7723,15 +7723,15 @@
       "subcategory": "Sink",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "450 Dia × 150 H mm",
+          "overall_product_weight": "30 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural Green Marble",
           "base_type": "Countertop Vessel Basin",
           "top_color": "Dark Green with White Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "Green Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Smooth Round Vessel Bowl Basin",
           "mixed_materials": "No",
@@ -7766,15 +7766,15 @@
       "subcategory": "Sink",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "450 Dia × 150 H mm",
+          "overall_product_weight": "30 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural Beige Marble",
           "base_type": "Countertop Vessel Basin",
           "top_color": "Beige / Cream Marble",
-          "wood_species": "Not Applicable",
+          "wood_species": "Beige Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Hand-Carved Flower Petal Vessel Basin",
           "mixed_materials": "No",
@@ -7809,15 +7809,15 @@
       "subcategory": "Sink",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "600 W × 400 D × 150 H mm",
+          "overall_product_weight": "30 kg"
         },
         "details": {
           "overall_shape": "Irregular",
           "material": "Natural Makrana Pink Marble",
           "base_type": "Countertop Vessel Basin",
           "top_color": "Pink / Peach with Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "Makrana Pink Marble",
           "natural_variation_type": "Natural Marble Veining & Color Variation",
           "detailing": "Rustic Natural-Edge Vessel Basin",
           "mixed_materials": "No",
@@ -7860,7 +7860,7 @@
           "material": "Natural Marble",
           "base_type": "Countertop Vessel Basin",
           "top_color": "White Marble",
-          "wood_species": "N/A",
+          "wood_species": "Marble",
           "natural_variation_type": "Natural Marble Veining and Color Variation",
           "detailing": "Hand-Carved Scalloped Exterior with Smooth Polished Interior Bowl",
           "mixed_materials": "No",
@@ -7895,15 +7895,15 @@
       "subcategory": "Sink",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "450 Dia × 150 H mm",
+          "overall_product_weight": "30 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural White Marble",
           "base_type": "Countertop Vessel Basin",
           "top_color": "White with Grey Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Fluted Ring Round Vessel Basin",
           "mixed_materials": "No",
@@ -7938,15 +7938,15 @@
       "subcategory": "Sink",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "600 W × 400 D × 150 H mm",
+          "overall_product_weight": "30 kg"
         },
         "details": {
           "overall_shape": "Irregular",
           "material": "Natural White Marble",
           "base_type": "Countertop Vessel Basin",
           "top_color": "White with Grey Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Organic Rough-Hewn Natural-Edge Vessel Basin",
           "mixed_materials": "No",
@@ -7981,15 +7981,15 @@
       "subcategory": "Sink",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "600 W × 400 D × 150 H mm",
+          "overall_product_weight": "30 kg"
         },
         "details": {
           "overall_shape": "Irregular",
           "material": "Natural Pink Marble",
           "base_type": "Countertop Vessel Basin",
           "top_color": "Pink / Peach with Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "Pink Marble",
           "natural_variation_type": "Natural Marble Veining & Color Variation",
           "detailing": "Organic Natural-Edge Vessel Basin",
           "mixed_materials": "No",
@@ -8024,15 +8024,15 @@
       "subcategory": "Sink",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "450 Dia × 150 H mm",
+          "overall_product_weight": "30 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural Beige Marble",
           "base_type": "Countertop Vessel Basin",
           "top_color": "Beige / Cream Marble",
-          "wood_species": "Not Applicable",
+          "wood_species": "Beige Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Hand-Carved Flower Petal Vessel Basin",
           "mixed_materials": "No",
@@ -8067,15 +8067,15 @@
       "subcategory": "Sink",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "600 W × 400 D × 150 H mm",
+          "overall_product_weight": "30 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
           "material": "Natural White Marble",
           "base_type": "Countertop Vessel Basin",
           "top_color": "White with Grey Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Fluted Front Rectangular Vessel Basin",
           "mixed_materials": "No",
@@ -8110,15 +8110,15 @@
       "subcategory": "Sink",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "600 W × 400 D × 150 H mm",
+          "overall_product_weight": "30 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
           "material": "Natural Red Marble",
           "base_type": "Integrated Countertop Basin",
           "top_color": "Red / Burgundy with White Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "Red Marble",
           "natural_variation_type": "Natural Marble Veining & Color Variation",
           "detailing": "Fluted Apron Rectangular Integrated Basin",
           "mixed_materials": "No",
@@ -8153,15 +8153,15 @@
       "subcategory": "Sink",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "450 Dia × 150 H mm",
+          "overall_product_weight": "30 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural Beige Marble",
           "base_type": "Countertop Vessel Basin",
           "top_color": "Beige / Cream Marble",
-          "wood_species": "Not Applicable",
+          "wood_species": "Beige Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Hand-Carved Flower Petal Vessel Basin",
           "mixed_materials": "No",
@@ -8196,15 +8196,15 @@
       "subcategory": "Sink",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "600 W × 400 D × 150 H mm",
+          "overall_product_weight": "30 kg"
         },
         "details": {
           "overall_shape": "Irregular",
           "material": "Natural White Marble",
           "base_type": "Countertop Vessel Basin",
           "top_color": "White with Grey Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Rough-Chiseled Rock Vessel Basin",
           "mixed_materials": "No",
@@ -8239,15 +8239,15 @@
       "subcategory": "Sink",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "600 W × 400 D × 150 H mm",
+          "overall_product_weight": "30 kg"
         },
         "details": {
           "overall_shape": "Irregular",
           "material": "Natural White Marble",
           "base_type": "Countertop Vessel Basin",
           "top_color": "White with Grey Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Organic Natural-Edge Vessel Basin",
           "mixed_materials": "No",
@@ -8282,15 +8282,15 @@
       "subcategory": "Sink",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "600 W × 400 D × 150 H mm",
+          "overall_product_weight": "30 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
           "material": "Natural Brown Marble",
           "base_type": "Countertop Vessel Basin",
           "top_color": "Brown / Grey with Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "Brown Marble",
           "natural_variation_type": "Natural Marble Veining & Color Variation",
           "detailing": "Fluted Rectangular Vessel Basin",
           "mixed_materials": "No",
@@ -8325,15 +8325,15 @@
       "subcategory": "Sink",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "600 W × 400 D × 150 H mm",
+          "overall_product_weight": "30 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
           "material": "Natural White & Black Marble",
           "base_type": "Integrated Countertop Basin",
           "top_color": "White with Black Striations",
-          "wood_species": "Not Applicable",
+          "wood_species": "White & Black Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Smooth Rectangular Integrated Basin",
           "mixed_materials": "No",
@@ -8376,7 +8376,7 @@
           "material": "Natural Marble",
           "base_type": "Countertop Vessel Sink",
           "top_color": "Burgundy Red",
-          "wood_species": "N/A",
+          "wood_species": "Marble",
           "natural_variation_type": "Natural Marble Veining & Color Variation",
           "detailing": "Handcrafted Rounded Rectangular Basin with Matching Marble Drain Cover",
           "mixed_materials": "No",
@@ -8411,15 +8411,15 @@
       "subcategory": "Sink",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "450 Dia × 150 H mm",
+          "overall_product_weight": "30 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural Red Travertine",
           "base_type": "Cylindrical Pedestal Column",
           "top_color": "Red / Terracotta Travertine",
-          "wood_species": "Not Applicable",
+          "wood_species": "Red Travertine",
           "natural_variation_type": "Natural Travertine Texture & Veining",
           "detailing": "Round Basin on Cylindrical Pedestal Column",
           "mixed_materials": "No",
@@ -8454,15 +8454,15 @@
       "subcategory": "Sink",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "450 Dia × 150 H mm",
+          "overall_product_weight": "30 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural White Marble",
           "base_type": "Square Block Base",
           "top_color": "White with Grey Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Round Basin on Square Block Base",
           "mixed_materials": "No",
@@ -8505,7 +8505,7 @@
           "material": "Natural Marble",
           "base_type": "Pedestal Base",
           "top_color": "Beige Marble Basin / Black Marble Pedestal",
-          "wood_species": "N/A",
+          "wood_species": "Marble",
           "natural_variation_type": "Natural Marble Veining and Color Variation",
           "detailing": "Hand-Carved Human Face Basin with Integrated Sculptural Marble Pedestal",
           "mixed_materials": "Yes",
@@ -8548,7 +8548,7 @@
           "material": "Natural Beige Marble / Travertine Stone",
           "base_type": "Countertop Vessel Basin",
           "top_color": "Beige / Sandstone Tone",
-          "wood_species": "Not Applicable",
+          "wood_species": "Beige Marble / Travertine Stone",
           "natural_variation_type": "Natural Stone Texture & Color Variation",
           "detailing": "3D Square Grid Carved Exterior Pattern with Rounded Corners",
           "mixed_materials": "No",
@@ -8591,7 +8591,7 @@
           "material": "Natural Marble",
           "base_type": "Countertop Vessel Sink",
           "top_color": "White / Light Grey",
-          "wood_species": "N/A",
+          "wood_species": "Marble",
           "natural_variation_type": "Natural Marble Veining & Stone Formation Variation",
           "detailing": "Hand Carved Layered Topographic Basin Design with Natural Chiseled Exterior",
           "mixed_materials": "No",
@@ -8626,15 +8626,15 @@
       "subcategory": "Sink",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "450 Dia × 150 H mm",
+          "overall_product_weight": "30 kg"
         },
         "details": {
           "overall_shape": "Round",
           "material": "Natural White Marble",
           "base_type": "Countertop Vessel Basin",
           "top_color": "White with Grey Veining",
-          "wood_species": "Not Applicable",
+          "wood_species": "White Marble",
           "natural_variation_type": "Natural Marble Veining",
           "detailing": "Hand-Carved Ribbed Urn Vessel Basin",
           "mixed_materials": "No",
@@ -8677,7 +8677,7 @@
           "material": "Natural Marble",
           "base_type": "Pedestal Base",
           "top_color": "Ivory White",
-          "wood_species": "N/A",
+          "wood_species": "Marble",
           "natural_variation_type": "Natural Marble Veining & Color Variation",
           "detailing": "Hand Carved Fluted Design",
           "mixed_materials": "No",
@@ -8712,8 +8712,8 @@
       "subcategory": "Bed",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "1800 W × 2100 D × 1200 H mm",
+          "overall_product_weight": "90 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
@@ -8755,8 +8755,8 @@
       "subcategory": "Bench",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "1200 W × 400 D × 450 H mm",
+          "overall_product_weight": "25 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
@@ -8798,8 +8798,8 @@
       "subcategory": "Bench",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "1200 W × 400 D × 450 H mm",
+          "overall_product_weight": "25 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
@@ -8841,8 +8841,8 @@
       "subcategory": "Box",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "300 W × 220 D × 150 H mm",
+          "overall_product_weight": "3 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
@@ -8888,8 +8888,8 @@
       "subcategory": "Cabinet",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "900 W × 450 D × 1000 H mm",
+          "overall_product_weight": "45 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
@@ -8935,8 +8935,8 @@
       "subcategory": "Chair",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "750 W × 800 D × 1050 H mm",
+          "overall_product_weight": "30 kg"
         },
         "details": {
           "overall_shape": "Wingback",
@@ -8978,8 +8978,8 @@
       "subcategory": "Chair",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "750 W × 800 D × 1050 H mm",
+          "overall_product_weight": "30 kg"
         },
         "details": {
           "overall_shape": "Armchair",
@@ -9021,8 +9021,8 @@
       "subcategory": "Chair",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "750 W × 800 D × 1050 H mm",
+          "overall_product_weight": "30 kg"
         },
         "details": {
           "overall_shape": "Armchair",
@@ -9064,8 +9064,8 @@
       "subcategory": "Coffee Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "1200 W × 600 D × 450 H mm",
+          "overall_product_weight": "40 kg"
         },
         "details": {
           "overall_shape": "Square",
@@ -9107,8 +9107,8 @@
       "subcategory": "Coffee Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "1200 W × 600 D × 450 H mm",
+          "overall_product_weight": "40 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
@@ -9154,8 +9154,8 @@
       "subcategory": "Console Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "1200 W × 400 D × 800 H mm",
+          "overall_product_weight": "40 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
@@ -9201,8 +9201,8 @@
       "subcategory": "Console Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "1200 W × 400 D × 800 H mm",
+          "overall_product_weight": "40 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
@@ -9244,8 +9244,8 @@
       "subcategory": "Dresser",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "1200 W × 500 D × 800 H mm",
+          "overall_product_weight": "60 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
@@ -9291,8 +9291,8 @@
       "subcategory": "Dresser",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "1200 W × 500 D × 800 H mm",
+          "overall_product_weight": "60 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
@@ -9338,8 +9338,8 @@
       "subcategory": "Mirror",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "800 Dia × 40 H mm",
+          "overall_product_weight": "12 kg"
         },
         "details": {
           "overall_shape": "Round",
@@ -9381,8 +9381,8 @@
       "subcategory": "Mirror Frame",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "700 W × 40 D × 900 H mm",
+          "overall_product_weight": "12 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
@@ -9424,8 +9424,8 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "575 W × 550 D × 550 H mm",
+          "overall_product_weight": "24 kg"
         },
         "details": {
           "overall_shape": "Square",
@@ -9471,8 +9471,8 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "575 W × 550 D × 550 H mm",
+          "overall_product_weight": "24 kg"
         },
         "details": {
           "overall_shape": "Square",
@@ -9518,8 +9518,8 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "575 W × 550 D × 550 H mm",
+          "overall_product_weight": "24 kg"
         },
         "details": {
           "overall_shape": "Square",
@@ -9565,8 +9565,8 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "500 W × 500 D × 550 H mm",
+          "overall_product_weight": "15 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
@@ -9608,8 +9608,8 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "500 W × 500 D × 550 H mm",
+          "overall_product_weight": "15 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
@@ -9655,8 +9655,8 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "575 W × 550 D × 550 H mm",
+          "overall_product_weight": "24 kg"
         },
         "details": {
           "overall_shape": "Square",
@@ -9702,8 +9702,8 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "575 W × 550 D × 550 H mm",
+          "overall_product_weight": "24 kg"
         },
         "details": {
           "overall_shape": "Square",
@@ -9749,8 +9749,8 @@
       "subcategory": "Sofa",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "2000 W × 900 D × 800 H mm",
+          "overall_product_weight": "80 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
@@ -9792,8 +9792,8 @@
       "subcategory": "Sofa",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "2000 W × 900 D × 800 H mm",
+          "overall_product_weight": "80 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
@@ -9839,8 +9839,8 @@
       "subcategory": "Stool",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "450 Dia × 450 H mm",
+          "overall_product_weight": "10 kg"
         },
         "details": {
           "overall_shape": "Round",
@@ -9882,8 +9882,8 @@
       "subcategory": "Stool",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "450 Dia × 450 H mm",
+          "overall_product_weight": "10 kg"
         },
         "details": {
           "overall_shape": "Round",
@@ -11650,8 +11650,8 @@
       "subcategory": "Coffee Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "1200 W × 600 D × 450 H mm",
+          "overall_product_weight": "45 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
@@ -11693,8 +11693,8 @@
       "subcategory": "Coffee Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "900 Dia × 450 H mm",
+          "overall_product_weight": "45 kg"
         },
         "details": {
           "overall_shape": "Round",
@@ -11736,8 +11736,8 @@
       "subcategory": "Coffee Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "1200 W × 600 D × 450 H mm",
+          "overall_product_weight": "45 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
@@ -11779,8 +11779,8 @@
       "subcategory": "Console Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "1400 W × 450 D × 850 H mm",
+          "overall_product_weight": "60 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
@@ -11826,8 +11826,8 @@
       "subcategory": "Console Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "1400 W × 450 D × 850 H mm",
+          "overall_product_weight": "60 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
@@ -11873,8 +11873,8 @@
       "subcategory": "Console Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "1400 W × 450 D × 850 H mm",
+          "overall_product_weight": "60 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
@@ -11920,8 +11920,8 @@
       "subcategory": "Dining Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "1440 Dia × 760 H mm",
+          "overall_product_weight": "192 kg"
         },
         "details": {
           "overall_shape": "Round",
@@ -11963,8 +11963,8 @@
       "subcategory": "Dining Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "1440 Dia × 760 H mm",
+          "overall_product_weight": "192 kg"
         },
         "details": {
           "overall_shape": "Round",
@@ -12006,8 +12006,8 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "500 W × 400 D × 600 H mm",
+          "overall_product_weight": "25 kg"
         },
         "details": {
           "overall_shape": "Square",
@@ -12053,8 +12053,8 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "500 W × 400 D × 600 H mm",
+          "overall_product_weight": "25 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
@@ -12100,8 +12100,8 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "500 W × 400 D × 600 H mm",
+          "overall_product_weight": "25 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
@@ -12147,8 +12147,8 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "500 W × 400 D × 600 H mm",
+          "overall_product_weight": "25 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
@@ -12194,8 +12194,8 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "500 W × 400 D × 600 H mm",
+          "overall_product_weight": "25 kg"
         },
         "details": {
           "overall_shape": "Square",
@@ -12241,8 +12241,8 @@
       "subcategory": "Side Table",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "500 W × 400 D × 600 H mm",
+          "overall_product_weight": "25 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
@@ -12288,8 +12288,8 @@
       "subcategory": "Sofa",
       "productSpecifications": {
         "other_dimensions": {
-          "overall_dimensions": "",
-          "overall_product_weight": ""
+          "overall_dimensions": "1800 W × 750 D × 900 H mm",
+          "overall_product_weight": "70 kg"
         },
         "details": {
           "overall_shape": "Rectangle",
