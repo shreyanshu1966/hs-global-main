@@ -1,0 +1,512 @@
+[
+  {
+    "productId": "Black-Agate",
+    "name": "Black Agate",
+    "subcategory": "Agate",
+    "currentPriceINR": 3000,
+    "competitorPriceINR": 3000,
+    "competitorUrl": "https://semipreciousstoneslab.com/black-agate.html",
+    "newPriceINR": 4000,
+    "newPriceRangeText": "Starting From INR 4000/ SQFT."
+  },
+  {
+    "productId": "Brown-Agate",
+    "name": "Brown Agate",
+    "subcategory": "Agate",
+    "currentPriceINR": 3200,
+    "competitorPriceINR": 2100,
+    "competitorUrl": "https://semipreciousstoneslab.com/brown-agate.html",
+    "newPriceINR": 3100,
+    "newPriceRangeText": "Starting From INR 3100/ SQFT."
+  },
+  {
+    "productId": "crystal-agate",
+    "name": "Crystal Agate",
+    "subcategory": "Agate",
+    "currentPriceINR": 4200,
+    "competitorPriceINR": 3000,
+    "competitorUrl": "https://semipreciousstoneslab.com/crystal-agate.html",
+    "newPriceINR": 4000,
+    "newPriceRangeText": "Starting From INR 4000/ SQFT."
+  },
+  {
+    "productId": "Crystal-Agate-With-Golden-Glitter",
+    "name": "Crystal Agate With Golden Glitter",
+    "subcategory": "Agate",
+    "currentPriceINR": 4400,
+    "competitorPriceINR": 2200,
+    "competitorUrl": "https://semipreciousstoneslab.com/crystal-agate-with-golden-glitter.html",
+    "newPriceINR": 3200,
+    "newPriceRangeText": "Starting From INR 3200/ SQFT."
+  },
+  {
+    "productId": "Yellow-Agate",
+    "name": "Yellow Agate",
+    "subcategory": "Agate",
+    "currentPriceINR": 3200,
+    "competitorPriceINR": 3555,
+    "competitorUrl": "https://semipreciousstoneslab.com/yellow-agate.html",
+    "newPriceINR": 4555,
+    "newPriceRangeText": "Starting From INR 4555/ SQFT."
+  },
+  {
+    "productId": "Earth-Agate",
+    "name": "Earth Agate",
+    "subcategory": "Agate",
+    "currentPriceINR": 3300,
+    "competitorPriceINR": 4845,
+    "competitorUrl": "https://semipreciousstoneslab.com/earth-agate.html",
+    "newPriceINR": 5845,
+    "newPriceRangeText": "Starting From INR 5845/ SQFT."
+  },
+  {
+    "productId": "Banded-Agate-Slab",
+    "name": "Banded Agate Slab",
+    "subcategory": "Agate",
+    "currentPriceINR": 3000,
+    "competitorPriceINR": 3120,
+    "competitorUrl": "https://semipreciousstoneslab.com/banded-agate.html",
+    "newPriceINR": 4120,
+    "newPriceRangeText": "Starting From INR 4120/ SQFT."
+  },
+  {
+    "productId": "Ruby-Agate",
+    "name": "Ruby Agate",
+    "subcategory": "Agate",
+    "currentPriceINR": 3200,
+    "competitorPriceINR": 4120,
+    "competitorUrl": "https://semipreciousstoneslab.com/ruby-agate.html",
+    "newPriceINR": 5120,
+    "newPriceRangeText": "Starting From INR 5120/ SQFT."
+  },
+  {
+    "productId": "Lace-Agate",
+    "name": "Lace Agate",
+    "subcategory": "Agate",
+    "currentPriceINR": 3500,
+    "competitorPriceINR": 2880,
+    "competitorUrl": "https://semipreciousstoneslab.com/lace-agate.html",
+    "newPriceINR": 3880,
+    "newPriceRangeText": "Starting From INR 3880/ SQFT."
+  },
+  {
+    "productId": "Crystal-Agate",
+    "name": "Crystal Agate",
+    "subcategory": "Agate",
+    "currentPriceINR": 3200,
+    "competitorPriceINR": 3000,
+    "competitorUrl": "https://semipreciousstoneslab.com/crystal-agate.html",
+    "newPriceINR": 4000,
+    "newPriceRangeText": "Starting From INR 4000/ SQFT."
+  },
+  {
+    "productId": "Fossil-Agate",
+    "name": "Fossil Agate",
+    "subcategory": "Agate",
+    "currentPriceINR": 4400,
+    "competitorPriceINR": 3000,
+    "competitorUrl": "https://semipreciousstoneslab.com/fossil-agate.html",
+    "newPriceINR": 4000,
+    "newPriceRangeText": "Starting From INR 4000/ SQFT."
+  },
+  {
+    "productId": "Brazilian-Green-Agate",
+    "name": "Brazilian Green Agate",
+    "subcategory": "Agate",
+    "currentPriceINR": null,
+    "competitorPriceINR": 2550,
+    "competitorUrl": "https://semipreciousstoneslab.com/brazilian-green-agate.html",
+    "newPriceINR": 3550,
+    "newPriceRangeText": "Starting From INR 3550/ SQFT."
+  },
+  {
+    "productId": "Mix-Agate-Slabs",
+    "name": "Mix Agate Slabs",
+    "subcategory": "Agate",
+    "currentPriceINR": 4200,
+    "competitorPriceINR": 3315,
+    "competitorUrl": "https://semipreciousstoneslab.com/mix-agate.html",
+    "newPriceINR": 4315,
+    "newPriceRangeText": "Starting From INR 4315/ SQFT."
+  },
+  {
+    "productId": "Mix-Agate",
+    "name": "Mix Agate",
+    "subcategory": "Agate",
+    "currentPriceINR": 4200,
+    "competitorPriceINR": 3315,
+    "competitorUrl": "https://semipreciousstoneslab.com/mix-agate.html",
+    "newPriceINR": 4315,
+    "newPriceRangeText": "Starting From INR 4315/ SQFT."
+  },
+  {
+    "productId": "Brazilian-Black-Agate",
+    "name": "Brazilian Black Agate",
+    "subcategory": "Agate",
+    "currentPriceINR": null,
+    "competitorPriceINR": 3115,
+    "competitorUrl": "https://semipreciousstoneslab.com/brazilian-black-agate.html",
+    "newPriceINR": 4115,
+    "newPriceRangeText": "Starting From INR 4115/ SQFT."
+  },
+  {
+    "productId": "Moss-Agate",
+    "name": "Moss Agate",
+    "subcategory": "Agate",
+    "currentPriceINR": 3200,
+    "competitorPriceINR": 5100,
+    "competitorUrl": "https://semipreciousstoneslab.com/moss-agate.html",
+    "newPriceINR": 6100,
+    "newPriceRangeText": "Starting From INR 6100/ SQFT."
+  },
+  {
+    "productId": "grey-agate",
+    "name": "Grey Agate",
+    "subcategory": "Agate",
+    "currentPriceINR": 3200,
+    "competitorPriceINR": 3825,
+    "competitorUrl": "https://semipreciousstoneslab.com/grey-agate.html",
+    "newPriceINR": 4825,
+    "newPriceRangeText": "Starting From INR 4825/ SQFT."
+  },
+  {
+    "productId": "BRAZILIAN-BLUE-AGATE",
+    "name": "BRAZILIAN BLUE AGATE",
+    "subcategory": "Agate",
+    "currentPriceINR": 3500,
+    "competitorPriceINR": 5355,
+    "competitorUrl": "https://semipreciousstoneslab.com/brazilian-blue-agate.html",
+    "newPriceINR": 6355,
+    "newPriceRangeText": "Starting From INR 6355/ SQFT."
+  },
+  {
+    "productId": "Brazilian-Red-Agate",
+    "name": "Brazilian Red Agate",
+    "subcategory": "Agate",
+    "currentPriceINR": 3100,
+    "competitorPriceINR": 4557,
+    "competitorUrl": "https://semipreciousstoneslab.com/brazilian-red-agate.html",
+    "newPriceINR": 5557,
+    "newPriceRangeText": "Starting From INR 5557/ SQFT."
+  },
+  {
+    "productId": "Amazonite",
+    "name": "Amazonite",
+    "subcategory": "Amazonite",
+    "currentPriceINR": 4500,
+    "competitorPriceINR": 5355,
+    "competitorUrl": "https://semipreciousstoneslab.com/amazonite.html",
+    "newPriceINR": 6355,
+    "newPriceRangeText": "Starting From INR 6355/ SQFT."
+  },
+  {
+    "productId": "Amethyst",
+    "name": "Amethyst",
+    "subcategory": "Amethyst",
+    "currentPriceINR": 3800,
+    "competitorPriceINR": 5355,
+    "competitorUrl": "https://semipreciousstoneslab.com/amethyst.html",
+    "newPriceINR": 6355,
+    "newPriceRangeText": "Starting From INR 6355/ SQFT."
+  },
+  {
+    "productId": "Malachite-Flower-Slabs",
+    "name": "Malachite Flower Slabs",
+    "subcategory": "Gemstone",
+    "currentPriceINR": 6200,
+    "competitorPriceINR": 9052,
+    "competitorUrl": "https://semipreciousstoneslab.com/malachite-flower.html",
+    "newPriceINR": 10052,
+    "newPriceRangeText": "Starting From INR 10052/ SQFT."
+  },
+  {
+    "productId": "Malachite",
+    "name": "Malachite",
+    "subcategory": "Gemstone",
+    "currentPriceINR": 6000,
+    "competitorPriceINR": 9817,
+    "competitorUrl": "https://semipreciousstoneslab.com/malachite.html",
+    "newPriceINR": 10817,
+    "newPriceRangeText": "Starting From INR 10817/ SQFT."
+  },
+  {
+    "productId": "Sodalite-Blue",
+    "name": "Sodalite Blue",
+    "subcategory": "Gemstone",
+    "currentPriceINR": 5200,
+    "competitorPriceINR": 5355,
+    "competitorUrl": "https://semipreciousstoneslab.com/sodalite-blue.html",
+    "newPriceINR": 6355,
+    "newPriceRangeText": "Starting From INR 6355/ SQFT."
+  },
+  {
+    "productId": "Rose-Quartz",
+    "name": "Rose Quartz",
+    "subcategory": "Gemstone",
+    "currentPriceINR": 5000,
+    "competitorPriceINR": 3825,
+    "competitorUrl": "https://semipreciousstoneslab.com/rose-quartz.html",
+    "newPriceINR": 4825,
+    "newPriceRangeText": "Starting From INR 4825/ SQFT."
+  },
+  {
+    "productId": "Labradorite",
+    "name": "Labradorite",
+    "subcategory": "Gemstone",
+    "currentPriceINR": 4200,
+    "competitorPriceINR": 5992,
+    "competitorUrl": "https://semipreciousstoneslab.com/labradorite.html",
+    "newPriceINR": 6992,
+    "newPriceRangeText": "Starting From INR 6992/ SQFT."
+  },
+  {
+    "productId": "Red-Jasper",
+    "name": "Red Jasper",
+    "subcategory": "Jasper",
+    "currentPriceINR": 5200,
+    "competitorPriceINR": 4590,
+    "competitorUrl": "https://semipreciousstoneslab.com/red-jasper.html",
+    "newPriceINR": 5590,
+    "newPriceRangeText": "Starting From INR 5590/ SQFT."
+  },
+  {
+    "productId": "Jamaican-Jasper-Slabs",
+    "name": "Jamaican Jasper Slabs",
+    "subcategory": "Jasper",
+    "currentPriceINR": 3800,
+    "competitorPriceINR": 4590,
+    "competitorUrl": "https://semipreciousstoneslab.com/jamaican-jasper.html",
+    "newPriceINR": 5590,
+    "newPriceRangeText": "Starting From INR 5590/ SQFT."
+  },
+  {
+    "productId": "Angel-Jasper",
+    "name": "Angel Jasper",
+    "subcategory": "Jasper",
+    "currentPriceINR": 4500,
+    "competitorPriceINR": 3952,
+    "competitorUrl": "https://semipreciousstoneslab.com/angel-jasper.html",
+    "newPriceINR": 4952,
+    "newPriceRangeText": "Starting From INR 4952/ SQFT."
+  },
+  {
+    "productId": "Mockite-Jasper",
+    "name": "Mockite Jasper",
+    "subcategory": "Jasper",
+    "currentPriceINR": 4300,
+    "competitorPriceINR": 6120,
+    "competitorUrl": "https://semipreciousstoneslab.com/mockite-jasper.html",
+    "newPriceINR": 7120,
+    "newPriceRangeText": "Starting From INR 7120/ SQFT."
+  },
+  {
+    "productId": "Green-Jasper",
+    "name": "Green Jasper",
+    "subcategory": "Jasper",
+    "currentPriceINR": 3800,
+    "competitorPriceINR": 4590,
+    "competitorUrl": "https://semipreciousstoneslab.com/green-jasper.html",
+    "newPriceINR": 5590,
+    "newPriceRangeText": "Starting From INR 5590/ SQFT."
+  },
+  {
+    "productId": "Polychrome-Jasper",
+    "name": "Polychrome Jasper",
+    "subcategory": "Jasper",
+    "currentPriceINR": 5200,
+    "competitorPriceINR": 3590,
+    "competitorUrl": "https://semipreciousstoneslab.com/polychrome-jasper.html",
+    "newPriceINR": 4590,
+    "newPriceRangeText": "Starting From INR 4590/ SQFT."
+  },
+  {
+    "productId": "Golden Mop",
+    "name": "Golden Mop",
+    "subcategory": "Mother Of Pearl",
+    "currentPriceINR": 5000,
+    "competitorPriceINR": 3555,
+    "competitorUrl": "https://semipreciousstoneslab.com/golden-mop.html",
+    "newPriceINR": 4555,
+    "newPriceRangeText": "Starting From INR 4555/ SQFT."
+  },
+  {
+    "productId": "Black-MOP",
+    "name": "Black MOP",
+    "subcategory": "Mother Of Pearl",
+    "currentPriceINR": 4500,
+    "competitorPriceINR": 3825,
+    "competitorUrl": "https://semipreciousstoneslab.com/black-mop.html",
+    "newPriceINR": 4825,
+    "newPriceRangeText": "Starting From INR 4825/ SQFT."
+  },
+  {
+    "productId": "Rose-Quartz-Slabs",
+    "name": "Rose Quartz Slabs",
+    "subcategory": "Quartz",
+    "currentPriceINR": 5000,
+    "competitorPriceINR": 3825,
+    "competitorUrl": "https://semipreciousstoneslab.com/rose-quartz.html",
+    "newPriceINR": 4825,
+    "newPriceRangeText": "Starting From INR 4825/ SQFT."
+  },
+  {
+    "productId": "White-MOP",
+    "name": "White MOP",
+    "subcategory": "Quartz",
+    "currentPriceINR": 6200,
+    "competitorPriceINR": 6842,
+    "competitorUrl": "https://semipreciousstoneslab.com/white-mop.html",
+    "newPriceINR": 7842,
+    "newPriceRangeText": "Starting From INR 7842/ SQFT."
+  },
+  {
+    "productId": "Orange-Quartz",
+    "name": "Orange Quartz",
+    "subcategory": "Quartz",
+    "currentPriceINR": null,
+    "competitorPriceINR": 3189,
+    "competitorUrl": "https://semipreciousstoneslab.com/orange-quartz.html",
+    "newPriceINR": 4189,
+    "newPriceRangeText": "Starting From INR 4189/ SQFT."
+  },
+  {
+    "productId": "Green-Quartz",
+    "name": "Green Quartz",
+    "subcategory": "Quartz",
+    "currentPriceINR": null,
+    "competitorPriceINR": 2550,
+    "competitorUrl": "https://semipreciousstoneslab.com/green-quartz.html",
+    "newPriceINR": 3550,
+    "newPriceRangeText": "Starting From INR 3550/ SQFT."
+  },
+  {
+    "productId": "Septaria-Yellow",
+    "name": "Septaria Yellow",
+    "subcategory": "Quartz",
+    "currentPriceINR": 4600,
+    "competitorPriceINR": 5355,
+    "competitorUrl": "https://semipreciousstoneslab.com/septaria-yellow.html",
+    "newPriceINR": 6355,
+    "newPriceRangeText": "Starting From INR 6355/ SQFT."
+  },
+  {
+    "productId": "Golden-Quartz",
+    "name": "Golden Quartz",
+    "subcategory": "Quartz",
+    "currentPriceINR": 4200,
+    "competitorPriceINR": 3000,
+    "competitorUrl": "https://semipreciousstoneslab.com/golden-quartz.html",
+    "newPriceINR": 4000,
+    "newPriceRangeText": "Starting From INR 4000/ SQFT."
+  },
+  {
+    "productId": "Hemotied-Quartz",
+    "name": "Hemotied Quartz",
+    "subcategory": "Quartz",
+    "currentPriceINR": 3900,
+    "competitorPriceINR": 2850,
+    "competitorUrl": "https://semipreciousstoneslab.com/hemotied-quartz.html",
+    "newPriceINR": 3850,
+    "newPriceRangeText": "Starting From INR 3850/ SQFT."
+  },
+  {
+    "productId": "Blue-Calcite",
+    "name": "Blue Calcite",
+    "subcategory": "Quartz",
+    "currentPriceINR": 3400,
+    "competitorPriceINR": 3000,
+    "competitorUrl": "https://semipreciousstoneslab.com/calcite-blue.html",
+    "newPriceINR": 4000,
+    "newPriceRangeText": "Starting From INR 4000/ SQFT."
+  },
+  {
+    "productId": "crystal-quartz-with-rose-gold",
+    "name": "Crystal Quartz with Rose Gold",
+    "subcategory": "Quartz",
+    "currentPriceINR": 4200,
+    "competitorPriceINR": 3589,
+    "competitorUrl": "https://semipreciousstoneslab.com/crystal-quartz-with-rose-gold.html",
+    "newPriceINR": 4589,
+    "newPriceRangeText": "Starting From INR 4589/ SQFT."
+  },
+  {
+    "productId": "Green-Fluorite",
+    "name": "Green Fluorite",
+    "subcategory": "Semiprecious Stone",
+    "currentPriceINR": 4200,
+    "competitorPriceINR": 2100,
+    "competitorUrl": "https://semipreciousstoneslab.com/green-fluorite.html",
+    "newPriceINR": 3100,
+    "newPriceRangeText": "Starting From INR 3100/ SQFT."
+  },
+  {
+    "productId": "Red-Tiger-Eye",
+    "name": "Red Tiger Eye",
+    "subcategory": "Tiger eye",
+    "currentPriceINR": 5000,
+    "competitorPriceINR": 2650,
+    "competitorUrl": "https://semipreciousstoneslab.com/tiger-eye-red.html",
+    "newPriceINR": 3650,
+    "newPriceRangeText": "Starting From INR 3650/ SQFT."
+  },
+  {
+    "productId": "Tiger-Eye-Retro",
+    "name": "Tiger Eye Retro",
+    "subcategory": "Tiger eye",
+    "currentPriceINR": 5000,
+    "competitorPriceINR": 3500,
+    "competitorUrl": "https://semipreciousstoneslab.com/tiger-eye-retro.html",
+    "newPriceINR": 4500,
+    "newPriceRangeText": "Starting From INR 4500/ SQFT."
+  },
+  {
+    "productId": "Tiger-Eye-Blue",
+    "name": "Tiger Eye Blue",
+    "subcategory": "Tiger eye",
+    "currentPriceINR": 5200,
+    "competitorPriceINR": 4845,
+    "competitorUrl": "https://semipreciousstoneslab.com/tiger-eye-blue.html",
+    "newPriceINR": 5845,
+    "newPriceRangeText": "Starting From INR 5845/ SQFT."
+  },
+  {
+    "productId": "Tiger-Eye",
+    "name": "Tiger Eye",
+    "subcategory": "Tiger eye",
+    "currentPriceINR": 4800,
+    "competitorPriceINR": 5355,
+    "competitorUrl": "https://semipreciousstoneslab.com/tiger-eye.html",
+    "newPriceINR": 6355,
+    "newPriceRangeText": "Starting From INR 6355/ SQFT."
+  },
+  {
+    "productId": "White-Petrified-Wood",
+    "name": "White Petrified Wood",
+    "subcategory": "petrified wood",
+    "currentPriceINR": 4000,
+    "competitorPriceINR": 2880,
+    "competitorUrl": "https://semipreciousstoneslab.com/white-petrified-wood.html",
+    "newPriceINR": 3880,
+    "newPriceRangeText": "Starting From INR 3880/ SQFT."
+  },
+  {
+    "productId": "Brown-Petrified-Wood-Retro-Slabs",
+    "name": "Brown Petrified Wood Retro Slabs",
+    "subcategory": "petrified wood",
+    "currentPriceINR": 3200,
+    "competitorPriceINR": 3120,
+    "competitorUrl": "https://semipreciousstoneslab.com/brown-petrified-wood-retro.html",
+    "newPriceINR": 4120,
+    "newPriceRangeText": "Starting From INR 4120/ SQFT."
+  },
+  {
+    "productId": "Beige-Petrified-Wood-Slab",
+    "name": "Beige Petrified Wood Slab",
+    "subcategory": "petrified wood",
+    "currentPriceINR": 4000,
+    "competitorPriceINR": 4590,
+    "competitorUrl": "https://semipreciousstoneslab.com/beige-petrified-wood.html",
+    "newPriceINR": 5590,
+    "newPriceRangeText": "Starting From INR 5590/ SQFT."
+  }
+]

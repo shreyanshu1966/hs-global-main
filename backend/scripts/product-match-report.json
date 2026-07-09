@@ -1,0 +1,949 @@
+{
+  "matches": [
+    {
+      "ourProductId": "African-Carnelian",
+      "ourName": "African Carnelian",
+      "ourSubcategory": "Agate",
+      "ourPricePerSqFt": 3000,
+      "matchType": "fuzzy",
+      "matchScore": 1,
+      "competitorName": "African Carnalin",
+      "competitorUrl": "https://semipreciousstoneslab.com/african-carnalin.html",
+      "competitorPricePerSqFt": 5500,
+      "priceDiffINR": -2500
+    },
+    {
+      "ourProductId": "Black-Agate",
+      "ourName": "Black Agate",
+      "ourSubcategory": "Agate",
+      "ourPricePerSqFt": 3000,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Black Agate",
+      "competitorUrl": "https://semipreciousstoneslab.com/black-agate.html",
+      "competitorPricePerSqFt": 3000,
+      "priceDiffINR": 0
+    },
+    {
+      "ourProductId": "Blue-Agate",
+      "ourName": "BlueAgate",
+      "ourSubcategory": "Agate",
+      "ourPricePerSqFt": 4200,
+      "matchType": "fuzzy",
+      "matchScore": 0.8,
+      "competitorName": "Blue Lace Agate",
+      "competitorUrl": "https://semipreciousstoneslab.com/blue-lace-agate.html",
+      "competitorPricePerSqFt": 2310,
+      "priceDiffINR": 1890
+    },
+    {
+      "ourProductId": "Brown-Agate",
+      "ourName": "Brown Agate",
+      "ourSubcategory": "Agate",
+      "ourPricePerSqFt": 3200,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Brown Agate",
+      "competitorUrl": "https://semipreciousstoneslab.com/brown-agate.html",
+      "competitorPricePerSqFt": 2100,
+      "priceDiffINR": 1100
+    },
+    {
+      "ourProductId": "crystal-agate",
+      "ourName": "Crystal Agate",
+      "ourSubcategory": "Agate",
+      "ourPricePerSqFt": 4200,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Crystal Agate",
+      "competitorUrl": "https://semipreciousstoneslab.com/crystal-agate.html",
+      "competitorPricePerSqFt": 3000,
+      "priceDiffINR": 1200
+    },
+    {
+      "ourProductId": "Crystal-Agate-With-Golden-Glitter",
+      "ourName": "Crystal Agate With Golden Glitter",
+      "ourSubcategory": "Agate",
+      "ourPricePerSqFt": 4400,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Crystal Agate With Golden Glitter",
+      "competitorUrl": "https://semipreciousstoneslab.com/crystal-agate-with-golden-glitter.html",
+      "competitorPricePerSqFt": 2200,
+      "priceDiffINR": 2200
+    },
+    {
+      "ourProductId": "Yellow-Agate",
+      "ourName": "Yellow Agate",
+      "ourSubcategory": "Agate",
+      "ourPricePerSqFt": 3200,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Yellow Agate",
+      "competitorUrl": "https://semipreciousstoneslab.com/yellow-agate.html",
+      "competitorPricePerSqFt": 3555,
+      "priceDiffINR": -355
+    },
+    {
+      "ourProductId": "Earth-Agate",
+      "ourName": "Earth Agate",
+      "ourSubcategory": "Agate",
+      "ourPricePerSqFt": 3300,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Earth Agate",
+      "competitorUrl": "https://semipreciousstoneslab.com/earth-agate.html",
+      "competitorPricePerSqFt": 4845,
+      "priceDiffINR": -1545
+    },
+    {
+      "ourProductId": "Banded-Agate-Slab",
+      "ourName": "Banded Agate Slab",
+      "ourSubcategory": "Agate",
+      "ourPricePerSqFt": 3000,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Banded Agate",
+      "competitorUrl": "https://semipreciousstoneslab.com/banded-agate.html",
+      "competitorPricePerSqFt": 3120,
+      "priceDiffINR": -120
+    },
+    {
+      "ourProductId": "Ruby-Agate",
+      "ourName": "Ruby Agate",
+      "ourSubcategory": "Agate",
+      "ourPricePerSqFt": 3200,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Ruby Agate",
+      "competitorUrl": "https://semipreciousstoneslab.com/ruby-agate.html",
+      "competitorPricePerSqFt": 4120,
+      "priceDiffINR": -920
+    },
+    {
+      "ourProductId": "Lace-Agate",
+      "ourName": "Lace Agate",
+      "ourSubcategory": "Agate",
+      "ourPricePerSqFt": 3500,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Lace Agate",
+      "competitorUrl": "https://semipreciousstoneslab.com/lace-agate.html",
+      "competitorPricePerSqFt": 2880,
+      "priceDiffINR": 620
+    },
+    {
+      "ourProductId": "Crystal-Agate",
+      "ourName": "Crystal Agate",
+      "ourSubcategory": "Agate",
+      "ourPricePerSqFt": 3200,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Crystal Agate",
+      "competitorUrl": "https://semipreciousstoneslab.com/crystal-agate.html",
+      "competitorPricePerSqFt": 3000,
+      "priceDiffINR": 200
+    },
+    {
+      "ourProductId": "Fossil-Agate",
+      "ourName": "Fossil Agate",
+      "ourSubcategory": "Agate",
+      "ourPricePerSqFt": 4400,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Fossil Agate",
+      "competitorUrl": "https://semipreciousstoneslab.com/fossil-agate.html",
+      "competitorPricePerSqFt": 3000,
+      "priceDiffINR": 1400
+    },
+    {
+      "ourProductId": "Brazilian-Green-Agate",
+      "ourName": "Brazilian Green Agate",
+      "ourSubcategory": "Agate",
+      "ourPricePerSqFt": null,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Brazilian Green Agate",
+      "competitorUrl": "https://semipreciousstoneslab.com/brazilian-green-agate.html",
+      "competitorPricePerSqFt": 2550,
+      "priceDiffINR": null
+    },
+    {
+      "ourProductId": "Mix-Agate-Slabs",
+      "ourName": "Mix Agate Slabs",
+      "ourSubcategory": "Agate",
+      "ourPricePerSqFt": 4200,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Mix Agate",
+      "competitorUrl": "https://semipreciousstoneslab.com/mix-agate.html",
+      "competitorPricePerSqFt": 3315,
+      "priceDiffINR": 885
+    },
+    {
+      "ourProductId": "Mix-Agate",
+      "ourName": "Mix Agate",
+      "ourSubcategory": "Agate",
+      "ourPricePerSqFt": 4200,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Mix Agate",
+      "competitorUrl": "https://semipreciousstoneslab.com/mix-agate.html",
+      "competitorPricePerSqFt": 3315,
+      "priceDiffINR": 885
+    },
+    {
+      "ourProductId": "Brazilian-Black-Agate",
+      "ourName": "Brazilian Black Agate",
+      "ourSubcategory": "Agate",
+      "ourPricePerSqFt": null,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Brazilian Black Agate",
+      "competitorUrl": "https://semipreciousstoneslab.com/brazilian-black-agate.html",
+      "competitorPricePerSqFt": 3115,
+      "priceDiffINR": null
+    },
+    {
+      "ourProductId": "Dendrite-Agate",
+      "ourName": "Dendrite Agate",
+      "ourSubcategory": "Agate",
+      "ourPricePerSqFt": 3200,
+      "matchType": "fuzzy",
+      "matchScore": 0.8,
+      "competitorName": "Brazilian Dendrite Agate",
+      "competitorUrl": "https://semipreciousstoneslab.com/brazilian-dendrite-agate.html",
+      "competitorPricePerSqFt": 2800,
+      "priceDiffINR": 400
+    },
+    {
+      "ourProductId": "Moss-Agate",
+      "ourName": "Moss Agate",
+      "ourSubcategory": "Agate",
+      "ourPricePerSqFt": 3200,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Moss Agate",
+      "competitorUrl": "https://semipreciousstoneslab.com/moss-agate.html",
+      "competitorPricePerSqFt": 5100,
+      "priceDiffINR": -1900
+    },
+    {
+      "ourProductId": "White-Quartz",
+      "ourName": "White Quartz",
+      "ourSubcategory": "Agate",
+      "ourPricePerSqFt": 5200,
+      "matchType": "fuzzy",
+      "matchScore": 0.8,
+      "competitorName": "White Crystal Quartz",
+      "competitorUrl": "https://semipreciousstoneslab.com/white-crystal-quartz.html",
+      "competitorPricePerSqFt": 3825,
+      "priceDiffINR": 1375
+    },
+    {
+      "ourProductId": "grey-agate",
+      "ourName": "Grey Agate",
+      "ourSubcategory": "Agate",
+      "ourPricePerSqFt": 3200,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Grey Agate",
+      "competitorUrl": "https://semipreciousstoneslab.com/grey-agate.html",
+      "competitorPricePerSqFt": 3825,
+      "priceDiffINR": -625
+    },
+    {
+      "ourProductId": "BRAZILIAN-BLUE-AGATE",
+      "ourName": "BRAZILIAN BLUE AGATE",
+      "ourSubcategory": "Agate",
+      "ourPricePerSqFt": 3500,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Brazilian Blue Agate",
+      "competitorUrl": "https://semipreciousstoneslab.com/brazilian-blue-agate.html",
+      "competitorPricePerSqFt": 5355,
+      "priceDiffINR": -1855
+    },
+    {
+      "ourProductId": "Brazilian-Red-Agate",
+      "ourName": "Brazilian Red Agate",
+      "ourSubcategory": "Agate",
+      "ourPricePerSqFt": 3100,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Brazilian Red Agate",
+      "competitorUrl": "https://semipreciousstoneslab.com/brazilian-red-agate.html",
+      "competitorPricePerSqFt": 4557,
+      "priceDiffINR": -1457
+    },
+    {
+      "ourProductId": "Straight-Line",
+      "ourName": "Straight Line",
+      "ourSubcategory": "Agate",
+      "ourPricePerSqFt": null,
+      "matchType": "fuzzy",
+      "matchScore": 0.8,
+      "competitorName": "Straight Line Agate",
+      "competitorUrl": "https://semipreciousstoneslab.com/straight-line-agate.html",
+      "competitorPricePerSqFt": 3450,
+      "priceDiffINR": null
+    },
+    {
+      "ourProductId": "Amazonite",
+      "ourName": "Amazonite",
+      "ourSubcategory": "Amazonite",
+      "ourPricePerSqFt": 4500,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Amazonite",
+      "competitorUrl": "https://semipreciousstoneslab.com/amazonite.html",
+      "competitorPricePerSqFt": 5355,
+      "priceDiffINR": -855
+    },
+    {
+      "ourProductId": "Amethyst",
+      "ourName": "Amethyst",
+      "ourSubcategory": "Amethyst",
+      "ourPricePerSqFt": 3800,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Amethyst",
+      "competitorUrl": "https://semipreciousstoneslab.com/amethyst.html",
+      "competitorPricePerSqFt": 5355,
+      "priceDiffINR": -1555
+    },
+    {
+      "ourProductId": "Malachite-Flower-Slabs",
+      "ourName": "Malachite Flower Slabs",
+      "ourSubcategory": "Gemstone",
+      "ourPricePerSqFt": 6200,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Malachite Flower",
+      "competitorUrl": "https://semipreciousstoneslab.com/malachite-flower.html",
+      "competitorPricePerSqFt": 9052,
+      "priceDiffINR": -2852
+    },
+    {
+      "ourProductId": "Malachite",
+      "ourName": "Malachite",
+      "ourSubcategory": "Gemstone",
+      "ourPricePerSqFt": 6000,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Malachite",
+      "competitorUrl": "https://semipreciousstoneslab.com/malachite.html",
+      "competitorPricePerSqFt": 9817,
+      "priceDiffINR": -3817
+    },
+    {
+      "ourProductId": "Sodalite-Blue",
+      "ourName": "Sodalite Blue",
+      "ourSubcategory": "Gemstone",
+      "ourPricePerSqFt": 5200,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Sodalite Blue",
+      "competitorUrl": "https://semipreciousstoneslab.com/sodalite-blue.html",
+      "competitorPricePerSqFt": 5355,
+      "priceDiffINR": -155
+    },
+    {
+      "ourProductId": "Rose-Quartz",
+      "ourName": "Rose Quartz",
+      "ourSubcategory": "Gemstone",
+      "ourPricePerSqFt": 5000,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Rose Quartz",
+      "competitorUrl": "https://semipreciousstoneslab.com/rose-quartz.html",
+      "competitorPricePerSqFt": 3825,
+      "priceDiffINR": 1175
+    },
+    {
+      "ourProductId": "Lapis-Lazulli",
+      "ourName": "Lapis Lazulli",
+      "ourSubcategory": "Gemstone",
+      "ourPricePerSqFt": 6200,
+      "matchType": "fuzzy",
+      "matchScore": 1,
+      "competitorName": "Lapiz Lazulli",
+      "competitorUrl": "https://semipreciousstoneslab.com/lapiz-lazulli.html",
+      "competitorPricePerSqFt": 4500,
+      "priceDiffINR": 1700
+    },
+    {
+      "ourProductId": "Labradorite",
+      "ourName": "Labradorite",
+      "ourSubcategory": "Gemstone",
+      "ourPricePerSqFt": 4200,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Labradorite",
+      "competitorUrl": "https://semipreciousstoneslab.com/labradorite.html",
+      "competitorPricePerSqFt": 5992,
+      "priceDiffINR": -1792
+    },
+    {
+      "ourProductId": "Emerald-quartz",
+      "ourName": "Emerald Quartz",
+      "ourSubcategory": "Gemstone",
+      "ourPricePerSqFt": 6200,
+      "matchType": "fuzzy",
+      "matchScore": 0.8,
+      "competitorName": "Green Emerald quartz",
+      "competitorUrl": "https://semipreciousstoneslab.com/green-emerald.html",
+      "competitorPricePerSqFt": 4000,
+      "priceDiffINR": 2200
+    },
+    {
+      "ourProductId": "Red-Jasper",
+      "ourName": "Red Jasper",
+      "ourSubcategory": "Jasper",
+      "ourPricePerSqFt": 5200,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Red Jasper",
+      "competitorUrl": "https://semipreciousstoneslab.com/red-jasper.html",
+      "competitorPricePerSqFt": 4590,
+      "priceDiffINR": 610
+    },
+    {
+      "ourProductId": "Jamaican-Jasper-Slabs",
+      "ourName": "Jamaican Jasper Slabs",
+      "ourSubcategory": "Jasper",
+      "ourPricePerSqFt": 3800,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Jamaican Jasper",
+      "competitorUrl": "https://semipreciousstoneslab.com/jamaican-jasper.html",
+      "competitorPricePerSqFt": 4590,
+      "priceDiffINR": -790
+    },
+    {
+      "ourProductId": "Angel-Jasper",
+      "ourName": "Angel Jasper",
+      "ourSubcategory": "Jasper",
+      "ourPricePerSqFt": 4500,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Angel Jasper",
+      "competitorUrl": "https://semipreciousstoneslab.com/angel-jasper.html",
+      "competitorPricePerSqFt": 3952,
+      "priceDiffINR": 548
+    },
+    {
+      "ourProductId": "Mockite-Jasper",
+      "ourName": "Mockite Jasper",
+      "ourSubcategory": "Jasper",
+      "ourPricePerSqFt": 4300,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Mockite Jasper",
+      "competitorUrl": "https://semipreciousstoneslab.com/mockite-jasper.html",
+      "competitorPricePerSqFt": 6120,
+      "priceDiffINR": -1820
+    },
+    {
+      "ourProductId": "Green-Jasper",
+      "ourName": "Green Jasper",
+      "ourSubcategory": "Jasper",
+      "ourPricePerSqFt": 3800,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Green Jasper",
+      "competitorUrl": "https://semipreciousstoneslab.com/green-jasper.html",
+      "competitorPricePerSqFt": 4590,
+      "priceDiffINR": -790
+    },
+    {
+      "ourProductId": "Polychrome-Jasper",
+      "ourName": "Polychrome Jasper",
+      "ourSubcategory": "Jasper",
+      "ourPricePerSqFt": 5200,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Polychrome Jasper",
+      "competitorUrl": "https://semipreciousstoneslab.com/polychrome-jasper.html",
+      "competitorPricePerSqFt": 3590,
+      "priceDiffINR": 1610
+    },
+    {
+      "ourProductId": "Green-Abalone",
+      "ourName": "Green Abalone",
+      "ourSubcategory": "Mother Of Pearl",
+      "ourPricePerSqFt": 6100,
+      "matchType": "fuzzy",
+      "matchScore": 1,
+      "competitorName": "Green Abelone",
+      "competitorUrl": "https://semipreciousstoneslab.com/green-abelone.html",
+      "competitorPricePerSqFt": 3990,
+      "priceDiffINR": 2110
+    },
+    {
+      "ourProductId": "Golden Mop",
+      "ourName": "Golden Mop",
+      "ourSubcategory": "Mother Of Pearl",
+      "ourPricePerSqFt": 5000,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Golden MOP",
+      "competitorUrl": "https://semipreciousstoneslab.com/golden-mop.html",
+      "competitorPricePerSqFt": 3555,
+      "priceDiffINR": 1445
+    },
+    {
+      "ourProductId": "Black-MOP",
+      "ourName": "Black MOP",
+      "ourSubcategory": "Mother Of Pearl",
+      "ourPricePerSqFt": 4500,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Black MOP",
+      "competitorUrl": "https://semipreciousstoneslab.com/black-mop.html",
+      "competitorPricePerSqFt": 3825,
+      "priceDiffINR": 675
+    },
+    {
+      "ourProductId": "Golden-Hematite",
+      "ourName": "Golden Hematite",
+      "ourSubcategory": "Quartz",
+      "ourPricePerSqFt": 4200,
+      "matchType": "none",
+      "matchScore": 0,
+      "competitorName": null,
+      "competitorUrl": null,
+      "competitorPricePerSqFt": null,
+      "priceDiffINR": null
+    },
+    {
+      "ourProductId": "Rose-Quartz-Slabs",
+      "ourName": "Rose Quartz Slabs",
+      "ourSubcategory": "Quartz",
+      "ourPricePerSqFt": 5000,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Rose Quartz",
+      "competitorUrl": "https://semipreciousstoneslab.com/rose-quartz.html",
+      "competitorPricePerSqFt": 3825,
+      "priceDiffINR": 1175
+    },
+    {
+      "ourProductId": "White-Quartz-with-Sparkle",
+      "ourName": "White Quartz with Sparkle",
+      "ourSubcategory": "Quartz",
+      "ourPricePerSqFt": 4200,
+      "matchType": "none",
+      "matchScore": 0,
+      "competitorName": null,
+      "competitorUrl": null,
+      "competitorPricePerSqFt": null,
+      "priceDiffINR": null
+    },
+    {
+      "ourProductId": "White-MOP",
+      "ourName": "White MOP",
+      "ourSubcategory": "Quartz",
+      "ourPricePerSqFt": 6200,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "White Mother Of Pearl Gemstone Slab",
+      "competitorUrl": "https://semipreciousstoneslab.com/white-mop.html",
+      "competitorPricePerSqFt": 6842,
+      "priceDiffINR": -642
+    },
+    {
+      "ourProductId": "Smoky-Quartz-Dark",
+      "ourName": "Smoky Quartz Dark",
+      "ourSubcategory": "Quartz",
+      "ourPricePerSqFt": 4400,
+      "matchType": "fuzzy",
+      "matchScore": 0.67,
+      "competitorName": "Pink Quartz Dark",
+      "competitorUrl": "https://semipreciousstoneslab.com/pink-quartz-dark.html",
+      "competitorPricePerSqFt": 3890,
+      "priceDiffINR": 510
+    },
+    {
+      "ourProductId": "smoky-quartz-dark",
+      "ourName": "Smoky Quartz Dark",
+      "ourSubcategory": "Quartz",
+      "ourPricePerSqFt": 4400,
+      "matchType": "fuzzy",
+      "matchScore": 0.67,
+      "competitorName": "Pink Quartz Dark",
+      "competitorUrl": "https://semipreciousstoneslab.com/pink-quartz-dark.html",
+      "competitorPricePerSqFt": 3890,
+      "priceDiffINR": 510
+    },
+    {
+      "ourProductId": "Obsidian-Black-with-Gold",
+      "ourName": "Obsidian Black with Gold",
+      "ourSubcategory": "Quartz",
+      "ourPricePerSqFt": null,
+      "matchType": "fuzzy",
+      "matchScore": 0.75,
+      "competitorName": "Black Agate With Gold",
+      "competitorUrl": "https://semipreciousstoneslab.com/black-agate-with-gold.html",
+      "competitorPricePerSqFt": 2700,
+      "priceDiffINR": null
+    },
+    {
+      "ourProductId": "Orange-Quartz",
+      "ourName": "Orange Quartz",
+      "ourSubcategory": "Quartz",
+      "ourPricePerSqFt": null,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Orange Quartz",
+      "competitorUrl": "https://semipreciousstoneslab.com/orange-quartz.html",
+      "competitorPricePerSqFt": 3189,
+      "priceDiffINR": null
+    },
+    {
+      "ourProductId": "Green-Quartz",
+      "ourName": "Green Quartz",
+      "ourSubcategory": "Quartz",
+      "ourPricePerSqFt": null,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Green Quartz",
+      "competitorUrl": "https://semipreciousstoneslab.com/green-quartz.html",
+      "competitorPricePerSqFt": 2550,
+      "priceDiffINR": null
+    },
+    {
+      "ourProductId": "Septaria-Yellow",
+      "ourName": "Septaria Yellow",
+      "ourSubcategory": "Quartz",
+      "ourPricePerSqFt": 4600,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Septaria Yellow",
+      "competitorUrl": "https://semipreciousstoneslab.com/septaria-yellow.html",
+      "competitorPricePerSqFt": 5355,
+      "priceDiffINR": -755
+    },
+    {
+      "ourProductId": "Golden-Hematite-Quartz-Slab",
+      "ourName": "Golden Hematite Quartz Slab",
+      "ourSubcategory": "Quartz",
+      "ourPricePerSqFt": 4200,
+      "matchType": "fuzzy",
+      "matchScore": 0.8,
+      "competitorName": "Golden Quartz",
+      "competitorUrl": "https://semipreciousstoneslab.com/golden-quartz.html",
+      "competitorPricePerSqFt": 3000,
+      "priceDiffINR": 1200
+    },
+    {
+      "ourProductId": "Golden-Quartz",
+      "ourName": "Golden Quartz",
+      "ourSubcategory": "Quartz",
+      "ourPricePerSqFt": 4200,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Golden Quartz",
+      "competitorUrl": "https://semipreciousstoneslab.com/golden-quartz.html",
+      "competitorPricePerSqFt": 3000,
+      "priceDiffINR": 1200
+    },
+    {
+      "ourProductId": "Hemotied-Quartz",
+      "ourName": "Hemotied Quartz",
+      "ourSubcategory": "Quartz",
+      "ourPricePerSqFt": 3900,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Hemotied Quartz",
+      "competitorUrl": "https://semipreciousstoneslab.com/hemotied-quartz.html",
+      "competitorPricePerSqFt": 2850,
+      "priceDiffINR": 1050
+    },
+    {
+      "ourProductId": "Blue-Calcite",
+      "ourName": "Blue Calcite",
+      "ourSubcategory": "Quartz",
+      "ourPricePerSqFt": 3400,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Calcite Blue",
+      "competitorUrl": "https://semipreciousstoneslab.com/calcite-blue.html",
+      "competitorPricePerSqFt": 3000,
+      "priceDiffINR": 400
+    },
+    {
+      "ourProductId": "Obsidian-Black-with-Silver",
+      "ourName": "Obsidian Black with Silver",
+      "ourSubcategory": "Quartz",
+      "ourPricePerSqFt": 4200,
+      "matchType": "fuzzy",
+      "matchScore": 0.86,
+      "competitorName": "Black Obsidian Silver",
+      "competitorUrl": "https://semipreciousstoneslab.com/black-obsidian-silver.html",
+      "competitorPricePerSqFt": 4900,
+      "priceDiffINR": -700
+    },
+    {
+      "ourProductId": "crystal-quartz-with-rose-gold",
+      "ourName": "Crystal Quartz with Rose Gold",
+      "ourSubcategory": "Quartz",
+      "ourPricePerSqFt": 4200,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Crystal Quartz With Rose Gold",
+      "competitorUrl": "https://semipreciousstoneslab.com/crystal-quartz-with-rose-gold.html",
+      "competitorPricePerSqFt": 3589,
+      "priceDiffINR": 611
+    },
+    {
+      "ourProductId": "Green-Fluorite",
+      "ourName": "Green Fluorite",
+      "ourSubcategory": "Semiprecious Stone",
+      "ourPricePerSqFt": 4200,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Green Fluorite",
+      "competitorUrl": "https://semipreciousstoneslab.com/green-fluorite.html",
+      "competitorPricePerSqFt": 2100,
+      "priceDiffINR": 2100
+    },
+    {
+      "ourProductId": "Red-Carnelian-Agate-Slabs",
+      "ourName": "Red Carnelian Agate Slabs",
+      "ourSubcategory": "Semiprecious Stone",
+      "ourPricePerSqFt": 4000,
+      "matchType": "fuzzy",
+      "matchScore": 0.8,
+      "competitorName": "Red Carnelian",
+      "competitorUrl": "https://semipreciousstoneslab.com/red-carnelian.html",
+      "competitorPricePerSqFt": 3200,
+      "priceDiffINR": 800
+    },
+    {
+      "ourProductId": "Red-Tiger-Eye",
+      "ourName": "Red Tiger Eye",
+      "ourSubcategory": "Tiger eye",
+      "ourPricePerSqFt": 5000,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Tiger Eye Red",
+      "competitorUrl": "https://semipreciousstoneslab.com/tiger-eye-red.html",
+      "competitorPricePerSqFt": 2650,
+      "priceDiffINR": 2350
+    },
+    {
+      "ourProductId": "Tiger-Eye-Retro",
+      "ourName": "Tiger Eye Retro",
+      "ourSubcategory": "Tiger eye",
+      "ourPricePerSqFt": 5000,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Tiger Eye Retro",
+      "competitorUrl": "https://semipreciousstoneslab.com/tiger-eye-retro.html",
+      "competitorPricePerSqFt": 3500,
+      "priceDiffINR": 1500
+    },
+    {
+      "ourProductId": "Tiger-Eye-Blue",
+      "ourName": "Tiger Eye Blue",
+      "ourSubcategory": "Tiger eye",
+      "ourPricePerSqFt": 5200,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Tiger Eye Blue",
+      "competitorUrl": "https://semipreciousstoneslab.com/tiger-eye-blue.html",
+      "competitorPricePerSqFt": 4845,
+      "priceDiffINR": 355
+    },
+    {
+      "ourProductId": "Tiger-Eye",
+      "ourName": "Tiger Eye",
+      "ourSubcategory": "Tiger eye",
+      "ourPricePerSqFt": 4800,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Tiger Eye",
+      "competitorUrl": "https://semipreciousstoneslab.com/tiger-eye.html",
+      "competitorPricePerSqFt": 5355,
+      "priceDiffINR": -555
+    },
+    {
+      "ourProductId": "Black-Petrified-Wood-Retro-Slab",
+      "ourName": "Black Petrified Wood Retro Slab",
+      "ourSubcategory": "petrified wood",
+      "ourPricePerSqFt": 3500,
+      "matchType": "fuzzy",
+      "matchScore": 0.86,
+      "competitorName": "Black Petrified Wood",
+      "competitorUrl": "https://semipreciousstoneslab.com/black-petrified-wood.html",
+      "competitorPricePerSqFt": 5355,
+      "priceDiffINR": -1855
+    },
+    {
+      "ourProductId": "White-Petrified-Wood",
+      "ourName": "White Petrified Wood",
+      "ourSubcategory": "petrified wood",
+      "ourPricePerSqFt": 4000,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "White Petrified Wood",
+      "competitorUrl": "https://semipreciousstoneslab.com/white-petrified-wood.html",
+      "competitorPricePerSqFt": 2880,
+      "priceDiffINR": 1120
+    },
+    {
+      "ourProductId": "Brown-Petrified-Wood-Slabs",
+      "ourName": "Brown Petrified Wood Slabs",
+      "ourSubcategory": "petrified wood",
+      "ourPricePerSqFt": 3300,
+      "matchType": "fuzzy",
+      "matchScore": 0.86,
+      "competitorName": "Brown Petrified Wood Retro",
+      "competitorUrl": "https://semipreciousstoneslab.com/brown-petrified-wood-retro.html",
+      "competitorPricePerSqFt": 3120,
+      "priceDiffINR": 180
+    },
+    {
+      "ourProductId": "Brown-Petrified-Wood-Retro-Slabs",
+      "ourName": "Brown Petrified Wood Retro Slabs",
+      "ourSubcategory": "petrified wood",
+      "ourPricePerSqFt": 3200,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Brown Petrified Wood Retro",
+      "competitorUrl": "https://semipreciousstoneslab.com/brown-petrified-wood-retro.html",
+      "competitorPricePerSqFt": 3120,
+      "priceDiffINR": 80
+    },
+    {
+      "ourProductId": "Beige-Petrified-Wood-Slab",
+      "ourName": "Beige Petrified Wood Slab",
+      "ourSubcategory": "petrified wood",
+      "ourPricePerSqFt": 4000,
+      "matchType": "exact",
+      "matchScore": 1,
+      "competitorName": "Beige Petrified Wood",
+      "competitorUrl": "https://semipreciousstoneslab.com/beige-petrified-wood.html",
+      "competitorPricePerSqFt": 4590,
+      "priceDiffINR": -590
+    }
+  ],
+  "unmatchedCompetitorProducts": [
+    {
+      "name": "Beige Petrified Wood Retro",
+      "url": "https://semipreciousstoneslab.com/beige-petrified-wood-retro.html",
+      "startingPrice": "₹ 2230 / sq. ft."
+    },
+    {
+      "name": "Black MOP Random",
+      "url": "https://semipreciousstoneslab.com/black-mop-random.html",
+      "startingPrice": "₹ 3825 / sq. ft."
+    },
+    {
+      "name": "Black Obsidian",
+      "url": "https://semipreciousstoneslab.com/black-obsidian.html",
+      "startingPrice": "₹ 5535 / sq. ft."
+    },
+    {
+      "name": "Black Petrified Wood Round",
+      "url": "https://semipreciousstoneslab.com/black-petrified-wood-round.html",
+      "startingPrice": "₹ 4590 / sq. ft."
+    },
+    {
+      "name": "Blue Apetite",
+      "url": "https://semipreciousstoneslab.com/blue-apetite.html",
+      "startingPrice": "₹ 6757 / sq. ft."
+    },
+    {
+      "name": "Brazilian crystal Agate",
+      "url": "https://semipreciousstoneslab.com/brazilian-crystal-agate.html",
+      "startingPrice": "₹ 2890 / sq. ft."
+    },
+    {
+      "name": "Brazilian Pink Agate",
+      "url": "https://semipreciousstoneslab.com/brazilian-pink-agate.html",
+      "startingPrice": "₹ 2100 / sq. ft."
+    },
+    {
+      "name": "Brazilian Purple Agate",
+      "url": "https://semipreciousstoneslab.com/brazilian-purple-agate.html",
+      "startingPrice": "₹ 3200 / sq. ft."
+    },
+    {
+      "name": "Brazilian Yellow Agate",
+      "url": "https://semipreciousstoneslab.com/brazilian-yellow-agate.html",
+      "startingPrice": "₹ 2650 / sq. ft."
+    },
+    {
+      "name": "Desert Jasper",
+      "url": "https://semipreciousstoneslab.com/desert-jasper.html",
+      "startingPrice": "₹ 4590 / sq. ft."
+    },
+    {
+      "name": "Golden Hemotied Quartz",
+      "url": "https://semipreciousstoneslab.com/golden-hemotied-quartz.html",
+      "startingPrice": "₹ 4100 / sq. ft."
+    },
+    {
+      "name": "Golden MOP Random",
+      "url": "https://semipreciousstoneslab.com/golden-mop-random.html",
+      "startingPrice": "₹ 3825 / sq. ft."
+    },
+    {
+      "name": "Green Abelone Random",
+      "url": "https://semipreciousstoneslab.com/green-abelone-random.html",
+      "startingPrice": "₹ 3500 / sq. ft."
+    },
+    {
+      "name": "Jasper Shellfint",
+      "url": "https://semipreciousstoneslab.com/jasper-shellfint.html",
+      "startingPrice": "₹ 5690 / sq. ft."
+    },
+    {
+      "name": "Light Golden Quartz",
+      "url": "https://semipreciousstoneslab.com/light-golden-quartz.html",
+      "startingPrice": "₹ 4500 / sq. ft."
+    },
+    {
+      "name": "Natural Agate",
+      "url": "https://semipreciousstoneslab.com/natural-agate.html",
+      "startingPrice": "₹ 3060 / sq. ft."
+    },
+    {
+      "name": "Petrified Wood",
+      "url": "https://semipreciousstoneslab.com/brown-petrified-wood.html",
+      "startingPrice": "₹ 4590 / sq. ft."
+    },
+    {
+      "name": "Pink Quartz Light",
+      "url": "https://semipreciousstoneslab.com/pink-quartz-light.html",
+      "startingPrice": "₹ 2000 / sq. ft."
+    },
+    {
+      "name": "Smokey Quartz Light",
+      "url": "https://semipreciousstoneslab.com/smokey-quartz.html",
+      "startingPrice": "₹ 2805 / sq. ft."
+    },
+    {
+      "name": "Tiger Eye Random",
+      "url": "https://semipreciousstoneslab.com/tiger-eye-random.html",
+      "startingPrice": "₹ 2350 / sq. ft."
+    },
+    {
+      "name": "Tiger Eye Zigzag",
+      "url": "https://semipreciousstoneslab.com/tiger-eye-zigzag.html",
+      "startingPrice": "₹ 4040 / sq. ft."
+    },
+    {
+      "name": "White Mother Of Pearl Random Gemstone Slab",
+      "url": "https://semipreciousstoneslab.com/white-mop-random.html",
+      "startingPrice": "₹ 3300 / sq. ft."
+    },
+    {
+      "name": "White Petrified Wood Retro",
+      "url": "https://semipreciousstoneslab.com/white-petrified-wood-retro.html",
+      "startingPrice": "₹ 3000 / sq. ft."
+    }
+  ]
+}
