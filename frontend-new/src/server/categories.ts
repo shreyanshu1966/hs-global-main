@@ -11,7 +11,7 @@ export const CATEGORIES: CategoryDef[] = [
     slug: 'furniture',
     label: 'Furniture',
     subcategories: [
-      'Bathtub', 'Bowl', 'Center Table', 'Chaise Chair', 'Clock', 'Coffee Table',
+      'Bathtub', 'Center Table', 'Chaise Chair', 'Coffee Table',
       'Console Table', 'Dining Table', 'Mirror Frame', 'Pedestal Sink', 'Side Table', 'Sink', 'Vase',
     ],
   },

@@ -54,8 +54,6 @@ const DEFAULTS: Record<string, NavCategoryConfig> = {
         id: 'decor-lighting',
         title: 'Decor & Lighting',
         items: [
-          { id: 'bowl', label: 'bowl', slug: 'bowl' },
-          { id: 'clock', label: 'clock', slug: 'clock' },
           { id: 'lamp', label: 'lamp', slug: 'lamp' },
           { id: 'mirror-frame', label: 'mirror frame', slug: 'mirror-frame' },
           { id: 'tree-sculpture', label: 'tree sculpture', slug: 'tree-sculpture' },

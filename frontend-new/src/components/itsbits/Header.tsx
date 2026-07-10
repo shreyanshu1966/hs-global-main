@@ -229,10 +229,8 @@ const Header = () => {
   const furnitureMegaItems = [
     { label: 'All in Marble Furniture', href: '/products/furniture' },
     { label: 'bathtub', href: '/products/furniture/bathtub' },
-    { label: 'bowl', href: '/products/furniture/bowl' },
     { label: 'center table', href: '/products/furniture/center-table' },
     { label: 'chaise chair', href: '/products/furniture/chaise-chair' },
-    { label: 'clock', href: '/products/furniture/clock' },
     { label: 'coffee table', href: '/products/furniture/coffee-table' },
     { label: 'console table', href: '/products/furniture/console-table' },
     { label: 'dining table', href: '/products/furniture/dining-table' },
@@ -264,7 +262,7 @@ const Header = () => {
       },
       {
         title: 'Decor & Lighting',
-        items: furnitureMegaItems.filter((item) => ['bowl', 'clock', 'lamp', 'mirror frame', 'tree sculpture', 'vase'].includes(item.label)),
+        items: furnitureMegaItems.filter((item) => ['lamp', 'mirror frame', 'tree sculpture', 'vase'].includes(item.label)),
       },
     ];
   }, [navbarConfigs]);

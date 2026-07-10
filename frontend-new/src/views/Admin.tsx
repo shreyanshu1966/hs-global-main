@@ -195,13 +195,25 @@ const Admin = () => {
     const [showQuotationModal, setShowQuotationModal] = useState(false);
 
     // Products state
+    // Restore the products-list position (page/filters/search/scroll) when we're
+    // navigated back from the product edit page — see goBack() in AdminProductFormPage.
+    const restoredListState = useRef((location.state as any)?.listState).current;
     const [products, setProducts] = useState<Product[]>([]);
-    const [productsPage, setProductsPage] = useState(1);
+    const [productsPage, setProductsPage] = useState(restoredListState?.page ?? 1);
     const [productsPagination, setProductsPagination] = useState<any>(null);
-    const [productsSearch, setProductsSearch] = useState('');
-    const [productsCategoryFilter, setProductsCategoryFilter] = useState('');
-    const [productsSubcategoryFilter, setProductsSubcategoryFilter] = useState('');
-    const [productsStatusFilter, setProductsStatusFilter] = useState('');
+    const [productsSearch, setProductsSearch] = useState(restoredListState?.search ?? '');
+    const [productsCategoryFilter, setProductsCategoryFilter] = useState(restoredListState?.category ?? '');
+    const [productsSubcategoryFilter, setProductsSubcategoryFilter] = useState(restoredListState?.subcategory ?? '');
+    const [productsStatusFilter, setProductsStatusFilter] = useState(restoredListState?.status ?? '');
+    const pendingScrollRestoreRef = useRef<number | null>(restoredListState?.scrollY ?? null);
+    const buildProductsListState = () => ({
+        page: productsPage,
+        search: productsSearch,
+        category: productsCategoryFilter,
+        subcategory: productsSubcategoryFilter,
+        status: productsStatusFilter,
+        scrollY: window.scrollY
+    });
     const [showProductModal, setShowProductModal] = useState(false);
     const [editingProduct, setEditingProduct] = useState<Product | null>(null);
     const [productFormData, setProductFormData] = useState<Partial<ProductFormData>>({});
@@ -315,6 +327,15 @@ const Admin = () => {
             }
         };
     }, [productsSearch]); // eslint-disable-line react-hooks/exhaustive-deps
+
+    // Restore scroll position once, after the products list we navigated back to has loaded.
+    useEffect(() => {
+        if (activeTab !== 'products' || productsLoading) return;
+        if (pendingScrollRestoreRef.current === null) return;
+        const y = pendingScrollRestoreRef.current;
+        pendingScrollRestoreRef.current = null;
+        requestAnimationFrame(() => window.scrollTo(0, y));
+    }, [activeTab, productsLoading]);
 
     useEffect(() => {
         if (!user || user.role !== 'admin') {
@@ -2937,7 +2958,7 @@ const Admin = () => {
                                     </button>
                                     {!bulkEditMode && (
                                         <button
-                                            onClick={() => navigate('/admin/products/new')}
+                                            onClick={() => navigate('/admin/products/new', { state: { listState: buildProductsListState() } })}
                                             className="flex items-center gap-2 px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-semibold text-sm transition-colors shadow-sm"
                                         >
                                             <Plus className="w-4 h-4" />
@@ -3298,7 +3319,9 @@ const Admin = () => {
                                                     {/* Hover action overlay */}
                                                     <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 pointer-events-none group-hover:pointer-events-auto">
                                                         <button
-                                                            onClick={() => navigate(`/admin/products/${product.productId}/edit`, { state: { product } })}
+                                                            onClick={() => navigate(`/admin/products/${product.productId}/edit`, {
+                                                                state: { product, listState: buildProductsListState() }
+                                                            })}
                                                             className="p-2 bg-white rounded-full shadow-lg hover:scale-110 transition-transform"
                                                             title="Edit listing"
                                                         >

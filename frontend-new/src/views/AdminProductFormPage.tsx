@@ -37,7 +37,10 @@ export default function AdminProductFormPage() {
       .finally(() => setFetchingProduct(false));
   }, [isNew, productId, editingProduct]);
 
-  const goBack = () => navigate('/admin', { state: { tab: 'products' } });
+  // Carry the products-list position (page/filters/search/scroll) we arrived with
+  // back to the admin page, so "Listings" returns to the exact spot the user was at.
+  const listState = location.state?.listState;
+  const goBack = () => navigate('/admin', { state: { tab: 'products', listState } });
 
   // Auto-dismiss the post-save confirmation banner
   useEffect(() => {

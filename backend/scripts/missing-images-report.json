@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-07-09T08:44:00.645Z",
+  "generatedAt": "2026-07-09T11:35:45.649Z",
   "totalProducts": 331,
-  "missingOrPartialCount": 27,
-  "noLocalReferenceCount": 30,
-  "okMatchedCount": 274,
+  "missingOrPartialCount": 16,
+  "noLocalReferenceCount": 27,
+  "okMatchedCount": 288,
   "unusedLocalFolders": {
-    "count": 61,
+    "count": 58,
     "semiPreciousStone": [
       {
         "folder": "26-05-26/BRAZILIAN CRYSTAL AGATE",
@@ -77,12 +77,6 @@
         "code": "HSMSTBE19",
         "folder": "marble Etsy All Product Photos/102. HSMSTBE19-Travertine Side Table Sculptural Stone Accent Table _ DesignForAges",
         "fileCount": 7,
-        "source": "marble Etsy All Product Photos"
-      },
-      {
-        "code": "HSMSTBE20",
-        "folder": "marble Etsy All Product Photos/103.HSMSTBE20- Travertine Round Side Table Minimal Stone Pedestal _ DesignForAges",
-        "fileCount": 5,
         "source": "marble Etsy All Product Photos"
       },
       {
@@ -208,12 +202,6 @@
       {
         "code": "HSMCORE21",
         "folder": "marble Etsy All Product Photos/208.HSMCORE21-Burgundy Marble Console Table Sculptural Entryway Decor",
-        "fileCount": 6,
-        "source": "marble Etsy All Product Photos"
-      },
-      {
-        "code": "HSMCOBE22",
-        "folder": "marble Etsy All Product Photos/209.HSMCOBE22-Modern Marble Console Table Minimal Entryway Furniture",
         "fileCount": 6,
         "source": "marble Etsy All Product Photos"
       },
@@ -360,12 +348,6 @@
         "folder": "marble Etsy All Product Photos/98.HSMSTWH15- White Marble Side Table Modern Sculptural Accent Table _ DesignForAges",
         "fileCount": 5,
         "source": "marble Etsy All Product Photos"
-      },
-      {
-        "code": "HSMSTWHBL16",
-        "folder": "marble Etsy All Product Photos/99. HSMSTWHBL16-Black Marble Side Table Sculptural Modern Accent Table _ DesignForAges",
-        "fileCount": 5,
-        "source": "marble Etsy All Product Photos"
       }
     ]
   },
@@ -383,15 +365,6 @@
       "dbImageCount": 1,
       "localFolder": "marble Etsy All Product Photos/111.HSMSTWH27- Marble Cluster Side Table Sculptural Modern Accent Table _ DesignForAges",
       "localImageCount": 6
-    },
-    {
-      "productId": "green-marble-vessel-sink-round-stone-basin",
-      "productCode": "HSMSGR13",
-      "category": "furniture",
-      "subcategory": "Sink",
-      "dbImageCount": 6,
-      "localFolder": "marble Etsy All Product Photos/117. HSMSGR13-Green Marble Vessel Sink Round Stone Basin _ DesignForAges",
-      "localImageCount": 11
     },
     {
       "productId": "handmade-fluted-marble-vessel-sink-modern-living-room-design",
@@ -418,15 +391,6 @@
       "subcategory": "Sink",
       "dbImageCount": 1,
       "localFolder": "marble Etsy All Product Photos/123. HSMSGR19-Green Marble Rectangular Vessel Sink Fluted Stone Basin _ DesignForAges",
-      "localImageCount": 5
-    },
-    {
-      "productId": "fluted-marble-pedestal-sink-pink-stone-bathroom-basin",
-      "productCode": "HSMPSWH25",
-      "category": "furniture",
-      "subcategory": "Pedestal Sink",
-      "dbImageCount": 1,
-      "localFolder": "marble Etsy All Product Photos/195.HSMPSWH25-light pinkish pedestal basin",
       "localImageCount": 5
     },
     {
@@ -475,15 +439,6 @@
       "localImageCount": 5
     },
     {
-      "productId": "handcrafted-marble-vessel-sink-modern-bathroom-basin",
-      "productCode": "HSMSWH36",
-      "category": "furniture",
-      "subcategory": "Sink",
-      "dbImageCount": 5,
-      "localFolder": "marble Etsy All Product Photos/168.HSMSWH36-Handcrafted Marble Vessel Sink Modern Bathroom Basin",
-      "localImageCount": 7
-    },
-    {
       "productId": "white-marble-pedestal-sink-textured-stone-basin",
       "productCode": "HSMPSWH11",
       "category": "furniture",
@@ -500,24 +455,6 @@
       "dbImageCount": 5,
       "localFolder": "marble Etsy All Product Photos/26. HSMLABE2-Fluted Cream Stone Table Lamp _ DesignForAges",
       "localImageCount": 6
-    },
-    {
-      "productId": "marble-console-table-modern-two-tone-entryway-table-luxurious-modern-table-design-fully-customize",
-      "productCode": "HSMCOTWHBL11",
-      "category": "furniture",
-      "subcategory": "Console Table",
-      "dbImageCount": 5,
-      "localFolder": "marble Etsy All Product Photos/84.HSMCOTWHBL11-Marble Console Table Modern Two Tone Entryway Table _ DesignForAges",
-      "localImageCount": 6
-    },
-    {
-      "productId": "green-marble-pedestal-sink-modern-stone-wash-basin-luxurious-bathroom",
-      "productCode": "HSMPSGR8",
-      "category": "furniture",
-      "subcategory": "Pedestal Sink",
-      "dbImageCount": 6,
-      "localFolder": "marble Etsy All Product Photos/88. HSMPSGR8-Green Marble Pedestal Sink Modern Stone Wash Basin _ DesignForAges",
-      "localImageCount": 7
     },
     {
       "productId": "white-marble-pedestal-sink-fluted-stone-basin-fully-customize",
@@ -547,33 +484,6 @@
       "localImageCount": 6
     },
     {
-      "productId": "pink-marble-coffee-table-modern-stone-living-room-table",
-      "productCode": "HSMCETBE23",
-      "category": "furniture",
-      "subcategory": "Coffee Table",
-      "dbImageCount": 5,
-      "localFolder": "marble Etsy All Product Photos/159. HSMCETBE23-Pink Marble Coffee Table Modern Stone Living Room Table",
-      "localImageCount": 6
-    },
-    {
-      "productId": "marble-side-table-modern-stone-nightstand-accent-table",
-      "productCode": "HSMSTMU38",
-      "category": "furniture",
-      "subcategory": "Side Table",
-      "dbImageCount": 5,
-      "localFolder": "marble Etsy All Product Photos/167.HSMSTMU38-Marble Side Table Modern Stone Nightstand Accent Table",
-      "localImageCount": 6
-    },
-    {
-      "productId": "green-marble-console-table-sculptural-arch-design-entry-table",
-      "productCode": "HSMCOGR18",
-      "category": "furniture",
-      "subcategory": "Console Table",
-      "dbImageCount": 6,
-      "localFolder": "marble Etsy All Product Photos/197.HSMCOGR18-forest green console table",
-      "localImageCount": 7
-    },
-    {
       "productId": "modern-marble-glass-coffee-table-sculptural-living-room-table",
       "productCode": "HSMCETBLWH33",
       "category": "furniture",
@@ -581,32 +491,6 @@
       "dbImageCount": 4,
       "localFolder": "marble Etsy All Product Photos/205.HSMCETBLWH33-Modern Marble Glass Coffee Table Sculptural Living Room Table",
       "localImageCount": 5
-    },
-    {
-      "productId": "brass-inlay-console-table-wooden-entryway-desk-4-drawer",
-      "productCode": "HCBCOBR4",
-      "category": "wooden-furniture",
-      "subcategory": "Side Table",
-      "dbImageCount": 5,
-      "localFolder": "HANDICRAFT PRODUCTS/14. HCBCOBR4 Brass Inlay Console Table Wooden Entryway Desk 4 Drawer",
-      "localImageCount": 6
-    },
-    {
-      "productId": "brass-inlay-console-table-wooden-entryway-table-3-drawer",
-      "productCode": "HCBCOBR2",
-      "category": "wooden-furniture",
-      "subcategory": "Console Table",
-      "dbImageCount": 5,
-      "localFolder": "HANDICRAFT PRODUCTS/7. HCBCOBR2 Brass Inlay Console Table Wooden Entryway Table 3 Drawer",
-      "localImageCount": 6
-    },
-    {
-      "productId": "chesterfield-green-leather-sofa-luxury-living-room-couch",
-      "category": "leather",
-      "subcategory": "Sofa",
-      "dbImageCount": 5,
-      "localFolder": "Leather Products/1. Chesterfield Green Leather Sofa Luxury Living Room Couch",
-      "localImageCount": 6
     },
     {
       "productId": "travertine-console-table-minimalist-stone-entryway-table",
@@ -624,14 +508,14 @@
       "productCode": "HSMSWH14",
       "category": "furniture",
       "subcategory": "Sink",
-      "dbImageCount": 5,
+      "dbImageCount": 0,
       "reason": "productCode not found among local handicraft/marble folders"
     },
     {
       "productId": "Golden-Hematite",
       "category": "semi-precious-stone",
       "subcategory": "Quartz",
-      "dbImageCount": 7,
+      "dbImageCount": 0,
       "reason": "no matching local stone folder (by name)"
     },
     {
@@ -645,7 +529,7 @@
       "productId": "white-marble-coffee-table-round-stone-ball-base-table",
       "category": "furniture",
       "subcategory": "Coffee Table",
-      "dbImageCount": 6,
+      "dbImageCount": 0,
       "reason": "product has no productCode field to match against local folders"
     },
     {
@@ -659,14 +543,14 @@
       "productId": "black-marble-side-table-modern-round-stone-accent-table",
       "category": "furniture",
       "subcategory": "Side Table",
-      "dbImageCount": 5,
+      "dbImageCount": 0,
       "reason": "product has no productCode field to match against local folders"
     },
     {
       "productId": "large-wooden-dining-table-set-brass-inlay-6-chairs",
       "category": "wooden-furniture",
       "subcategory": "Dining Table",
-      "dbImageCount": 5,
+      "dbImageCount": 0,
       "reason": "product has no productCode field to match against local folders"
     },
     {
@@ -680,7 +564,7 @@
       "productId": "natural-marble-rock-sink-rustic-stone-vessel-basin",
       "category": "furniture",
       "subcategory": "Sink",
-      "dbImageCount": 6,
+      "dbImageCount": 5,
       "reason": "product has no productCode field to match against local folders"
     },
     {
@@ -692,13 +576,6 @@
     },
     {
       "productId": "black-white-marble-side-table-geometric-accent-table",
-      "category": "furniture",
-      "subcategory": "Side Table",
-      "dbImageCount": 5,
-      "reason": "product has no productCode field to match against local folders"
-    },
-    {
-      "productId": "black-marble-side-table-sculptural-modern-accent-table",
       "category": "furniture",
       "subcategory": "Side Table",
       "dbImageCount": 5,
@@ -722,28 +599,21 @@
       "productId": "black-marble-vessel-sink-round-stone-bathroom-basin",
       "category": "furniture",
       "subcategory": "Sink",
-      "dbImageCount": 6,
+      "dbImageCount": 5,
       "reason": "product has no productCode field to match against local folders"
     },
     {
       "productId": "white-marble-oval-coffee-table-sculptural-stone-table",
       "category": "furniture",
       "subcategory": "Coffee Table",
-      "dbImageCount": 8,
-      "reason": "product has no productCode field to match against local folders"
-    },
-    {
-      "productId": "modern-marble-console-table-minimal-entryway-furniture",
-      "category": "furniture",
-      "subcategory": "Console Table",
-      "dbImageCount": 6,
+      "dbImageCount": 7,
       "reason": "product has no productCode field to match against local folders"
     },
     {
       "productId": "red-marble-coffee-table-modern-round-stone-center-table",
       "category": "furniture",
       "subcategory": "Coffee Table",
-      "dbImageCount": 6,
+      "dbImageCount": 1,
       "reason": "product has no productCode field to match against local folders"
     },
     {
@@ -757,34 +627,27 @@
       "productId": "travertine-side-table-sculptural-stone-accent-table",
       "category": "furniture",
       "subcategory": "Side Table",
-      "dbImageCount": 5,
+      "dbImageCount": 0,
       "reason": "product has no productCode field to match against local folders"
     },
     {
       "productId": "burgundy-marble-console-table-sculptural-entryway-decor",
       "category": "furniture",
       "subcategory": "Console Table",
-      "dbImageCount": 6,
+      "dbImageCount": 5,
       "reason": "product has no productCode field to match against local folders"
     },
     {
       "productId": "white-marble-side-table-modern-sculptural-accent-table",
       "category": "furniture",
       "subcategory": "Side Table",
-      "dbImageCount": 5,
+      "dbImageCount": 0,
       "reason": "product has no productCode field to match against local folders"
     },
     {
       "productId": "red-marble-vessel-sink-oval-stone-bathroom-basin",
       "category": "furniture",
       "subcategory": "Sink",
-      "dbImageCount": 6,
-      "reason": "product has no productCode field to match against local folders"
-    },
-    {
-      "productId": "travertine-round-side-table-minimal-stone-pedestal",
-      "category": "furniture",
-      "subcategory": "Side Table",
       "dbImageCount": 5,
       "reason": "product has no productCode field to match against local folders"
     },
@@ -799,7 +662,7 @@
       "productId": "white-marble-coffee-table-round-modern-stone-table",
       "category": "furniture",
       "subcategory": "Side Table",
-      "dbImageCount": 11,
+      "dbImageCount": 1,
       "reason": "product has no productCode field to match against local folders"
     },
     {
@@ -813,14 +676,14 @@
       "productId": "black-white-marble-coffee-table-modern-round-center-table",
       "category": "furniture",
       "subcategory": "Coffee Table",
-      "dbImageCount": 10,
+      "dbImageCount": 5,
       "reason": "product has no productCode field to match against local folders"
     },
     {
       "productId": "green-marble-round-coffee-table-modern-stone-table",
       "category": "furniture",
       "subcategory": "Coffee Table",
-      "dbImageCount": 7,
+      "dbImageCount": 4,
       "reason": "product has no productCode field to match against local folders"
     },
     {
