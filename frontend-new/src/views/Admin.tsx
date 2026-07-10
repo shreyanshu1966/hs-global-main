@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { saveAdminProductsListState, consumeAdminProductsListState } from '../utils/adminProductsNav';
 import {
     getAnalytics,
     getAllUsers,
@@ -132,10 +133,16 @@ const Admin = () => {
     const { user, token, logout } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
+    // The app's react-router-dom shim (src/shims/react-router-dom.tsx) drops
+    // navigate() state entirely — useLocation().state is always null — so the
+    // products-list position we return to has to travel through a module-level
+    // singleton instead. See ../utils/adminProductsNav.
+    const initialListStateRef = useRef(consumeAdminProductsListState());
     const [activeTab, setActiveTab] = useState<'analytics' | 'orders' | 'users' | 'blogs' | 'contacts' | 'quotations' | 'products' | 'categories' | 'reviews' | 'homepage' | 'popups' | 'delivery-checks'>(() => {
       const tab = (location.state as any)?.tab;
       const validTabs = ['analytics', 'orders', 'users', 'blogs', 'contacts', 'quotations', 'products', 'categories', 'reviews', 'homepage', 'popups', 'delivery-checks'];
       if (tab && validTabs.includes(tab)) return tab as any;
+      if (initialListStateRef.current) return 'products';
       return 'analytics';
     });
     const [loading, setLoading] = useState(true);
@@ -196,8 +203,8 @@ const Admin = () => {
 
     // Products state
     // Restore the products-list position (page/filters/search/scroll) when we're
-    // navigated back from the product edit page — see goBack() in AdminProductFormPage.
-    const restoredListState = useRef((location.state as any)?.listState).current;
+    // navigated back from the product edit page — see initialListStateRef above.
+    const restoredListState = initialListStateRef.current;
     const [products, setProducts] = useState<Product[]>([]);
     const [productsPage, setProductsPage] = useState(restoredListState?.page ?? 1);
     const [productsPagination, setProductsPagination] = useState<any>(null);
@@ -328,9 +335,15 @@ const Admin = () => {
         };
     }, [productsSearch]); // eslint-disable-line react-hooks/exhaustive-deps
 
-    // Restore scroll position once, after the products list we navigated back to has loaded.
+    // Restore scroll position once, after the products list we navigated back to has
+    // actually finished (re-)loading. `productsLoading` defaults to false before the
+    // load effect below has run, so we wait for a true->false transition rather than
+    // acting on that initial false — otherwise this fires on the still-empty page.
+    const hasStartedProductsLoadRef = useRef(false);
     useEffect(() => {
-        if (activeTab !== 'products' || productsLoading) return;
+        if (activeTab !== 'products') return;
+        if (productsLoading) { hasStartedProductsLoadRef.current = true; return; }
+        if (!hasStartedProductsLoadRef.current) return;
         if (pendingScrollRestoreRef.current === null) return;
         const y = pendingScrollRestoreRef.current;
         pendingScrollRestoreRef.current = null;
@@ -2958,7 +2971,7 @@ const Admin = () => {
                                     </button>
                                     {!bulkEditMode && (
                                         <button
-                                            onClick={() => navigate('/admin/products/new', { state: { listState: buildProductsListState() } })}
+                                            onClick={() => { saveAdminProductsListState(buildProductsListState()); navigate('/admin/products/new'); }}
                                             className="flex items-center gap-2 px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-semibold text-sm transition-colors shadow-sm"
                                         >
                                             <Plus className="w-4 h-4" />
@@ -3319,9 +3332,10 @@ const Admin = () => {
                                                     {/* Hover action overlay */}
                                                     <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 pointer-events-none group-hover:pointer-events-auto">
                                                         <button
-                                                            onClick={() => navigate(`/admin/products/${product.productId}/edit`, {
-                                                                state: { product, listState: buildProductsListState() }
-                                                            })}
+                                                            onClick={() => {
+                                                                saveAdminProductsListState(buildProductsListState());
+                                                                navigate(`/admin/products/${product.productId}/edit`, { state: { product } });
+                                                            }}
                                                             className="p-2 bg-white rounded-full shadow-lg hover:scale-110 transition-transform"
                                                             title="Edit listing"
                                                         >

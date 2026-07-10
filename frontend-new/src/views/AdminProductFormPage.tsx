@@ -37,10 +37,11 @@ export default function AdminProductFormPage() {
       .finally(() => setFetchingProduct(false));
   }, [isNew, productId, editingProduct]);
 
-  // Carry the products-list position (page/filters/search/scroll) we arrived with
-  // back to the admin page, so "Listings" returns to the exact spot the user was at.
-  const listState = location.state?.listState;
-  const goBack = () => navigate('/admin', { state: { tab: 'products', listState } });
+  // The products-list position (page/filters/search/scroll) we arrived with was
+  // stashed in a module-level singleton before navigating here — Admin.tsx picks
+  // it back up on mount. See ../utils/adminProductsNav for why (router `state`
+  // doesn't survive this app's react-router-dom shim).
+  const goBack = () => navigate('/admin');
 
   // Auto-dismiss the post-save confirmation banner
   useEffect(() => {
