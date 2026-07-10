@@ -6,18 +6,30 @@ import Client from './client';
 
 export const revalidate = 3600;
 
+const FALLBACK_KEYWORDS = [
+  'HS Global Export', 'Luxury Furniture', 'Bespoke Furniture', 'Luxury Home Furniture',
+  'Bespoke Interior Design', 'Semi Precious Stone Slabs', 'Agate Slabs', 'Gemstone Slabs',
+  'Furniture Exporter', 'Marble Furniture Manufacturer', 'Luxury Furniture Manufacturer',
+  'Luxury Furniture Exporter', 'Natural Stone Exporter', 'USA Furniture Supplier',
+  'UK Furniture Supplier', 'Global Furniture Exporter in USA', 'United States', 'UK',
+  'United Kingdom', 'Europe', 'Australia', 'Saudi Arabia', 'Dubai', 'UAE', 'Netherlands',
+  'Canada', 'Singapore', 'South Africa', 'Global Exporter',
+];
+
 export async function generateMetadata(): Promise<Metadata> {
   const seo = await getPageSeo('/');
   const title =
-    seo?.title || 'Marble & Granite Furniture Manufacturer & Exporter | HS Global Export';
+    seo?.title || 'HS Global Export : Luxury Furniture & Semi Precious Stone Slabs | Bespoke Interior Products';
   const description =
     seo?.description ||
-    'HS Global Export — premium granite & marble solutions. Handcrafted products with worldwide delivery to the USA, UK and beyond.';
+    'HS Global Export specializes in bespoke furniture, marble furniture, leather furniture, antique wooden furniture and semi precious stone slabs for the USA, UK and worldwide.';
+  const keywords = seo?.keywords?.length ? seo.keywords : FALLBACK_KEYWORDS;
   const canonical = seo?.canonical || SITE_URL;
   const image = seo?.image ? absoluteImage(seo.image) : `${SITE_URL}/og-image.jpg`;
   return {
     title: { absolute: title },
     description,
+    keywords,
     alternates: { canonical },
     openGraph: { title, description, url: canonical, images: [{ url: image, width: 1200, height: 630, alt: SITE_NAME }] },
     twitter: { card: 'summary_large_image', title, description, images: [{ url: image, alt: SITE_NAME }] },
