@@ -40,6 +40,7 @@ set -e
 
 echo ">>> Pulling ${branch}..."
 cd ${appPath}
+git reset --hard HEAD
 git fetch origin ${branch}
 git checkout -B ${branch} origin/${branch}
 git reset --hard origin/${branch}
