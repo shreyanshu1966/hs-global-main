@@ -1,0 +1,25 @@
+{
+  "generated": "2026-07-11T09:15:35.252Z",
+  "urls": {
+    "Banner3-des_new.png": {
+      "source": "Banner3-des_new.png",
+      "publicId": "hs-global/hero/Banner3-des",
+      "cloudinary": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783761334/hs-global/hero/Banner3-des.webp",
+      "format": "webp",
+      "width": 1920,
+      "height": 640,
+      "bytes": 153790,
+      "version": 1783761334
+    },
+    "Banner3-mob_new.png": {
+      "source": "Banner3-mob_new.png",
+      "publicId": "hs-global/hero/Banner3-mob",
+      "cloudinary": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783761336/hs-global/hero/Banner3-mob.webp",
+      "format": "webp",
+      "width": 1122,
+      "height": 1402,
+      "bytes": 215966,
+      "version": 1783761336
+    }
+  }
+}

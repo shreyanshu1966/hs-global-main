@@ -37,8 +37,8 @@ const HeroSection = ({ slides: _slides = [], autoplayInterval = 5000 }: HeroSect
       ctaLink: '/products/leather',
     },
     {
-      backgroundImage: `${CLOUDINARY_BASE}/Banner3-des.webp?v=1782749386`,
-      mobileBackgroundImage: `${CLOUDINARY_BASE}/Banner3-mob.webp?v=1782749387`,
+      backgroundImage: `${CLOUDINARY_BASE}/Banner3-des.webp?v=1783761334`,
+      mobileBackgroundImage: `${CLOUDINARY_BASE}/Banner3-mob.webp?v=1783761336`,
       heading: 'HS Global Export - Wooden Furniture',
       alt: 'Hand-carved wooden dining table and chairs with inlay detailing - HS Global Export wooden furniture collection',
       ctaLink: '/products/wooden-furniture',
