@@ -3109,7 +3109,7 @@ const Admin = () => {
                                             <thead className="bg-gray-50 border-b border-gray-100">
                                                 <tr>
                                                     <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide w-12"></th>
-                                                    <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide w-14">Photo</th>
+                                                    <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide w-24">Photo</th>
                                                     <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">Name</th>
                                                     <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide w-36">Price (₹)</th>
                                                     <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide w-36">Category</th>
@@ -3148,7 +3148,7 @@ const Admin = () => {
                                                             {/* Thumbnail */}
                                                             <td className="px-4 py-3">
                                                                 <img src={product.image} alt={product.name}
-                                                                    className="w-10 h-10 object-cover rounded-lg border border-gray-100" />
+                                                                    className="w-16 h-16 object-cover rounded-lg border border-gray-100" />
                                                             </td>
                                                             {/* Name */}
                                                             <td className="px-4 py-3 min-w-[220px]">
