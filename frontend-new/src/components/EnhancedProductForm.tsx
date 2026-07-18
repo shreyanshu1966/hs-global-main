@@ -786,7 +786,8 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
               <ProductImageManager
                 images={images.filter(i => !i.variantOnly)}
                 onImagesChange={next => setImages([...next, ...images.filter(i => i.variantOnly)])}
-                onMainImageChange={() => {}} aspectRatio={1} allowCrop maxImages={10} hideUploadZone />
+                onMainImageChange={() => {}} aspectRatio={1} allowCrop maxImages={10} hideUploadZone
+                productId={editingProduct?.productId} />
               {uploadProgress.images > 0 && uploadProgress.images < 100 && (
                 <div className="rounded-xl bg-orange-50 border border-orange-100 p-3">
                   <div className="flex justify-between text-xs text-orange-700 mb-1.5"><span>Uploading images…</span><span>{uploadProgress.images}%</span></div>

@@ -133,6 +133,30 @@ export const adminProductApi = {
     return response.data;
   },
 
+  async replaceProductImage(
+    productId: string,
+    oldUrl: string,
+    image: File
+  ): Promise<{ success: boolean; data: { newUrl: string; images: string[]; sortedImages: string[]; image: string }; message: string }> {
+    const formData = new FormData();
+    formData.append('oldUrl', oldUrl);
+    formData.append('image', image);
+
+    const response = await axios.patch(
+      `${API_URL}/admin/products/${productId}/replace-image`,
+      formData,
+      {
+        ...getAuthHeader(),
+        headers: {
+          ...getAuthHeader().headers,
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
+
+    return response.data;
+  },
+
   async previewProduct(
     productData: ProductFormData,
     images?: FileList | File[],

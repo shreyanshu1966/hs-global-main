@@ -555,6 +555,74 @@ const reorderProductImages = async (req, res) => {
 };
 
 /**
+ * Replace a single existing product image in place (used by the admin
+ * "crop image" tool for already-saved images). Uploads the new file,
+ * swaps it into `images`/`sortedImages` at the same position as `oldUrl`
+ * (and updates `image` if it was the main photo), then deletes the old
+ * Cloudinary asset. Keeps gallery ordering untouched, unlike the
+ * create/update flow which always appends new uploads at the end.
+ */
+const replaceProductImage = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { oldUrl } = req.body;
+        const file = req.file;
+
+        if (!file) {
+            return res.status(400).json({ success: false, message: 'No image file provided' });
+        }
+        if (!oldUrl) {
+            return res.status(400).json({ success: false, message: 'oldUrl is required' });
+        }
+
+        const product = await Product.findOne({ productId: id });
+        if (!product) {
+            return res.status(404).json({ success: false, message: 'Product not found' });
+        }
+
+        if (!(product.images || []).includes(oldUrl)) {
+            return res.status(400).json({ success: false, message: 'oldUrl does not belong to this product' });
+        }
+
+        const result = await uploadToCloudinary(
+            file.buffer,
+            `hs-global/products/${product.category}/${product.subcategory}`
+        );
+        const newUrl = result.secure_url;
+
+        const replaceInArray = (arr) => (arr || []).map(url => url === oldUrl ? newUrl : url);
+        const baseSortedImages = (product.sortedImages && product.sortedImages.length) ? product.sortedImages : product.images;
+
+        product.sortedImages = replaceInArray(baseSortedImages);
+        product.images = replaceInArray(product.images);
+        if (product.image === oldUrl) {
+            product.image = newUrl;
+        }
+        product.updatedAt = new Date();
+        await product.save();
+
+        try {
+            await deleteMultipleFromCloudinary([oldUrl]);
+        } catch (deleteError) {
+            console.error('Error deleting replaced image from Cloudinary:', deleteError);
+        }
+
+        res.json({
+            success: true,
+            data: { newUrl, images: product.images, sortedImages: product.sortedImages, image: product.image },
+            message: 'Image replaced successfully'
+        });
+    } catch (error) {
+        console.error('Replace image error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to replace image',
+            error: error.message
+        });
+    }
+};
+
+/**
  * Get all subcategories for a category
  */
 const getSubcategories = async (req, res) => {
@@ -1586,6 +1654,7 @@ module.exports = {
     updateProductWithImages,
     deleteProductWithImages,
     reorderProductImages,
+    replaceProductImage,
     getSubcategories,
     previewProduct,
     processProductImages,
