@@ -3172,7 +3172,7 @@ const Admin = () => {
                                                                     <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm pointer-events-none">₹</span>
                                                                     <input type="number" min="0" value={displayPriceINR}
                                                                         onChange={e => handleBulkEditChange(product.productId, 'priceINR', e.target.value)}
-                                                                        className={`${cellCls('priceINR')} pl-7`} />
+                                                                        className={`${cellCls('priceINR')} pl-7 [-moz-appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`} />
                                                                 </div>
                                                             </td>
                                                             {/* Category */}
