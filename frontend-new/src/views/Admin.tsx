@@ -38,7 +38,8 @@ import {
     Tag,
     Percent,
     Play,
-    Bell
+    Bell,
+    ZoomIn
 } from 'lucide-react';
 import {
     BarChart,
@@ -288,6 +289,7 @@ const Admin = () => {
         subcategory?: string;
     }>>({});
     const [bulkEditSaving, setBulkEditSaving] = useState(false);
+    const [zoomImage, setZoomImage] = useState<{ url: string; name: string } | null>(null);
 
     // Reviews state
     const [reviews, setReviews] = useState<Review[]>([]);
@@ -3147,8 +3149,15 @@ const Admin = () => {
                                                             </td>
                                                             {/* Thumbnail */}
                                                             <td className="px-4 py-3">
-                                                                <img src={product.image} alt={product.name}
-                                                                    className="w-32 h-32 object-cover rounded-lg border border-gray-100" />
+                                                                <button type="button"
+                                                                    onClick={() => setZoomImage({ url: product.image, name: product.name })}
+                                                                    className="block cursor-zoom-in group relative">
+                                                                    <img src={product.image} alt={product.name}
+                                                                        className="w-32 h-32 object-cover rounded-lg border border-gray-100 transition-opacity group-hover:opacity-80" />
+                                                                    <span className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/20 rounded-lg transition-colors">
+                                                                        <ZoomIn className="w-6 h-6 text-white opacity-0 group-hover:opacity-100 transition-opacity drop-shadow" />
+                                                                    </span>
+                                                                </button>
                                                             </td>
                                                             {/* Name */}
                                                             <td className="px-4 py-3 min-w-[220px]">
@@ -3251,6 +3260,23 @@ const Admin = () => {
                                     </div>
                                 </div>
                             )}
+
+                            {/* ── Image zoom popup (bulk-edit thumbnails) ── */}
+                            {zoomImage && isMounted && typeof document !== 'undefined' && document.body && createPortal(
+                                <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+                                    onClick={() => setZoomImage(null)}>
+                                    <div className="relative max-w-3xl max-h-[85vh] animate-in fade-in zoom-in-95 duration-200"
+                                        onClick={e => e.stopPropagation()}>
+                                        <button onClick={() => setZoomImage(null)}
+                                            className="absolute -top-4 -right-4 w-9 h-9 flex items-center justify-center bg-white hover:bg-gray-100 rounded-full shadow-lg transition-colors">
+                                            <X className="w-5 h-5 text-gray-700" />
+                                        </button>
+                                        <img src={zoomImage.url} alt={zoomImage.name}
+                                            className="max-w-full max-h-[85vh] rounded-xl shadow-2xl object-contain" />
+                                        <p className="mt-3 text-center text-sm text-white/80">{zoomImage.name}</p>
+                                    </div>
+                                </div>
+                                , document.body)}
 
                             {/* ── Product card grid ── */}
                             {!bulkEditMode && <div className="relative">
