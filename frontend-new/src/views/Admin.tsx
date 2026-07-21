@@ -289,7 +289,7 @@ const Admin = () => {
         subcategory?: string;
     }>>({});
     const [bulkEditSaving, setBulkEditSaving] = useState(false);
-    const [zoomImage, setZoomImage] = useState<{ url: string; name: string } | null>(null);
+    const [zoomImage, setZoomImage] = useState<{ images: string[]; name: string; index: number } | null>(null);
 
     // Reviews state
     const [reviews, setReviews] = useState<Review[]>([]);
@@ -3150,7 +3150,12 @@ const Admin = () => {
                                                             {/* Thumbnail */}
                                                             <td className="px-4 py-3">
                                                                 <button type="button"
-                                                                    onClick={() => setZoomImage({ url: product.image, name: product.name })}
+                                                                    onClick={() => {
+                                                                        const gallery = product.sortedImages?.length ? product.sortedImages
+                                                                            : product.images?.length ? product.images
+                                                                            : [product.image];
+                                                                        setZoomImage({ images: gallery, name: product.name, index: 0 });
+                                                                    }}
                                                                     className="block cursor-zoom-in group relative">
                                                                     <img src={product.image} alt={product.name}
                                                                         className="w-32 h-32 object-cover rounded-lg border border-gray-100 transition-opacity group-hover:opacity-80" />
@@ -3271,9 +3276,44 @@ const Admin = () => {
                                             className="absolute -top-4 -right-4 w-9 h-9 flex items-center justify-center bg-white hover:bg-gray-100 rounded-full shadow-lg transition-colors">
                                             <X className="w-5 h-5 text-gray-700" />
                                         </button>
-                                        <img src={zoomImage.url} alt={zoomImage.name}
+
+                                        {zoomImage.images.length > 1 && (
+                                            <button type="button"
+                                                onClick={() => setZoomImage(z => z && ({ ...z, index: (z.index - 1 + z.images.length) % z.images.length }))}
+                                                className="absolute left-2 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center bg-white/90 hover:bg-white rounded-full shadow-lg transition-colors">
+                                                <ChevronLeft className="w-5 h-5 text-gray-700" />
+                                            </button>
+                                        )}
+
+                                        <img src={zoomImage.images[zoomImage.index]} alt={zoomImage.name}
                                             className="max-w-full max-h-[85vh] rounded-xl shadow-2xl object-contain" />
-                                        <p className="mt-3 text-center text-sm text-white/80">{zoomImage.name}</p>
+
+                                        {zoomImage.images.length > 1 && (
+                                            <button type="button"
+                                                onClick={() => setZoomImage(z => z && ({ ...z, index: (z.index + 1) % z.images.length }))}
+                                                className="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center bg-white/90 hover:bg-white rounded-full shadow-lg transition-colors">
+                                                <ChevronRight className="w-5 h-5 text-gray-700" />
+                                            </button>
+                                        )}
+
+                                        <p className="mt-3 text-center text-sm text-white/80">
+                                            {zoomImage.name}
+                                            {zoomImage.images.length > 1 && ` (${zoomImage.index + 1}/${zoomImage.images.length})`}
+                                        </p>
+
+                                        {zoomImage.images.length > 1 && (
+                                            <div className="mt-3 flex justify-center gap-2 flex-wrap max-w-full">
+                                                {zoomImage.images.map((img, i) => (
+                                                    <button key={img + i} type="button"
+                                                        onClick={() => setZoomImage(z => z && ({ ...z, index: i }))}
+                                                        className={`w-14 h-14 rounded-lg overflow-hidden border-2 transition-colors flex-shrink-0 ${
+                                                            i === zoomImage.index ? 'border-orange-500' : 'border-transparent opacity-70 hover:opacity-100'
+                                                        }`}>
+                                                        <img src={img} alt="" className="w-full h-full object-cover" />
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                                 , document.body)}
