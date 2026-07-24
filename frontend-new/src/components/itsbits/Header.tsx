@@ -9,6 +9,7 @@ import { LocationSelector } from "../LocationSelector";
 import { productService, Product } from "../../services/productService";
 import { useWishlist } from "../../contexts/WishlistContext";
 import { fetchNavbarConfig, NavCategoryConfig } from "../../services/navbarService";
+import { buildGallery, GalleryDataItem } from "../../utils/galleryData";
 
 const Header = () => {
   const [isBottomNavVisible, setIsBottomNavVisible] = useState(true);
@@ -48,6 +49,8 @@ const Header = () => {
   const location = useLocation();
   const { isAuthenticated, user } = useAuth();
   const { count: wishlistCount } = useWishlist();
+
+  const galleryItems = useMemo(() => buildGallery().items, []);
 
   useEffect(() => {
     setIsMobileMenuOpen(false);
@@ -197,9 +200,21 @@ const Header = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const galleryResults = useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
+    if (q.length < 2) return [];
+    return galleryItems
+      .filter((item) =>
+        item.title.toLowerCase().includes(q) ||
+        item.category.toLowerCase().includes(q) ||
+        item.code.toLowerCase().includes(q)
+      )
+      .slice(0, 5);
+  }, [galleryItems, searchQuery]);
+
   const showNoResults = useMemo(
-    () => hasSearched && !isSearching && searchQuery.trim().length >= 2 && searchResults.length === 0,
-    [hasSearched, isSearching, searchQuery, searchResults.length]
+    () => hasSearched && !isSearching && searchQuery.trim().length >= 2 && searchResults.length === 0 && galleryResults.length === 0,
+    [hasSearched, isSearching, searchQuery, searchResults.length, galleryResults.length]
   );
 
   const handleSelectProduct = (product: Product) => {
@@ -212,6 +227,15 @@ const Header = () => {
     setIsDesktopDropdownOpen(false);
     setIsMobileDropdownOpen(false);
     navigate(`/product/${id}`);
+  };
+
+  const handleSelectGalleryItem = (item: GalleryDataItem) => {
+    setSearchQuery("");
+    setSearchResults([]);
+    setHasSearched(false);
+    setIsDesktopDropdownOpen(false);
+    setIsMobileDropdownOpen(false);
+    navigate(`/gallery?q=${encodeURIComponent(item.code)}`);
   };
 
   const navItems = [
@@ -484,6 +508,33 @@ const Header = () => {
   return (
     <>
       <header className="fixed top-0 left-0 w-full z-50 font-sans itsbits-header itsbits-header-root">
+      
+      {/* ===== Announcement Bar / Marquee ===== */}
+      <div className="h-[32px] bg-[#111827] text-white text-[11px] sm:text-xs py-2 uppercase tracking-[0.1em] w-full overflow-hidden flex items-center relative">
+        <style dangerouslySetInnerHTML={{__html: `
+          @keyframes marquee-infinite {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+          }
+          .animate-marquee-infinite {
+            display: inline-flex;
+            white-space: nowrap;
+            animation: marquee-infinite 45s linear infinite;
+          }
+          .animate-marquee-infinite:hover {
+            animation-play-state: paused;
+          }
+        `}} />
+        <div className="animate-marquee-infinite w-max">
+          {Array(20).fill(0).map((_, i) => (
+            <span key={i} className="mx-8 flex items-center">
+              Looking for an idea? Visit our <Link to="/gallery" className="underline font-bold hover:text-[#d1d5db] mx-1">Gallery</Link> for real, unedited product images!
+              <span className="ml-16 text-[#4b5563]">✦</span>
+            </span>
+          ))}
+        </div>
+      </div>
+
       {/* ===== Top Bar (Logo + Search + Icons) — height: 84px ===== */}
       <div
         className="bg-white flex justify-center relative itsbits-top-bar"
@@ -580,6 +631,32 @@ const Header = () => {
                     </div>
                   </button>
                 ))}
+
+                {!isSearching && galleryResults.length > 0 && (
+                  <>
+                    <div className="px-4 py-2.5 border-y border-[#eef2f7] text-[11px] uppercase tracking-[0.12em] text-[#64748b]">
+                      Gallery
+                    </div>
+                    {galleryResults.map((item) => (
+                      <button
+                        key={`gallery-${item.id}`}
+                        type="button"
+                        onClick={() => handleSelectGalleryItem(item)}
+                        className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-[#f8fafc] transition-colors"
+                      >
+                        <div className="w-12 h-12 rounded-md overflow-hidden bg-[#f3f4f6] shrink-0 relative">
+                          <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-sm font-medium text-[#111827] truncate">{item.title}</p>
+                          <p className="text-xs text-[#6b7280] capitalize truncate">
+                            {item.category} • {item.code}
+                          </p>
+                        </div>
+                      </button>
+                    ))}
+                  </>
+                )}
 
                 {showNoResults && (
                   <div className="px-4 py-4 text-sm text-[#6b7280]">No products found.</div>
@@ -874,6 +951,32 @@ const Header = () => {
                   </div>
                 </button>
               ))}
+
+              {!isSearching && galleryResults.length > 0 && (
+                <>
+                  <div className="px-4 py-2.5 border-y border-[#eef2f7] text-[11px] uppercase tracking-[0.12em] text-[#64748b]">
+                    Gallery
+                  </div>
+                  {galleryResults.map((item) => (
+                    <button
+                      key={`mobile-gallery-${item.id}`}
+                      type="button"
+                      onClick={() => handleSelectGalleryItem(item)}
+                      className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-[#f8f8f8] transition-colors"
+                    >
+                      <div className="w-10 h-10 rounded-md overflow-hidden bg-[#f3f4f6] shrink-0 relative">
+                        <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium text-[#111827] truncate">{item.title}</p>
+                        <p className="text-xs text-[#6b7280] capitalize truncate">
+                          {item.category} • {item.code}
+                        </p>
+                      </div>
+                    </button>
+                  ))}
+                </>
+              )}
 
               {showNoResults && (
                 <div className="px-4 py-4 text-sm text-[#6b7280]">No products found.</div>

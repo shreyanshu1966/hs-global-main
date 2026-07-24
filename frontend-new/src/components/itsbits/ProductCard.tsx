@@ -176,16 +176,16 @@ const ProductCard = ({ id, image, title, designer, price, originalPrice, priceIN
 
       {/* Details */}
       <div className="flex flex-col flex-1">
-        <div className="itsbits-product-title itsbits-product-title-text text-[14px] text-[#222] leading-tight mb-[2px]">
+        <div className="itsbits-product-title itsbits-product-title-text text-[14px] text-[#222] leading-tight mb-0">
           {title}
         </div>
-        <div className="itsbits-product-designer itsbits-product-designer-text text-[14px] text-[#666] leading-tight mb-[4px]">
+        <div className="itsbits-product-designer itsbits-product-designer-text text-[14px] text-[#666] leading-tight mb-[2px]">
           {designer}
         </div>
         
         {/* Rating Section — identical logic to products-page ProductCard */}
         {(averageRating || 0) > 0 && (totalReviews || 0) > 0 && (
-          <div className="flex items-center gap-1.5 mb-[6px]">
+          <div className="flex items-center gap-1.5 mb-1">
             <div className="flex text-[#f59e0b]">
               {[1, 2, 3, 4, 5].map((star) => (
                 <svg
@@ -204,7 +204,7 @@ const ProductCard = ({ id, image, title, designer, price, originalPrice, priceIN
         )}
         {showPrice && (
           showDiscount ? (
-            <div className="mt-auto space-y-1.5">
+            <div className="mt-auto space-y-1">
               <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
                 <span className="itsbits-price-new text-[14px] sm:text-[15px] text-[#b91c1c] itsbits-price-new-discount font-semibold leading-none">
                   {resolvedPrice}

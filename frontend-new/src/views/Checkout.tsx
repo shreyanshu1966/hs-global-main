@@ -649,7 +649,7 @@ const Checkout: React.FC = () => {
                   <div className="flex-1">
                     <p className="text-sm font-medium text-blue-900">Delivery charges are paid separately</p>
                     <p className="text-xs text-blue-700 mt-1">
-                      This payment covers your order only. Delivery charges are calculated based on your address and will be shared with you after the order is placed, to be paid separately.
+                      Shipping charges are calculated based on your delivery location, package dimensions, and preferred shipping method. Your dedicated export executive will provide a detailed quotation within 24 hours for your approval before shipment.
                     </p>
                   </div>
                 </div>

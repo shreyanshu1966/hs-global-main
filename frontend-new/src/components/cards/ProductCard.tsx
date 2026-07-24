@@ -289,7 +289,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
                 </div>
 
                 {/* ---- Info ---- */}
-                <div className="space-y-2 mt-4">
+                <div className="space-y-1 mt-2.5">
                     <h3 className="font-serif text-xl text-[#2B2B2B] group-hover:text-[#111827] transition-colors truncate">
                         {product.name}
                     </h3>
@@ -298,7 +298,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
                     </p>
                     {/* Rating Section — only shown when real reviews exist */}
                     {product.averageRating > 0 && product.totalReviews > 0 && (
-                        <div className="flex items-center gap-1.5 mt-1 mb-2">
+                        <div className="flex items-center gap-1.5 mt-0.5 mb-1">
                             <div className="flex text-[#f59e0b]">
                                 {[1, 2, 3, 4, 5].map((star) => (
                                     <svg
@@ -319,7 +319,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
                     {product.productType === 'configurable' && product.variants && product.variants.length > 0 && (() => {
                         const colorAttr = product.variantAttributes?.find(a => /color|colour/i.test(a.name));
                         return (
-                            <div className="flex items-center gap-1.5 mt-1 mb-1">
+                            <div className="flex items-center gap-1.5 mt-0.5 mb-0.5">
                                 {colorAttr ? (
                                     colorAttr.values.slice(0, 5).map(v => (
                                         <span
@@ -353,7 +353,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
                             </div>
                         )
                     ) : showDiscount ? (
-                        <div className="space-y-1.5">
+                        <div className="space-y-1">
                             <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
                                 <p className="text-[16px] sm:text-lg font-semibold text-[#b91c1c] leading-none">{displayPrice}</p>
                                 {price.discountPercentage > 0 && (

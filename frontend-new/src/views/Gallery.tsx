@@ -1,52 +1,10 @@
 'use client';
 import { useCallback, useEffect, useMemo, useRef, useState, memo } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Search, X, CheckCircle2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { getResponsiveImage, getImagesByCategory } from '../utils/responsive-image-helper';
 import { GalleryItem, GalleryModal } from '../components/GalleryModal';
-
-const toTitle = (s: string) =>
-  decodeURIComponent(s.replace(/\+/g, ' '))
-    .replace(/[/_-]+/g, ' ').trim().replace(/\s+/g, ' ')
-    .replace(/\b\w/g, c => c.toUpperCase());
-
-const toSlug = (s: string) =>
-  decodeURIComponent(s.replace(/\+/g, ' '))
-    .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-
-const buildGallery = () => {
-  type Item = { id: string; title: string; category: string; image: string; code: string };
-  const interim: { path: string; title: string; category: string; image: string }[] = [];
-
-  const galleryPaths = getImagesByCategory('gallery') as string[];
-  galleryPaths.forEach((rel) => {
-    const parts = rel.split('/').filter(Boolean);
-    const idx = parts.indexOf('gallery');
-    if (idx === -1 || !parts[idx + 1]) return;
-    const category = toTitle(parts[idx + 1]);
-    const file = parts[parts.length - 1];
-    const base = toTitle(file.replace(/\.(webp|jpg|jpeg|png)$/i, ''));
-    const responsiveUrl = getResponsiveImage(rel, 'mobile') || getResponsiveImage(rel, 'desktop') || getResponsiveImage(rel, 'tablet') || rel;
-    interim.push({ path: rel, title: base, category, image: responsiveUrl });
-  });
-
-  const byCat = new Map<string, { idx: number; list: Item[] }>();
-  interim.sort((a, b) => a.category.localeCompare(b.category) || a.title.localeCompare(b.title));
-
-  const items: Item[] = interim.map(({ path, title, category, image }) => {
-    const id = toSlug(path);
-    if (!byCat.has(category)) byCat.set(category, { idx: 1, list: [] });
-    const entry = byCat.get(category)!;
-    const code = `HS${category.slice(0, 2).toUpperCase()}${String(entry.idx).padStart(3, '0')}`;
-    entry.idx += 1;
-    const item: Item = { id, title, category, image, code };
-    entry.list.push(item);
-    return item;
-  });
-
-  const cats = Array.from(new Set(items.map(i => i.category))).sort();
-  return { items, cats: ['All', ...cats] };
-};
+import { buildGallery } from '../utils/galleryData';
 
 
 // ── Icons ────────────────────────────────────────────────────────────────────
@@ -76,10 +34,11 @@ const WAIcon = () => (
 
 const Gallery = memo(() => {
   const { items: allItems, cats } = useMemo(() => buildGallery(), []);
+  const [searchParams] = useSearchParams();
 
   const [activeCategory, setActiveCategory] = useState('All');
-  const [searchActive, setSearchActive]     = useState(false);
-  const [searchQuery, setSearchQuery]       = useState('');
+  const [searchActive, setSearchActive]     = useState(() => !!searchParams.get('q'));
+  const [searchQuery, setSearchQuery]       = useState(() => searchParams.get('q') || '');
   const [colCount, setColCount]             = useState<3 | 2>(3);
   const [isSelectionMode, setIsSelectionMode] = useState(false);
   const [selectedItems, setSelectedItems]   = useState<Set<string>>(new Set());
@@ -144,6 +103,11 @@ const Gallery = memo(() => {
   // ── Effects ────────────────────────────────────────────────────────────────
 
   useEffect(() => {
+    const q = searchParams.get('q');
+    if (q) { setSearchQuery(q); setSearchActive(true); }
+  }, [searchParams]);
+
+  useEffect(() => {
     const tab = activeTabRef.current;
     const container = tabsScrollRef.current;
     if (!tab || !container) return;
@@ -195,7 +159,7 @@ const Gallery = memo(() => {
           if (stickyBarRef.current && window.innerWidth >= 768) {
             stickyBarRef.current.style.top = navVisible
               ? 'var(--itsbits-header-offset)'
-              : 'var(--itsbits-header-top-height)';
+              : 'calc(var(--itsbits-marquee-height, 32px) + var(--itsbits-header-top-height))';
           }
         }
 
