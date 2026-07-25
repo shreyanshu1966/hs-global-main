@@ -105,12 +105,9 @@ const searchProducts = ({ query, filters, skip, limit }) => Product.search(query
     .skip(skip)
     .limit(limit);
 
-const countSearchProducts = ({ query, filters }) => Product.countDocuments({
-    status: 'active',
-    available: true,
-    ...filters,
-    $text: { $search: query }
-});
+const countSearchProducts = ({ query, filters }) => Product.countDocuments(
+    Product.buildSearchQuery(query, filters)
+);
 
 const aggregatePublicCategories = () => Product.aggregate([
     {

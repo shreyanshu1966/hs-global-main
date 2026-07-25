@@ -649,7 +649,7 @@ const Checkout: React.FC = () => {
                   <div className="flex-1">
                     <p className="text-sm font-medium text-blue-900">Delivery charges are paid separately</p>
                     <p className="text-xs text-blue-700 mt-1">
-                      Shipping charges are calculated based on your delivery location, package dimensions, and preferred shipping method. Your dedicated export executive will provide a detailed quotation within 24 hours for your approval before shipment.
+                      Each product is made exclusively for you. Our Export Team will contact you by email within 24 hours to confirm your order and customization preferences. Once production and packaging are complete, we'll recommend the most suitable shipping option for your destination. From manufacturing to delivery at your doorstep, we'll keep you informed at every stage with complete transparency.
                     </p>
                   </div>
                 </div>

@@ -527,10 +527,16 @@ const Header = () => {
         `}} />
         <div className="animate-marquee-infinite w-max">
           {Array(20).fill(0).map((_, i) => (
-            <span key={i} className="mx-8 flex items-center">
-              Looking for an idea? Visit our <Link to="/gallery" className="underline font-bold hover:text-[#d1d5db] mx-1">Gallery</Link> for real, unedited product images!
-              <span className="ml-16 text-[#4b5563]">✦</span>
-            </span>
+            <div key={i} className="flex">
+              <span className="mx-8 flex items-center">
+                Looking for an idea? Visit our <Link to="/gallery" className="underline font-bold hover:text-[#d1d5db] mx-1">Gallery</Link> for real, unedited product images!
+                <span className="ml-16 text-[#4b5563]">✦</span>
+              </span>
+              <span className="mx-8 flex items-center">
+                100% Customizable: Every Product Built to Your Preferred Size, Material &amp; Finish
+                <span className="ml-16 text-[#4b5563]">✦</span>
+              </span>
+            </div>
           ))}
         </div>
       </div>

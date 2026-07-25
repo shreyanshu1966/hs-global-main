@@ -177,7 +177,7 @@ export function ProductSpecifications({ product }: ProductSpecificationsProps) {
     ['top_color', 'Color'],
     ['wood_species', speciesLabel], ['natural_variation_type', 'Natural Variation'],
     ['detailing', 'Detailing'], ['mixed_materials', 'Mixed Materials'],
-    ['weight_capacity', 'Weight Capacity'],
+    // ['weight_capacity', 'Weight Capacity'], // removed for now
     ['custom_product', 'Custom Product'], ['imported', 'Imported'],
     ['wayfair_verified', 'Eligible for Refund'],
   ];
@@ -188,7 +188,7 @@ export function ProductSpecifications({ product }: ProductSpecificationsProps) {
 
   const psDimensionRows: [string, string][] = [
     ps.other_dimensions?.overall_dimensions     ? ['Overall Dimensions',    ps.other_dimensions.overall_dimensions]     : null,
-    ps.other_dimensions?.overall_product_weight ? ['Overall Product Weight', ps.other_dimensions.overall_product_weight] : null,
+    // ps.other_dimensions?.overall_product_weight ? ['Overall Product Weight', ps.other_dimensions.overall_product_weight] : null, // removed for now
     ...dimRows,
   ].filter(Boolean) as [string, string][];
 

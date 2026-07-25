@@ -766,17 +766,29 @@ productSchema.statics.getExpiringSoonDiscounts = function (days = 3) {
     }).select('productId name discount priceINR');
 };
 
-// Static method for search
-productSchema.statics.search = function (query, filters = {}) {
-    const searchQuery = {
+// Builds the query used for search — matches on name/description as well as
+// productCode/productId so product codes are searchable across all categories.
+productSchema.statics.buildSearchQuery = function (query, filters = {}) {
+    const escaped = String(query).trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(escaped, 'i');
+
+    return {
         status: 'active',
         available: true,
         ...filters,
-        $text: { $search: query }
+        $or: [
+            { productCode: regex },
+            { productId: regex },
+            { name: regex },
+            { description: regex }
+        ]
     };
+};
 
-    return this.find(searchQuery, { score: { $meta: 'textScore' } })
-        .sort({ score: { $meta: 'textScore' } });
+// Static method for search
+productSchema.statics.search = function (query, filters = {}) {
+    return this.find(this.buildSearchQuery(query, filters))
+        .sort({ createdAt: -1 });
 };
 
 // Static method to get all subcategories for a category

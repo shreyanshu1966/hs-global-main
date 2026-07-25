@@ -64,11 +64,12 @@ type FieldDef = {
   label: string;
   type: 'text' | 'select' | 'textarea';
   options?: string[];
+  placeholder?: string;
 };
 
 const OTHER_DIMENSION_FIELDS: FieldDef[] = [
-  { key: 'overall_dimensions',    label: 'Overall Dimensions',    type: 'text' },
-  { key: 'overall_product_weight', label: 'Overall Product Weight', type: 'text' },
+  { key: 'overall_dimensions',    label: 'Overall Dimensions',    type: 'text', placeholder: 'e.g. Customizable' },
+  // { key: 'overall_product_weight', label: 'Overall Product Weight', type: 'text' }, // removed for now
 ];
 
 const DETAIL_FIELDS: FieldDef[] = [
@@ -80,7 +81,7 @@ const DETAIL_FIELDS: FieldDef[] = [
   { key: 'natural_variation_type', label: 'Natural Variation Type', type: 'text' },
   { key: 'detailing',              label: 'Detailing',              type: 'text' },
   { key: 'mixed_materials',        label: 'Mixed Materials',        type: 'select', options: ['Yes', 'No'] },
-  { key: 'weight_capacity',        label: 'Weight Capacity',        type: 'text' },
+  // { key: 'weight_capacity',        label: 'Weight Capacity',        type: 'text' }, // removed for now
   { key: 'custom_product',         label: 'Custom Product',         type: 'select', options: ['Yes', 'No'] },
   { key: 'imported',               label: 'Imported',               type: 'select', options: ['Yes', 'No'] },
   { key: 'wayfair_verified',       label: 'Eligible for Refund',    type: 'select', options: ['Yes', 'No'] },
@@ -206,7 +207,7 @@ function SectionField({
           type="text"
           value={value}
           onChange={e => onChange(e.target.value)}
-          placeholder={`Enter ${field.label.toLowerCase()}`}
+          placeholder={field.placeholder || `Enter ${field.label.toLowerCase()}`}
           className={base}
         />
       )}
