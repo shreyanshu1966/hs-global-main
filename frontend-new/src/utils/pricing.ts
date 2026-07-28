@@ -8,7 +8,7 @@
 export const REGION_CURRENCIES: Record<string, string> = {
   UAE: 'AED',
   Europe: 'EUR',
-  India: 'INR',
+  India: 'USD',
   USA: 'USD',
   UK: 'GBP',
   default: 'USD',

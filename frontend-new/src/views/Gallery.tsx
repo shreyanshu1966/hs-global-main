@@ -4,7 +4,9 @@ import { useSearchParams } from "react-router-dom";
 import { Search, X, CheckCircle2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { GalleryItem, GalleryModal } from '../components/GalleryModal';
+import { VideoGallerySection } from '../components/VideoGallerySection';
 import { buildGallery } from '../utils/galleryData';
+import { buildVideoGallery } from '../utils/videoGalleryData';
 
 
 // ── Icons ────────────────────────────────────────────────────────────────────
@@ -34,8 +36,10 @@ const WAIcon = () => (
 
 const Gallery = memo(() => {
   const { items: allItems, cats } = useMemo(() => buildGallery(), []);
+  const { items: videoItems } = useMemo(() => buildVideoGallery(), []);
   const [searchParams] = useSearchParams();
 
+  const [viewMode, setViewMode] = useState<'photos' | 'videos'>('photos');
   const [activeCategory, setActiveCategory] = useState('All');
   const [searchActive, setSearchActive]     = useState(() => !!searchParams.get('q'));
   const [searchQuery, setSearchQuery]       = useState(() => searchParams.get('q') || '');
@@ -299,9 +303,39 @@ const Gallery = memo(() => {
             <span className="inline-block w-7 h-px bg-white/12" />
             <span>{cats.length - 1} collections</span>
           </motion.div>
+
+          {videoItems.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.32 }}
+              className="inline-flex items-center gap-1 mt-7 p-1 rounded-full bg-white/[0.06] border border-white/[0.08]"
+            >
+              <button
+                onClick={() => setViewMode('photos')}
+                className={`px-4 py-1.5 rounded-full text-[11px] tracking-wide font-medium transition-colors ${
+                  viewMode === 'photos' ? 'bg-white text-black' : 'text-white/50 hover:text-white/80'
+                }`}
+              >
+                Photos
+              </button>
+              <button
+                onClick={() => setViewMode('videos')}
+                className={`px-4 py-1.5 rounded-full text-[11px] tracking-wide font-medium transition-colors ${
+                  viewMode === 'videos' ? 'bg-white text-black' : 'text-white/50 hover:text-white/80'
+                }`}
+              >
+                Videos
+              </button>
+            </motion.div>
+          )}
         </section>
       )}
 
+      {viewMode === 'videos' && <VideoGallerySection />}
+
+      {viewMode === 'photos' && (
+      <>
       {/* ── Sticky Control Bar ──────────────────────────────────────────────── */}
       <div
         ref={stickyBarRef}
@@ -652,6 +686,8 @@ const Gallery = memo(() => {
         setModalIndex={setModalIndex}
         setCurrentItem={setCurrentItem}
       />
+      </>
+      )}
     </div>
   );
 });

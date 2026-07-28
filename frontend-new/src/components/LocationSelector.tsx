@@ -5,7 +5,7 @@ import { useRegion, REGION_CURRENCIES, REGION_LABELS, type Region } from '../con
 import { CURRENCY_SYMBOLS } from '../utils/pricing';
 
 const REGIONS: { value: Region; label: string; flag: string; currency: string }[] = [
-  { value: 'India',  label: 'India',  flag: '🇮🇳', currency: 'INR' },
+  { value: 'India',  label: 'India',  flag: '🇮🇳', currency: 'USD' },
   { value: 'USA',    label: 'USA',    flag: '🇺🇸', currency: 'USD' },
   { value: 'UAE',    label: 'UAE',    flag: '🇦🇪', currency: 'AED' },
   { value: 'UK',     label: 'UK',     flag: '🇬🇧', currency: 'GBP' },

@@ -519,7 +519,7 @@ const Header = () => {
           .animate-marquee-infinite {
             display: inline-flex;
             white-space: nowrap;
-            animation: marquee-infinite 45s linear infinite;
+            animation: marquee-infinite 70s linear infinite;
           }
           .animate-marquee-infinite:hover {
             animation-play-state: paused;
@@ -654,9 +654,9 @@ const Header = () => {
                           <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
                         </div>
                         <div className="min-w-0">
-                          <p className="text-sm font-medium text-[#111827] truncate">{item.title}</p>
+                          <p className="text-sm font-medium text-[#111827] truncate">{item.code}</p>
                           <p className="text-xs text-[#6b7280] capitalize truncate">
-                            {item.category} • {item.code}
+                            {item.category}
                           </p>
                         </div>
                       </button>
@@ -974,9 +974,9 @@ const Header = () => {
                         <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
                       </div>
                       <div className="min-w-0">
-                        <p className="text-sm font-medium text-[#111827] truncate">{item.title}</p>
+                        <p className="text-sm font-medium text-[#111827] truncate">{item.code}</p>
                         <p className="text-xs text-[#6b7280] capitalize truncate">
-                          {item.category} • {item.code}
+                          {item.category}
                         </p>
                       </div>
                     </button>

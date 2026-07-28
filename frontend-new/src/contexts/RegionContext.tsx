@@ -7,7 +7,7 @@ export type Region = 'UAE' | 'Europe' | 'India' | 'USA' | 'UK' | 'default';
 export const REGION_CURRENCIES: Record<Region, string> = {
     UAE: 'AED',
     Europe: 'EUR',
-    India: 'INR',
+    India: 'USD',
     USA: 'USD',
     UK: 'GBP',
     default: 'USD',

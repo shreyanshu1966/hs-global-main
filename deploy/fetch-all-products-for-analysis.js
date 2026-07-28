@@ -46,9 +46,19 @@ require('dotenv').config();
   const products = await Product.find({}, {
     productId: 1, productCode: 1, name: 1, category: 1, subcategory: 1,
     image: 1, images: 1, sortedImages: 1, status: 1, available: 1,
+    'seo.slug': 1,
   }).lean();
-  fs.writeFileSync('${REMOTE_TMP_NAME}', JSON.stringify(products));
-  console.log('WROTE', products.length, 'products');
+  const mapped = products.map(p => {
+    const slugVal = (p.seo && p.seo.slug) ? p.seo.slug : "";
+    const urlSlug = slugVal || p.productId || p._id || "";
+    return {
+      ...p,
+      slug: slugVal,
+      url: urlSlug ? 'https://www.hsglobalexport.com/product/' + urlSlug : ""
+    };
+  });
+  fs.writeFileSync('${REMOTE_TMP_NAME}', JSON.stringify(mapped));
+  console.log('WROTE', mapped.length, 'products');
   await mongoose.disconnect();
 })().catch((e) => { console.error(e); process.exit(1); });
 `.trim();
