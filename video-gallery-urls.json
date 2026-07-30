@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-30T13:58:22.639Z",
+  "generated": "2026-07-30T18:06:48.108Z",
   "videos": {
     "etsy/alabaster-marble-table-lamp-designforages/video.mp4": {
       "category": "etsy",
@@ -776,6 +776,38 @@
       "posterUrl": "https://res.cloudinary.com/dynd1aan0/image/upload/v1785232399/hs-global/gallery-videos-posters/Wash_Basins/Pedestal/Wide-Bowl_Forest_Green_Marble/video.jpg",
       "videoUrl": "https://res.cloudinary.com/dynd1aan0/video/upload/v1785247342/hs-global/gallery-videos/Wash_Basins/Pedestal/Wide-Bowl_Forest_Green_Marble/video.mp4",
       "size": 1322935
+    },
+    "Tables/Coffee Table/Marble Sphere Base Glass Coffee Table/video.mp4": {
+      "category": "Tables",
+      "subCategory": "Coffee Table",
+      "title": "Marble Sphere Base Glass Coffee Table",
+      "posterUrl": "https://res.cloudinary.com/dynd1aan0/image/upload/v1785434753/hs-global/gallery-videos-posters/Tables/Coffee_Table/Marble_Sphere_Base_Glass_Coffee_Table/video.jpg",
+      "videoUrl": "https://res.cloudinary.com/dynd1aan0/video/upload/v1785434757/hs-global/gallery-videos/Tables/Coffee_Table/Marble_Sphere_Base_Glass_Coffee_Table/video.mp4",
+      "size": 1617385
+    },
+    "Semi Precious Stone/Amethyst Purple Stone Slab/video.mp4": {
+      "category": "Semi Precious Stone",
+      "subCategory": null,
+      "title": "Amethyst Purple Stone Slab",
+      "posterUrl": "https://res.cloudinary.com/dynd1aan0/image/upload/v1785434758/hs-global/gallery-videos-posters/Semi_Precious_Stone/Amethyst_Purple_Stone_Slab/video.jpg",
+      "videoUrl": "https://res.cloudinary.com/dynd1aan0/video/upload/v1785434762/hs-global/gallery-videos/Semi_Precious_Stone/Amethyst_Purple_Stone_Slab/video.mp4",
+      "size": 1550711
+    },
+    "Cabinets/Black Fluted Marble Cabinet with Gold Trim/video.mp4": {
+      "category": "Cabinets",
+      "subCategory": null,
+      "title": "Black Fluted Marble Cabinet with Gold Trim",
+      "posterUrl": "https://res.cloudinary.com/dynd1aan0/image/upload/v1785434613/hs-global/gallery-videos-posters/Cabinets/Black_Fluted_Marble_Cabinet_with_Gold_Trim/video.jpg",
+      "videoUrl": "https://res.cloudinary.com/dynd1aan0/video/upload/v1785434776/hs-global/gallery-videos/Cabinets/Black_Fluted_Marble_Cabinet_with_Gold_Trim/video.mp4",
+      "size": 2291387
+    },
+    "Tables/Center Table/Beige Travertine Fluted Pedestal Table/video.mp4": {
+      "category": "Tables",
+      "subCategory": "Center Table",
+      "title": "Beige Travertine Fluted Pedestal Table",
+      "posterUrl": "https://res.cloudinary.com/dynd1aan0/image/upload/v1785434778/hs-global/gallery-videos-posters/Tables/Center_Table/Beige_Travertine_Fluted_Pedestal_Table/video.jpg",
+      "videoUrl": "https://res.cloudinary.com/dynd1aan0/video/upload/v1785434806/hs-global/gallery-videos/Tables/Center_Table/Beige_Travertine_Fluted_Pedestal_Table/video.mp4",
+      "size": 2579044
     }
   }
 }
