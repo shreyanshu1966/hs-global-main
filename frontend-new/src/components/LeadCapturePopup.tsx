@@ -169,11 +169,16 @@ const LeadCapturePopup: React.FC<LeadCapturePopupProps> = ({ isOpen, onClose }) 
         {/* ── Left branding panel ── */}
         <div
           className="hidden sm:flex flex-col justify-between text-white px-8 py-9 w-[210px] flex-shrink-0 relative overflow-hidden"
-          style={{
-            background: config.entryPopup.backgroundImage
-              ? `linear-gradient(rgba(17,24,39,0.82),rgba(17,24,39,0.82)) center/cover, url(${config.entryPopup.backgroundImage})`
-              : '#111827'
-          }}
+          style={config.entryPopup.backgroundImage
+            ? {
+                backgroundColor: '#111827',
+                backgroundImage: `linear-gradient(rgba(17,24,39,0.82),rgba(17,24,39,0.82)), url(${config.entryPopup.backgroundImage})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+              }
+            : { backgroundColor: '#111827' }
+          }
         >
           <div className="absolute -bottom-16 -right-16 w-48 h-48 rounded-full border border-white/10" />
           <div className="absolute -bottom-8 -right-8 w-32 h-32 rounded-full border border-white/5" />
