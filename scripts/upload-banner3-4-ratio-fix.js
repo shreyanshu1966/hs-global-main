@@ -1,8 +1,8 @@
 /**
- * Upload the ratio-corrected Banner3/Banner4 desktop artwork to Cloudinary,
- * overwriting the existing hs-global/hero/Banner3-des(.webp) / Banner4-des(.webp) assets.
+ * Upload the ratio-corrected Banner3/Banner4 desktop artwork to Cloudinary
+ * as new hs-global/hero/Banner3-des-ratio-fixed(.webp) / Banner4-des-ratio-fixed(.webp) assets.
  *
- * Source: frontend-new/public/Banner3-des.png, Banner4-des.png (already replaced in place, 2172x724)
+ * Source: frontend-new/public/Banner3-des-ratio-fixed.png, Banner4-des-ratio-fixed.png (2172x724)
  */
 
 const sharp = require('sharp');
@@ -22,8 +22,8 @@ const CONFIG = {
         folder: 'hs-global/hero'
     },
     files: [
-        { source: 'Banner3-des.png', publicId: 'Banner3-des', maxWidth: 1920 },
-        { source: 'Banner4-des.png', publicId: 'Banner4-des', maxWidth: 1920 },
+        { source: 'Banner3-des-ratio-fixed.png', publicId: 'Banner3-des-ratio-fixed', maxWidth: 1920 },
+        { source: 'Banner4-des-ratio-fixed.png', publicId: 'Banner4-des-ratio-fixed', maxWidth: 1920 },
     ],
     quality: 85,
 };

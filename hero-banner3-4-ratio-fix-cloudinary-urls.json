@@ -1,25 +1,25 @@
 {
-  "generated": "2026-07-31T14:32:29.733Z",
+  "generated": "2026-07-31T14:45:51.027Z",
   "urls": {
-    "Banner3-des.png": {
-      "source": "Banner3-des.png",
-      "publicId": "hs-global/hero/Banner3-des",
-      "cloudinary": "https://res.cloudinary.com/dynd1aan0/image/upload/v1785508345/hs-global/hero/Banner3-des.webp",
+    "Banner3-des-ratio-fixed.png": {
+      "source": "Banner3-des-ratio-fixed.png",
+      "publicId": "hs-global/hero/Banner3-des-ratio-fixed",
+      "cloudinary": "https://res.cloudinary.com/dynd1aan0/image/upload/v1785509147/hs-global/hero/Banner3-des-ratio-fixed.webp",
       "format": "webp",
       "width": 1920,
       "height": 640,
       "bytes": 207942,
-      "version": 1785508345
+      "version": 1785509147
     },
-    "Banner4-des.png": {
-      "source": "Banner4-des.png",
-      "publicId": "hs-global/hero/Banner4-des",
-      "cloudinary": "https://res.cloudinary.com/dynd1aan0/image/upload/v1785508347/hs-global/hero/Banner4-des.webp",
+    "Banner4-des-ratio-fixed.png": {
+      "source": "Banner4-des-ratio-fixed.png",
+      "publicId": "hs-global/hero/Banner4-des-ratio-fixed",
+      "cloudinary": "https://res.cloudinary.com/dynd1aan0/image/upload/v1785509149/hs-global/hero/Banner4-des-ratio-fixed.webp",
       "format": "webp",
       "width": 1920,
       "height": 640,
       "bytes": 222582,
-      "version": 1785508347
+      "version": 1785509149
     }
   }
 }

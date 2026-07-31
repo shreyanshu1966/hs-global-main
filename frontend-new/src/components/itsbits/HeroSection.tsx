@@ -37,14 +37,14 @@ const HeroSection = ({ slides: _slides = [], autoplayInterval = 5000 }: HeroSect
       ctaLink: '/products/leather',
     },
     {
-      backgroundImage: `${CLOUDINARY_BASE}/Banner3-des.webp?v=1785431217`,
+      backgroundImage: `${CLOUDINARY_BASE}/Banner3-des-ratio-fixed.webp?v=1785509147`,
       mobileBackgroundImage: `${CLOUDINARY_BASE}/Banner3-mob.webp?v=1785431221`,
       heading: 'HS Global Export - Wooden Furniture',
       alt: 'Hand-carved wooden dining table and chairs with inlay detailing - HS Global Export wooden furniture collection',
       ctaLink: '/products/wooden-furniture',
     },
     {
-      backgroundImage: `${CLOUDINARY_BASE}/Banner4-des.webp?v=1785431227`,
+      backgroundImage: `${CLOUDINARY_BASE}/Banner4-des-ratio-fixed.webp?v=1785509149`,
       mobileBackgroundImage: `${CLOUDINARY_BASE}/Banner4-mob.webp?v=1785431231`,
       heading: "HS Global Export - Nature's Masterpiece, Timeless Luxury",
       alt: 'Illuminated purple semi-precious stone slab bar counter and wall cladding - HS Global Export semi-precious stone collection',
