@@ -245,7 +245,6 @@ const Header = () => {
     { label: 'Leather Furniture', mobileLabel: 'Leather Furniture', href: '/products/leather', megaMenuType: 'leather' },
     { label: 'Semi Precious Stone', mobileLabel: 'Semi Precious Stone', href: '/products/semi-precious-stone', megaMenuType: 'semi-precious-stone' },
     { label: 'Gallery', mobileLabel: 'Gallery', href: '/gallery' },
-    { label: 'Shipping', mobileLabel: 'Shipping', href: '/shipping' },
     { label: 'Journal', mobileLabel: 'Journal', href: '/blog' },
     { label: 'Custom Bulk Order', mobileLabel: 'Custom Bulk Order', href: '/contact', isSale: true },
   ];

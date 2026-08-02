@@ -72,7 +72,6 @@ const Footer = () => {
                 <a href="/products/furniture" className="itsbits-footer-link hover:underline">Marble Furniture</a>
                 <a href="/products/furniture/coffee-table" className="itsbits-footer-link hover:underline">Marble Coffee Tables</a>
                 <a href="/products/furniture/console-table" className="itsbits-footer-link hover:underline">Marble Console Tables</a>
-                <a href="/shipping" className="itsbits-footer-link hover:underline">Custom Shipping</a>
                 <a href="/gallery" className="itsbits-footer-link hover:underline">Project Gallery</a>
                 <a href="/contact" className="itsbits-footer-link hover:underline">Request Quote</a>
               </div>
@@ -83,7 +82,6 @@ const Footer = () => {
                 <h3 className="itsbits-footer-heading">Global Buyers</h3>
                 <div className="itsbits-footer-link-list">
                   <a href="/contact" className="itsbits-footer-link hover:underline">Bulk Inquiry</a>
-                  <a href="/shipping" className="itsbits-footer-link hover:underline">Export Logistics</a>
                   <a href="/about" className="itsbits-footer-link hover:underline">Our Process</a>
                 </div>
               </div>
@@ -93,7 +91,6 @@ const Footer = () => {
               <h3 className="itsbits-footer-heading">Our Company</h3>
               <div className="itsbits-footer-link-list">
                 <a href="/about" className="itsbits-footer-link hover:underline">About Us</a>
-                <a href="/shipping" className="itsbits-footer-link hover:underline">Shipping</a>
                 <a href="/gallery" className="itsbits-footer-link hover:underline">Projects</a>
                 <a href="/blog" className="itsbits-footer-link hover:underline">Journal</a>
                 <a href="/contact" className="itsbits-footer-link hover:underline">Contact</a>
