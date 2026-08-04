@@ -1,0 +1,221 @@
+[
+  {
+    "productId": "brass-inlay-wooden-coffee-table-vintage-accent-table",
+    "productSpecifications": {
+      "details": {
+        "overall_shape": "Rectangle",
+        "material": "Solid Wood with Brass Inlay",
+        "base_type": "Curved Wooden Legs (Opium Style)",
+        "top_color": "Walnut Brown Wood with Brass",
+        "natural_variation_type": "Natural Wood Grain Variation",
+        "detailing": "Hand-Embossed Brass Inlay with Geometric & Floral Pattern",
+        "mixed_materials": "Yes"
+      }
+    }
+  },
+  {
+    "productId": "round-wooden-coffee-table-brass-inlay-accent-table",
+    "productSpecifications": {
+      "details": {
+        "overall_shape": "Round",
+        "material": "Solid Wood with Brass Inlay",
+        "base_type": "Curved Wooden Splayed Legs",
+        "top_color": "Walnut Brown Wood with Brass",
+        "natural_variation_type": "Natural Wood Grain Variation",
+        "detailing": "Brass Inlay Border with Central Embossed Medallion",
+        "mixed_materials": "Yes"
+      }
+    }
+  },
+  {
+    "productId": "wooden-coffee-table-brass-inlay-rustic-center-table",
+    "productSpecifications": {
+      "details": {
+        "overall_shape": "Rectangle",
+        "material": "Solid Wood with Brass Inlay",
+        "base_type": "Turned Wooden Legs with Iron Corner Brackets",
+        "top_color": "Rustic Brown Wood with Brass",
+        "natural_variation_type": "Natural Wood Grain Variation",
+        "detailing": "Brass Inlay Panel Top with Hand-Carved Apron",
+        "mixed_materials": "Yes"
+      }
+    }
+  },
+  {
+    "productId": "brass-inlay-console-table-wooden-entryway-table-3-drawer",
+    "productSpecifications": {
+      "details": {
+        "overall_shape": "Rectangle",
+        "material": "Solid Wood with Brass Cladding",
+        "base_type": "Turned Wooden Legs with Lower Shelf",
+        "top_color": "Antique Brass / Gold with Brown Wood",
+        "natural_variation_type": "Natural Wood Grain Variation",
+        "detailing": "Hand-Embossed Brass Sheet Cladding",
+        "mixed_materials": "Yes"
+      }
+    },
+    "customSpecs": [ { "label": "Drawers", "value": "3" } ]
+  },
+  {
+    "productId": "elephant-brass-inlay-wooden-sideboard-cabinet-large-storage",
+    "productSpecifications": {
+      "details": {
+        "overall_shape": "Rectangle",
+        "material": "Solid Wood with Brass Panels",
+        "base_type": "Solid Wood Plinth Base",
+        "top_color": "Walnut Brown Wood with Brass",
+        "natural_variation_type": "Natural Wood Grain Variation",
+        "detailing": "Brass Embossed Elephant Door Panels with Brass Studs",
+        "mixed_materials": "Yes"
+      }
+    },
+    "customSpecs": [ { "label": "Doors", "value": "4" } ]
+  },
+  {
+    "productId": "hand-carved-wooden-sideboard-peacock-cabinet",
+    "productSpecifications": {
+      "details": {
+        "overall_shape": "Rectangle",
+        "material": "Solid Wood with Brass Panels",
+        "base_type": "Solid Wood Plinth Base",
+        "top_color": "Walnut Brown Wood with Brass",
+        "natural_variation_type": "Natural Wood Grain Variation",
+        "detailing": "Hand-Carved with Brass Embossed Peacock / Tree-of-Life Panels",
+        "mixed_materials": "Yes"
+      }
+    },
+    "customSpecs": [ { "label": "Doors", "value": "4" } ]
+  },
+  {
+    "productId": "large-wooden-dining-table-set-brass-inlay-6-chairs",
+    "productSpecifications": {
+      "details": {
+        "overall_shape": "Round",
+        "material": "Solid Wood with Brass Inlay",
+        "base_type": "Wooden Pedestal Base",
+        "top_color": "Walnut Brown Wood with Brass",
+        "natural_variation_type": "Natural Wood Grain Variation",
+        "detailing": "Brass Inlay Apron Band with Matching Wooden Chairs",
+        "mixed_materials": "Yes"
+      }
+    }
+  },
+  {
+    "productId": "round-wooden-dining-table-set-brass-inlay-4-chairs",
+    "productSpecifications": {
+      "details": {
+        "overall_shape": "Round",
+        "material": "Solid Wood with Brass Inlay",
+        "base_type": "Wooden Pedestal Base",
+        "top_color": "Walnut Brown Wood with Brass",
+        "natural_variation_type": "Natural Wood Grain Variation",
+        "detailing": "Brass Inlay Apron Band with Matching Wooden Chairs",
+        "mixed_materials": "Yes"
+      }
+    }
+  },
+  {
+    "productId": "brass-embossed-bedside-cabinet-vintage-storage-table",
+    "productSpecifications": {
+      "details": {
+        "overall_shape": "Square",
+        "material": "Solid Wood with Brass Cladding",
+        "base_type": "Straight Wooden Legs",
+        "top_color": "Antique Brass / Gold",
+        "natural_variation_type": "Natural Wood Grain Variation",
+        "detailing": "Hand-Embossed Brass Sheet with Animal Motifs",
+        "mixed_materials": "Yes"
+      }
+    },
+    "customSpecs": [ { "label": "Drawers", "value": "2" } ]
+  },
+  {
+    "productId": "brass-inlay-5-drawer-bedside-chest-wooden-storage-table",
+    "productSpecifications": {
+      "details": {
+        "overall_shape": "Rectangle",
+        "material": "Solid Wood with Brass Drawer Fronts",
+        "base_type": "Tapered Wooden Legs",
+        "top_color": "Dark Espresso Wood with Antique Brass",
+        "natural_variation_type": "Natural Wood Grain Variation",
+        "detailing": "Brass Embossed Drawer Fronts with Brass Knobs",
+        "mixed_materials": "Yes"
+      }
+    },
+    "customSpecs": [ { "label": "Drawers", "value": "5" } ]
+  },
+  {
+    "productId": "brass-inlay-console-table-wooden-entryway-desk-4-drawer",
+    "productSpecifications": {
+      "details": {
+        "overall_shape": "Rectangle",
+        "material": "Solid Wood with Brass Drawer Fronts",
+        "base_type": "Cabriole Wooden Legs",
+        "top_color": "Dark Brown Wood with Brass",
+        "natural_variation_type": "Natural Wood Grain Variation",
+        "detailing": "Brass Embossed Floral Drawer Fronts",
+        "mixed_materials": "Yes"
+      }
+    },
+    "customSpecs": [ { "label": "Drawers", "value": "4" } ]
+  },
+  {
+    "productId": "brass-inlay-wooden-bedside-table-3-drawer-nightstand",
+    "productSpecifications": {
+      "details": {
+        "overall_shape": "Rectangle",
+        "material": "Solid Wood with Brass Drawer Fronts",
+        "base_type": "Tapered Wooden Legs",
+        "top_color": "Dark Espresso Wood with Antique Brass",
+        "natural_variation_type": "Natural Wood Grain Variation",
+        "detailing": "Brass Embossed Drawer Fronts with Brass Edged Top",
+        "mixed_materials": "Yes"
+      }
+    },
+    "customSpecs": [ { "label": "Drawers", "value": "3" } ]
+  },
+  {
+    "productId": "brass-inlay-wooden-side-table-vintage-accent-nightstand",
+    "productSpecifications": {
+      "details": {
+        "overall_shape": "Square",
+        "material": "Solid Wood with Brass Inlay",
+        "base_type": "Cabriole Wooden Legs with Cross Stretcher",
+        "top_color": "Walnut Brown Wood with Brass",
+        "natural_variation_type": "Natural Wood Grain Variation",
+        "detailing": "Brass Inlay on Legs & Apron with Embossed Drawer Front",
+        "mixed_materials": "Yes"
+      }
+    },
+    "customSpecs": [ { "label": "Drawers", "value": "1" } ]
+  },
+  {
+    "productId": "vintage-brass-inlay-wooden-chest-of-drawers-table",
+    "productSpecifications": {
+      "details": {
+        "overall_shape": "Rectangle",
+        "material": "Solid Wood with Brass Drawer Fronts",
+        "base_type": "Curved Cabriole Wooden Legs",
+        "top_color": "Black Wood with Antique Brass",
+        "natural_variation_type": "Natural Wood Grain Variation",
+        "detailing": "Brass Embossed Drawer Fronts in Bombe / Serpentine Form",
+        "mixed_materials": "Yes"
+      }
+    },
+    "customSpecs": [ { "label": "Drawers", "value": "3" } ]
+  },
+  {
+    "productId": "wooden-brass-inlay-sofa-bench-traditional-accent-sofa",
+    "productSpecifications": {
+      "details": {
+        "overall_shape": "Rectangle",
+        "material": "Solid Wood with Brass Inlay",
+        "base_type": "Solid Wood Base with Scrolled Arms",
+        "top_color": "Dark Walnut Wood with Brass",
+        "natural_variation_type": "Natural Wood Grain Variation",
+        "detailing": "Brass Inlay Border with Embossed Medallions, Scroll-Arm Sleigh Design",
+        "mixed_materials": "Yes"
+      }
+    }
+  }
+]

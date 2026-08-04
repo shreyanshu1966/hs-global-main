@@ -1,0 +1,685 @@
+{
+  "generatedAt": "2026-07-09T05:13:59.039Z",
+  "totalProducts": 69,
+  "matchedCount": 68,
+  "unmatchedCount": 1,
+  "unusedFolderCount": 9,
+  "matched": [
+    {
+      "productId": "African-Carnelian",
+      "name": "African Carnelian",
+      "subcategory": "Agate",
+      "currentImageCount": 6,
+      "localFolder": "25-05-26/AFRICAN CARNALIN",
+      "localImageCount": 6,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Black-Agate",
+      "name": "Black Agate",
+      "subcategory": "Agate",
+      "currentImageCount": 6,
+      "localFolder": "25-05-26/BLACK AGATE",
+      "localImageCount": 6,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Blue-Agate",
+      "name": "BlueAgate",
+      "subcategory": "Agate",
+      "currentImageCount": 7,
+      "localFolder": "26-05-26/BLUE AGATE",
+      "localImageCount": 7,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Brown-Agate",
+      "name": "Brown Agate",
+      "subcategory": "Agate",
+      "currentImageCount": 6,
+      "localFolder": "26-05-26/BROWN AGATE",
+      "localImageCount": 6,
+      "sharedFolder": false
+    },
+    {
+      "productId": "crystal-agate",
+      "name": "Crystal Agate",
+      "subcategory": "Agate",
+      "currentImageCount": 6,
+      "localFolder": "26-05-26/CRYSTAL AGATE",
+      "localImageCount": 7,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Crystal-Agate-With-Golden-Glitter",
+      "name": "Crystal Agate With Golden Glitter",
+      "subcategory": "Agate",
+      "currentImageCount": 6,
+      "localFolder": "26-05-26/CRYSTAL AGATE GOLD GLITTER",
+      "localImageCount": 7,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Yellow-Agate",
+      "name": "Yellow Agate",
+      "subcategory": "Agate",
+      "currentImageCount": 6,
+      "localFolder": "25-05-26/YELLOW AGATE",
+      "localImageCount": 6,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Earth-Agate",
+      "name": "Earth Agate",
+      "subcategory": "Agate",
+      "currentImageCount": 6,
+      "localFolder": "26-05-26/EARTH AGATE",
+      "localImageCount": 6,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Banded-Agate-Slab",
+      "name": "Banded Agate Slab",
+      "subcategory": "Agate",
+      "currentImageCount": 7,
+      "localFolder": "26-05-26/BANDED AGATE",
+      "localImageCount": 7,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Ruby-Agate",
+      "name": "Ruby Agate",
+      "subcategory": "Agate",
+      "currentImageCount": 6,
+      "localFolder": "25-05-26/RUBY AGATE",
+      "localImageCount": 6,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Lace-Agate",
+      "name": "Lace Agate",
+      "subcategory": "Agate",
+      "currentImageCount": 6,
+      "localFolder": "25-05-26/LACE AGATE",
+      "localImageCount": 12,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Crystal-Agate",
+      "name": "Crystal Agate",
+      "subcategory": "Agate",
+      "currentImageCount": 6,
+      "localFolder": "26-05-26/CRYSTAL AGATE",
+      "localImageCount": 7,
+      "sharedFolder": true
+    },
+    {
+      "productId": "Fossil-Agate",
+      "name": "Fossil Agate",
+      "subcategory": "Agate",
+      "currentImageCount": 7,
+      "localFolder": "27-05-26/FOSSIL AGATE",
+      "localImageCount": 7,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Brazilian-Green-Agate",
+      "name": "Brazilian Green Agate",
+      "subcategory": "Agate",
+      "currentImageCount": 1,
+      "localFolder": "25-05-26/BRAZILIAN GREEN AGATE",
+      "localImageCount": 7,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Mix-Agate-Slabs",
+      "name": "Mix Agate Slabs",
+      "subcategory": "Agate",
+      "currentImageCount": 6,
+      "localFolder": "25-05-26/MIX AGATE",
+      "localImageCount": 7,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Mix-Agate",
+      "name": "Mix Agate",
+      "subcategory": "Agate",
+      "currentImageCount": 7,
+      "localFolder": "25-05-26/MIX AGATE",
+      "localImageCount": 7,
+      "sharedFolder": true
+    },
+    {
+      "productId": "Brazilian-Black-Agate",
+      "name": "Brazilian Black Agate",
+      "subcategory": "Agate",
+      "currentImageCount": 1,
+      "localFolder": "25-05-26/BRAZILIAN BLACK AGATE",
+      "localImageCount": 7,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Dendrite-Agate",
+      "name": "Dendrite Agate",
+      "subcategory": "Agate",
+      "currentImageCount": 8,
+      "localFolder": "25-05-26/DENDRITE AGATE",
+      "localImageCount": 8,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Moss-Agate",
+      "name": "Moss Agate",
+      "subcategory": "Agate",
+      "currentImageCount": 8,
+      "localFolder": "01-06-26/MOSS AGATE",
+      "localImageCount": 8,
+      "sharedFolder": false
+    },
+    {
+      "productId": "White-Quartz",
+      "name": "White Quartz",
+      "subcategory": "Agate",
+      "currentImageCount": 6,
+      "localFolder": "29-05-26/WHITE QUARTZ",
+      "localImageCount": 7,
+      "sharedFolder": false
+    },
+    {
+      "productId": "grey-agate",
+      "name": "Grey Agate",
+      "subcategory": "Agate",
+      "currentImageCount": 7,
+      "localFolder": "27-05-26/GREY AGATE",
+      "localImageCount": 8,
+      "sharedFolder": false
+    },
+    {
+      "productId": "BRAZILIAN-BLUE-AGATE",
+      "name": "BRAZILIAN BLUE AGATE",
+      "subcategory": "Agate",
+      "currentImageCount": 6,
+      "localFolder": "25-05-26/BRAZILIAN BLUE AGATE",
+      "localImageCount": 6,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Brazilian-Red-Agate",
+      "name": "Brazilian Red Agate",
+      "subcategory": "Agate",
+      "currentImageCount": 2,
+      "localFolder": "27-05-26/BRAZILIAN RED AGATE",
+      "localImageCount": 7,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Straight-Line",
+      "name": "Straight Line",
+      "subcategory": "Agate",
+      "currentImageCount": 1,
+      "localFolder": "26-05-26/STRAIGHT LINE AGATE",
+      "localImageCount": 7,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Amazonite",
+      "name": "Amazonite",
+      "subcategory": "Amazonite",
+      "currentImageCount": 7,
+      "localFolder": "01-06-26/AMAZONITE",
+      "localImageCount": 7,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Amethyst",
+      "name": "Amethyst",
+      "subcategory": "Amethyst",
+      "currentImageCount": 8,
+      "localFolder": "29-05-26/AMEHTYST",
+      "localImageCount": 8,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Malachite-Flower-Slabs",
+      "name": "Malachite Flower Slabs",
+      "subcategory": "Gemstone",
+      "currentImageCount": 6,
+      "localFolder": "27-05-26/MALACHITE FLOWER",
+      "localImageCount": 7,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Malachite",
+      "name": "Malachite",
+      "subcategory": "Gemstone",
+      "currentImageCount": 7,
+      "localFolder": "27-05-26/MALACHITE",
+      "localImageCount": 7,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Sodalite-Blue",
+      "name": "Sodalite Blue",
+      "subcategory": "Gemstone",
+      "currentImageCount": 6,
+      "localFolder": "28-05-26/SODALITE BLUE",
+      "localImageCount": 6,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Rose-Quartz",
+      "name": "Rose Quartz",
+      "subcategory": "Gemstone",
+      "currentImageCount": 6,
+      "localFolder": "29-05-26/ROSE QUARTZ",
+      "localImageCount": 7,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Lapis-Lazulli",
+      "name": "Lapis Lazulli",
+      "subcategory": "Gemstone",
+      "currentImageCount": 7,
+      "localFolder": "27-05-26/LAPIZ LAZULI",
+      "localImageCount": 7,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Labradorite",
+      "name": "Labradorite",
+      "subcategory": "Gemstone",
+      "currentImageCount": 8,
+      "localFolder": "27-05-26/LABRADORITE",
+      "localImageCount": 8,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Emerald-quartz",
+      "name": "Emerald Quartz",
+      "subcategory": "Gemstone",
+      "currentImageCount": 6,
+      "localFolder": "28-05-26/EMERALD QUARTZ",
+      "localImageCount": 6,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Red-Jasper",
+      "name": "Red Jasper",
+      "subcategory": "Jasper",
+      "currentImageCount": 1,
+      "localFolder": "01-06-26/RED JASPER",
+      "localImageCount": 7,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Jamaican-Jasper-Slabs",
+      "name": "Jamaican Jasper Slabs",
+      "subcategory": "Jasper",
+      "currentImageCount": 6,
+      "localFolder": "30-05-26/jamaican jasper",
+      "localImageCount": 6,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Angel-Jasper",
+      "name": "Angel Jasper",
+      "subcategory": "Jasper",
+      "currentImageCount": 2,
+      "localFolder": "30-05-26/angel jasper",
+      "localImageCount": 6,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Mockite-Jasper",
+      "name": "Mockite Jasper",
+      "subcategory": "Jasper",
+      "currentImageCount": 8,
+      "localFolder": "01-06-26/MOCKITE JASPER",
+      "localImageCount": 8,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Green-Jasper",
+      "name": "Green Jasper",
+      "subcategory": "Jasper",
+      "currentImageCount": 7,
+      "localFolder": "01-06-26/GREEN JASPER",
+      "localImageCount": 7,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Polychrome-Jasper",
+      "name": "Polychrome Jasper",
+      "subcategory": "Jasper",
+      "currentImageCount": 1,
+      "localFolder": "30-05-26/polychrome jasper",
+      "localImageCount": 6,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Green-Abalone",
+      "name": "Green Abalone",
+      "subcategory": "Mother Of Pearl",
+      "currentImageCount": 7,
+      "localFolder": "28-05-26/GREEN ABELONE",
+      "localImageCount": 7,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Golden Mop",
+      "name": "Golden Mop",
+      "subcategory": "Mother Of Pearl",
+      "currentImageCount": 7,
+      "localFolder": "28-05-26/GOLDEN MOP",
+      "localImageCount": 7,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Black-MOP",
+      "name": "Black MOP",
+      "subcategory": "Mother Of Pearl",
+      "currentImageCount": 7,
+      "localFolder": "28-05-26/BLACK MOP",
+      "localImageCount": 7,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Rose-Quartz-Slabs",
+      "name": "Rose Quartz Slabs",
+      "subcategory": "Quartz",
+      "currentImageCount": 6,
+      "localFolder": "29-05-26/ROSE QUARTZ",
+      "localImageCount": 7,
+      "sharedFolder": true
+    },
+    {
+      "productId": "White-Quartz-with-Sparkle",
+      "name": "White Quartz with Sparkle",
+      "subcategory": "Quartz",
+      "currentImageCount": 6,
+      "localFolder": "28-05-26/WHITE CRYSTAL QUARTZ",
+      "localImageCount": 6,
+      "sharedFolder": false
+    },
+    {
+      "productId": "White-MOP",
+      "name": "White MOP",
+      "subcategory": "Quartz",
+      "currentImageCount": 7,
+      "localFolder": "28-05-26/WHITE MOP",
+      "localImageCount": 7,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Smoky-Quartz-Dark",
+      "name": "Smoky Quartz Dark",
+      "subcategory": "Quartz",
+      "currentImageCount": 6,
+      "localFolder": "29-05-26/SMOKEY QUARTZ",
+      "localImageCount": 7,
+      "sharedFolder": false
+    },
+    {
+      "productId": "smoky-quartz-dark",
+      "name": "Smoky Quartz Dark",
+      "subcategory": "Quartz",
+      "currentImageCount": 7,
+      "localFolder": "29-05-26/SMOKEY QUARTZ",
+      "localImageCount": 7,
+      "sharedFolder": true
+    },
+    {
+      "productId": "Obsidian-Black-with-Gold",
+      "name": "Obsidian Black with Gold",
+      "subcategory": "Quartz",
+      "currentImageCount": 1,
+      "localFolder": "30-05-26/black obsidian with gold",
+      "localImageCount": 6,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Orange-Quartz",
+      "name": "Orange Quartz",
+      "subcategory": "Quartz",
+      "currentImageCount": 1,
+      "localFolder": "28-05-26/ORANGE QUARTZ",
+      "localImageCount": 7,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Green-Quartz",
+      "name": "Green Quartz",
+      "subcategory": "Quartz",
+      "currentImageCount": 8,
+      "localFolder": "28-05-26/GREEN QUARTZ",
+      "localImageCount": 8,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Septaria-Yellow",
+      "name": "Septaria Yellow",
+      "subcategory": "Quartz",
+      "currentImageCount": 6,
+      "localFolder": "01-06-26/SEPTARIAN YELLOW",
+      "localImageCount": 6,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Golden-Hematite-Quartz-Slab",
+      "name": "Golden Hematite Quartz Slab",
+      "subcategory": "Quartz",
+      "currentImageCount": 7,
+      "localFolder": "29-05-26/GOLD HEMOTIED QUARTZ",
+      "localImageCount": 7,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Golden-Quartz",
+      "name": "Golden Quartz",
+      "subcategory": "Quartz",
+      "currentImageCount": 6,
+      "localFolder": "28-05-26/Golden  Quartz",
+      "localImageCount": 6,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Hemotied-Quartz",
+      "name": "Hemotied Quartz",
+      "subcategory": "Quartz",
+      "currentImageCount": 7,
+      "localFolder": "29-05-26/HEMOTIED QUARTZ",
+      "localImageCount": 7,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Blue-Calcite",
+      "name": "Blue Calcite",
+      "subcategory": "Quartz",
+      "currentImageCount": 2,
+      "localFolder": "29-05-26/CALCITE BLUE",
+      "localImageCount": 7,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Obsidian-Black-with-Silver",
+      "name": "Obsidian Black with Silver",
+      "subcategory": "Quartz",
+      "currentImageCount": 7,
+      "localFolder": "29-05-26/BLACK OBSIDIAN WITH SILVER",
+      "localImageCount": 7,
+      "sharedFolder": false
+    },
+    {
+      "productId": "crystal-quartz-with-rose-gold",
+      "name": "Crystal Quartz with Rose Gold",
+      "subcategory": "Quartz",
+      "currentImageCount": 6,
+      "localFolder": "28-05-26/CRYSTAL QUARTZ ROSE GOLD",
+      "localImageCount": 6,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Green-Fluorite",
+      "name": "Green Fluorite",
+      "subcategory": "Semiprecious Stone",
+      "currentImageCount": 1,
+      "localFolder": "29-05-26/GREEN FLUORITE",
+      "localImageCount": 7,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Red-Carnelian-Agate-Slabs",
+      "name": "Red Carnelian Agate Slabs",
+      "subcategory": "Semiprecious Stone",
+      "currentImageCount": 7,
+      "localFolder": "29-05-26/RED CARNALIN",
+      "localImageCount": 8,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Red-Tiger-Eye",
+      "name": "Red Tiger Eye",
+      "subcategory": "Tiger eye",
+      "currentImageCount": 2,
+      "localFolder": "28-05-26/RED TIGER EYE",
+      "localImageCount": 8,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Tiger-Eye-Retro",
+      "name": "Tiger Eye Retro",
+      "subcategory": "Tiger eye",
+      "currentImageCount": 7,
+      "localFolder": "28-05-26/TIGER EYE RANDOM",
+      "localImageCount": 7,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Tiger-Eye-Blue",
+      "name": "Tiger Eye Blue",
+      "subcategory": "Tiger eye",
+      "currentImageCount": 7,
+      "localFolder": "27-05-26/TIGER EYE BLUE",
+      "localImageCount": 7,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Tiger-Eye",
+      "name": "Tiger Eye",
+      "subcategory": "Tiger eye",
+      "currentImageCount": 6,
+      "localFolder": "27-05-26/TIGER EYE",
+      "localImageCount": 7,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Black-Petrified-Wood-Retro-Slab",
+      "name": "Black Petrified Wood Retro Slab",
+      "subcategory": "petrified wood",
+      "currentImageCount": 6,
+      "localFolder": "29-05-26/BLACK PETRIFIED WOOD RETRO",
+      "localImageCount": 6,
+      "sharedFolder": false
+    },
+    {
+      "productId": "White-Petrified-Wood",
+      "name": "White Petrified Wood",
+      "subcategory": "petrified wood",
+      "currentImageCount": 6,
+      "localFolder": "29-05-26/White Petrified Wood",
+      "localImageCount": 6,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Brown-Petrified-Wood-Slabs",
+      "name": "Brown Petrified Wood Slabs",
+      "subcategory": "petrified wood",
+      "currentImageCount": 5,
+      "localFolder": "29-05-26/Brown Petrified Wood",
+      "localImageCount": 6,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Brown-Petrified-Wood-Retro-Slabs",
+      "name": "Brown Petrified Wood Retro Slabs",
+      "subcategory": "petrified wood",
+      "currentImageCount": 6,
+      "localFolder": "29-05-26/BROWN PETRIFIED WOOD RETRO",
+      "localImageCount": 6,
+      "sharedFolder": false
+    },
+    {
+      "productId": "Beige-Petrified-Wood-Slab",
+      "name": "Beige Petrified Wood Slab",
+      "subcategory": "petrified wood",
+      "currentImageCount": 7,
+      "localFolder": "29-05-26/BEIGE PETRIFIED WOOD RETRO",
+      "localImageCount": 6,
+      "sharedFolder": false
+    }
+  ],
+  "unmatchedProducts": [
+    {
+      "productId": "Golden-Hematite",
+      "name": "Golden Hematite",
+      "subcategory": "Quartz",
+      "reason": "no confident local folder (ambiguous/no shoot)"
+    }
+  ],
+  "unusedFolders": [
+    {
+      "name": "BRAZILIAN CRYSTAL AGATE",
+      "date": "26-05-26",
+      "imageCount": 6,
+      "path": "D:\\hs-global-main\\new products\\semi precious stones\\26-05-26\\BRAZILIAN CRYSTAL AGATE"
+    },
+    {
+      "name": "BRAZILIAN PURPLE AGATE",
+      "date": "26-05-26",
+      "imageCount": 6,
+      "path": "D:\\hs-global-main\\new products\\semi precious stones\\26-05-26\\BRAZILIAN PURPLE AGATE"
+    },
+    {
+      "name": "NATURAL AGATE",
+      "date": "26-05-26",
+      "imageCount": 7,
+      "path": "D:\\hs-global-main\\new products\\semi precious stones\\26-05-26\\NATURAL AGATE"
+    },
+    {
+      "name": "BLUE APETITE",
+      "date": "27-05-26",
+      "imageCount": 7,
+      "path": "D:\\hs-global-main\\new products\\semi precious stones\\27-05-26\\BLUE APETITE"
+    },
+    {
+      "name": "AFRICAN ROSE QUARTZ",
+      "date": "28-05-26",
+      "imageCount": 6,
+      "path": "D:\\hs-global-main\\new products\\semi precious stones\\28-05-26\\AFRICAN ROSE QUARTZ"
+    },
+    {
+      "name": "Crystal Agate With Gold",
+      "date": "28-05-26",
+      "imageCount": 6,
+      "path": "D:\\hs-global-main\\new products\\semi precious stones\\28-05-26\\Crystal Agate With Gold"
+    },
+    {
+      "name": "Light Golden Quartz",
+      "date": "28-05-26",
+      "imageCount": 6,
+      "path": "D:\\hs-global-main\\new products\\semi precious stones\\28-05-26\\Light Golden Quartz"
+    },
+    {
+      "name": "Smoky Quartz Dark",
+      "date": "28-05-26",
+      "imageCount": 6,
+      "path": "D:\\hs-global-main\\new products\\semi precious stones\\28-05-26\\Smoky Quartz Dark"
+    },
+    {
+      "name": "Petrified Wood Round",
+      "date": "29-05-26",
+      "imageCount": 7,
+      "path": "D:\\hs-global-main\\new products\\semi precious stones\\29-05-26\\Petrified Wood Round"
+    }
+  ]
+}

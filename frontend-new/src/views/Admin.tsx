@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { saveAdminProductsListState, consumeAdminProductsListState } from '../utils/adminProductsNav';
 import {
     getAnalytics,
     getAllUsers,
@@ -37,7 +38,8 @@ import {
     Tag,
     Percent,
     Play,
-    Bell
+    Bell,
+    ZoomIn
 } from 'lucide-react';
 import {
     BarChart,
@@ -57,8 +59,7 @@ import contactService, { Contact, ContactStats } from '../services/contactServic
 import quotationService, { Quotation, QuotationStats } from '../services/quotationService';
 import { adminProductApi } from '../modules/product/api';
 import type { AdminProduct as Product, AdminProductFormData as ProductFormData } from '../modules/product/types';
-import { formatAdminINR, DEFAULT_RATES } from '../utils/pricing';
-import { useCurrency } from '../contexts/CurrencyContext';
+import { formatAdminINR } from '../utils/pricing';
 import reviewService, { Review } from '../services/reviewService';
 import {
     fetchCustomCategories,
@@ -133,10 +134,16 @@ const Admin = () => {
     const { user, token, logout } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
+    // The app's react-router-dom shim (src/shims/react-router-dom.tsx) drops
+    // navigate() state entirely — useLocation().state is always null — so the
+    // products-list position we return to has to travel through a module-level
+    // singleton instead. See ../utils/adminProductsNav.
+    const initialListStateRef = useRef(consumeAdminProductsListState());
     const [activeTab, setActiveTab] = useState<'analytics' | 'orders' | 'users' | 'blogs' | 'contacts' | 'quotations' | 'products' | 'categories' | 'reviews' | 'homepage' | 'popups' | 'delivery-checks'>(() => {
       const tab = (location.state as any)?.tab;
       const validTabs = ['analytics', 'orders', 'users', 'blogs', 'contacts', 'quotations', 'products', 'categories', 'reviews', 'homepage', 'popups', 'delivery-checks'];
       if (tab && validTabs.includes(tab)) return tab as any;
+      if (initialListStateRef.current) return 'products';
       return 'analytics';
     });
     const [loading, setLoading] = useState(true);
@@ -196,13 +203,25 @@ const Admin = () => {
     const [showQuotationModal, setShowQuotationModal] = useState(false);
 
     // Products state
+    // Restore the products-list position (page/filters/search/scroll) when we're
+    // navigated back from the product edit page — see initialListStateRef above.
+    const restoredListState = initialListStateRef.current;
     const [products, setProducts] = useState<Product[]>([]);
-    const [productsPage, setProductsPage] = useState(1);
+    const [productsPage, setProductsPage] = useState(restoredListState?.page ?? 1);
     const [productsPagination, setProductsPagination] = useState<any>(null);
-    const [productsSearch, setProductsSearch] = useState('');
-    const [productsCategoryFilter, setProductsCategoryFilter] = useState('');
-    const [productsSubcategoryFilter, setProductsSubcategoryFilter] = useState('');
-    const [productsStatusFilter, setProductsStatusFilter] = useState('');
+    const [productsSearch, setProductsSearch] = useState(restoredListState?.search ?? '');
+    const [productsCategoryFilter, setProductsCategoryFilter] = useState(restoredListState?.category ?? '');
+    const [productsSubcategoryFilter, setProductsSubcategoryFilter] = useState(restoredListState?.subcategory ?? '');
+    const [productsStatusFilter, setProductsStatusFilter] = useState(restoredListState?.status ?? '');
+    const pendingScrollRestoreRef = useRef<number | null>(restoredListState?.scrollY ?? null);
+    const buildProductsListState = () => ({
+        page: productsPage,
+        search: productsSearch,
+        category: productsCategoryFilter,
+        subcategory: productsSubcategoryFilter,
+        status: productsStatusFilter,
+        scrollY: window.scrollY
+    });
     const [showProductModal, setShowProductModal] = useState(false);
     const [editingProduct, setEditingProduct] = useState<Product | null>(null);
     const [productFormData, setProductFormData] = useState<Partial<ProductFormData>>({});
@@ -270,6 +289,7 @@ const Admin = () => {
         subcategory?: string;
     }>>({});
     const [bulkEditSaving, setBulkEditSaving] = useState(false);
+    const [zoomImage, setZoomImage] = useState<{ images: string[]; name: string; index: number } | null>(null);
 
     // Reviews state
     const [reviews, setReviews] = useState<Review[]>([]);
@@ -316,6 +336,21 @@ const Admin = () => {
             }
         };
     }, [productsSearch]); // eslint-disable-line react-hooks/exhaustive-deps
+
+    // Restore scroll position once, after the products list we navigated back to has
+    // actually finished (re-)loading. `productsLoading` defaults to false before the
+    // load effect below has run, so we wait for a true->false transition rather than
+    // acting on that initial false — otherwise this fires on the still-empty page.
+    const hasStartedProductsLoadRef = useRef(false);
+    useEffect(() => {
+        if (activeTab !== 'products') return;
+        if (productsLoading) { hasStartedProductsLoadRef.current = true; return; }
+        if (!hasStartedProductsLoadRef.current) return;
+        if (pendingScrollRestoreRef.current === null) return;
+        const y = pendingScrollRestoreRef.current;
+        pendingScrollRestoreRef.current = null;
+        requestAnimationFrame(() => window.scrollTo(0, y));
+    }, [activeTab, productsLoading]);
 
     useEffect(() => {
         if (!user || user.role !== 'admin') {
@@ -683,7 +718,7 @@ const Admin = () => {
                 category: product.category,
                 subcategory: product.subcategory,
                 description: product.description,
-                priceUSD: product.priceUSD,
+                priceINR: product.priceINR,
                 available: product.available,
                 featured: product.featured || false,
                 hasVideo: product.hasVideo,
@@ -1022,7 +1057,7 @@ const Admin = () => {
                     category: categoryId,
                     subcategory,
                     description: product.description,
-                    priceUSD: product.priceUSD,
+                    priceINR: product.priceINR,
                     available: product.available,
                     status: product.status,
                     featured: product.featured,
@@ -1066,7 +1101,7 @@ const Admin = () => {
                     category: 'uncategorized',
                     subcategory: 'general',
                     description: product.description,
-                    priceUSD: product.priceUSD,
+                    priceINR: product.priceINR,
                     available: product.available,
                     status: product.status,
                     featured: product.featured,
@@ -1126,7 +1161,7 @@ const Admin = () => {
                     category: product.category,
                     subcategory: product.subcategory,
                     description: product.description,
-                    priceUSD: product.priceUSD,
+                    priceINR: product.priceINR,
                     available: product.available,
                     status: product.status,
                     featured: product.featured,
@@ -1173,9 +1208,6 @@ const Admin = () => {
             setBulkDiscountLoading(false);
         }
     };
-
-    const { exchangeRates } = useCurrency();
-    const inrRate = (exchangeRates['INR'] as number | undefined) || DEFAULT_RATES.INR;
 
     const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
     const authHeaders = () => ({ 'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('authToken')}` });
@@ -1259,7 +1291,7 @@ const Admin = () => {
 
         // Compute the original value for this field so we can detect no-op edits
         const originalVal = field === 'priceINR'
-            ? (original.priceUSD ? String(Math.round(original.priceUSD * inrRate)) : '')
+            ? (original.priceINR ? String(Math.round(original.priceINR)) : '')
             : String((original as any)[field] ?? '');
 
         setBulkEditChanges(prev => {
@@ -1287,9 +1319,9 @@ const Admin = () => {
                 const original = products.find(p => p.productId === productId);
                 if (!original) return Promise.resolve();
 
-                const newPriceUSD = changes.priceINR !== undefined
-                    ? Math.max(0.01, parseFloat(changes.priceINR) / inrRate)
-                    : original.priceUSD;
+                const newPriceINR = changes.priceINR !== undefined
+                    ? Math.max(0.01, parseFloat(changes.priceINR))
+                    : original.priceINR;
 
                 return adminProductApi.updateProduct(productId, {
                     productId:      original.productId,
@@ -1298,7 +1330,7 @@ const Admin = () => {
                     subcategory:    changes.subcategory    ?? original.subcategory,
                     description:    original.description,
                     subDescription: original.subDescription || '',
-                    priceUSD:       newPriceUSD,
+                    priceINR:       newPriceINR,
                     status:         changes.status          ?? original.status,
                     featured:       changes.featured        ?? (original.featured || false),
                     available:      original.available,
@@ -1310,7 +1342,6 @@ const Admin = () => {
             }));
             await loadData();
             setBulkEditChanges({});
-            setBulkEditMode(false);
         } catch (err: any) {
             alert(err.message || 'Failed to save changes');
         } finally {
@@ -2942,7 +2973,7 @@ const Admin = () => {
                                     </button>
                                     {!bulkEditMode && (
                                         <button
-                                            onClick={() => navigate('/admin/products/new')}
+                                            onClick={() => { saveAdminProductsListState(buildProductsListState()); navigate('/admin/products/new'); }}
                                             className="flex items-center gap-2 px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-semibold text-sm transition-colors shadow-sm"
                                         >
                                             <Plus className="w-4 h-4" />
@@ -3080,7 +3111,7 @@ const Admin = () => {
                                             <thead className="bg-gray-50 border-b border-gray-100">
                                                 <tr>
                                                     <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide w-12"></th>
-                                                    <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide w-14">Photo</th>
+                                                    <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide w-40">Photo</th>
                                                     <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">Name</th>
                                                     <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide w-36">Price (₹)</th>
                                                     <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide w-36">Category</th>
@@ -3094,7 +3125,7 @@ const Admin = () => {
                                                     const ch = bulkEditChanges[product.productId] || {};
                                                     const isDirty = Object.keys(ch).length > 0;
                                                     const displayName    = ch.name     ?? product.name;
-                                                    const displayPriceINR = ch.priceINR ?? (product.priceUSD ? String(Math.round(product.priceUSD * inrRate)) : '');
+                                                    const displayPriceINR = ch.priceINR ?? (product.priceINR ? String(Math.round(product.priceINR)) : '');
                                                     const displayStatus  = ch.status   ?? product.status;
                                                     const displayFeatured = ch.featured ?? (product.featured || false);
                                                     const displayCategory = ch.category ?? (product.category || '');
@@ -3118,8 +3149,20 @@ const Admin = () => {
                                                             </td>
                                                             {/* Thumbnail */}
                                                             <td className="px-4 py-3">
-                                                                <img src={product.image} alt={product.name}
-                                                                    className="w-10 h-10 object-cover rounded-lg border border-gray-100" />
+                                                                <button type="button"
+                                                                    onClick={() => {
+                                                                        const gallery = product.sortedImages?.length ? product.sortedImages
+                                                                            : product.images?.length ? product.images
+                                                                            : [product.image];
+                                                                        setZoomImage({ images: gallery, name: product.name, index: 0 });
+                                                                    }}
+                                                                    className="block cursor-zoom-in group relative">
+                                                                    <img src={product.image} alt={product.name}
+                                                                        className="w-32 h-32 object-cover rounded-lg border border-gray-100 transition-opacity group-hover:opacity-80" />
+                                                                    <span className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/20 rounded-lg transition-colors">
+                                                                        <ZoomIn className="w-6 h-6 text-white opacity-0 group-hover:opacity-100 transition-opacity drop-shadow" />
+                                                                    </span>
+                                                                </button>
                                                             </td>
                                                             {/* Name */}
                                                             <td className="px-4 py-3 min-w-[220px]">
@@ -3134,7 +3177,7 @@ const Admin = () => {
                                                                     <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm pointer-events-none">₹</span>
                                                                     <input type="number" min="0" value={displayPriceINR}
                                                                         onChange={e => handleBulkEditChange(product.productId, 'priceINR', e.target.value)}
-                                                                        className={`${cellCls('priceINR')} pl-7`} />
+                                                                        className={`${cellCls('priceINR')} pl-7 [-moz-appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`} />
                                                                 </div>
                                                             </td>
                                                             {/* Category */}
@@ -3223,6 +3266,58 @@ const Admin = () => {
                                 </div>
                             )}
 
+                            {/* ── Image zoom popup (bulk-edit thumbnails) ── */}
+                            {zoomImage && isMounted && typeof document !== 'undefined' && document.body && createPortal(
+                                <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+                                    onClick={() => setZoomImage(null)}>
+                                    <div className="relative max-w-3xl max-h-[85vh] animate-in fade-in zoom-in-95 duration-200"
+                                        onClick={e => e.stopPropagation()}>
+                                        <button onClick={() => setZoomImage(null)}
+                                            className="absolute -top-4 -right-4 w-9 h-9 flex items-center justify-center bg-white hover:bg-gray-100 rounded-full shadow-lg transition-colors">
+                                            <X className="w-5 h-5 text-gray-700" />
+                                        </button>
+
+                                        {zoomImage.images.length > 1 && (
+                                            <button type="button"
+                                                onClick={() => setZoomImage(z => z && ({ ...z, index: (z.index - 1 + z.images.length) % z.images.length }))}
+                                                className="absolute left-2 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center bg-white/90 hover:bg-white rounded-full shadow-lg transition-colors">
+                                                <ChevronLeft className="w-5 h-5 text-gray-700" />
+                                            </button>
+                                        )}
+
+                                        <img src={zoomImage.images[zoomImage.index]} alt={zoomImage.name}
+                                            className="max-w-full max-h-[85vh] rounded-xl shadow-2xl object-contain" />
+
+                                        {zoomImage.images.length > 1 && (
+                                            <button type="button"
+                                                onClick={() => setZoomImage(z => z && ({ ...z, index: (z.index + 1) % z.images.length }))}
+                                                className="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center bg-white/90 hover:bg-white rounded-full shadow-lg transition-colors">
+                                                <ChevronRight className="w-5 h-5 text-gray-700" />
+                                            </button>
+                                        )}
+
+                                        <p className="mt-3 text-center text-sm text-white/80">
+                                            {zoomImage.name}
+                                            {zoomImage.images.length > 1 && ` (${zoomImage.index + 1}/${zoomImage.images.length})`}
+                                        </p>
+
+                                        {zoomImage.images.length > 1 && (
+                                            <div className="mt-3 flex justify-center gap-2 flex-wrap max-w-full">
+                                                {zoomImage.images.map((img, i) => (
+                                                    <button key={img + i} type="button"
+                                                        onClick={() => setZoomImage(z => z && ({ ...z, index: i }))}
+                                                        className={`w-14 h-14 rounded-lg overflow-hidden border-2 transition-colors flex-shrink-0 ${
+                                                            i === zoomImage.index ? 'border-orange-500' : 'border-transparent opacity-70 hover:opacity-100'
+                                                        }`}>
+                                                        <img src={img} alt="" className="w-full h-full object-cover" />
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                                , document.body)}
+
                             {/* ── Product card grid ── */}
                             {!bulkEditMode && <div className="relative">
                                 {productsLoading && products.length === 0 && (
@@ -3303,7 +3398,10 @@ const Admin = () => {
                                                     {/* Hover action overlay */}
                                                     <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 pointer-events-none group-hover:pointer-events-auto">
                                                         <button
-                                                            onClick={() => navigate(`/admin/products/${product.productId}/edit`, { state: { product } })}
+                                                            onClick={() => {
+                                                                saveAdminProductsListState(buildProductsListState());
+                                                                navigate(`/admin/products/${product.productId}/edit`, { state: { product } });
+                                                            }}
                                                             className="p-2 bg-white rounded-full shadow-lg hover:scale-110 transition-transform"
                                                             title="Edit listing"
                                                         >
@@ -3331,14 +3429,14 @@ const Admin = () => {
                                                         <p className="text-xs text-gray-400 mb-2 capitalize">{product.subcategory}</p>
                                                         <div className="flex items-end justify-between gap-1">
                                                             <div>
-                                                                {product.priceUSD ? (
+                                                                {product.priceINR ? (
                                                                     discountActive ? (
                                                                         <div>
-                                                                            <p className="text-sm font-bold text-gray-900">{formatAdminINR(product.priceUSD * (1 - product.discount!.percentage / 100))}</p>
-                                                                            <p className="text-xs text-gray-400 line-through leading-none">{formatAdminINR(product.priceUSD)}</p>
+                                                                            <p className="text-sm font-bold text-gray-900">{formatAdminINR(product.priceINR * (1 - product.discount!.percentage / 100))}</p>
+                                                                            <p className="text-xs text-gray-400 line-through leading-none">{formatAdminINR(product.priceINR)}</p>
                                                                         </div>
                                                                     ) : (
-                                                                        <p className="text-sm font-bold text-gray-900">{formatAdminINR(product.priceUSD)}</p>
+                                                                        <p className="text-sm font-bold text-gray-900">{formatAdminINR(product.priceINR)}</p>
                                                                     )
                                                                 ) : <p className="text-xs text-gray-400 italic">Price on request</p>}
                                                             </div>
@@ -3873,18 +3971,18 @@ const Admin = () => {
                                                         <span className="text-sm text-gray-900 capitalize">{previewProduct.subcategory}</span>
                                                     </div>
 
-                                                    {previewProduct.priceUSD && (
+                                                    {previewProduct.priceINR && (
                                                         <div className="flex items-center justify-between">
                                                             <span className="text-sm font-medium text-gray-500">Price:</span>
                                                             <div className="text-right">
                                                                 {previewProduct.discount?.enabled && previewProduct.discount?.percentage ? (
                                                                     <>
                                                                         <span className="text-lg font-bold text-gray-900">
-                                                                            {formatAdminINR(Math.round(previewProduct.priceUSD * (1 - (previewProduct.discount.percentage / 100)) * 100) / 100)}
+                                                                            {formatAdminINR(Math.round(previewProduct.priceINR * (1 - (previewProduct.discount.percentage / 100)) * 100) / 100)}
                                                                         </span>
                                                                         <br />
                                                                         <span className="text-sm text-gray-500 line-through">
-                                                                            {formatAdminINR(previewProduct.priceUSD)}
+                                                                            {formatAdminINR(previewProduct.priceINR)}
                                                                         </span>
                                                                         <span className="ml-2 px-2 py-1 bg-red-100 text-red-700 text-xs rounded-full">
                                                                             {previewProduct.discount.percentage}% OFF
@@ -3892,7 +3990,7 @@ const Admin = () => {
                                                                     </>
                                                                 ) : (
                                                                     <span className="text-lg font-bold text-gray-900">
-                                                                        {formatAdminINR(previewProduct.priceUSD)}
+                                                                        {formatAdminINR(previewProduct.priceINR)}
                                                                     </span>
                                                                 )}
                                                             </div>

@@ -1,55 +1,12 @@
 'use client';
 import { useCallback, useEffect, useMemo, useRef, useState, memo } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Search, X, CheckCircle2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { getResponsiveImage } from '../utils/responsive-image-helper';
 import { GalleryItem, GalleryModal } from '../components/GalleryModal';
-
-import galleryFilesJson from '@/data/_glob-gallery.json';
-const galleryFiles = galleryFilesJson as Record<string, string>;
-
-const toTitle = (s: string) =>
-  decodeURIComponent(s.replace(/\+/g, ' '))
-    .replace(/[/_-]+/g, ' ').trim().replace(/\s+/g, ' ')
-    .replace(/\b\w/g, c => c.toUpperCase());
-
-const toSlug = (s: string) =>
-  decodeURIComponent(s.replace(/\+/g, ' '))
-    .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-
-const buildGallery = () => {
-  type Item = { id: string; title: string; category: string; image: string; code: string };
-  const interim: { path: string; title: string; category: string; image: string }[] = [];
-
-  Object.entries(galleryFiles).forEach(([absPath, url]) => {
-    const rel = absPath.replace(/^..\/..\/public\//, '').replace(/^\//, '');
-    const parts = rel.split('/').filter(Boolean);
-    const idx = parts.indexOf('gallery');
-    if (idx === -1 || !parts[idx + 1]) return;
-    const category = toTitle(parts[idx + 1]);
-    const file = parts[parts.length - 1];
-    const base = toTitle(file.replace(/\.(webp|jpg|jpeg|png)$/i, ''));
-    const responsiveUrl = getResponsiveImage(rel, 'mobile') || (url as string);
-    interim.push({ path: rel, title: base, category, image: responsiveUrl });
-  });
-
-  const byCat = new Map<string, { idx: number; list: Item[] }>();
-  interim.sort((a, b) => a.category.localeCompare(b.category) || a.title.localeCompare(b.title));
-
-  const items: Item[] = interim.map(({ path, title, category, image }) => {
-    const id = toSlug(path);
-    if (!byCat.has(category)) byCat.set(category, { idx: 1, list: [] });
-    const entry = byCat.get(category)!;
-    const code = `HS${category.slice(0, 2).toUpperCase()}${String(entry.idx).padStart(3, '0')}`;
-    entry.idx += 1;
-    const item: Item = { id, title, category, image, code };
-    entry.list.push(item);
-    return item;
-  });
-
-  const cats = Array.from(new Set(items.map(i => i.category))).sort();
-  return { items, cats: ['All', ...cats] };
-};
+import { VideoGallerySection } from '../components/VideoGallerySection';
+import { buildGallery } from '../utils/galleryData';
+import { buildVideoGallery } from '../utils/videoGalleryData';
 
 
 // ── Icons ────────────────────────────────────────────────────────────────────
@@ -79,10 +36,13 @@ const WAIcon = () => (
 
 const Gallery = memo(() => {
   const { items: allItems, cats } = useMemo(() => buildGallery(), []);
+  const { items: videoItems } = useMemo(() => buildVideoGallery(), []);
+  const [searchParams] = useSearchParams();
 
+  const [viewMode, setViewMode] = useState<'photos' | 'videos'>('photos');
   const [activeCategory, setActiveCategory] = useState('All');
-  const [searchActive, setSearchActive]     = useState(false);
-  const [searchQuery, setSearchQuery]       = useState('');
+  const [searchActive, setSearchActive]     = useState(() => !!searchParams.get('q'));
+  const [searchQuery, setSearchQuery]       = useState(() => searchParams.get('q') || '');
   const [colCount, setColCount]             = useState<3 | 2>(3);
   const [isSelectionMode, setIsSelectionMode] = useState(false);
   const [selectedItems, setSelectedItems]   = useState<Set<string>>(new Set());
@@ -147,6 +107,11 @@ const Gallery = memo(() => {
   // ── Effects ────────────────────────────────────────────────────────────────
 
   useEffect(() => {
+    const q = searchParams.get('q');
+    if (q) { setSearchQuery(q); setSearchActive(true); }
+  }, [searchParams]);
+
+  useEffect(() => {
     const tab = activeTabRef.current;
     const container = tabsScrollRef.current;
     if (!tab || !container) return;
@@ -198,7 +163,7 @@ const Gallery = memo(() => {
           if (stickyBarRef.current && window.innerWidth >= 768) {
             stickyBarRef.current.style.top = navVisible
               ? 'var(--itsbits-header-offset)'
-              : 'var(--itsbits-header-top-height)';
+              : 'calc(var(--itsbits-marquee-height, 32px) + var(--itsbits-header-top-height))';
           }
         }
 
@@ -338,9 +303,39 @@ const Gallery = memo(() => {
             <span className="inline-block w-7 h-px bg-white/12" />
             <span>{cats.length - 1} collections</span>
           </motion.div>
+
+          {videoItems.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.32 }}
+              className="inline-flex items-center gap-1 mt-7 p-1 rounded-full bg-white/[0.06] border border-white/[0.08]"
+            >
+              <button
+                onClick={() => setViewMode('photos')}
+                className={`px-4 py-1.5 rounded-full text-[11px] tracking-wide font-medium transition-colors ${
+                  viewMode === 'photos' ? 'bg-white text-black' : 'text-white/50 hover:text-white/80'
+                }`}
+              >
+                Photos
+              </button>
+              <button
+                onClick={() => setViewMode('videos')}
+                className={`px-4 py-1.5 rounded-full text-[11px] tracking-wide font-medium transition-colors ${
+                  viewMode === 'videos' ? 'bg-white text-black' : 'text-white/50 hover:text-white/80'
+                }`}
+              >
+                Videos
+              </button>
+            </motion.div>
+          )}
         </section>
       )}
 
+      {viewMode === 'videos' && <VideoGallerySection />}
+
+      {viewMode === 'photos' && (
+      <>
       {/* ── Sticky Control Bar ──────────────────────────────────────────────── */}
       <div
         ref={stickyBarRef}
@@ -691,6 +686,8 @@ const Gallery = memo(() => {
         setModalIndex={setModalIndex}
         setCurrentItem={setCurrentItem}
       />
+      </>
+      )}
     </div>
   );
 });

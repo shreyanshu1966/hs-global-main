@@ -8,7 +8,7 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 
 export const AddedToCartNotification: React.FC = () => {
-  const { state, hideAddedToCart, getRegionalEffectivePriceUSD } = useCart();
+  const { state, hideAddedToCart, getRegionalEffectivePriceINR } = useCart();
   const { formatPrice } = useCurrency();
   const notificationRef = useRef<HTMLDivElement>(null);
 
@@ -97,7 +97,7 @@ export const AddedToCartNotification: React.FC = () => {
                 <span>Qty: {state.lastAddedItem.quantity}</span>
                 <span>•</span>
                 <span className="font-semibold">
-                  {formatPrice(getRegionalEffectivePriceUSD(state.lastAddedItem))}
+                  {formatPrice(getRegionalEffectivePriceINR(state.lastAddedItem))}
                 </span>
               </div>
             </div>
@@ -117,7 +117,7 @@ export const AddedToCartNotification: React.FC = () => {
       <div className="mt-3 pt-3 border-t border-gray-100">
         <div className="flex items-center justify-between text-xs text-gray-600">
           <span>Cart Total: {formatPrice(
-            state.items.reduce((sum, item) => sum + getRegionalEffectivePriceUSD(item) * item.quantity, 0)
+            state.items.reduce((sum, item) => sum + getRegionalEffectivePriceINR(item) * item.quantity, 0)
           )}</span>
           <span>{state.items.reduce((total, item) => total + item.quantity, 0)} items</span>
         </div>

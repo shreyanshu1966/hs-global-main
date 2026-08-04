@@ -23,7 +23,7 @@ interface Product {
   images?: string[];
   category?: string;
   subcategory?: string;
-  priceUSD?: number;
+  priceINR?: number;
   available?: boolean;
   averageRating?: number;
   totalReviews?: number;

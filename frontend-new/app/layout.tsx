@@ -3,7 +3,7 @@ import { Suspense } from 'react';
 import { Inter } from 'next/font/google';
 import '@/index.css';
 import ClientProviders from '@/ClientProviders';
-import { GoogleAnalytics } from '@next/third-parties/google';
+import CookieConsent from '@/components/CookieConsent';
 import { SITE_NAME, SITE_URL } from '@/server/api';
 
 const inter = Inter({
@@ -16,31 +16,35 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Marble & Granite Furniture Manufacturer & Exporter | HS Global Export',
+    default: 'HS Global Export : Luxury Furniture & Semi Precious Stone Slabs | Bespoke Interior Products',
     template: `%s | ${SITE_NAME}`,
   },
   description:
-    'HS Global Export — premium granite & marble solutions. Handcrafted products with worldwide delivery to the USA, UK and beyond.',
+    'HS Global Export specializes in bespoke furniture, marble furniture, leather furniture, antique wooden furniture and semi precious stone slabs for the USA, UK and worldwide.',
   alternates: { canonical: '/' },
   openGraph: {
     type: 'website',
     siteName: SITE_NAME,
     url: SITE_URL,
-    title: 'Marble & Granite Furniture Manufacturer & Exporter | HS Global Export',
-    description: 'HS Global Export — premium granite & marble solutions. Handcrafted products with worldwide delivery to the USA, UK and beyond.',
+    title: 'HS Global Export : Luxury Furniture & Semi Precious Stone Slabs | Bespoke Interior Products',
+    description: 'HS Global Export specializes in bespoke furniture, marble furniture, leather furniture, antique wooden furniture and semi precious stone slabs for the USA, UK and worldwide.',
     images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: SITE_NAME }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Marble & Granite Furniture Manufacturer & Exporter | HS Global Export',
-    description: 'HS Global Export — premium granite & marble solutions. Handcrafted products with worldwide delivery to the USA, UK and beyond.',
+    title: 'HS Global Export : Luxury Furniture & Semi Precious Stone Slabs | Bespoke Interior Products',
+    description: 'HS Global Export specializes in bespoke furniture, marble furniture, leather furniture, antique wooden furniture and semi precious stone slabs for the USA, UK and worldwide.',
     images: [{ url: '/og-image.jpg', alt: SITE_NAME }],
   },
   robots: { index: true, follow: true },
   icons: {
-    icon: '/logo.svg',
-    shortcut: '/logo.svg',
-    apple: '/logo.svg',
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icon-512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: '/apple-icon.png',
   },
 };
 
@@ -61,8 +65,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Suspense>
           <ClientProviders>{children}</ClientProviders>
         </Suspense>
+        <CookieConsent gaId="G-LDEFWLFCYY" />
       </body>
-      <GoogleAnalytics gaId="G-LDEFWLFCYY" />
     </html>
   );
 }

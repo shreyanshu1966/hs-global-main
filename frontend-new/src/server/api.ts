@@ -60,7 +60,7 @@ export interface Product {
   description?: string;
   image?: string;
   images?: string[];
-  priceUSD?: number;
+  priceINR?: number;
   available?: boolean;
   status?: string;
   averageRating?: number;

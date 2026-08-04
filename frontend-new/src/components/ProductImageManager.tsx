@@ -1,7 +1,8 @@
 'use client';
 import React, { useState, useRef } from 'react';
-import { Upload, Star, Trash2, Edit, Move, Grid, Eye } from 'lucide-react';
+import { Upload, Star, Trash2, Edit, Move, Grid, Eye, Loader2 } from 'lucide-react';
 import ImageCropper from './ImageCropper';
+import { adminProductApi } from '../modules/product/api';
 
 interface ProductImage {
   id: string;
@@ -20,6 +21,9 @@ interface ProductImageManagerProps {
   aspectRatio?: number;
   allowCrop?: boolean;
   hideUploadZone?: boolean;
+  /** Required to crop already-saved images — cropping them re-uploads and
+   *  replaces the image on the product immediately (no local File to hold). */
+  productId?: string;
 }
 
 const ProductImageManager: React.FC<ProductImageManagerProps> = ({
@@ -29,11 +33,13 @@ const ProductImageManager: React.FC<ProductImageManagerProps> = ({
   maxImages = 10,
   aspectRatio,
   allowCrop = true,
-  hideUploadZone = false
+  hideUploadZone = false,
+  productId
 }) => {
   const [showCropper, setShowCropper] = useState(false);
-  const [cropImage, setCropImage] = useState<{ src: string; file: File; imageId?: string } | null>(null);
+  const [cropImage, setCropImage] = useState<{ src: string; file: File; imageId?: string; existingUrl?: string } | null>(null);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+  const [replacingImageId, setReplacingImageId] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -122,7 +128,7 @@ const ProductImageManager: React.FC<ProductImageManagerProps> = ({
     }
   };
 
-  const handleCropComplete = (croppedBlob: Blob, croppedUrl: string) => {
+  const handleCropComplete = async (croppedBlob: Blob, croppedUrl: string) => {
     if (!cropImage) return;
 
     // Convert blob to file
@@ -131,10 +137,41 @@ const ProductImageManager: React.FC<ProductImageManagerProps> = ({
       lastModified: Date.now(),
     });
 
+    if (cropImage.existingUrl && cropImage.imageId) {
+      // Already-saved image: re-upload the cropped version and replace it on
+      // the product right away, so ordering/position is preserved exactly
+      // (the create/update flow always appends new uploads at the end, which
+      // would otherwise reshuffle the gallery).
+      if (!productId) {
+        alert('Cannot crop this image: product must be saved first.');
+        setShowCropper(false);
+        setCropImage(null);
+        return;
+      }
+
+      const imageId = cropImage.imageId;
+      const oldUrl = cropImage.existingUrl;
+      setReplacingImageId(imageId);
+      setShowCropper(false);
+
+      try {
+        const res = await adminProductApi.replaceProductImage(productId, oldUrl, croppedFile);
+        const newUrl = res.data.newUrl;
+        onImagesChange(images.map(img => img.id === imageId ? { ...img, url: newUrl } : img));
+      } catch (err: any) {
+        console.error('Error replacing image:', err);
+        alert(err?.response?.data?.message || 'Failed to save cropped image');
+      } finally {
+        setReplacingImageId(null);
+        setCropImage(null);
+      }
+      return;
+    }
+
     if (cropImage.imageId) {
-      // Update existing image with cropped version
-      const newImages = images.map(img => 
-        img.id === cropImage.imageId 
+      // Update existing (not-yet-uploaded) image with cropped version
+      const newImages = images.map(img =>
+        img.id === cropImage.imageId
           ? { ...img, file: croppedFile, url: croppedUrl }
           : img
       );
@@ -143,7 +180,7 @@ const ProductImageManager: React.FC<ProductImageManagerProps> = ({
       // Add new cropped image
       addImage(croppedFile, croppedUrl);
     }
-    
+
     setShowCropper(false);
     setCropImage(null);
   };
@@ -203,10 +240,30 @@ const ProductImageManager: React.FC<ProductImageManagerProps> = ({
     setDraggedIndex(null);
   };
 
-  const handleEditImage = (image: ProductImage) => {
+  const handleEditImage = async (image: ProductImage) => {
     if (image.file) {
       setCropImage({ src: image.url, file: image.file, imageId: image.id });
       setShowCropper(true);
+      return;
+    }
+
+    if (image.isExisting) {
+      if (!productId) {
+        alert('Cannot crop this image: product must be saved first.');
+        return;
+      }
+      try {
+        const response = await fetch(image.url);
+        if (!response.ok) throw new Error('Failed to load image');
+        const blob = await response.blob();
+        const file = new File([blob], 'existing-image.jpg', { type: blob.type || 'image/jpeg' });
+        const blobUrl = URL.createObjectURL(blob);
+        setCropImage({ src: blobUrl, file, imageId: image.id, existingUrl: image.url });
+        setShowCropper(true);
+      } catch (err) {
+        console.error('Error loading image for crop:', err);
+        alert('Failed to load image for cropping');
+      }
     }
   };
 
@@ -296,11 +353,12 @@ const ProductImageManager: React.FC<ProductImageManagerProps> = ({
                         <Star className="w-3 h-3" />
                       </button>
                     )}
-                    {allowCrop && image.file && (
+                    {allowCrop && (image.file || image.isExisting) && (
                       <button
                         type="button"
                         onClick={() => handleEditImage(image)}
-                        className="p-1.5 bg-purple-600 hover:bg-purple-700 text-white rounded transition-colors"
+                        disabled={replacingImageId === image.id}
+                        className="p-1.5 bg-purple-600 hover:bg-purple-700 text-white rounded transition-colors disabled:opacity-50"
                         title="Edit/Crop image"
                       >
                         <Edit className="w-3 h-3" />
@@ -333,6 +391,13 @@ const ProductImageManager: React.FC<ProductImageManagerProps> = ({
                   <div className="absolute bottom-1 right-1 p-1 bg-white/80 rounded">
                     <Move className="w-3 h-3 text-gray-600" />
                   </div>
+
+                  {/* Cropping-in-progress overlay */}
+                  {replacingImageId === image.id && (
+                    <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                      <Loader2 className="w-5 h-5 text-white animate-spin" />
+                    </div>
+                  )}
                 </div>
               </div>
             ))}

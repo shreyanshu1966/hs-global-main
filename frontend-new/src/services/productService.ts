@@ -11,7 +11,7 @@ export interface Product {
   image: string;
   images: string[];
   sortedImages?: string[];
-  priceUSD?: number;
+  priceINR?: number;
   pricePerSqFt?: number;
   available: boolean;
   discount?: {
@@ -93,8 +93,8 @@ export interface Product {
   }[];
   variants?: {
     attributes: Record<string, string>;
-    /** null = use product base price; a number = variant-specific price in USD */
-    priceUSD: number | null;
+    /** null = use product base price; a number = variant-specific price in INR */
+    priceINR: number | null;
     stockQuantity: number;
     sku?: string | null;
     images?: string[];

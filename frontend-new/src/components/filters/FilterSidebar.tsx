@@ -4,7 +4,7 @@ import { Category } from '../../services/productService';
 
 const CATEGORY_DISPLAY_NAMES: Record<string, string> = {
   furniture: 'Marble Furniture',
-  handcrafted: 'Handcrafted Furniture',
+  'wooden-furniture': 'Wooden Furniture',
   leather: 'Leather Furniture',
   'semi-precious-stone': 'Semi Precious Stone',
 };
@@ -13,7 +13,7 @@ const getCatDisplayName = (cat: string) =>
 import { ChevronDown, X } from 'lucide-react';
 import * as Accordion from '@radix-ui/react-accordion';
 import * as Slider from '@radix-ui/react-slider';
-import { useCurrency } from '../../contexts/CurrencyContext';
+import { useCurrency, DEFAULT_RATES } from '../../contexts/CurrencyContext';
 
 interface FilterSidebarProps {
     categories: Category[];
@@ -41,8 +41,12 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
     onClearFilters,
 }) => {
     const { getCurrencySymbol, exchangeRates, currency } = useCurrency();
-    const rate = exchangeRates[currency] || exchangeRates.INR || 1;
-    
+    // minPrice/maxPrice are canonical INR. Convert to the display currency via the
+    // INR cross-rate — for the India region this is an identity (rate = 1), so the
+    // slider never drifts for the common case, matching the rest of the pricing engine.
+    const inrRate = exchangeRates.INR || DEFAULT_RATES.INR;
+    const rate = currency === 'INR' ? 1 : (exchangeRates[currency] || 1) / inrRate;
+
     // We arbitrarily choose 1,000,000 INR as the max slider value for the UI if we don't know the catalogue max
     const GLOBAL_MAX_INR = 1000000;
     const maxLocalLimit = Math.ceil(GLOBAL_MAX_INR * rate);

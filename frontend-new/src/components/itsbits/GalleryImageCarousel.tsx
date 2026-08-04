@@ -4,8 +4,7 @@ import { useHorizontalCarousel } from './useHorizontalCarousel';
 import { GalleryItem, GalleryModal } from '../GalleryModal';
 
 
-import galleryFilesJson from '@/data/_glob-gallery.json';
-const galleryFiles = galleryFilesJson as Record<string, string>;
+import { getResponsiveImage, getImagesByCategory } from '../../utils/responsive-image-helper';
 
 const toTitle = (value: string) =>
   decodeURIComponent(value)
@@ -24,9 +23,9 @@ const toSlug = (value: string) =>
 const buildGalleryItems = (): GalleryItem[] => {
   const interim: { path: string; title: string; category: string; image: string }[] = [];
 
-  Object.entries(galleryFiles).forEach(([path, url]) => {
-    const relativePath = path.replace(/^..\/..\/public\//, '').replace(/^\//, '');
-    const parts = relativePath.split('/').filter(Boolean);
+  const galleryPaths = getImagesByCategory('gallery') as string[];
+  galleryPaths.forEach((rel) => {
+    const parts = rel.split('/').filter(Boolean);
     const galleryIndex = parts.indexOf('gallery');
     if (galleryIndex === -1 || !parts[galleryIndex + 1]) {
       return;
@@ -35,12 +34,13 @@ const buildGalleryItems = (): GalleryItem[] => {
     const category = toTitle(parts[galleryIndex + 1]);
     const fileName = parts[parts.length - 1] || '';
     const title = toTitle(fileName);
+    const responsiveUrl = getResponsiveImage(rel, 'mobile') || getResponsiveImage(rel, 'desktop') || getResponsiveImage(rel, 'tablet') || rel;
 
     interim.push({
-      path: relativePath,
+      path: rel,
       title,
       category,
-      image: url,
+      image: responsiveUrl,
     });
   });
 

@@ -249,24 +249,24 @@ async function testPricingCalculatorLogic() {
     console.log('TEST 7 — pricingCalculator.js unit tests (no HTTP)');
     console.log(line());
 
-    const { getRegionalPriceUSD } = require('./utils/pricingCalculator');
+    const { getRegionalPriceINR } = require('./utils/pricingCalculator');
 
     const cases = [
-        // [label,                 priceUSD, region,   rp,                                             expected]
+        // [label,                 priceINR, region,   rp,                                             expected]
         ['No regional pricing',    1000,     'India',  null,                                           1000],
         ['Region default',         1000,     'default',{ India: { enabled:true, adjustmentType:'percentage', adjustmentValue:10 } }, 1000],
         ['% +10% India enabled',   1000,     'India',  { India: { enabled:true, adjustmentType:'percentage', adjustmentValue:10 } }, 1100],
         ['% -20% UK enabled',      1000,     'UK',     { UK:    { enabled:true, adjustmentType:'percentage', adjustmentValue:-20 } }, 800],
         ['fixed +50 UAE enabled',  1000,     'UAE',    { UAE:   { enabled:true, adjustmentType:'fixed',      adjustmentValue:50  } }, 1050],
         ['region override disabled', 1000,   'India',  { India: { enabled:false,adjustmentType:'percentage', adjustmentValue:10 } }, 1000],
-        ['zero priceUSD',          0,        'India',  { India: { enabled:true, adjustmentType:'percentage', adjustmentValue:10 } }, 0],
+        ['zero priceINR',          0,        'India',  { India: { enabled:true, adjustmentType:'percentage', adjustmentValue:10 } }, 0],
         ['negative fixed (floor 0)',100,     'UAE',    { UAE:   { enabled:true, adjustmentType:'fixed',      adjustmentValue:-200 } }, 0],
     ];
 
     let passed = 0, failed = 0;
-    for (const [label, priceUSD, region, rp, expected] of cases) {
-        const product = { priceUSD, regionalPricing: rp };
-        const result = getRegionalPriceUSD(product, region);
+    for (const [label, priceINR, region, rp, expected] of cases) {
+        const product = { priceINR, regionalPricing: rp };
+        const result = getRegionalPriceINR(product, region);
         if (Math.abs(result - expected) < 0.02) {
             pass(`${label} → $${result}`);
             passed++;

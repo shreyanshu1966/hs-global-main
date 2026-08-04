@@ -1,0 +1,44 @@
+[
+  { "n": "fu-009", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural White Marble with Glass Top", "base_type": "Marble Pebble Cluster Base",
+    "top_color": "White Marble with Glass Top", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Sculptural Pebble Cluster Base under Round Glass Top",
+    "mixed_materials": "Yes" } } },
+  { "n": "fu-010", "productSpecifications": { "details": {
+    "overall_shape": "Oval", "material": "Natural Marble / Onyx with Metal Legs", "base_type": "Bronze Metal Cylinder Legs",
+    "top_color": "White & Black Marble", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Nested Two-Table Set",
+    "mixed_materials": "Yes" } },
+    "customSpecs": [ { "label": "Set Includes", "value": "2 Tables" } ] },
+  { "n": "fu-011", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural Travertine Stone", "base_type": "Cylindrical Pedestal Legs",
+    "top_color": "Grey Travertine", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Travertine Texture & Veining", "detailing": "Organic Nested Three-Table Set",
+    "mixed_materials": "No" } },
+    "customSpecs": [ { "label": "Set Includes", "value": "3 Tables" } ] },
+  { "n": "fu-012", "productSpecifications": { "details": {
+    "overall_shape": "Oval", "material": "Natural White Marble", "base_type": "Oval Marble Pedestal Base",
+    "top_color": "White with Grey Veining", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Oval Top on Pedestal Base",
+    "mixed_materials": "No" } } },
+  { "n": "fu-013", "productSpecifications": { "details": {
+    "overall_shape": "Rectangle", "material": "Natural Pink Marble", "base_type": "Slab Marble Legs",
+    "top_color": "Pink / Rust Marble", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining & Color Variation", "detailing": "Rectangular Top on Slab Legs",
+    "mixed_materials": "No" } } },
+  { "n": "fu-014", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural Marble", "base_type": "Three Cylindrical Pedestal Legs",
+    "top_color": "Cream / Beige", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Stone Veining", "detailing": "Round Top on Three Cylinder Legs",
+    "mixed_materials": "No" } } },
+  { "n": "fu-015", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural Travertine Stone", "base_type": "Triple Sphere Base",
+    "top_color": "Beige Travertine", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Travertine Texture & Veining", "detailing": "Round Top on Triple Sphere Base",
+    "mixed_materials": "No" } } },
+  { "n": "fu-016", "productSpecifications": { "details": {
+    "overall_shape": "Irregular", "material": "Natural Marble with Textured Stone Base", "base_type": "Tapered Cone Stone Legs",
+    "top_color": "White Marble with Textured Stone", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Organic Cloud Top with Rough-Textured Edge",
+    "mixed_materials": "No" } } }
+]

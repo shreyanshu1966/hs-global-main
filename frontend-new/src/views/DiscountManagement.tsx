@@ -622,15 +622,15 @@ const DiscountManagement: React.FC = () => {
                                                                 {formatAdminINR(product.finalPrice)}
                                                             </p>
                                                             <p className="text-sm text-gray-500 line-through">
-                                                                {formatAdminINR(product.priceUSD)}
+                                                                {formatAdminINR(product.priceINR)}
                                                             </p>
                                                             <p className="text-xs text-green-600 font-medium">
-                                                                Save {formatAdminINR(product.priceUSD - product.finalPrice)}
+                                                                Save {formatAdminINR(product.priceINR - product.finalPrice)}
                                                             </p>
                                                         </div>
                                                     ) : (
                                                         <p className="font-semibold text-gray-900">
-                                                            {formatAdminINR(product.priceUSD)}
+                                                            {formatAdminINR(product.priceINR)}
                                                         </p>
                                                     )}
                                                 </td>

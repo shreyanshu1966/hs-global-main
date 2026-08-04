@@ -1,0 +1,59 @@
+{
+  "categories": {
+    "furniture": {
+      "categoryName": "Marble Furniture",
+      "navbarZero": [],
+      "customSubcategoryZero": [
+        {
+          "id": "bowl",
+          "name": "Bowl"
+        },
+        {
+          "id": "clock",
+          "name": "Clock"
+        }
+      ]
+    },
+    "semi-precious-stone": {
+      "categoryName": "Semi Precious Stone",
+      "navbarZero": [],
+      "customSubcategoryZero": []
+    },
+    "wooden-furniture": {
+      "categoryName": "Wooden Furniture",
+      "navbarZero": [],
+      "customSubcategoryZero": [
+        {
+          "id": "bench",
+          "name": "Bench"
+        },
+        {
+          "id": "stool",
+          "name": "Stool"
+        }
+      ]
+    },
+    "leather": {
+      "categoryName": "Leather",
+      "navbarZero": [],
+      "customSubcategoryZero": [
+        {
+          "id": "ottoman",
+          "name": "Ottoman"
+        },
+        {
+          "id": "armchair",
+          "name": "Armchair"
+        },
+        {
+          "id": "headboard",
+          "name": "Headboard"
+        },
+        {
+          "id": "recliner",
+          "name": "Recliner"
+        }
+      ]
+    }
+  }
+}

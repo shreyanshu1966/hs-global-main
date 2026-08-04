@@ -1,6 +1,7 @@
 'use client';
 import { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface HeroSlide {
   heading?: string;
@@ -10,6 +11,7 @@ interface HeroSlide {
   backgroundImage?: string;
   mobileBackgroundImage?: string;
   overlayOpacity?: number;
+  alt?: string;
 }
 
 interface HeroSectionProps {
@@ -21,24 +23,32 @@ const HeroSection = ({ slides: _slides = [], autoplayInterval = 5000 }: HeroSect
   const CLOUDINARY_BASE = 'https://res.cloudinary.com/dynd1aan0/image/upload/hs-global/hero';
   const slides = [
     {
-      backgroundImage: `${CLOUDINARY_BASE}/Banner1-des.webp`,
-      mobileBackgroundImage: `${CLOUDINARY_BASE}/Banner1-mob.webp`,
-      heading: 'HS Global Export',
+      backgroundImage: `${CLOUDINARY_BASE}/Banner1-des.webp?v=1785431205`,
+      mobileBackgroundImage: `${CLOUDINARY_BASE}/Banner1-mob.webp?v=1785431209`,
+      heading: 'HS Global Export - Luxury Redefined',
+      alt: 'Sculptural handcrafted marble bathtub in a luxury bathroom - HS Global Export marble furniture collection',
+      ctaLink: '/products/furniture',
     },
     {
-      backgroundImage: `${CLOUDINARY_BASE}/Banner2-des.webp`,
-      mobileBackgroundImage: `${CLOUDINARY_BASE}/Banner2-mob.webp`,
-      heading: 'HS Global Export',
+      backgroundImage: `${CLOUDINARY_BASE}/Banner2-des.webp?v=1785431211`,
+      mobileBackgroundImage: `${CLOUDINARY_BASE}/Banner2-mob.webp?v=1785431214`,
+      heading: 'HS Global Export - Timeless Comfort, Lasting Elegance',
+      alt: 'Green tufted leather chesterfield sofa in an elegant living room - HS Global Export leather furniture collection',
+      ctaLink: '/products/leather',
     },
     {
-      backgroundImage: `${CLOUDINARY_BASE}/Banner3-des.webp`,
-      mobileBackgroundImage: `${CLOUDINARY_BASE}/Banner3-mob.webp`,
-      heading: 'HS Global Export',
+      backgroundImage: `${CLOUDINARY_BASE}/Banner3-des-ratio-fixed.webp?v=1785509147`,
+      mobileBackgroundImage: `${CLOUDINARY_BASE}/Banner3-mob.webp?v=1785431221`,
+      heading: 'HS Global Export - Wooden Furniture',
+      alt: 'Hand-carved wooden dining table and chairs with inlay detailing - HS Global Export wooden furniture collection',
+      ctaLink: '/products/wooden-furniture',
     },
     {
-      backgroundImage: `${CLOUDINARY_BASE}/Banner4-des.webp`,
-      mobileBackgroundImage: `${CLOUDINARY_BASE}/Banner4-mob.webp`,
-      heading: 'HS Global Export',
+      backgroundImage: `${CLOUDINARY_BASE}/Banner4-des-ratio-fixed.webp?v=1785509149`,
+      mobileBackgroundImage: `${CLOUDINARY_BASE}/Banner4-mob.webp?v=1785431231`,
+      heading: "HS Global Export - Nature's Masterpiece, Timeless Luxury",
+      alt: 'Illuminated purple semi-precious stone slab bar counter and wall cladding - HS Global Export semi-precious stone collection',
+      ctaLink: '/products/semi-precious-stone',
     },
   ];
   
@@ -76,26 +86,33 @@ const HeroSection = ({ slides: _slides = [], autoplayInterval = 5000 }: HeroSect
               index === active ? 'opacity-100 relative z-10' : 'opacity-0 absolute inset-0 z-0'
             }`}
           >
-            {/* DESKTOP IMAGE (Hidden on mobile) */}
-            <Image
-              src={slide.backgroundImage || ''}
-              alt={slide.heading || 'HS Global Export Desktop'}
-              width={1920}
-              height={640}
-              className="hidden md:block w-full h-auto object-contain select-none"
-              priority={index === 0}
-              quality={100}
-            />
-            {/* MOBILE IMAGE (Hidden on desktop) */}
-            <Image
-              src={slide.mobileBackgroundImage || slide.backgroundImage || ''}
-              alt={slide.heading || 'HS Global Export Mobile'}
-              width={1122}
-              height={1402}
-              className="block md:hidden w-full h-auto object-contain select-none"
-              priority={index === 0}
-              quality={100}
-            />
+            <Link
+              href={slide.ctaLink || '/products'}
+              aria-label={slide.heading || 'Explore collection'}
+              className="block w-full cursor-pointer"
+              tabIndex={index === active ? 0 : -1}
+            >
+              {/* DESKTOP IMAGE (Hidden on mobile) */}
+              <Image
+                src={slide.backgroundImage || ''}
+                alt={slide.alt || slide.heading || 'HS Global Export Desktop'}
+                width={1920}
+                height={640}
+                className="hidden md:block w-full h-auto object-contain select-none"
+                priority={index === 0}
+                quality={100}
+              />
+              {/* MOBILE IMAGE (Hidden on desktop) */}
+              <Image
+                src={slide.mobileBackgroundImage || slide.backgroundImage || ''}
+                alt={slide.alt || slide.heading || 'HS Global Export Mobile'}
+                width={1122}
+                height={1402}
+                className="block md:hidden w-full h-auto object-contain select-none"
+                priority={index === 0}
+                quality={100}
+              />
+            </Link>
           </div>
         ))}
       </div>

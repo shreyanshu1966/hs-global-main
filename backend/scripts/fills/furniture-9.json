@@ -1,0 +1,32 @@
+[
+  { "n": "fu-065", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural White Marble", "base_type": "Clustered Cylinder Base",
+    "top_color": "White with Grey Veining", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Clustered Half-Cylinder Form",
+    "mixed_materials": "No" } } },
+  { "n": "fu-066", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural Marble", "base_type": "Hourglass (Diabolo) Base",
+    "top_color": "Brown / Green Marble", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining & Color Variation", "detailing": "Sculptural Hourglass Diabolo Form",
+    "mixed_materials": "No" } } },
+  { "n": "fu-067", "productSpecifications": { "details": {
+    "overall_shape": "Rectangle", "material": "Natural Travertine Stone", "base_type": "Z-Shaped Base",
+    "top_color": "Grey Travertine", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Travertine Texture & Veining", "detailing": "Minimalist Z-Shape Cantilever",
+    "mixed_materials": "No" } } },
+  { "n": "fu-068", "productSpecifications": { "details": {
+    "overall_shape": "Rectangle", "material": "Natural Travertine with Wood Top", "base_type": "Travertine Slab Base with Wood Accent",
+    "top_color": "Walnut Wood with Beige Travertine", "wood_species": "Walnut Wood",
+    "natural_variation_type": "Natural Travertine Texture & Veining", "detailing": "C-Shape Slab with Wood Top Accent",
+    "mixed_materials": "Yes" } } },
+  { "n": "fu-069", "productSpecifications": { "details": {
+    "overall_shape": "Square", "material": "Natural Marble", "base_type": "Block Leg Base",
+    "top_color": "Brown / Multicolor Marble", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining & Color Variation", "detailing": "Natural-Edge Organic Top on Block Legs",
+    "mixed_materials": "No" } } },
+  { "n": "fu-070", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural Travertine Stone", "base_type": "Sphere-on-Cube Pedestal",
+    "top_color": "Beige Travertine", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Travertine Texture & Veining", "detailing": "Round Top on Sphere & Cube Base",
+    "mixed_materials": "No" } } }
+]

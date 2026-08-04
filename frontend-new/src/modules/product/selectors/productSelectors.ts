@@ -1,6 +1,6 @@
 'use client';
 import { LegacyProduct } from '../types';
-import { geteffectivePriceUSD } from '../pricing/priceSelectors';
+import { geteffectivePriceINR } from '../pricing/priceSelectors';
 
 export const getProductPrimaryImage = (product: LegacyProduct): string => {
   if (product.image) {
@@ -20,4 +20,4 @@ export const getProductDisplayImages = (product: LegacyProduct): string[] => {
 };
 
 export const isProductDiscounted = (product: LegacyProduct): boolean =>
-  geteffectivePriceUSD(product) < (product.priceUSD || 0);
+  geteffectivePriceINR(product) < (product.priceINR || 0);

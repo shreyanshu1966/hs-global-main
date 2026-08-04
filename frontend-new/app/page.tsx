@@ -1,21 +1,35 @@
 import type { Metadata } from 'next';
 import { getPageSeo, absoluteImage, SITE_NAME, SITE_URL } from '@/server/api';
+import { HOME_FAQ_ITEMS } from '@/data/homeFaq';
+import { TESTIMONIALS, TESTIMONIALS_AVG_RATING } from '@/data/testimonials';
 import Client from './client';
 
 export const revalidate = 3600;
 
+const FALLBACK_KEYWORDS = [
+  'HS Global Export', 'Luxury Furniture', 'Bespoke Furniture', 'Luxury Home Furniture',
+  'Bespoke Interior Design', 'Semi Precious Stone Slabs', 'Agate Slabs', 'Gemstone Slabs',
+  'Furniture Exporter', 'Marble Furniture Manufacturer', 'Luxury Furniture Manufacturer',
+  'Luxury Furniture Exporter', 'Natural Stone Exporter', 'USA Furniture Supplier',
+  'UK Furniture Supplier', 'Global Furniture Exporter in USA', 'United States', 'UK',
+  'United Kingdom', 'Europe', 'Australia', 'Saudi Arabia', 'Dubai', 'UAE', 'Netherlands',
+  'Canada', 'Singapore', 'South Africa', 'Global Exporter',
+];
+
 export async function generateMetadata(): Promise<Metadata> {
   const seo = await getPageSeo('/');
   const title =
-    seo?.title || 'Marble & Granite Furniture Manufacturer & Exporter | HS Global Export';
+    seo?.title || 'HS Global Export : Luxury Furniture & Semi Precious Stone Slabs | Bespoke Interior Products';
   const description =
     seo?.description ||
-    'HS Global Export — premium granite & marble solutions. Handcrafted products with worldwide delivery to the USA, UK and beyond.';
+    'HS Global Export specializes in bespoke furniture, marble furniture, leather furniture, antique wooden furniture and semi precious stone slabs for the USA, UK and worldwide.';
+  const keywords = seo?.keywords?.length ? seo.keywords : FALLBACK_KEYWORDS;
   const canonical = seo?.canonical || SITE_URL;
   const image = seo?.image ? absoluteImage(seo.image) : `${SITE_URL}/og-image.jpg`;
   return {
     title: { absolute: title },
     description,
+    keywords,
     alternates: { canonical },
     openGraph: { title, description, url: canonical, images: [{ url: image, width: 1200, height: 630, alt: SITE_NAME }] },
     twitter: { card: 'summary_large_image', title, description, images: [{ url: image, alt: SITE_NAME }] },
@@ -36,6 +50,31 @@ const organizationLd = {
     availableLanguage: 'English',
   },
   sameAs: [],
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: TESTIMONIALS_AVG_RATING,
+    reviewCount: TESTIMONIALS.length,
+    bestRating: 5,
+    worstRating: 1,
+  },
+  review: TESTIMONIALS.map((t) => ({
+    '@type': 'Review',
+    reviewRating: { '@type': 'Rating', ratingValue: t.rating, bestRating: 5, worstRating: 1 },
+    author: { '@type': 'Person', name: t.name },
+    reviewBody: t.quote,
+  })),
+};
+
+// FAQPage structured data for the home-page FAQ accordion — shares its source
+// data with the HomeFAQ component so the markup and visible copy stay in sync.
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: HOME_FAQ_ITEMS.map((f) => ({
+    '@type': 'Question',
+    name: f.question,
+    acceptedAnswer: { '@type': 'Answer', text: f.answer },
+  })),
 };
 
 const websiteLd = {
@@ -67,6 +106,7 @@ export default function Page() {
       />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
       <Client />
     </>
   );

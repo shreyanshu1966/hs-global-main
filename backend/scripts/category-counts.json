@@ -1,0 +1,127 @@
+{
+  "total": 92,
+  "byCategory": [
+    {
+      "_id": "furniture",
+      "count": 85
+    },
+    {
+      "_id": "semi-precious-stone",
+      "count": 7
+    }
+  ],
+  "bySubcategory": [
+    {
+      "_id": {
+        "category": "furniture",
+        "subcategory": "Sink"
+      },
+      "count": 21
+    },
+    {
+      "_id": {
+        "category": "furniture",
+        "subcategory": "Side Table"
+      },
+      "count": 18
+    },
+    {
+      "_id": {
+        "category": "furniture",
+        "subcategory": "Bathtub"
+      },
+      "count": 8
+    },
+    {
+      "_id": {
+        "category": "furniture",
+        "subcategory": "Console Table"
+      },
+      "count": 8
+    },
+    {
+      "_id": {
+        "category": "furniture",
+        "subcategory": "Coffee Table"
+      },
+      "count": 7
+    },
+    {
+      "_id": {
+        "category": "furniture",
+        "subcategory": "Pedestal Sink"
+      },
+      "count": 6
+    },
+    {
+      "_id": {
+        "category": "furniture",
+        "subcategory": "Mirror Frame"
+      },
+      "count": 3
+    },
+    {
+      "_id": {
+        "category": "furniture",
+        "subcategory": "Bowl"
+      },
+      "count": 3
+    },
+    {
+      "_id": {
+        "category": "furniture",
+        "subcategory": "Lamp"
+      },
+      "count": 3
+    },
+    {
+      "_id": {
+        "category": "furniture",
+        "subcategory": "Center Table"
+      },
+      "count": 2
+    },
+    {
+      "_id": {
+        "category": "furniture",
+        "subcategory": "Dining Table"
+      },
+      "count": 2
+    },
+    {
+      "_id": {
+        "category": "furniture",
+        "subcategory": "Clock"
+      },
+      "count": 2
+    },
+    {
+      "_id": {
+        "category": "furniture",
+        "subcategory": "Vase"
+      },
+      "count": 1
+    },
+    {
+      "_id": {
+        "category": "furniture",
+        "subcategory": "Chaise Chair"
+      },
+      "count": 1
+    },
+    {
+      "_id": {
+        "category": "semi-precious-stone",
+        "subcategory": "Agate"
+      },
+      "count": 6
+    },
+    {
+      "_id": {
+        "category": "semi-precious-stone",
+        "subcategory": "Quartz"
+      },
+      "count": 1
+    }
+  ]
+}

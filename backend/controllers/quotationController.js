@@ -4,13 +4,13 @@ const { sendQuotationNotificationEmail, sendQuotationConfirmationEmail } = requi
 // Submit quotation request
 exports.submitQuotationRequest = async (req, res) => {
     try {
-        const { name, email, mobile, productName, finish, thickness, requirement } = req.body;
+        const { name, email, mobile, productName, finish, thickness, requirement, notes, category } = req.body;
 
-        // Validation
-        if (!name || !email || !mobile || !productName || !finish || !thickness || !requirement) {
+        // Validation — finish/thickness/requirement are optional (not all product forms collect them)
+        if (!name || !email || !mobile || !productName) {
             return res.status(400).json({
                 ok: false,
-                error: 'All fields are required'
+                error: 'Name, email, mobile and product are required'
             });
         }
 
@@ -32,11 +32,11 @@ exports.submitQuotationRequest = async (req, res) => {
             });
         }
 
-        // Requirement validation
-        if (requirement < 1) {
+        // Requirement validation (optional field — only validate when provided)
+        if (requirement !== undefined && requirement !== null && requirement !== '' && Number(requirement) < 0) {
             return res.status(400).json({
                 ok: false,
-                error: 'Requirement must be at least 1 sq ft'
+                error: 'Requirement cannot be negative'
             });
         }
 
@@ -50,9 +50,11 @@ exports.submitQuotationRequest = async (req, res) => {
             email: email.trim().toLowerCase(),
             mobile: mobile.trim(),
             productName: productName.trim(),
-            finish: finish.trim(),
-            thickness: thickness.trim(),
-            requirement: parseInt(requirement),
+            finish: (finish || '').trim(),
+            thickness: (thickness || '').trim(),
+            requirement: requirement ? parseInt(requirement) : 0,
+            notes: (notes || '').trim(),
+            category: category || 'slabs',
             ipAddress,
             userAgent
         };

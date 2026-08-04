@@ -555,6 +555,74 @@ const reorderProductImages = async (req, res) => {
 };
 
 /**
+ * Replace a single existing product image in place (used by the admin
+ * "crop image" tool for already-saved images). Uploads the new file,
+ * swaps it into `images`/`sortedImages` at the same position as `oldUrl`
+ * (and updates `image` if it was the main photo), then deletes the old
+ * Cloudinary asset. Keeps gallery ordering untouched, unlike the
+ * create/update flow which always appends new uploads at the end.
+ */
+const replaceProductImage = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { oldUrl } = req.body;
+        const file = req.file;
+
+        if (!file) {
+            return res.status(400).json({ success: false, message: 'No image file provided' });
+        }
+        if (!oldUrl) {
+            return res.status(400).json({ success: false, message: 'oldUrl is required' });
+        }
+
+        const product = await Product.findOne({ productId: id });
+        if (!product) {
+            return res.status(404).json({ success: false, message: 'Product not found' });
+        }
+
+        if (!(product.images || []).includes(oldUrl)) {
+            return res.status(400).json({ success: false, message: 'oldUrl does not belong to this product' });
+        }
+
+        const result = await uploadToCloudinary(
+            file.buffer,
+            `hs-global/products/${product.category}/${product.subcategory}`
+        );
+        const newUrl = result.secure_url;
+
+        const replaceInArray = (arr) => (arr || []).map(url => url === oldUrl ? newUrl : url);
+        const baseSortedImages = (product.sortedImages && product.sortedImages.length) ? product.sortedImages : product.images;
+
+        product.sortedImages = replaceInArray(baseSortedImages);
+        product.images = replaceInArray(product.images);
+        if (product.image === oldUrl) {
+            product.image = newUrl;
+        }
+        product.updatedAt = new Date();
+        await product.save();
+
+        try {
+            await deleteMultipleFromCloudinary([oldUrl]);
+        } catch (deleteError) {
+            console.error('Error deleting replaced image from Cloudinary:', deleteError);
+        }
+
+        res.json({
+            success: true,
+            data: { newUrl, images: product.images, sortedImages: product.sortedImages, image: product.image },
+            message: 'Image replaced successfully'
+        });
+    } catch (error) {
+        console.error('Replace image error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to replace image',
+            error: error.message
+        });
+    }
+};
+
+/**
  * Get all subcategories for a category
  */
 const getSubcategories = async (req, res) => {
@@ -664,8 +732,8 @@ const previewProduct = async (req, res) => {
             isPreview: true,
             previewTimestamp: new Date().toISOString(),
             // Calculate discount price if applicable
-            discountedPrice: productData.discount?.enabled && productData.priceUSD 
-                ? Math.round(productData.priceUSD * (1 - productData.discount.percentage / 100))
+            discountedPrice: productData.discount?.enabled && productData.priceINR
+                ? Math.round(productData.priceINR * (1 - productData.discount.percentage / 100))
                 : null
         };
 
@@ -1032,7 +1100,7 @@ const getDiscountedProducts = async (req, res) => {
         
         const [products, total] = await Promise.all([
             Product.find(query)
-                .select('productId name category subcategory priceUSD discount image')
+                .select('productId name category subcategory priceINR discount image')
                 .skip(skip)
                 .limit(parseInt(limit))
                 .sort({ 'discount.endDate': 1 }),
@@ -1450,29 +1518,19 @@ const bulkAdjustPrice = async (req, res) => {
             return res.status(400).json({ success: false, message: 'direction must be increase or decrease' });
         }
 
-        // Get live INR rate for fixed_inr conversion
-        let inrRate = 83.5;
-        if (adjustType === 'fixed_inr') {
-            try {
-                const Currency = require('../models/Currency');
-                const currencyDoc = await Currency.findOne({ base: 'USD' });
-                if (currencyDoc?.rates?.INR) inrRate = currencyDoc.rates.INR;
-            } catch { /* use fallback */ }
-        }
-
-        const products = await Product.find({ productId: { $in: productIds }, priceUSD: { $exists: true, $gt: 0 } });
+        const products = await Product.find({ productId: { $in: productIds }, priceINR: { $exists: true, $gt: 0 } });
         let updated = 0;
         for (const product of products) {
             let newPrice;
             if (adjustType === 'percentage') {
                 const multiplier = direction === 'increase' ? 1 + value / 100 : 1 - value / 100;
-                newPrice = product.priceUSD * multiplier;
+                newPrice = product.priceINR * multiplier;
             } else {
-                const deltaUSD = value / inrRate;
-                newPrice = direction === 'increase' ? product.priceUSD + deltaUSD : product.priceUSD - deltaUSD;
+                // fixed_inr: value is already in INR, applied directly — no currency conversion needed
+                newPrice = direction === 'increase' ? product.priceINR + value : product.priceINR - value;
             }
             newPrice = Math.max(0.01, Math.round(newPrice * 100) / 100);
-            await Product.updateOne({ _id: product._id }, { $set: { priceUSD: newPrice } });
+            await Product.updateOne({ _id: product._id }, { $set: { priceINR: newPrice } });
             updated++;
         }
         res.json({ success: true, data: { updated }, message: `Price adjusted for ${updated} product(s)` });
@@ -1596,6 +1654,7 @@ module.exports = {
     updateProductWithImages,
     deleteProductWithImages,
     reorderProductImages,
+    replaceProductImage,
     getSubcategories,
     previewProduct,
     processProductImages,

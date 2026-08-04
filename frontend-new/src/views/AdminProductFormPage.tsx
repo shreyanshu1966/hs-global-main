@@ -22,6 +22,7 @@ export default function AdminProductFormPage() {
   const [previewLoading, setPreviewLoading]   = useState(false);
   const [previewProduct, setPreviewProduct]   = useState<any>(null);
   const [showPreview, setShowPreview]         = useState(false);
+  const [saveMessage, setSaveMessage]         = useState<string | null>(null);
 
   // If editing but product wasn't passed in nav state, fetch it
   useEffect(() => {
@@ -36,7 +37,18 @@ export default function AdminProductFormPage() {
       .finally(() => setFetchingProduct(false));
   }, [isNew, productId, editingProduct]);
 
-  const goBack = () => navigate('/admin', { state: { tab: 'products' } });
+  // The products-list position (page/filters/search/scroll) we arrived with was
+  // stashed in a module-level singleton before navigating here — Admin.tsx picks
+  // it back up on mount. See ../utils/adminProductsNav for why (router `state`
+  // doesn't survive this app's react-router-dom shim).
+  const goBack = () => navigate('/admin');
+
+  // Auto-dismiss the post-save confirmation banner
+  useEffect(() => {
+    if (!saveMessage) return;
+    const t = setTimeout(() => setSaveMessage(null), 4000);
+    return () => clearTimeout(t);
+  }, [saveMessage]);
 
   const handleSave = async (productData: any, images: any[], _customSpecs: any[], video?: File | null) => {
     setProductLoading(true);
@@ -55,12 +67,22 @@ export default function AdminProductFormPage() {
 
       const finalData = { ...productData, existingImages: existingImageUrls, imageTokens, variantImageTokens };
 
+      let saved;
       if (!isNew && editingProduct) {
-        await adminProductApi.updateProduct(editingProduct.productId, finalData, newImageFiles, video || null, !video, variantImageFiles);
+        saved = await adminProductApi.updateProduct(editingProduct.productId, finalData, newImageFiles, video || null, !video, variantImageFiles);
       } else {
-        await adminProductApi.createProduct(finalData, newImageFiles, video || null, variantImageFiles);
+        saved = await adminProductApi.createProduct(finalData, newImageFiles, video || null, variantImageFiles);
       }
-      goBack();
+
+      const savedProduct = saved?.data ?? { ...finalData };
+      setEditingProduct(savedProduct);
+      setSaveMessage(isNew ? 'Product created successfully.' : 'Product updated successfully.');
+
+      // A newly created product must switch to edit mode so a further save
+      // updates it instead of creating a duplicate.
+      if (isNew && savedProduct?.productId) {
+        navigate(`/admin/products/${savedProduct.productId}/edit`, { replace: true, state: { product: savedProduct } });
+      }
     } catch (err) {
       console.error('Error saving product:', err);
       throw err;
@@ -98,6 +120,12 @@ export default function AdminProductFormPage() {
 
   return (
     <>
+      {saveMessage && (
+        <div className="fixed top-4 right-4 z-[10000] px-4 py-3 bg-green-600 text-white text-sm font-medium rounded-lg shadow-lg">
+          {saveMessage}
+        </div>
+      )}
+
       <EnhancedProductForm
         editingProduct={isNew ? undefined : editingProduct}
         loading={productLoading}
@@ -176,16 +204,16 @@ export default function AdminProductFormPage() {
                         <dd className="text-gray-900 capitalize text-right">{val || '—'}</dd>
                       </div>
                     ))}
-                    {previewProduct.priceUSD && (
+                    {previewProduct.priceINR && (
                       <div className="flex justify-between gap-4 border-b border-gray-50 pb-2">
                         <dt className="text-gray-500 font-medium">Price</dt>
                         <dd className="text-gray-900 font-semibold">
                           {previewProduct.discount?.enabled && previewProduct.discount.percentage > 0 ? (
                             <span>
-                              <span className="text-green-600">{formatAdminINR(previewProduct.priceUSD * (1 - previewProduct.discount.percentage / 100))}</span>
-                              <span className="ml-2 text-gray-400 line-through text-xs">{formatAdminINR(previewProduct.priceUSD)}</span>
+                              <span className="text-green-600">{formatAdminINR(previewProduct.priceINR * (1 - previewProduct.discount.percentage / 100))}</span>
+                              <span className="ml-2 text-gray-400 line-through text-xs">{formatAdminINR(previewProduct.priceINR)}</span>
                             </span>
-                          ) : formatAdminINR(previewProduct.priceUSD)}
+                          ) : formatAdminINR(previewProduct.priceINR)}
                         </dd>
                       </div>
                     )}

@@ -13,8 +13,8 @@ interface CurrencyContextType {
   currency: string;
   exchangeRates: ExchangeRates;
   loading: boolean;
-  formatPrice: (amountUSD: number) => string;
-  convertFromUSD: (amountUSD: number) => number;
+  formatPrice: (amountINR: number) => string;
+  convertFromINR: (amountINR: number) => number;
   getCurrencySymbol: () => string;
   getPaymentCurrency: () => { currency: string; rate: number };
 }
@@ -23,12 +23,31 @@ export { CURRENCY_SYMBOLS, DEFAULT_RATES };
 export const SUPPORTED_CURRENCIES = ['USD', 'INR', 'GBP', 'EUR', 'AED'];
 
 const API_URL = `${process.env.NEXT_PUBLIC_API_URL || '/api'}/currency/rates`;
+const RATES_CACHE_KEY = 'currencyRatesCache';
+
+// Seed from the last successfully fetched rates (if any) instead of the
+// hardcoded DEFAULT_RATES, which can drift far from reality over time and
+// causes prices to render differently depending on whether the live fetch
+// has resolved yet on a given page load.
+const getInitialRates = (): ExchangeRates => {
+  if (typeof window === 'undefined') return DEFAULT_RATES;
+  try {
+    const cached = window.localStorage.getItem(RATES_CACHE_KEY);
+    if (cached) {
+      const parsed = JSON.parse(cached);
+      if (parsed && typeof parsed === 'object') return parsed;
+    }
+  } catch {
+    // ignore malformed cache
+  }
+  return DEFAULT_RATES;
+};
 
 const CurrencyContext = createContext<CurrencyContextType | undefined>(undefined);
 
 export const CurrencyProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const { region } = useRegion();
-  const [exchangeRates, setExchangeRates] = useState<ExchangeRates>(DEFAULT_RATES);
+  const [exchangeRates, setExchangeRates] = useState<ExchangeRates>(getInitialRates);
   const [loading, setLoading] = useState(true);
 
   // Currency is purely derived from region — no manual selection
@@ -41,9 +60,14 @@ export const CurrencyProvider: React.FC<{ children: ReactNode }> = ({ children }
         const data = await response.json();
         if (data.ok && data.rates) {
           setExchangeRates(data.rates);
+          try {
+            window.localStorage.setItem(RATES_CACHE_KEY, JSON.stringify(data.rates));
+          } catch {
+            // ignore storage quota/availability errors
+          }
         }
       } catch {
-        // keep default rates on failure
+        // keep cached/default rates on failure
       } finally {
         setLoading(false);
       }
@@ -54,16 +78,20 @@ export const CurrencyProvider: React.FC<{ children: ReactNode }> = ({ children }
     return () => clearInterval(interval);
   }, []);
 
-  const convertFromUSD = useCallback((amountUSD: number): number => {
-    if (!amountUSD || amountUSD <= 0) return 0;
-    const rate = exchangeRates[currency] || 1;
-    return Math.round(amountUSD * rate * 100) / 100;
+  // Converts a canonical INR amount to the region's display currency. For the
+  // India region (currency === 'INR') this is the identity — no rate involved.
+  const convertFromINR = useCallback((amountINR: number): number => {
+    if (!amountINR || amountINR <= 0) return 0;
+    if (currency === 'INR') return Math.round(amountINR * 100) / 100;
+    const inrRate = exchangeRates.INR || DEFAULT_RATES.INR;
+    const targetRate = exchangeRates[currency] || 1;
+    return Math.round((amountINR / inrRate) * targetRate * 100) / 100;
   }, [currency, exchangeRates]);
 
-  const formatPrice = useCallback((amountUSD: number): string => {
-    const converted = convertFromUSD(amountUSD);
+  const formatPrice = useCallback((amountINR: number): string => {
+    const converted = convertFromINR(amountINR);
     return formatCurrencyAmount(converted, currency);
-  }, [currency, convertFromUSD]);
+  }, [currency, convertFromINR]);
 
   const getCurrencySymbol = useCallback((): string => {
     return CURRENCY_SYMBOLS[currency] || '$';
@@ -78,7 +106,7 @@ export const CurrencyProvider: React.FC<{ children: ReactNode }> = ({ children }
       exchangeRates,
       loading,
       formatPrice,
-      convertFromUSD,
+      convertFromINR,
       getCurrencySymbol,
       getPaymentCurrency,
     }}>

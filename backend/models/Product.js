@@ -119,7 +119,7 @@ const productSchema = new mongoose.Schema({
     category: {
         type: String,
         required: true,
-        enum: ['furniture', 'handcrafted', 'leather', 'semi-precious-stone'],
+        enum: ['furniture', 'wooden-furniture', 'leather', 'semi-precious-stone'],
         trim: true
     },
     subcategory: {
@@ -153,7 +153,7 @@ const productSchema = new mongoose.Schema({
     sortedImages: [{
         type: String
     }],
-    priceUSD: {
+    priceINR: {
         type: Number,
         min: 0
     },
@@ -417,10 +417,10 @@ const productSchema = new mongoose.Schema({
     // Each entry is one purchasable SKU (a combination of attribute values)
     variants: [{
         attributes: { type: Map, of: String }, // e.g. { Color: "Red", Size: "Small" }
-        // If priceUSD is set it overrides the product base price; otherwise base price is used
-        priceUSD: { type: Number, default: null },
-        // compareAtPriceUSD: shown as strikethrough "was" price for this variant
-        compareAtPriceUSD: { type: Number, default: null },
+        // If priceINR is set it overrides the product base price; otherwise base price is used
+        priceINR: { type: Number, default: null },
+        // compareAtPriceINR: shown as strikethrough "was" price for this variant
+        compareAtPriceINR: { type: Number, default: null },
         stockQuantity: { type: Number, default: 0 },
         sku: { type: String, default: '' },
         images: [{ type: String }],
@@ -445,7 +445,7 @@ const productSchema = new mongoose.Schema({
         countryOfOrigin: String
     },
 
-    // Region-wise pricing adjustments (from base priceUSD)
+    // Region-wise pricing adjustments (from base priceINR)
     regionalPricing: {
         UAE: {
             enabled: { type: Boolean, default: false },
@@ -512,7 +512,7 @@ productSchema.index({ category: 1, subcategory: 1 });
 productSchema.index({ status: 1 });
 productSchema.index({ featured: -1, createdAt: -1 });
 productSchema.index({ name: 'text', description: 'text' }); // Text search
-productSchema.index({ priceUSD: 1 });
+productSchema.index({ priceINR: 1 });
 productSchema.index({ available: 1 });
 // Discount indexes for analytics and queries
 productSchema.index({ 'discount.enabled': 1, 'discount.endDate': 1 });
@@ -520,8 +520,8 @@ productSchema.index({ 'discount.enabled': 1, 'discount.startDate': 1 });
 
 // Virtual for formatted price
 productSchema.virtual('formattedPrice').get(function () {
-    if (!this.priceUSD) return 'Price on Request';
-    return `$${this.priceUSD.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    if (!this.priceINR) return 'Price on Request';
+    return `₹${this.priceINR.toLocaleString('en-IN', { maximumFractionDigits: 2 })}`;
 });
 
 // Instance method to increment view count
@@ -627,16 +627,16 @@ productSchema.methods.checkAndDisableExpiredDiscount = async function () {
 
 // Instance method to get the final price (with discount if active)
 productSchema.methods.getFinalPrice = function () {
-    if (!this.priceUSD) {
+    if (!this.priceINR) {
         return null;
     }
 
     if (this.isDiscountActive()) {
-        const discountAmount = (this.priceUSD * this.discount.percentage) / 100;
-        return Math.round((this.priceUSD - discountAmount) * 100) / 100;
+        const discountAmount = (this.priceINR * this.discount.percentage) / 100;
+        return Math.round((this.priceINR - discountAmount) * 100) / 100;
     }
 
-    return this.priceUSD;
+    return this.priceINR;
 };
 
 // Virtual for discounted price
@@ -646,10 +646,10 @@ productSchema.virtual('discountedPrice').get(function () {
 
 // Virtual for discount amount
 productSchema.virtual('discountAmount').get(function () {
-    if (!this.priceUSD || !this.isDiscountActive()) {
+    if (!this.priceINR || !this.isDiscountActive()) {
         return 0;
     }
-    return Math.round((this.priceUSD * this.discount.percentage) * 100) / 10000;
+    return Math.round((this.priceINR * this.discount.percentage) * 100) / 10000;
 });
 
 // Static method to get active discounted products
@@ -763,20 +763,32 @@ productSchema.statics.getExpiringSoonDiscounts = function (days = 3) {
             $gte: now,
             $lte: futureDate
         }
-    }).select('productId name discount priceUSD');
+    }).select('productId name discount priceINR');
+};
+
+// Builds the query used for search — matches on name/description as well as
+// productCode/productId so product codes are searchable across all categories.
+productSchema.statics.buildSearchQuery = function (query, filters = {}) {
+    const escaped = String(query).trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(escaped, 'i');
+
+    return {
+        status: 'active',
+        available: true,
+        ...filters,
+        $or: [
+            { productCode: regex },
+            { productId: regex },
+            { name: regex },
+            { description: regex }
+        ]
+    };
 };
 
 // Static method for search
 productSchema.statics.search = function (query, filters = {}) {
-    const searchQuery = {
-        status: 'active',
-        available: true,
-        ...filters,
-        $text: { $search: query }
-    };
-
-    return this.find(searchQuery, { score: { $meta: 'textScore' } })
-        .sort({ score: { $meta: 'textScore' } });
+    return this.find(this.buildSearchQuery(query, filters))
+        .sort({ createdAt: -1 });
 };
 
 // Static method to get all subcategories for a category

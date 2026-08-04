@@ -1,5 +1,5 @@
 {
-  "generated": "2026-06-27T16:31:29.013Z",
+  "generated": "2026-06-29T16:09:49.878Z",
   "cloudName": "dynd1aan0",
   "folder": "hs-global/hero",
   "urls": {
@@ -41,21 +41,21 @@
     },
     "Banner3-des.png": {
       "original": "Banner3-des.png",
-      "cloudinary": "https://res.cloudinary.com/dynd1aan0/image/upload/v1782577883/hs-global/hero/Banner3-des.webp",
+      "cloudinary": "https://res.cloudinary.com/dynd1aan0/image/upload/v1782749386/hs-global/hero/Banner3-des.webp",
       "publicId": "hs-global/hero/Banner3-des",
-      "format": "webp",
-      "width": 1920,
-      "height": 640,
-      "bytes": 180682
-    },
-    "Banner3-mob.png": {
-      "original": "Banner3-mob.png",
-      "cloudinary": "https://res.cloudinary.com/dynd1aan0/image/upload/v1782577885/hs-global/hero/Banner3-mob.webp",
-      "publicId": "hs-global/hero/Banner3-mob",
       "format": "webp",
       "width": 1122,
       "height": 1402,
-      "bytes": 228368
+      "bytes": 215966
+    },
+    "Banner3-mob.png": {
+      "original": "Banner3-mob.png",
+      "cloudinary": "https://res.cloudinary.com/dynd1aan0/image/upload/v1782749387/hs-global/hero/Banner3-mob.webp",
+      "publicId": "hs-global/hero/Banner3-mob",
+      "format": "webp",
+      "width": 1122,
+      "height": 374,
+      "bytes": 67386
     },
     "Banner4-des.png": {
       "original": "Banner4-des.png",

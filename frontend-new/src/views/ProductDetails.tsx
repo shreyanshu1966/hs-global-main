@@ -82,7 +82,7 @@ const ProductDetails = ({ initialData }: { initialData?: any } = {}) => {
       subcategory,
       image: baseImages[0],
       images: baseImages,
-      priceUSD: dbProduct.priceUSD,
+      priceINR: dbProduct.priceINR,
       pricePerSqFt: dbProduct.pricePerSqFt,
       stoneSpecs: dbProduct.stoneSpecs,
       moq,
@@ -372,7 +372,7 @@ const ProductDetails = ({ initialData }: { initialData?: any } = {}) => {
             },
             "offers": {
               "@type": "Offer",
-              "price": product.priceUSD || 0,
+              "price": product.priceINR || 0,
               "priceCurrency": "INR",
               "availability": product.available ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
               "url": seoMeta.canonicalUrl

@@ -11,8 +11,9 @@
         "migrate-products": "node migrate-products.js",
         "test-auth": "node test-auth-flow.js",
         "seed-reviews": "node seed-reviews.js",
+        "seed-reviews:dry": "node seed-reviews.js --dry-run",
         "test-reviews": "node test-reviews.js",
-        "update-ratings": "node update-product-ratings.js",
+        "update-ratings": "node seed-reviews.js --ratings-only",
         "seed-blogs": "node seed-blogs.js",
         "test-crud": "node test-product-crud.js",
         "check-indexes": "node check-discount-indexes.js",
@@ -34,7 +35,10 @@
         "delete-prices:dry": "node scripts/delete-all-prices.js",
         "delete-prices:apply": "node scripts/delete-all-prices.js --apply",
         "migrate:etsy-serial:dry": "node scripts/migrate-etsy-serial-products.js --dry-run",
-        "migrate:etsy-serial:apply": "node scripts/migrate-etsy-serial-products.js --apply"
+        "migrate:etsy-serial:apply": "node scripts/migrate-etsy-serial-products.js --apply",
+        "specs:export": "node scripts/export-product-specs.js",
+        "specs:import:dry": "node scripts/import-product-specs.js",
+        "specs:import:commit": "node scripts/import-product-specs.js --commit"
     },
     "dependencies": {
         "axios": "^1.13.4",

@@ -1,0 +1,259 @@
+[
+  {
+    "_id": "69ca2ec29b6735600a7e2b44",
+    "categoryId": "furniture",
+    "categoryName": "Furniture",
+    "customSubcategories": [
+      {
+        "id": "bathtub",
+        "name": "Bathtub",
+        "isCustom": true
+      },
+      {
+        "id": "center-table",
+        "name": "Center Table",
+        "isCustom": true
+      },
+      {
+        "id": "chaise-chair",
+        "name": "Chaise Chair",
+        "isCustom": true
+      },
+      {
+        "id": "coffee-table",
+        "name": "Coffee Table",
+        "isCustom": true
+      },
+      {
+        "id": "console-table",
+        "name": "Console Table",
+        "isCustom": true
+      },
+      {
+        "id": "dining-table",
+        "name": "Dining Table",
+        "isCustom": true
+      },
+      {
+        "id": "lamp",
+        "name": "Lamp",
+        "isCustom": true
+      },
+      {
+        "id": "mirror-frame",
+        "name": "Mirror Frame",
+        "isCustom": true
+      },
+      {
+        "id": "pedestal-sink",
+        "name": "Pedestal Sink",
+        "isCustom": true
+      },
+      {
+        "id": "side-table",
+        "name": "Side Table",
+        "isCustom": true
+      },
+      {
+        "id": "sink",
+        "name": "Sink",
+        "isCustom": true
+      },
+      {
+        "id": "vase",
+        "name": "Vase",
+        "isCustom": true
+      },
+      {
+        "id": "bowl",
+        "name": "Bowl",
+        "isCustom": true
+      },
+      {
+        "id": "clock",
+        "name": "Clock",
+        "isCustom": true
+      }
+    ],
+    "__v": 5,
+    "createdAt": "2026-05-25T09:49:32.624Z",
+    "createdBy": "admin",
+    "updatedAt": "2026-07-03T09:27:03.566Z",
+    "seo": {
+      "keywords": []
+    }
+  },
+  {
+    "_id": "6a0f3824bd31793f015dbbfc",
+    "categoryId": "leather",
+    "categoryName": "Leather",
+    "customSubcategories": [
+      {
+        "id": "sofa",
+        "name": "Sofa",
+        "isCustom": true
+      },
+      {
+        "id": "bed",
+        "name": "Bed",
+        "isCustom": true
+      },
+      {
+        "id": "side-table",
+        "name": "Side Table",
+        "isCustom": true
+      },
+      {
+        "id": "chair",
+        "name": "Chair",
+        "isCustom": true
+      },
+      {
+        "id": "coffee-table",
+        "name": "Coffee Table",
+        "isCustom": true
+      },
+      {
+        "id": "bench",
+        "name": "Bench",
+        "isCustom": true
+      },
+      {
+        "id": "stool",
+        "name": "Stool",
+        "isCustom": true
+      },
+      {
+        "id": "dresser",
+        "name": "Dresser",
+        "isCustom": true
+      },
+      {
+        "id": "mirror-frame",
+        "name": "Mirror Frame",
+        "isCustom": true
+      },
+      {
+        "id": "console-table",
+        "name": "Console Table",
+        "isCustom": true
+      },
+      {
+        "id": "mirror",
+        "name": "Mirror",
+        "isCustom": true
+      },
+      {
+        "id": "box",
+        "name": "Box",
+        "isCustom": true
+      },
+      {
+        "id": "cabinet",
+        "name": "Cabinet",
+        "isCustom": true
+      },
+      {
+        "id": "ottoman",
+        "name": "Ottoman",
+        "isCustom": true
+      },
+      {
+        "id": "armchair",
+        "name": "Armchair",
+        "isCustom": true
+      },
+      {
+        "id": "headboard",
+        "name": "Headboard",
+        "isCustom": true
+      },
+      {
+        "id": "recliner",
+        "name": "Recliner",
+        "isCustom": true
+      }
+    ],
+    "__v": 4,
+    "createdAt": "2026-05-31T08:27:12.275Z",
+    "createdBy": "admin",
+    "updatedAt": "2026-07-03T09:27:03.614Z",
+    "seo": {
+      "keywords": []
+    }
+  },
+  {
+    "_id": "6a0372c2b7a05cc296fa3d57",
+    "categoryId": "wooden-furniture",
+    "categoryName": "Wooden Furniture",
+    "customSubcategories": [
+      {
+        "id": "side-table",
+        "name": "Side Table",
+        "isCustom": true
+      },
+      {
+        "id": "dining-table",
+        "name": "Dining Table",
+        "isCustom": true
+      },
+      {
+        "id": "console-table",
+        "name": "Console Table",
+        "isCustom": true
+      },
+      {
+        "id": "sofa",
+        "name": "Sofa",
+        "isCustom": true
+      },
+      {
+        "id": "coffee-table",
+        "name": "Coffee Table",
+        "isCustom": true
+      },
+      {
+        "id": "bench",
+        "name": "Bench",
+        "isCustom": true
+      },
+      {
+        "id": "stool",
+        "name": "Stool",
+        "isCustom": true
+      },
+      {
+        "id": "cabinet",
+        "name": "Cabinet",
+        "isCustom": true
+      },
+      {
+        "id": "bookshelf",
+        "name": "Bookshelf",
+        "isCustom": true
+      },
+      {
+        "id": "trunk",
+        "name": "Trunk",
+        "isCustom": true
+      },
+      {
+        "id": "armoire",
+        "name": "Armoire",
+        "isCustom": true
+      },
+      {
+        "id": "door",
+        "name": "Door",
+        "isCustom": true
+      }
+    ],
+    "__v": 5,
+    "createdAt": "2026-05-22T11:53:49.119Z",
+    "createdBy": "admin",
+    "updatedAt": "2026-07-03T09:27:03.605Z",
+    "seo": {
+      "keywords": []
+    }
+  }
+]

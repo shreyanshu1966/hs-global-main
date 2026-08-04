@@ -1,5 +1,7 @@
 /* Server-rendered article body — fully static & crawlable (no 'use client'). */
 
+import { AuthorBio, SocialShare, RelatedProducts } from '../_components/ArticleFooter';
+
 type Faq = { q: string; a: string };
 
 const IMG_BASE = '/blog/premium-leather-furniture-luxury-interiors';
@@ -118,6 +120,7 @@ export default function Article({
   faqs,
   publishedLabel,
   heroImage,
+  canonical,
 }: {
   faqs: Faq[];
   publishedLabel: string;
@@ -395,17 +398,18 @@ export default function Article({
         </div>
       </section>
 
-      {/* Author + tags */}
+      {/* You might also like */}
+      <RelatedProducts products={[...SEATING_PRODUCTS, ...BED_TABLES_PRODUCTS]} />
+
+      {/* Share · Author · tags */}
       <section className="mx-auto max-w-3xl px-6 py-16">
-        <div className="flex flex-col gap-5 border-y border-[#ece9dd] py-8 sm:flex-row sm:items-center">
-          <span className={`${SERIF} grid h-16 w-16 flex-shrink-0 place-items-center rounded-full bg-[#222] text-[18px] text-white`}>HS</span>
-          <div>
-            <p className={`${SERIF} text-[20px] text-[#222]`}>HS Global Export</p>
-            <p className="mt-1 text-[14px] font-light leading-[1.6] text-[#555]">
-              Premium leather &amp; natural-stone furniture manufacturer and worldwide exporter — serving the USA, UK, Europe and the
-              Middle East with handcrafted bespoke luxury.
-            </p>
-          </div>
+        <SocialShare
+          url={canonical}
+          title="Premium Leather Furniture for Modern Luxury Interiors"
+        />
+
+        <div className="mt-10">
+          <AuthorBio />
         </div>
 
         <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-[12px] uppercase tracking-[0.14em] text-[#9a9582]">

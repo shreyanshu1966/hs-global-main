@@ -1,0 +1,47 @@
+{
+  "generatedAt": "2026-07-09T09:30:36.589Z",
+  "totalProducts": 331,
+  "totalUniqueUrls": 1766,
+  "totalBrokenUrls": 0,
+  "productsWithBrokenImagesCount": 0,
+  "productsWithNoImagesCount": 7,
+  "brokenCountByCategory": {},
+  "productsWithBrokenImages": [],
+  "productsWithNoImages": [
+    {
+      "productId": "marble-flower-vessel-sink-hand-carved-stone-basin",
+      "category": "furniture",
+      "subcategory": "Sink"
+    },
+    {
+      "productId": "Golden-Hematite",
+      "category": "semi-precious-stone",
+      "subcategory": "Quartz"
+    },
+    {
+      "productId": "white-marble-coffee-table-round-stone-ball-base-table",
+      "category": "furniture",
+      "subcategory": "Coffee Table"
+    },
+    {
+      "productId": "black-marble-side-table-modern-round-stone-accent-table",
+      "category": "furniture",
+      "subcategory": "Side Table"
+    },
+    {
+      "productId": "large-wooden-dining-table-set-brass-inlay-6-chairs",
+      "category": "wooden-furniture",
+      "subcategory": "Dining Table"
+    },
+    {
+      "productId": "travertine-side-table-sculptural-stone-accent-table",
+      "category": "furniture",
+      "subcategory": "Side Table"
+    },
+    {
+      "productId": "white-marble-side-table-modern-sculptural-accent-table",
+      "category": "furniture",
+      "subcategory": "Side Table"
+    }
+  ]
+}

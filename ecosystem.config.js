@@ -1,10 +1,12 @@
 module.exports = {
   apps: [
     // Main Backend API Server
+    // Name + cwd match the live, serving PM2 process so deploys reload the
+    // right app. cwd must be the backend dir so server.js loads backend/.env.
     {
-      name: 'hs-backend-api',
-      script: './backend/server.js',
-      cwd: __dirname,
+      name: 'project-backend',
+      script: 'server.js',
+      cwd: __dirname + '/backend',
       instances: 1,
       autorestart: true,
       watch: false,

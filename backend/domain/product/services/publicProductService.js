@@ -259,11 +259,11 @@ const getAllProducts = async (query) => {
     const maxPrice = parsePrice(query.maxPrice);
 
     if (minPrice !== undefined) {
-        filters.priceUSD = { ...filters.priceUSD, $gte: minPrice };
+        filters.priceINR = { ...filters.priceINR, $gte: minPrice };
     }
 
     if (maxPrice !== undefined) {
-        filters.priceUSD = { ...filters.priceUSD, $lte: maxPrice };
+        filters.priceINR = { ...filters.priceINR, $lte: maxPrice };
     }
 
     const skip = (page - 1) * limit;
@@ -360,11 +360,11 @@ const getProductsByCategory = async (category, query) => {
     const maxPrice = parsePrice(query.maxPrice);
 
     if (minPrice !== undefined) {
-        filters.priceUSD = { ...filters.priceUSD, $gte: minPrice };
+        filters.priceINR = { ...filters.priceINR, $gte: minPrice };
     }
 
     if (maxPrice !== undefined) {
-        filters.priceUSD = { ...filters.priceUSD, $lte: maxPrice };
+        filters.priceINR = { ...filters.priceINR, $lte: maxPrice };
     }
 
     const skip = (page - 1) * limit;

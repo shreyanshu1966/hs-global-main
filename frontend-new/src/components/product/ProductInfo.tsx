@@ -41,9 +41,9 @@ export function ProductInfo({
 
     const isSemiPreciousStone = product.category === 'semi-precious-stone';
     const sqFtPrice = product.pricePerSqFt as number | undefined;
-    const { formatPrice: formatCurrencyPrice, exchangeRates } = useCurrency();
-    const formattedSqFtPrice = sqFtPrice && sqFtPrice > 0 && exchangeRates.INR
-        ? formatCurrencyPrice(sqFtPrice / exchangeRates.INR)
+    const { formatPrice: formatCurrencyPrice } = useCurrency();
+    const formattedSqFtPrice = sqFtPrice && sqFtPrice > 0
+        ? formatCurrencyPrice(sqFtPrice)
         : null;
     const sellerRating = reviewStats.totalReviews > 0 ? reviewStats.averageRating.toFixed(1) : '5.0';
 
@@ -52,8 +52,8 @@ export function ProductInfo({
     const variantAttributes: { name: string; values: string[] }[] = product.variantAttributes || [];
     const variantSkus: {
       attributes: Record<string, string>;
-      priceUSD: number | null;
-      compareAtPriceUSD?: number | null;
+      priceINR: number | null;
+      compareAtPriceINR?: number | null;
       stockQuantity: number;
       sku?: string | null;
       images?: string[];
@@ -107,29 +107,29 @@ export function ProductInfo({
       });
     };
 
-    // Single source of pricing: if the selected variant has its own priceUSD, override
+    // Single source of pricing: if the selected variant has its own priceINR, override
     // the product's base price before feeding into usePrice. This way regional adjustments,
     // discounts, currency formatting all flow through the same engine with no special-casing.
-    const variantPriceUSD = selectedVariant?.priceUSD ?? null;
-    const variantCompareAtUSD = selectedVariant?.compareAtPriceUSD ?? null;
+    const variantPriceINR = selectedVariant?.priceINR ?? null;
+    const variantCompareAtINR = selectedVariant?.compareAtPriceINR ?? null;
     const productForPrice = useMemo(
-      () => variantPriceUSD != null ? { ...product, priceUSD: variantPriceUSD } : product,
-      [product, variantPriceUSD]
+      () => variantPriceINR != null ? { ...product, priceINR: variantPriceINR } : product,
+      [product, variantPriceINR]
     );
 
     // One call to usePrice, using whichever price is active (variant or base).
     const price = usePrice(productForPrice);
-    const basePriceUSD = price.baseUSD;
+    const basePriceINR = price.baseINR;
     const hasDiscount = price.hasDiscount && !isSemiPreciousStone;
     const discountPercentage = Math.round(price.discountPercentage);
 
     // Variant compare-at price (shown as strikethrough "was" price when set)
     const compareAtProductForPrice = useMemo(
-      () => variantCompareAtUSD != null ? { ...product, priceUSD: variantCompareAtUSD } : null,
-      [product, variantCompareAtUSD]
+      () => variantCompareAtINR != null ? { ...product, priceINR: variantCompareAtINR } : null,
+      [product, variantCompareAtINR]
     );
     const compareAtPrice = usePrice(compareAtProductForPrice ?? product);
-    const showVariantCompareAt = variantCompareAtUSD != null && !hasDiscount;
+    const showVariantCompareAt = variantCompareAtINR != null && !hasDiscount;
 
     const getProductId = (): string => {
         return product.productId || product._id || product.id || '';
@@ -162,14 +162,14 @@ export function ProductInfo({
                 productId: product.productId || resolvedId,
                 name: product.name,
                 image: getProductImage(),
-                // basePriceUSD already reflects the variant price (via productForPrice → usePrice)
-                priceUSD: basePriceUSD || 0,
+                // basePriceINR already reflects the variant price (via productForPrice → usePrice)
+                priceINR: basePriceINR || 0,
                 regionalPricing: product.regionalPricing,
                 category: product.category,
                 subcategory: product.subcategory || '',
                 discount: product.discount,
                 selectedVariant: selectedVariant
-                    ? { attributes: selectedAttrs, sku: selectedVariant.sku, compareAtPriceUSD: selectedVariant.compareAtPriceUSD, images: selectedVariant.images }
+                    ? { attributes: selectedAttrs, sku: selectedVariant.sku, compareAtPriceINR: selectedVariant.compareAtPriceINR, images: selectedVariant.images }
                     : undefined,
             });
             trackAddToCart(resolvedId);
@@ -367,7 +367,7 @@ export function ProductInfo({
                             </div>
                         </div>
                     )
-                ) : basePriceUSD ? (
+                ) : basePriceINR ? (
                     <div className="flex flex-col gap-0.5">
                         <div className="flex items-end gap-2.5 flex-wrap">
                             <span className="text-[24px] md:text-[28px] font-medium text-[#111827] leading-none">
@@ -391,9 +391,6 @@ export function ProductInfo({
                                 </span>
                             )}
                         </div>
-                        <p className="text-[10px] text-[#757575] uppercase tracking-wide">
-                            Free shipping
-                        </p>
                     </div>
                 ) : (
                     <div className="text-[24px] font-medium text-[#111827]">
@@ -436,13 +433,13 @@ export function ProductInfo({
                                         productId: product.productId || resolvedId,
                                         name: product.name,
                                         image: getProductImage(),
-                                        // basePriceUSD already reflects variant price (via productForPrice)
-                                        priceUSD: basePriceUSD || 0,
+                                        // basePriceINR already reflects variant price (via productForPrice)
+                                        priceINR: basePriceINR || 0,
                                         regionalPricing: product.regionalPricing,
                                         category: product.category,
                                         subcategory: product.subcategory || '',
                                         discount: product.discount,
-                                        selectedVariant: { attributes: selectedAttrs, sku: selectedVariant.sku, compareAtPriceUSD: selectedVariant.compareAtPriceUSD, images: selectedVariant.images },
+                                        selectedVariant: { attributes: selectedAttrs, sku: selectedVariant.sku, compareAtPriceINR: selectedVariant.compareAtPriceINR, images: selectedVariant.images },
                                     });
                                     trackAddToCart(resolvedId);
                                 }}

@@ -17,14 +17,14 @@ const LIMIT = 12;
 
 const CATEGORY_DISPLAY_NAMES: Record<string, string> = {
   furniture: 'Marble Furniture',
-  handcrafted: 'Handcrafted Furniture',
+  'wooden-furniture': 'Wooden Furniture',
   leather: 'Leather Furniture',
   'semi-precious-stone': 'Semi Precious Stone',
 };
 const getCatDisplayName = (cat: string) =>
   CATEGORY_DISPLAY_NAMES[cat] ?? cat.replace(/-/g, ' ');
 
-// Subcategories that exist in both furniture AND handcrafted
+// Subcategories that exist in both furniture AND wooden-furniture
 const SHARED_SUBCATEGORY_SLUGS = new Set([
   "coffee-table",
   "console-table",
@@ -128,7 +128,7 @@ export default function Products({ initialProducts }: { initialProducts?: any[] 
     return {
       category: rawCategory,
       subcategory: toSlug(paramSubcategory || ""),
-      categoryFilter: ((paramCategoryFilter || "") as "" | "furniture" | "handcrafted"),
+      categoryFilter: ((paramCategoryFilter || "") as "" | "furniture" | "wooden-furniture"),
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -136,12 +136,15 @@ export default function Products({ initialProducts }: { initialProducts?: any[] 
   // Filter state
   const [activeCategory, setActiveCategory] = useState(initParams.category);
   const [activeSubcategory, setActiveSubcategory] = useState(initParams.subcategory);
-  const [crossCategoryFilter, setCrossCategoryFilter] = useState<"" | "furniture" | "handcrafted">(initParams.categoryFilter);
+  const [crossCategoryFilter, setCrossCategoryFilter] = useState<"" | "furniture" | "wooden-furniture">(initParams.categoryFilter);
   const [sortBy, setSortBy] = useState(DEFAULT_SORT.sortBy);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">(DEFAULT_SORT.sortOrder);
   const [page, setPage] = useState(1);
   const [visibleProducts, setVisibleProducts] = useState<Product[]>(initialProducts ?? []);
   const [firstNewIndex, setFirstNewIndex] = useState(0);
+  // Scroll-spy: the subcategory whose products are currently in view (only used
+  // in an "All" view, where no specific subcategory is selected). Visual hint only.
+  const [spySubcategory, setSpySubcategory] = useState("");
 
   // Subcategory list expand/collapse in desktop sidebar
   // Mobile sheets
@@ -153,6 +156,8 @@ export default function Products({ initialProducts }: { initialProducts?: any[] 
   const tabScrollRef = useRef<HTMLDivElement>(null);
   const sidebarRef = useRef<HTMLElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
+  const mobileSubRowRef = useRef<HTMLDivElement>(null);
+  const desktopSubNavRef = useRef<HTMLElement>(null);
   const [tabCanScrollLeft, setTabCanScrollLeft] = useState(false);
   const [tabCanScrollRight, setTabCanScrollRight] = useState(false);
 
@@ -298,7 +303,7 @@ export default function Products({ initialProducts }: { initialProducts?: any[] 
     setVisibleProducts([]);
   }, []);
 
-  const handleCrossFilter = useCallback((filter: "" | "furniture" | "handcrafted") => {
+  const handleCrossFilter = useCallback((filter: "" | "furniture" | "wooden-furniture") => {
     setCrossCategoryFilter(filter);
     setPage(1);
     setVisibleProducts([]);
@@ -335,9 +340,76 @@ export default function Products({ initialProducts }: { initialProducts?: any[] 
     return () => observer.disconnect();
   }, [hasMore, loading]);
 
+  // ── Subcategory scroll-spy ───────────────────────────────────────────────────
+  // Reset the "viewing" hint whenever the active filters change.
+  useEffect(() => {
+    setSpySubcategory("");
+  }, [activeCategory, activeSubcategory]);
+
+  // Watch the product cards and highlight the subcategory of the top-most card in
+  // view. Only runs in an "All" view (no specific subcategory selected).
+  useEffect(() => {
+    if (activeSubcategory || displaySubcategories.length === 0) return;
+    const grid = gridRef.current;
+    if (!grid) return;
+    const cards = grid.querySelectorAll<HTMLElement>("[data-subcategory]");
+    if (cards.length === 0) return;
+
+    const visible = new Map<Element, boolean>();
+    const recompute = () => {
+      let topSub = "";
+      let topVal = Infinity;
+      visible.forEach((isVis, el) => {
+        if (!isVis) return;
+        const node = el as HTMLElement;
+        const top = node.getBoundingClientRect().top;
+        if (top < topVal) {
+          topVal = top;
+          topSub = node.dataset.subcategory || "";
+        }
+      });
+      if (topSub) setSpySubcategory(topSub);
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => visible.set(e.target, e.isIntersecting));
+        recompute();
+      },
+      // Active zone = roughly the upper portion of the viewport.
+      { root: null, rootMargin: "-10% 0px -60% 0px", threshold: 0 }
+    );
+    cards.forEach((c) => observer.observe(c));
+    return () => observer.disconnect();
+  }, [activeSubcategory, displaySubcategories, visibleProducts]);
+
+  // Keep the highlighted subcategory pill scrolled into view (mobile row + desktop list).
+  useEffect(() => {
+    if (!spySubcategory) return;
+    [mobileSubRowRef.current, desktopSubNavRef.current].forEach((container) => {
+      const btn = container?.querySelector<HTMLElement>(`[data-sub="${CSS.escape(spySubcategory)}"]`);
+      btn?.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+    });
+  }, [spySubcategory]);
+
   const sortLabel = getSortOptionLabel(sortBy, sortOrder);
   const hasFilters = !!(activeCategory || activeSubcategory || crossCategoryFilter);
   const filterCount = [activeCategory, activeSubcategory, crossCategoryFilter].filter(Boolean).length;
+
+  // Desktop sidebar subcategory item classes: selected (solid) > viewing (spy hint) > idle.
+  const subItemClass = (sub: string) => {
+    if (activeSubcategory === sub) return "bg-gray-900 text-white font-medium";
+    if (!activeSubcategory && spySubcategory === sub)
+      return "bg-gray-100 text-gray-900 font-medium ring-1 ring-inset ring-gray-300";
+    return "text-gray-500 hover:bg-gray-50 hover:text-gray-900";
+  };
+  // Mobile subcategory pill classes.
+  const subPillClass = (sub: string) => {
+    if (activeSubcategory === sub) return "bg-gray-800 text-white";
+    if (!activeSubcategory && spySubcategory === sub)
+      return "bg-gray-100 text-gray-900 ring-1 ring-gray-400 font-semibold";
+    return "bg-gray-100 text-gray-600 hover:bg-gray-200";
+  };
 
   const pageTitle = [
     activeCategory ? activeCategory.replace(/-/g, " ") : "Best Luxury & Imported Marble Stones at Marble, Granite Centre International",
@@ -426,7 +498,7 @@ export default function Products({ initialProducts }: { initialProducts?: any[] 
               className="bg-white border-b border-gray-100 px-3 py-2 overflow-x-auto"
               style={{ scrollbarWidth: "none" }}
             >
-              <div className="flex gap-2 min-w-max">
+              <div ref={mobileSubRowRef} className="flex gap-2 min-w-max">
                 <button
                   onClick={() => handleSubcategory("")}
                   className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap transition-all ${
@@ -440,12 +512,9 @@ export default function Products({ initialProducts }: { initialProducts?: any[] 
                 {displaySubcategories.map((sub) => (
                   <button
                     key={sub}
+                    data-sub={sub}
                     onClick={() => handleSubcategory(sub)}
-                    className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap capitalize transition-all ${
-                      activeSubcategory === sub
-                        ? "bg-gray-800 text-white"
-                        : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                    }`}
+                    className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap capitalize transition-all ${subPillClass(sub)}`}
                   >
                     {sub.replace(/-/g, " ")}
                   </button>
@@ -461,7 +530,7 @@ export default function Products({ initialProducts }: { initialProducts?: any[] 
               style={{ scrollbarWidth: "none" }}
             >
               <div className="flex gap-2 min-w-max">
-                {(["", "furniture", "handcrafted"] as const).map((cf) => (
+                {(["", "furniture", "wooden-furniture"] as const).map((cf) => (
                   <button
                     key={cf || "all"}
                     onClick={() => handleCrossFilter(cf)}
@@ -543,6 +612,7 @@ export default function Products({ initialProducts }: { initialProducts?: any[] 
                     {activeCategory ? activeCategory.replace(/-/g, " ") : "Subcategory"}
                   </p>
                   <nav
+                    ref={desktopSubNavRef}
                     className="space-y-0.5"
                     style={{
                       maxHeight: "230px",
@@ -564,12 +634,9 @@ export default function Products({ initialProducts }: { initialProducts?: any[] 
                     {displaySubcategories.map((sub) => (
                       <button
                         key={sub}
+                        data-sub={sub}
                         onClick={() => handleSubcategory(sub)}
-                        className={`w-full text-left px-2.5 py-1.5 rounded-lg text-sm capitalize transition-colors ${
-                          activeSubcategory === sub
-                            ? "bg-gray-900 text-white font-medium"
-                            : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"
-                        }`}
+                        className={`w-full text-left px-2.5 py-1.5 rounded-lg text-sm capitalize transition-colors ${subItemClass(sub)}`}
                       >
                         {sub.replace(/-/g, " ")}
                       </button>
@@ -585,7 +652,7 @@ export default function Products({ initialProducts }: { initialProducts?: any[] 
                     Category
                   </p>
                   <nav className="space-y-0.5">
-                    {(["", "furniture", "handcrafted"] as const).map((cf) => (
+                    {(["", "furniture", "wooden-furniture"] as const).map((cf) => (
                       <button
                         key={cf || "all"}
                         onClick={() => handleCrossFilter(cf)}
@@ -756,6 +823,7 @@ export default function Products({ initialProducts }: { initialProducts?: any[] 
                       return (
                         <motion.div
                           key={product._id || product.productId}
+                          data-subcategory={toSlug(product.subcategory || "")}
                           initial={isNew ? { opacity: 0, y: 24 } : false}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{

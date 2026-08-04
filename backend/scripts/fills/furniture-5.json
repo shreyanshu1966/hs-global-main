@@ -1,0 +1,42 @@
+[
+  { "n": "fu-033", "productSpecifications": { "details": {
+    "overall_shape": "Rectangle", "material": "Natural White Marble with Metal Legs", "base_type": "Black Metal U-Legs",
+    "top_color": "White with Grey Veining", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Marble Top on Black Metal Frame",
+    "mixed_materials": "Yes" } } },
+  { "n": "fu-034", "productSpecifications": { "details": {
+    "overall_shape": "Irregular", "material": "Printed Acrylic with LED Neon", "base_type": "Wall Mounted",
+    "top_color": "Multicolor / Neon", "wood_species": "Not Applicable",
+    "natural_variation_type": "No Natural Variation", "detailing": "Hand-Printed Cartoon Figure with LED Backlight",
+    "mixed_materials": "Yes" } } },
+  { "n": "fu-035", "productSpecifications": { "details": {
+    "overall_shape": "Rectangle", "material": "Natural Pink Onyx / Marble Frame", "base_type": "Floor Standing / Leaning",
+    "top_color": "Pink Onyx / Marble", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining & Color Variation", "detailing": "Hand-Carved Leaf / Feather Frame",
+    "mixed_materials": "No" } } },
+  { "n": "fu-036", "productSpecifications": { "details": {
+    "overall_shape": "Rectangle", "material": "Natural White Marble Frame", "base_type": "Floor Standing / Leaning",
+    "top_color": "White with Grey Veining", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Wavy Scalloped Marble Frame",
+    "mixed_materials": "No" } } },
+  { "n": "fu-037", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural White Marble", "base_type": "Fluted Column Pedestal",
+    "top_color": "White with Grey Veining", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Rough-Carved Organic Basin on Fluted Column",
+    "mixed_materials": "No" } } },
+  { "n": "fu-038", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural Green Marble", "base_type": "Tapered Cylindrical Pedestal",
+    "top_color": "Green with White Veining", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Round Basin on Cantilevered Pedestal",
+    "mixed_materials": "No" } } },
+  { "n": "fu-039", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural White & Black Marble", "base_type": "Cylindrical Pedestal",
+    "top_color": "White with Black Veining", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Bowl Basin on Cylindrical Column",
+    "mixed_materials": "No" } } },
+  { "n": "fu-040", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural White Marble", "base_type": "Ribbed Cylindrical Pedestal",
+    "top_color": "White with Grey Veining", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Round Basin on Ribbed Column",
+    "mixed_materials": "No" } } }
+]

@@ -11,8 +11,8 @@ export type SortOption = {
 export const SORT_OPTIONS: SortOption[] = [
     { label: 'Relevance', sortBy: 'relevance', sortOrder: 'asc' },
     { label: 'Newest Arrivals', sortBy: 'createdAt', sortOrder: 'desc' },
-    { label: 'Price: Low to High', sortBy: 'priceUSD', sortOrder: 'asc' },
-    { label: 'Price: High to Low', sortBy: 'priceUSD', sortOrder: 'desc' },
+    { label: 'Price: Low to High', sortBy: 'priceINR', sortOrder: 'asc' },
+    { label: 'Price: High to Low', sortBy: 'priceINR', sortOrder: 'desc' },
     { label: 'Name: A-Z', sortBy: 'name', sortOrder: 'asc' },
     { label: 'Name: Z-A', sortBy: 'name', sortOrder: 'desc' },
 ];

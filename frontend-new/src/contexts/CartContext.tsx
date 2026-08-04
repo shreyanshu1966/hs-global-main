@@ -8,7 +8,7 @@ export interface CartItem {
   productId?: string;
   name: string;
   image: string;
-  priceUSD: number; // Always store in USD (base currency)
+  priceINR: number; // Always store in INR (canonical base currency)
   regionalPricing?: Record<string, { enabled: boolean; adjustmentType: 'percentage' | 'fixed'; adjustmentValue: number }>;
   quantity: number;
   category: string;
@@ -22,7 +22,7 @@ export interface CartItem {
   selectedVariant?: {
     attributes: Record<string, string>;
     sku?: string | null;
-    compareAtPriceUSD?: number | null;
+    compareAtPriceINR?: number | null;
     images?: string[];
   };
   discount?: {
@@ -168,8 +168,8 @@ interface CartContextType {
   hideAddedToCart: () => void;
   getTotalItems: () => number;
   getTotalPriceNumeric: () => number;
-  getRegionalBasePriceUSD: (item: CartItem) => number;
-  getRegionalEffectivePriceUSD: (item: CartItem) => number;
+  getRegionalBasePriceINR: (item: CartItem) => number;
+  getRegionalEffectivePriceINR: (item: CartItem) => number;
   applyCoupon: (coupon: AppliedCoupon) => void;
   removeCoupon: () => void;
 }
@@ -248,8 +248,8 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   // Regional price without discount (for strikethrough display)
-  const getRegionalBasePriceUSD = (item: CartItem): number => {
-    const base = item.priceUSD;
+  const getRegionalBasePriceINR = (item: CartItem): number => {
+    const base = item.priceINR;
     const rp = item.regionalPricing?.[region];
     if (!rp?.enabled || !rp.adjustmentValue) return base;
     const adjusted = rp.adjustmentType === 'percentage'
@@ -258,9 +258,9 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     return Math.round(Math.max(0, adjusted) * 100) / 100;
   };
 
-  const getRegionalEffectivePriceUSD = (item: CartItem): number => {
+  const getRegionalEffectivePriceINR = (item: CartItem): number => {
     // Step 1: apply regional adjustment to base price first (matches backend order)
-    const base = item.priceUSD;
+    const base = item.priceINR;
     const rp = item.regionalPricing?.[region];
     let regionalPrice = base;
     if (rp?.enabled && rp.adjustmentValue) {
@@ -279,9 +279,11 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const getTotalPriceNumeric = (): number => {
     const itemsTotal = state.items.reduce((sum, item) => {
-      return sum + (getRegionalEffectivePriceUSD(item) * item.quantity);
+      return sum + (getRegionalEffectivePriceINR(item) * item.quantity);
     }, 0);
     if (state.appliedCoupon) {
+      // discountAmountUSD is USD-denominated at the source (Coupon model) — this local
+      // total is advisory only; Checkout.tsx uses the backend-authoritative INR total for display and charge.
       return Math.max(0, itemsTotal - state.appliedCoupon.discountAmountUSD);
     }
     return itemsTotal;
@@ -308,8 +310,8 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     hideAddedToCart,
     getTotalItems,
     getTotalPriceNumeric,
-    getRegionalBasePriceUSD,
-    getRegionalEffectivePriceUSD,
+    getRegionalBasePriceINR,
+    getRegionalEffectivePriceINR,
     applyCoupon,
     removeCoupon,
   };

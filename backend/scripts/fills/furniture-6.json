@@ -1,0 +1,42 @@
+[
+  { "n": "fu-041", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural White Marble", "base_type": "Pedestal Base",
+    "top_color": "White with Grey Veining", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Carved Concentric Ripple Basin",
+    "mixed_materials": "No" } } },
+  { "n": "fu-042", "productSpecifications": { "details": {
+    "overall_shape": "Irregular", "material": "Natural Brown Marble", "base_type": "Tapered Pedestal",
+    "top_color": "Brown / Rust Marble", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining & Color Variation", "detailing": "Organic Natural-Edge Basin on Pedestal",
+    "mixed_materials": "No" } } },
+  { "n": "fu-043", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural White Marble with Brass Band", "base_type": "Fluted Column Pedestal",
+    "top_color": "White with Grey Veining", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Fluted Round Basin with Brass Band on Fluted Column",
+    "mixed_materials": "Yes" } } },
+  { "n": "fu-044", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural White Marble", "base_type": "Tapered Conical Pedestal",
+    "top_color": "White with Grey Veining", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Round Basin on Conical Pedestal",
+    "mixed_materials": "No" } } },
+  { "n": "fu-045", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural White Marble Mosaic", "base_type": "Cylindrical Pedestal",
+    "top_color": "White / Cream", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Stone Texture", "detailing": "Mosaic Textured Cylindrical Pedestal",
+    "mixed_materials": "No" } } },
+  { "n": "fu-046", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural Marble", "base_type": "Tapered Cylindrical Pedestal",
+    "top_color": "Beige / Brown Marble", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining & Color Variation", "detailing": "Round Top on Tapered Pedestal",
+    "mixed_materials": "No" } } },
+  { "n": "fu-047", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural Black Marble", "base_type": "Turned Baluster Pedestal Base",
+    "top_color": "Black with White Veining", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Round Top on Turned Baluster Column",
+    "mixed_materials": "No" } } },
+  { "n": "fu-048", "productSpecifications": { "details": {
+    "overall_shape": "Round", "material": "Natural Black & White Marble", "base_type": "Tapered Conical Pedestal",
+    "top_color": "Black with White Veining", "wood_species": "Not Applicable",
+    "natural_variation_type": "Natural Marble Veining", "detailing": "Round Top on Conical Pedestal",
+    "mixed_materials": "No" } } }
+]

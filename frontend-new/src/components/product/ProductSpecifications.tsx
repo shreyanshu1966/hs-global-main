@@ -167,13 +167,17 @@ export function ProductSpecifications({ product }: ProductSpecificationsProps) {
   // Fixed product spec sections
   const ps = product.productSpecifications || {};
 
+  // Furniture is predominantly marble/stone, so its species field reads as
+  // "Marble / Stone Species"; wood-based categories keep "Wood Species".
+  const speciesLabel = product.category === 'furniture' ? 'Marble / Stone Species' : 'Wood Species';
+
   const DETAIL_LABELS: [string, string][] = [
     ['overall_shape', 'Overall Shape'], ['material', 'Material'],
     ['base_type', 'Base Type'],
     ['top_color', 'Color'],
-    ['wood_species', 'Wood Species'], ['natural_variation_type', 'Natural Variation'],
+    ['wood_species', speciesLabel], ['natural_variation_type', 'Natural Variation'],
     ['detailing', 'Detailing'], ['mixed_materials', 'Mixed Materials'],
-    ['weight_capacity', 'Weight Capacity'],
+    // ['weight_capacity', 'Weight Capacity'], // removed for now
     ['custom_product', 'Custom Product'], ['imported', 'Imported'],
     ['wayfair_verified', 'Eligible for Refund'],
   ];
@@ -184,7 +188,7 @@ export function ProductSpecifications({ product }: ProductSpecificationsProps) {
 
   const psDimensionRows: [string, string][] = [
     ps.other_dimensions?.overall_dimensions     ? ['Overall Dimensions',    ps.other_dimensions.overall_dimensions]     : null,
-    ps.other_dimensions?.overall_product_weight ? ['Overall Product Weight', ps.other_dimensions.overall_product_weight] : null,
+    // ps.other_dimensions?.overall_product_weight ? ['Overall Product Weight', ps.other_dimensions.overall_product_weight] : null, // removed for now
     ...dimRows,
   ].filter(Boolean) as [string, string][];
 

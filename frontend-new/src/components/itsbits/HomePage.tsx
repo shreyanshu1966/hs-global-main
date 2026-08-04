@@ -2,6 +2,7 @@
 import { ReactNode, Suspense, lazy, startTransition, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import HeroSection from './HeroSection';
+import HeroTrustStrip from './HeroTrustStrip';
 import CategoryCards from './CategoryCards';
 import TrustCTABar from './TrustCTABar';
 import { HomePageConfig, homePageConfigService } from '../../services/homePageConfigService';
@@ -16,6 +17,8 @@ const PromiseBanner = lazy(() => import('./PromiseBanner'));
 const ProductCarousel = lazy(() => import('./ProductCarousel'));
 const VideoProductCarousel = lazy(() => import('./VideoProductCarousel'));
 const GalleryImageCarousel = lazy(() => import('./GalleryImageCarousel'));
+const Testimonials = lazy(() => import('./Testimonials'));
+const HomeFAQ = lazy(() => import('./HomeFAQ'));
 
 interface DeferredSectionProps {
   children: ReactNode;
@@ -133,6 +136,9 @@ const HomePage = () => {
         autoplayInterval={config.hero.autoplayInterval}
       />
 
+      {/* ===== SECTION 1b: Hero Trust Strip ===== */}
+      <HeroTrustStrip />
+
       {/* ===== SECTION 2: Category Cards ===== */}
       <CategoryCards
         title={config.categoryCards.title}
@@ -228,6 +234,16 @@ const HomePage = () => {
           titleSuffix={config.journal.titleSuffix}
           articles={config.journal.articles}
         />
+      </DeferredSection>
+
+      {/* ===== SECTION 12a: Testimonials ===== */}
+      <DeferredSection minHeight={420}>
+        <Testimonials />
+      </DeferredSection>
+
+      {/* ===== SECTION 12b: FAQ ===== */}
+      <DeferredSection minHeight={480}>
+        <HomeFAQ />
       </DeferredSection>
 
       {/* ===== SECTION 13: HS Global Promise ===== */}

@@ -1,13 +1,49 @@
 const mongoose = require('mongoose');
+const path = require('path');
 const Product = require('./models/Product');
 const Review = require('./models/Review');
 require('dotenv').config();
+// Optional review tuning file (does NOT override anything already set in the real .env)
+require('dotenv').config({ path: path.join(__dirname, 'review-config.env'), override: false });
 
-// Connect to database
+// ---------------------------------------------------------------------------
+// CLI / config
+// ---------------------------------------------------------------------------
+const DRY_RUN = process.argv.includes('--dry-run') || process.env.DRY_RUN === 'true';
+// Recompute product ratings from the reviews already in the DB, without
+// regenerating reviews. Ratings are ALWAYS derived from reviews, so this is the
+// same code path the full seed uses at the end — just skipping the seeding step.
+const RATINGS_ONLY = process.argv.includes('--ratings-only');
+
+const num = (val, fallback) => {
+    const n = Number(val);
+    return Number.isFinite(n) ? n : fallback;
+};
+
+// Defaults preserve the historical behaviour of this script. Override via
+// review-config.env or environment variables without touching the code.
+const CONFIG = {
+    reviewsMin: num(process.env.REVIEWS_PER_PRODUCT_MIN, 100),
+    reviewsMax: num(process.env.REVIEWS_PER_PRODUCT_MAX, 150),
+    // Probability (%) of a 5-star review; the remainder become 4-star.
+    // ~85% 5-star + 15% 4-star averages to ~4.85.
+    fiveStarPercent: num(process.env.RATING_5_STAR_PERCENT, 85),
+    verifiedPercent: num(process.env.VERIFIED_REVIEW_PERCENT, 90),
+    approvedPercent: num(process.env.APPROVED_REVIEW_PERCENT, 95),
+    oldestReviewDays: num(process.env.OLDEST_REVIEW_DAYS, 365),
+    newestReviewDays: num(process.env.NEWEST_REVIEW_DAYS, 7),
+    clearExisting: process.env.CLEAR_EXISTING_REVIEWS !== 'false',
+};
+
+// Connect to database (mirrors backend/config/db.js so seeding and the live
+// server always target the same database, even on a remote/Atlas URI).
 const connectDB = async () => {
     try {
-        const conn = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/hs_global_export');
-        console.log(`MongoDB Connected: ${conn.connection.host}`);
+        const conn = await mongoose.connect(
+            process.env.MONGODB_URI || 'mongodb://localhost:27017/hs_global_export',
+            { serverSelectionTimeoutMS: 8000, dbName: 'hs_global_export' }
+        );
+        console.log(`MongoDB Connected: ${conn.connection.host} (db: ${conn.connection.name})`);
     } catch (error) {
         console.error('Database connection error:', error);
         process.exit(1);
@@ -81,8 +117,8 @@ const reviewerProfiles = [
 // Dynamic review phrases
 const reviewPhrases = {
     openers: [
-        "Absolutely stunning piece!", "As an interior designer, I'm quite particular.", 
-        "Outstanding quality and design!", "Love this {product}!", 
+        "Absolutely stunning piece!", "As an interior designer, I'm quite particular.",
+        "Outstanding quality and design!", "Love this {product}!",
         "This {product} is absolutely gorgeous!", "Couldn't be happier with this purchase!",
         "Exceptional architectural element!", "High-quality {material} with excellent structural integrity.",
         "Perfect for our luxury project!", "Solid construction and beautiful finish!",
@@ -135,15 +171,6 @@ const reviewPhrases = {
     ]
 };
 
-// Quality adjectives for different materials
-const materialDescriptors = {
-    'granite': ['durable', 'polished', 'lustrous', 'speckled', 'crystalline', 'resistant'],
-    'marble': ['elegant', 'veined', 'smooth', 'luxurious', 'classic', 'pristine'],
-    'tables': ['sturdy', 'finished', 'crafted', 'designed', 'balanced', 'proportioned'],
-    'wash basins': ['smooth', 'curved', 'polished', 'seamless', 'refined', 'sculptural'],
-    'benches': ['solid', 'comfortable', 'weatherproof', 'stable', 'architectural', 'durable']
-};
-
 // Helpful vote patterns (more helpful votes for higher ratings)
 const getHelpfulVotes = (rating) => {
     const baseVotes = Math.floor(Math.random() * 8);
@@ -166,49 +193,95 @@ const generateEmail = (name, region) => {
         India: ['gmail.com', 'yahoo.com', 'outlook.com', 'rediffmail.com'],
         default: ['gmail.com', 'yahoo.com', 'outlook.com']
     };
-    
+
     const domainList = domains[region] || domains.default;
     const domain = domainList[Math.floor(Math.random() * domainList.length)];
-    
+
     const patterns = [
         `${firstName}.${lastName}`,
         `${firstName}${lastName}`,
         `${firstName}.${lastName}${Math.floor(Math.random() * 99)}`,
         `${firstName}${Math.floor(Math.random() * 999)}`
     ];
-    
+
     const pattern = patterns[Math.floor(Math.random() * patterns.length)];
     return `${pattern}@${domain}`;
 };
 
-// Extract product specifications for template replacement
-const getProductSpecs = (product) => {
-    if (product.category === 'furniture' && product.furnitureSpecs) {
-        return {
-            material: product.furnitureSpecs.material || product.furnitureSpecs.colorName || 'premium stone',
-            product: product.furnitureSpecs.product || product.subcategory || 'furniture piece',
-            finish: product.furnitureSpecs.surfaceFinish || 'polished',
-            size: product.furnitureSpecs.size || 'standard size'
-        };
-    } else if (product.category === 'slabs' && product.slabSpecs) {
-        return {
-            material: product.slabSpecs.material || product.subcategory,
-            finish: product.slabSpecs.finish || 'polished',
-            thickness: product.slabSpecs.thickness || 'standard thickness',
-            origin: product.slabSpecs.origin || 'premium source',
-            application: product.slabSpecs.application || 'architectural use'
-        };
+// Turn a slug/raw subcategory ("coffee-table", "Wash Basins") into readable text
+const humanize = (value) => {
+    if (!value || typeof value !== 'string') return '';
+    return value
+        .replace(/[-_]+/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim()
+        .toLowerCase();
+};
+
+// First non-empty string from the candidates
+const firstOf = (...vals) => {
+    for (const v of vals) {
+        if (typeof v === 'string' && v.trim()) return v.trim();
     }
-    
-    // Fallback for products without specs
-    return {
-        material: product.subcategory || 'natural stone',
-        product: product.name,
-        finish: 'polished',
-        thickness: 'standard thickness',
-        origin: 'premium source',
-        application: 'architectural use'
-    };
+    return null;
+};
+
+// Extract product specifications for template replacement.
+// Works across the CURRENT product system: furniture, wooden-furniture,
+// handcrafted (legacy), leather, semi-precious-stone — and any future
+// category — by reading every spec shape the schema supports and falling
+// back to the subcategory / product name.
+const getProductSpecs = (product) => {
+    const f = product.furnitureSpecs || {};
+    const sl = product.slabSpecs || {};       // legacy slab products
+    const st = product.stoneSpecs || {};      // semi-precious-stone
+    const details = (product.productSpecifications && product.productSpecifications.details) || {};
+
+    // Custom specs are an array of { key, label, value }; index by lowercased key
+    const custom = {};
+    (product.customSpecs || []).forEach(c => {
+        if (c && c.key && typeof c.value === 'string' && c.value.trim()) {
+            custom[c.key.toLowerCase()] = c.value.trim();
+        }
+    });
+
+    const subLabel = humanize(product.subcategory);
+
+    const material = firstOf(
+        f.material, f.colorName,
+        st.material,
+        sl.material,
+        details.material, details.wood_species, details.top_color,
+        custom.material, custom.wood, custom.stone,
+        subLabel
+    ) || 'premium material';
+
+    const finish = firstOf(
+        f.surfaceFinish,
+        st.surfaceFinish,
+        sl.finish,
+        custom.finish, custom.surface_finish,
+        'polished'
+    );
+
+    const productLabel = firstOf(
+        f.type,
+        subLabel,
+        humanize(product.name)
+    ) || 'piece';
+
+    const size = firstOf(
+        f.size,
+        st.maxSlabSize, st.minSlabSize,
+        custom.size, custom.dimensions,
+        'standard size'
+    );
+
+    const thickness = firstOf(st.thickness, sl.thickness, 'standard thickness');
+    const origin = firstOf(sl.origin, product.manufacturing && product.manufacturing.countryOfOrigin, 'premium source');
+    const application = firstOf(sl.application, st.usage, 'architectural use');
+
+    return { material, product: productLabel, finish, size, thickness, origin, application };
 };
 
 // Replace template variables
@@ -222,76 +295,70 @@ const fillTemplate = (template, specs, reviewer) => {
     return filled;
 };
 
-// Generate review for a product
-const generateReviewForProduct = (product, usedTemplates) => {
-    // Select random reviewer
+// Generate a single review object for a product
+const generateReviewForProduct = (product) => {
     const reviewer = reviewerProfiles[Math.floor(Math.random() * reviewerProfiles.length)];
-    
-    // User wants 4.5 to 5 rating -> 85% 5-star, 15% 4-star averages to ~4.85
-    const actualRating = Math.random() > 0.15 ? 5 : 4; 
-    
+
+    // Rating: CONFIG.fiveStarPercent% are 5-star, the rest 4-star.
+    const actualRating = (Math.random() * 100) < CONFIG.fiveStarPercent ? 5 : 4;
+
     const specs = getProductSpecs(product);
-    
-    // Dynamic comment generation
+
     const openers = reviewPhrases.openers;
     const mids = reviewPhrases.mids;
     const closers = reviewPhrases.closers;
-    
-    // Sometimes add a second middle sentence for variety
+
     const o = openers[Math.floor(Math.random() * openers.length)];
     let m = mids[Math.floor(Math.random() * mids.length)];
     if (Math.random() > 0.5) {
-        let m2 = mids[Math.floor(Math.random() * mids.length)];
+        const m2 = mids[Math.floor(Math.random() * mids.length)];
         if (m !== m2) m += " " + m2;
     }
     const c = closers[Math.floor(Math.random() * closers.length)];
-    
+
     let comment = `${o} ${m} ${c}`;
-    
-    // Fill template
     comment = fillTemplate(comment, specs, reviewer);
-    
-    // Generate review title
+
     const titleTemplates = [
-        'Excellent Quality!', 'Outstanding!', 'Perfect Choice!', 'Highly Recommend!', 
-        'Premium Quality', 'Love It!', 'Exceeded Expectations!', 'Amazing Product!', 
+        'Excellent Quality!', 'Outstanding!', 'Perfect Choice!', 'Highly Recommend!',
+        'Premium Quality', 'Love It!', 'Exceeded Expectations!', 'Amazing Product!',
         'Superb Craftsmanship!', 'Great Value', 'Beautiful Addition', 'Very Satisfied',
         'Stunning Material', 'Five Stars', 'Incredible Finish', 'Top Notch',
         'Beautiful and Durable', 'Highly Professional', 'Best Purchase', 'Flawless'
     ];
-    
     const title = titleTemplates[Math.floor(Math.random() * titleTemplates.length)];
-    
-    // Generate review date (between 1 year ago and 1 week ago) to spread out 100-150 reviews
-    const maxAge = 365 * 24 * 60 * 60 * 1000; 
-    const minAge = 7 * 24 * 60 * 60 * 1000; 
-    const reviewDate = new Date(Date.now() - minAge - Math.random() * (maxAge - minAge));
-    
+
+    // Spread review dates across the configured window
+    const maxAge = CONFIG.oldestReviewDays * 24 * 60 * 60 * 1000;
+    const minAge = CONFIG.newestReviewDays * 24 * 60 * 60 * 1000;
+    const reviewDate = new Date(Date.now() - minAge - Math.random() * Math.max(0, maxAge - minAge));
+
     return {
         productId: product.productId,
         userName: reviewer.name,
         userEmail: generateEmail(reviewer.name, reviewer.region),
         rating: actualRating,
-        title: title,
-        comment: comment,
-        verified: Math.random() > 0.1, // 90% verified reviews
+        title,
+        comment,
+        verified: (Math.random() * 100) < CONFIG.verifiedPercent,
         helpful: getHelpfulVotes(actualRating),
-        status: Math.random() > 0.05 ? 'approved' : 'pending', // 95% approved
+        status: (Math.random() * 100) < CONFIG.approvedPercent ? 'approved' : 'pending',
         createdAt: reviewDate,
         updatedAt: reviewDate
     };
 };
+
 // Update rating statistics for all products after seeding
 const updateAllProductRatings = async () => {
     console.log('📊 Calculating rating statistics for all products...');
-    
+
     const products = await Product.find({ status: 'active' });
     let updatedCount = 0;
-    
+
     for (const product of products) {
         try {
             const stats = await Review.getProductStats(product.productId);
-            
+
             await Product.findOneAndUpdate(
                 { productId: product.productId },
                 {
@@ -299,97 +366,142 @@ const updateAllProductRatings = async () => {
                     totalReviews: stats.totalReviews
                 }
             );
-            
+
             if (stats.totalReviews > 0) {
                 console.log(`   ✅ ${product.name}: ${stats.averageRating.toFixed(1)} ⭐ (${stats.totalReviews} reviews)`);
                 updatedCount++;
             }
-            
         } catch (error) {
             console.error(`   ❌ Error updating ${product.name}:`, error.message);
         }
     }
-    
+
     console.log(`🎯 Updated rating stats for ${updatedCount} products with reviews`);
 };
+
+// Print the effective configuration
+const printConfig = () => {
+    console.log('⚙️  Configuration:');
+    console.log(`   Reviews per product : ${CONFIG.reviewsMin}–${CONFIG.reviewsMax}`);
+    console.log(`   Rating split        : ${CONFIG.fiveStarPercent}% 5-star / ${100 - CONFIG.fiveStarPercent}% 4-star`);
+    console.log(`   Verified / Approved : ${CONFIG.verifiedPercent}% / ${CONFIG.approvedPercent}%`);
+    console.log(`   Date window         : ${CONFIG.newestReviewDays}–${CONFIG.oldestReviewDays} days ago`);
+    console.log(`   Clear existing      : ${CONFIG.clearExisting}`);
+    console.log('');
+};
+
 // Main seeding function
 const seedReviews = async () => {
     try {
-        console.log('🌱 Starting review seeding process...');
+        // Ratings-only mode: don't touch reviews, just resync each product's
+        // averageRating/totalReviews from the approved reviews already stored.
+        if (RATINGS_ONLY) {
+            console.log('📊 Ratings-only mode — recomputing product ratings from existing reviews');
+            console.log('======================================');
+            await connectDB();
+            await updateAllProductRatings();
+            console.log('\n🎉 Product ratings resynced from existing reviews.');
+            return;
+        }
+
+        console.log(DRY_RUN ? '🧪 Review seeding — DRY RUN (no writes)' : '🌱 Starting review seeding process...');
         console.log('======================================');
-        
+        printConfig();
+
         await connectDB();
-        
-        // Get active products that have stable product identifiers
+
+        // Get active products that have stable product identifiers.
+        // Pull every spec shape so getProductSpecs can build authentic text.
         const products = await Product.find({
             status: 'active',
             productId: { $exists: true, $ne: '' }
-        }).select('productId name category subcategory furnitureSpecs slabSpecs');
+        }).select('productId name category subcategory furnitureSpecs slabSpecs stoneSpecs productSpecifications customSpecs manufacturing');
         console.log(`📦 Found ${products.length} products to generate reviews for`);
-        
+
         if (products.length === 0) {
             console.log('❌ No products found. Please run product migration first.');
             return;
         }
-        
-        // Clear existing reviews (optional - comment out if you want to keep existing reviews)
-        console.log('🗑️ Clearing existing reviews...');
-        const deletedCount = await Review.deleteMany({});
-        console.log(`✅ Removed ${deletedCount.deletedCount} existing reviews`);
-        
+
+        // Per-category breakdown so we can see coverage of the new product system
+        const byCategory = {};
+        products.forEach(p => { byCategory[p.category] = (byCategory[p.category] || 0) + 1; });
+        console.log('🗂️  Products by category:');
+        Object.entries(byCategory).forEach(([cat, n]) => console.log(`   ${cat}: ${n}`));
+        console.log('');
+
+        const existingReviewCount = await Review.countDocuments({});
+
+        // Generate reviews in memory (same for dry run and real run)
         const allReviews = [];
-        const usedTemplates = new Set();
-        let totalReviewsGenerated = 0;
-        
+        const sampleByCategory = {};
         for (const product of products) {
-            // Generate 100-150 reviews per product
-            const numberOfReviews = Math.floor(Math.random() * 51) + 100; // 100 to 150 reviews
-            
-            console.log(`📝 Generating ${numberOfReviews} reviews for: ${product.name}`);
-            
+            const numberOfReviews = Math.floor(Math.random() * (CONFIG.reviewsMax - CONFIG.reviewsMin + 1)) + CONFIG.reviewsMin;
             for (let i = 0; i < numberOfReviews; i++) {
-                const review = generateReviewForProduct(product, usedTemplates);
+                const review = generateReviewForProduct(product);
                 allReviews.push(review);
-                totalReviewsGenerated++;
+                // Capture one sample per category for dry-run preview
+                if (DRY_RUN && !sampleByCategory[product.category]) {
+                    sampleByCategory[product.category] = { product, review };
+                }
             }
         }
-        
-        // Batch insert all reviews
+        const totalReviewsGenerated = allReviews.length;
+
+        // Projected rating distribution
+        const dist = allReviews.reduce((acc, r) => { acc[r.rating] = (acc[r.rating] || 0) + 1; return acc; }, {});
+        const verifiedCount = allReviews.filter(r => r.verified).length;
+        const approvedCount = allReviews.filter(r => r.status === 'approved').length;
+
+        if (DRY_RUN) {
+            console.log('🔎 DRY RUN SUMMARY');
+            console.log('==========================================');
+            console.log(`Existing reviews in DB         : ${existingReviewCount}`);
+            console.log(`Would DELETE                   : ${CONFIG.clearExisting ? existingReviewCount : 0}`);
+            console.log(`Would INSERT                   : ${totalReviewsGenerated}`);
+            console.log('Projected rating distribution  :');
+            Object.keys(dist).sort((a, b) => b - a).forEach(k => {
+                console.log(`   ${k} stars: ${dist[k]} reviews`);
+            });
+            console.log(`Verified (projected)           : ${verifiedCount}`);
+            console.log(`Approved (projected)           : ${approvedCount}`);
+            const avg = allReviews.reduce((s, r) => s + r.rating, 0) / (totalReviewsGenerated || 1);
+            console.log(`Average rating (projected)     : ${avg.toFixed(2)} ⭐`);
+            console.log('');
+            console.log('📝 Sample generated reviews (one per category):');
+            Object.entries(sampleByCategory).forEach(([cat, { product, review }]) => {
+                console.log(`\n   ── ${cat} — ${product.name}`);
+                console.log(`      ${review.rating}⭐  "${review.title}"  by ${review.userName}`);
+                console.log(`      ${review.comment}`);
+            });
+            console.log('\n✅ Dry run complete. No data was written. Re-run without --dry-run to apply.');
+            return;
+        }
+
+        // ---- Real run (writes) ----
+        if (CONFIG.clearExisting) {
+            console.log('🗑️ Clearing existing reviews...');
+            const deleted = await Review.deleteMany({});
+            console.log(`✅ Removed ${deleted.deletedCount} existing reviews`);
+        }
+
         console.log(`💾 Inserting ${totalReviewsGenerated} reviews into database...`);
         await Review.insertMany(allReviews);
-        
-        // Generate statistics
-        const stats = await Review.aggregate([
-            { $match: { status: 'approved' } },
-            {
-                $group: {
-                    _id: '$rating',
-                    count: { $sum: 1 }
-                }
-            },
-            { $sort: { _id: -1 } }
-        ]);
-        
+
         console.log('✅ Review seeding completed successfully!');
         console.log('==========================================');
         console.log(`📊 Generated ${totalReviewsGenerated} total reviews`);
         console.log('📈 Rating distribution:');
-        stats.forEach(stat => {
-            console.log(`   ${stat._id} stars: ${stat.count} reviews`);
+        Object.keys(dist).sort((a, b) => b - a).forEach(k => {
+            console.log(`   ${k} stars: ${dist[k]} reviews`);
         });
-        
-        const verifiedCount = await Review.countDocuments({ verified: true });
-        const approvedCount = await Review.countDocuments({ status: 'approved' });
-        console.log(`✅ Verified reviews: ${verifiedCount}`);
-        console.log(`✅ Approved reviews: ${approvedCount}`);
-        
-        console.log('\n🎉 All reviews have been generated successfully!');
-        console.log('💡 You can now view reviews on your product pages.');
-        
-        // Update product rating statistics
+        console.log(`✅ Verified reviews: ${await Review.countDocuments({ verified: true })}`);
+        console.log(`✅ Approved reviews: ${await Review.countDocuments({ status: 'approved' })}`);
+
         console.log('\n🔄 Updating product rating statistics...');
         await updateAllProductRatings();
-        
+
+        console.log('\n🎉 All reviews have been generated successfully!');
     } catch (error) {
         console.error('❌ Error during review seeding:', error);
         throw error;
@@ -404,4 +516,4 @@ if (require.main === module) {
     seedReviews().catch(console.error);
 }
 
-module.exports = { seedReviews };
+module.exports = { seedReviews, getProductSpecs, updateAllProductRatings };

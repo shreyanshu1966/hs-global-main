@@ -16,7 +16,7 @@ const ctas = [
   },
   {
     href: '/products',
-    label: 'Free Global Delivery',
+    label: 'Global Delivery',
     sub: 'USA, UK & worldwide doorstep',
     svg: <Globe strokeWidth={1.5} />,
   },

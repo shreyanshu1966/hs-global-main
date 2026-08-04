@@ -6,6 +6,7 @@ const {
     updateProductWithImages,
     deleteProductWithImages,
     reorderProductImages,
+    replaceProductImage,
     getSubcategories,
     previewProduct,
     processProductImages,
@@ -77,6 +78,7 @@ router.put('/:id',
 );
 router.delete('/:id', deleteProductWithImages);
 router.patch('/:id/reorder-images', reorderProductImages);
+router.patch('/:id/replace-image', uploadMedia.single('image'), replaceProductImage);
 
 // Enhanced ecommerce features
 router.post('/:id/process-images', 

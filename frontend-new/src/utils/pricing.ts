@@ -1,13 +1,14 @@
 // ============================================================
 // CENTRALIZED PRICING ENGINE — single source of truth
 // All price calculations across the app flow through here.
-// Flow: base USD → regional adjustment → discount → display currency
+// Flow: base INR (canonical) → regional adjustment → discount → display currency
+// INR display never involves a rate multiplication — it IS the stored value.
 // ============================================================
 
 export const REGION_CURRENCIES: Record<string, string> = {
   UAE: 'AED',
   Europe: 'EUR',
-  India: 'INR',
+  India: 'USD',
   USA: 'USD',
   UK: 'GBP',
   default: 'USD',
@@ -21,6 +22,8 @@ export const CURRENCY_SYMBOLS: Record<string, string> = {
   AED: 'AED',
 };
 
+// Cross-rates (1 USD = X currency), used only to convert the canonical INR
+// price into non-INR display currencies. INR display itself never uses these.
 export const DEFAULT_RATES: Record<string, number> = {
   USD: 1,
   INR: 83.5,
@@ -43,13 +46,13 @@ export interface DiscountEntry {
 }
 
 export interface PriceResult {
-  baseUSD: number;               // Raw product.priceUSD
-  regionalUSD: number;           // After regional adjustment, before discount
-  finalUSD: number;              // After regional + discount
-  displayAmount: number;         // finalUSD converted to display currency
-  originalDisplayAmount: number; // regionalUSD converted (strikethrough when discounted)
-  formattedPrice: string;        // e.g. "₹8,350.00"
-  originalFormattedPrice: string;// e.g. "₹10,000.00" (for strikethrough)
+  baseINR: number;               // Raw product.priceINR
+  regionalINR: number;           // After regional adjustment, before discount
+  finalINR: number;              // After regional + discount
+  displayAmount: number;         // finalINR converted to display currency
+  originalDisplayAmount: number; // regionalINR converted (strikethrough when discounted)
+  formattedPrice: string;        // e.g. "₹8,350"
+  originalFormattedPrice: string;// e.g. "₹10,000" (for strikethrough)
   currencyCode: string;
   symbol: string;
   hasDiscount: boolean;
@@ -64,28 +67,40 @@ export function isDiscountActive(discount?: DiscountEntry | null): boolean {
   return true;
 }
 
-export function getRegionalBaseUSD(
-  priceUSD: number,
+export function getRegionalBaseINR(
+  priceINR: number,
   region: string,
   regionalPricing?: Record<string, RegionalPricingEntry> | null,
 ): number {
-  if (!regionalPricing || region === 'default') return priceUSD;
+  if (!regionalPricing || region === 'default') return priceINR;
   const rp = regionalPricing[region];
-  if (!rp?.enabled || !rp.adjustmentValue) return priceUSD;
+  if (!rp?.enabled || !rp.adjustmentValue) return priceINR;
   const adjusted = rp.adjustmentType === 'percentage'
-    ? priceUSD * (1 + rp.adjustmentValue / 100)
-    : priceUSD + rp.adjustmentValue;
+    ? priceINR * (1 + rp.adjustmentValue / 100)
+    : priceINR + rp.adjustmentValue;
   return Math.max(0, Math.round(adjusted * 100) / 100);
 }
 
 export function formatCurrencyAmount(amount: number, currencyCode: string): string {
   const symbol = CURRENCY_SYMBOLS[currencyCode] || '$';
+  if (currencyCode === 'INR') {
+    return `${symbol}${Math.round(amount).toLocaleString('en-IN')}`;
+  }
   return `${symbol}${amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+}
+
+// Converts a canonical INR amount to any display currency using the USD-based
+// cross-rate table. For INR itself this is the identity (no rate involved).
+function convertINRTo(amountINR: number, currencyCode: string, exchangeRates: Record<string, number>): number {
+  if (currencyCode === 'INR') return Math.round(amountINR * 100) / 100;
+  const inrRate = exchangeRates.INR || DEFAULT_RATES.INR;
+  const targetRate = exchangeRates[currencyCode] || 1;
+  return Math.round((amountINR / inrRate) * targetRate * 100) / 100;
 }
 
 export function computePrice(
   product: {
-    priceUSD?: number;
+    priceINR?: number;
     regionalPricing?: Record<string, RegionalPricingEntry> | null;
     discount?: DiscountEntry | null;
   } | null | undefined,
@@ -94,11 +109,10 @@ export function computePrice(
 ): PriceResult {
   const currencyCode = REGION_CURRENCIES[region] || 'USD';
   const symbol = CURRENCY_SYMBOLS[currencyCode] || '$';
-  const rate = exchangeRates[currencyCode] || 1;
 
-  if (!product?.priceUSD) {
+  if (!product?.priceINR) {
     return {
-      baseUSD: 0, regionalUSD: 0, finalUSD: 0,
+      baseINR: 0, regionalINR: 0, finalINR: 0,
       displayAmount: 0, originalDisplayAmount: 0,
       formattedPrice: 'Price on Request',
       originalFormattedPrice: 'Price on Request',
@@ -107,19 +121,19 @@ export function computePrice(
     };
   }
 
-  const baseUSD = product.priceUSD;
-  const regionalUSD = getRegionalBaseUSD(baseUSD, region, product.regionalPricing);
+  const baseINR = product.priceINR;
+  const regionalINR = getRegionalBaseINR(baseINR, region, product.regionalPricing);
   const hasDiscount = isDiscountActive(product.discount);
   const discountPercentage = hasDiscount ? (product.discount!.percentage || 0) : 0;
-  const finalUSD = hasDiscount
-    ? Math.max(0, Math.round(regionalUSD * (1 - discountPercentage / 100) * 100) / 100)
-    : regionalUSD;
+  const finalINR = hasDiscount
+    ? Math.max(0, Math.round(regionalINR * (1 - discountPercentage / 100) * 100) / 100)
+    : regionalINR;
 
-  const displayAmount = Math.round(finalUSD * rate * 100) / 100;
-  const originalDisplayAmount = Math.round(regionalUSD * rate * 100) / 100;
+  const displayAmount = convertINRTo(finalINR, currencyCode, exchangeRates);
+  const originalDisplayAmount = convertINRTo(regionalINR, currencyCode, exchangeRates);
 
   return {
-    baseUSD, regionalUSD, finalUSD,
+    baseINR, regionalINR, finalINR,
     displayAmount, originalDisplayAmount,
     formattedPrice: formatCurrencyAmount(displayAmount, currencyCode),
     originalFormattedPrice: formatCurrencyAmount(originalDisplayAmount, currencyCode),
@@ -128,15 +142,14 @@ export function computePrice(
   };
 }
 
-// Convert any USD amount to display currency for a given region
-export function formatUSDInRegion(
-  amountUSD: number,
+// Convert any canonical INR amount to display currency for a given region
+export function formatINRInRegion(
+  amountINR: number,
   region: string,
   exchangeRates: Record<string, number>,
 ): string {
   const currencyCode = REGION_CURRENCIES[region] || 'USD';
-  const rate = exchangeRates[currencyCode] || 1;
-  const displayAmount = Math.round(amountUSD * rate * 100) / 100;
+  const displayAmount = convertINRTo(amountINR, currencyCode, exchangeRates);
   return formatCurrencyAmount(displayAmount, currencyCode);
 }
 
@@ -145,10 +158,7 @@ export function getCurrencySymbolForRegion(region: string): string {
   return CURRENCY_SYMBOLS[currencyCode] || '$';
 }
 
-// Admin-only: always display a USD amount as INR for Indian admin reference.
-// Uses live rates if provided, otherwise falls back to DEFAULT_RATES.
-export function formatAdminINR(priceUSD: number, rates?: Record<string, number>): string {
-  const inrRate = (rates && rates.INR) || DEFAULT_RATES.INR;
-  const inrAmount = Math.round(priceUSD * inrRate);
-  return `₹${inrAmount.toLocaleString('en-IN')}`;
+// Admin-only: format a canonical INR amount for Indian admin reference.
+export function formatAdminINR(priceINR: number): string {
+  return `₹${Math.round(priceINR).toLocaleString('en-IN')}`;
 }

@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useRef, useCallback } from 'react';
-import ReactCrop, { Crop, PercentCrop } from 'react-image-crop';
+import ReactCrop, { Crop, PercentCrop, centerCrop, makeAspectCrop } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 import { X, Check, RotateCw, Crop as CropIcon } from 'lucide-react';
 
@@ -14,6 +14,15 @@ interface ImageCropperProps {
   fileName?: string;
 }
 
+const ASPECT_PRESETS: { label: string; value: number | undefined }[] = [
+  { label: 'Free', value: undefined },
+  { label: '1:1', value: 1 },
+  { label: '4:3', value: 4 / 3 },
+  { label: '4:5', value: 4 / 5 },
+];
+
+const DEFAULT_CROP: Crop = { unit: '%', width: 80, height: 80, x: 10, y: 10 };
+
 const ImageCropper: React.FC<ImageCropperProps> = ({
   src,
   onCropComplete,
@@ -24,29 +33,32 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
   fileName = 'cropped-image.jpg'
 }) => {
   const imgRef = useRef<HTMLImageElement>(null);
-  const [crop, setCrop] = useState<Crop>({
-    unit: '%',
-    width: 80,
-    height: 80,
-    x: 10,
-    y: 10
-  });
+  const [aspect, setAspect] = useState<number | undefined>(aspectRatio);
+  const [crop, setCrop] = useState<Crop>(DEFAULT_CROP);
   const [completedCrop, setCompletedCrop] = useState<PercentCrop>();
   const [isProcessing, setIsProcessing] = useState(false);
   const [rotation, setRotation] = useState(0);
 
   const onImageLoad = useCallback((e: React.SyntheticEvent<HTMLImageElement>) => {
-    if (aspectRatio) {
-      const { width, height } = e.currentTarget;
-      setCrop({
-        unit: '%',
-        width: 80,
-        height: 80,
-        x: 10,
-        y: 10
-      });
+    const { width, height } = e.currentTarget;
+    if (aspect) {
+      setCrop(centerCrop(makeAspectCrop({ unit: '%', width: 80 }, aspect, width, height), width, height));
+    } else {
+      setCrop(DEFAULT_CROP);
     }
-  }, [aspectRatio]);
+  }, [aspect]);
+
+  const handleAspectChange = (value: number | undefined) => {
+    setAspect(value);
+    const img = imgRef.current;
+    if (!img) return;
+    const { width, height } = img;
+    if (value) {
+      setCrop(centerCrop(makeAspectCrop({ unit: '%', width: 80 }, value, width, height), width, height));
+    } else {
+      setCrop(DEFAULT_CROP);
+    }
+  };
 
   const getCroppedImg = useCallback(async () => {
     if (!imgRef.current || !completedCrop) return;
@@ -139,7 +151,7 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
                 crop={crop}
                 onComplete={(c) => setCompletedCrop(c)}
                 onChange={(c) => setCrop(c)}
-                aspect={aspectRatio}
+                aspect={aspect}
                 minWidth={minWidth}
                 minHeight={minHeight}
                 className="max-w-full max-h-[60vh]"
@@ -148,6 +160,7 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
                   ref={imgRef}
                   alt="Crop me"
                   src={src}
+                  crossOrigin="anonymous"
                   style={{ transform: `rotate(${rotation}deg)` }}
                   onLoad={onImageLoad}
                   className="max-w-full max-h-[60vh] object-contain"
@@ -164,8 +177,22 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
 
         {/* Controls */}
         <div className="border-t border-gray-200 p-6">
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
             <div className="flex items-center gap-2">
+              {ASPECT_PRESETS.map((preset) => (
+                <button
+                  key={preset.label}
+                  type="button"
+                  onClick={() => handleAspectChange(preset.value)}
+                  className={`px-3 py-2 text-sm rounded-lg border transition-colors ${
+                    aspect === preset.value
+                      ? 'bg-blue-600 border-blue-600 text-white'
+                      : 'border-gray-300 text-gray-700 hover:bg-gray-50'
+                  }`}
+                >
+                  {preset.label}
+                </button>
+              ))}
               <button
                 type="button"
                 onClick={handleRotate}

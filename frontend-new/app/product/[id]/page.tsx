@@ -87,11 +87,11 @@ export default async function Page({ params }: Params) {
     sku: product.productId,
     url,
   };
-  if (typeof product.priceUSD === 'number' && product.priceUSD > 0) {
+  if (typeof product.priceINR === 'number' && product.priceINR > 0) {
     productLd.offers = {
       '@type': 'Offer',
-      priceCurrency: 'USD',
-      price: product.priceUSD,
+      priceCurrency: 'INR',
+      price: product.priceINR,
       availability:
         product.available === false
           ? 'https://schema.org/OutOfStock'
