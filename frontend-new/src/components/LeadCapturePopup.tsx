@@ -145,144 +145,111 @@ const LeadCapturePopup: React.FC<LeadCapturePopupProps> = ({ isOpen, onClose }) 
     setCopied(false);
     onClose();
   };
-
   if (!isRendered) return null;
 
   const showSuccess = !!couponCode;
+  const bgUrl = config.entryPopup.backgroundImage || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80';
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+      {/* Backdrop */}
       <div
         ref={backdropRef}
-        className="absolute inset-0 bg-black/75 backdrop-blur-sm"
+        className="fixed inset-0 bg-black/75 backdrop-blur-md"
         onClick={handleClose}
         style={{ opacity: 0 }}
         onWheel={(e) => { e.preventDefault(); e.stopPropagation(); }}
       />
 
+      {/* Main Joybird-style popup card */}
       <div
         ref={modalRef}
-        className="relative z-10 w-full max-w-[640px] flex rounded-2xl shadow-[0_32px_80px_rgba(0,0,0,0.32)] overflow-hidden"
-        style={{ opacity: 0 }}
+        className="relative z-10 w-full max-w-[480px] sm:max-w-[500px] rounded-2xl shadow-[0_32px_80px_rgba(0,0,0,0.5)] overflow-hidden text-white flex flex-col my-auto border border-white/15"
+        style={{
+          opacity: 0,
+          background: `linear-gradient(180deg, rgba(15, 23, 42, 0.45) 0%, rgba(15, 23, 42, 0.72) 100%), url(${bgUrl}) center/cover no-repeat`
+        }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* ── Left branding panel ── */}
-        <div
-          className="hidden sm:flex flex-col justify-between text-white px-8 py-9 w-[210px] flex-shrink-0 relative overflow-hidden"
-          style={{
-            background: config.entryPopup.backgroundImage
-              ? `linear-gradient(rgba(17,24,39,0.82),rgba(17,24,39,0.82)) center/cover, url(${config.entryPopup.backgroundImage})`
-              : '#111827'
-          }}
+        {/* Floating Close Button */}
+        <button
+          onClick={handleClose}
+          className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-black/30 hover:bg-black/50 backdrop-blur-md flex items-center justify-center text-white transition-all border border-white/20 shadow-md"
+          aria-label="Close popup"
         >
-          <div className="absolute -bottom-16 -right-16 w-48 h-48 rounded-full border border-white/10" />
-          <div className="absolute -bottom-8 -right-8 w-32 h-32 rounded-full border border-white/5" />
-          <div className="relative z-10">
-            <p className="text-[9px] uppercase tracking-[0.35em] text-gray-500 mb-7">Enquiry Form</p>
-            <h2 className="text-[20px] font-light leading-[1.3] tracking-wide">
-              {config.entryPopup.heading || 'Premium Stone & Marble'}
+          <X className="w-4 h-4" />
+        </button>
+
+        <div className="p-6 sm:p-8 flex flex-col items-center text-center max-h-[90vh] overflow-y-auto" style={{ overscrollBehavior: 'contain' }}>
+          
+          {/* Brand Name / Logo */}
+          <div className="mt-2 mb-1">
+            <h2 className="text-xl sm:text-2xl font-bold tracking-[0.25em] uppercase text-white font-serif drop-shadow-sm">
+              ENQUIRY FORM
             </h2>
-            <div className="w-6 h-px bg-white/25 my-5" />
-            <p className="text-[11px] text-gray-400 leading-relaxed font-light">
-              {config.entryPopup.subheading || 'Custom bulk orders, marble furniture & exclusive stone collections.'}
-            </p>
           </div>
-          <div className="relative z-10 space-y-3">
-            <div>
-              <p className="text-[8px] uppercase tracking-[0.3em] text-gray-600 mb-1">Response within</p>
-              <p className="text-sm font-light text-white">24 hours</p>
-            </div>
-          </div>
-        </div>
 
-        {/* ── Right panel ── */}
-        <div className="flex-1 bg-white flex flex-col max-h-[88vh] sm:max-h-[560px]">
-          {/* Discount highlight strip */}
-          {!showSuccess && config.entryPopup.discountPercentage > 0 && (
-            <div className="flex items-center justify-center gap-2.5 px-5 py-2.5 bg-[#111827] flex-shrink-0">
-              <span className="text-[10px] text-gray-500 uppercase tracking-[0.3em]">Exclusive Offer</span>
-              <span className="text-white font-bold text-base tracking-wide">
-                {config.entryPopup.discountPercentage}% OFF
-              </span>
-              <span className="text-[10px] text-gray-500 uppercase tracking-[0.3em]">Your Order</span>
-            </div>
-          )}
-
-          {/* Header */}
-          <div className="flex items-center justify-between px-5 sm:px-6 py-4 border-b border-gray-100 flex-shrink-0">
-            <div>
-              <h3 className="text-sm font-semibold text-[#111827] uppercase tracking-[0.12em]">
-                {showSuccess ? 'Your Exclusive Code' : 'Get Your Discount'}
-              </h3>
-              <p className="text-xs text-gray-400 mt-0.5 font-light">
-                {showSuccess ? 'Copy and apply at checkout' : 'Fill in your details to unlock your code'}
+          {!showSuccess ? (
+            <>
+              {/* Italic Serif Tagline */}
+              <p className="font-serif italic text-sm sm:text-base text-gray-200 tracking-wide mt-1">
+                {config.entryPopup.heading || 'Exclusive Member Offer'}
               </p>
-            </div>
-            <button onClick={handleClose} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors flex-shrink-0 ml-3">
-              <X className="w-4 h-4 text-gray-400" />
-            </button>
-          </div>
 
-          {/* ── Success: show coupon ── */}
-          {showSuccess && (
-            <div className="flex-1 flex flex-col items-center justify-center px-6 py-8 text-center">
-              <div className="w-12 h-12 bg-[#111827] rounded-full flex items-center justify-center mb-4">
-                <CheckCircle className="w-6 h-6 text-white" />
-              </div>
-              <h3 className="text-lg font-semibold text-[#111827] uppercase tracking-[0.1em] mb-1">Thank You!</h3>
-              <p className="text-sm text-gray-500 font-light mb-6">Here is your exclusive discount code</p>
+              {/* Hero Discount Display with Accent Lines */}
+              {(config.entryPopup.discountPercentage ?? 12) > 0 && (
+                <div className="w-full my-4 py-2.5 border-y border-white/30 flex flex-col items-center">
+                  <span className="text-4xl sm:text-5xl font-extrabold tracking-tight text-white drop-shadow-md">
+                    {config.entryPopup.discountPercentage || 12}% OFF
+                  </span>
+                  <span className="text-[10px] sm:text-xs uppercase tracking-[0.25em] text-gray-200 mt-1 font-medium">
+                    Your Order*
+                  </span>
+                </div>
+              )}
 
-              <div className="w-full max-w-[280px] bg-gray-50 border border-dashed border-gray-300 rounded-2xl px-5 py-5 mb-4">
-                <p className="text-[9px] uppercase tracking-[0.3em] text-gray-400 mb-1">Your Code</p>
-                <p className="text-3xl font-bold tracking-[0.4em] text-[#111827] mb-1">{couponCode}</p>
-                {expiryLabel && (
-                  <p className="text-[11px] text-amber-600 flex items-center justify-center gap-1 mt-1">
-                    <Clock className="w-3 h-3" />
-                    {expiryLabel}
-                  </p>
-                )}
-              </div>
-
-              <button
-                onClick={handleCopy}
-                className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all mb-3 ${copied ? 'bg-green-600 text-white' : 'bg-[#111827] text-white hover:bg-[#1f2937]'}`}
-              >
-                {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-                {copied ? 'Copied to clipboard!' : 'Copy Code'}
-              </button>
-
-              <p className="text-[10px] text-gray-400 font-light">
-                Apply this code at checkout to claim your discount
+              {/* Subheading / CTA encouragement */}
+              <p className="text-xs sm:text-sm text-gray-200 mb-5 font-light">
+                {config.entryPopup.subheading || 'Unlock your exclusive benefits'}
               </p>
-            </div>
-          )}
 
-          {/* ── Form ── */}
-          {!showSuccess && (
-            <div className="overflow-y-auto flex-1" style={{ overscrollBehavior: 'contain' }}>
-              <form onSubmit={handleSubmit} className="px-5 sm:px-6 py-5 space-y-4">
-
-                {/* Name */}
+              {/* Lead Form */}
+              <form onSubmit={handleSubmit} className="w-full space-y-3">
+                {/* Full Name */}
                 <div>
-                  <label className="block text-[10px] uppercase tracking-[0.18em] font-medium text-gray-500 mb-1.5">Full Name</label>
                   <div className="relative">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
+                    <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
                     <input
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
-                      placeholder="Your full name"
-                      className={`w-full pl-9 pr-3 py-2.5 border rounded-lg text-sm font-light placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-[#111827] transition-all ${errors.name ? 'border-red-400' : 'border-gray-200 bg-gray-50/50'}`}
+                      placeholder="Enter your full name"
+                      className={`w-full pl-10 pr-4 py-3 rounded-lg text-sm text-gray-900 bg-white/95 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-400 font-normal transition-all shadow-sm ${errors.name ? 'ring-2 ring-red-400' : ''}`}
                     />
                   </div>
-                  {errors.name && <p className="text-red-400 text-[11px] mt-1">{errors.name}</p>}
+                  {errors.name && <p className="text-red-300 text-[11px] mt-1 text-left">{errors.name}</p>}
                 </div>
 
-                {/* Mobile */}
+                {/* Email Address */}
                 <div>
-                  <label className="block text-[10px] uppercase tracking-[0.18em] font-medium text-gray-500 mb-1.5">Mobile Number</label>
+                  <div className="relative">
+                    <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+                    <input
+                      name="email"
+                      type="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      placeholder="Enter your email address"
+                      className={`w-full pl-10 pr-4 py-3 rounded-lg text-sm text-gray-900 bg-white/95 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-400 font-normal transition-all shadow-sm ${errors.email ? 'ring-2 ring-red-400' : ''}`}
+                    />
+                  </div>
+                  {errors.email && <p className="text-red-300 text-[11px] mt-1 text-left">{errors.email}</p>}
+                </div>
+
+                {/* Mobile Input with Dial Dropdown */}
+                <div>
                   <div
-                    className="flex"
+                    className="flex text-gray-900"
                     ref={countryDialRef}
                     tabIndex={0}
                     onBlur={() => setTimeout(() => {
@@ -295,22 +262,23 @@ const LeadCapturePopup: React.FC<LeadCapturePopupProps> = ({ isOpen, onClose }) 
                       <button
                         type="button"
                         onClick={() => setShowCountryDial(v => !v)}
-                        className="px-2.5 py-2.5 border border-r-0 border-gray-200 rounded-l-lg bg-gray-50/50 flex items-center gap-1 text-sm flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-[#111827]"
-                        style={{ width: '88px' }}
+                        className="px-3 py-3 bg-white/95 border-r border-gray-200 rounded-l-lg flex items-center gap-1 text-xs sm:text-sm font-medium flex-shrink-0 focus:outline-none"
+                        style={{ width: '85px' }}
                       >
                         <span>{(countriesList.find(c => c.dialCode === formData.countryCode) || { flag: '🌐' as any }).flag}</span>
-                        <span className="text-xs font-medium text-[#111827]">{formData.countryCode}</span>
-                        <svg className="w-3 h-3 text-gray-400" viewBox="0 0 20 20" fill="currentColor"><path d="M5.23 7.21a.75.75 0 011.06.02L10 11.188l3.71-3.957a.75.75 0 111.08 1.04l-4.24 4.52a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" /></svg>
+                        <span className="text-xs font-semibold">{formData.countryCode}</span>
+                        <svg className="w-3 h-3 text-gray-500 ml-auto" viewBox="0 0 20 20" fill="currentColor"><path d="M5.23 7.21a.75.75 0 011.06.02L10 11.188l3.71-3.957a.75.75 0 111.08 1.04l-4.24 4.52a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" /></svg>
                       </button>
+
                       {showCountryDial && (
-                        <div className="absolute left-0 top-full mt-1 w-56 max-h-52 overflow-auto bg-white border border-gray-200 rounded-lg shadow-xl z-20">
+                        <div className="absolute left-0 top-full mt-1 w-56 max-h-48 overflow-auto bg-white border border-gray-200 rounded-lg shadow-2xl z-30 text-left text-gray-900">
                           <div className="p-2 border-b border-gray-100 sticky top-0 bg-white">
                             <input
                               type="text"
                               value={dialQuery}
                               onChange={(e) => setDialQuery(e.target.value)}
-                              placeholder="Search..."
-                              className="w-full px-2 py-1.5 border border-gray-200 rounded-md text-xs focus:outline-none focus:ring-2 focus:ring-[#111827]"
+                              placeholder="Search country..."
+                              className="w-full px-2 py-1 border border-gray-200 rounded text-xs focus:outline-none focus:ring-1 focus:ring-amber-500"
                             />
                           </div>
                           {filteredDial.map(c => (
@@ -319,16 +287,17 @@ const LeadCapturePopup: React.FC<LeadCapturePopupProps> = ({ isOpen, onClose }) 
                               type="button"
                               onMouseDown={(e) => e.preventDefault()}
                               onClick={() => { setFormData(p => ({ ...p, countryCode: c.dialCode })); setShowCountryDial(false); setDialQuery(''); }}
-                              className="w-full text-left px-3 py-2 hover:bg-gray-50 text-sm flex items-center gap-2 transition-colors"
+                              className="w-full text-left px-3 py-1.5 hover:bg-gray-100 text-xs flex items-center gap-2 transition-colors"
                             >
                               <span>{c.flag}</span>
-                              <span className="font-medium text-xs">{c.dialCode}</span>
-                              <span className="text-gray-400 text-xs truncate">{c.name}</span>
+                              <span className="font-semibold text-xs">{c.dialCode}</span>
+                              <span className="text-gray-500 text-xs truncate">{c.name}</span>
                             </button>
                           ))}
                         </div>
                       )}
                     </div>
+
                     <input
                       name="mobile"
                       type="tel"
@@ -336,75 +305,94 @@ const LeadCapturePopup: React.FC<LeadCapturePopupProps> = ({ isOpen, onClose }) 
                       value={formData.mobile}
                       onChange={handleChange}
                       placeholder="Mobile number"
-                      className={`flex-1 min-w-0 px-3 py-2.5 border rounded-r-lg text-sm font-light placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-[#111827] transition-all ${errors.mobile ? 'border-red-400' : 'border-gray-200 bg-gray-50/50'}`}
+                      className={`flex-1 min-w-0 px-3.5 py-3 bg-white/95 rounded-r-lg text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-400 font-normal transition-all shadow-sm ${errors.mobile ? 'ring-2 ring-red-400' : ''}`}
                     />
                   </div>
-                  {errors.mobile && <p className="text-red-400 text-[11px] mt-1">{errors.mobile}</p>}
-                </div>
-
-                {/* Email */}
-                <div>
-                  <label className="block text-[10px] uppercase tracking-[0.18em] font-medium text-gray-500 mb-1.5">Email Address</label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
-                    <input
-                      name="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      placeholder="your@email.com"
-                      className={`w-full pl-9 pr-3 py-2.5 border rounded-lg text-sm font-light placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-[#111827] transition-all ${errors.email ? 'border-red-400' : 'border-gray-200 bg-gray-50/50'}`}
-                    />
-                  </div>
-                  {errors.email && <p className="text-red-400 text-[11px] mt-1">{errors.email}</p>}
+                  {errors.mobile && <p className="text-red-300 text-[11px] mt-1 text-left">{errors.mobile}</p>}
                 </div>
 
                 {/* Country + Pincode */}
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-2.5">
                   <div>
-                    <label className="block text-[10px] uppercase tracking-[0.18em] font-medium text-gray-500 mb-1.5">Country</label>
                     <select
                       name="country"
                       value={formData.country}
                       onChange={handleChange}
-                      className={`w-full px-3 py-2.5 border rounded-lg text-sm font-light text-[#111827] focus:outline-none focus:ring-2 focus:ring-[#111827] transition-all bg-gray-50/50 ${errors.country ? 'border-red-400' : 'border-gray-200'}`}
+                      className={`w-full px-3 py-3 rounded-lg text-xs sm:text-sm text-gray-900 bg-white/95 focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all ${errors.country ? 'ring-2 ring-red-400' : ''}`}
                     >
                       <option value="">Select country</option>
                       {countryNames.map(n => <option key={n} value={n}>{n}</option>)}
                     </select>
-                    {errors.country && <p className="text-red-400 text-[11px] mt-1">{errors.country}</p>}
+                    {errors.country && <p className="text-red-300 text-[11px] mt-1 text-left">{errors.country}</p>}
                   </div>
-                  <div>
-                    <label className="block text-[10px] uppercase tracking-[0.18em] font-medium text-gray-500 mb-1.5">
-                      Pincode <span className="normal-case tracking-normal text-gray-300">(optional)</span>
-                    </label>
-                    <div className="relative">
-                      <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
-                      <input
-                        name="pincode"
-                        value={formData.pincode}
-                        onChange={handleChange}
-                        placeholder="PIN / ZIP"
-                        className="w-full pl-9 pr-3 py-2.5 border border-gray-200 bg-gray-50/50 rounded-lg text-sm font-light placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-[#111827] transition-all"
-                      />
-                    </div>
+
+                  <div className="relative">
+                    <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-500" />
+                    <input
+                      name="pincode"
+                      value={formData.pincode}
+                      onChange={handleChange}
+                      placeholder="ZIP / Pincode"
+                      className="w-full pl-8 pr-3 py-3 rounded-lg text-xs sm:text-sm text-gray-900 bg-white/95 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all"
+                    />
                   </div>
                 </div>
 
-                {/* Submit */}
-                <div className="pt-1">
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full bg-[#111827] text-white py-3 rounded-lg text-[11px] font-semibold uppercase tracking-[0.2em] hover:bg-[#1f2937] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {isSubmitting ? 'Please wait...' : 'Get My Discount Code'}
-                  </button>
-                  <p className="text-[10px] text-gray-400 text-center mt-2 font-light">
-                    Your information is kept private and never shared.
-                  </p>
-                </div>
+                {/* Submit Button */}
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full mt-2 bg-white text-gray-900 py-3.5 rounded-lg text-xs sm:text-sm font-bold uppercase tracking-[0.2em] hover:bg-gray-100 active:scale-[0.99] transition-all shadow-lg text-center disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isSubmitting ? 'Unlocking...' : 'GET MY DISCOUNT'}
+                </button>
               </form>
+
+              {/* No, thanks dismiss link */}
+              <button
+                type="button"
+                onClick={handleClose}
+                className="mt-4 text-xs text-gray-300 hover:text-white underline decoration-gray-400 underline-offset-4 transition-colors font-light"
+              >
+                No, thanks.
+              </button>
+
+              {/* Footer disclaimer */}
+              <p className="text-[10px] text-gray-300/80 mt-4 font-light tracking-wide">
+                Hurry, these exclusive deals are time-limited. *Terms & conditions apply.
+              </p>
+            </>
+          ) : (
+            /* Success State */
+            <div className="py-6 flex flex-col items-center w-full">
+              <div className="w-14 h-14 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center mb-4 border border-white/30">
+                <CheckCircle className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-2xl font-serif font-bold text-white uppercase tracking-wider mb-2">Thank You!</h3>
+              <p className="text-xs sm:text-sm text-gray-200 mb-6 font-light">Here is your exclusive discount code:</p>
+
+              <div className="w-full max-w-[300px] bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl px-6 py-6 mb-6">
+                <p className="text-[10px] uppercase tracking-[0.3em] text-gray-300 mb-1">Your Code</p>
+                <p className="text-3xl font-extrabold tracking-[0.3em] text-white my-1">{couponCode}</p>
+                {expiryLabel && (
+                  <p className="text-xs text-amber-300 flex items-center justify-center gap-1.5 mt-2 font-medium">
+                    <Clock className="w-3.5 h-3.5" />
+                    {expiryLabel}
+                  </p>
+                )}
+              </div>
+
+              <button
+                onClick={handleCopy}
+                className={`flex items-center justify-center gap-2 w-full max-w-[280px] py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all shadow-lg ${copied ? 'bg-green-500 text-white' : 'bg-white text-gray-900 hover:bg-gray-100'}`}
+              >
+                {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                {copied ? 'Copied to Clipboard!' : 'Copy Code'}
+              </button>
+
+              <p className="text-xs text-gray-300 mt-4 font-light">
+                Apply this code at checkout to claim your discount
+              </p>
             </div>
           )}
         </div>
