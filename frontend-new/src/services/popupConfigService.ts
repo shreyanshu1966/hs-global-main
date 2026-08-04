@@ -35,9 +35,9 @@ export const DEFAULT_POPUP_CONFIG: PopupConfig = {
     timerSeconds: 12,
     heading: 'Premium Stone & Marble',
     subheading: 'Custom bulk orders, marble furniture & exclusive stone collections.',
-    backgroundImage: '',
-    couponCode: 'HS10',
-    discountPercentage: 10,
+    backgroundImage: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
+    couponCode: 'HS12',
+    discountPercentage: 12,
   },
   exitIntent: {
     enabled: true,
