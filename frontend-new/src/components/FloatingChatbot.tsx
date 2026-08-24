@@ -236,7 +236,7 @@ const FloatingChatbot: React.FC = () => {
             `}</style>
 
             {/* ─── Floating Action Button ──────────────────────────────────────── */}
-            <div className={`fixed bottom-28 right-4 sm:right-6 z-50`} id="chat-fab-container">
+            <div className="fixed bottom-8 right-4 sm:bottom-10 sm:right-6 z-50" id="chat-fab-container">
                 <button
                     id="chat-fab-btn"
                     onClick={handleToggle}

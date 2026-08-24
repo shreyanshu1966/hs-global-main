@@ -11,7 +11,6 @@ import { CartDrawer } from './CartDrawer';
 import { PhoneVerifyModal } from './PhoneVerifyModal';
 import { AddedToCartNotification } from './AddedToCartNotification';
 import NoiseOverlay from './NoiseOverlay';
-import FloatingWhatsApp from './FloatingWhatsApp';
 import FloatingChatbot from './FloatingChatbot';
 import FloatingScrollButton from './FloatingScrollButton';
 import LeadCapturePopup from './LeadCapturePopup';
@@ -70,7 +69,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             {!isAdminPage && <CartDrawer />}
             {!isAdminPage && !isItsbitsHome && <PhoneVerifyModal />}
             {!isAdminPage && !isItsbitsHome && <AddedToCartNotification />}
-            {!isAdminPage && <FloatingWhatsApp />}
             {!isAdminPage && <FloatingChatbot />}
             {!isAdminPage && <FloatingScrollButton />}
             <NoiseOverlay />
