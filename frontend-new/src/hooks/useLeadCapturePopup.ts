@@ -14,6 +14,7 @@ export const useLeadCapturePopup = () => {
     if (timerRef.current) clearTimeout(timerRef.current);
     timerRef.current = setTimeout(() => {
       if (!configRef.current.enabled) return;
+      if (document.body.style.overflow === 'hidden') return;
       setIsOpen(true);
       setHasShown(true);
       sessionStorage.setItem('leadCapturePopupShown', 'true');

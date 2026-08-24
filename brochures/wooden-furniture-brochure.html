@@ -1,0 +1,3469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HS Global Export — Wooden Furniture Catalogue</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─────────────────────────────────────────
+       WOODEN FURNITURE BROCHURE — DESIGN SYSTEM
+       Palette: Warm Walnut · Deep Forest · Brass
+       Feel: Artisanal · Earthy · Handcrafted
+    ───────────────────────────────────────── */
+    :root {
+      --walnut:     #4A3728;
+      --walnut-lt:  #6B4F3A;
+      --birch:      #F0E8D8;
+      --parchment:  #E8DFC8;
+      --brass:      #C4934A;
+      --brass-lt:   #D4A862;
+      --forest:     #2D3A2E;
+      --forest-lt:  #3D5040;
+      --sienna:     #8B5E3C;
+      --mist:       #C8BFB0;
+      --ink:        #1C1410;
+      --rule:       rgba(196,147,74,0.3);
+
+      --ff-display: 'Playfair Display', Georgia, serif;
+      --ff-body:    'DM Sans', system-ui, sans-serif;
+
+      --page-w: 297mm;
+      --page-h: 210mm;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    @page { size: A4 landscape; margin: 0; }
+
+    body {
+      font-family: var(--ff-body);
+      background: #2A1F14;
+      color: var(--ink);
+    }
+
+    /* ── EACH PRODUCT = ONE PAGE ── */
+    .product-page {
+      width: var(--page-w);
+      height: var(--page-h);
+      background: var(--birch);
+      display: grid;
+      grid-template-columns: 150mm 1fr;
+      grid-template-rows: 1fr;
+      position: relative;
+      overflow: hidden;
+      page-break-after: always;
+      break-after: page;
+    }
+
+    /* ── WOOD GRAIN TEXTURE — radial warm gradients ── */
+    .product-page::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          92deg,
+          transparent 0px,
+          transparent 18px,
+          rgba(74,55,40,0.025) 18px,
+          rgba(74,55,40,0.025) 19px
+        ),
+        radial-gradient(ellipse 200% 120% at 70% 50%, rgba(196,147,74,0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 100% 100% at -10% 50%, rgba(45,58,46,0.06) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── LEFT PANEL — DARK WALNUT SIDE ── */
+    .left-panel {
+      position: relative;
+      background: var(--forest);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    /* Diagonal cut on right edge */
+    .left-panel::after {
+      content: '';
+      position: absolute;
+      top: 0; right: -24px; bottom: 0;
+      width: 48px;
+      background: var(--forest);
+      clip-path: polygon(0 0, 50% 0, 100% 100%, 0 100%);
+      z-index: 3;
+    }
+
+    /* Brass top accent line */
+    .left-panel::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3pt;
+      background: linear-gradient(90deg, var(--brass), var(--brass-lt), var(--brass));
+      z-index: 5;
+    }
+
+    /* ── PRODUCT IMAGE ── */
+    .product-image-wrap {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .product-image-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .img-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+    }
+
+    /* Big category text on image */
+    .category-watermark {
+      position: absolute;
+      top: 8mm;
+      left: 8mm;
+      z-index: 4;
+    }
+
+    .cat-eyebrow {
+      font-size: 6pt;
+      font-weight: 500;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--brass-lt);
+      display: block;
+      margin-bottom: 2mm;
+    }
+
+    .cat-title {
+      font-family: var(--ff-display);
+      font-size: 28pt;
+      font-weight: 400;
+      font-style: italic;
+      color: var(--birch);
+      line-height: 1.05;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.4);
+    }
+
+    /* Product number bottom left of image */
+    .img-sku {
+      position: absolute;
+      bottom: 5mm;
+      left: 8mm;
+      font-size: 6.5pt;
+      font-weight: 400;
+      letter-spacing: 0.22em;
+      color: rgba(240,232,216,0.7);
+      z-index: 4;
+      text-transform: uppercase;
+    }
+
+    /* ── RIGHT PANEL — PARCHMENT ── */
+    .right-panel {
+      position: relative;
+      z-index: 2;
+      padding: 10mm 11mm 8mm 20mm;
+      display: flex;
+      flex-direction: column;
+      gap: 4mm;
+    }
+
+    /* Brand header top right */
+    .brand-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1mm;
+    }
+
+    .brand-name {
+      font-family: var(--ff-display);
+      font-size: 10pt;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--walnut);
+      text-transform: uppercase;
+    }
+
+    .brand-sub {
+      font-size: 5.5pt;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      color: var(--mist);
+      text-transform: uppercase;
+      margin-top: 1px;
+    }
+
+    .page-num-top {
+      font-size: 6.5pt;
+      font-weight: 500;
+      color: var(--brass);
+      letter-spacing: 0.15em;
+    }
+
+    /* Brass divider */
+    .brass-rule {
+      height: 1.5pt;
+      background: linear-gradient(90deg, var(--brass) 0%, transparent 100%);
+      margin: 0;
+    }
+
+    /* ── PRODUCT NAME ── */
+    .product-name {
+      font-family: var(--ff-display);
+      font-size: 26pt;
+      font-weight: 700;
+      color: var(--walnut);
+      line-height: 1.1;
+      letter-spacing: 0.01em;
+    }
+
+    .product-subtitle {
+      font-family: var(--ff-display);
+      font-size: 13pt;
+      font-weight: 400;
+      font-style: italic;
+      color: var(--sienna);
+      margin-top: 1mm;
+    }
+
+    /* ── CRAFT CALLOUT BOX ── */
+    .craft-box {
+      background: rgba(196,147,74,0.1);
+      border-left: 2.5pt solid var(--brass);
+      padding: 3mm 5mm;
+      font-size: 7.5pt;
+      font-style: italic;
+      color: var(--walnut);
+      line-height: 1.55;
+    }
+
+    /* ── SPEC TABLE ── */
+    .spec-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 7pt;
+      flex: 1;
+    }
+
+    .spec-table tr {
+      border-bottom: 0.5pt solid rgba(74,55,40,0.12);
+    }
+    .spec-table tr:last-child { border-bottom: none; }
+
+    .spec-table td {
+      padding: 2mm 0;
+      vertical-align: top;
+      line-height: 1.4;
+    }
+
+    .spec-table td:first-child {
+      font-weight: 500;
+      font-size: 6pt;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--mist);
+      width: 38%;
+      padding-right: 4mm;
+    }
+
+    .spec-table td:last-child {
+      color: var(--walnut);
+    }
+
+    /* ── MATERIALS CHIPS ── */
+    .materials-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 3px;
+    }
+
+    .chip {
+      background: var(--forest);
+      color: var(--brass-lt);
+      font-size: 5.5pt;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 2px 7px;
+    }
+
+    /* ── PRICE BLOCK ── */
+    .price-block {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-top: auto;
+      padding-top: 3mm;
+      border-top: 0.4pt solid var(--rule);
+    }
+
+    .price-label {
+      font-size: 5.5pt;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--mist);
+    }
+
+    .price-value {
+      font-family: var(--ff-display);
+      font-size: 20pt;
+      font-weight: 700;
+      color: var(--walnut);
+    }
+
+    .price-note {
+      font-size: 5.5pt;
+      color: var(--mist);
+      margin-left: 4px;
+    }
+
+    /* ── CONTACT FOOTER — Bottom strip ── */
+    .page-footer {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 14mm;
+      background: var(--walnut);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      padding: 0 12mm;
+      z-index: 10;
+    }
+
+    .footer-desc {
+      font-size: 7.5pt;
+      font-style: italic;
+      color: rgba(240,232,216,0.75);
+      font-family: var(--ff-display);
+      line-height: 1.5;
+      max-width: 180mm;
+    }
+
+    .footer-contact {
+      font-size: 5.5pt;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--brass-lt);
+      text-align: right;
+      line-height: 1.9;
+    }
+
+    @media screen {
+      body { padding: 20px; display: flex; flex-direction: column; gap: 20px; align-items: center; }
+      .product-page { box-shadow: 0 16px 70px rgba(0,0,0,0.5); }
+      .cover-page   { box-shadow: 0 16px 70px rgba(0,0,0,0.5); }
+    }
+    @media print {
+      body { background: none; padding: 0; }
+    }
+
+    /* ═══════════════════════════════════════════
+       COVER PAGE — WOODEN FURNITURE
+    ═══════════════════════════════════════════ */
+    .cover-page {
+      width: var(--page-w);
+      height: var(--page-h);
+      background: var(--forest);
+      display: grid;
+      grid-template-columns: 1fr 110mm;
+      grid-template-rows: 3pt 1fr 16mm;
+      position: relative;
+      overflow: hidden;
+      page-break-after: always;
+      break-after: page;
+    }
+
+    /* Brass top stripe full width */
+    .cover-page .brass-top {
+      grid-column: 1 / -1;
+      grid-row: 1;
+      background: linear-gradient(90deg, var(--brass), var(--brass-lt) 50%, var(--brass));
+      z-index: 10;
+    }
+
+    /* Wood grain lines overlay */
+    .cover-page::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          88deg,
+          transparent 0px,
+          transparent 22px,
+          rgba(196,147,74,0.04) 22px,
+          rgba(196,147,74,0.04) 23px
+        ),
+        radial-gradient(ellipse 140% 100% at 40% 50%, rgba(61,80,64,0.6) 0%, transparent 70%),
+        radial-gradient(ellipse 70% 70% at 95% 80%, rgba(28,20,16,0.4) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* LEFT text panel */
+    .cover-left {
+      grid-column: 1;
+      grid-row: 2;
+      position: relative;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 14mm 16mm 14mm 18mm;
+      gap: 6mm;
+    }
+
+    .cover-eyebrow {
+      font-size: 6.5pt;
+      font-weight: 500;
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      color: var(--brass-lt);
+    }
+
+    .cover-headline {
+      font-family: var(--ff-display);
+      font-size: 52pt;
+      font-weight: 700;
+      line-height: 0.9;
+      color: var(--birch);
+    }
+
+    .cover-headline em {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--brass-lt);
+      display: block;
+      font-size: 38pt;
+      margin-top: 2mm;
+    }
+
+    .cover-brass-rule {
+      width: 20mm;
+      height: 2pt;
+      background: linear-gradient(90deg, var(--brass), transparent);
+    }
+
+    .cover-tagline {
+      font-family: var(--ff-display);
+      font-size: 10.5pt;
+      font-weight: 400;
+      font-style: italic;
+      color: rgba(200,191,176,0.8);
+      line-height: 1.65;
+      max-width: 95mm;
+    }
+
+    .cover-subgroups {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      margin-top: 3mm;
+    }
+
+    .cover-subgroup-item {
+      font-size: 6.5pt;
+      font-weight: 400;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(200,191,176,0.55);
+      padding-left: 8px;
+      border-left: 2pt solid var(--brass);
+    }
+
+    /* RIGHT image panel */
+    .cover-right {
+      grid-column: 2;
+      grid-row: 2;
+      position: relative;
+      overflow: hidden;
+      z-index: 2;
+    }
+
+    /* Diagonal cut on left edge of right panel */
+    .cover-right::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -32px; bottom: 0;
+      width: 64px;
+      background: var(--forest);
+      clip-path: polygon(0 0, 50% 0, 100% 100%, 0 100%);
+      z-index: 4;
+    }
+
+    .cover-right img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .cover-right-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+    }
+
+    /* Craft stamp top-right corner on image */
+    .cover-craft-stamp {
+      position: absolute;
+      top: 8mm;
+      right: 8mm;
+      border: 1pt solid rgba(196,147,74,0.5);
+      padding: 4mm 5mm;
+      text-align: center;
+      z-index: 5;
+    }
+
+    .stamp-line1 {
+      font-size: 5pt;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--brass-lt);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .stamp-line2 {
+      font-family: var(--ff-display);
+      font-size: 11pt;
+      font-weight: 700;
+      color: var(--birch);
+      display: block;
+    }
+
+    .stamp-line3 {
+      font-size: 5pt;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(200,191,176,0.6);
+      display: block;
+      margin-top: 2px;
+    }
+
+    /* Cover footer */
+    .cover-footer {
+      grid-column: 1 / -1;
+      grid-row: 3;
+      background: var(--walnut);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 14mm;
+      z-index: 10;
+      position: relative;
+    }
+
+    .cover-footer::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1pt;
+      background: linear-gradient(90deg, var(--brass), transparent);
+    }
+
+    .cover-brand {
+      font-family: var(--ff-display);
+      font-size: 10pt;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--birch);
+    }
+
+    .cover-contact {
+      font-size: 6pt;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--brass-lt);
+      text-align: right;
+      line-height: 1.9;
+    }
+  
+    /* ── END-PRODUCT THUMBNAIL IMAGES (top of right panel, above description) ── */
+    .end-images {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2mm;
+      margin-bottom: 4mm;
+      flex-shrink: 0;
+    }
+    .end-images img {
+      width: 100%;
+      height: 30mm;
+      object-fit: cover;
+      border: 0.5pt solid rgba(196,147,74,0.35);
+      filter: saturate(1.05) contrast(1.05);
+    }
+    .desc-content {
+      display: flex;
+      flex-direction: column;
+      gap: 3mm;
+      margin-top: auto;
+      flex: 1;
+    }
+    .right-panel {
+      overflow: hidden;
+    }
+
+  
+    /* ── END-PRODUCT THUMBNAIL IMAGES (top of right panel, above description) ── */
+    .end-images {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5mm;
+      margin-bottom: 2mm;
+      flex-shrink: 0;
+    }
+    .end-images img {
+      width: 100%;
+      height: 16mm;
+      object-fit: cover;
+      border: 0.5pt solid rgba(196,147,74,0.35);
+      filter: saturate(1.05) contrast(1.05);
+    }
+    .desc-content {
+      display: flex;
+      flex-direction: column;
+      gap: 2mm;
+      flex: 1;
+    }
+    .right-panel {
+      overflow: hidden;
+      gap: 2mm !important;
+    }
+
+  
+    /* ── END-PRODUCT THUMBNAIL IMAGES (top of right panel, above description) ── */
+    .end-images {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2mm;
+      margin-bottom: 4mm;
+      flex-shrink: 0;
+    }
+    .end-images img {
+      width: 100%;
+      height: 30mm;
+      object-fit: cover;
+      border: 0.5pt solid rgba(196,147,74,0.35);
+      filter: saturate(1.05) contrast(1.05);
+    }
+    .desc-content {
+      display: flex;
+      flex-direction: column;
+      gap: 3mm;
+      margin-top: auto;
+      flex: 1;
+    }
+    .right-panel {
+      overflow: hidden;
+    }
+
+  
+    /* ── END-PRODUCT THUMBNAIL IMAGES (top of right panel, above description) ── */
+    .end-images {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2mm;
+      margin-bottom: 4mm;
+      flex-shrink: 0;
+    }
+    .end-images img {
+      width: 100%;
+      height: 30mm;
+      object-fit: cover;
+      border: 0.5pt solid rgba(196,147,74,0.35);
+      filter: saturate(1.05) contrast(1.05);
+    }
+    .desc-content {
+      display: flex;
+      flex-direction: column;
+      gap: 3mm;
+      margin-top: auto;
+      flex: 1;
+    }
+    .right-panel {
+      overflow: hidden;
+    }
+    /* ── REDUCED HEADING SIZE ── */
+    .product-name {
+      font-size: 14pt !important;
+      line-height: 1.2 !important;
+    }
+    .product-subtitle {
+      font-size: 8pt !important;
+      margin-top: 0.5mm !important;
+    }
+
+  
+    /* ── END-PRODUCT THUMBNAIL IMAGES (top of right panel, above description) ── */
+    .end-images {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2mm;
+      margin-bottom: 4mm;
+      flex-shrink: 0;
+    }
+    .end-images img {
+      width: 100%;
+      height: 30mm;
+      object-fit: cover;
+      border: 0.5pt solid rgba(196,147,74,0.35);
+      filter: saturate(1.05) contrast(1.05);
+    }
+    .desc-content {
+      display: flex;
+      flex-direction: column;
+      gap: 2mm;
+      margin-top: auto;
+      flex: 1;
+    }
+    .right-panel {
+      overflow: hidden;
+      padding-bottom: 16mm !important;
+    }
+    /* ── REDUCED HEADING SIZE ── */
+    .product-name {
+      font-size: 14pt !important;
+      line-height: 1.2 !important;
+    }
+    .product-subtitle {
+      font-size: 8pt !important;
+      margin-top: 0.5mm !important;
+    }
+    /* ── 2×2 SPEC GRID ── */
+    .spec-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2mm 3mm;
+    }
+    .spec-cell {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5mm;
+    }
+    .spec-cell .s-label {
+      font-size: 5.5pt;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--mist);
+    }
+    .spec-cell .s-value {
+      font-size: 7pt;
+      color: var(--walnut);
+      line-height: 1.3;
+    }
+
+  
+    /* ── END-PRODUCT THUMBNAIL IMAGES (top of right panel, above description) ── */
+    .end-images {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2mm;
+      margin-bottom: 4mm;
+      flex-shrink: 0;
+    }
+    .end-images img {
+      width: 100%;
+      height: 30mm;
+      object-fit: cover;
+      border: 0.5pt solid rgba(196,147,74,0.35);
+      filter: saturate(1.05) contrast(1.05);
+    }
+    .desc-content {
+      display: flex;
+      flex-direction: column;
+      gap: 2mm;
+      margin-top: auto;
+      flex: 1;
+    }
+    .right-panel {
+      overflow: hidden;
+      padding-bottom: 16mm !important;
+    }
+    /* ── REDUCED HEADING SIZE ── */
+    .product-name {
+      font-size: 14pt !important;
+      line-height: 1.2 !important;
+    }
+    .product-subtitle {
+      font-size: 8pt !important;
+      margin-top: 0.5mm !important;
+    }
+    /* ── 2×2 SPEC GRID ── */
+    .spec-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2mm 3mm;
+    }
+    .spec-cell {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5mm;
+    }
+    .spec-cell .s-label {
+      font-size: 5.5pt;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--mist);
+    }
+    .spec-cell .s-value {
+      font-size: 7pt;
+      color: var(--walnut);
+      line-height: 1.3;
+    }
+
+  
+    /* ── END-PRODUCT THUMBNAIL IMAGES (top of right panel, above description) ── */
+    .end-images {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2mm;
+      margin-bottom: 4mm;
+      flex-shrink: 0;
+    }
+    .end-images img {
+      width: 100%;
+      height: 30mm;
+      object-fit: cover;
+      border: 0.5pt solid rgba(196,147,74,0.35);
+      filter: saturate(1.05) contrast(1.05);
+    }
+    .desc-content {
+      display: flex;
+      flex-direction: column;
+      gap: 2mm;
+      margin-top: auto;
+      flex: 1;
+    }
+    .right-panel {
+      overflow: hidden;
+      padding-bottom: 16mm !important;
+    }
+    /* ── REDUCED HEADING SIZE ── */
+    .product-name {
+      font-size: 14pt !important;
+      line-height: 1.2 !important;
+    }
+    .product-subtitle {
+      font-size: 8pt !important;
+      margin-top: 0.5mm !important;
+    }
+    /* ── 2×2 SPEC GRID ── */
+    .spec-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2mm 3mm;
+    }
+    .spec-cell {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5mm;
+    }
+    .spec-cell .s-label {
+      font-size: 5.5pt;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--mist);
+    }
+    .spec-cell .s-value {
+      font-size: 7pt;
+      color: var(--walnut);
+      line-height: 1.3;
+    }
+
+  
+    /* ── END-PRODUCT THUMBNAIL IMAGES (top of right panel, above description) ── */
+    .end-images {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2mm;
+      margin-bottom: 4mm;
+      flex-shrink: 0;
+    }
+    .end-images img {
+      width: 100%;
+      height: 30mm;
+      object-fit: cover;
+      border: 0.5pt solid rgba(196,147,74,0.35);
+      filter: saturate(1.05) contrast(1.05);
+    }
+    .desc-content {
+      display: flex;
+      flex-direction: column;
+      gap: 2mm;
+      margin-top: auto;
+      flex: 1;
+    }
+    .right-panel {
+      overflow: hidden;
+      padding-bottom: 16mm !important;
+    }
+    /* ── REDUCED HEADING SIZE ── */
+    .product-name {
+      font-size: 14pt !important;
+      line-height: 1.2 !important;
+    }
+    .product-subtitle {
+      font-size: 8pt !important;
+      margin-top: 0.5mm !important;
+    }
+    /* ── 2×2 SPEC GRID ── */
+    .spec-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2mm 3mm;
+    }
+    .spec-cell {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5mm;
+    }
+    .spec-cell .s-label {
+      font-size: 5.5pt;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--mist);
+    }
+    .spec-cell .s-value {
+      font-size: 7pt;
+      color: var(--walnut);
+      line-height: 1.3;
+    }
+
+  </style>
+</head>
+<body>
+
+  <article class="cover-page" id="cover">
+
+    <!-- Brass top stripe -->
+    <div class="brass-top"></div>
+
+    <!-- LEFT — TEXT CONTENT -->
+    <div class="cover-left">
+      <div class="cover-eyebrow">Exclusive Export Collection</div>
+
+      <h1 class="cover-headline">
+        Wooden<br/>
+        <em>Furniture</em>
+      </h1>
+
+      <div class="cover-brass-rule"></div>
+
+      <p class="cover-tagline">
+        Solid Sheesham with hand-chiselled brass wire inlay — coffee tables,
+        console tables, dining tables, sofas &amp; side tables crafted by
+        three-generation artisans in Jodhpur.
+      </p>
+
+      <div class="cover-subgroups">
+        <span class="cover-subgroup-item">Tables — Coffee, Console, Dining, Side</span>
+        <span class="cover-subgroup-item">Sofas &amp; Seating</span>
+        <span class="cover-subgroup-item">Storage — Armoires, Cabinets, Trunks</span>
+        <span class="cover-subgroup-item">Architectural Doors</span>
+      </div>
+    </div>
+
+    <!-- RIGHT — IMAGE PANEL -->
+    <div class="cover-right">
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587809/hs-global/handicraft/etsy/HCBCETBR2/1.webp" alt="Wooden Furniture — HS Global Export Cover" />
+      <div class="cover-right-overlay"></div>
+
+      <div class="cover-craft-stamp">
+        <span class="stamp-line1">Handcrafted in</span>
+        <span class="stamp-line2">Jodhpur</span>
+        <span class="stamp-line3">Rajasthan · India</span>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="cover-footer">
+      <div class="cover-brand">HS Global Export</div>
+      <div class="cover-contact">
+        export@hsglobalexport.com &nbsp;·&nbsp; +91 98765 43210 &nbsp;·&nbsp; www.hsglobalexport.com
+      </div>
+    </footer>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 01 / 30 — BRASS INLAY WOODEN COFFEE TABLE VINTAGE ACCENT TABLE
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-1">
+
+    <!-- ── LEFT DARK PANEL ── -->
+    <div class="left-panel">
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587809/hs-global/handicraft/etsy/HCBCETBR2/1.webp" alt="Brass Inlay Wooden Coffee Table Vintage Accent Table — Wooden Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+      </div>
+
+      <div class="category-watermark">
+        <span class="cat-eyebrow">Wooden Furniture</span>
+        <div class="cat-title">Coffee Tables</div>
+      </div>
+
+      <div class="img-sku">SKU · HSG-WD-001</div>
+    </div>
+
+    <!-- ── RIGHT PARCHMENT PANEL ── -->
+    <div class="right-panel">
+
+      <div class="brand-header">
+        <div>
+          <div class="brand-name">HS Global Export</div>
+          <div class="brand-sub">Handcrafted Wooden Furniture · Est. 2004</div>
+        </div>
+        <div class="page-num-top">01</div>
+      </div>
+
+      <div class="brass-rule"></div>
+
+      <!-- 4 THUMBNAIL IMAGES (top, before description) -->
+      <div class="end-images">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587809/hs-global/handicraft/etsy/HCBCETBR2/1.webp" alt="View 1" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587811/hs-global/handicraft/etsy/HCBCETBR2/2.webp" alt="View 2" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587812/hs-global/handicraft/etsy/HCBCETBR2/3.webp" alt="View 3" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587814/hs-global/handicraft/etsy/HCBCETBR2/4.webp" alt="View 4" loading="lazy" />
+      </div>
+
+      <!-- DESCRIPTION (pushed to bottom via margin-top:auto) -->
+      <div class="desc-content">
+        <h1 class="product-name">Brass Inlay Wooden Coffee Table Vintage Accent Table</h1>
+        <div class="product-subtitle">Coffee Tables · Brass Inlay · Natural Finish</div>
+
+        <div class="spec-grid">
+          <div class="spec-cell"><span class="s-label">Wood Species</span><span class="s-value">Indian Sheesham (Dalbergia Sissoo)</span></div>
+          <div class="spec-cell"><span class="s-label">Inlay Work</span><span class="s-value">Solid Brass Wire, Hand-Hammered</span></div>
+          <div class="spec-cell"><span class="s-label">Category</span><span class="s-value">Coffee Tables</span></div>
+          <div class="spec-cell"><span class="s-label">Origin</span><span class="s-value">Jodhpur, Rajasthan, India</span></div>
+          <div class="spec-cell"><span class="s-label">Lead Time</span><span class="s-value">4–6 Weeks</span></div>
+          <div class="spec-cell"><span class="s-label">Customisation</span><span class="s-value">Dimensions, Inlay Pattern, Finish</span></div>
+        </div>
+
+        <div class="materials-row">
+          <span class="chip">Sheesham</span>
+          <span class="chip">Brass Inlay</span>
+          <span class="chip">Handcrafted</span>
+        </div>
+
+        <div class="price-block">
+          <span class="price-label">Export Price</span>
+          <span class="price-value">On Request</span>
+          <span class="price-note">FOB Jodhpur</span>
+        </div>
+      </div>
+
+    </div><!-- end .right-panel -->
+
+    <!-- FOOTER DESCRIPTION BAR -->
+    <footer class="page-footer">
+      <p class="footer-desc">Individually hand-chiselled brass wire inlay — a technique mastered over three generations in Jodhpur, Rajasthan.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </footer>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 02 / 30 — ROUND WOODEN COFFEE TABLE BRASS INLAY ACCENT TABLE
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-2">
+
+    <!-- ── LEFT DARK PANEL ── -->
+    <div class="left-panel">
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587681/hs-global/handicraft/etsy/HCBSTBR7/1.webp" alt="Round Wooden Coffee Table Brass Inlay Accent Table — Wooden Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+      </div>
+
+      <div class="category-watermark">
+        <span class="cat-eyebrow">Wooden Furniture</span>
+        <div class="cat-title">Coffee Tables</div>
+      </div>
+
+      <div class="img-sku">SKU · HSG-WD-002</div>
+    </div>
+
+    <!-- ── RIGHT PARCHMENT PANEL ── -->
+    <div class="right-panel">
+
+      <div class="brand-header">
+        <div>
+          <div class="brand-name">HS Global Export</div>
+          <div class="brand-sub">Handcrafted Wooden Furniture · Est. 2004</div>
+        </div>
+        <div class="page-num-top">02</div>
+      </div>
+
+      <div class="brass-rule"></div>
+
+      <!-- 4 THUMBNAIL IMAGES (top, before description) -->
+      <div class="end-images">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587681/hs-global/handicraft/etsy/HCBSTBR7/1.webp" alt="View 1" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587682/hs-global/handicraft/etsy/HCBSTBR7/2.webp" alt="View 2" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587684/hs-global/handicraft/etsy/HCBSTBR7/3.webp" alt="View 3" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587685/hs-global/handicraft/etsy/HCBSTBR7/4.webp" alt="View 4" loading="lazy" />
+      </div>
+
+      <!-- DESCRIPTION (pushed to bottom via margin-top:auto) -->
+      <div class="desc-content">
+        <h1 class="product-name">Round Wooden Coffee Table Brass Inlay Accent Table</h1>
+        <div class="product-subtitle">Coffee Tables · Brass Inlay · Natural Finish</div>
+
+        <div class="spec-grid">
+          <div class="spec-cell"><span class="s-label">Wood Species</span><span class="s-value">Indian Sheesham (Dalbergia Sissoo)</span></div>
+          <div class="spec-cell"><span class="s-label">Inlay Work</span><span class="s-value">Solid Brass Wire, Hand-Hammered</span></div>
+          <div class="spec-cell"><span class="s-label">Category</span><span class="s-value">Coffee Tables</span></div>
+          <div class="spec-cell"><span class="s-label">Origin</span><span class="s-value">Jodhpur, Rajasthan, India</span></div>
+          <div class="spec-cell"><span class="s-label">Lead Time</span><span class="s-value">4–6 Weeks</span></div>
+          <div class="spec-cell"><span class="s-label">Customisation</span><span class="s-value">Dimensions, Inlay Pattern, Finish</span></div>
+        </div>
+
+        <div class="materials-row">
+          <span class="chip">Sheesham</span>
+          <span class="chip">Brass Inlay</span>
+          <span class="chip">Handcrafted</span>
+        </div>
+
+        <div class="price-block">
+          <span class="price-label">Export Price</span>
+          <span class="price-value">On Request</span>
+          <span class="price-note">FOB Jodhpur</span>
+        </div>
+      </div>
+
+    </div><!-- end .right-panel -->
+
+    <!-- FOOTER DESCRIPTION BAR -->
+    <footer class="page-footer">
+      <p class="footer-desc">Individually hand-chiselled brass wire inlay — a technique mastered over three generations in Jodhpur, Rajasthan.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </footer>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 03 / 30 — WOODEN COFFEE TABLE BRASS INLAY RUSTIC CENTER TABLE
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-3">
+
+    <!-- ── LEFT DARK PANEL ── -->
+    <div class="left-panel">
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587803/hs-global/handicraft/etsy/HCBCETBR1/2.webp" alt="Wooden Coffee Table Brass Inlay Rustic Center Table — Wooden Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+      </div>
+
+      <div class="category-watermark">
+        <span class="cat-eyebrow">Wooden Furniture</span>
+        <div class="cat-title">Coffee Tables</div>
+      </div>
+
+      <div class="img-sku">SKU · HSG-WD-003</div>
+    </div>
+
+    <!-- ── RIGHT PARCHMENT PANEL ── -->
+    <div class="right-panel">
+
+      <div class="brand-header">
+        <div>
+          <div class="brand-name">HS Global Export</div>
+          <div class="brand-sub">Handcrafted Wooden Furniture · Est. 2004</div>
+        </div>
+        <div class="page-num-top">03</div>
+      </div>
+
+      <div class="brass-rule"></div>
+
+      <!-- 4 THUMBNAIL IMAGES (top, before description) -->
+      <div class="end-images">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587803/hs-global/handicraft/etsy/HCBCETBR1/2.webp" alt="View 1" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587802/hs-global/handicraft/etsy/HCBCETBR1/1.webp" alt="View 2" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587804/hs-global/handicraft/etsy/HCBCETBR1/3.webp" alt="View 3" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587805/hs-global/handicraft/etsy/HCBCETBR1/4.webp" alt="View 4" loading="lazy" />
+      </div>
+
+      <!-- DESCRIPTION (pushed to bottom via margin-top:auto) -->
+      <div class="desc-content">
+        <h1 class="product-name">Wooden Coffee Table Brass Inlay Rustic Center Table</h1>
+        <div class="product-subtitle">Coffee Tables · Brass Inlay · Natural Finish</div>
+
+        <div class="spec-grid">
+          <div class="spec-cell"><span class="s-label">Wood Species</span><span class="s-value">Indian Sheesham (Dalbergia Sissoo)</span></div>
+          <div class="spec-cell"><span class="s-label">Inlay Work</span><span class="s-value">Solid Brass Wire, Hand-Hammered</span></div>
+          <div class="spec-cell"><span class="s-label">Category</span><span class="s-value">Coffee Tables</span></div>
+          <div class="spec-cell"><span class="s-label">Origin</span><span class="s-value">Jodhpur, Rajasthan, India</span></div>
+          <div class="spec-cell"><span class="s-label">Lead Time</span><span class="s-value">4–6 Weeks</span></div>
+          <div class="spec-cell"><span class="s-label">Customisation</span><span class="s-value">Dimensions, Inlay Pattern, Finish</span></div>
+        </div>
+
+        <div class="materials-row">
+          <span class="chip">Sheesham</span>
+          <span class="chip">Brass Inlay</span>
+          <span class="chip">Handcrafted</span>
+        </div>
+
+        <div class="price-block">
+          <span class="price-label">Export Price</span>
+          <span class="price-value">On Request</span>
+          <span class="price-note">FOB Jodhpur</span>
+        </div>
+      </div>
+
+    </div><!-- end .right-panel -->
+
+    <!-- FOOTER DESCRIPTION BAR -->
+    <footer class="page-footer">
+      <p class="footer-desc">Individually hand-chiselled brass wire inlay — a technique mastered over three generations in Jodhpur, Rajasthan.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </footer>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 04 / 30 — ROUND WOODEN DINING TABLE SET BRASS INLAY 4 CHAIRS
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-4">
+
+    <!-- ── LEFT DARK PANEL ── -->
+    <div class="left-panel">
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587440/hs-global/handicraft/etsy/HCBDTBR1/2.webp" alt="Round Wooden Dining Table Set Brass Inlay 4 Chairs — Wooden Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+      </div>
+
+      <div class="category-watermark">
+        <span class="cat-eyebrow">Wooden Furniture</span>
+        <div class="cat-title">Dining Tables</div>
+      </div>
+
+      <div class="img-sku">SKU · HSG-WD-004</div>
+    </div>
+
+    <!-- ── RIGHT PARCHMENT PANEL ── -->
+    <div class="right-panel">
+
+      <div class="brand-header">
+        <div>
+          <div class="brand-name">HS Global Export</div>
+          <div class="brand-sub">Handcrafted Wooden Furniture · Est. 2004</div>
+        </div>
+        <div class="page-num-top">04</div>
+      </div>
+
+      <div class="brass-rule"></div>
+
+      <!-- 4 THUMBNAIL IMAGES (top, before description) -->
+      <div class="end-images">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587440/hs-global/handicraft/etsy/HCBDTBR1/2.webp" alt="View 1" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587438/hs-global/handicraft/etsy/HCBDTBR1/1.webp" alt="View 2" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587441/hs-global/handicraft/etsy/HCBDTBR1/3.webp" alt="View 3" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587443/hs-global/handicraft/etsy/HCBDTBR1/4.webp" alt="View 4" loading="lazy" />
+      </div>
+
+      <!-- DESCRIPTION (pushed to bottom via margin-top:auto) -->
+      <div class="desc-content">
+        <h1 class="product-name">Round Wooden Dining Table Set Brass Inlay 4 Chairs</h1>
+        <div class="product-subtitle">Dining Tables · Brass Inlay · Natural Finish</div>
+
+        <div class="spec-grid">
+          <div class="spec-cell"><span class="s-label">Wood Species</span><span class="s-value">Indian Sheesham (Dalbergia Sissoo)</span></div>
+          <div class="spec-cell"><span class="s-label">Inlay Work</span><span class="s-value">Solid Brass Wire, Hand-Hammered</span></div>
+          <div class="spec-cell"><span class="s-label">Category</span><span class="s-value">Dining Tables</span></div>
+          <div class="spec-cell"><span class="s-label">Origin</span><span class="s-value">Jodhpur, Rajasthan, India</span></div>
+          <div class="spec-cell"><span class="s-label">Lead Time</span><span class="s-value">4–6 Weeks</span></div>
+          <div class="spec-cell"><span class="s-label">Customisation</span><span class="s-value">Dimensions, Inlay Pattern, Finish</span></div>
+        </div>
+
+        <div class="materials-row">
+          <span class="chip">Sheesham</span>
+          <span class="chip">Brass Inlay</span>
+          <span class="chip">Handcrafted</span>
+        </div>
+
+        <div class="price-block">
+          <span class="price-label">Export Price</span>
+          <span class="price-value">On Request</span>
+          <span class="price-note">FOB Jodhpur</span>
+        </div>
+      </div>
+
+    </div><!-- end .right-panel -->
+
+    <!-- FOOTER DESCRIPTION BAR -->
+    <footer class="page-footer">
+      <p class="footer-desc">Solid Indian Sheesham dining table with hand-hammered brass inlay in traditional Rajasthani geometric patterns.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </footer>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 05 / 30 — BRASS INLAY CONSOLE TABLE WOODEN ENTRYWAY TABLE 3 DRAWER
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-5">
+
+    <!-- ── LEFT DARK PANEL ── -->
+    <div class="left-panel">
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587771/hs-global/handicraft/etsy/HCBCOBR2/1.webp" alt="Brass Inlay Console Table Wooden Entryway Table 3 Drawer — Wooden Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+      </div>
+
+      <div class="category-watermark">
+        <span class="cat-eyebrow">Wooden Furniture</span>
+        <div class="cat-title">Console Tables</div>
+      </div>
+
+      <div class="img-sku">SKU · HSG-WD-005</div>
+    </div>
+
+    <!-- ── RIGHT PARCHMENT PANEL ── -->
+    <div class="right-panel">
+
+      <div class="brand-header">
+        <div>
+          <div class="brand-name">HS Global Export</div>
+          <div class="brand-sub">Handcrafted Wooden Furniture · Est. 2004</div>
+        </div>
+        <div class="page-num-top">05</div>
+      </div>
+
+      <div class="brass-rule"></div>
+
+      <!-- 4 THUMBNAIL IMAGES (top, before description) -->
+      <div class="end-images">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587771/hs-global/handicraft/etsy/HCBCOBR2/1.webp" alt="View 1" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587772/hs-global/handicraft/etsy/HCBCOBR2/2.webp" alt="View 2" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587773/hs-global/handicraft/etsy/HCBCOBR2/3.webp" alt="View 3" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587774/hs-global/handicraft/etsy/HCBCOBR2/4.webp" alt="View 4" loading="lazy" />
+      </div>
+
+      <!-- DESCRIPTION (pushed to bottom via margin-top:auto) -->
+      <div class="desc-content">
+        <h1 class="product-name">Brass Inlay Console Table Wooden Entryway Table 3 Drawer</h1>
+        <div class="product-subtitle">Console Tables · Brass Inlay · Natural Finish</div>
+
+        <div class="spec-grid">
+          <div class="spec-cell"><span class="s-label">Wood Species</span><span class="s-value">Indian Sheesham (Dalbergia Sissoo)</span></div>
+          <div class="spec-cell"><span class="s-label">Inlay Work</span><span class="s-value">Solid Brass Wire, Hand-Hammered</span></div>
+          <div class="spec-cell"><span class="s-label">Category</span><span class="s-value">Console Tables</span></div>
+          <div class="spec-cell"><span class="s-label">Origin</span><span class="s-value">Jodhpur, Rajasthan, India</span></div>
+          <div class="spec-cell"><span class="s-label">Lead Time</span><span class="s-value">4–6 Weeks</span></div>
+          <div class="spec-cell"><span class="s-label">Customisation</span><span class="s-value">Dimensions, Inlay Pattern, Finish</span></div>
+        </div>
+
+        <div class="materials-row">
+          <span class="chip">Sheesham</span>
+          <span class="chip">Brass Inlay</span>
+          <span class="chip">Handcrafted</span>
+        </div>
+
+        <div class="price-block">
+          <span class="price-label">Export Price</span>
+          <span class="price-value">On Request</span>
+          <span class="price-note">FOB Jodhpur</span>
+        </div>
+      </div>
+
+    </div><!-- end .right-panel -->
+
+    <!-- FOOTER DESCRIPTION BAR -->
+    <footer class="page-footer">
+      <p class="footer-desc">Crafted from solid Sheesham with mortise &amp;amp; tenon joinery — a timeless console table for luxury interiors.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </footer>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 06 / 30 — ELEPHANT BRASS INLAY WOODEN SIDEBOARD CABINET LARGE STORAGE
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-6">
+
+    <!-- ── LEFT DARK PANEL ── -->
+    <div class="left-panel">
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587696/hs-global/handicraft/etsy/HCBCOBR3/1.webp" alt="Elephant Brass Inlay Wooden Sideboard Cabinet Large Storage — Wooden Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+      </div>
+
+      <div class="category-watermark">
+        <span class="cat-eyebrow">Wooden Furniture</span>
+        <div class="cat-title">Console Tables</div>
+      </div>
+
+      <div class="img-sku">SKU · HSG-WD-006</div>
+    </div>
+
+    <!-- ── RIGHT PARCHMENT PANEL ── -->
+    <div class="right-panel">
+
+      <div class="brand-header">
+        <div>
+          <div class="brand-name">HS Global Export</div>
+          <div class="brand-sub">Handcrafted Wooden Furniture · Est. 2004</div>
+        </div>
+        <div class="page-num-top">06</div>
+      </div>
+
+      <div class="brass-rule"></div>
+
+      <!-- 4 THUMBNAIL IMAGES (top, before description) -->
+      <div class="end-images">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587696/hs-global/handicraft/etsy/HCBCOBR3/1.webp" alt="View 1" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587697/hs-global/handicraft/etsy/HCBCOBR3/2.webp" alt="View 2" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587698/hs-global/handicraft/etsy/HCBCOBR3/3.webp" alt="View 3" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587700/hs-global/handicraft/etsy/HCBCOBR3/4.webp" alt="View 4" loading="lazy" />
+      </div>
+
+      <!-- DESCRIPTION (pushed to bottom via margin-top:auto) -->
+      <div class="desc-content">
+        <h1 class="product-name">Elephant Brass Inlay Wooden Sideboard Cabinet Large Storage</h1>
+        <div class="product-subtitle">Console Tables · Brass Inlay · Natural Finish</div>
+
+        <div class="spec-grid">
+          <div class="spec-cell"><span class="s-label">Wood Species</span><span class="s-value">Indian Sheesham (Dalbergia Sissoo)</span></div>
+          <div class="spec-cell"><span class="s-label">Inlay Work</span><span class="s-value">Solid Brass Wire, Hand-Hammered</span></div>
+          <div class="spec-cell"><span class="s-label">Category</span><span class="s-value">Console Tables</span></div>
+          <div class="spec-cell"><span class="s-label">Origin</span><span class="s-value">Jodhpur, Rajasthan, India</span></div>
+          <div class="spec-cell"><span class="s-label">Lead Time</span><span class="s-value">4–6 Weeks</span></div>
+          <div class="spec-cell"><span class="s-label">Customisation</span><span class="s-value">Dimensions, Inlay Pattern, Finish</span></div>
+        </div>
+
+        <div class="materials-row">
+          <span class="chip">Sheesham</span>
+          <span class="chip">Brass Inlay</span>
+          <span class="chip">Handcrafted</span>
+        </div>
+
+        <div class="price-block">
+          <span class="price-label">Export Price</span>
+          <span class="price-value">On Request</span>
+          <span class="price-note">FOB Jodhpur</span>
+        </div>
+      </div>
+
+    </div><!-- end .right-panel -->
+
+    <!-- FOOTER DESCRIPTION BAR -->
+    <footer class="page-footer">
+      <p class="footer-desc">Crafted from solid Sheesham with mortise &amp;amp; tenon joinery — a timeless console table for luxury interiors.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </footer>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 07 / 30 — HAND CARVED WOODEN SIDEBOARD PEACOCK CABINET
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-7">
+
+    <!-- ── LEFT DARK PANEL ── -->
+    <div class="left-panel">
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587394/hs-global/handicraft/etsy/HCBCOBR1/1.webp" alt="Hand Carved Wooden Sideboard Peacock Cabinet — Wooden Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+      </div>
+
+      <div class="category-watermark">
+        <span class="cat-eyebrow">Wooden Furniture</span>
+        <div class="cat-title">Console Tables</div>
+      </div>
+
+      <div class="img-sku">SKU · HSG-WD-007</div>
+    </div>
+
+    <!-- ── RIGHT PARCHMENT PANEL ── -->
+    <div class="right-panel">
+
+      <div class="brand-header">
+        <div>
+          <div class="brand-name">HS Global Export</div>
+          <div class="brand-sub">Handcrafted Wooden Furniture · Est. 2004</div>
+        </div>
+        <div class="page-num-top">07</div>
+      </div>
+
+      <div class="brass-rule"></div>
+
+      <!-- 4 THUMBNAIL IMAGES (top, before description) -->
+      <div class="end-images">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587394/hs-global/handicraft/etsy/HCBCOBR1/1.webp" alt="View 1" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587395/hs-global/handicraft/etsy/HCBCOBR1/2.webp" alt="View 2" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587396/hs-global/handicraft/etsy/HCBCOBR1/3.webp" alt="View 3" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587398/hs-global/handicraft/etsy/HCBCOBR1/4.webp" alt="View 4" loading="lazy" />
+      </div>
+
+      <!-- DESCRIPTION (pushed to bottom via margin-top:auto) -->
+      <div class="desc-content">
+        <h1 class="product-name">Hand Carved Wooden Sideboard Peacock Cabinet</h1>
+        <div class="product-subtitle">Console Tables · Brass Inlay · Natural Finish</div>
+
+        <div class="spec-grid">
+          <div class="spec-cell"><span class="s-label">Wood Species</span><span class="s-value">Indian Sheesham (Dalbergia Sissoo)</span></div>
+          <div class="spec-cell"><span class="s-label">Inlay Work</span><span class="s-value">Solid Brass Wire, Hand-Hammered</span></div>
+          <div class="spec-cell"><span class="s-label">Category</span><span class="s-value">Console Tables</span></div>
+          <div class="spec-cell"><span class="s-label">Origin</span><span class="s-value">Jodhpur, Rajasthan, India</span></div>
+          <div class="spec-cell"><span class="s-label">Lead Time</span><span class="s-value">4–6 Weeks</span></div>
+          <div class="spec-cell"><span class="s-label">Customisation</span><span class="s-value">Dimensions, Inlay Pattern, Finish</span></div>
+        </div>
+
+        <div class="materials-row">
+          <span class="chip">Sheesham</span>
+          <span class="chip">Brass Inlay</span>
+          <span class="chip">Handcrafted</span>
+        </div>
+
+        <div class="price-block">
+          <span class="price-label">Export Price</span>
+          <span class="price-value">On Request</span>
+          <span class="price-note">FOB Jodhpur</span>
+        </div>
+      </div>
+
+    </div><!-- end .right-panel -->
+
+    <!-- FOOTER DESCRIPTION BAR -->
+    <footer class="page-footer">
+      <p class="footer-desc">Crafted from solid Sheesham with mortise &amp;amp; tenon joinery — a timeless console table for luxury interiors.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </footer>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 08 / 30 — BRASS EMBOSSED BEDSIDE CABINET VINTAGE STORAGE TABLE
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-8">
+
+    <!-- ── LEFT DARK PANEL ── -->
+    <div class="left-panel">
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587308/hs-global/handicraft/etsy/HCBSTGO2/1.webp" alt="Brass Embossed Bedside Cabinet Vintage Storage Table — Wooden Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+      </div>
+
+      <div class="category-watermark">
+        <span class="cat-eyebrow">Wooden Furniture</span>
+        <div class="cat-title">Side Tables</div>
+      </div>
+
+      <div class="img-sku">SKU · HSG-WD-008</div>
+    </div>
+
+    <!-- ── RIGHT PARCHMENT PANEL ── -->
+    <div class="right-panel">
+
+      <div class="brand-header">
+        <div>
+          <div class="brand-name">HS Global Export</div>
+          <div class="brand-sub">Handcrafted Wooden Furniture · Est. 2004</div>
+        </div>
+        <div class="page-num-top">08</div>
+      </div>
+
+      <div class="brass-rule"></div>
+
+      <!-- 4 THUMBNAIL IMAGES (top, before description) -->
+      <div class="end-images">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587308/hs-global/handicraft/etsy/HCBSTGO2/1.webp" alt="View 1" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587309/hs-global/handicraft/etsy/HCBSTGO2/2.webp" alt="View 2" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587310/hs-global/handicraft/etsy/HCBSTGO2/3.webp" alt="View 3" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587312/hs-global/handicraft/etsy/HCBSTGO2/4.webp" alt="View 4" loading="lazy" />
+      </div>
+
+      <!-- DESCRIPTION (pushed to bottom via margin-top:auto) -->
+      <div class="desc-content">
+        <h1 class="product-name">Brass Embossed Bedside Cabinet Vintage Storage Table</h1>
+        <div class="product-subtitle">Side Tables · Brass Inlay · Natural Finish</div>
+
+        <div class="spec-grid">
+          <div class="spec-cell"><span class="s-label">Wood Species</span><span class="s-value">Indian Sheesham (Dalbergia Sissoo)</span></div>
+          <div class="spec-cell"><span class="s-label">Inlay Work</span><span class="s-value">Solid Brass Wire, Hand-Hammered</span></div>
+          <div class="spec-cell"><span class="s-label">Category</span><span class="s-value">Side Tables</span></div>
+          <div class="spec-cell"><span class="s-label">Origin</span><span class="s-value">Jodhpur, Rajasthan, India</span></div>
+          <div class="spec-cell"><span class="s-label">Lead Time</span><span class="s-value">4–6 Weeks</span></div>
+          <div class="spec-cell"><span class="s-label">Customisation</span><span class="s-value">Dimensions, Inlay Pattern, Finish</span></div>
+        </div>
+
+        <div class="materials-row">
+          <span class="chip">Sheesham</span>
+          <span class="chip">Brass Inlay</span>
+          <span class="chip">Handcrafted</span>
+        </div>
+
+        <div class="price-block">
+          <span class="price-label">Export Price</span>
+          <span class="price-value">On Request</span>
+          <span class="price-note">FOB Jodhpur</span>
+        </div>
+      </div>
+
+    </div><!-- end .right-panel -->
+
+    <!-- FOOTER DESCRIPTION BAR -->
+    <footer class="page-footer">
+      <p class="footer-desc">Hand-turned solid wood side table with brass inlay detailing, built using traditional Rajasthani joinery techniques.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </footer>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 09 / 30 — BRASS INLAY 5 DRAWER BEDSIDE CHEST WOODEN STORAGE TABLE
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-9">
+
+    <!-- ── LEFT DARK PANEL ── -->
+    <div class="left-panel">
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587348/hs-global/handicraft/etsy/HCBSTBR4/1.webp" alt="Brass Inlay 5 Drawer Bedside Chest Wooden Storage Table — Wooden Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+      </div>
+
+      <div class="category-watermark">
+        <span class="cat-eyebrow">Wooden Furniture</span>
+        <div class="cat-title">Side Tables</div>
+      </div>
+
+      <div class="img-sku">SKU · HSG-WD-009</div>
+    </div>
+
+    <!-- ── RIGHT PARCHMENT PANEL ── -->
+    <div class="right-panel">
+
+      <div class="brand-header">
+        <div>
+          <div class="brand-name">HS Global Export</div>
+          <div class="brand-sub">Handcrafted Wooden Furniture · Est. 2004</div>
+        </div>
+        <div class="page-num-top">09</div>
+      </div>
+
+      <div class="brass-rule"></div>
+
+      <!-- 4 THUMBNAIL IMAGES (top, before description) -->
+      <div class="end-images">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587348/hs-global/handicraft/etsy/HCBSTBR4/1.webp" alt="View 1" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587350/hs-global/handicraft/etsy/HCBSTBR4/2.webp" alt="View 2" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587351/hs-global/handicraft/etsy/HCBSTBR4/3.webp" alt="View 3" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587353/hs-global/handicraft/etsy/HCBSTBR4/4.webp" alt="View 4" loading="lazy" />
+      </div>
+
+      <!-- DESCRIPTION (pushed to bottom via margin-top:auto) -->
+      <div class="desc-content">
+        <h1 class="product-name">Brass Inlay 5 Drawer Bedside Chest Wooden Storage Table</h1>
+        <div class="product-subtitle">Side Tables · Brass Inlay · Natural Finish</div>
+
+        <div class="spec-grid">
+          <div class="spec-cell"><span class="s-label">Wood Species</span><span class="s-value">Indian Sheesham (Dalbergia Sissoo)</span></div>
+          <div class="spec-cell"><span class="s-label">Inlay Work</span><span class="s-value">Solid Brass Wire, Hand-Hammered</span></div>
+          <div class="spec-cell"><span class="s-label">Category</span><span class="s-value">Side Tables</span></div>
+          <div class="spec-cell"><span class="s-label">Origin</span><span class="s-value">Jodhpur, Rajasthan, India</span></div>
+          <div class="spec-cell"><span class="s-label">Lead Time</span><span class="s-value">4–6 Weeks</span></div>
+          <div class="spec-cell"><span class="s-label">Customisation</span><span class="s-value">Dimensions, Inlay Pattern, Finish</span></div>
+        </div>
+
+        <div class="materials-row">
+          <span class="chip">Sheesham</span>
+          <span class="chip">Brass Inlay</span>
+          <span class="chip">Handcrafted</span>
+        </div>
+
+        <div class="price-block">
+          <span class="price-label">Export Price</span>
+          <span class="price-value">On Request</span>
+          <span class="price-note">FOB Jodhpur</span>
+        </div>
+      </div>
+
+    </div><!-- end .right-panel -->
+
+    <!-- FOOTER DESCRIPTION BAR -->
+    <footer class="page-footer">
+      <p class="footer-desc">Hand-turned solid wood side table with brass inlay detailing, built using traditional Rajasthani joinery techniques.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </footer>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 10 / 30 — BRASS INLAY CONSOLE TABLE WOODEN ENTRYWAY DESK 4 DRAWER
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-10">
+
+    <!-- ── LEFT DARK PANEL ── -->
+    <div class="left-panel">
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587487/hs-global/handicraft/etsy/HCBCOBR4/1.webp" alt="Brass Inlay Console Table Wooden Entryway Desk 4 Drawer — Wooden Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+      </div>
+
+      <div class="category-watermark">
+        <span class="cat-eyebrow">Wooden Furniture</span>
+        <div class="cat-title">Side Tables</div>
+      </div>
+
+      <div class="img-sku">SKU · HSG-WD-010</div>
+    </div>
+
+    <!-- ── RIGHT PARCHMENT PANEL ── -->
+    <div class="right-panel">
+
+      <div class="brand-header">
+        <div>
+          <div class="brand-name">HS Global Export</div>
+          <div class="brand-sub">Handcrafted Wooden Furniture · Est. 2004</div>
+        </div>
+        <div class="page-num-top">10</div>
+      </div>
+
+      <div class="brass-rule"></div>
+
+      <!-- 4 THUMBNAIL IMAGES (top, before description) -->
+      <div class="end-images">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587487/hs-global/handicraft/etsy/HCBCOBR4/1.webp" alt="View 1" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587488/hs-global/handicraft/etsy/HCBCOBR4/2.webp" alt="View 2" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587490/hs-global/handicraft/etsy/HCBCOBR4/3.webp" alt="View 3" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587492/hs-global/handicraft/etsy/HCBCOBR4/4.webp" alt="View 4" loading="lazy" />
+      </div>
+
+      <!-- DESCRIPTION (pushed to bottom via margin-top:auto) -->
+      <div class="desc-content">
+        <h1 class="product-name">Brass Inlay Console Table Wooden Entryway Desk 4 Drawer</h1>
+        <div class="product-subtitle">Side Tables · Brass Inlay · Natural Finish</div>
+
+        <div class="spec-grid">
+          <div class="spec-cell"><span class="s-label">Wood Species</span><span class="s-value">Indian Sheesham (Dalbergia Sissoo)</span></div>
+          <div class="spec-cell"><span class="s-label">Inlay Work</span><span class="s-value">Solid Brass Wire, Hand-Hammered</span></div>
+          <div class="spec-cell"><span class="s-label">Category</span><span class="s-value">Side Tables</span></div>
+          <div class="spec-cell"><span class="s-label">Origin</span><span class="s-value">Jodhpur, Rajasthan, India</span></div>
+          <div class="spec-cell"><span class="s-label">Lead Time</span><span class="s-value">4–6 Weeks</span></div>
+          <div class="spec-cell"><span class="s-label">Customisation</span><span class="s-value">Dimensions, Inlay Pattern, Finish</span></div>
+        </div>
+
+        <div class="materials-row">
+          <span class="chip">Sheesham</span>
+          <span class="chip">Brass Inlay</span>
+          <span class="chip">Handcrafted</span>
+        </div>
+
+        <div class="price-block">
+          <span class="price-label">Export Price</span>
+          <span class="price-value">On Request</span>
+          <span class="price-note">FOB Jodhpur</span>
+        </div>
+      </div>
+
+    </div><!-- end .right-panel -->
+
+    <!-- FOOTER DESCRIPTION BAR -->
+    <footer class="page-footer">
+      <p class="footer-desc">Hand-turned solid wood side table with brass inlay detailing, built using traditional Rajasthani joinery techniques.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </footer>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 11 / 30 — BRASS INLAY CURVED CHEST OF DRAWERS VINTAGE ACCENT TABLE
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-11">
+
+    <!-- ── LEFT DARK PANEL ── -->
+    <div class="left-panel">
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516935/hs-global/handicraft/etsy/HCBSTBR3/file_00000000d9a471fa8fcc441df085ecff.webp" alt="Brass Inlay Curved Chest of Drawers Vintage Accent Table — Wooden Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+      </div>
+
+      <div class="category-watermark">
+        <span class="cat-eyebrow">Wooden Furniture</span>
+        <div class="cat-title">Side Tables</div>
+      </div>
+
+      <div class="img-sku">SKU · HSG-WD-011</div>
+    </div>
+
+    <!-- ── RIGHT PARCHMENT PANEL ── -->
+    <div class="right-panel">
+
+      <div class="brand-header">
+        <div>
+          <div class="brand-name">HS Global Export</div>
+          <div class="brand-sub">Handcrafted Wooden Furniture · Est. 2004</div>
+        </div>
+        <div class="page-num-top">11</div>
+      </div>
+
+      <div class="brass-rule"></div>
+
+      <!-- 4 THUMBNAIL IMAGES (top, before description) -->
+      <div class="end-images">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516935/hs-global/handicraft/etsy/HCBSTBR3/file_00000000d9a471fa8fcc441df085ecff.webp" alt="View 1" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516939/hs-global/handicraft/etsy/HCBSTBR3/file_000000003df47207a1e38ee8ffb956f6.webp" alt="View 2" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516942/hs-global/handicraft/etsy/HCBSTBR3/file_000000005bb471fabc961ca501341c66.webp" alt="View 3" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516944/hs-global/handicraft/etsy/HCBSTBR3/file_000000006c5871faba1d88cfd0bef648.webp" alt="View 4" loading="lazy" />
+      </div>
+
+      <!-- DESCRIPTION (pushed to bottom via margin-top:auto) -->
+      <div class="desc-content">
+        <h1 class="product-name">Brass Inlay Curved Chest of Drawers Vintage Accent Table</h1>
+        <div class="product-subtitle">Side Tables · Brass Inlay · Natural Finish</div>
+
+        <div class="spec-grid">
+          <div class="spec-cell"><span class="s-label">Wood Species</span><span class="s-value">Indian Sheesham (Dalbergia Sissoo)</span></div>
+          <div class="spec-cell"><span class="s-label">Inlay Work</span><span class="s-value">Solid Brass Wire, Hand-Hammered</span></div>
+          <div class="spec-cell"><span class="s-label">Category</span><span class="s-value">Side Tables</span></div>
+          <div class="spec-cell"><span class="s-label">Origin</span><span class="s-value">Jodhpur, Rajasthan, India</span></div>
+          <div class="spec-cell"><span class="s-label">Lead Time</span><span class="s-value">4–6 Weeks</span></div>
+          <div class="spec-cell"><span class="s-label">Customisation</span><span class="s-value">Dimensions, Inlay Pattern, Finish</span></div>
+        </div>
+
+        <div class="materials-row">
+          <span class="chip">Sheesham</span>
+          <span class="chip">Brass Inlay</span>
+          <span class="chip">Handcrafted</span>
+        </div>
+
+        <div class="price-block">
+          <span class="price-label">Export Price</span>
+          <span class="price-value">On Request</span>
+          <span class="price-note">FOB Jodhpur</span>
+        </div>
+      </div>
+
+    </div><!-- end .right-panel -->
+
+    <!-- FOOTER DESCRIPTION BAR -->
+    <footer class="page-footer">
+      <p class="footer-desc">Hand-turned solid wood side table with brass inlay detailing, built using traditional Rajasthani joinery techniques.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </footer>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 12 / 30 — BRASS INLAY WOODEN BEDSIDE TABLE 3 DRAWER NIGHTSTAND
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-12">
+
+    <!-- ── LEFT DARK PANEL ── -->
+    <div class="left-panel">
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587662/hs-global/handicraft/etsy/HCBSTBR5/4.webp" alt="Brass Inlay Wooden Bedside Table 3 Drawer Nightstand — Wooden Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+      </div>
+
+      <div class="category-watermark">
+        <span class="cat-eyebrow">Wooden Furniture</span>
+        <div class="cat-title">Side Tables</div>
+      </div>
+
+      <div class="img-sku">SKU · HSG-WD-012</div>
+    </div>
+
+    <!-- ── RIGHT PARCHMENT PANEL ── -->
+    <div class="right-panel">
+
+      <div class="brand-header">
+        <div>
+          <div class="brand-name">HS Global Export</div>
+          <div class="brand-sub">Handcrafted Wooden Furniture · Est. 2004</div>
+        </div>
+        <div class="page-num-top">12</div>
+      </div>
+
+      <div class="brass-rule"></div>
+
+      <!-- 4 THUMBNAIL IMAGES (top, before description) -->
+      <div class="end-images">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587662/hs-global/handicraft/etsy/HCBSTBR5/4.webp" alt="View 1" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587657/hs-global/handicraft/etsy/HCBSTBR5/1.webp" alt="View 2" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587658/hs-global/handicraft/etsy/HCBSTBR5/2.webp" alt="View 3" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587660/hs-global/handicraft/etsy/HCBSTBR5/3.webp" alt="View 4" loading="lazy" />
+      </div>
+
+      <!-- DESCRIPTION (pushed to bottom via margin-top:auto) -->
+      <div class="desc-content">
+        <h1 class="product-name">Brass Inlay Wooden Bedside Table 3 Drawer Nightstand</h1>
+        <div class="product-subtitle">Side Tables · Brass Inlay · Natural Finish</div>
+
+        <div class="spec-grid">
+          <div class="spec-cell"><span class="s-label">Wood Species</span><span class="s-value">Indian Sheesham (Dalbergia Sissoo)</span></div>
+          <div class="spec-cell"><span class="s-label">Inlay Work</span><span class="s-value">Solid Brass Wire, Hand-Hammered</span></div>
+          <div class="spec-cell"><span class="s-label">Category</span><span class="s-value">Side Tables</span></div>
+          <div class="spec-cell"><span class="s-label">Origin</span><span class="s-value">Jodhpur, Rajasthan, India</span></div>
+          <div class="spec-cell"><span class="s-label">Lead Time</span><span class="s-value">4–6 Weeks</span></div>
+          <div class="spec-cell"><span class="s-label">Customisation</span><span class="s-value">Dimensions, Inlay Pattern, Finish</span></div>
+        </div>
+
+        <div class="materials-row">
+          <span class="chip">Sheesham</span>
+          <span class="chip">Brass Inlay</span>
+          <span class="chip">Handcrafted</span>
+        </div>
+
+        <div class="price-block">
+          <span class="price-label">Export Price</span>
+          <span class="price-value">On Request</span>
+          <span class="price-note">FOB Jodhpur</span>
+        </div>
+      </div>
+
+    </div><!-- end .right-panel -->
+
+    <!-- FOOTER DESCRIPTION BAR -->
+    <footer class="page-footer">
+      <p class="footer-desc">Hand-turned solid wood side table with brass inlay detailing, built using traditional Rajasthani joinery techniques.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </footer>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 13 / 30 — BRASS INLAY WOODEN SIDE TABLE VINTAGE ACCENT NIGHTSTAND
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-13">
+
+    <!-- ── LEFT DARK PANEL ── -->
+    <div class="left-panel">
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587375/hs-global/handicraft/etsy/HCBSTBR6/1.webp" alt="Brass Inlay Wooden Side Table Vintage Accent Nightstand — Wooden Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+      </div>
+
+      <div class="category-watermark">
+        <span class="cat-eyebrow">Wooden Furniture</span>
+        <div class="cat-title">Side Tables</div>
+      </div>
+
+      <div class="img-sku">SKU · HSG-WD-013</div>
+    </div>
+
+    <!-- ── RIGHT PARCHMENT PANEL ── -->
+    <div class="right-panel">
+
+      <div class="brand-header">
+        <div>
+          <div class="brand-name">HS Global Export</div>
+          <div class="brand-sub">Handcrafted Wooden Furniture · Est. 2004</div>
+        </div>
+        <div class="page-num-top">13</div>
+      </div>
+
+      <div class="brass-rule"></div>
+
+      <!-- 4 THUMBNAIL IMAGES (top, before description) -->
+      <div class="end-images">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587375/hs-global/handicraft/etsy/HCBSTBR6/1.webp" alt="View 1" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587376/hs-global/handicraft/etsy/HCBSTBR6/2.webp" alt="View 2" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587378/hs-global/handicraft/etsy/HCBSTBR6/3.webp" alt="View 3" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587379/hs-global/handicraft/etsy/HCBSTBR6/4.webp" alt="View 4" loading="lazy" />
+      </div>
+
+      <!-- DESCRIPTION (pushed to bottom via margin-top:auto) -->
+      <div class="desc-content">
+        <h1 class="product-name">Brass Inlay Wooden Side Table Vintage Accent Nightstand</h1>
+        <div class="product-subtitle">Side Tables · Brass Inlay · Natural Finish</div>
+
+        <div class="spec-grid">
+          <div class="spec-cell"><span class="s-label">Wood Species</span><span class="s-value">Indian Sheesham (Dalbergia Sissoo)</span></div>
+          <div class="spec-cell"><span class="s-label">Inlay Work</span><span class="s-value">Solid Brass Wire, Hand-Hammered</span></div>
+          <div class="spec-cell"><span class="s-label">Category</span><span class="s-value">Side Tables</span></div>
+          <div class="spec-cell"><span class="s-label">Origin</span><span class="s-value">Jodhpur, Rajasthan, India</span></div>
+          <div class="spec-cell"><span class="s-label">Lead Time</span><span class="s-value">4–6 Weeks</span></div>
+          <div class="spec-cell"><span class="s-label">Customisation</span><span class="s-value">Dimensions, Inlay Pattern, Finish</span></div>
+        </div>
+
+        <div class="materials-row">
+          <span class="chip">Sheesham</span>
+          <span class="chip">Brass Inlay</span>
+          <span class="chip">Handcrafted</span>
+        </div>
+
+        <div class="price-block">
+          <span class="price-label">Export Price</span>
+          <span class="price-value">On Request</span>
+          <span class="price-note">FOB Jodhpur</span>
+        </div>
+      </div>
+
+    </div><!-- end .right-panel -->
+
+    <!-- FOOTER DESCRIPTION BAR -->
+    <footer class="page-footer">
+      <p class="footer-desc">Hand-turned solid wood side table with brass inlay detailing, built using traditional Rajasthani joinery techniques.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </footer>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 14 / 30 — VINTAGE BRASS INLAY WOODEN CHEST OF DRAWERS TABLE
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-14">
+
+    <!-- ── LEFT DARK PANEL ── -->
+    <div class="left-panel">
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587734/hs-global/handicraft/etsy/HCBSTBR1/1.webp" alt="Vintage Brass Inlay Wooden Chest of Drawers Table — Wooden Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+      </div>
+
+      <div class="category-watermark">
+        <span class="cat-eyebrow">Wooden Furniture</span>
+        <div class="cat-title">Side Tables</div>
+      </div>
+
+      <div class="img-sku">SKU · HSG-WD-014</div>
+    </div>
+
+    <!-- ── RIGHT PARCHMENT PANEL ── -->
+    <div class="right-panel">
+
+      <div class="brand-header">
+        <div>
+          <div class="brand-name">HS Global Export</div>
+          <div class="brand-sub">Handcrafted Wooden Furniture · Est. 2004</div>
+        </div>
+        <div class="page-num-top">14</div>
+      </div>
+
+      <div class="brass-rule"></div>
+
+      <!-- 4 THUMBNAIL IMAGES (top, before description) -->
+      <div class="end-images">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587734/hs-global/handicraft/etsy/HCBSTBR1/1.webp" alt="View 1" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587736/hs-global/handicraft/etsy/HCBSTBR1/2.webp" alt="View 2" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587737/hs-global/handicraft/etsy/HCBSTBR1/3.webp" alt="View 3" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587739/hs-global/handicraft/etsy/HCBSTBR1/4.webp" alt="View 4" loading="lazy" />
+      </div>
+
+      <!-- DESCRIPTION (pushed to bottom via margin-top:auto) -->
+      <div class="desc-content">
+        <h1 class="product-name">Vintage Brass Inlay Wooden Chest of Drawers Table</h1>
+        <div class="product-subtitle">Side Tables · Brass Inlay · Natural Finish</div>
+
+        <div class="spec-grid">
+          <div class="spec-cell"><span class="s-label">Wood Species</span><span class="s-value">Indian Sheesham (Dalbergia Sissoo)</span></div>
+          <div class="spec-cell"><span class="s-label">Inlay Work</span><span class="s-value">Solid Brass Wire, Hand-Hammered</span></div>
+          <div class="spec-cell"><span class="s-label">Category</span><span class="s-value">Side Tables</span></div>
+          <div class="spec-cell"><span class="s-label">Origin</span><span class="s-value">Jodhpur, Rajasthan, India</span></div>
+          <div class="spec-cell"><span class="s-label">Lead Time</span><span class="s-value">4–6 Weeks</span></div>
+          <div class="spec-cell"><span class="s-label">Customisation</span><span class="s-value">Dimensions, Inlay Pattern, Finish</span></div>
+        </div>
+
+        <div class="materials-row">
+          <span class="chip">Sheesham</span>
+          <span class="chip">Brass Inlay</span>
+          <span class="chip">Handcrafted</span>
+        </div>
+
+        <div class="price-block">
+          <span class="price-label">Export Price</span>
+          <span class="price-value">On Request</span>
+          <span class="price-note">FOB Jodhpur</span>
+        </div>
+      </div>
+
+    </div><!-- end .right-panel -->
+
+    <!-- FOOTER DESCRIPTION BAR -->
+    <footer class="page-footer">
+      <p class="footer-desc">Hand-turned solid wood side table with brass inlay detailing, built using traditional Rajasthani joinery techniques.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </footer>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 15 / 30 — WOODEN BRASS INLAY SOFA BENCH TRADITIONAL ACCENT SOFA
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-15">
+
+    <!-- ── LEFT DARK PANEL ── -->
+    <div class="left-panel">
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587513/hs-global/handicraft/etsy/HCBSOBR1/3.webp" alt="Wooden Brass Inlay Sofa Bench Traditional Accent Sofa — Wooden Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+      </div>
+
+      <div class="category-watermark">
+        <span class="cat-eyebrow">Wooden Furniture</span>
+        <div class="cat-title">Sofas</div>
+      </div>
+
+      <div class="img-sku">SKU · HSG-WD-015</div>
+    </div>
+
+    <!-- ── RIGHT PARCHMENT PANEL ── -->
+    <div class="right-panel">
+
+      <div class="brand-header">
+        <div>
+          <div class="brand-name">HS Global Export</div>
+          <div class="brand-sub">Handcrafted Wooden Furniture · Est. 2004</div>
+        </div>
+        <div class="page-num-top">15</div>
+      </div>
+
+      <div class="brass-rule"></div>
+
+      <!-- 4 THUMBNAIL IMAGES (top, before description) -->
+      <div class="end-images">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587513/hs-global/handicraft/etsy/HCBSOBR1/3.webp" alt="View 1" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587511/hs-global/handicraft/etsy/HCBSOBR1/2.webp" alt="View 2" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587514/hs-global/handicraft/etsy/HCBSOBR1/4.webp" alt="View 3" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587510/hs-global/handicraft/etsy/HCBSOBR1/1.webp" alt="View 4" loading="lazy" />
+      </div>
+
+      <!-- DESCRIPTION (pushed to bottom via margin-top:auto) -->
+      <div class="desc-content">
+        <h1 class="product-name">Wooden Brass Inlay Sofa Bench Traditional Accent Sofa</h1>
+        <div class="product-subtitle">Sofas · Brass Inlay · Natural Finish</div>
+
+        <div class="spec-grid">
+          <div class="spec-cell"><span class="s-label">Wood Species</span><span class="s-value">Indian Sheesham (Dalbergia Sissoo)</span></div>
+          <div class="spec-cell"><span class="s-label">Inlay Work</span><span class="s-value">Solid Brass Wire, Hand-Hammered</span></div>
+          <div class="spec-cell"><span class="s-label">Category</span><span class="s-value">Sofas</span></div>
+          <div class="spec-cell"><span class="s-label">Origin</span><span class="s-value">Jodhpur, Rajasthan, India</span></div>
+          <div class="spec-cell"><span class="s-label">Lead Time</span><span class="s-value">4–6 Weeks</span></div>
+          <div class="spec-cell"><span class="s-label">Customisation</span><span class="s-value">Dimensions, Inlay Pattern, Finish</span></div>
+        </div>
+
+        <div class="materials-row">
+          <span class="chip">Sheesham</span>
+          <span class="chip">Brass Inlay</span>
+          <span class="chip">Handcrafted</span>
+        </div>
+
+        <div class="price-block">
+          <span class="price-label">Export Price</span>
+          <span class="price-value">On Request</span>
+          <span class="price-note">FOB Jodhpur</span>
+        </div>
+      </div>
+
+    </div><!-- end .right-panel -->
+
+    <!-- FOOTER DESCRIPTION BAR -->
+    <footer class="page-footer">
+      <p class="footer-desc">Traditional Rajasthani joinery — mortise &amp;amp; tenon, no metal fasteners — ensures structural integrity for decades.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </footer>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 16 / 30 — HAND CARVED WOODEN ARMOIRE CABINET RUSTIC GREEN STORAGE
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-16">
+
+    <!-- ── LEFT DARK PANEL ── -->
+    <div class="left-panel">
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517022/hs-global/handicraft/etsy/HCFARGR1/1%20%2811%29.webp" alt="Hand Carved Wooden Armoire Cabinet Rustic Green Storage — Wooden Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+      </div>
+
+      <div class="category-watermark">
+        <span class="cat-eyebrow">Wooden Furniture</span>
+        <div class="cat-title">Armoires</div>
+      </div>
+
+      <div class="img-sku">SKU · HSG-WD-016</div>
+    </div>
+
+    <!-- ── RIGHT PARCHMENT PANEL ── -->
+    <div class="right-panel">
+
+      <div class="brand-header">
+        <div>
+          <div class="brand-name">HS Global Export</div>
+          <div class="brand-sub">Handcrafted Wooden Furniture · Est. 2004</div>
+        </div>
+        <div class="page-num-top">16</div>
+      </div>
+
+      <div class="brass-rule"></div>
+
+      <!-- 4 THUMBNAIL IMAGES (top, before description) -->
+      <div class="end-images">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517022/hs-global/handicraft/etsy/HCFARGR1/1%20%2811%29.webp" alt="View 1" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517023/hs-global/handicraft/etsy/HCFARGR1/2%20%2811%29.webp" alt="View 2" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517026/hs-global/handicraft/etsy/HCFARGR1/3%20%2811%29.webp" alt="View 3" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517027/hs-global/handicraft/etsy/HCFARGR1/4%20%2811%29.webp" alt="View 4" loading="lazy" />
+      </div>
+
+      <!-- DESCRIPTION (pushed to bottom via margin-top:auto) -->
+      <div class="desc-content">
+        <h1 class="product-name">Hand Carved Wooden Armoire Cabinet Rustic Green Storage</h1>
+        <div class="product-subtitle">Armoires · Brass Inlay · Natural Finish</div>
+
+        <div class="spec-grid">
+          <div class="spec-cell"><span class="s-label">Wood Species</span><span class="s-value">Indian Sheesham (Dalbergia Sissoo)</span></div>
+          <div class="spec-cell"><span class="s-label">Inlay Work</span><span class="s-value">Solid Brass Wire, Hand-Hammered</span></div>
+          <div class="spec-cell"><span class="s-label">Category</span><span class="s-value">Armoires</span></div>
+          <div class="spec-cell"><span class="s-label">Origin</span><span class="s-value">Jodhpur, Rajasthan, India</span></div>
+          <div class="spec-cell"><span class="s-label">Lead Time</span><span class="s-value">4–6 Weeks</span></div>
+          <div class="spec-cell"><span class="s-label">Customisation</span><span class="s-value">Dimensions, Inlay Pattern, Finish</span></div>
+        </div>
+
+        <div class="materials-row">
+          <span class="chip">Sheesham</span>
+          <span class="chip">Brass Inlay</span>
+          <span class="chip">Handcrafted</span>
+        </div>
+
+        <div class="price-block">
+          <span class="price-label">Export Price</span>
+          <span class="price-value">On Request</span>
+          <span class="price-note">FOB Jodhpur</span>
+        </div>
+      </div>
+
+    </div><!-- end .right-panel -->
+
+    <!-- FOOTER DESCRIPTION BAR -->
+    <footer class="page-footer">
+      <p class="footer-desc">Solid Sheesham armoire with hand-carved detailing and brass hardware, built for heirloom longevity.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </footer>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 17 / 30 — HAND CARVED WOODEN BOOKSHELF RUSTIC DISPLAY BOOKCASE
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-17">
+
+    <!-- ── LEFT DARK PANEL ── -->
+    <div class="left-panel">
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516957/hs-global/handicraft/etsy/HCFBSBR1/1%20%281%29.webp" alt="Hand Carved Wooden Bookshelf Rustic Display Bookcase — Wooden Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+      </div>
+
+      <div class="category-watermark">
+        <span class="cat-eyebrow">Wooden Furniture</span>
+        <div class="cat-title">Bookshelves</div>
+      </div>
+
+      <div class="img-sku">SKU · HSG-WD-017</div>
+    </div>
+
+    <!-- ── RIGHT PARCHMENT PANEL ── -->
+    <div class="right-panel">
+
+      <div class="brand-header">
+        <div>
+          <div class="brand-name">HS Global Export</div>
+          <div class="brand-sub">Handcrafted Wooden Furniture · Est. 2004</div>
+        </div>
+        <div class="page-num-top">17</div>
+      </div>
+
+      <div class="brass-rule"></div>
+
+      <!-- 4 THUMBNAIL IMAGES (top, before description) -->
+      <div class="end-images">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516957/hs-global/handicraft/etsy/HCFBSBR1/1%20%281%29.webp" alt="View 1" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516959/hs-global/handicraft/etsy/HCFBSBR1/2%20%281%29.webp" alt="View 2" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516960/hs-global/handicraft/etsy/HCFBSBR1/3%20%281%29.webp" alt="View 3" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516962/hs-global/handicraft/etsy/HCFBSBR1/4%20%281%29.webp" alt="View 4" loading="lazy" />
+      </div>
+
+      <!-- DESCRIPTION (pushed to bottom via margin-top:auto) -->
+      <div class="desc-content">
+        <h1 class="product-name">Hand Carved Wooden Bookshelf Rustic Display Bookcase</h1>
+        <div class="product-subtitle">Bookshelves · Brass Inlay · Natural Finish</div>
+
+        <div class="spec-grid">
+          <div class="spec-cell"><span class="s-label">Wood Species</span><span class="s-value">Indian Sheesham (Dalbergia Sissoo)</span></div>
+          <div class="spec-cell"><span class="s-label">Inlay Work</span><span class="s-value">Solid Brass Wire, Hand-Hammered</span></div>
+          <div class="spec-cell"><span class="s-label">Category</span><span class="s-value">Bookshelves</span></div>
+          <div class="spec-cell"><span class="s-label">Origin</span><span class="s-value">Jodhpur, Rajasthan, India</span></div>
+          <div class="spec-cell"><span class="s-label">Lead Time</span><span class="s-value">4–6 Weeks</span></div>
+          <div class="spec-cell"><span class="s-label">Customisation</span><span class="s-value">Dimensions, Inlay Pattern, Finish</span></div>
+        </div>
+
+        <div class="materials-row">
+          <span class="chip">Sheesham</span>
+          <span class="chip">Brass Inlay</span>
+          <span class="chip">Handcrafted</span>
+        </div>
+
+        <div class="price-block">
+          <span class="price-label">Export Price</span>
+          <span class="price-value">On Request</span>
+          <span class="price-note">FOB Jodhpur</span>
+        </div>
+      </div>
+
+    </div><!-- end .right-panel -->
+
+    <!-- FOOTER DESCRIPTION BAR -->
+    <footer class="page-footer">
+      <p class="footer-desc">Solid wood bookshelf with hand-chiselled brass accents, crafted by three-generation Jodhpur artisans.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </footer>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 18 / 30 — SOLID WOOD BOOKRACK TALL DISPLAY BOOKSHELF STORAGE UNIT.
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-18">
+
+    <!-- ── LEFT DARK PANEL ── -->
+    <div class="left-panel">
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516998/hs-global/handicraft/etsy/HCFBSBR2/1%20%288%29.webp" alt="Solid Wood Bookrack Tall Display Bookshelf Storage Unit. — Wooden Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+      </div>
+
+      <div class="category-watermark">
+        <span class="cat-eyebrow">Wooden Furniture</span>
+        <div class="cat-title">Bookshelves</div>
+      </div>
+
+      <div class="img-sku">SKU · HSG-WD-018</div>
+    </div>
+
+    <!-- ── RIGHT PARCHMENT PANEL ── -->
+    <div class="right-panel">
+
+      <div class="brand-header">
+        <div>
+          <div class="brand-name">HS Global Export</div>
+          <div class="brand-sub">Handcrafted Wooden Furniture · Est. 2004</div>
+        </div>
+        <div class="page-num-top">18</div>
+      </div>
+
+      <div class="brass-rule"></div>
+
+      <!-- 4 THUMBNAIL IMAGES (top, before description) -->
+      <div class="end-images">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516998/hs-global/handicraft/etsy/HCFBSBR2/1%20%288%29.webp" alt="View 1" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517000/hs-global/handicraft/etsy/HCFBSBR2/2%20%288%29.webp" alt="View 2" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517001/hs-global/handicraft/etsy/HCFBSBR2/3%20%288%29.webp" alt="View 3" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517002/hs-global/handicraft/etsy/HCFBSBR2/4%20%288%29.webp" alt="View 4" loading="lazy" />
+      </div>
+
+      <!-- DESCRIPTION (pushed to bottom via margin-top:auto) -->
+      <div class="desc-content">
+        <h1 class="product-name">Solid Wood Bookrack Tall Display Bookshelf Storage Unit.</h1>
+        <div class="product-subtitle">Bookshelves · Brass Inlay · Natural Finish</div>
+
+        <div class="spec-grid">
+          <div class="spec-cell"><span class="s-label">Wood Species</span><span class="s-value">Indian Sheesham (Dalbergia Sissoo)</span></div>
+          <div class="spec-cell"><span class="s-label">Inlay Work</span><span class="s-value">Solid Brass Wire, Hand-Hammered</span></div>
+          <div class="spec-cell"><span class="s-label">Category</span><span class="s-value">Bookshelves</span></div>
+          <div class="spec-cell"><span class="s-label">Origin</span><span class="s-value">Jodhpur, Rajasthan, India</span></div>
+          <div class="spec-cell"><span class="s-label">Lead Time</span><span class="s-value">4–6 Weeks</span></div>
+          <div class="spec-cell"><span class="s-label">Customisation</span><span class="s-value">Dimensions, Inlay Pattern, Finish</span></div>
+        </div>
+
+        <div class="materials-row">
+          <span class="chip">Sheesham</span>
+          <span class="chip">Brass Inlay</span>
+          <span class="chip">Handcrafted</span>
+        </div>
+
+        <div class="price-block">
+          <span class="price-label">Export Price</span>
+          <span class="price-value">On Request</span>
+          <span class="price-note">FOB Jodhpur</span>
+        </div>
+      </div>
+
+    </div><!-- end .right-panel -->
+
+    <!-- FOOTER DESCRIPTION BAR -->
+    <footer class="page-footer">
+      <p class="footer-desc">Solid wood bookshelf with hand-chiselled brass accents, crafted by three-generation Jodhpur artisans.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </footer>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 19 / 30 — ANTIQUE WOODEN DISPLAY CABINET RUSTIC GLASS STORAGE CABINET
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-19">
+
+    <!-- ── LEFT DARK PANEL ── -->
+    <div class="left-panel">
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517047/hs-global/handicraft/etsy/HCFCABBR8/1%20%2814%29.webp" alt="Antique Wooden Display Cabinet Rustic Glass Storage Cabinet — Wooden Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+      </div>
+
+      <div class="category-watermark">
+        <span class="cat-eyebrow">Wooden Furniture</span>
+        <div class="cat-title">Cabinets</div>
+      </div>
+
+      <div class="img-sku">SKU · HSG-WD-019</div>
+    </div>
+
+    <!-- ── RIGHT PARCHMENT PANEL ── -->
+    <div class="right-panel">
+
+      <div class="brand-header">
+        <div>
+          <div class="brand-name">HS Global Export</div>
+          <div class="brand-sub">Handcrafted Wooden Furniture · Est. 2004</div>
+        </div>
+        <div class="page-num-top">19</div>
+      </div>
+
+      <div class="brass-rule"></div>
+
+      <!-- 4 THUMBNAIL IMAGES (top, before description) -->
+      <div class="end-images">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517047/hs-global/handicraft/etsy/HCFCABBR8/1%20%2814%29.webp" alt="View 1" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517048/hs-global/handicraft/etsy/HCFCABBR8/2%20%2814%29.webp" alt="View 2" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517051/hs-global/handicraft/etsy/HCFCABBR8/3%20%2814%29.webp" alt="View 3" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517052/hs-global/handicraft/etsy/HCFCABBR8/4%20%2814%29.webp" alt="View 4" loading="lazy" />
+      </div>
+
+      <!-- DESCRIPTION (pushed to bottom via margin-top:auto) -->
+      <div class="desc-content">
+        <h1 class="product-name">Antique Wooden Display Cabinet Rustic Glass Storage Cabinet</h1>
+        <div class="product-subtitle">Cabinets · Brass Inlay · Natural Finish</div>
+
+        <div class="spec-grid">
+          <div class="spec-cell"><span class="s-label">Wood Species</span><span class="s-value">Indian Sheesham (Dalbergia Sissoo)</span></div>
+          <div class="spec-cell"><span class="s-label">Inlay Work</span><span class="s-value">Solid Brass Wire, Hand-Hammered</span></div>
+          <div class="spec-cell"><span class="s-label">Category</span><span class="s-value">Cabinets</span></div>
+          <div class="spec-cell"><span class="s-label">Origin</span><span class="s-value">Jodhpur, Rajasthan, India</span></div>
+          <div class="spec-cell"><span class="s-label">Lead Time</span><span class="s-value">4–6 Weeks</span></div>
+          <div class="spec-cell"><span class="s-label">Customisation</span><span class="s-value">Dimensions, Inlay Pattern, Finish</span></div>
+        </div>
+
+        <div class="materials-row">
+          <span class="chip">Sheesham</span>
+          <span class="chip">Brass Inlay</span>
+          <span class="chip">Handcrafted</span>
+        </div>
+
+        <div class="price-block">
+          <span class="price-label">Export Price</span>
+          <span class="price-value">On Request</span>
+          <span class="price-note">FOB Jodhpur</span>
+        </div>
+      </div>
+
+    </div><!-- end .right-panel -->
+
+    <!-- FOOTER DESCRIPTION BAR -->
+    <footer class="page-footer">
+      <p class="footer-desc">Hand-carved wooden cabinet with brass inlay, built using traditional Rajasthani joinery for lasting quality.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </footer>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 20 / 30 — HAND CARVED RUSTIC WOODEN SIDEBOARD STORAGE CABINET
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-20">
+
+    <!-- ── LEFT DARK PANEL ── -->
+    <div class="left-panel">
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516977/hs-global/handicraft/etsy/HCFCABBR3/5%20%283%29.webp" alt="Hand Carved Rustic Wooden Sideboard Storage Cabinet — Wooden Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+      </div>
+
+      <div class="category-watermark">
+        <span class="cat-eyebrow">Wooden Furniture</span>
+        <div class="cat-title">Cabinets</div>
+      </div>
+
+      <div class="img-sku">SKU · HSG-WD-020</div>
+    </div>
+
+    <!-- ── RIGHT PARCHMENT PANEL ── -->
+    <div class="right-panel">
+
+      <div class="brand-header">
+        <div>
+          <div class="brand-name">HS Global Export</div>
+          <div class="brand-sub">Handcrafted Wooden Furniture · Est. 2004</div>
+        </div>
+        <div class="page-num-top">20</div>
+      </div>
+
+      <div class="brass-rule"></div>
+
+      <!-- 4 THUMBNAIL IMAGES (top, before description) -->
+      <div class="end-images">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516977/hs-global/handicraft/etsy/HCFCABBR3/5%20%283%29.webp" alt="View 1" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516972/hs-global/handicraft/etsy/HCFCABBR3/1%20%283%29.webp" alt="View 2" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516973/hs-global/handicraft/etsy/HCFCABBR3/2%20%283%29.webp" alt="View 3" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516975/hs-global/handicraft/etsy/HCFCABBR3/3%20%283%29.webp" alt="View 4" loading="lazy" />
+      </div>
+
+      <!-- DESCRIPTION (pushed to bottom via margin-top:auto) -->
+      <div class="desc-content">
+        <h1 class="product-name">Hand Carved Rustic Wooden Sideboard Storage Cabinet</h1>
+        <div class="product-subtitle">Cabinets · Brass Inlay · Natural Finish</div>
+
+        <div class="spec-grid">
+          <div class="spec-cell"><span class="s-label">Wood Species</span><span class="s-value">Indian Sheesham (Dalbergia Sissoo)</span></div>
+          <div class="spec-cell"><span class="s-label">Inlay Work</span><span class="s-value">Solid Brass Wire, Hand-Hammered</span></div>
+          <div class="spec-cell"><span class="s-label">Category</span><span class="s-value">Cabinets</span></div>
+          <div class="spec-cell"><span class="s-label">Origin</span><span class="s-value">Jodhpur, Rajasthan, India</span></div>
+          <div class="spec-cell"><span class="s-label">Lead Time</span><span class="s-value">4–6 Weeks</span></div>
+          <div class="spec-cell"><span class="s-label">Customisation</span><span class="s-value">Dimensions, Inlay Pattern, Finish</span></div>
+        </div>
+
+        <div class="materials-row">
+          <span class="chip">Sheesham</span>
+          <span class="chip">Brass Inlay</span>
+          <span class="chip">Handcrafted</span>
+        </div>
+
+        <div class="price-block">
+          <span class="price-label">Export Price</span>
+          <span class="price-value">On Request</span>
+          <span class="price-note">FOB Jodhpur</span>
+        </div>
+      </div>
+
+    </div><!-- end .right-panel -->
+
+    <!-- FOOTER DESCRIPTION BAR -->
+    <footer class="page-footer">
+      <p class="footer-desc">Hand-carved wooden cabinet with brass inlay, built using traditional Rajasthani joinery for lasting quality.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </footer>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 21 / 30 — HAND CARVED WOODEN CHEST OF DRAWERS RUSTIC STORAGE CABINET
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-21">
+
+    <!-- ── LEFT DARK PANEL ── -->
+    <div class="left-panel">
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516965/hs-global/handicraft/etsy/HCFCABBR2/1%20%282%29.webp" alt="Hand Carved Wooden Chest of Drawers Rustic Storage Cabinet — Wooden Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+      </div>
+
+      <div class="category-watermark">
+        <span class="cat-eyebrow">Wooden Furniture</span>
+        <div class="cat-title">Cabinets</div>
+      </div>
+
+      <div class="img-sku">SKU · HSG-WD-021</div>
+    </div>
+
+    <!-- ── RIGHT PARCHMENT PANEL ── -->
+    <div class="right-panel">
+
+      <div class="brand-header">
+        <div>
+          <div class="brand-name">HS Global Export</div>
+          <div class="brand-sub">Handcrafted Wooden Furniture · Est. 2004</div>
+        </div>
+        <div class="page-num-top">21</div>
+      </div>
+
+      <div class="brass-rule"></div>
+
+      <!-- 4 THUMBNAIL IMAGES (top, before description) -->
+      <div class="end-images">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516965/hs-global/handicraft/etsy/HCFCABBR2/1%20%282%29.webp" alt="View 1" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516966/hs-global/handicraft/etsy/HCFCABBR2/2%20%282%29.webp" alt="View 2" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516968/hs-global/handicraft/etsy/HCFCABBR2/3%20%282%29.webp" alt="View 3" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516970/hs-global/handicraft/etsy/HCFCABBR2/4%20%282%29.webp" alt="View 4" loading="lazy" />
+      </div>
+
+      <!-- DESCRIPTION (pushed to bottom via margin-top:auto) -->
+      <div class="desc-content">
+        <h1 class="product-name">Hand Carved Wooden Chest of Drawers Rustic Storage Cabinet</h1>
+        <div class="product-subtitle">Cabinets · Brass Inlay · Natural Finish</div>
+
+        <div class="spec-grid">
+          <div class="spec-cell"><span class="s-label">Wood Species</span><span class="s-value">Indian Sheesham (Dalbergia Sissoo)</span></div>
+          <div class="spec-cell"><span class="s-label">Inlay Work</span><span class="s-value">Solid Brass Wire, Hand-Hammered</span></div>
+          <div class="spec-cell"><span class="s-label">Category</span><span class="s-value">Cabinets</span></div>
+          <div class="spec-cell"><span class="s-label">Origin</span><span class="s-value">Jodhpur, Rajasthan, India</span></div>
+          <div class="spec-cell"><span class="s-label">Lead Time</span><span class="s-value">4–6 Weeks</span></div>
+          <div class="spec-cell"><span class="s-label">Customisation</span><span class="s-value">Dimensions, Inlay Pattern, Finish</span></div>
+        </div>
+
+        <div class="materials-row">
+          <span class="chip">Sheesham</span>
+          <span class="chip">Brass Inlay</span>
+          <span class="chip">Handcrafted</span>
+        </div>
+
+        <div class="price-block">
+          <span class="price-label">Export Price</span>
+          <span class="price-value">On Request</span>
+          <span class="price-note">FOB Jodhpur</span>
+        </div>
+      </div>
+
+    </div><!-- end .right-panel -->
+
+    <!-- FOOTER DESCRIPTION BAR -->
+    <footer class="page-footer">
+      <p class="footer-desc">Hand-carved wooden cabinet with brass inlay, built using traditional Rajasthani joinery for lasting quality.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </footer>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 22 / 30 — HANDCRAFTED DAMCHIYA STORAGE SIDEBOARD RUSTIC WOODEN CONSOLE
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-22">
+
+    <!-- ── LEFT DARK PANEL ── -->
+    <div class="left-panel">
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517054/hs-global/handicraft/etsy/HCFCABBR9/1%20%2815%29.webp" alt="Handcrafted Damchiya Storage Sideboard Rustic Wooden Console — Wooden Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+      </div>
+
+      <div class="category-watermark">
+        <span class="cat-eyebrow">Wooden Furniture</span>
+        <div class="cat-title">Cabinets</div>
+      </div>
+
+      <div class="img-sku">SKU · HSG-WD-022</div>
+    </div>
+
+    <!-- ── RIGHT PARCHMENT PANEL ── -->
+    <div class="right-panel">
+
+      <div class="brand-header">
+        <div>
+          <div class="brand-name">HS Global Export</div>
+          <div class="brand-sub">Handcrafted Wooden Furniture · Est. 2004</div>
+        </div>
+        <div class="page-num-top">22</div>
+      </div>
+
+      <div class="brass-rule"></div>
+
+      <!-- 4 THUMBNAIL IMAGES (top, before description) -->
+      <div class="end-images">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517054/hs-global/handicraft/etsy/HCFCABBR9/1%20%2815%29.webp" alt="View 1" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517056/hs-global/handicraft/etsy/HCFCABBR9/2%20%2815%29.webp" alt="View 2" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517057/hs-global/handicraft/etsy/HCFCABBR9/3%20%2815%29.webp" alt="View 3" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517058/hs-global/handicraft/etsy/HCFCABBR9/4%20%2815%29.webp" alt="View 4" loading="lazy" />
+      </div>
+
+      <!-- DESCRIPTION (pushed to bottom via margin-top:auto) -->
+      <div class="desc-content">
+        <h1 class="product-name">Handcrafted Damchiya Storage Sideboard Rustic Wooden Console</h1>
+        <div class="product-subtitle">Cabinets · Brass Inlay · Natural Finish</div>
+
+        <div class="spec-grid">
+          <div class="spec-cell"><span class="s-label">Wood Species</span><span class="s-value">Indian Sheesham (Dalbergia Sissoo)</span></div>
+          <div class="spec-cell"><span class="s-label">Inlay Work</span><span class="s-value">Solid Brass Wire, Hand-Hammered</span></div>
+          <div class="spec-cell"><span class="s-label">Category</span><span class="s-value">Cabinets</span></div>
+          <div class="spec-cell"><span class="s-label">Origin</span><span class="s-value">Jodhpur, Rajasthan, India</span></div>
+          <div class="spec-cell"><span class="s-label">Lead Time</span><span class="s-value">4–6 Weeks</span></div>
+          <div class="spec-cell"><span class="s-label">Customisation</span><span class="s-value">Dimensions, Inlay Pattern, Finish</span></div>
+        </div>
+
+        <div class="materials-row">
+          <span class="chip">Sheesham</span>
+          <span class="chip">Brass Inlay</span>
+          <span class="chip">Handcrafted</span>
+        </div>
+
+        <div class="price-block">
+          <span class="price-label">Export Price</span>
+          <span class="price-value">On Request</span>
+          <span class="price-note">FOB Jodhpur</span>
+        </div>
+      </div>
+
+    </div><!-- end .right-panel -->
+
+    <!-- FOOTER DESCRIPTION BAR -->
+    <footer class="page-footer">
+      <p class="footer-desc">Hand-carved wooden cabinet with brass inlay, built using traditional Rajasthani joinery for lasting quality.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </footer>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 23 / 30 — HANDCRAFTED WOODEN HOME TEMPLE PRAYER CABINET SHRINE
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-23">
+
+    <!-- ── LEFT DARK PANEL ── -->
+    <div class="left-panel">
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516984/hs-global/handicraft/etsy/HCFCABBR4/5%20%285%29.webp" alt="Handcrafted Wooden Home Temple Prayer Cabinet Shrine — Wooden Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+      </div>
+
+      <div class="category-watermark">
+        <span class="cat-eyebrow">Wooden Furniture</span>
+        <div class="cat-title">Cabinets</div>
+      </div>
+
+      <div class="img-sku">SKU · HSG-WD-023</div>
+    </div>
+
+    <!-- ── RIGHT PARCHMENT PANEL ── -->
+    <div class="right-panel">
+
+      <div class="brand-header">
+        <div>
+          <div class="brand-name">HS Global Export</div>
+          <div class="brand-sub">Handcrafted Wooden Furniture · Est. 2004</div>
+        </div>
+        <div class="page-num-top">23</div>
+      </div>
+
+      <div class="brass-rule"></div>
+
+      <!-- 4 THUMBNAIL IMAGES (top, before description) -->
+      <div class="end-images">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516984/hs-global/handicraft/etsy/HCFCABBR4/5%20%285%29.webp" alt="View 1" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516981/hs-global/handicraft/etsy/HCFCABBR4/3%20%285%29.webp" alt="View 2" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516980/hs-global/handicraft/etsy/HCFCABBR4/2%20%285%29.webp" alt="View 3" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516979/hs-global/handicraft/etsy/HCFCABBR4/1%20%285%29.webp" alt="View 4" loading="lazy" />
+      </div>
+
+      <!-- DESCRIPTION (pushed to bottom via margin-top:auto) -->
+      <div class="desc-content">
+        <h1 class="product-name">Handcrafted Wooden Home Temple Prayer Cabinet Shrine</h1>
+        <div class="product-subtitle">Cabinets · Brass Inlay · Natural Finish</div>
+
+        <div class="spec-grid">
+          <div class="spec-cell"><span class="s-label">Wood Species</span><span class="s-value">Indian Sheesham (Dalbergia Sissoo)</span></div>
+          <div class="spec-cell"><span class="s-label">Inlay Work</span><span class="s-value">Solid Brass Wire, Hand-Hammered</span></div>
+          <div class="spec-cell"><span class="s-label">Category</span><span class="s-value">Cabinets</span></div>
+          <div class="spec-cell"><span class="s-label">Origin</span><span class="s-value">Jodhpur, Rajasthan, India</span></div>
+          <div class="spec-cell"><span class="s-label">Lead Time</span><span class="s-value">4–6 Weeks</span></div>
+          <div class="spec-cell"><span class="s-label">Customisation</span><span class="s-value">Dimensions, Inlay Pattern, Finish</span></div>
+        </div>
+
+        <div class="materials-row">
+          <span class="chip">Sheesham</span>
+          <span class="chip">Brass Inlay</span>
+          <span class="chip">Handcrafted</span>
+        </div>
+
+        <div class="price-block">
+          <span class="price-label">Export Price</span>
+          <span class="price-value">On Request</span>
+          <span class="price-note">FOB Jodhpur</span>
+        </div>
+      </div>
+
+    </div><!-- end .right-panel -->
+
+    <!-- FOOTER DESCRIPTION BAR -->
+    <footer class="page-footer">
+      <p class="footer-desc">Hand-carved wooden cabinet with brass inlay, built using traditional Rajasthani joinery for lasting quality.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </footer>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 24 / 30 — RUSTIC DISTRESSED WOOD CABINET VINTAGE STORAGE ARMOIRE
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-24">
+
+    <!-- ── LEFT DARK PANEL ── -->
+    <div class="left-panel">
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516949/hs-global/handicraft/etsy/HCFCABBR1/1.webp" alt="Rustic Distressed Wood Cabinet Vintage Storage Armoire — Wooden Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+      </div>
+
+      <div class="category-watermark">
+        <span class="cat-eyebrow">Wooden Furniture</span>
+        <div class="cat-title">Cabinets</div>
+      </div>
+
+      <div class="img-sku">SKU · HSG-WD-024</div>
+    </div>
+
+    <!-- ── RIGHT PARCHMENT PANEL ── -->
+    <div class="right-panel">
+
+      <div class="brand-header">
+        <div>
+          <div class="brand-name">HS Global Export</div>
+          <div class="brand-sub">Handcrafted Wooden Furniture · Est. 2004</div>
+        </div>
+        <div class="page-num-top">24</div>
+      </div>
+
+      <div class="brass-rule"></div>
+
+      <!-- 4 THUMBNAIL IMAGES (top, before description) -->
+      <div class="end-images">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516949/hs-global/handicraft/etsy/HCFCABBR1/1.webp" alt="View 1" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516951/hs-global/handicraft/etsy/HCFCABBR1/2.webp" alt="View 2" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516952/hs-global/handicraft/etsy/HCFCABBR1/3.webp" alt="View 3" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516954/hs-global/handicraft/etsy/HCFCABBR1/4.webp" alt="View 4" loading="lazy" />
+      </div>
+
+      <!-- DESCRIPTION (pushed to bottom via margin-top:auto) -->
+      <div class="desc-content">
+        <h1 class="product-name">Rustic Distressed Wood Cabinet Vintage Storage Armoire</h1>
+        <div class="product-subtitle">Cabinets · Brass Inlay · Natural Finish</div>
+
+        <div class="spec-grid">
+          <div class="spec-cell"><span class="s-label">Wood Species</span><span class="s-value">Indian Sheesham (Dalbergia Sissoo)</span></div>
+          <div class="spec-cell"><span class="s-label">Inlay Work</span><span class="s-value">Solid Brass Wire, Hand-Hammered</span></div>
+          <div class="spec-cell"><span class="s-label">Category</span><span class="s-value">Cabinets</span></div>
+          <div class="spec-cell"><span class="s-label">Origin</span><span class="s-value">Jodhpur, Rajasthan, India</span></div>
+          <div class="spec-cell"><span class="s-label">Lead Time</span><span class="s-value">4–6 Weeks</span></div>
+          <div class="spec-cell"><span class="s-label">Customisation</span><span class="s-value">Dimensions, Inlay Pattern, Finish</span></div>
+        </div>
+
+        <div class="materials-row">
+          <span class="chip">Sheesham</span>
+          <span class="chip">Brass Inlay</span>
+          <span class="chip">Handcrafted</span>
+        </div>
+
+        <div class="price-block">
+          <span class="price-label">Export Price</span>
+          <span class="price-value">On Request</span>
+          <span class="price-note">FOB Jodhpur</span>
+        </div>
+      </div>
+
+    </div><!-- end .right-panel -->
+
+    <!-- FOOTER DESCRIPTION BAR -->
+    <footer class="page-footer">
+      <p class="footer-desc">Hand-carved wooden cabinet with brass inlay, built using traditional Rajasthani joinery for lasting quality.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </footer>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 25 / 30 — RUSTIC GLASS DOOR WOODEN ALMIRAH CABINET 2 DRAWER
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-25">
+
+    <!-- ── LEFT DARK PANEL ── -->
+    <div class="left-panel">
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517015/hs-global/handicraft/etsy/HCFCABBU7/1%20%2810%29.webp" alt="Rustic Glass Door Wooden Almirah Cabinet 2 Drawer — Wooden Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+      </div>
+
+      <div class="category-watermark">
+        <span class="cat-eyebrow">Wooden Furniture</span>
+        <div class="cat-title">Cabinets</div>
+      </div>
+
+      <div class="img-sku">SKU · HSG-WD-025</div>
+    </div>
+
+    <!-- ── RIGHT PARCHMENT PANEL ── -->
+    <div class="right-panel">
+
+      <div class="brand-header">
+        <div>
+          <div class="brand-name">HS Global Export</div>
+          <div class="brand-sub">Handcrafted Wooden Furniture · Est. 2004</div>
+        </div>
+        <div class="page-num-top">25</div>
+      </div>
+
+      <div class="brass-rule"></div>
+
+      <!-- 4 THUMBNAIL IMAGES (top, before description) -->
+      <div class="end-images">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517015/hs-global/handicraft/etsy/HCFCABBU7/1%20%2810%29.webp" alt="View 1" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517016/hs-global/handicraft/etsy/HCFCABBU7/2%20%2810%29.webp" alt="View 2" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517018/hs-global/handicraft/etsy/HCFCABBU7/3%20%2810%29.webp" alt="View 3" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517019/hs-global/handicraft/etsy/HCFCABBU7/4%20%2810%29.webp" alt="View 4" loading="lazy" />
+      </div>
+
+      <!-- DESCRIPTION (pushed to bottom via margin-top:auto) -->
+      <div class="desc-content">
+        <h1 class="product-name">Rustic Glass Door Wooden Almirah Cabinet 2 Drawer</h1>
+        <div class="product-subtitle">Cabinets · Brass Inlay · Natural Finish</div>
+
+        <div class="spec-grid">
+          <div class="spec-cell"><span class="s-label">Wood Species</span><span class="s-value">Indian Sheesham (Dalbergia Sissoo)</span></div>
+          <div class="spec-cell"><span class="s-label">Inlay Work</span><span class="s-value">Solid Brass Wire, Hand-Hammered</span></div>
+          <div class="spec-cell"><span class="s-label">Category</span><span class="s-value">Cabinets</span></div>
+          <div class="spec-cell"><span class="s-label">Origin</span><span class="s-value">Jodhpur, Rajasthan, India</span></div>
+          <div class="spec-cell"><span class="s-label">Lead Time</span><span class="s-value">4–6 Weeks</span></div>
+          <div class="spec-cell"><span class="s-label">Customisation</span><span class="s-value">Dimensions, Inlay Pattern, Finish</span></div>
+        </div>
+
+        <div class="materials-row">
+          <span class="chip">Sheesham</span>
+          <span class="chip">Brass Inlay</span>
+          <span class="chip">Handcrafted</span>
+        </div>
+
+        <div class="price-block">
+          <span class="price-label">Export Price</span>
+          <span class="price-value">On Request</span>
+          <span class="price-note">FOB Jodhpur</span>
+        </div>
+      </div>
+
+    </div><!-- end .right-panel -->
+
+    <!-- FOOTER DESCRIPTION BAR -->
+    <footer class="page-footer">
+      <p class="footer-desc">Hand-carved wooden cabinet with brass inlay, built using traditional Rajasthani joinery for lasting quality.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </footer>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 26 / 30 — RUSTIC RECLAIMED WOOD SIDEBOARD CABINET 4 DOOR 4 DRAWER
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-26">
+
+    <!-- ── LEFT DARK PANEL ── -->
+    <div class="left-panel">
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517013/hs-global/handicraft/etsy/HCFCABBR6/5%20%289%29.webp" alt="Rustic Reclaimed Wood Sideboard Cabinet 4 Door 4 Drawer — Wooden Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+      </div>
+
+      <div class="category-watermark">
+        <span class="cat-eyebrow">Wooden Furniture</span>
+        <div class="cat-title">Cabinets</div>
+      </div>
+
+      <div class="img-sku">SKU · HSG-WD-026</div>
+    </div>
+
+    <!-- ── RIGHT PARCHMENT PANEL ── -->
+    <div class="right-panel">
+
+      <div class="brand-header">
+        <div>
+          <div class="brand-name">HS Global Export</div>
+          <div class="brand-sub">Handcrafted Wooden Furniture · Est. 2004</div>
+        </div>
+        <div class="page-num-top">26</div>
+      </div>
+
+      <div class="brass-rule"></div>
+
+      <!-- 4 THUMBNAIL IMAGES (top, before description) -->
+      <div class="end-images">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517013/hs-global/handicraft/etsy/HCFCABBR6/5%20%289%29.webp" alt="View 1" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517007/hs-global/handicraft/etsy/HCFCABBR6/1%20%289%29.webp" alt="View 2" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517008/hs-global/handicraft/etsy/HCFCABBR6/2%20%289%29.webp" alt="View 3" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517010/hs-global/handicraft/etsy/HCFCABBR6/3%20%289%29.webp" alt="View 4" loading="lazy" />
+      </div>
+
+      <!-- DESCRIPTION (pushed to bottom via margin-top:auto) -->
+      <div class="desc-content">
+        <h1 class="product-name">Rustic Reclaimed Wood Sideboard Cabinet 4 Door 4 Drawer</h1>
+        <div class="product-subtitle">Cabinets · Brass Inlay · Natural Finish</div>
+
+        <div class="spec-grid">
+          <div class="spec-cell"><span class="s-label">Wood Species</span><span class="s-value">Indian Sheesham (Dalbergia Sissoo)</span></div>
+          <div class="spec-cell"><span class="s-label">Inlay Work</span><span class="s-value">Solid Brass Wire, Hand-Hammered</span></div>
+          <div class="spec-cell"><span class="s-label">Category</span><span class="s-value">Cabinets</span></div>
+          <div class="spec-cell"><span class="s-label">Origin</span><span class="s-value">Jodhpur, Rajasthan, India</span></div>
+          <div class="spec-cell"><span class="s-label">Lead Time</span><span class="s-value">4–6 Weeks</span></div>
+          <div class="spec-cell"><span class="s-label">Customisation</span><span class="s-value">Dimensions, Inlay Pattern, Finish</span></div>
+        </div>
+
+        <div class="materials-row">
+          <span class="chip">Sheesham</span>
+          <span class="chip">Brass Inlay</span>
+          <span class="chip">Handcrafted</span>
+        </div>
+
+        <div class="price-block">
+          <span class="price-label">Export Price</span>
+          <span class="price-value">On Request</span>
+          <span class="price-note">FOB Jodhpur</span>
+        </div>
+      </div>
+
+    </div><!-- end .right-panel -->
+
+    <!-- FOOTER DESCRIPTION BAR -->
+    <footer class="page-footer">
+      <p class="footer-desc">Hand-carved wooden cabinet with brass inlay, built using traditional Rajasthani joinery for lasting quality.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </footer>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 27 / 30 — VINTAGE 4 DOOR SIDEBOARD RUSTIC WOODEN BUFFET CABINET
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-27">
+
+    <!-- ── LEFT DARK PANEL ── -->
+    <div class="left-panel">
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516997/hs-global/handicraft/etsy/HCFCABBU5/5%20%287%29.webp" alt="Vintage 4 Door Sideboard Rustic Wooden Buffet Cabinet — Wooden Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+      </div>
+
+      <div class="category-watermark">
+        <span class="cat-eyebrow">Wooden Furniture</span>
+        <div class="cat-title">Cabinets</div>
+      </div>
+
+      <div class="img-sku">SKU · HSG-WD-027</div>
+    </div>
+
+    <!-- ── RIGHT PARCHMENT PANEL ── -->
+    <div class="right-panel">
+
+      <div class="brand-header">
+        <div>
+          <div class="brand-name">HS Global Export</div>
+          <div class="brand-sub">Handcrafted Wooden Furniture · Est. 2004</div>
+        </div>
+        <div class="page-num-top">27</div>
+      </div>
+
+      <div class="brass-rule"></div>
+
+      <!-- 4 THUMBNAIL IMAGES (top, before description) -->
+      <div class="end-images">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516997/hs-global/handicraft/etsy/HCFCABBU5/5%20%287%29.webp" alt="View 1" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516992/hs-global/handicraft/etsy/HCFCABBU5/1%20%287%29.webp" alt="View 2" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516993/hs-global/handicraft/etsy/HCFCABBU5/2%20%287%29.webp" alt="View 3" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516994/hs-global/handicraft/etsy/HCFCABBU5/3%20%287%29.webp" alt="View 4" loading="lazy" />
+      </div>
+
+      <!-- DESCRIPTION (pushed to bottom via margin-top:auto) -->
+      <div class="desc-content">
+        <h1 class="product-name">Vintage 4 Door Sideboard Rustic Wooden Buffet Cabinet</h1>
+        <div class="product-subtitle">Cabinets · Brass Inlay · Natural Finish</div>
+
+        <div class="spec-grid">
+          <div class="spec-cell"><span class="s-label">Wood Species</span><span class="s-value">Indian Sheesham (Dalbergia Sissoo)</span></div>
+          <div class="spec-cell"><span class="s-label">Inlay Work</span><span class="s-value">Solid Brass Wire, Hand-Hammered</span></div>
+          <div class="spec-cell"><span class="s-label">Category</span><span class="s-value">Cabinets</span></div>
+          <div class="spec-cell"><span class="s-label">Origin</span><span class="s-value">Jodhpur, Rajasthan, India</span></div>
+          <div class="spec-cell"><span class="s-label">Lead Time</span><span class="s-value">4–6 Weeks</span></div>
+          <div class="spec-cell"><span class="s-label">Customisation</span><span class="s-value">Dimensions, Inlay Pattern, Finish</span></div>
+        </div>
+
+        <div class="materials-row">
+          <span class="chip">Sheesham</span>
+          <span class="chip">Brass Inlay</span>
+          <span class="chip">Handcrafted</span>
+        </div>
+
+        <div class="price-block">
+          <span class="price-label">Export Price</span>
+          <span class="price-value">On Request</span>
+          <span class="price-note">FOB Jodhpur</span>
+        </div>
+      </div>
+
+    </div><!-- end .right-panel -->
+
+    <!-- FOOTER DESCRIPTION BAR -->
+    <footer class="page-footer">
+      <p class="footer-desc">Hand-carved wooden cabinet with brass inlay, built using traditional Rajasthani joinery for lasting quality.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </footer>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 28 / 30 — ANTIQUE DAMCHIYA STORAGE BOX VINTAGE WOODEN CHEST
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-28">
+
+    <!-- ── LEFT DARK PANEL ── -->
+    <div class="left-panel">
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516990/hs-global/handicraft/etsy/HCFTRBU1/5%20%286%29.webp" alt="Antique Damchiya Storage Box Vintage Wooden Chest — Wooden Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+      </div>
+
+      <div class="category-watermark">
+        <span class="cat-eyebrow">Wooden Furniture</span>
+        <div class="cat-title">Trunks</div>
+      </div>
+
+      <div class="img-sku">SKU · HSG-WD-028</div>
+    </div>
+
+    <!-- ── RIGHT PARCHMENT PANEL ── -->
+    <div class="right-panel">
+
+      <div class="brand-header">
+        <div>
+          <div class="brand-name">HS Global Export</div>
+          <div class="brand-sub">Handcrafted Wooden Furniture · Est. 2004</div>
+        </div>
+        <div class="page-num-top">28</div>
+      </div>
+
+      <div class="brass-rule"></div>
+
+      <!-- 4 THUMBNAIL IMAGES (top, before description) -->
+      <div class="end-images">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516990/hs-global/handicraft/etsy/HCFTRBU1/5%20%286%29.webp" alt="View 1" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516989/hs-global/handicraft/etsy/HCFTRBU1/4%20%286%29.webp" alt="View 2" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516987/hs-global/handicraft/etsy/HCFTRBU1/2%20%286%29.webp" alt="View 3" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516985/hs-global/handicraft/etsy/HCFTRBU1/1%20%286%29.webp" alt="View 4" loading="lazy" />
+      </div>
+
+      <!-- DESCRIPTION (pushed to bottom via margin-top:auto) -->
+      <div class="desc-content">
+        <h1 class="product-name">Antique Damchiya Storage Box Vintage Wooden Chest</h1>
+        <div class="product-subtitle">Trunks · Brass Inlay · Natural Finish</div>
+
+        <div class="spec-grid">
+          <div class="spec-cell"><span class="s-label">Wood Species</span><span class="s-value">Indian Sheesham (Dalbergia Sissoo)</span></div>
+          <div class="spec-cell"><span class="s-label">Inlay Work</span><span class="s-value">Solid Brass Wire, Hand-Hammered</span></div>
+          <div class="spec-cell"><span class="s-label">Category</span><span class="s-value">Trunks</span></div>
+          <div class="spec-cell"><span class="s-label">Origin</span><span class="s-value">Jodhpur, Rajasthan, India</span></div>
+          <div class="spec-cell"><span class="s-label">Lead Time</span><span class="s-value">4–6 Weeks</span></div>
+          <div class="spec-cell"><span class="s-label">Customisation</span><span class="s-value">Dimensions, Inlay Pattern, Finish</span></div>
+        </div>
+
+        <div class="materials-row">
+          <span class="chip">Sheesham</span>
+          <span class="chip">Brass Inlay</span>
+          <span class="chip">Handcrafted</span>
+        </div>
+
+        <div class="price-block">
+          <span class="price-label">Export Price</span>
+          <span class="price-value">On Request</span>
+          <span class="price-note">FOB Jodhpur</span>
+        </div>
+      </div>
+
+    </div><!-- end .right-panel -->
+
+    <!-- FOOTER DESCRIPTION BAR -->
+    <footer class="page-footer">
+      <p class="footer-desc">Heirloom-quality wooden trunk with brass inlay and hand-hammered hardware from Jodhpur master craftsmen.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </footer>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 29 / 30 — ANTIQUE METAL FITTED WOODEN DOUBLE DOOR RUSTIC ENTRY DOOR
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-29">
+
+    <!-- ── LEFT DARK PANEL ── -->
+    <div class="left-panel">
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517030/hs-global/handicraft/etsy/HCFDOBR2/1%20%2812%29.webp" alt="Antique Metal Fitted Wooden Double Door Rustic Entry Door — Wooden Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+      </div>
+
+      <div class="category-watermark">
+        <span class="cat-eyebrow">Wooden Furniture</span>
+        <div class="cat-title">Doors</div>
+      </div>
+
+      <div class="img-sku">SKU · HSG-WD-029</div>
+    </div>
+
+    <!-- ── RIGHT PARCHMENT PANEL ── -->
+    <div class="right-panel">
+
+      <div class="brand-header">
+        <div>
+          <div class="brand-name">HS Global Export</div>
+          <div class="brand-sub">Handcrafted Wooden Furniture · Est. 2004</div>
+        </div>
+        <div class="page-num-top">29</div>
+      </div>
+
+      <div class="brass-rule"></div>
+
+      <!-- 4 THUMBNAIL IMAGES (top, before description) -->
+      <div class="end-images">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517030/hs-global/handicraft/etsy/HCFDOBR2/1%20%2812%29.webp" alt="View 1" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517032/hs-global/handicraft/etsy/HCFDOBR2/2%20%2812%29.webp" alt="View 2" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517034/hs-global/handicraft/etsy/HCFDOBR2/3%20%2812%29.webp" alt="View 3" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517035/hs-global/handicraft/etsy/HCFDOBR2/4%20%2812%29.webp" alt="View 4" loading="lazy" />
+      </div>
+
+      <!-- DESCRIPTION (pushed to bottom via margin-top:auto) -->
+      <div class="desc-content">
+        <h1 class="product-name">Antique Metal Fitted Wooden Double Door Rustic Entry Door</h1>
+        <div class="product-subtitle">Doors · Brass Inlay · Natural Finish</div>
+
+        <div class="spec-grid">
+          <div class="spec-cell"><span class="s-label">Wood Species</span><span class="s-value">Indian Sheesham (Dalbergia Sissoo)</span></div>
+          <div class="spec-cell"><span class="s-label">Inlay Work</span><span class="s-value">Solid Brass Wire, Hand-Hammered</span></div>
+          <div class="spec-cell"><span class="s-label">Category</span><span class="s-value">Doors</span></div>
+          <div class="spec-cell"><span class="s-label">Origin</span><span class="s-value">Jodhpur, Rajasthan, India</span></div>
+          <div class="spec-cell"><span class="s-label">Lead Time</span><span class="s-value">4–6 Weeks</span></div>
+          <div class="spec-cell"><span class="s-label">Customisation</span><span class="s-value">Dimensions, Inlay Pattern, Finish</span></div>
+        </div>
+
+        <div class="materials-row">
+          <span class="chip">Sheesham</span>
+          <span class="chip">Brass Inlay</span>
+          <span class="chip">Handcrafted</span>
+        </div>
+
+        <div class="price-block">
+          <span class="price-label">Export Price</span>
+          <span class="price-value">On Request</span>
+          <span class="price-note">FOB Jodhpur</span>
+        </div>
+      </div>
+
+    </div><!-- end .right-panel -->
+
+    <!-- FOOTER DESCRIPTION BAR -->
+    <footer class="page-footer">
+      <p class="footer-desc">Architecturally sculptural solid wood door with hand-carved decorative panels and traditional brass fittings.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </footer>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 30 / 30 — ANTIQUE TEAK WOOD DOUBLE ENTRY DOOR HAND CARVED RUSTIC DOOR
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-30">
+
+    <!-- ── LEFT DARK PANEL ── -->
+    <div class="left-panel">
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517039/hs-global/handicraft/etsy/HCFDOBR3/1%20%2813%29.webp" alt="Antique Teak Wood Double Entry Door Hand Carved Rustic Door — Wooden Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+      </div>
+
+      <div class="category-watermark">
+        <span class="cat-eyebrow">Wooden Furniture</span>
+        <div class="cat-title">Doors</div>
+      </div>
+
+      <div class="img-sku">SKU · HSG-WD-030</div>
+    </div>
+
+    <!-- ── RIGHT PARCHMENT PANEL ── -->
+    <div class="right-panel">
+
+      <div class="brand-header">
+        <div>
+          <div class="brand-name">HS Global Export</div>
+          <div class="brand-sub">Handcrafted Wooden Furniture · Est. 2004</div>
+        </div>
+        <div class="page-num-top">30</div>
+      </div>
+
+      <div class="brass-rule"></div>
+
+      <!-- 4 THUMBNAIL IMAGES (top, before description) -->
+      <div class="end-images">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517039/hs-global/handicraft/etsy/HCFDOBR3/1%20%2813%29.webp" alt="View 1" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517041/hs-global/handicraft/etsy/HCFDOBR3/2%20%2813%29.webp" alt="View 2" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517042/hs-global/handicraft/etsy/HCFDOBR3/3%20%2813%29.webp" alt="View 3" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517044/hs-global/handicraft/etsy/HCFDOBR3/4%20%2813%29.webp" alt="View 4" loading="lazy" />
+      </div>
+
+      <!-- DESCRIPTION (pushed to bottom via margin-top:auto) -->
+      <div class="desc-content">
+        <h1 class="product-name">Antique Teak Wood Double Entry Door Hand Carved Rustic Door</h1>
+        <div class="product-subtitle">Doors · Brass Inlay · Natural Finish</div>
+
+        <div class="spec-grid">
+          <div class="spec-cell"><span class="s-label">Wood Species</span><span class="s-value">Indian Sheesham (Dalbergia Sissoo)</span></div>
+          <div class="spec-cell"><span class="s-label">Inlay Work</span><span class="s-value">Solid Brass Wire, Hand-Hammered</span></div>
+          <div class="spec-cell"><span class="s-label">Category</span><span class="s-value">Doors</span></div>
+          <div class="spec-cell"><span class="s-label">Origin</span><span class="s-value">Jodhpur, Rajasthan, India</span></div>
+          <div class="spec-cell"><span class="s-label">Lead Time</span><span class="s-value">4–6 Weeks</span></div>
+          <div class="spec-cell"><span class="s-label">Customisation</span><span class="s-value">Dimensions, Inlay Pattern, Finish</span></div>
+        </div>
+
+        <div class="materials-row">
+          <span class="chip">Sheesham</span>
+          <span class="chip">Brass Inlay</span>
+          <span class="chip">Handcrafted</span>
+        </div>
+
+        <div class="price-block">
+          <span class="price-label">Export Price</span>
+          <span class="price-value">On Request</span>
+          <span class="price-note">FOB Jodhpur</span>
+        </div>
+      </div>
+
+    </div><!-- end .right-panel -->
+
+    <!-- FOOTER DESCRIPTION BAR -->
+    <footer class="page-footer">
+      <p class="footer-desc">Architecturally sculptural solid wood door with hand-carved decorative panels and traditional brass fittings.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </footer>
+
+  </article>
+
+</body>
+</html>

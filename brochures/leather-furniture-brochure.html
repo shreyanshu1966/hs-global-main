@@ -1,0 +1,3581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HS Global Export — Leather Furniture Catalogue</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─────────────────────────────────────────
+       LEATHER FURNITURE BROCHURE — DESIGN SYSTEM
+       Palette: Cognac · Onyx · Aged Parchment · Silver
+       Feel: Luxury Club · Masculine · Bespoke Tailor
+    ───────────────────────────────────────── */
+    :root {
+      --onyx:       #0F0D0B;
+      --onyx-lt:    #1C1916;
+      --cognac:     #8B4513;
+      --cognac-lt:  #A0522D;
+      --tan:        #C68642;
+      --tan-lt:     #D4985A;
+      --parchment:  #F2EDE4;
+      --cream:      #FAF7F2;
+      --silver:     #9BA1A6;
+      --silver-dk:  #6B7175;
+      --rule:       rgba(139,69,19,0.25);
+
+      --ff-editorial: 'EB Garamond', Georgia, serif;
+      --ff-ui:        'Inter', system-ui, sans-serif;
+
+      --page-w: 297mm;
+      --page-h: 210mm;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    @page { size: A4 landscape; margin: 0; }
+
+    body {
+      font-family: var(--ff-ui);
+      background: #0A0806;
+      color: var(--onyx);
+    }
+
+    /* ── PAGE LAYOUT — full-width horizontal strip approach ── */
+    .product-page {
+      width: var(--page-w);
+      height: var(--page-h);
+      background: var(--onyx);
+      display: grid;
+      grid-template-rows: 18mm 1fr 18mm;
+      grid-template-columns: 1fr;
+      position: relative;
+      overflow: hidden;
+      page-break-after: always;
+      break-after: page;
+    }
+
+    /* ── TOP BRAND BAND (full width, onyx) ── */
+    .top-band {
+      grid-row: 1;
+      grid-column: 1;
+      background: var(--onyx-lt);
+      border-bottom: 1pt solid rgba(139,69,19,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 12mm;
+      z-index: 10;
+      position: relative;
+    }
+
+    /* Triple stitch effect on top of band */
+    .top-band::before {
+      content: '';
+      position: absolute;
+      top: 3px; left: 0; right: 0;
+      height: 1px;
+      background: repeating-linear-gradient(
+        90deg,
+        transparent 0px, transparent 6px,
+        rgba(196,134,66,0.35) 6px, rgba(196,134,66,0.35) 10px
+      );
+    }
+
+    .brand-name {
+      font-family: var(--ff-editorial);
+      font-size: 13pt;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--parchment);
+    }
+
+    .brand-name em {
+      color: var(--tan);
+      font-style: normal;
+    }
+
+    .top-meta {
+      display: flex;
+      align-items: center;
+      gap: 12mm;
+    }
+
+    .category-badge {
+      text-align: right;
+    }
+
+    .cat-name {
+      font-size: 7pt;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--tan);
+    }
+
+    .subgroup-name {
+      font-size: 5.5pt;
+      font-weight: 300;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--silver);
+      margin-top: 1px;
+    }
+
+    .page-num-badge {
+      width: 9mm;
+      height: 9mm;
+      border: 0.5pt solid var(--tan);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 7pt;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--tan);
+    }
+
+    /* ── MAIN BODY ── */
+    .page-body {
+      grid-row: 2;
+      display: grid;
+      grid-template-columns: 152mm 1fr;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── LEFT — PRODUCT IMAGE ── */
+    .product-image-wrap {
+      position: relative;
+      overflow: hidden;
+      background: var(--onyx);
+    }
+
+    .product-image-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: contrast(1.05) saturate(0.9);
+    }
+
+    /* Cognac gradient overlay on image */
+    .img-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        135deg,
+        rgba(139,69,19,0.15) 0%,
+        transparent 45%,
+        rgba(15,13,11,0.5) 100%
+      );
+      z-index: 2;
+    }
+
+    /* SKU on image */
+    .img-sku-badge {
+      position: absolute;
+      top: 6mm;
+      right: 6mm;
+      background: rgba(15,13,11,0.7);
+      border: 0.5pt solid var(--tan);
+      color: var(--tan-lt);
+      font-size: 6pt;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      padding: 2px 8px;
+      text-transform: uppercase;
+      z-index: 4;
+    }
+
+    /* Stitch detail border on image right edge */
+    .stitch-edge {
+      position: absolute;
+      top: 0; right: 0; bottom: 0;
+      width: 8px;
+      background: var(--onyx-lt);
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-around;
+      padding: 6mm 0;
+    }
+
+    .stitch-dot {
+      width: 3px;
+      height: 3px;
+      background: var(--tan);
+      border-radius: 50%;
+      opacity: 0.6;
+    }
+
+    /* ── RIGHT — DETAILS PANEL (dark) ── */
+    .product-details {
+      background: var(--onyx-lt);
+      padding: 8mm 10mm 6mm 9mm;
+      display: flex;
+      flex-direction: column;
+      gap: 4.5mm;
+      border-left: 1pt solid rgba(139,69,19,0.3);
+    }
+
+    /* Product identity */
+    .product-sku {
+      font-size: 6pt;
+      font-weight: 600;
+      letter-spacing: 0.35em;
+      color: var(--tan);
+      text-transform: uppercase;
+    }
+
+    .product-name {
+      font-family: var(--ff-editorial);
+      font-size: 28pt;
+      font-weight: 400;
+      line-height: 1.0;
+      color: var(--parchment);
+      letter-spacing: 0.02em;
+    }
+
+    .product-variant {
+      font-family: var(--ff-editorial);
+      font-size: 11pt;
+      font-style: italic;
+      color: var(--tan-lt);
+      margin-top: 1mm;
+    }
+
+    /* Cognac divider */
+    .cognac-rule {
+      height: 1pt;
+      background: linear-gradient(90deg, var(--cognac), transparent);
+    }
+
+    /* ── SPEC TABLE (on dark bg) ── */
+    .spec-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 7pt;
+    }
+
+    .spec-table tr {
+      border-bottom: 0.4pt solid rgba(155,161,166,0.15);
+    }
+    .spec-table tr:last-child { border-bottom: none; }
+
+    .spec-table td {
+      padding: 2.3mm 0;
+      vertical-align: top;
+      line-height: 1.4;
+    }
+
+    .spec-table td:first-child {
+      font-weight: 500;
+      font-size: 6pt;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--silver-dk);
+      width: 38%;
+      padding-right: 4mm;
+    }
+
+    .spec-table td:last-child {
+      color: var(--parchment);
+      font-weight: 300;
+    }
+
+    /* ── TAG PILLS ── */
+    .tags-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .tag {
+      background: transparent;
+      border: 0.5pt solid rgba(139,69,19,0.5);
+      color: var(--tan-lt);
+      font-size: 5.5pt;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 2px 7px;
+    }
+
+    /* ── PRICE BLOCK ── */
+    .price-row {
+      margin-top: auto;
+      padding-top: 3mm;
+      border-top: 0.4pt solid rgba(139,69,19,0.25);
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+    }
+
+    .price-label {
+      font-size: 5.5pt;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--silver-dk);
+      margin-bottom: 2px;
+    }
+
+    .price-amount {
+      font-family: var(--ff-editorial);
+      font-size: 22pt;
+      font-weight: 500;
+      color: var(--cream);
+      line-height: 1;
+    }
+
+    .price-note {
+      font-size: 6pt;
+      color: var(--silver);
+      margin-bottom: 3px;
+    }
+
+    /* ── BOTTOM DESCRIPTION BAND ── */
+    .bottom-band {
+      grid-row: 3;
+      background: var(--cognac);
+      border-top: 1pt solid rgba(139,69,19,0.6);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      padding: 0 12mm;
+      gap: 10mm;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* Stitching top of bottom band */
+    .bottom-band::before {
+      content: '';
+      position: absolute;
+      top: 2px; left: 0; right: 0;
+      height: 1px;
+      background: repeating-linear-gradient(
+        90deg,
+        transparent 0px, transparent 6px,
+        rgba(255,255,255,0.2) 6px, rgba(255,255,255,0.2) 10px
+      );
+    }
+
+    .product-description {
+      font-family: var(--ff-editorial);
+      font-size: 9pt;
+      font-style: italic;
+      color: rgba(242,237,228,0.88);
+      line-height: 1.6;
+    }
+
+    .footer-contact {
+      font-size: 6pt;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(242,237,228,0.7);
+      text-align: right;
+      line-height: 2;
+      flex-shrink: 0;
+    }
+
+    @media screen {
+      body { padding: 20px; display: flex; flex-direction: column; gap: 20px; align-items: center; }
+      .product-page { box-shadow: 0 20px 80px rgba(0,0,0,0.7); }
+      .cover-page   { box-shadow: 0 20px 80px rgba(0,0,0,0.7); }
+    }
+    @media print {
+      body { background: none; padding: 0; }
+    }
+
+    /* ═══════════════════════════════════════════
+       COVER PAGE — LEATHER FURNITURE
+       Layout: Full-bleed image right, dark text left, cognac center bar
+    ═══════════════════════════════════════════ */
+    .cover-page {
+      width: var(--page-w);
+      height: var(--page-h);
+      background: var(--onyx);
+      display: grid;
+      grid-template-columns: 1fr 4mm 120mm;
+      grid-template-rows: 1fr;
+      position: relative;
+      overflow: hidden;
+      page-break-after: always;
+      break-after: page;
+    }
+
+    /* Full-page stitch pattern as texture */
+    .cover-page::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent 0px, transparent 24px,
+          rgba(139,69,19,0.04) 24px, rgba(139,69,19,0.04) 25px
+        ),
+        radial-gradient(ellipse 120% 100% at 30% 50%, rgba(28,25,22,0.9) 0%, transparent 70%),
+        radial-gradient(ellipse 80% 80% at 90% 20%, rgba(139,69,19,0.08) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* LEFT — text content */
+    .cover-left {
+      grid-column: 1;
+      grid-row: 1;
+      position: relative;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 18mm 10mm 18mm 16mm;
+      gap: 7mm;
+    }
+
+    .cover-eyebrow {
+      font-size: 6pt;
+      font-weight: 600;
+      letter-spacing: 0.55em;
+      text-transform: uppercase;
+      color: var(--tan);
+    }
+
+    .cover-headline {
+      font-family: var(--ff-editorial);
+      font-size: 54pt;
+      font-weight: 400;
+      line-height: 0.92;
+      color: var(--parchment);
+    }
+
+    .cover-headline em {
+      font-style: italic;
+      color: var(--tan-lt);
+    }
+
+    /* Stitch-style rule */
+    .cover-stitch-rule {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      width: 80%;
+    }
+
+    .cover-stitch-rule span {
+      display: inline-block;
+      width: 8px;
+      height: 1pt;
+      background: var(--cognac);
+      margin-right: 4px;
+    }
+
+    .cover-tagline {
+      font-family: var(--ff-editorial);
+      font-size: 11pt;
+      font-style: italic;
+      color: rgba(155,161,166,0.85);
+      line-height: 1.65;
+      max-width: 95mm;
+    }
+
+    /* Quality grade badges */
+    .cover-grades {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-top: 4mm;
+    }
+
+    .grade-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .grade-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--cognac);
+      flex-shrink: 0;
+    }
+
+    .grade-text {
+      font-size: 6.5pt;
+      font-weight: 400;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(155,161,166,0.6);
+    }
+
+    /* Brand block bottom of left panel */
+    .cover-brand-block {
+      position: absolute;
+      bottom: 12mm;
+      left: 16mm;
+      z-index: 4;
+    }
+
+    .cover-brand-name {
+      font-family: var(--ff-editorial);
+      font-size: 9pt;
+      font-weight: 400;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--parchment);
+      opacity: 0.7;
+    }
+
+    .cover-brand-sub {
+      font-size: 5.5pt;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--silver-dk);
+      margin-top: 2px;
+    }
+
+    /* CENTRE — cognac vertical bar */
+    .cover-centre-bar {
+      grid-column: 2;
+      grid-row: 1;
+      background: var(--cognac);
+      position: relative;
+      z-index: 4;
+    }
+
+    /* Stitch marks along the bar */
+    .cover-centre-bar::before {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0; left: 0; right: 0;
+      background: repeating-linear-gradient(
+        180deg,
+        transparent 0px, transparent 8px,
+        rgba(255,255,255,0.15) 8px, rgba(255,255,255,0.15) 12px
+      );
+    }
+
+    /* RIGHT — full-height image */
+    .cover-right {
+      grid-column: 3;
+      grid-row: 1;
+      position: relative;
+      overflow: hidden;
+      z-index: 2;
+    }
+
+    .cover-right img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: saturate(0.85) contrast(1.05);
+    }
+
+    .cover-right-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to left,
+        transparent 40%,
+        rgba(15,13,11,0.5) 100%
+      );
+      z-index: 3;
+    }
+
+    /* Leather grade stamp — top right of image */
+    .cover-stamp {
+      position: absolute;
+      top: 10mm;
+      right: 10mm;
+      z-index: 5;
+      border: 0.8pt solid rgba(198,134,66,0.6);
+      padding: 5mm 6mm;
+      text-align: center;
+    }
+
+    .stamp-main {
+      font-family: var(--ff-editorial);
+      font-size: 8pt;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--tan-lt);
+      display: block;
+    }
+
+    .stamp-sub {
+      font-size: 5pt;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(155,161,166,0.6);
+      display: block;
+      margin-top: 3px;
+    }
+
+    /* Contact strip — bottom of right image */
+    .cover-contact-strip {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 14mm;
+      background: rgba(15,13,11,0.85);
+      border-top: 1pt solid rgba(139,69,19,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 0 8mm;
+      z-index: 6;
+    }
+
+    .cover-contact-text {
+      font-size: 5.5pt;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(155,161,166,0.7);
+      text-align: right;
+      line-height: 2;
+    }
+  
+    /* ── END-PRODUCT THUMBNAIL IMAGES (top of right panel, above description) ── */
+    .end-images {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2mm;
+      margin-bottom: 4mm;
+      flex-shrink: 0;
+    }
+    .end-images img {
+      width: 100%;
+      height: 30mm;
+      object-fit: cover;
+      border: 0.5pt solid rgba(139,69,19,0.35);
+      filter: saturate(0.9) contrast(1.05);
+    }
+    .desc-content {
+      display: flex;
+      flex-direction: column;
+      gap: 3mm;
+      margin-top: auto;
+    }
+    .product-details {
+      overflow: hidden;
+    }
+
+  
+    /* ── END-PRODUCT THUMBNAIL IMAGES (top of right panel, above description) ── */
+    .end-images {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5mm;
+      margin-bottom: 2mm;
+      flex-shrink: 0;
+    }
+    .end-images img {
+      width: 100%;
+      height: 16mm;
+      object-fit: cover;
+      border: 0.5pt solid rgba(139,69,19,0.35);
+      filter: saturate(0.9) contrast(1.05);
+    }
+    .desc-content {
+      display: flex;
+      flex-direction: column;
+      gap: 2mm;
+    }
+    .product-details {
+      overflow: hidden;
+      gap: 2mm !important;
+    }
+
+  
+    /* ── END-PRODUCT THUMBNAIL IMAGES (top of right panel, above description) ── */
+    .end-images {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2mm;
+      margin-bottom: 4mm;
+      flex-shrink: 0;
+    }
+    .end-images img {
+      width: 100%;
+      height: 30mm;
+      object-fit: cover;
+      border: 0.5pt solid rgba(139,69,19,0.35);
+      filter: saturate(0.9) contrast(1.05);
+    }
+    .desc-content {
+      display: flex;
+      flex-direction: column;
+      gap: 3mm;
+      margin-top: auto;
+    }
+    .product-details {
+      overflow: hidden;
+    }
+
+  
+    /* ── END-PRODUCT THUMBNAIL IMAGES (top of right panel, above description) ── */
+    .end-images {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2mm;
+      margin-bottom: 4mm;
+      flex-shrink: 0;
+    }
+    .end-images img {
+      width: 100%;
+      height: 30mm;
+      object-fit: cover;
+      border: 0.5pt solid rgba(139,69,19,0.35);
+      filter: saturate(0.9) contrast(1.05);
+    }
+    .desc-content {
+      display: flex;
+      flex-direction: column;
+      gap: 3mm;
+      margin-top: auto;
+    }
+    .product-details {
+      overflow: hidden;
+    }
+    /* ── REDUCED HEADING SIZE ── */
+    .product-name {
+      font-size: 14pt !important;
+      line-height: 1.2 !important;
+    }
+    .product-variant {
+      font-size: 8pt !important;
+      margin-top: 0.5mm !important;
+    }
+
+  
+    /* ── END-PRODUCT THUMBNAIL IMAGES (top of right panel, above description) ── */
+    .end-images {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2mm;
+      margin-bottom: 4mm;
+      flex-shrink: 0;
+    }
+    .end-images img {
+      width: 100%;
+      height: 30mm;
+      object-fit: cover;
+      border: 0.5pt solid rgba(139,69,19,0.35);
+      filter: saturate(0.9) contrast(1.05);
+    }
+    .desc-content {
+      display: flex;
+      flex-direction: column;
+      gap: 3mm;
+      margin-top: auto;
+    }
+    .product-details {
+      overflow: hidden;
+    }
+    /* ── REDUCED HEADING SIZE ── */
+    .product-name {
+      font-size: 14pt !important;
+      line-height: 1.2 !important;
+    }
+    .product-variant {
+      font-size: 8pt !important;
+      margin-top: 0.5mm !important;
+    }
+
+  
+    /* ── END-PRODUCT THUMBNAIL IMAGES (top of right panel, above description) ── */
+    .end-images {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2mm;
+      margin-bottom: 4mm;
+      flex-shrink: 0;
+    }
+    .end-images img {
+      width: 100%;
+      height: 30mm;
+      object-fit: cover;
+      border: 0.5pt solid rgba(139,69,19,0.35);
+      filter: saturate(0.9) contrast(1.05);
+    }
+    .desc-content {
+      display: flex;
+      flex-direction: column;
+      gap: 3mm;
+      margin-top: auto;
+    }
+    .product-details {
+      overflow: hidden;
+    }
+    /* ── REDUCED HEADING SIZE ── */
+    .product-name {
+      font-size: 14pt !important;
+      line-height: 1.2 !important;
+    }
+    .product-variant {
+      font-size: 8pt !important;
+      margin-top: 0.5mm !important;
+    }
+
+  </style>
+</head>
+<body>
+
+  <article class="cover-page" id="cover">
+
+    <!-- LEFT — CONTENT -->
+    <div class="cover-left">
+      <div class="cover-eyebrow">Exclusive Export Collection</div>
+
+      <h1 class="cover-headline">
+        Leather<br/><em>Furniture</em>
+      </h1>
+
+      <div class="cover-stitch-rule">
+        <span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span>
+        <span></span><span></span>
+      </div>
+
+      <p class="cover-tagline">
+        Full-grain and top-grain leather upholstered pieces — sofas, armchairs,
+        ottomans, benches, beds &amp; storage — handcrafted in India's finest tannery
+        tradition.
+      </p>
+
+      <div class="cover-grades">
+        <div class="grade-item"><div class="grade-dot"></div><span class="grade-text">Seating — Sofas, Armchairs, Ottomans</span></div>
+        <div class="grade-item"><div class="grade-dot"></div><span class="grade-text">Bedroom &amp; Tables</span></div>
+        <div class="grade-item"><div class="grade-dot"></div><span class="grade-text">Storage &amp; Decor</span></div>
+      </div>
+
+      <div class="cover-brand-block">
+        <div class="cover-brand-name">HS Global Export</div>
+        <div class="cover-brand-sub">Luxury Leather Furniture · Est. 2004 · 28 Products</div>
+      </div>
+    </div>
+
+    <!-- CENTRE COGNAC DIVIDER BAR -->
+    <div class="cover-centre-bar"></div>
+
+    <!-- RIGHT — IMAGE -->
+    <div class="cover-right">
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587816/hs-global/leather/etsy/HSLSOGR1/1.webp" alt="Leather Furniture — HS Global Export Cover" />
+      <div class="cover-right-overlay"></div>
+
+      <div class="cover-stamp">
+        <span class="stamp-main">Full Grain<br/>Leather</span>
+        <span class="stamp-sub">Indian Tanneries · Kanpur</span>
+      </div>
+
+      <div class="cover-contact-strip">
+        <div class="cover-contact-text">
+          export@hsglobalexport.com &nbsp;·&nbsp; +91 98765 43210 &nbsp;·&nbsp; www.hsglobalexport.com
+        </div>
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 01 / 28 — CHESTERFIELD GREEN LEATHER SOFA LUXURY LIVING ROOM COUCH
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-1">
+
+    <!-- TOP BRAND BAND -->
+    <header class="top-band">
+      <div class="brand-name">HS <em>Global</em> Export</div>
+      <div class="top-meta">
+        <div class="category-badge">
+          <div class="cat-name">Leather Furniture</div>
+          <div class="subgroup-name">Seating Collection</div>
+        </div>
+        <div class="page-num-badge">01</div>
+      </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <div class="page-body">
+
+      <!-- LEFT IMAGE -->
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587816/hs-global/leather/etsy/HSLSOGR1/1.webp" alt="Chesterfield Green Leather Sofa Luxury Living Room Couch — Leather Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+        <div class="img-sku-badge">SKU · HSG-LTH-001</div>
+        <div class="stitch-edge">
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT DETAILS -->
+      <aside class="product-details">
+
+        <!-- 4 THUMBNAIL IMAGES (top) -->
+        <div class="end-images">
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587816/hs-global/leather/etsy/HSLSOGR1/1.webp" alt="View 1" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587817/hs-global/leather/etsy/HSLSOGR1/2.webp" alt="View 2" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587819/hs-global/leather/etsy/HSLSOGR1/3.webp" alt="View 3" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587821/hs-global/leather/etsy/HSLSOGR1/4.webp" alt="View 4" loading="lazy" />
+        </div>
+
+        <!-- DESCRIPTION CONTENT (pushed to bottom) -->
+        <div class="desc-content">
+          <div>
+            <div class="product-sku">HSG-LTH-001</div>
+            <h1 class="product-name">Chesterfield Green Leather Sofa Luxury Living Room Couch</h1>
+            <div class="product-variant">Sofas · Full-Grain Leather</div>
+          </div>
+
+          <div class="cognac-rule"></div>
+
+          <table class="spec-table">
+            <tbody>
+              <tr><td>Leather Type</td><td>Full-Grain Vegetable-Tanned</td></tr>
+              <tr><td>Category</td><td>Sofas</td></tr>
+              <tr><td>Origin</td><td>Kanpur Tanneries, India</td></tr>
+              <tr><td>Lead Time</td><td>5–7 Weeks</td></tr>
+              <tr><td>Customisation</td><td>Colour, Dimensions, Finish</td></tr>
+            </tbody>
+          </table>
+
+          <div class="tags-row">
+            <span class="tag">Full-Grain</span>
+            <span class="tag">Handcrafted</span>
+            <span class="tag">Sofas</span>
+          </div>
+
+          <div class="price-row">
+            <div>
+              <div class="price-label">Wholesale / Export Price</div>
+              <div class="price-amount">On Request</div>
+            </div>
+            <div class="price-note">FOB India · MOQ 1 Piece</div>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+
+    <!-- BOTTOM DESCRIPTION BAND -->
+    <div class="bottom-band">
+      <p class="product-description">Full-grain leather upholstered sofa, hand-stitched in the Indian tannery tradition with sinuous spring seating.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 02 / 28 — CHESTERFIELD LEATHER SOFA CLASSIC TUFTED LOVESEAT
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-2">
+
+    <!-- TOP BRAND BAND -->
+    <header class="top-band">
+      <div class="brand-name">HS <em>Global</em> Export</div>
+      <div class="top-meta">
+        <div class="category-badge">
+          <div class="cat-name">Leather Furniture</div>
+          <div class="subgroup-name">Seating Collection</div>
+        </div>
+        <div class="page-num-badge">02</div>
+      </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <div class="page-body">
+
+      <!-- LEFT IMAGE -->
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587673/hs-global/leather/etsy/HSLSOBR3/1.webp" alt="Chesterfield Leather Sofa Classic Tufted Loveseat — Leather Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+        <div class="img-sku-badge">SKU · HSG-LTH-002</div>
+        <div class="stitch-edge">
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT DETAILS -->
+      <aside class="product-details">
+
+        <!-- 4 THUMBNAIL IMAGES (top) -->
+        <div class="end-images">
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587673/hs-global/leather/etsy/HSLSOBR3/1.webp" alt="View 1" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587674/hs-global/leather/etsy/HSLSOBR3/2.webp" alt="View 2" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587676/hs-global/leather/etsy/HSLSOBR3/3.webp" alt="View 3" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587678/hs-global/leather/etsy/HSLSOBR3/4.webp" alt="View 4" loading="lazy" />
+        </div>
+
+        <!-- DESCRIPTION CONTENT (pushed to bottom) -->
+        <div class="desc-content">
+          <div>
+            <div class="product-sku">HSG-LTH-002</div>
+            <h1 class="product-name">Chesterfield Leather Sofa Classic Tufted Loveseat</h1>
+            <div class="product-variant">Sofas · Full-Grain Leather</div>
+          </div>
+
+          <div class="cognac-rule"></div>
+
+          <table class="spec-table">
+            <tbody>
+              <tr><td>Leather Type</td><td>Full-Grain Vegetable-Tanned</td></tr>
+              <tr><td>Category</td><td>Sofas</td></tr>
+              <tr><td>Origin</td><td>Kanpur Tanneries, India</td></tr>
+              <tr><td>Lead Time</td><td>5–7 Weeks</td></tr>
+              <tr><td>Customisation</td><td>Colour, Dimensions, Finish</td></tr>
+            </tbody>
+          </table>
+
+          <div class="tags-row">
+            <span class="tag">Full-Grain</span>
+            <span class="tag">Handcrafted</span>
+            <span class="tag">Sofas</span>
+          </div>
+
+          <div class="price-row">
+            <div>
+              <div class="price-label">Wholesale / Export Price</div>
+              <div class="price-amount">On Request</div>
+            </div>
+            <div class="price-note">FOB India · MOQ 1 Piece</div>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+
+    <!-- BOTTOM DESCRIPTION BAND -->
+    <div class="bottom-band">
+      <p class="product-description">Full-grain leather upholstered sofa, hand-stitched in the Indian tannery tradition with sinuous spring seating.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 03 / 28 — CHESTERFIELD WINGBACK LEATHER ACCENT CHAIR CLASSIC ARMCHAIR
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-3">
+
+    <!-- TOP BRAND BAND -->
+    <header class="top-band">
+      <div class="brand-name">HS <em>Global</em> Export</div>
+      <div class="top-meta">
+        <div class="category-badge">
+          <div class="cat-name">Leather Furniture</div>
+          <div class="subgroup-name">Seating Collection</div>
+        </div>
+        <div class="page-num-badge">03</div>
+      </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <div class="page-body">
+
+      <!-- LEFT IMAGE -->
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587429/hs-global/leather/etsy/HSLCHBR1/1.webp" alt="Chesterfield Wingback Leather Accent Chair Classic Armchair — Leather Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+        <div class="img-sku-badge">SKU · HSG-LTH-003</div>
+        <div class="stitch-edge">
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT DETAILS -->
+      <aside class="product-details">
+
+        <!-- 4 THUMBNAIL IMAGES (top) -->
+        <div class="end-images">
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587429/hs-global/leather/etsy/HSLCHBR1/1.webp" alt="View 1" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587431/hs-global/leather/etsy/HSLCHBR1/2.webp" alt="View 2" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587433/hs-global/leather/etsy/HSLCHBR1/3.webp" alt="View 3" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587435/hs-global/leather/etsy/HSLCHBR1/4.webp" alt="View 4" loading="lazy" />
+        </div>
+
+        <!-- DESCRIPTION CONTENT (pushed to bottom) -->
+        <div class="desc-content">
+          <div>
+            <div class="product-sku">HSG-LTH-003</div>
+            <h1 class="product-name">Chesterfield Wingback Leather Accent Chair Classic Armchair</h1>
+            <div class="product-variant">Chairs · Full-Grain Leather</div>
+          </div>
+
+          <div class="cognac-rule"></div>
+
+          <table class="spec-table">
+            <tbody>
+              <tr><td>Leather Type</td><td>Full-Grain Vegetable-Tanned</td></tr>
+              <tr><td>Category</td><td>Chairs</td></tr>
+              <tr><td>Origin</td><td>Kanpur Tanneries, India</td></tr>
+              <tr><td>Lead Time</td><td>5–7 Weeks</td></tr>
+              <tr><td>Customisation</td><td>Colour, Dimensions, Finish</td></tr>
+            </tbody>
+          </table>
+
+          <div class="tags-row">
+            <span class="tag">Full-Grain</span>
+            <span class="tag">Handcrafted</span>
+            <span class="tag">Chairs</span>
+          </div>
+
+          <div class="price-row">
+            <div>
+              <div class="price-label">Wholesale / Export Price</div>
+              <div class="price-amount">On Request</div>
+            </div>
+            <div class="price-note">FOB India · MOQ 1 Piece</div>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+
+    <!-- BOTTOM DESCRIPTION BAND -->
+    <div class="bottom-band">
+      <p class="product-description">A bespoke leather accent chair combining artisanal stitching with kiln-dried hardwood frame — built for generations.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 04 / 28 — LUXURY LEATHER ACCENT ARMCHAIR MODERN DINING CHAIR
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-4">
+
+    <!-- TOP BRAND BAND -->
+    <header class="top-band">
+      <div class="brand-name">HS <em>Global</em> Export</div>
+      <div class="top-meta">
+        <div class="category-badge">
+          <div class="cat-name">Leather Furniture</div>
+          <div class="subgroup-name">Seating Collection</div>
+        </div>
+        <div class="page-num-badge">04</div>
+      </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <div class="page-body">
+
+      <!-- LEFT IMAGE -->
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587639/hs-global/leather/etsy/HSLCHRE2/1.webp" alt="Luxury Leather Accent Armchair Modern Dining Chair — Leather Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+        <div class="img-sku-badge">SKU · HSG-LTH-004</div>
+        <div class="stitch-edge">
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT DETAILS -->
+      <aside class="product-details">
+
+        <!-- 4 THUMBNAIL IMAGES (top) -->
+        <div class="end-images">
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587639/hs-global/leather/etsy/HSLCHRE2/1.webp" alt="View 1" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587640/hs-global/leather/etsy/HSLCHRE2/2.webp" alt="View 2" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587643/hs-global/leather/etsy/HSLCHRE2/3.webp" alt="View 3" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587645/hs-global/leather/etsy/HSLCHRE2/4.webp" alt="View 4" loading="lazy" />
+        </div>
+
+        <!-- DESCRIPTION CONTENT (pushed to bottom) -->
+        <div class="desc-content">
+          <div>
+            <div class="product-sku">HSG-LTH-004</div>
+            <h1 class="product-name">Luxury Leather Accent Armchair Modern Dining Chair</h1>
+            <div class="product-variant">Chairs · Full-Grain Leather</div>
+          </div>
+
+          <div class="cognac-rule"></div>
+
+          <table class="spec-table">
+            <tbody>
+              <tr><td>Leather Type</td><td>Full-Grain Vegetable-Tanned</td></tr>
+              <tr><td>Category</td><td>Chairs</td></tr>
+              <tr><td>Origin</td><td>Kanpur Tanneries, India</td></tr>
+              <tr><td>Lead Time</td><td>5–7 Weeks</td></tr>
+              <tr><td>Customisation</td><td>Colour, Dimensions, Finish</td></tr>
+            </tbody>
+          </table>
+
+          <div class="tags-row">
+            <span class="tag">Full-Grain</span>
+            <span class="tag">Handcrafted</span>
+            <span class="tag">Chairs</span>
+          </div>
+
+          <div class="price-row">
+            <div>
+              <div class="price-label">Wholesale / Export Price</div>
+              <div class="price-amount">On Request</div>
+            </div>
+            <div class="price-note">FOB India · MOQ 1 Piece</div>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+
+    <!-- BOTTOM DESCRIPTION BAND -->
+    <div class="bottom-band">
+      <p class="product-description">A bespoke leather accent chair combining artisanal stitching with kiln-dried hardwood frame — built for generations.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 05 / 28 — MODERN LEATHER ACCENT ARMCHAIR LUXURY LOUNGE CHAIR
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-5">
+
+    <!-- TOP BRAND BAND -->
+    <header class="top-band">
+      <div class="brand-name">HS <em>Global</em> Export</div>
+      <div class="top-meta">
+        <div class="category-badge">
+          <div class="cat-name">Leather Furniture</div>
+          <div class="subgroup-name">Seating Collection</div>
+        </div>
+        <div class="page-num-badge">05</div>
+      </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <div class="page-body">
+
+      <!-- LEFT IMAGE -->
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587456/hs-global/leather/etsy/HSLSOBR2/1.webp" alt="Modern Leather Accent Armchair Luxury Lounge Chair — Leather Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+        <div class="img-sku-badge">SKU · HSG-LTH-005</div>
+        <div class="stitch-edge">
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT DETAILS -->
+      <aside class="product-details">
+
+        <!-- 4 THUMBNAIL IMAGES (top) -->
+        <div class="end-images">
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587456/hs-global/leather/etsy/HSLSOBR2/1.webp" alt="View 1" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587457/hs-global/leather/etsy/HSLSOBR2/2.webp" alt="View 2" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587459/hs-global/leather/etsy/HSLSOBR2/3.webp" alt="View 3" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587460/hs-global/leather/etsy/HSLSOBR2/4.webp" alt="View 4" loading="lazy" />
+        </div>
+
+        <!-- DESCRIPTION CONTENT (pushed to bottom) -->
+        <div class="desc-content">
+          <div>
+            <div class="product-sku">HSG-LTH-005</div>
+            <h1 class="product-name">Modern Leather Accent Armchair Luxury Lounge Chair</h1>
+            <div class="product-variant">Chairs · Full-Grain Leather</div>
+          </div>
+
+          <div class="cognac-rule"></div>
+
+          <table class="spec-table">
+            <tbody>
+              <tr><td>Leather Type</td><td>Full-Grain Vegetable-Tanned</td></tr>
+              <tr><td>Category</td><td>Chairs</td></tr>
+              <tr><td>Origin</td><td>Kanpur Tanneries, India</td></tr>
+              <tr><td>Lead Time</td><td>5–7 Weeks</td></tr>
+              <tr><td>Customisation</td><td>Colour, Dimensions, Finish</td></tr>
+            </tbody>
+          </table>
+
+          <div class="tags-row">
+            <span class="tag">Full-Grain</span>
+            <span class="tag">Handcrafted</span>
+            <span class="tag">Chairs</span>
+          </div>
+
+          <div class="price-row">
+            <div>
+              <div class="price-label">Wholesale / Export Price</div>
+              <div class="price-amount">On Request</div>
+            </div>
+            <div class="price-note">FOB India · MOQ 1 Piece</div>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+
+    <!-- BOTTOM DESCRIPTION BAND -->
+    <div class="bottom-band">
+      <p class="product-description">A bespoke leather accent chair combining artisanal stitching with kiln-dried hardwood frame — built for generations.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 06 / 28 — MODERN GREEN UPHOLSTERED BENCH ENTRYWAY BEDROOM SEAT
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-6">
+
+    <!-- TOP BRAND BAND -->
+    <header class="top-band">
+      <div class="brand-name">HS <em>Global</em> Export</div>
+      <div class="top-meta">
+        <div class="category-badge">
+          <div class="cat-name">Leather Furniture</div>
+          <div class="subgroup-name">Seating Collection</div>
+        </div>
+        <div class="page-num-badge">06</div>
+      </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <div class="page-body">
+
+      <!-- LEFT IMAGE -->
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587714/hs-global/leather/etsy/HSLBENGR1/1.webp" alt="Modern Green Upholstered Bench Entryway Bedroom Seat — Leather Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+        <div class="img-sku-badge">SKU · HSG-LTH-006</div>
+        <div class="stitch-edge">
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT DETAILS -->
+      <aside class="product-details">
+
+        <!-- 4 THUMBNAIL IMAGES (top) -->
+        <div class="end-images">
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587714/hs-global/leather/etsy/HSLBENGR1/1.webp" alt="View 1" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587716/hs-global/leather/etsy/HSLBENGR1/2.webp" alt="View 2" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587717/hs-global/leather/etsy/HSLBENGR1/3.webp" alt="View 3" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587718/hs-global/leather/etsy/HSLBENGR1/4.webp" alt="View 4" loading="lazy" />
+        </div>
+
+        <!-- DESCRIPTION CONTENT (pushed to bottom) -->
+        <div class="desc-content">
+          <div>
+            <div class="product-sku">HSG-LTH-006</div>
+            <h1 class="product-name">Modern Green Upholstered Bench Entryway Bedroom Seat</h1>
+            <div class="product-variant">Benches · Full-Grain Leather</div>
+          </div>
+
+          <div class="cognac-rule"></div>
+
+          <table class="spec-table">
+            <tbody>
+              <tr><td>Leather Type</td><td>Full-Grain Vegetable-Tanned</td></tr>
+              <tr><td>Category</td><td>Benches</td></tr>
+              <tr><td>Origin</td><td>Kanpur Tanneries, India</td></tr>
+              <tr><td>Lead Time</td><td>5–7 Weeks</td></tr>
+              <tr><td>Customisation</td><td>Colour, Dimensions, Finish</td></tr>
+            </tbody>
+          </table>
+
+          <div class="tags-row">
+            <span class="tag">Full-Grain</span>
+            <span class="tag">Handcrafted</span>
+            <span class="tag">Benches</span>
+          </div>
+
+          <div class="price-row">
+            <div>
+              <div class="price-label">Wholesale / Export Price</div>
+              <div class="price-amount">On Request</div>
+            </div>
+            <div class="price-note">FOB India · MOQ 1 Piece</div>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+
+    <!-- BOTTOM DESCRIPTION BAND -->
+    <div class="bottom-band">
+      <p class="product-description">Hand-upholstered leather bench with precision stitching — a versatile luxury piece for bedroom or entryway.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 07 / 28 — MODERN UPHOLSTERED STORAGE BENCH OTTOMAN ENTRYWAY SEAT
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-7">
+
+    <!-- TOP BRAND BAND -->
+    <header class="top-band">
+      <div class="brand-name">HS <em>Global</em> Export</div>
+      <div class="top-meta">
+        <div class="category-badge">
+          <div class="cat-name">Leather Furniture</div>
+          <div class="subgroup-name">Seating Collection</div>
+        </div>
+        <div class="page-num-badge">07</div>
+      </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <div class="page-body">
+
+      <!-- LEFT IMAGE -->
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587620/hs-global/leather/etsy/HSLBENBE2/5.webp" alt="Modern Upholstered Storage Bench Ottoman Entryway Seat — Leather Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+        <div class="img-sku-badge">SKU · HSG-LTH-007</div>
+        <div class="stitch-edge">
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT DETAILS -->
+      <aside class="product-details">
+
+        <!-- 4 THUMBNAIL IMAGES (top) -->
+        <div class="end-images">
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587620/hs-global/leather/etsy/HSLBENBE2/5.webp" alt="View 1" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587615/hs-global/leather/etsy/HSLBENBE2/2.webp" alt="View 2" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587614/hs-global/leather/etsy/HSLBENBE2/1.webp" alt="View 3" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587617/hs-global/leather/etsy/HSLBENBE2/3.webp" alt="View 4" loading="lazy" />
+        </div>
+
+        <!-- DESCRIPTION CONTENT (pushed to bottom) -->
+        <div class="desc-content">
+          <div>
+            <div class="product-sku">HSG-LTH-007</div>
+            <h1 class="product-name">Modern Upholstered Storage Bench Ottoman Entryway Seat</h1>
+            <div class="product-variant">Benches · Full-Grain Leather</div>
+          </div>
+
+          <div class="cognac-rule"></div>
+
+          <table class="spec-table">
+            <tbody>
+              <tr><td>Leather Type</td><td>Full-Grain Vegetable-Tanned</td></tr>
+              <tr><td>Category</td><td>Benches</td></tr>
+              <tr><td>Origin</td><td>Kanpur Tanneries, India</td></tr>
+              <tr><td>Lead Time</td><td>5–7 Weeks</td></tr>
+              <tr><td>Customisation</td><td>Colour, Dimensions, Finish</td></tr>
+            </tbody>
+          </table>
+
+          <div class="tags-row">
+            <span class="tag">Full-Grain</span>
+            <span class="tag">Handcrafted</span>
+            <span class="tag">Benches</span>
+          </div>
+
+          <div class="price-row">
+            <div>
+              <div class="price-label">Wholesale / Export Price</div>
+              <div class="price-amount">On Request</div>
+            </div>
+            <div class="price-note">FOB India · MOQ 1 Piece</div>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+
+    <!-- BOTTOM DESCRIPTION BAND -->
+    <div class="bottom-band">
+      <p class="product-description">Hand-upholstered leather bench with precision stitching — a versatile luxury piece for bedroom or entryway.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 08 / 28 — GREEN LEATHER OTTOMAN LUXURY ACCENT STOOL
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-8">
+
+    <!-- TOP BRAND BAND -->
+    <header class="top-band">
+      <div class="brand-name">HS <em>Global</em> Export</div>
+      <div class="top-meta">
+        <div class="category-badge">
+          <div class="cat-name">Leather Furniture</div>
+          <div class="subgroup-name">Seating Collection</div>
+        </div>
+        <div class="page-num-badge">08</div>
+      </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <div class="page-body">
+
+      <!-- LEFT IMAGE -->
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587447/hs-global/leather/etsy/HSLSTOGR2/1.webp" alt="Green Leather Ottoman Luxury Accent Stool — Leather Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+        <div class="img-sku-badge">SKU · HSG-LTH-008</div>
+        <div class="stitch-edge">
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT DETAILS -->
+      <aside class="product-details">
+
+        <!-- 4 THUMBNAIL IMAGES (top) -->
+        <div class="end-images">
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587447/hs-global/leather/etsy/HSLSTOGR2/1.webp" alt="View 1" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587448/hs-global/leather/etsy/HSLSTOGR2/2.webp" alt="View 2" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587450/hs-global/leather/etsy/HSLSTOGR2/3.webp" alt="View 3" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587451/hs-global/leather/etsy/HSLSTOGR2/4.webp" alt="View 4" loading="lazy" />
+        </div>
+
+        <!-- DESCRIPTION CONTENT (pushed to bottom) -->
+        <div class="desc-content">
+          <div>
+            <div class="product-sku">HSG-LTH-008</div>
+            <h1 class="product-name">Green Leather Ottoman Luxury Accent Stool</h1>
+            <div class="product-variant">Stools · Full-Grain Leather</div>
+          </div>
+
+          <div class="cognac-rule"></div>
+
+          <table class="spec-table">
+            <tbody>
+              <tr><td>Leather Type</td><td>Full-Grain Vegetable-Tanned</td></tr>
+              <tr><td>Category</td><td>Stools</td></tr>
+              <tr><td>Origin</td><td>Kanpur Tanneries, India</td></tr>
+              <tr><td>Lead Time</td><td>5–7 Weeks</td></tr>
+              <tr><td>Customisation</td><td>Colour, Dimensions, Finish</td></tr>
+            </tbody>
+          </table>
+
+          <div class="tags-row">
+            <span class="tag">Full-Grain</span>
+            <span class="tag">Handcrafted</span>
+            <span class="tag">Stools</span>
+          </div>
+
+          <div class="price-row">
+            <div>
+              <div class="price-label">Wholesale / Export Price</div>
+              <div class="price-amount">On Request</div>
+            </div>
+            <div class="price-note">FOB India · MOQ 1 Piece</div>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+
+    <!-- BOTTOM DESCRIPTION BAND -->
+    <div class="bottom-band">
+      <p class="product-description">Leather-topped stool with solid wood frame, hand-stitched with the precision of a master saddler.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 09 / 28 — LUXURY LEATHER OTTOMAN ROUND ACCENT STOOL
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-9">
+
+    <!-- TOP BRAND BAND -->
+    <header class="top-band">
+      <div class="brand-name">HS <em>Global</em> Export</div>
+      <div class="top-meta">
+        <div class="category-badge">
+          <div class="cat-name">Leather Furniture</div>
+          <div class="subgroup-name">Seating Collection</div>
+        </div>
+        <div class="page-num-badge">09</div>
+      </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <div class="page-body">
+
+      <!-- LEFT IMAGE -->
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587496/hs-global/leather/etsy/HSLSTOBR1/1.webp" alt="Luxury Leather Ottoman Round Accent Stool — Leather Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+        <div class="img-sku-badge">SKU · HSG-LTH-009</div>
+        <div class="stitch-edge">
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT DETAILS -->
+      <aside class="product-details">
+
+        <!-- 4 THUMBNAIL IMAGES (top) -->
+        <div class="end-images">
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587496/hs-global/leather/etsy/HSLSTOBR1/1.webp" alt="View 1" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587498/hs-global/leather/etsy/HSLSTOBR1/2.webp" alt="View 2" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587499/hs-global/leather/etsy/HSLSTOBR1/3.webp" alt="View 3" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587501/hs-global/leather/etsy/HSLSTOBR1/4.webp" alt="View 4" loading="lazy" />
+        </div>
+
+        <!-- DESCRIPTION CONTENT (pushed to bottom) -->
+        <div class="desc-content">
+          <div>
+            <div class="product-sku">HSG-LTH-009</div>
+            <h1 class="product-name">Luxury Leather Ottoman Round Accent Stool</h1>
+            <div class="product-variant">Stools · Full-Grain Leather</div>
+          </div>
+
+          <div class="cognac-rule"></div>
+
+          <table class="spec-table">
+            <tbody>
+              <tr><td>Leather Type</td><td>Full-Grain Vegetable-Tanned</td></tr>
+              <tr><td>Category</td><td>Stools</td></tr>
+              <tr><td>Origin</td><td>Kanpur Tanneries, India</td></tr>
+              <tr><td>Lead Time</td><td>5–7 Weeks</td></tr>
+              <tr><td>Customisation</td><td>Colour, Dimensions, Finish</td></tr>
+            </tbody>
+          </table>
+
+          <div class="tags-row">
+            <span class="tag">Full-Grain</span>
+            <span class="tag">Handcrafted</span>
+            <span class="tag">Stools</span>
+          </div>
+
+          <div class="price-row">
+            <div>
+              <div class="price-label">Wholesale / Export Price</div>
+              <div class="price-amount">On Request</div>
+            </div>
+            <div class="price-note">FOB India · MOQ 1 Piece</div>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+
+    <!-- BOTTOM DESCRIPTION BAND -->
+    <div class="bottom-band">
+      <p class="product-description">Leather-topped stool with solid wood frame, hand-stitched with the precision of a master saddler.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 10 / 28 — GREEN TUFTED UPHOLSTERED BED FRAME MODERN LUXURY BED
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-10">
+
+    <!-- TOP BRAND BAND -->
+    <header class="top-band">
+      <div class="brand-name">HS <em>Global</em> Export</div>
+      <div class="top-meta">
+        <div class="category-badge">
+          <div class="cat-name">Leather Furniture</div>
+          <div class="subgroup-name">Bedroom &amp; Tables</div>
+        </div>
+        <div class="page-num-badge">10</div>
+      </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <div class="page-body">
+
+      <!-- LEFT IMAGE -->
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587479/hs-global/leather/etsy/HSLBEGR1/1.webp" alt="Green Tufted Upholstered Bed Frame Modern Luxury Bed — Leather Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+        <div class="img-sku-badge">SKU · HSG-LTH-010</div>
+        <div class="stitch-edge">
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT DETAILS -->
+      <aside class="product-details">
+
+        <!-- 4 THUMBNAIL IMAGES (top) -->
+        <div class="end-images">
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587479/hs-global/leather/etsy/HSLBEGR1/1.webp" alt="View 1" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587480/hs-global/leather/etsy/HSLBEGR1/2.webp" alt="View 2" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587482/hs-global/leather/etsy/HSLBEGR1/3.webp" alt="View 3" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587484/hs-global/leather/etsy/HSLBEGR1/4.webp" alt="View 4" loading="lazy" />
+        </div>
+
+        <!-- DESCRIPTION CONTENT (pushed to bottom) -->
+        <div class="desc-content">
+          <div>
+            <div class="product-sku">HSG-LTH-010</div>
+            <h1 class="product-name">Green Tufted Upholstered Bed Frame Modern Luxury Bed</h1>
+            <div class="product-variant">Beds · Full-Grain Leather</div>
+          </div>
+
+          <div class="cognac-rule"></div>
+
+          <table class="spec-table">
+            <tbody>
+              <tr><td>Leather Type</td><td>Full-Grain Vegetable-Tanned</td></tr>
+              <tr><td>Category</td><td>Beds</td></tr>
+              <tr><td>Origin</td><td>Kanpur Tanneries, India</td></tr>
+              <tr><td>Lead Time</td><td>5–7 Weeks</td></tr>
+              <tr><td>Customisation</td><td>Colour, Dimensions, Finish</td></tr>
+            </tbody>
+          </table>
+
+          <div class="tags-row">
+            <span class="tag">Full-Grain</span>
+            <span class="tag">Handcrafted</span>
+            <span class="tag">Beds</span>
+          </div>
+
+          <div class="price-row">
+            <div>
+              <div class="price-label">Wholesale / Export Price</div>
+              <div class="price-amount">On Request</div>
+            </div>
+            <div class="price-note">FOB India · MOQ 1 Piece</div>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+
+    <!-- BOTTOM DESCRIPTION BAND -->
+    <div class="bottom-band">
+      <p class="product-description">Leather-upholstered bed frame with deep buttoning and hand-stitched detailing for a truly bespoke sleeping environment.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 11 / 28 — LUXURY LEATHER DRESSER CROCODILE TEXTURE STORAGE CABINET
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-11">
+
+    <!-- TOP BRAND BAND -->
+    <header class="top-band">
+      <div class="brand-name">HS <em>Global</em> Export</div>
+      <div class="top-meta">
+        <div class="category-badge">
+          <div class="cat-name">Leather Furniture</div>
+          <div class="subgroup-name">Bedroom &amp; Tables</div>
+        </div>
+        <div class="page-num-badge">11</div>
+      </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <div class="page-body">
+
+      <!-- LEFT IMAGE -->
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587556/hs-global/leather/etsy/HSLDRBR2/1.webp" alt="Luxury Leather Dresser Crocodile Texture Storage Cabinet — Leather Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+        <div class="img-sku-badge">SKU · HSG-LTH-011</div>
+        <div class="stitch-edge">
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT DETAILS -->
+      <aside class="product-details">
+
+        <!-- 4 THUMBNAIL IMAGES (top) -->
+        <div class="end-images">
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587556/hs-global/leather/etsy/HSLDRBR2/1.webp" alt="View 1" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587558/hs-global/leather/etsy/HSLDRBR2/2.webp" alt="View 2" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587559/hs-global/leather/etsy/HSLDRBR2/3.webp" alt="View 3" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587561/hs-global/leather/etsy/HSLDRBR2/4.webp" alt="View 4" loading="lazy" />
+        </div>
+
+        <!-- DESCRIPTION CONTENT (pushed to bottom) -->
+        <div class="desc-content">
+          <div>
+            <div class="product-sku">HSG-LTH-011</div>
+            <h1 class="product-name">Luxury Leather Dresser Crocodile Texture Storage Cabinet</h1>
+            <div class="product-variant">Dressers · Full-Grain Leather</div>
+          </div>
+
+          <div class="cognac-rule"></div>
+
+          <table class="spec-table">
+            <tbody>
+              <tr><td>Leather Type</td><td>Full-Grain Vegetable-Tanned</td></tr>
+              <tr><td>Category</td><td>Dressers</td></tr>
+              <tr><td>Origin</td><td>Kanpur Tanneries, India</td></tr>
+              <tr><td>Lead Time</td><td>5–7 Weeks</td></tr>
+              <tr><td>Customisation</td><td>Colour, Dimensions, Finish</td></tr>
+            </tbody>
+          </table>
+
+          <div class="tags-row">
+            <span class="tag">Full-Grain</span>
+            <span class="tag">Handcrafted</span>
+            <span class="tag">Dressers</span>
+          </div>
+
+          <div class="price-row">
+            <div>
+              <div class="price-label">Wholesale / Export Price</div>
+              <div class="price-amount">On Request</div>
+            </div>
+            <div class="price-note">FOB India · MOQ 1 Piece</div>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+
+    <!-- BOTTOM DESCRIPTION BAND -->
+    <div class="bottom-band">
+      <p class="product-description">Leather-fronted dresser combining artisanal upholstery with solid wood joinery from Kanpur master craftsmen.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 12 / 28 — MODERN 6 DRAWER DRESSER BEIGE STORAGE CABINET
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-12">
+
+    <!-- TOP BRAND BAND -->
+    <header class="top-band">
+      <div class="brand-name">HS <em>Global</em> Export</div>
+      <div class="top-meta">
+        <div class="category-badge">
+          <div class="cat-name">Leather Furniture</div>
+          <div class="subgroup-name">Bedroom &amp; Tables</div>
+        </div>
+        <div class="page-num-badge">12</div>
+      </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <div class="page-body">
+
+      <!-- LEFT IMAGE -->
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587784/hs-global/leather/etsy/HSLDRBE1/1.webp" alt="Modern 6 Drawer Dresser Beige Storage Cabinet — Leather Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+        <div class="img-sku-badge">SKU · HSG-LTH-012</div>
+        <div class="stitch-edge">
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT DETAILS -->
+      <aside class="product-details">
+
+        <!-- 4 THUMBNAIL IMAGES (top) -->
+        <div class="end-images">
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587784/hs-global/leather/etsy/HSLDRBE1/1.webp" alt="View 1" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587785/hs-global/leather/etsy/HSLDRBE1/2.webp" alt="View 2" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587786/hs-global/leather/etsy/HSLDRBE1/3.webp" alt="View 3" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587787/hs-global/leather/etsy/HSLDRBE1/4.webp" alt="View 4" loading="lazy" />
+        </div>
+
+        <!-- DESCRIPTION CONTENT (pushed to bottom) -->
+        <div class="desc-content">
+          <div>
+            <div class="product-sku">HSG-LTH-012</div>
+            <h1 class="product-name">Modern 6 Drawer Dresser Beige Storage Cabinet</h1>
+            <div class="product-variant">Dressers · Full-Grain Leather</div>
+          </div>
+
+          <div class="cognac-rule"></div>
+
+          <table class="spec-table">
+            <tbody>
+              <tr><td>Leather Type</td><td>Full-Grain Vegetable-Tanned</td></tr>
+              <tr><td>Category</td><td>Dressers</td></tr>
+              <tr><td>Origin</td><td>Kanpur Tanneries, India</td></tr>
+              <tr><td>Lead Time</td><td>5–7 Weeks</td></tr>
+              <tr><td>Customisation</td><td>Colour, Dimensions, Finish</td></tr>
+            </tbody>
+          </table>
+
+          <div class="tags-row">
+            <span class="tag">Full-Grain</span>
+            <span class="tag">Handcrafted</span>
+            <span class="tag">Dressers</span>
+          </div>
+
+          <div class="price-row">
+            <div>
+              <div class="price-label">Wholesale / Export Price</div>
+              <div class="price-amount">On Request</div>
+            </div>
+            <div class="price-note">FOB India · MOQ 1 Piece</div>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+
+    <!-- BOTTOM DESCRIPTION BAND -->
+    <div class="bottom-band">
+      <p class="product-description">Leather-fronted dresser combining artisanal upholstery with solid wood joinery from Kanpur master craftsmen.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 13 / 28 — LUXURY LEATHER COFFEE TABLE MODERN BRASS ACCENT TABLE
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-13">
+
+    <!-- TOP BRAND BAND -->
+    <header class="top-band">
+      <div class="brand-name">HS <em>Global</em> Export</div>
+      <div class="top-meta">
+        <div class="category-badge">
+          <div class="cat-name">Leather Furniture</div>
+          <div class="subgroup-name">Bedroom &amp; Tables</div>
+        </div>
+        <div class="page-num-badge">13</div>
+      </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <div class="page-body">
+
+      <!-- LEFT IMAGE -->
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587468/hs-global/leather/etsy/HSLCETBR3/4.webp" alt="Luxury Leather Coffee Table Modern Brass Accent Table — Leather Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+        <div class="img-sku-badge">SKU · HSG-LTH-013</div>
+        <div class="stitch-edge">
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT DETAILS -->
+      <aside class="product-details">
+
+        <!-- 4 THUMBNAIL IMAGES (top) -->
+        <div class="end-images">
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587468/hs-global/leather/etsy/HSLCETBR3/4.webp" alt="View 1" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587467/hs-global/leather/etsy/HSLCETBR3/3.webp" alt="View 2" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587464/hs-global/leather/etsy/HSLCETBR3/1.webp" alt="View 3" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587465/hs-global/leather/etsy/HSLCETBR3/2.webp" alt="View 4" loading="lazy" />
+        </div>
+
+        <!-- DESCRIPTION CONTENT (pushed to bottom) -->
+        <div class="desc-content">
+          <div>
+            <div class="product-sku">HSG-LTH-013</div>
+            <h1 class="product-name">Luxury Leather Coffee Table Modern Brass Accent Table</h1>
+            <div class="product-variant">Coffee Tables · Full-Grain Leather</div>
+          </div>
+
+          <div class="cognac-rule"></div>
+
+          <table class="spec-table">
+            <tbody>
+              <tr><td>Leather Type</td><td>Full-Grain Vegetable-Tanned</td></tr>
+              <tr><td>Category</td><td>Coffee Tables</td></tr>
+              <tr><td>Origin</td><td>Kanpur Tanneries, India</td></tr>
+              <tr><td>Lead Time</td><td>5–7 Weeks</td></tr>
+              <tr><td>Customisation</td><td>Colour, Dimensions, Finish</td></tr>
+            </tbody>
+          </table>
+
+          <div class="tags-row">
+            <span class="tag">Full-Grain</span>
+            <span class="tag">Handcrafted</span>
+            <span class="tag">Coffee Tables</span>
+          </div>
+
+          <div class="price-row">
+            <div>
+              <div class="price-label">Wholesale / Export Price</div>
+              <div class="price-amount">On Request</div>
+            </div>
+            <div class="price-note">FOB India · MOQ 1 Piece</div>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+
+    <!-- BOTTOM DESCRIPTION BAND -->
+    <div class="bottom-band">
+      <p class="product-description">Leather-wrapped coffee table with polished brass hardware — an heirloom piece with old-world craftsmanship.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 14 / 28 — LUXURY MARBLE TOP COFFEE TABLE WITH STORAGE DRAWER
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-14">
+
+    <!-- TOP BRAND BAND -->
+    <header class="top-band">
+      <div class="brand-name">HS <em>Global</em> Export</div>
+      <div class="top-meta">
+        <div class="category-badge">
+          <div class="cat-name">Leather Furniture</div>
+          <div class="subgroup-name">Bedroom &amp; Tables</div>
+        </div>
+        <div class="page-num-badge">14</div>
+      </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <div class="page-body">
+
+      <!-- LEFT IMAGE -->
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587573/hs-global/leather/etsy/HSLCETCR2/1.webp" alt="Luxury Marble Top Coffee Table with Storage Drawer — Leather Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+        <div class="img-sku-badge">SKU · HSG-LTH-014</div>
+        <div class="stitch-edge">
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT DETAILS -->
+      <aside class="product-details">
+
+        <!-- 4 THUMBNAIL IMAGES (top) -->
+        <div class="end-images">
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587573/hs-global/leather/etsy/HSLCETCR2/1.webp" alt="View 1" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587574/hs-global/leather/etsy/HSLCETCR2/2.webp" alt="View 2" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587576/hs-global/leather/etsy/HSLCETCR2/3.webp" alt="View 3" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587577/hs-global/leather/etsy/HSLCETCR2/4.webp" alt="View 4" loading="lazy" />
+        </div>
+
+        <!-- DESCRIPTION CONTENT (pushed to bottom) -->
+        <div class="desc-content">
+          <div>
+            <div class="product-sku">HSG-LTH-014</div>
+            <h1 class="product-name">Luxury Marble Top Coffee Table with Storage Drawer</h1>
+            <div class="product-variant">Coffee Tables · Full-Grain Leather</div>
+          </div>
+
+          <div class="cognac-rule"></div>
+
+          <table class="spec-table">
+            <tbody>
+              <tr><td>Leather Type</td><td>Full-Grain Vegetable-Tanned</td></tr>
+              <tr><td>Category</td><td>Coffee Tables</td></tr>
+              <tr><td>Origin</td><td>Kanpur Tanneries, India</td></tr>
+              <tr><td>Lead Time</td><td>5–7 Weeks</td></tr>
+              <tr><td>Customisation</td><td>Colour, Dimensions, Finish</td></tr>
+            </tbody>
+          </table>
+
+          <div class="tags-row">
+            <span class="tag">Full-Grain</span>
+            <span class="tag">Handcrafted</span>
+            <span class="tag">Coffee Tables</span>
+          </div>
+
+          <div class="price-row">
+            <div>
+              <div class="price-label">Wholesale / Export Price</div>
+              <div class="price-amount">On Request</div>
+            </div>
+            <div class="price-note">FOB India · MOQ 1 Piece</div>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+
+    <!-- BOTTOM DESCRIPTION BAND -->
+    <div class="bottom-band">
+      <p class="product-description">Leather-wrapped coffee table with polished brass hardware — an heirloom piece with old-world craftsmanship.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 15 / 28 — VINTAGE STORAGE TRUNK COFFEE TABLE GREEN FAUX LEATHER CHEST
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-15">
+
+    <!-- TOP BRAND BAND -->
+    <header class="top-band">
+      <div class="brand-name">HS <em>Global</em> Export</div>
+      <div class="top-meta">
+        <div class="category-badge">
+          <div class="cat-name">Leather Furniture</div>
+          <div class="subgroup-name">Bedroom &amp; Tables</div>
+        </div>
+        <div class="page-num-badge">15</div>
+      </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <div class="page-body">
+
+      <!-- LEFT IMAGE -->
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587744/hs-global/leather/etsy/HSLCETGR1/4.webp" alt="Vintage Storage Trunk Coffee Table Green Faux Leather Chest — Leather Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+        <div class="img-sku-badge">SKU · HSG-LTH-015</div>
+        <div class="stitch-edge">
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT DETAILS -->
+      <aside class="product-details">
+
+        <!-- 4 THUMBNAIL IMAGES (top) -->
+        <div class="end-images">
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587744/hs-global/leather/etsy/HSLCETGR1/4.webp" alt="View 1" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587740/hs-global/leather/etsy/HSLCETGR1/1.webp" alt="View 2" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587743/hs-global/leather/etsy/HSLCETGR1/3.webp" alt="View 3" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587744/hs-global/leather/etsy/HSLCETGR1/4.webp" alt="View 4" loading="lazy" />
+        </div>
+
+        <!-- DESCRIPTION CONTENT (pushed to bottom) -->
+        <div class="desc-content">
+          <div>
+            <div class="product-sku">HSG-LTH-015</div>
+            <h1 class="product-name">Vintage Storage Trunk Coffee Table Green Faux Leather Chest</h1>
+            <div class="product-variant">Coffee Tables · Full-Grain Leather</div>
+          </div>
+
+          <div class="cognac-rule"></div>
+
+          <table class="spec-table">
+            <tbody>
+              <tr><td>Leather Type</td><td>Full-Grain Vegetable-Tanned</td></tr>
+              <tr><td>Category</td><td>Coffee Tables</td></tr>
+              <tr><td>Origin</td><td>Kanpur Tanneries, India</td></tr>
+              <tr><td>Lead Time</td><td>5–7 Weeks</td></tr>
+              <tr><td>Customisation</td><td>Colour, Dimensions, Finish</td></tr>
+            </tbody>
+          </table>
+
+          <div class="tags-row">
+            <span class="tag">Full-Grain</span>
+            <span class="tag">Handcrafted</span>
+            <span class="tag">Coffee Tables</span>
+          </div>
+
+          <div class="price-row">
+            <div>
+              <div class="price-label">Wholesale / Export Price</div>
+              <div class="price-amount">On Request</div>
+            </div>
+            <div class="price-note">FOB India · MOQ 1 Piece</div>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+
+    <!-- BOTTOM DESCRIPTION BAND -->
+    <div class="bottom-band">
+      <p class="product-description">Leather-wrapped coffee table with polished brass hardware — an heirloom piece with old-world craftsmanship.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 16 / 28 — LUXURY CONSOLE TABLE GREEN ENTRYWAY ACCENT TABLE
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-16">
+
+    <!-- TOP BRAND BAND -->
+    <header class="top-band">
+      <div class="brand-name">HS <em>Global</em> Export</div>
+      <div class="top-meta">
+        <div class="category-badge">
+          <div class="cat-name">Leather Furniture</div>
+          <div class="subgroup-name">Bedroom &amp; Tables</div>
+        </div>
+        <div class="page-num-badge">16</div>
+      </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <div class="page-body">
+
+      <!-- LEFT IMAGE -->
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587530/hs-global/leather/etsy/HSLCOTGR1/1.webp" alt="Luxury Console Table Green Entryway Accent Table — Leather Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+        <div class="img-sku-badge">SKU · HSG-LTH-016</div>
+        <div class="stitch-edge">
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT DETAILS -->
+      <aside class="product-details">
+
+        <!-- 4 THUMBNAIL IMAGES (top) -->
+        <div class="end-images">
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587530/hs-global/leather/etsy/HSLCOTGR1/1.webp" alt="View 1" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587532/hs-global/leather/etsy/HSLCOTGR1/2.webp" alt="View 2" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587533/hs-global/leather/etsy/HSLCOTGR1/3.webp" alt="View 3" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587535/hs-global/leather/etsy/HSLCOTGR1/4.webp" alt="View 4" loading="lazy" />
+        </div>
+
+        <!-- DESCRIPTION CONTENT (pushed to bottom) -->
+        <div class="desc-content">
+          <div>
+            <div class="product-sku">HSG-LTH-016</div>
+            <h1 class="product-name">Luxury Console Table Green Entryway Accent Table</h1>
+            <div class="product-variant">Console Tables · Full-Grain Leather</div>
+          </div>
+
+          <div class="cognac-rule"></div>
+
+          <table class="spec-table">
+            <tbody>
+              <tr><td>Leather Type</td><td>Full-Grain Vegetable-Tanned</td></tr>
+              <tr><td>Category</td><td>Console Tables</td></tr>
+              <tr><td>Origin</td><td>Kanpur Tanneries, India</td></tr>
+              <tr><td>Lead Time</td><td>5–7 Weeks</td></tr>
+              <tr><td>Customisation</td><td>Colour, Dimensions, Finish</td></tr>
+            </tbody>
+          </table>
+
+          <div class="tags-row">
+            <span class="tag">Full-Grain</span>
+            <span class="tag">Handcrafted</span>
+            <span class="tag">Console Tables</span>
+          </div>
+
+          <div class="price-row">
+            <div>
+              <div class="price-label">Wholesale / Export Price</div>
+              <div class="price-amount">On Request</div>
+            </div>
+            <div class="price-note">FOB India · MOQ 1 Piece</div>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+
+    <!-- BOTTOM DESCRIPTION BAND -->
+    <div class="bottom-band">
+      <p class="product-description">Hand-upholstered leather console table with decorative stitching and solid hardwood frame.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 17 / 28 — LUXURY CONSOLE TABLE LEATHER ENTRYWAY SOFA TABLE
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-17">
+
+    <!-- TOP BRAND BAND -->
+    <header class="top-band">
+      <div class="brand-name">HS <em>Global</em> Export</div>
+      <div class="top-meta">
+        <div class="category-badge">
+          <div class="cat-name">Leather Furniture</div>
+          <div class="subgroup-name">Bedroom &amp; Tables</div>
+        </div>
+        <div class="page-num-badge">17</div>
+      </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <div class="page-body">
+
+      <!-- LEFT IMAGE -->
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587596/hs-global/leather/etsy/HSLCOTBR2/1.webp" alt="Luxury Console Table Leather Entryway Sofa Table — Leather Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+        <div class="img-sku-badge">SKU · HSG-LTH-017</div>
+        <div class="stitch-edge">
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT DETAILS -->
+      <aside class="product-details">
+
+        <!-- 4 THUMBNAIL IMAGES (top) -->
+        <div class="end-images">
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587596/hs-global/leather/etsy/HSLCOTBR2/1.webp" alt="View 1" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587598/hs-global/leather/etsy/HSLCOTBR2/2.webp" alt="View 2" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587599/hs-global/leather/etsy/HSLCOTBR2/3.webp" alt="View 3" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587601/hs-global/leather/etsy/HSLCOTBR2/4.webp" alt="View 4" loading="lazy" />
+        </div>
+
+        <!-- DESCRIPTION CONTENT (pushed to bottom) -->
+        <div class="desc-content">
+          <div>
+            <div class="product-sku">HSG-LTH-017</div>
+            <h1 class="product-name">Luxury Console Table Leather Entryway Sofa Table</h1>
+            <div class="product-variant">Console Tables · Full-Grain Leather</div>
+          </div>
+
+          <div class="cognac-rule"></div>
+
+          <table class="spec-table">
+            <tbody>
+              <tr><td>Leather Type</td><td>Full-Grain Vegetable-Tanned</td></tr>
+              <tr><td>Category</td><td>Console Tables</td></tr>
+              <tr><td>Origin</td><td>Kanpur Tanneries, India</td></tr>
+              <tr><td>Lead Time</td><td>5–7 Weeks</td></tr>
+              <tr><td>Customisation</td><td>Colour, Dimensions, Finish</td></tr>
+            </tbody>
+          </table>
+
+          <div class="tags-row">
+            <span class="tag">Full-Grain</span>
+            <span class="tag">Handcrafted</span>
+            <span class="tag">Console Tables</span>
+          </div>
+
+          <div class="price-row">
+            <div>
+              <div class="price-label">Wholesale / Export Price</div>
+              <div class="price-amount">On Request</div>
+            </div>
+            <div class="price-note">FOB India · MOQ 1 Piece</div>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+
+    <!-- BOTTOM DESCRIPTION BAND -->
+    <div class="bottom-band">
+      <p class="product-description">Hand-upholstered leather console table with decorative stitching and solid hardwood frame.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 18 / 28 — LUXURY 3 PIECE NESTING TABLES GOLD ACCENT SIDE TABLE SET
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-18">
+
+    <!-- TOP BRAND BAND -->
+    <header class="top-band">
+      <div class="brand-name">HS <em>Global</em> Export</div>
+      <div class="top-meta">
+        <div class="category-badge">
+          <div class="cat-name">Leather Furniture</div>
+          <div class="subgroup-name">Bedroom &amp; Tables</div>
+        </div>
+        <div class="page-num-badge">18</div>
+      </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <div class="page-body">
+
+      <!-- LEFT IMAGE -->
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285389/hs-global/leather/etsy/HSLSTBR3/1.webp" alt="Luxury 3 Piece Nesting Tables Gold Accent Side Table Set — Leather Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+        <div class="img-sku-badge">SKU · HSG-LTH-018</div>
+        <div class="stitch-edge">
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT DETAILS -->
+      <aside class="product-details">
+
+        <!-- 4 THUMBNAIL IMAGES (top) -->
+        <div class="end-images">
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285389/hs-global/leather/etsy/HSLSTBR3/1.webp" alt="View 1" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285390/hs-global/leather/etsy/HSLSTBR3/2.webp" alt="View 2" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285391/hs-global/leather/etsy/HSLSTBR3/3.webp" alt="View 3" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285393/hs-global/leather/etsy/HSLSTBR3/4.webp" alt="View 4" loading="lazy" />
+        </div>
+
+        <!-- DESCRIPTION CONTENT (pushed to bottom) -->
+        <div class="desc-content">
+          <div>
+            <div class="product-sku">HSG-LTH-018</div>
+            <h1 class="product-name">Luxury 3 Piece Nesting Tables Gold Accent Side Table Set</h1>
+            <div class="product-variant">Side Tables · Full-Grain Leather</div>
+          </div>
+
+          <div class="cognac-rule"></div>
+
+          <table class="spec-table">
+            <tbody>
+              <tr><td>Leather Type</td><td>Full-Grain Vegetable-Tanned</td></tr>
+              <tr><td>Category</td><td>Side Tables</td></tr>
+              <tr><td>Origin</td><td>Kanpur Tanneries, India</td></tr>
+              <tr><td>Lead Time</td><td>5–7 Weeks</td></tr>
+              <tr><td>Customisation</td><td>Colour, Dimensions, Finish</td></tr>
+            </tbody>
+          </table>
+
+          <div class="tags-row">
+            <span class="tag">Full-Grain</span>
+            <span class="tag">Handcrafted</span>
+            <span class="tag">Side Tables</span>
+          </div>
+
+          <div class="price-row">
+            <div>
+              <div class="price-label">Wholesale / Export Price</div>
+              <div class="price-amount">On Request</div>
+            </div>
+            <div class="price-note">FOB India · MOQ 1 Piece</div>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+
+    <!-- BOTTOM DESCRIPTION BAND -->
+    <div class="bottom-band">
+      <p class="product-description">Compact leather side table with hand-sewn detailing and turned solid wood legs.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 19 / 28 — LUXURY NESTING SIDE TABLES FAUX LEATHER ACCENT TABLE SE
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-19">
+
+    <!-- TOP BRAND BAND -->
+    <header class="top-band">
+      <div class="brand-name">HS <em>Global</em> Export</div>
+      <div class="top-meta">
+        <div class="category-badge">
+          <div class="cat-name">Leather Furniture</div>
+          <div class="subgroup-name">Bedroom &amp; Tables</div>
+        </div>
+        <div class="page-num-badge">19</div>
+      </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <div class="page-body">
+
+      <!-- LEFT IMAGE -->
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587548/hs-global/leather/etsy/HSLSTBR2/1.webp" alt="Luxury Nesting Side Tables Faux Leather Accent Table Se — Leather Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+        <div class="img-sku-badge">SKU · HSG-LTH-019</div>
+        <div class="stitch-edge">
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT DETAILS -->
+      <aside class="product-details">
+
+        <!-- 4 THUMBNAIL IMAGES (top) -->
+        <div class="end-images">
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587548/hs-global/leather/etsy/HSLSTBR2/1.webp" alt="View 1" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587549/hs-global/leather/etsy/HSLSTBR2/2.webp" alt="View 2" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587551/hs-global/leather/etsy/HSLSTBR2/3.webp" alt="View 3" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587553/hs-global/leather/etsy/HSLSTBR2/4.webp" alt="View 4" loading="lazy" />
+        </div>
+
+        <!-- DESCRIPTION CONTENT (pushed to bottom) -->
+        <div class="desc-content">
+          <div>
+            <div class="product-sku">HSG-LTH-019</div>
+            <h1 class="product-name">Luxury Nesting Side Tables Faux Leather Accent Table Se</h1>
+            <div class="product-variant">Side Tables · Full-Grain Leather</div>
+          </div>
+
+          <div class="cognac-rule"></div>
+
+          <table class="spec-table">
+            <tbody>
+              <tr><td>Leather Type</td><td>Full-Grain Vegetable-Tanned</td></tr>
+              <tr><td>Category</td><td>Side Tables</td></tr>
+              <tr><td>Origin</td><td>Kanpur Tanneries, India</td></tr>
+              <tr><td>Lead Time</td><td>5–7 Weeks</td></tr>
+              <tr><td>Customisation</td><td>Colour, Dimensions, Finish</td></tr>
+            </tbody>
+          </table>
+
+          <div class="tags-row">
+            <span class="tag">Full-Grain</span>
+            <span class="tag">Handcrafted</span>
+            <span class="tag">Side Tables</span>
+          </div>
+
+          <div class="price-row">
+            <div>
+              <div class="price-label">Wholesale / Export Price</div>
+              <div class="price-amount">On Request</div>
+            </div>
+            <div class="price-note">FOB India · MOQ 1 Piece</div>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+
+    <!-- BOTTOM DESCRIPTION BAND -->
+    <div class="bottom-band">
+      <p class="product-description">Compact leather side table with hand-sewn detailing and turned solid wood legs.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 20 / 28 — LUXURY NESTING SIDE TABLES LEATHER ACCENT TABLE SET
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-20">
+
+    <!-- TOP BRAND BAND -->
+    <header class="top-band">
+      <div class="brand-name">HS <em>Global</em> Export</div>
+      <div class="top-meta">
+        <div class="category-badge">
+          <div class="cat-name">Leather Furniture</div>
+          <div class="subgroup-name">Bedroom &amp; Tables</div>
+        </div>
+        <div class="page-num-badge">20</div>
+      </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <div class="page-body">
+
+      <!-- LEFT IMAGE -->
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587687/hs-global/leather/etsy/HSLSTBR7/1.webp" alt="Luxury Nesting Side Tables Leather Accent Table Set — Leather Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+        <div class="img-sku-badge">SKU · HSG-LTH-020</div>
+        <div class="stitch-edge">
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT DETAILS -->
+      <aside class="product-details">
+
+        <!-- 4 THUMBNAIL IMAGES (top) -->
+        <div class="end-images">
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587687/hs-global/leather/etsy/HSLSTBR7/1.webp" alt="View 1" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587688/hs-global/leather/etsy/HSLSTBR7/2.webp" alt="View 2" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587690/hs-global/leather/etsy/HSLSTBR7/3.webp" alt="View 3" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587691/hs-global/leather/etsy/HSLSTBR7/4.webp" alt="View 4" loading="lazy" />
+        </div>
+
+        <!-- DESCRIPTION CONTENT (pushed to bottom) -->
+        <div class="desc-content">
+          <div>
+            <div class="product-sku">HSG-LTH-020</div>
+            <h1 class="product-name">Luxury Nesting Side Tables Leather Accent Table Set</h1>
+            <div class="product-variant">Side Tables · Full-Grain Leather</div>
+          </div>
+
+          <div class="cognac-rule"></div>
+
+          <table class="spec-table">
+            <tbody>
+              <tr><td>Leather Type</td><td>Full-Grain Vegetable-Tanned</td></tr>
+              <tr><td>Category</td><td>Side Tables</td></tr>
+              <tr><td>Origin</td><td>Kanpur Tanneries, India</td></tr>
+              <tr><td>Lead Time</td><td>5–7 Weeks</td></tr>
+              <tr><td>Customisation</td><td>Colour, Dimensions, Finish</td></tr>
+            </tbody>
+          </table>
+
+          <div class="tags-row">
+            <span class="tag">Full-Grain</span>
+            <span class="tag">Handcrafted</span>
+            <span class="tag">Side Tables</span>
+          </div>
+
+          <div class="price-row">
+            <div>
+              <div class="price-label">Wholesale / Export Price</div>
+              <div class="price-amount">On Request</div>
+            </div>
+            <div class="price-note">FOB India · MOQ 1 Piece</div>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+
+    <!-- BOTTOM DESCRIPTION BAND -->
+    <div class="bottom-band">
+      <p class="product-description">Compact leather side table with hand-sewn detailing and turned solid wood legs.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 21 / 28 — LUXURY TRAY SIDE TABLE BLACK CROC ACCENT TABLE
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-21">
+
+    <!-- TOP BRAND BAND -->
+    <header class="top-band">
+      <div class="brand-name">HS <em>Global</em> Export</div>
+      <div class="top-meta">
+        <div class="category-badge">
+          <div class="cat-name">Leather Furniture</div>
+          <div class="subgroup-name">Bedroom &amp; Tables</div>
+        </div>
+        <div class="page-num-badge">21</div>
+      </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <div class="page-body">
+
+      <!-- LEFT IMAGE -->
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587649/hs-global/leather/etsy/HSLSTBL6/1.webp" alt="Luxury Tray Side Table Black Croc Accent Table — Leather Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+        <div class="img-sku-badge">SKU · HSG-LTH-021</div>
+        <div class="stitch-edge">
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT DETAILS -->
+      <aside class="product-details">
+
+        <!-- 4 THUMBNAIL IMAGES (top) -->
+        <div class="end-images">
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587649/hs-global/leather/etsy/HSLSTBL6/1.webp" alt="View 1" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587650/hs-global/leather/etsy/HSLSTBL6/2.webp" alt="View 2" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587652/hs-global/leather/etsy/HSLSTBL6/3.webp" alt="View 3" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587654/hs-global/leather/etsy/HSLSTBL6/4.webp" alt="View 4" loading="lazy" />
+        </div>
+
+        <!-- DESCRIPTION CONTENT (pushed to bottom) -->
+        <div class="desc-content">
+          <div>
+            <div class="product-sku">HSG-LTH-021</div>
+            <h1 class="product-name">Luxury Tray Side Table Black Croc Accent Table</h1>
+            <div class="product-variant">Side Tables · Full-Grain Leather</div>
+          </div>
+
+          <div class="cognac-rule"></div>
+
+          <table class="spec-table">
+            <tbody>
+              <tr><td>Leather Type</td><td>Full-Grain Vegetable-Tanned</td></tr>
+              <tr><td>Category</td><td>Side Tables</td></tr>
+              <tr><td>Origin</td><td>Kanpur Tanneries, India</td></tr>
+              <tr><td>Lead Time</td><td>5–7 Weeks</td></tr>
+              <tr><td>Customisation</td><td>Colour, Dimensions, Finish</td></tr>
+            </tbody>
+          </table>
+
+          <div class="tags-row">
+            <span class="tag">Full-Grain</span>
+            <span class="tag">Handcrafted</span>
+            <span class="tag">Side Tables</span>
+          </div>
+
+          <div class="price-row">
+            <div>
+              <div class="price-label">Wholesale / Export Price</div>
+              <div class="price-amount">On Request</div>
+            </div>
+            <div class="price-note">FOB India · MOQ 1 Piece</div>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+
+    <!-- BOTTOM DESCRIPTION BAND -->
+    <div class="bottom-band">
+      <p class="product-description">Compact leather side table with hand-sewn detailing and turned solid wood legs.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 22 / 28 — MODERN BLACK TRAY SIDE TABLE GOLD ACCENT END TABLE
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-22">
+
+    <!-- TOP BRAND BAND -->
+    <header class="top-band">
+      <div class="brand-name">HS <em>Global</em> Export</div>
+      <div class="top-meta">
+        <div class="category-badge">
+          <div class="cat-name">Leather Furniture</div>
+          <div class="subgroup-name">Bedroom &amp; Tables</div>
+        </div>
+        <div class="page-num-badge">22</div>
+      </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <div class="page-body">
+
+      <!-- LEFT IMAGE -->
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587472/hs-global/leather/etsy/HSLSTBL4/1.webp" alt="Modern Black Tray Side Table Gold Accent End Table — Leather Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+        <div class="img-sku-badge">SKU · HSG-LTH-022</div>
+        <div class="stitch-edge">
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT DETAILS -->
+      <aside class="product-details">
+
+        <!-- 4 THUMBNAIL IMAGES (top) -->
+        <div class="end-images">
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587472/hs-global/leather/etsy/HSLSTBL4/1.webp" alt="View 1" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587473/hs-global/leather/etsy/HSLSTBL4/2.webp" alt="View 2" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587475/hs-global/leather/etsy/HSLSTBL4/3.webp" alt="View 3" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587476/hs-global/leather/etsy/HSLSTBL4/4.webp" alt="View 4" loading="lazy" />
+        </div>
+
+        <!-- DESCRIPTION CONTENT (pushed to bottom) -->
+        <div class="desc-content">
+          <div>
+            <div class="product-sku">HSG-LTH-022</div>
+            <h1 class="product-name">Modern Black Tray Side Table Gold Accent End Table</h1>
+            <div class="product-variant">Side Tables · Full-Grain Leather</div>
+          </div>
+
+          <div class="cognac-rule"></div>
+
+          <table class="spec-table">
+            <tbody>
+              <tr><td>Leather Type</td><td>Full-Grain Vegetable-Tanned</td></tr>
+              <tr><td>Category</td><td>Side Tables</td></tr>
+              <tr><td>Origin</td><td>Kanpur Tanneries, India</td></tr>
+              <tr><td>Lead Time</td><td>5–7 Weeks</td></tr>
+              <tr><td>Customisation</td><td>Colour, Dimensions, Finish</td></tr>
+            </tbody>
+          </table>
+
+          <div class="tags-row">
+            <span class="tag">Full-Grain</span>
+            <span class="tag">Handcrafted</span>
+            <span class="tag">Side Tables</span>
+          </div>
+
+          <div class="price-row">
+            <div>
+              <div class="price-label">Wholesale / Export Price</div>
+              <div class="price-amount">On Request</div>
+            </div>
+            <div class="price-note">FOB India · MOQ 1 Piece</div>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+
+    <!-- BOTTOM DESCRIPTION BAND -->
+    <div class="bottom-band">
+      <p class="product-description">Compact leather side table with hand-sewn detailing and turned solid wood legs.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 23 / 28 — MODERN NESTING SIDE TABLE SET GOLD ACCENT END TABLES
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-23">
+
+    <!-- TOP BRAND BAND -->
+    <header class="top-band">
+      <div class="brand-name">HS <em>Global</em> Export</div>
+      <div class="top-meta">
+        <div class="category-badge">
+          <div class="cat-name">Leather Furniture</div>
+          <div class="subgroup-name">Bedroom &amp; Tables</div>
+        </div>
+        <div class="page-num-badge">23</div>
+      </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <div class="page-body">
+
+      <!-- LEFT IMAGE -->
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1780660572/hs-global/products/leather/Side%20Table/file_bbcgjh.webp" alt="Modern Nesting Side Table Set Gold Accent End Tables — Leather Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+        <div class="img-sku-badge">SKU · HSG-LTH-023</div>
+        <div class="stitch-edge">
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT DETAILS -->
+      <aside class="product-details">
+
+        <!-- 4 THUMBNAIL IMAGES (top) -->
+        <div class="end-images">
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1780660572/hs-global/products/leather/Side%20Table/file_bbcgjh.webp" alt="View 1" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1780660574/hs-global/products/leather/Side%20Table/file_lmjnnh.webp" alt="View 2" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1780660575/hs-global/products/leather/Side%20Table/file_bqqjtl.webp" alt="View 3" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1780660576/hs-global/products/leather/Side%20Table/file_hest6b.webp" alt="View 4" loading="lazy" />
+        </div>
+
+        <!-- DESCRIPTION CONTENT (pushed to bottom) -->
+        <div class="desc-content">
+          <div>
+            <div class="product-sku">HSG-LTH-023</div>
+            <h1 class="product-name">Modern Nesting Side Table Set Gold Accent End Tables</h1>
+            <div class="product-variant">Side Tables · Full-Grain Leather</div>
+          </div>
+
+          <div class="cognac-rule"></div>
+
+          <table class="spec-table">
+            <tbody>
+              <tr><td>Leather Type</td><td>Full-Grain Vegetable-Tanned</td></tr>
+              <tr><td>Category</td><td>Side Tables</td></tr>
+              <tr><td>Origin</td><td>Kanpur Tanneries, India</td></tr>
+              <tr><td>Lead Time</td><td>5–7 Weeks</td></tr>
+              <tr><td>Customisation</td><td>Colour, Dimensions, Finish</td></tr>
+            </tbody>
+          </table>
+
+          <div class="tags-row">
+            <span class="tag">Full-Grain</span>
+            <span class="tag">Handcrafted</span>
+            <span class="tag">Side Tables</span>
+          </div>
+
+          <div class="price-row">
+            <div>
+              <div class="price-label">Wholesale / Export Price</div>
+              <div class="price-amount">On Request</div>
+            </div>
+            <div class="price-note">FOB India · MOQ 1 Piece</div>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+
+    <!-- BOTTOM DESCRIPTION BAND -->
+    <div class="bottom-band">
+      <p class="product-description">Compact leather side table with hand-sewn detailing and turned solid wood legs.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 24 / 28 — MODERN NESTING SIDE TABLES WOOD &AMP; METAL ACCENT TABLES SE
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-24">
+
+    <!-- TOP BRAND BAND -->
+    <header class="top-band">
+      <div class="brand-name">HS <em>Global</em> Export</div>
+      <div class="top-meta">
+        <div class="category-badge">
+          <div class="cat-name">Leather Furniture</div>
+          <div class="subgroup-name">Bedroom &amp; Tables</div>
+        </div>
+        <div class="page-num-badge">24</div>
+      </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <div class="page-body">
+
+      <!-- LEFT IMAGE -->
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587517/hs-global/leather/etsy/HSLSTBR1/1.webp" alt="Modern Nesting Side Tables Wood &amp; Metal Accent Tables Set — Leather Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+        <div class="img-sku-badge">SKU · HSG-LTH-024</div>
+        <div class="stitch-edge">
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT DETAILS -->
+      <aside class="product-details">
+
+        <!-- 4 THUMBNAIL IMAGES (top) -->
+        <div class="end-images">
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587517/hs-global/leather/etsy/HSLSTBR1/1.webp" alt="View 1" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587518/hs-global/leather/etsy/HSLSTBR1/2.webp" alt="View 2" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587519/hs-global/leather/etsy/HSLSTBR1/3.webp" alt="View 3" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587521/hs-global/leather/etsy/HSLSTBR1/4.webp" alt="View 4" loading="lazy" />
+        </div>
+
+        <!-- DESCRIPTION CONTENT (pushed to bottom) -->
+        <div class="desc-content">
+          <div>
+            <div class="product-sku">HSG-LTH-024</div>
+            <h1 class="product-name">Modern Nesting Side Tables Wood &amp; Metal Accent Tables Set</h1>
+            <div class="product-variant">Side Tables · Full-Grain Leather</div>
+          </div>
+
+          <div class="cognac-rule"></div>
+
+          <table class="spec-table">
+            <tbody>
+              <tr><td>Leather Type</td><td>Full-Grain Vegetable-Tanned</td></tr>
+              <tr><td>Category</td><td>Side Tables</td></tr>
+              <tr><td>Origin</td><td>Kanpur Tanneries, India</td></tr>
+              <tr><td>Lead Time</td><td>5–7 Weeks</td></tr>
+              <tr><td>Customisation</td><td>Colour, Dimensions, Finish</td></tr>
+            </tbody>
+          </table>
+
+          <div class="tags-row">
+            <span class="tag">Full-Grain</span>
+            <span class="tag">Handcrafted</span>
+            <span class="tag">Side Tables</span>
+          </div>
+
+          <div class="price-row">
+            <div>
+              <div class="price-label">Wholesale / Export Price</div>
+              <div class="price-amount">On Request</div>
+            </div>
+            <div class="price-note">FOB India · MOQ 1 Piece</div>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+
+    <!-- BOTTOM DESCRIPTION BAND -->
+    <div class="bottom-band">
+      <p class="product-description">Compact leather side table with hand-sewn detailing and turned solid wood legs.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 25 / 28 — LUXURY LEATHER JEWELRY BOX ORGANIZER VINTAGE STORAGE CHEST
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-25">
+
+    <!-- TOP BRAND BAND -->
+    <header class="top-band">
+      <div class="brand-name">HS <em>Global</em> Export</div>
+      <div class="top-meta">
+        <div class="category-badge">
+          <div class="cat-name">Leather Furniture</div>
+          <div class="subgroup-name">Storage &amp; Decor</div>
+        </div>
+        <div class="page-num-badge">25</div>
+      </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <div class="page-body">
+
+      <!-- LEFT IMAGE -->
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587782/hs-global/leather/etsy/HSLBOBR1/4.webp" alt="Luxury Leather Jewelry Box Organizer Vintage Storage Chest — Leather Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+        <div class="img-sku-badge">SKU · HSG-LTH-025</div>
+        <div class="stitch-edge">
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT DETAILS -->
+      <aside class="product-details">
+
+        <!-- 4 THUMBNAIL IMAGES (top) -->
+        <div class="end-images">
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587782/hs-global/leather/etsy/HSLBOBR1/4.webp" alt="View 1" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587781/hs-global/leather/etsy/HSLBOBR1/3.webp" alt="View 2" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587779/hs-global/leather/etsy/HSLBOBR1/2.webp" alt="View 3" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587782/hs-global/leather/etsy/HSLBOBR1/4.webp" alt="View 4" loading="lazy" />
+        </div>
+
+        <!-- DESCRIPTION CONTENT (pushed to bottom) -->
+        <div class="desc-content">
+          <div>
+            <div class="product-sku">HSG-LTH-025</div>
+            <h1 class="product-name">Luxury Leather Jewelry Box Organizer Vintage Storage Chest</h1>
+            <div class="product-variant">Cabinets · Full-Grain Leather</div>
+          </div>
+
+          <div class="cognac-rule"></div>
+
+          <table class="spec-table">
+            <tbody>
+              <tr><td>Leather Type</td><td>Full-Grain Vegetable-Tanned</td></tr>
+              <tr><td>Category</td><td>Cabinets</td></tr>
+              <tr><td>Origin</td><td>Kanpur Tanneries, India</td></tr>
+              <tr><td>Lead Time</td><td>5–7 Weeks</td></tr>
+              <tr><td>Customisation</td><td>Colour, Dimensions, Finish</td></tr>
+            </tbody>
+          </table>
+
+          <div class="tags-row">
+            <span class="tag">Full-Grain</span>
+            <span class="tag">Handcrafted</span>
+            <span class="tag">Cabinets</span>
+          </div>
+
+          <div class="price-row">
+            <div>
+              <div class="price-label">Wholesale / Export Price</div>
+              <div class="price-amount">On Request</div>
+            </div>
+            <div class="price-note">FOB India · MOQ 1 Piece</div>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+
+    <!-- BOTTOM DESCRIPTION BAND -->
+    <div class="bottom-band">
+      <p class="product-description">Leather-panelled cabinet combining bespoke upholstery with precision joinery from India's finest craftsmen.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 26 / 28 — VINTAGE TRUNK STORAGE CABINET LEATHER ACCENT CHEST
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-26">
+
+    <!-- TOP BRAND BAND -->
+    <header class="top-band">
+      <div class="brand-name">HS <em>Global</em> Export</div>
+      <div class="top-meta">
+        <div class="category-badge">
+          <div class="cat-name">Leather Furniture</div>
+          <div class="subgroup-name">Storage &amp; Decor</div>
+        </div>
+        <div class="page-num-badge">26</div>
+      </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <div class="page-body">
+
+      <!-- LEFT IMAGE -->
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587539/hs-global/leather/etsy/HSLCABBL1/2.webp" alt="Vintage Trunk Storage Cabinet Leather Accent Chest — Leather Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+        <div class="img-sku-badge">SKU · HSG-LTH-026</div>
+        <div class="stitch-edge">
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT DETAILS -->
+      <aside class="product-details">
+
+        <!-- 4 THUMBNAIL IMAGES (top) -->
+        <div class="end-images">
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587539/hs-global/leather/etsy/HSLCABBL1/2.webp" alt="View 1" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587538/hs-global/leather/etsy/HSLCABBL1/1.webp" alt="View 2" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587546/hs-global/leather/etsy/HSLCABBL1/5.webp" alt="View 3" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587544/hs-global/leather/etsy/HSLCABBL1/4.webp" alt="View 4" loading="lazy" />
+        </div>
+
+        <!-- DESCRIPTION CONTENT (pushed to bottom) -->
+        <div class="desc-content">
+          <div>
+            <div class="product-sku">HSG-LTH-026</div>
+            <h1 class="product-name">Vintage Trunk Storage Cabinet Leather Accent Chest</h1>
+            <div class="product-variant">Cabinets · Full-Grain Leather</div>
+          </div>
+
+          <div class="cognac-rule"></div>
+
+          <table class="spec-table">
+            <tbody>
+              <tr><td>Leather Type</td><td>Full-Grain Vegetable-Tanned</td></tr>
+              <tr><td>Category</td><td>Cabinets</td></tr>
+              <tr><td>Origin</td><td>Kanpur Tanneries, India</td></tr>
+              <tr><td>Lead Time</td><td>5–7 Weeks</td></tr>
+              <tr><td>Customisation</td><td>Colour, Dimensions, Finish</td></tr>
+            </tbody>
+          </table>
+
+          <div class="tags-row">
+            <span class="tag">Full-Grain</span>
+            <span class="tag">Handcrafted</span>
+            <span class="tag">Cabinets</span>
+          </div>
+
+          <div class="price-row">
+            <div>
+              <div class="price-label">Wholesale / Export Price</div>
+              <div class="price-amount">On Request</div>
+            </div>
+            <div class="price-note">FOB India · MOQ 1 Piece</div>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+
+    <!-- BOTTOM DESCRIPTION BAND -->
+    <div class="bottom-band">
+      <p class="product-description">Leather-panelled cabinet combining bespoke upholstery with precision joinery from India's finest craftsmen.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 27 / 28 — ROUND LEATHER WALL MIRROR LUXURY ACCENT MIRROR
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-27">
+
+    <!-- TOP BRAND BAND -->
+    <header class="top-band">
+      <div class="brand-name">HS <em>Global</em> Export</div>
+      <div class="top-meta">
+        <div class="category-badge">
+          <div class="cat-name">Leather Furniture</div>
+          <div class="subgroup-name">Storage &amp; Decor</div>
+        </div>
+        <div class="page-num-badge">27</div>
+      </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <div class="page-body">
+
+      <!-- LEFT IMAGE -->
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587565/hs-global/leather/etsy/HSLMFBR2/1.webp" alt="Round Leather Wall Mirror Luxury Accent Mirror — Leather Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+        <div class="img-sku-badge">SKU · HSG-LTH-027</div>
+        <div class="stitch-edge">
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT DETAILS -->
+      <aside class="product-details">
+
+        <!-- 4 THUMBNAIL IMAGES (top) -->
+        <div class="end-images">
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587565/hs-global/leather/etsy/HSLMFBR2/1.webp" alt="View 1" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587566/hs-global/leather/etsy/HSLMFBR2/2.webp" alt="View 2" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587568/hs-global/leather/etsy/HSLMFBR2/3.webp" alt="View 3" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587570/hs-global/leather/etsy/HSLMFBR2/4.webp" alt="View 4" loading="lazy" />
+        </div>
+
+        <!-- DESCRIPTION CONTENT (pushed to bottom) -->
+        <div class="desc-content">
+          <div>
+            <div class="product-sku">HSG-LTH-027</div>
+            <h1 class="product-name">Round Leather Wall Mirror Luxury Accent Mirror</h1>
+            <div class="product-variant">Mirrors · Full-Grain Leather</div>
+          </div>
+
+          <div class="cognac-rule"></div>
+
+          <table class="spec-table">
+            <tbody>
+              <tr><td>Leather Type</td><td>Full-Grain Vegetable-Tanned</td></tr>
+              <tr><td>Category</td><td>Mirrors</td></tr>
+              <tr><td>Origin</td><td>Kanpur Tanneries, India</td></tr>
+              <tr><td>Lead Time</td><td>5–7 Weeks</td></tr>
+              <tr><td>Customisation</td><td>Colour, Dimensions, Finish</td></tr>
+            </tbody>
+          </table>
+
+          <div class="tags-row">
+            <span class="tag">Full-Grain</span>
+            <span class="tag">Handcrafted</span>
+            <span class="tag">Mirrors</span>
+          </div>
+
+          <div class="price-row">
+            <div>
+              <div class="price-label">Wholesale / Export Price</div>
+              <div class="price-amount">On Request</div>
+            </div>
+            <div class="price-note">FOB India · MOQ 1 Piece</div>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+
+    <!-- BOTTOM DESCRIPTION BAND -->
+    <div class="bottom-band">
+      <p class="product-description">Leather-framed mirror with hand-stitched border detailing — a luxury accent for any interior.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT 28 / 28 — MODERN WALL MIRROR MINIMALIST RECTANGULAR VANITY MIRROR
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-28">
+
+    <!-- TOP BRAND BAND -->
+    <header class="top-band">
+      <div class="brand-name">HS <em>Global</em> Export</div>
+      <div class="top-meta">
+        <div class="category-badge">
+          <div class="cat-name">Leather Furniture</div>
+          <div class="subgroup-name">Storage &amp; Decor</div>
+        </div>
+        <div class="page-num-badge">28</div>
+      </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <div class="page-body">
+
+      <!-- LEFT IMAGE -->
+      <div class="product-image-wrap">
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587605/hs-global/leather/etsy/HSLMFBE1/1.webp" alt="Modern Wall Mirror Minimalist Rectangular Vanity Mirror — Leather Furniture by HS Global Export" loading="lazy" />
+        <div class="img-overlay"></div>
+        <div class="img-sku-badge">SKU · HSG-LTH-028</div>
+        <div class="stitch-edge">
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+          <div class="stitch-dot"></div><div class="stitch-dot"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT DETAILS -->
+      <aside class="product-details">
+
+        <!-- 4 THUMBNAIL IMAGES (top) -->
+        <div class="end-images">
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587605/hs-global/leather/etsy/HSLMFBE1/1.webp" alt="View 1" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587607/hs-global/leather/etsy/HSLMFBE1/2.webp" alt="View 2" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587609/hs-global/leather/etsy/HSLMFBE1/3.webp" alt="View 3" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587610/hs-global/leather/etsy/HSLMFBE1/4.webp" alt="View 4" loading="lazy" />
+        </div>
+
+        <!-- DESCRIPTION CONTENT (pushed to bottom) -->
+        <div class="desc-content">
+          <div>
+            <div class="product-sku">HSG-LTH-028</div>
+            <h1 class="product-name">Modern Wall Mirror Minimalist Rectangular Vanity Mirror</h1>
+            <div class="product-variant">Mirror Frames · Full-Grain Leather</div>
+          </div>
+
+          <div class="cognac-rule"></div>
+
+          <table class="spec-table">
+            <tbody>
+              <tr><td>Leather Type</td><td>Full-Grain Vegetable-Tanned</td></tr>
+              <tr><td>Category</td><td>Mirror Frames</td></tr>
+              <tr><td>Origin</td><td>Kanpur Tanneries, India</td></tr>
+              <tr><td>Lead Time</td><td>5–7 Weeks</td></tr>
+              <tr><td>Customisation</td><td>Colour, Dimensions, Finish</td></tr>
+            </tbody>
+          </table>
+
+          <div class="tags-row">
+            <span class="tag">Full-Grain</span>
+            <span class="tag">Handcrafted</span>
+            <span class="tag">Mirror Frames</span>
+          </div>
+
+          <div class="price-row">
+            <div>
+              <div class="price-label">Wholesale / Export Price</div>
+              <div class="price-amount">On Request</div>
+            </div>
+            <div class="price-note">FOB India · MOQ 1 Piece</div>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+
+    <!-- BOTTOM DESCRIPTION BAND -->
+    <div class="bottom-band">
+      <p class="product-description">Hand-upholstered leather mirror frame with exquisite stitch detailing and premium tannery leather.</p>
+      <div class="footer-contact">
+        HS Global Export<br/>
+        export@hsglobalexport.com · +91 98765 43210<br/>
+        www.hsglobalexport.com
+      </div>
+    </div>
+
+  </article>
+
+</body>
+</html>

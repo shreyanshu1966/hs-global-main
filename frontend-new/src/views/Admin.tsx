@@ -1484,7 +1484,27 @@ const Admin = () => {
                         </div>
                     </div>
 
-                    {/* Tabs */}
+                    {/* Live Chat Quick Access */}
+                    <div className="bg-gradient-to-r from-purple-50 to-violet-50 rounded-lg shadow-sm border border-purple-200 p-4 mb-6">
+                        <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                                <div className="p-2 bg-purple-600 rounded-lg">
+                                    <Mail className="w-5 h-5 text-white" />
+                                </div>
+                                <div>
+                                    <h3 className="text-sm font-semibold text-gray-900">Live Chat Management</h3>
+                                    <p className="text-xs text-gray-600">View and reply to customer chat messages in real time</p>
+                                </div>
+                            </div>
+                            <button
+                                onClick={() => navigate('/admin/chats')}
+                                className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-medium text-sm transition-colors flex items-center gap-2"
+                            >
+                                <Mail className="w-4 h-4" />
+                                Open Chats
+                            </button>
+                        </div>
+                    </div>
                     <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-1 mb-6">
                         <div className="grid grid-cols-10 gap-1">
                             <button

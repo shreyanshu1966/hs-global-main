@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HS Global Export — Semi Precious Stone Catalogue</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,300;0,400;1,100&family=Cinzel:wght@400;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─────────────────────────────────────────
+       SEMI PRECIOUS STONE BROCHURE — DESIGN SYSTEM
+       Palette: Deep Amethyst · Agate Teal · Crystal White · Rose Gold
+       Feel: Gemological · Scientific Beauty · Artisanal Luxury
+    ───────────────────────────────────────── */
+    :root {
+      --void:        #080610;
+      --deep:        #0D0B1A;
+      --amethyst:    #6B3FA0;
+      --amethyst-lt: #8B5CC0;
+      --teal:        #1A7A7A;
+      --teal-lt:     #2EA8A8;
+      --rose-gold:   #C8836A;
+      --rose-lt:     #D4A090;
+      --crystal:     #F0EEF8;
+      --fog:         #C4C0D4;
+      --muted:       #7A788C;
+      --rule:        rgba(107,63,160,0.3);
+
+      --ff-title:  'Cinzel', Georgia, serif;
+      --ff-body:   'Josefin Sans', system-ui, sans-serif;
+
+      --page-w: 297mm;
+      --page-h: 210mm;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    @page { size: A4 landscape; margin: 0; }
+
+    body {
+      font-family: var(--ff-body);
+      background: var(--void);
+      color: var(--crystal);
+    }
+
+    /* ── PAGE — deep background tinted to this page's stone colour ── */
+    .product-page {
+      --acc-rgb: 107,63,160;
+      --acc-lt:  #8B5CC0;
+      --page-bg: var(--deep);
+      width: var(--page-w);
+      height: var(--page-h);
+      background: var(--page-bg);
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: 82mm 1fr;
+      position: relative;
+      overflow: hidden;
+      page-break-after: always;
+      break-after: page;
+    }
+
+    /* ── LEFT — IMAGE PANEL ── */
+    .image-panel {
+      position: relative;
+      overflow: hidden;
+      background: var(--void);
+      z-index: 1;
+    }
+
+    .image-panel img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: saturate(1.15) contrast(1.05);
+    }
+
+    /* Gem facet overlay pattern */
+    .facet-overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(
+          to bottom right,
+          rgba(107,63,160,0.25) 0%,
+          transparent 30%,
+          transparent 60%,
+          rgba(8,6,16,0.45) 100%
+        );
+      z-index: 2;
+    }
+
+    /* Crystal refraction lines on left panel */
+    .refraction-lines {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .refraction-lines::before {
+      content: '';
+      position: absolute;
+      top: -20%; left: 30%;
+      width: 1px;
+      height: 150%;
+      background: linear-gradient(180deg, transparent, rgba(var(--acc-rgb),0.4), transparent);
+      transform: rotate(25deg);
+    }
+
+    .refraction-lines::after {
+      content: '';
+      position: absolute;
+      top: -20%; left: 60%;
+      width: 0.5px;
+      height: 150%;
+      background: linear-gradient(180deg, transparent, rgba(var(--acc-rgb),0.25), transparent);
+      transform: rotate(-15deg);
+    }
+
+    /* Stone type badge — top left of image */
+    .stone-badge {
+      position: absolute;
+      top: 7mm;
+      left: 7mm;
+      z-index: 6;
+    }
+
+    .stone-type {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(8,6,16,0.65);
+      backdrop-filter: blur(6px);
+      border: 0.5pt solid rgba(var(--acc-rgb),0.6);
+      padding: 3px 9px;
+    }
+
+    .stone-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--acc-lt);
+      display: inline-block;
+    }
+
+    .stone-type-name {
+      font-size: 6pt;
+      font-weight: 300;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--fog);
+    }
+
+    /* Hardness scale bottom left */
+    .hardness-badge {
+      position: absolute;
+      bottom: 7mm;
+      left: 7mm;
+      z-index: 6;
+      background: rgba(8,6,16,0.7);
+      border-top: 1pt solid var(--acc-lt);
+      padding: 4px 8px;
+    }
+
+    .hardness-label {
+      font-size: 5pt;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: block;
+    }
+
+    .hardness-value {
+      font-family: var(--ff-title);
+      font-size: 13pt;
+      color: var(--acc-lt);
+      line-height: 1.1;
+    }
+
+    .hardness-scale {
+      font-size: 5pt;
+      color: var(--muted);
+    }
+
+    /* SKU bottom right of image */
+    .img-sku {
+      position: absolute;
+      bottom: 7mm;
+      right: 8mm;
+      font-size: 5.5pt;
+      font-weight: 300;
+      letter-spacing: 0.3em;
+      color: rgba(196,192,212,0.6);
+      text-transform: uppercase;
+      z-index: 6;
+    }
+
+    /* ── BOTTOM — CONTENT ROW (info left · description right) ── */
+    .content-row {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      border-top: 0.5pt solid rgba(var(--acc-rgb),0.4);
+      overflow: hidden;
+    }
+
+    .info-panel {
+      padding: 5mm 8mm 5mm 9mm;
+      display: flex;
+      flex-direction: column;
+      gap: 2.5mm;
+      overflow: hidden;
+    }
+
+    .desc-panel {
+      padding: 5mm 9mm 5mm 8mm;
+      border-left: 0.5pt solid rgba(var(--acc-rgb),0.4);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+
+    .desc-eyebrow {
+      font-size: 6pt;
+      font-weight: 300;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--acc-lt);
+      margin-bottom: 3mm;
+    }
+
+    .desc-footer {
+      margin-top: 5mm;
+    }
+
+    .gem-rule-mini {
+      height: 1pt;
+      background: linear-gradient(90deg, var(--acc-lt), transparent);
+      margin-bottom: 3mm;
+    }
+
+    /* Brand header */
+    .brand-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .brand-name {
+      font-family: var(--ff-title);
+      font-size: 9pt;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      color: var(--fog);
+    }
+
+    .brand-sub {
+      font-size: 5.5pt;
+      font-weight: 100;
+      letter-spacing: 0.25em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-top: 1.5px;
+    }
+
+    .page-indicator {
+      font-size: 7pt;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      color: var(--acc-lt);
+    }
+
+    /* Gradient rule */
+    .gem-rule {
+      height: 1pt;
+      background: linear-gradient(90deg, var(--acc-lt), rgba(var(--acc-rgb),0) 100%);
+    }
+
+    /* Category header */
+    .cat-header {
+      font-size: 6pt;
+      font-weight: 300;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--acc-lt);
+    }
+
+    /* Product name */
+    .product-name {
+      font-family: var(--ff-title);
+      font-size: 18pt;
+      font-weight: 400;
+      color: var(--crystal);
+      line-height: 1.05;
+      letter-spacing: 0.05em;
+    }
+
+    .product-variant {
+      font-size: 7pt;
+      font-weight: 100;
+      letter-spacing: 0.25em;
+      color: var(--rose-lt);
+      text-transform: uppercase;
+      margin-top: 1mm;
+    }
+
+    /* Gemological data box */
+    .gem-data-box {
+      background: rgba(var(--acc-rgb),0.08);
+      border: 0.5pt solid rgba(var(--acc-rgb),0.35);
+      padding: 2mm 4mm;
+    }
+
+    .gem-data-title {
+      font-size: 5pt;
+      font-weight: 400;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--acc-lt);
+      margin-bottom: 1.5mm;
+    }
+
+    .gem-props {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5mm;
+    }
+
+    .gem-prop {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .gem-prop-label {
+      font-size: 5pt;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .gem-prop-value {
+      font-size: 7pt;
+      font-weight: 400;
+      color: var(--crystal);
+      letter-spacing: 0.05em;
+    }
+
+    /* ── SPEC TABLE ── */
+    .spec-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 7pt;
+    }
+
+    .spec-table tr {
+      border-bottom: 0.4pt solid rgba(var(--acc-rgb),0.18);
+    }
+    .spec-table tr:last-child { border-bottom: none; }
+
+    .spec-table td {
+      padding: 1.2mm 0;
+      vertical-align: top;
+      line-height: 1.3;
+    }
+
+    .spec-table td:first-child {
+      font-weight: 400;
+      font-size: 6pt;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      width: 40%;
+      padding-right: 3mm;
+    }
+
+    .spec-table td:last-child {
+      color: var(--fog);
+      font-weight: 300;
+    }
+
+    /* ── STONE SPECTRUM CHIPS ── */
+    .spectrum-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 3px;
+    }
+
+    .spectrum-chip {
+      background: transparent;
+      border: 0.5pt solid rgba(var(--acc-rgb),0.55);
+      color: var(--acc-lt);
+      font-size: 5.5pt;
+      font-weight: 300;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      padding: 2px 7px;
+    }
+
+    .spectrum-chip.teal {
+      border-color: rgba(var(--acc-rgb),0.7);
+      color: var(--acc-lt);
+    }
+
+    .spectrum-chip.rose {
+      border-color: rgba(var(--acc-rgb),0.4);
+      color: var(--acc-lt);
+    }
+
+    /* ── PRICE ROW ── */
+    .price-row {
+      margin-top: auto;
+      padding-top: 2mm;
+      border-top: 0.5pt solid rgba(var(--acc-rgb),0.3);
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+    }
+
+    .price-label {
+      font-size: 5.5pt;
+      font-weight: 300;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1px;
+    }
+
+    .price-amount {
+      font-family: var(--ff-title);
+      font-size: 15pt;
+      font-weight: 400;
+      color: var(--acc-lt);
+      line-height: 1;
+    }
+
+    .price-note {
+      font-size: 5.5pt;
+      color: var(--muted);
+      margin-bottom: 3px;
+      font-weight: 300;
+    }
+
+    /* ── DESCRIPTION PANEL TEXT (right column of content row) ── */
+    .product-description {
+      font-size: 8.5pt;
+      font-weight: 100;
+      font-style: italic;
+      letter-spacing: 0.03em;
+      color: rgba(240,238,248,0.85);
+      line-height: 1.8;
+      font-family: var(--ff-body);
+    }
+
+    .footer-contact {
+      font-size: 5.5pt;
+      font-weight: 300;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(240,238,248,0.55);
+      text-align: left;
+      line-height: 2;
+    }
+
+    @media screen {
+      body { padding: 20px; display: flex; flex-direction: column; gap: 20px; align-items: center; }
+      .product-page { box-shadow: 0 20px 100px rgba(107,63,160,0.4); }
+      .cover-page   { box-shadow: 0 20px 100px rgba(107,63,160,0.5); }
+    }
+    @media print {
+      body { background: none; padding: 0; }
+    }
+
+    /* ═══════════════════════════════════════════
+       COVER PAGE — SEMI PRECIOUS STONE
+       Layout: Full-width cosmic / nebula feel
+       Left: gem wheel + text | Right: hero image
+    ═══════════════════════════════════════════ */
+    .cover-page {
+      width: var(--page-w);
+      height: var(--page-h);
+      background: var(--void);
+      display: grid;
+      grid-template-columns: 1fr 130mm;
+      grid-template-rows: 1fr;
+      position: relative;
+      overflow: hidden;
+      page-break-after: always;
+      break-after: page;
+    }
+
+    /* Full-page cosmic nebula gradient */
+    .cover-page::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 100% 100% at 30% 50%, rgba(107,63,160,0.22) 0%, transparent 60%),
+        radial-gradient(ellipse 80% 80% at 5%  80%,  rgba(26,122,122,0.15) 0%, transparent 50%),
+        radial-gradient(ellipse 60% 60% at 65% 15%,  rgba(200,131,106,0.10) 0%, transparent 40%),
+        radial-gradient(ellipse 50% 50% at 95% 90%,  rgba(107,63,160,0.12) 0%, transparent 35%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Star field dots */
+    .cover-page::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(1px 1px at 15% 20%, rgba(240,238,248,0.5) 0%, transparent 100%),
+        radial-gradient(1px 1px at 40% 70%, rgba(240,238,248,0.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 60% 30%, rgba(240,238,248,0.3) 0%, transparent 100%),
+        radial-gradient(1px 1px at 80% 55%, rgba(240,238,248,0.5) 0%, transparent 100%),
+        radial-gradient(1px 1px at 25% 85%, rgba(240,238,248,0.3) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 10% 50%, rgba(200,131,106,0.6) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 55% 90%, rgba(46,168,168,0.5) 0%, transparent 100%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* LEFT — content panel */
+    .cover-left {
+      grid-column: 1;
+      grid-row: 1;
+      position: relative;
+      z-index: 4;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 14mm 10mm 14mm 16mm;
+      gap: 6mm;
+    }
+
+    .cover-eyebrow {
+      font-size: 6pt;
+      font-weight: 300;
+      letter-spacing: 0.55em;
+      text-transform: uppercase;
+      color: var(--teal-lt);
+    }
+
+    .cover-headline {
+      font-family: var(--ff-title);
+      font-size: 44pt;
+      font-weight: 400;
+      line-height: 1.0;
+      color: var(--crystal);
+      letter-spacing: 0.06em;
+    }
+
+    .cover-headline span {
+      display: block;
+      font-size: 22pt;
+      color: var(--amethyst-lt);
+      letter-spacing: 0.15em;
+      margin-top: 2mm;
+    }
+
+    /* Amethyst-to-teal gradient rule */
+    .cover-gem-rule {
+      width: 100%;
+      height: 1pt;
+      background: linear-gradient(90deg, var(--amethyst), var(--teal-lt) 60%, transparent);
+    }
+
+    .cover-tagline {
+      font-size: 9.5pt;
+      font-weight: 100;
+      font-style: italic;
+      letter-spacing: 0.06em;
+      color: rgba(196,192,212,0.8);
+      line-height: 1.7;
+      max-width: 100mm;
+    }
+
+    /* Stone variety grid */
+    .stone-variety-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+      margin-top: 2mm;
+    }
+
+    .stone-variety-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 0;
+      border-bottom: 0.3pt solid rgba(107,63,160,0.2);
+    }
+
+    .variety-gem-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    /* Simulated gem shimmer inner ring */
+    .variety-gem-dot::after {
+      content: '';
+      position: absolute;
+      inset: 2px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+    }
+
+    .variety-name {
+      font-size: 6pt;
+      font-weight: 300;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(196,192,212,0.65);
+    }
+
+    /* Brand bottom left */
+    .cover-brand {
+      position: absolute;
+      bottom: 12mm;
+      left: 16mm;
+      z-index: 5;
+    }
+
+    .cover-brand-name {
+      font-family: var(--ff-title);
+      font-size: 9pt;
+      font-weight: 400;
+      letter-spacing: 0.22em;
+      color: var(--fog);
+      opacity: 0.7;
+    }
+
+    .cover-brand-sub {
+      font-size: 5.5pt;
+      font-weight: 100;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    /* RIGHT — image panel */
+    .cover-right {
+      grid-column: 2;
+      grid-row: 1;
+      position: relative;
+      overflow: hidden;
+      z-index: 3;
+      border-left: 0.5pt solid rgba(107,63,160,0.35);
+    }
+
+    .cover-right img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: saturate(1.2) contrast(1.05);
+      mix-blend-mode: screen;
+      opacity: 0.6;
+    }
+
+    .cover-right-overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to left, transparent 30%, rgba(8,6,16,0.7) 100%),
+        linear-gradient(to bottom, rgba(107,63,160,0.3) 0%, transparent 30%),
+        radial-gradient(ellipse 120% 120% at 50% 50%, rgba(107,63,160,0.2) 0%, transparent 70%);
+      z-index: 2;
+    }
+
+    /* Gemological data overlay on image */
+    .cover-gem-data {
+      position: absolute;
+      top: 10mm;
+      left: 10mm;
+      right: 10mm;
+      z-index: 5;
+    }
+
+    .cover-stone-count {
+      font-family: var(--ff-title);
+      font-size: 40pt;
+      font-weight: 600;
+      color: rgba(107,63,160,0.3);
+      line-height: 1;
+    }
+
+    .cover-stone-label {
+      font-size: 6pt;
+      font-weight: 300;
+      letter-spacing: 0.45em;
+      text-transform: uppercase;
+      color: rgba(196,192,212,0.5);
+      margin-top: -2mm;
+    }
+
+    /* Contact bottom of image */
+    .cover-contact-strip {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 14mm;
+      background: linear-gradient(90deg, var(--amethyst) 0%, var(--teal) 100%);
+      opacity: 0.85;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 6;
+    }
+
+    .cover-contact-text {
+      font-size: 5.5pt;
+      font-weight: 300;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(240,238,248,0.8);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ════════════════════════════════════════════
+       COVER PAGE — SEMI PRECIOUS STONE
+  ════════════════════════════════════════════ -->
+  <article class="cover-page" id="cover">
+
+    <!-- LEFT — CONTENT -->
+    <div class="cover-left">
+
+      <div class="cover-eyebrow">Exclusive Export Collection</div>
+
+      <h1 class="cover-headline">
+        Semi Precious
+        <span>Stone</span>
+      </h1>
+
+      <div class="cover-gem-rule"></div>
+
+      <p class="cover-tagline">
+        Natural agate, quartz, onyx & gemstone decoratives — sourced from 
+        certified Rajasthan quarries and hand-finished by master lapidaries. 
+        Each piece is a geological artefact, unrepeatable in colour and form.
+      </p>
+
+      <!-- Stone varieties -->
+      <div class="stone-variety-grid">
+        <div class="stone-variety-item">
+          <div class="variety-gem-dot" style="background: #6B3FA0;"></div>
+          <span class="variety-name">Amethyst</span>
+        </div>
+        <div class="stone-variety-item">
+          <div class="variety-gem-dot" style="background: #2EA8A8;"></div>
+          <span class="variety-name">Blue Agate</span>
+        </div>
+        <div class="stone-variety-item">
+          <div class="variety-gem-dot" style="background: #C8836A;"></div>
+          <span class="variety-name">Rose Quartz</span>
+        </div>
+        <div class="stone-variety-item">
+          <div class="variety-gem-dot" style="background: #4A8A4A;"></div>
+          <span class="variety-name">Green Onyx</span>
+        </div>
+        <div class="stone-variety-item">
+          <div class="variety-gem-dot" style="background: #F5C842;"></div>
+          <span class="variety-name">Yellow Agate</span>
+        </div>
+        <div class="stone-variety-item">
+          <div class="variety-gem-dot" style="background: #C8C8C8;"></div>
+          <span class="variety-name">White Quartz</span>
+        </div>
+      </div>
+
+      <div class="cover-brand">
+        <div class="cover-brand-name">HS Global Export</div>
+        <div class="cover-brand-sub">Semi Precious Stone Collection · Est. 2004</div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT — IMAGE PANEL -->
+    <div class="cover-right">
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1780647053/hs-global/products/semi-precious-stone/Quartz/file_hjagkc.jpg" alt="Semi Precious Stone — HS Global Export Cover" />
+      <!-- ↑ Replace COVER_IMAGE_URL with a hero gem/stone product image -->
+      <div class="cover-right-overlay"></div>
+
+      <div class="cover-gem-data">
+        <div class="cover-stone-count">~7</div>
+        <div class="cover-stone-label">Live Stone Varieties</div>
+      </div>
+
+      <div class="cover-contact-strip">
+        <div class="cover-contact-text">
+          export@hsglobalexport.com &nbsp;·&nbsp; +91 98765 43210 &nbsp;·&nbsp; www.hsglobalexport.com
+        </div>
+      </div>
+    </div>
+
+  </article>
+  <!-- END COVER PAGE -->
+
+
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT PAGE 1 — AGATE SLAB
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-1" style="--acc-rgb:155,89,182; --acc-lt:#C79EDD; --page-bg:#1C1228;">
+
+    <!-- LEFT — IMAGE PANEL -->
+    <div class="image-panel">
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1780563752/hs-global/products/semi-precious-stone/Agate%20Slabs/file_bbdwi4.webp" alt="Agate Slab Product — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <div class="facet-overlay"></div>
+      <div class="refraction-lines"></div>
+
+      <!-- Stone type badge -->
+      <div class="stone-badge">
+        <div class="stone-type">
+          <span class="stone-dot" style="background: #9B59B6;"></span>
+          <span class="stone-type-name">Agate · Banded Silica</span>
+        </div>
+      </div>
+
+      <!-- Mohs hardness badge -->
+      <div class="hardness-badge">
+        <span class="hardness-label">Mohs Hardness</span>
+        <div class="hardness-value">6.5–7</div>
+        <div class="hardness-scale">on 10-point scale</div>
+      </div>
+
+      <div class="img-sku">SKU · HSG-SPS-001</div>
+    </div>
+
+    <!-- BOTTOM — CONTENT ROW -->
+    <div class="content-row">
+
+      <!-- LEFT — PRODUCT INFO -->
+      <div class="info-panel">
+
+        <div class="brand-bar">
+          <div>
+            <div class="brand-name">HS Global Export</div>
+            <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
+          </div>
+          <div class="page-indicator">01 / 05</div>
+        </div>
+
+        <div class="gem-rule"></div>
+
+        <div class="cat-header">Semi Precious Stone — Agate Slabs Series</div>
+
+        <div>
+          <h1 class="product-name">Natural Agate Slab</h1>
+          <div class="product-variant">Hand-Polished · Natural Geode Slice</div>
+        </div>
+
+        <!-- Gemological data box -->
+        <div class="gem-data-box">
+          <div class="gem-data-title">Gemological Properties</div>
+          <div class="gem-props">
+            <div class="gem-prop">
+              <span class="gem-prop-label">Mineral Group</span>
+              <span class="gem-prop-value">Chalcedony / Quartz</span>
+            </div>
+            <div class="gem-prop">
+              <span class="gem-prop-label">Crystal System</span>
+              <span class="gem-prop-value">Trigonal</span>
+            </div>
+            <div class="gem-prop">
+              <span class="gem-prop-label">Colour Origin</span>
+              <span class="gem-prop-value">Trace Iron Oxide</span>
+            </div>
+            <div class="gem-prop">
+              <span class="gem-prop-label">Transparency</span>
+              <span class="gem-prop-value">Translucent to Opaque</span>
+            </div>
+          </div>
+        </div>
+
+        <table class="spec-table">
+          <tbody>
+            <tr><td>Product Type</td><td>Decorative Slab</td></tr>
+            <tr><td>Dimensions</td><td>60 × 40 × 3 cm (approx.)</td></tr>
+            <tr><td>Finish</td><td>High-Polish, Natural Edge</td></tr>
+            <tr><td>Origin</td><td>Gujarat, India</td></tr>
+            <tr><td>Lead Time</td><td>2–4 Weeks</td></tr>
+            <tr><td>Sold As</td><td>Single Piece</td></tr>
+          </tbody>
+        </table>
+
+        <div class="spectrum-row">
+          <span class="spectrum-chip">Agate</span><span class="spectrum-chip teal">Natural Banding</span><span class="spectrum-chip">Polished</span>
+        </div>
+
+        <div class="price-row">
+          <div>
+            <div class="price-label">Export Price</div>
+            <div class="price-amount">USD 350</div>
+          </div>
+          <div class="price-note">FOB Jaipur<br/>MOQ 1 piece</div>
+        </div>
+
+      </div><!-- end .info-panel -->
+
+      <!-- RIGHT — DESCRIPTION -->
+      <div class="desc-panel">
+        <div>
+          <div class="desc-eyebrow">The Provenance</div>
+          <p class="product-description">
+            Extracted from large geodes, these natural Agate Slabs feature stunning concentric banding and rich earthy tones. Polished to perfection, they bring an undeniable geological elegance to any luxury interior space.
+          </p>
+        </div>
+        <div class="desc-footer">
+          <div class="gem-rule-mini"></div>
+          <div class="footer-contact">
+            export@hsglobalexport.com<br/>
+            +91 98765 43210<br/>
+            www.hsglobalexport.com
+          </div>
+        </div>
+      </div><!-- end .desc-panel -->
+
+    </div><!-- end .content-row -->
+
+  </article>
+  <!-- END PRODUCT PAGE 1 -->
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT PAGE 2 — AGATE
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-2" style="--acc-rgb:26,122,122; --acc-lt:#2EA8A8; --page-bg:#0E2323;">
+
+    <!-- LEFT — IMAGE PANEL -->
+    <div class="image-panel">
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1780566317/hs-global/preview/semi-precious-stone/Agate/file_aci3di.webp" alt="Agate Product — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <div class="facet-overlay"></div>
+      <div class="refraction-lines"></div>
+
+      <!-- Stone type badge -->
+      <div class="stone-badge">
+        <div class="stone-type">
+          <span class="stone-dot" style="background: #2EA8A8;"></span>
+          <span class="stone-type-name">Blue Agate · Chalcedony</span>
+        </div>
+      </div>
+
+      <!-- Mohs hardness badge -->
+      <div class="hardness-badge">
+        <span class="hardness-label">Mohs Hardness</span>
+        <div class="hardness-value">6.5–7</div>
+        <div class="hardness-scale">on 10-point scale</div>
+      </div>
+
+      <div class="img-sku">SKU · HSG-SPS-002</div>
+    </div>
+
+    <!-- BOTTOM — CONTENT ROW -->
+    <div class="content-row">
+
+      <!-- LEFT — PRODUCT INFO -->
+      <div class="info-panel">
+
+        <div class="brand-bar">
+          <div>
+            <div class="brand-name">HS Global Export</div>
+            <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
+          </div>
+          <div class="page-indicator">02 / 05</div>
+        </div>
+
+        <div class="gem-rule"></div>
+
+        <div class="cat-header">Semi Precious Stone — Agate Series</div>
+
+        <div>
+          <h1 class="product-name">Blue Lace Agate Tray</h1>
+          <div class="product-variant">Hand-Polished · Natural Geode Slice · Pair</div>
+        </div>
+
+        <!-- Gemological data box -->
+        <div class="gem-data-box">
+          <div class="gem-data-title">Gemological Properties</div>
+          <div class="gem-props">
+            <div class="gem-prop">
+              <span class="gem-prop-label">Mineral Group</span>
+              <span class="gem-prop-value">Chalcedony / Quartz</span>
+            </div>
+            <div class="gem-prop">
+              <span class="gem-prop-label">Crystal System</span>
+              <span class="gem-prop-value">Trigonal</span>
+            </div>
+            <div class="gem-prop">
+              <span class="gem-prop-label">Colour Origin</span>
+              <span class="gem-prop-value">Trace Iron Oxide</span>
+            </div>
+            <div class="gem-prop">
+              <span class="gem-prop-label">Transparency</span>
+              <span class="gem-prop-value">Translucent to Opaque</span>
+            </div>
+          </div>
+        </div>
+
+        <table class="spec-table">
+          <tbody>
+            <tr><td>Product Type</td><td>Decorative Serving Tray</td></tr>
+            <tr><td>Dimensions</td><td>35 × 22 × 2.5 cm (approx.)</td></tr>
+            <tr><td>Finish</td><td>High-Polish, Gold-Plated Edge</td></tr>
+            <tr><td>Origin</td><td>Rajasthan, India</td></tr>
+            <tr><td>Lead Time</td><td>2–4 Weeks</td></tr>
+            <tr><td>Sold As</td><td>Pair (2 pieces, naturally matched)</td></tr>
+          </tbody>
+        </table>
+
+        <div class="spectrum-row">
+          <span class="spectrum-chip">Blue Agate</span><span class="spectrum-chip teal">Natural Banding</span><span class="spectrum-chip rose">Gold Edge</span><span class="spectrum-chip">Polished</span>
+        </div>
+
+        <div class="price-row">
+          <div>
+            <div class="price-label">Export Price</div>
+            <div class="price-amount">USD 380</div>
+          </div>
+          <div class="price-note">FOB Jaipur<br/>MOQ 2 pairs</div>
+        </div>
+
+      </div><!-- end .info-panel -->
+
+      <!-- RIGHT — DESCRIPTION -->
+      <div class="desc-panel">
+        <div>
+          <div class="desc-eyebrow">The Provenance</div>
+          <p class="product-description">
+            Matched from the same geode formation for natural colour continuity, these Blue Lace Agate trays display the stone's characteristic powder-blue and white banding — each one an unrepeatable geological record formed over millions of years.
+          </p>
+        </div>
+        <div class="desc-footer">
+          <div class="gem-rule-mini"></div>
+          <div class="footer-contact">
+            export@hsglobalexport.com<br/>
+            +91 98765 43210<br/>
+            www.hsglobalexport.com
+          </div>
+        </div>
+      </div><!-- end .desc-panel -->
+
+    </div><!-- end .content-row -->
+
+  </article>
+  <!-- END PRODUCT PAGE 2 -->
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT PAGE 3 — MOTHER OF PEARL
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-3" style="--acc-rgb:180,190,212; --acc-lt:#E8EDF5; --page-bg:#1A1D24;">
+
+    <!-- LEFT — IMAGE PANEL -->
+    <div class="image-panel">
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1780575898/hs-global/products/semi-precious-stone/Mother%20Of%20Pearl/file_chzcx4.webp" alt="Mother Of Pearl Product — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <div class="facet-overlay"></div>
+      <div class="refraction-lines"></div>
+
+      <!-- Stone type badge -->
+      <div class="stone-badge">
+        <div class="stone-type">
+          <span class="stone-dot" style="background: #F0EEF8;"></span>
+          <span class="stone-type-name">Nacre · Calcium Carbonate</span>
+        </div>
+      </div>
+
+      <!-- Mohs hardness badge -->
+      <div class="hardness-badge">
+        <span class="hardness-label">Mohs Hardness</span>
+        <div class="hardness-value">2.5–4.5</div>
+        <div class="hardness-scale">on 10-point scale</div>
+      </div>
+
+      <div class="img-sku">SKU · HSG-SPS-003</div>
+    </div>
+
+    <!-- BOTTOM — CONTENT ROW -->
+    <div class="content-row">
+
+      <!-- LEFT — PRODUCT INFO -->
+      <div class="info-panel">
+
+        <div class="brand-bar">
+          <div>
+            <div class="brand-name">HS Global Export</div>
+            <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
+          </div>
+          <div class="page-indicator">03 / 05</div>
+        </div>
+
+        <div class="gem-rule"></div>
+
+        <div class="cat-header">Semi Precious Stone — Organic Gem Series</div>
+
+        <div>
+          <h1 class="product-name">Mother Of Pearl Inlay Table</h1>
+          <div class="product-variant">Handcrafted Inlay · Geometric Pattern</div>
+        </div>
+
+        <!-- Gemological data box -->
+        <div class="gem-data-box">
+          <div class="gem-data-title">Gemological Properties</div>
+          <div class="gem-props">
+            <div class="gem-prop">
+              <span class="gem-prop-label">Mineral Group</span>
+              <span class="gem-prop-value">Aragonite</span>
+            </div>
+            <div class="gem-prop">
+              <span class="gem-prop-label">Crystal System</span>
+              <span class="gem-prop-value">Orthorhombic</span>
+            </div>
+            <div class="gem-prop">
+              <span class="gem-prop-label">Colour Origin</span>
+              <span class="gem-prop-value">Organic secretion</span>
+            </div>
+            <div class="gem-prop">
+              <span class="gem-prop-label">Transparency</span>
+              <span class="gem-prop-value">Opaque to Translucent</span>
+            </div>
+          </div>
+        </div>
+
+        <table class="spec-table">
+          <tbody>
+            <tr><td>Product Type</td><td>Inlay Furniture / Decor</td></tr>
+            <tr><td>Dimensions</td><td>Various sizes available</td></tr>
+            <tr><td>Finish</td><td>Polished Resin & Shell</td></tr>
+            <tr><td>Origin</td><td>Coastal India</td></tr>
+            <tr><td>Lead Time</td><td>4–6 Weeks</td></tr>
+            <tr><td>Sold As</td><td>Single Piece</td></tr>
+          </tbody>
+        </table>
+
+        <div class="spectrum-row">
+          <span class="spectrum-chip">Nacre</span><span class="spectrum-chip teal">Iridescent</span><span class="spectrum-chip">Handcrafted Inlay</span>
+        </div>
+
+        <div class="price-row">
+          <div>
+            <div class="price-label">Export Price</div>
+            <div class="price-amount">USD 250</div>
+          </div>
+          <div class="price-note">FOB Jaipur<br/>MOQ 5 pieces</div>
+        </div>
+
+      </div><!-- end .info-panel -->
+
+      <!-- RIGHT — DESCRIPTION -->
+      <div class="desc-panel">
+        <div>
+          <div class="desc-eyebrow">The Provenance</div>
+          <p class="product-description">
+            Crafted with precision, our Mother of Pearl inlay pieces showcase the iridescent beauty of natural nacre. The meticulous geometric patterns reflect light beautifully, creating a sophisticated and timeless aesthetic.
+          </p>
+        </div>
+        <div class="desc-footer">
+          <div class="gem-rule-mini"></div>
+          <div class="footer-contact">
+            export@hsglobalexport.com<br/>
+            +91 98765 43210<br/>
+            www.hsglobalexport.com
+          </div>
+        </div>
+      </div><!-- end .desc-panel -->
+
+    </div><!-- end .content-row -->
+
+  </article>
+  <!-- END PRODUCT PAGE 3 -->
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT PAGE 4 — PETRIFIED WOOD
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-4" style="--acc-rgb:139,90,43; --acc-lt:#D9A15C; --page-bg:#1F150C;">
+
+    <!-- LEFT — IMAGE PANEL -->
+    <div class="image-panel">
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1780652336/hs-global/products/semi-precious-stone/petrified%20wood/file_abqjgh.jpg" alt="Petrified Wood Product — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <div class="facet-overlay"></div>
+      <div class="refraction-lines"></div>
+
+      <!-- Stone type badge -->
+      <div class="stone-badge">
+        <div class="stone-type">
+          <span class="stone-dot" style="background: #8B5A2B;"></span>
+          <span class="stone-type-name">Petrified Wood · Fossilized Silica</span>
+        </div>
+      </div>
+
+      <!-- Mohs hardness badge -->
+      <div class="hardness-badge">
+        <span class="hardness-label">Mohs Hardness</span>
+        <div class="hardness-value">6.5–7.5</div>
+        <div class="hardness-scale">on 10-point scale</div>
+      </div>
+
+      <div class="img-sku">SKU · HSG-SPS-004</div>
+    </div>
+
+    <!-- BOTTOM — CONTENT ROW -->
+    <div class="content-row">
+
+      <!-- LEFT — PRODUCT INFO -->
+      <div class="info-panel">
+
+        <div class="brand-bar">
+          <div>
+            <div class="brand-name">HS Global Export</div>
+            <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
+          </div>
+          <div class="page-indicator">04 / 05</div>
+        </div>
+
+        <div class="gem-rule"></div>
+
+        <div class="cat-header">Semi Precious Stone — Fossilized Series</div>
+
+        <div>
+          <h1 class="product-name">Petrified Wood Table Top</h1>
+          <div class="product-variant">Polished Slice · Natural Bark Edge</div>
+        </div>
+
+        <!-- Gemological data box -->
+        <div class="gem-data-box">
+          <div class="gem-data-title">Gemological Properties</div>
+          <div class="gem-props">
+            <div class="gem-prop">
+              <span class="gem-prop-label">Mineral Group</span>
+              <span class="gem-prop-value">Microcrystalline Quartz</span>
+            </div>
+            <div class="gem-prop">
+              <span class="gem-prop-label">Crystal System</span>
+              <span class="gem-prop-value">Trigonal</span>
+            </div>
+            <div class="gem-prop">
+              <span class="gem-prop-label">Colour Origin</span>
+              <span class="gem-prop-value">Trace Minerals (Iron, Carbon)</span>
+            </div>
+            <div class="gem-prop">
+              <span class="gem-prop-label">Transparency</span>
+              <span class="gem-prop-value">Opaque</span>
+            </div>
+          </div>
+        </div>
+
+        <table class="spec-table">
+          <tbody>
+            <tr><td>Product Type</td><td>Table Top</td></tr>
+            <tr><td>Dimensions</td><td>80 × 60 × 5 cm (approx.)</td></tr>
+            <tr><td>Finish</td><td>High-Polish Top, Natural Edge</td></tr>
+            <tr><td>Origin</td><td>Madagascar / India</td></tr>
+            <tr><td>Lead Time</td><td>3–5 Weeks</td></tr>
+            <tr><td>Sold As</td><td>Single Piece</td></tr>
+          </tbody>
+        </table>
+
+        <div class="spectrum-row">
+          <span class="spectrum-chip">Petrified Wood</span><span class="spectrum-chip rose">Fossilized</span><span class="spectrum-chip">Natural Edge</span>
+        </div>
+
+        <div class="price-row">
+          <div>
+            <div class="price-label">Export Price</div>
+            <div class="price-amount">USD 650</div>
+          </div>
+          <div class="price-note">FOB Jaipur<br/>MOQ 1 piece</div>
+        </div>
+
+      </div><!-- end .info-panel -->
+
+      <!-- RIGHT — DESCRIPTION -->
+      <div class="desc-panel">
+        <div>
+          <div class="desc-eyebrow">The Provenance</div>
+          <p class="product-description">
+            A slice of ancient history, our Petrified Wood table tops feature the preserved cell structure of prehistoric trees, replaced molecule by molecule with silica over millions of years. A stunning conversation piece for any room.
+          </p>
+        </div>
+        <div class="desc-footer">
+          <div class="gem-rule-mini"></div>
+          <div class="footer-contact">
+            export@hsglobalexport.com<br/>
+            +91 98765 43210<br/>
+            www.hsglobalexport.com
+          </div>
+        </div>
+      </div><!-- end .desc-panel -->
+
+    </div><!-- end .content-row -->
+
+  </article>
+  <!-- END PRODUCT PAGE 4 -->
+
+  <!-- ════════════════════════════════════════════
+       PRODUCT PAGE 5 — TIGER EYE
+  ════════════════════════════════════════════ -->
+  <article class="product-page" id="product-5" style="--acc-rgb:218,165,32; --acc-lt:#F0C440; --page-bg:#241C08;">
+
+    <!-- LEFT — IMAGE PANEL -->
+    <div class="image-panel">
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1780637866/hs-global/products/semi-precious-stone/Tiger%20eye/file_aauh1u.webp" alt="Tiger Eye Product — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <div class="facet-overlay"></div>
+      <div class="refraction-lines"></div>
+
+      <!-- Stone type badge -->
+      <div class="stone-badge">
+        <div class="stone-type">
+          <span class="stone-dot" style="background: #DAA520;"></span>
+          <span class="stone-type-name">Tiger Eye · Chatoyant Quartz</span>
+        </div>
+      </div>
+
+      <!-- Mohs hardness badge -->
+      <div class="hardness-badge">
+        <span class="hardness-label">Mohs Hardness</span>
+        <div class="hardness-value">7.0</div>
+        <div class="hardness-scale">on 10-point scale</div>
+      </div>
+
+      <div class="img-sku">SKU · HSG-SPS-005</div>
+    </div>
+
+    <!-- BOTTOM — CONTENT ROW -->
+    <div class="content-row">
+
+      <!-- LEFT — PRODUCT INFO -->
+      <div class="info-panel">
+
+        <div class="brand-bar">
+          <div>
+            <div class="brand-name">HS Global Export</div>
+            <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
+          </div>
+          <div class="page-indicator">05 / 05</div>
+        </div>
+
+        <div class="gem-rule"></div>
+
+        <div class="cat-header">Semi Precious Stone — Tiger Eye Series</div>
+
+        <div>
+          <h1 class="product-name">Golden Tiger Eye Block</h1>
+          <div class="product-variant">Polished Block · High Chatoyancy</div>
+        </div>
+
+        <!-- Gemological data box -->
+        <div class="gem-data-box">
+          <div class="gem-data-title">Gemological Properties</div>
+          <div class="gem-props">
+            <div class="gem-prop">
+              <span class="gem-prop-label">Mineral Group</span>
+              <span class="gem-prop-value">Quartz</span>
+            </div>
+            <div class="gem-prop">
+              <span class="gem-prop-label">Crystal System</span>
+              <span class="gem-prop-value">Trigonal</span>
+            </div>
+            <div class="gem-prop">
+              <span class="gem-prop-label">Colour Origin</span>
+              <span class="gem-prop-value">Iron Oxide</span>
+            </div>
+            <div class="gem-prop">
+              <span class="gem-prop-label">Transparency</span>
+              <span class="gem-prop-value">Opaque</span>
+            </div>
+          </div>
+        </div>
+
+        <table class="spec-table">
+          <tbody>
+            <tr><td>Product Type</td><td>Decorative Block</td></tr>
+            <tr><td>Dimensions</td><td>15 × 10 × 10 cm</td></tr>
+            <tr><td>Finish</td><td>High-Polish All Sides</td></tr>
+            <tr><td>Origin</td><td>South Africa / India</td></tr>
+            <tr><td>Lead Time</td><td>2–4 Weeks</td></tr>
+            <tr><td>Sold As</td><td>Single Piece</td></tr>
+          </tbody>
+        </table>
+
+        <div class="spectrum-row">
+          <span class="spectrum-chip">Tiger Eye</span><span class="spectrum-chip teal">Chatoyant</span><span class="spectrum-chip rose">Polished</span>
+        </div>
+
+        <div class="price-row">
+          <div>
+            <div class="price-label">Export Price</div>
+            <div class="price-amount">USD 450</div>
+          </div>
+          <div class="price-note">FOB Jaipur<br/>MOQ 2 pieces</div>
+        </div>
+
+      </div><!-- end .info-panel -->
+
+      <!-- RIGHT — DESCRIPTION -->
+      <div class="desc-panel">
+        <div>
+          <div class="desc-eyebrow">The Provenance</div>
+          <p class="product-description">
+            Featuring a mesmerizing chatoyant effect, our Golden Tiger Eye blocks shift in the light like a cat's eye. The rich gold and brown banding provides a warm, powerful aesthetic to luxury spaces.
+          </p>
+        </div>
+        <div class="desc-footer">
+          <div class="gem-rule-mini"></div>
+          <div class="footer-contact">
+            export@hsglobalexport.com<br/>
+            +91 98765 43210<br/>
+            www.hsglobalexport.com
+          </div>
+        </div>
+      </div><!-- end .desc-panel -->
+
+    </div><!-- end .content-row -->
+
+  </article>
+  <!-- END PRODUCT PAGE 5 -->
+
+</body>
+</html>

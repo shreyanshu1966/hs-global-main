@@ -19,15 +19,25 @@ export const useExitIntentPopup = () => {
       if (sessionStorage.getItem('exitIntentShown')) return;
 
       const handleMouseLeave = (e: MouseEvent) => {
-        if (e.clientY <= 8 && !hasShownRef.current) {
+        // Only trigger if mouse leaves from the top of the viewport
+        if (e.clientY <= 20 && !hasShownRef.current) {
+          if (document.body.style.overflow === 'hidden') return;
           hasShownRef.current = true;
           sessionStorage.setItem('exitIntentShown', 'true');
           setIsOpen(true);
         }
       };
 
-      document.addEventListener('mouseleave', handleMouseLeave);
-      cleanup = () => document.removeEventListener('mouseleave', handleMouseLeave);
+      // Delay attaching the event listener by 5 seconds
+      // to prevent accidental triggers immediately upon page load
+      const timerId = setTimeout(() => {
+        document.addEventListener('mouseleave', handleMouseLeave);
+      }, 5000);
+
+      cleanup = () => {
+        clearTimeout(timerId);
+        document.removeEventListener('mouseleave', handleMouseLeave);
+      };
     });
 
     return () => cleanup?.();

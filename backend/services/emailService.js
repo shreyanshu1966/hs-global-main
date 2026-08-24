@@ -1189,3 +1189,176 @@ exports.sendLeadConfirmationEmail = async (leadData) => {
     }
 };
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Chat Notification Emails
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Send chat notification to admin when user sends a message
+exports.sendChatNotificationEmail = async ({ userName, userEmail, message, chatId, isFirstMessage }) => {
+    try {
+        const adminEmail = process.env.EMAIL_TO || 'inquiry@hsglobalexport.com';
+        const fromEmail = process.env.EMAIL_FROM || 'inquiry@hsglobalexport.com';
+        const adminChatUrl = `${process.env.FRONTEND_URL || 'http://localhost:3000'}/admin/chats/${chatId}`;
+
+        const mailOptions = {
+            from: `"HS Global Export - Chat" <${fromEmail}>`,
+            to: adminEmail,
+            replyTo: userEmail,
+            subject: isFirstMessage
+                ? `💬 New Chat from ${userName} - HS Global Export`
+                : `💬 New Message from ${userName} - HS Global Export`,
+            html: `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <style>
+                        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; }
+                        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+                        .header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: #fff; padding: 30px 20px; text-align: center; border-radius: 8px 8px 0 0; }
+                        .header h1 { margin: 0; font-size: 24px; }
+                        .header p { margin: 8px 0 0; opacity: 0.8; font-size: 14px; }
+                        .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 8px 8px; border: 1px solid #e0e0e0; border-top: none; }
+                        .badge { display: inline-block; background: #4CAF50; color: white; padding: 6px 14px; border-radius: 20px; font-size: 13px; margin-bottom: 20px; }
+                        .info-grid { background: #fff; padding: 16px; border-radius: 6px; border: 1px solid #e0e0e0; margin: 16px 0; }
+                        .info-row { display: flex; padding: 6px 0; border-bottom: 1px solid #f0f0f0; }
+                        .info-row:last-child { border-bottom: none; }
+                        .label { font-weight: bold; color: #666; min-width: 100px; font-size: 14px; }
+                        .value { color: #333; font-size: 14px; }
+                        .message-bubble { background: #e8f4fd; border-left: 4px solid #2196F3; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; font-size: 15px; line-height: 1.6; }
+                        .cta-button { display: block; width: fit-content; margin: 24px auto 0; padding: 14px 32px; background: #1a1a2e; color: #fff; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 15px; text-align: center; }
+                        .footer { text-align: center; margin-top: 24px; font-size: 12px; color: #999; }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <div class="header">
+                            <h1>HS Global Export</h1>
+                            <p>Live Chat Notification</p>
+                        </div>
+                        <div class="content">
+                            <div><span class="badge">💬 ${isFirstMessage ? 'NEW CHAT SESSION' : 'NEW MESSAGE'}</span></div>
+                            <h2 style="margin-top: 0; color: #1a1a2e;">${isFirstMessage ? 'A customer started a chat!' : 'You have a new message!'}</h2>
+                            
+                            <div class="info-grid">
+                                <div class="info-row">
+                                    <span class="label">Customer</span>
+                                    <span class="value"><strong>${userName}</strong></span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="label">Email</span>
+                                    <span class="value"><a href="mailto:${userEmail}">${userEmail}</a></span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="label">Time</span>
+                                    <span class="value">${new Date().toLocaleString('en-IN', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="label">Chat ID</span>
+                                    <span class="value" style="font-family: monospace; font-size: 12px;">${chatId}</span>
+                                </div>
+                            </div>
+
+                            <h3 style="color: #1a1a2e;">Message:</h3>
+                            <div class="message-bubble">${message.replace(/\n/g, '<br>')}</div>
+
+                            <a href="${adminChatUrl}" class="cta-button">
+                                → Reply in Admin Panel
+                            </a>
+
+                            <p style="font-size: 13px; color: #888; text-align: center; margin-top: 16px;">
+                                Or simply reply to this email to respond directly.
+                            </p>
+                        </div>
+                        <div class="footer">
+                            <p>© ${new Date().getFullYear()} HS Global Export. All rights reserved.</p>
+                            <p>This is an automated chat notification.</p>
+                        </div>
+                    </div>
+                </body>
+                </html>
+            `
+        };
+
+        const result = await sendMailWrapper(mailOptions);
+        if (result.success) {
+            console.log('✅ Chat notification email sent to admin:', result.messageId);
+        }
+        return result;
+    } catch (error) {
+        console.error('❌ Chat notification email failed:', error);
+        return { success: false, error: error.message };
+    }
+};
+
+// Notify user when admin replies to their chat
+exports.sendAdminReplyNotificationEmail = async ({ userEmail, userName, adminReply, chatId }) => {
+    try {
+        const fromEmail = process.env.EMAIL_FROM || 'inquiry@hsglobalexport.com';
+        const websiteUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+
+        const mailOptions = {
+            from: `"HS Global Export Support" <${fromEmail}>`,
+            to: userEmail,
+            subject: `💬 You have a new reply from HS Global Export`,
+            html: `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <style>
+                        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; }
+                        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+                        .header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: #fff; padding: 30px 20px; text-align: center; border-radius: 8px 8px 0 0; }
+                        .header h1 { margin: 0; font-size: 24px; }
+                        .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 8px 8px; border: 1px solid #e0e0e0; border-top: none; }
+                        .reply-bubble { background: #fff; border-left: 4px solid #c9a84c; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; font-size: 15px; line-height: 1.6; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+                        .cta-button { display: block; width: fit-content; margin: 24px auto 0; padding: 14px 32px; background: #1a1a2e; color: #fff; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 15px; text-align: center; }
+                        .footer { text-align: center; margin-top: 24px; font-size: 12px; color: #999; }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <div class="header">
+                            <h1>HS Global Export</h1>
+                            <p>Support Team Reply</p>
+                        </div>
+                        <div class="content">
+                            <h2 style="margin-top: 0; color: #1a1a2e;">Hi ${userName},</h2>
+                            <p>Our support team has replied to your chat message. Here's what they said:</p>
+
+                            <div class="reply-bubble">
+                                <strong style="color: #c9a84c;">HS Global Support:</strong><br><br>
+                                ${adminReply.replace(/\n/g, '<br>')}
+                            </div>
+
+                            <p>To continue the conversation, click the button below to open the chat on our website:</p>
+
+                            <a href="${websiteUrl}" class="cta-button">
+                                → Continue Chat on Website
+                            </a>
+
+                            <p style="font-size: 13px; color: #888; margin-top: 24px;">
+                                This reply was sent in response to your inquiry. If you have further questions, 
+                                please continue the chat on our website or reply to this email.
+                            </p>
+                        </div>
+                        <div class="footer">
+                            <p>© ${new Date().getFullYear()} HS Global Export. All rights reserved.</p>
+                            <p>This is a notification from your live chat session.</p>
+                        </div>
+                    </div>
+                </body>
+                </html>
+            `
+        };
+
+        const result = await sendMailWrapper(mailOptions);
+        if (result.success) {
+            console.log('✅ Admin reply notification email sent to user:', result.messageId);
+        }
+        return result;
+    } catch (error) {
+        console.error('❌ Admin reply notification email failed:', error);
+        return { success: false, error: error.message };
+    }
+};
+
