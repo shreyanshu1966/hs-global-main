@@ -1,0 +1,666 @@
+[
+  {
+    "sku": "HSG-MBL-001",
+    "folder": "hs-global/furniture/etsy/HSMCETWH37/"
+  },
+  {
+    "sku": "HSG-MBL-002",
+    "folder": "hs-global/furniture/etsy/HSMCETBE10/"
+  },
+  {
+    "sku": "HSG-MBL-004",
+    "folder": "hs-global/furniture/etsy/HSMCETWH3/"
+  },
+  {
+    "sku": "HSG-MBL-005",
+    "folder": "hs-global/furniture/etsy/HSMCETWH1/"
+  },
+  {
+    "sku": "HSG-MBL-006",
+    "folder": "hs-global/furniture/etsy/HSMCETBL4/"
+  },
+  {
+    "sku": "HSG-MBL-008",
+    "folder": "hs-global/furniture/etsy/HSMCETGR14/"
+  },
+  {
+    "sku": "HSG-MBL-009",
+    "folder": "hs-global/furniture/etsy/HSMCETGRWH25/"
+  },
+  {
+    "sku": "HSG-MBL-012",
+    "folder": "hs-global/furniture/etsy/HSMCETGR26/"
+  },
+  {
+    "sku": "HSG-MBL-013",
+    "folder": "hs-global/furniture/etsy/HSMCETBE6/"
+  },
+  {
+    "sku": "HSG-MBL-014",
+    "folder": "hs-global/furniture/etsy/HSMCETBE23/"
+  },
+  {
+    "sku": "HSG-MBL-015",
+    "folder": "hs-global/furniture/etsy/HSMCETBR12/"
+  },
+  {
+    "sku": "HSG-MBL-018",
+    "folder": "hs-global/furniture/etsy/HSMCETWH30/"
+  },
+  {
+    "sku": "HSG-MBL-019",
+    "folder": "hs-global/furniture/etsy/HSMCETBLWH11/"
+  },
+  {
+    "sku": "HSG-MBL-022",
+    "folder": "hs-global/furniture/etsy/HSMCETWHBR16/"
+  },
+  {
+    "sku": "HSG-MBL-023",
+    "folder": "hs-global/furniture/etsy/HSMCETWH13/"
+  },
+  {
+    "sku": "HSG-MBL-026",
+    "folder": "hs-global/furniture/etsy/HSMCETBE36/"
+  },
+  {
+    "sku": "HSG-MBL-027",
+    "folder": "hs-global/furniture/etsy/HSMCETBE34/"
+  },
+  {
+    "sku": "HSG-MBL-028",
+    "folder": "hs-global/furniture/etsy/HSMCETBE29/"
+  },
+  {
+    "sku": "HSG-MBL-029",
+    "folder": "hs-global/furniture/etsy/HSMDTBE3/"
+  },
+  {
+    "sku": "HSG-MBL-030",
+    "folder": "hs-global/furniture/etsy/HSMCETBE17/"
+  },
+  {
+    "sku": "HSG-MBL-031",
+    "folder": "hs-global/furniture/etsy/HSMDTMU4/"
+  },
+  {
+    "sku": "HSG-MBL-033",
+    "folder": "hs-global/furniture/etsy/HSMDTWHBL8/"
+  },
+  {
+    "sku": "HSG-MBL-034",
+    "folder": "hs-global/furniture/etsy/HSMDTBE6/"
+  },
+  {
+    "sku": "HSG-MBL-036",
+    "folder": "hs-global/furniture/etsy/HSMDTWH5/"
+  },
+  {
+    "sku": "HSG-MBL-037",
+    "folder": "hs-global/furniture/etsy/HSMDTBE7/"
+  },
+  {
+    "sku": "HSG-MBL-038",
+    "folder": "hs-global/furniture/etsy/HSMDTWH1/"
+  },
+  {
+    "sku": "HSG-MBL-040",
+    "folder": "hs-global/furniture/etsy/HSMCOGR17/"
+  },
+  {
+    "sku": "HSG-MBL-041",
+    "folder": "hs-global/furniture/etsy/HSMCOTGR6/"
+  },
+  {
+    "sku": "HSG-MBL-042",
+    "folder": "hs-global/furniture/etsy/HSMCOTGR4/"
+  },
+  {
+    "sku": "HSG-MBL-043",
+    "folder": "hs-global/furniture/etsy/HSMCOTGR10/"
+  },
+  {
+    "sku": "HSG-MBL-044",
+    "folder": "hs-global/furniture/etsy/HSMCOGR18/"
+  },
+  {
+    "sku": "HSG-MBL-045",
+    "folder": "hs-global/furniture/etsy/HSMCTBE1/"
+  },
+  {
+    "sku": "HSG-MBL-046",
+    "folder": "hs-global/furniture/etsy/HSMCOBL28/"
+  },
+  {
+    "sku": "HSG-MBL-048",
+    "folder": "hs-global/furniture/etsy/HSMCOTBL8/"
+  },
+  {
+    "sku": "HSG-MBL-049",
+    "folder": "hs-global/furniture/etsy/HSMCOTWH5/"
+  },
+  {
+    "sku": "HSG-MBL-050",
+    "folder": "hs-global/furniture/etsy/HSMCOTWHBL11/"
+  },
+  {
+    "sku": "HSG-MBL-051",
+    "folder": "hs-global/furniture/etsy/HSMCOBLWH24/"
+  },
+  {
+    "sku": "HSG-MBL-052",
+    "folder": "hs-global/furniture/etsy/HSMCOWHBL16/"
+  },
+  {
+    "sku": "HSG-MBL-053",
+    "folder": "hs-global/furniture/etsy/HSMCORE29/"
+  },
+  {
+    "sku": "HSG-MBL-054",
+    "folder": "hs-global/furniture/etsy/HSMCORE19/"
+  },
+  {
+    "sku": "HSG-MBL-055",
+    "folder": "hs-global/furniture/etsy/HSMCORE21/"
+  },
+  {
+    "sku": "HSG-MBL-056",
+    "folder": "hs-global/furniture/etsy/HSMCOBE25/"
+  },
+  {
+    "sku": "HSG-MBL-057",
+    "folder": "hs-global/furniture/etsy/HSMCOBE26/"
+  },
+  {
+    "sku": "HSG-MBL-058",
+    "folder": "hs-global/furniture/etsy/HSMCOBE27/"
+  },
+  {
+    "sku": "HSG-MBL-060",
+    "folder": "hs-global/furniture/etsy/HSMCOTBE2/"
+  },
+  {
+    "sku": "HSG-MBL-061",
+    "folder": "hs-global/furniture/etsy/HSMCOBE22/"
+  },
+  {
+    "sku": "HSG-MBL-062",
+    "folder": "hs-global/furniture/etsy/HSMCOTBE1/"
+  },
+  {
+    "sku": "HSG-MBL-063",
+    "folder": "hs-global/furniture/etsy/HSMCOTWH12/"
+  },
+  {
+    "sku": "HSG-MBL-064",
+    "folder": "hs-global/furniture/etsy/HSMCOTWH7/"
+  },
+  {
+    "sku": "HSG-MBL-065",
+    "folder": "hs-global/furniture/etsy/HSMCOTWH9/"
+  },
+  {
+    "sku": "HSG-MBL-066",
+    "folder": "hs-global/furniture/etsy/HSMCOTWH3/"
+  },
+  {
+    "sku": "HSG-MBL-067",
+    "folder": "hs-global/furniture/etsy/HSMCETGR27/"
+  },
+  {
+    "sku": "HSG-MBL-068",
+    "folder": "hs-global/furniture/etsy/HSMCTGR3/"
+  },
+  {
+    "sku": "HSG-MBL-069",
+    "folder": "hs-global/furniture/etsy/HSMCTGR2/"
+  },
+  {
+    "sku": "HSG-MBL-070",
+    "folder": "hs-global/furniture/etsy/HSMCTBL4/"
+  },
+  {
+    "sku": "HSG-MBL-071",
+    "folder": "hs-global/furniture/etsy/HSMCETWH15/"
+  },
+  {
+    "sku": "HSG-MBL-072",
+    "folder": "hs-global/furniture/etsy/HSMCETWH2/"
+  },
+  {
+    "sku": "HSG-MBL-073",
+    "folder": "hs-global/furniture/etsy/HSMCETWH18/"
+  },
+  {
+    "sku": "HSG-MBL-074",
+    "folder": "hs-global/furniture/etsy/HSMSTBE22/"
+  },
+  {
+    "sku": "HSG-MBL-076",
+    "folder": "hs-global/furniture/etsy/HSMSTBL57/"
+  },
+  {
+    "sku": "HSG-MBL-077",
+    "folder": "hs-global/furniture/etsy/HSMSTBL21/"
+  },
+  {
+    "sku": "HSG-MBL-079",
+    "folder": "hs-global/furniture/etsy/HSMSTWHBL16/"
+  },
+  {
+    "sku": "HSG-MBL-080",
+    "folder": "hs-global/furniture/etsy/HSMSTWHBL12/"
+  },
+  {
+    "sku": "HSG-MBL-082",
+    "folder": "hs-global/furniture/etsy/HSMSTWH4/"
+  },
+  {
+    "sku": "HSG-MBL-083",
+    "folder": "hs-global/furniture/etsy/HSMSTBR7/"
+  },
+  {
+    "sku": "HSG-MBL-084",
+    "folder": "hs-global/furniture/etsy/HSMSTGR1/"
+  },
+  {
+    "sku": "HSG-MBL-086",
+    "folder": "hs-global/furniture/etsy/HSMSTGR47/"
+  },
+  {
+    "sku": "HSG-MBL-087",
+    "folder": "hs-global/furniture/etsy/HSMSTGRWH40/"
+  },
+  {
+    "sku": "HSG-MBL-088",
+    "folder": "hs-global/furniture/etsy/HSMSTGR49/"
+  },
+  {
+    "sku": "HSG-MBL-089",
+    "folder": "hs-global/furniture/etsy/HSMSTGR46/"
+  },
+  {
+    "sku": "HSG-MBL-090",
+    "folder": "hs-global/furniture/etsy/HSMSTGE13/"
+  },
+  {
+    "sku": "HSG-MBL-091",
+    "folder": "hs-global/furniture/etsy/HSMSTGR24/"
+  },
+  {
+    "sku": "HSG-MBL-092",
+    "folder": "hs-global/furniture/etsy/HSMSTGR50/"
+  },
+  {
+    "sku": "HSG-MBL-093",
+    "folder": "hs-global/furniture/etsy/HSMSTGR65/"
+  },
+  {
+    "sku": "HSG-MBL-094",
+    "folder": "hs-global/furniture/etsy/HSMSTGR30/"
+  },
+  {
+    "sku": "HSG-MBL-095",
+    "folder": "hs-global/furniture/etsy/HSMSTGR23/"
+  },
+  {
+    "sku": "HSG-MBL-097",
+    "folder": "hs-global/furniture/etsy/HSMSTGR11/"
+  },
+  {
+    "sku": "HSG-MBL-098",
+    "folder": "hs-global/furniture/etsy/HSMSTGE60/"
+  },
+  {
+    "sku": "HSG-MBL-099",
+    "folder": "hs-global/furniture/etsy/HSMSTGR6/"
+  },
+  {
+    "sku": "HSG-MBL-100",
+    "folder": "hs-global/furniture/etsy/HSMSTWH3/"
+  },
+  {
+    "sku": "HSG-MBL-101",
+    "folder": "hs-global/furniture/etsy/HSMSTWH27/"
+  },
+  {
+    "sku": "HSG-MBL-102",
+    "folder": "hs-global/furniture/etsy/HSMSTBL32/"
+  },
+  {
+    "sku": "HSG-MBL-103",
+    "folder": "hs-global/furniture/etsy/HSMSTWH26/"
+  },
+  {
+    "sku": "HSG-MBL-104",
+    "folder": "hs-global/furniture/etsy/HSMSTMU8/"
+  },
+  {
+    "sku": "HSG-MBL-105",
+    "folder": "hs-global/furniture/etsy/HSMSTGE59/"
+  },
+  {
+    "sku": "HSG-MBL-106",
+    "folder": "hs-global/furniture/etsy/HSMSTWHRE43/"
+  },
+  {
+    "sku": "HSG-MBL-109",
+    "folder": "hs-global/furniture/etsy/HSMSTGE39/"
+  },
+  {
+    "sku": "HSG-MBL-112",
+    "folder": "hs-global/furniture/etsy/HSMSTBR2/"
+  },
+  {
+    "sku": "HSG-MBL-113",
+    "folder": "hs-global/furniture/etsy/HSMSTRE56/"
+  },
+  {
+    "sku": "HSG-MBL-114",
+    "folder": "hs-global/furniture/etsy/HSMSTRE64/"
+  },
+  {
+    "sku": "HSG-MBL-115",
+    "folder": "hs-global/furniture/etsy/HSMSTRE55/"
+  },
+  {
+    "sku": "HSG-MBL-116",
+    "folder": "hs-global/furniture/etsy/HSMSTRE63/"
+  },
+  {
+    "sku": "HSG-MBL-117",
+    "folder": "hs-global/furniture/etsy/HSMSTRE62/"
+  },
+  {
+    "sku": "HSG-MBL-118",
+    "folder": "hs-global/furniture/etsy/HSMSTRE54/"
+  },
+  {
+    "sku": "HSG-MBL-119",
+    "folder": "hs-global/furniture/etsy/HSMSTRE61/"
+  },
+  {
+    "sku": "HSG-MBL-121",
+    "folder": "hs-global/furniture/etsy/HSMSTWH44/"
+  },
+  {
+    "sku": "HSG-MBL-122",
+    "folder": "hs-global/furniture/etsy/HSMCETWH19/"
+  },
+  {
+    "sku": "HSG-MBL-123",
+    "folder": "hs-global/furniture/etsy/HSMSTBE20/"
+  },
+  {
+    "sku": "HSG-MBL-124",
+    "folder": "hs-global/furniture/etsy/HSMSTBE9/"
+  },
+  {
+    "sku": "HSG-MBL-125",
+    "folder": "hs-global/furniture/etsy/HSMSTWH28/"
+  },
+  {
+    "sku": "HSG-MBL-126",
+    "folder": "hs-global/furniture/etsy/HSMSTWH5/"
+  },
+  {
+    "sku": "HSG-MBL-127",
+    "folder": "hs-global/furniture/etsy/HSMSTWH45/"
+  },
+  {
+    "sku": "HSG-MBL-128",
+    "folder": "hs-global/furniture/etsy/HSMSTWH48/"
+  },
+  {
+    "sku": "HSG-MBL-129",
+    "folder": "hs-global/furniture/etsy/HSMSTWH52/"
+  },
+  {
+    "sku": "HSG-MBL-130",
+    "folder": "hs-global/furniture/etsy/HSMBTBE4/"
+  },
+  {
+    "sku": "HSG-MBL-131",
+    "folder": "hs-global/products/furniture/Bathtub/"
+  },
+  {
+    "sku": "HSG-MBL-132",
+    "folder": "hs-global/furniture/etsy/HSMBTGE7/"
+  },
+  {
+    "sku": "HSG-MBL-133",
+    "folder": "hs-global/furniture/etsy/HSMBTBL2/"
+  },
+  {
+    "sku": "HSG-MBL-134",
+    "folder": "hs-global/furniture/etsy/HSMBTBL6/"
+  },
+  {
+    "sku": "HSG-MBL-135",
+    "folder": "hs-global/furniture/etsy/HSMBTWH5/"
+  },
+  {
+    "sku": "HSG-MBL-136",
+    "folder": "hs-global/furniture/etsy/HSMBTWH8/"
+  },
+  {
+    "sku": "HSG-MBL-137",
+    "folder": "hs-global/furniture/etsy/HSMBTBE1/"
+  },
+  {
+    "sku": "HSG-MBL-138",
+    "folder": "hs-global/furniture/etsy/HSMBTWH9/"
+  },
+  {
+    "sku": "HSG-MBL-139",
+    "folder": "hs-global/furniture/etsy/HSMSBE11/"
+  },
+  {
+    "sku": "HSG-MBL-140",
+    "folder": "hs-global/furniture/etsy/HSMSBL25/"
+  },
+  {
+    "sku": "HSG-MBL-141",
+    "folder": "hs-global/furniture/etsy/HSMSWH12/"
+  },
+  {
+    "sku": "HSG-MBL-142",
+    "folder": "hs-global/furniture/etsy/HSMSWH24/"
+  },
+  {
+    "sku": "HSG-MBL-143",
+    "folder": "hs-global/furniture/etsy/HSMSWH18/"
+  },
+  {
+    "sku": "HSG-MBL-144",
+    "folder": "hs-global/furniture/etsy/HSMSWH20/"
+  },
+  {
+    "sku": "HSG-MBL-145",
+    "folder": "hs-global/furniture/etsy/HSMSGR38/"
+  },
+  {
+    "sku": "HSG-MBL-146",
+    "folder": "hs-global/furniture/etsy/HSMSGR19/"
+  },
+  {
+    "sku": "HSG-MBL-147",
+    "folder": "hs-global/furniture/etsy/HSMSGR13/"
+  },
+  {
+    "sku": "HSG-MBL-148",
+    "folder": "hs-global/furniture/etsy/HSMSGR16/"
+  },
+  {
+    "sku": "HSG-MBL-149",
+    "folder": "hs-global/furniture/etsy/HSMSBE15/"
+  },
+  {
+    "sku": "HSG-MBL-150",
+    "folder": "hs-global/furniture/etsy/HSMSPI4/"
+  },
+  {
+    "sku": "HSG-MBL-152",
+    "folder": "hs-global/furniture/etsy/HSMSWH5/"
+  },
+  {
+    "sku": "HSG-MBL-153",
+    "folder": "hs-global/furniture/etsy/HSMSWH7/"
+  },
+  {
+    "sku": "HSG-MBL-154",
+    "folder": "hs-global/furniture/etsy/HSMSPI1/"
+  },
+  {
+    "sku": "HSG-MBL-155",
+    "folder": "hs-global/furniture/etsy/HSMSPIWH2/"
+  },
+  {
+    "sku": "HSG-MBL-156",
+    "folder": "hs-global/furniture/etsy/HSMSWH6/"
+  },
+  {
+    "sku": "HSG-MBL-157",
+    "folder": "hs-global/furniture/etsy/HSMSRE8/"
+  },
+  {
+    "sku": "HSG-MBL-158",
+    "folder": "hs-global/furniture/etsy/HSMSWH22/"
+  },
+  {
+    "sku": "HSG-MBL-159",
+    "folder": "hs-global/furniture/etsy/HSMSWH17/"
+  },
+  {
+    "sku": "HSG-MBL-160",
+    "folder": "hs-global/furniture/etsy/HSMSWHBR10/"
+  },
+  {
+    "sku": "HSG-MBL-161",
+    "folder": "hs-global/furniture/etsy/HSMSWHBL21/"
+  },
+  {
+    "sku": "HSG-MBL-163",
+    "folder": "hs-global/furniture/etsy/HSMSWH23/"
+  },
+  {
+    "sku": "HSG-MBL-166",
+    "folder": "hs-global/furniture/etsy/HSMSBE39/"
+  },
+  {
+    "sku": "HSG-MBL-167",
+    "folder": "hs-global/furniture/etsy/HSMPSBL26/"
+  },
+  {
+    "sku": "HSG-MBL-168",
+    "folder": "hs-global/furniture/etsy/HSMPSWH24/"
+  },
+  {
+    "sku": "HSG-MBL-169",
+    "folder": "hs-global/furniture/etsy/HSMPSBE22/"
+  },
+  {
+    "sku": "HSG-MBL-170",
+    "folder": "hs-global/furniture/etsy/HSMPSWH25/"
+  },
+  {
+    "sku": "HSG-MBL-171",
+    "folder": "hs-global/furniture/etsy/HSMPSGR8/"
+  },
+  {
+    "sku": "HSG-MBL-172",
+    "folder": "hs-global/furniture/etsy/HSMPSGE13/"
+  },
+  {
+    "sku": "HSG-MBL-173",
+    "folder": "hs-global/furniture/etsy/HSMPSBL5/"
+  },
+  {
+    "sku": "HSG-MBL-174",
+    "folder": "hs-global/furniture/etsy/HSMPSWH2/"
+  },
+  {
+    "sku": "HSG-MBL-175",
+    "folder": "hs-global/furniture/etsy/HSMPSWH23/"
+  },
+  {
+    "sku": "HSG-MBL-176",
+    "folder": "hs-global/furniture/etsy/HSMPSWHPU4/"
+  },
+  {
+    "sku": "HSG-MBL-177",
+    "folder": "hs-global/furniture/etsy/HSMPSBE1/"
+  },
+  {
+    "sku": "HSG-MBL-178",
+    "folder": "hs-global/furniture/etsy/HSMPSWHBL6/"
+  },
+  {
+    "sku": "HSG-MBL-180",
+    "folder": "hs-global/furniture/etsy/HSMSRE35/"
+  },
+  {
+    "sku": "HSG-MBL-182",
+    "folder": "hs-global/furniture/etsy/HSMPSWH12/"
+  },
+  {
+    "sku": "HSG-MBL-183",
+    "folder": "hs-global/furniture/etsy/HSMPSWH7/"
+  },
+  {
+    "sku": "HSG-MBL-184",
+    "folder": "hs-global/furniture/etsy/HSMPSWH10/"
+  },
+  {
+    "sku": "HSG-MBL-186",
+    "folder": "hs-global/furniture/etsy/HSMPSWH11/"
+  },
+  {
+    "sku": "HSG-MBL-187",
+    "folder": "hs-global/furniture/etsy/HSMLABR7/"
+  },
+  {
+    "sku": "HSG-MBL-188",
+    "folder": "hs-global/furniture/etsy/HSMLAWH3/"
+  },
+  {
+    "sku": "HSG-MBL-189",
+    "folder": "hs-global/furniture/etsy/HSMLAWH4/"
+  },
+  {
+    "sku": "HSG-MBL-190",
+    "folder": "hs-global/furniture/etsy/HSMLABE2/"
+  },
+  {
+    "sku": "HSG-MBL-191",
+    "folder": "hs-global/furniture/etsy/HSMLAMU1/"
+  },
+  {
+    "sku": "HSG-MBL-192",
+    "folder": "hs-global/furniture/etsy/HSMLABR8/"
+  },
+  {
+    "sku": "HSG-MBL-193",
+    "folder": "hs-global/furniture/etsy/HSMLABE6/"
+  },
+  {
+    "sku": "HSG-MBL-194",
+    "folder": "hs-global/furniture/etsy/HSMLAWH5/"
+  },
+  {
+    "sku": "HSG-MBL-195",
+    "folder": "hs-global/furniture/etsy/HSMMFPI1/"
+  },
+  {
+    "sku": "HSG-MBL-196",
+    "folder": "hs-global/furniture/etsy/HSMMFWH2/"
+  },
+  {
+    "sku": "HSG-MBL-197",
+    "folder": "hs-global/furniture/etsy/HSMVAWH1/"
+  },
+  {
+    "sku": "HSG-MBL-198",
+    "folder": "hs-global/furniture/etsy/HSMCCGR1/"
+  }
+]

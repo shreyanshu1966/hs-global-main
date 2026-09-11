@@ -151,7 +151,10 @@ const LeadCapturePopup: React.FC<LeadCapturePopupProps> = ({ isOpen, onClose }) 
   const bgUrl = config.entryPopup.backgroundImage || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80';
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 overflow-y-auto no-scrollbar"
+      style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+    >
       {/* Backdrop */}
       <div
         ref={backdropRef}
@@ -180,11 +183,14 @@ const LeadCapturePopup: React.FC<LeadCapturePopupProps> = ({ isOpen, onClose }) 
           <X className="w-4 h-4" />
         </button>
 
-        <div className="p-6 sm:p-8 flex flex-col items-center text-center max-h-[90vh] overflow-y-auto" style={{ overscrollBehavior: 'contain' }}>
+        <div
+          className="p-5 sm:p-7 flex flex-col items-center text-center max-h-[90vh] overflow-y-auto no-scrollbar"
+          style={{ overscrollBehavior: 'contain', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
           
           {/* Brand Name / Logo */}
-          <div className="mt-2 mb-1">
-            <h2 className="text-xl sm:text-2xl font-bold tracking-[0.25em] uppercase text-white font-serif drop-shadow-sm">
+          <div className="mt-1 mb-1">
+            <h2 className="text-lg sm:text-2xl font-bold tracking-[0.25em] uppercase text-white font-serif drop-shadow-sm">
               ENQUIRY FORM
             </h2>
           </div>
@@ -192,29 +198,29 @@ const LeadCapturePopup: React.FC<LeadCapturePopupProps> = ({ isOpen, onClose }) 
           {!showSuccess ? (
             <>
               {/* Italic Serif Tagline */}
-              <p className="font-serif italic text-sm sm:text-base text-gray-200 tracking-wide mt-1">
+              <p className="font-serif italic text-xs sm:text-sm text-gray-200 tracking-wide mt-0.5">
                 {config.entryPopup.heading || 'Exclusive Member Offer'}
               </p>
 
               {/* Hero Discount Display with Accent Lines */}
               {(config.entryPopup.discountPercentage ?? 12) > 0 && (
-                <div className="w-full my-4 py-2.5 border-y border-white/30 flex flex-col items-center">
-                  <span className="text-4xl sm:text-5xl font-extrabold tracking-tight text-white drop-shadow-md">
+                <div className="w-full my-2.5 py-1.5 border-y border-white/30 flex flex-col items-center">
+                  <span className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white drop-shadow-md">
                     {config.entryPopup.discountPercentage || 12}% OFF
                   </span>
-                  <span className="text-[10px] sm:text-xs uppercase tracking-[0.25em] text-gray-200 mt-1 font-medium">
+                  <span className="text-[10px] sm:text-xs uppercase tracking-[0.25em] text-gray-200 mt-0.5 font-medium">
                     Your Order*
                   </span>
                 </div>
               )}
 
               {/* Subheading / CTA encouragement */}
-              <p className="text-xs sm:text-sm text-gray-200 mb-5 font-light">
+              <p className="text-xs sm:text-sm text-gray-200 mb-3.5 font-light">
                 {config.entryPopup.subheading || 'Unlock your exclusive benefits'}
               </p>
 
               {/* Lead Form */}
-              <form onSubmit={handleSubmit} className="w-full space-y-3">
+              <form onSubmit={handleSubmit} className="w-full space-y-2.5">
                 {/* Full Name */}
                 <div>
                   <div className="relative">
@@ -224,7 +230,7 @@ const LeadCapturePopup: React.FC<LeadCapturePopupProps> = ({ isOpen, onClose }) 
                       value={formData.name}
                       onChange={handleChange}
                       placeholder="Enter your full name"
-                      className={`w-full pl-10 pr-4 py-3 rounded-lg text-sm text-gray-900 bg-white/95 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-400 font-normal transition-all shadow-sm ${errors.name ? 'ring-2 ring-red-400' : ''}`}
+                      className={`w-full pl-10 pr-4 py-2.5 rounded-lg text-sm text-gray-900 bg-white/95 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-400 font-normal transition-all shadow-sm ${errors.name ? 'ring-2 ring-red-400' : ''}`}
                     />
                   </div>
                   {errors.name && <p className="text-red-300 text-[11px] mt-1 text-left">{errors.name}</p>}
@@ -240,7 +246,7 @@ const LeadCapturePopup: React.FC<LeadCapturePopupProps> = ({ isOpen, onClose }) 
                       value={formData.email}
                       onChange={handleChange}
                       placeholder="Enter your email address"
-                      className={`w-full pl-10 pr-4 py-3 rounded-lg text-sm text-gray-900 bg-white/95 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-400 font-normal transition-all shadow-sm ${errors.email ? 'ring-2 ring-red-400' : ''}`}
+                      className={`w-full pl-10 pr-4 py-2.5 rounded-lg text-sm text-gray-900 bg-white/95 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-400 font-normal transition-all shadow-sm ${errors.email ? 'ring-2 ring-red-400' : ''}`}
                     />
                   </div>
                   {errors.email && <p className="text-red-300 text-[11px] mt-1 text-left">{errors.email}</p>}
@@ -262,7 +268,7 @@ const LeadCapturePopup: React.FC<LeadCapturePopupProps> = ({ isOpen, onClose }) 
                       <button
                         type="button"
                         onClick={() => setShowCountryDial(v => !v)}
-                        className="px-3 py-3 bg-white/95 border-r border-gray-200 rounded-l-lg flex items-center gap-1 text-xs sm:text-sm font-medium flex-shrink-0 focus:outline-none"
+                        className="px-3 py-2.5 bg-white/95 border-r border-gray-200 rounded-l-lg flex items-center gap-1 text-xs sm:text-sm font-medium flex-shrink-0 focus:outline-none"
                         style={{ width: '85px' }}
                       >
                         <span>{(countriesList.find(c => c.dialCode === formData.countryCode) || { flag: '🌐' as any }).flag}</span>
@@ -271,7 +277,7 @@ const LeadCapturePopup: React.FC<LeadCapturePopupProps> = ({ isOpen, onClose }) 
                       </button>
 
                       {showCountryDial && (
-                        <div className="absolute left-0 top-full mt-1 w-56 max-h-48 overflow-auto bg-white border border-gray-200 rounded-lg shadow-2xl z-30 text-left text-gray-900">
+                        <div className="absolute left-0 top-full mt-1 w-56 max-h-48 overflow-auto bg-white border border-gray-200 rounded-lg shadow-2xl z-30 text-left text-gray-900 custom-scrollbar">
                           <div className="p-2 border-b border-gray-100 sticky top-0 bg-white">
                             <input
                               type="text"
@@ -305,7 +311,7 @@ const LeadCapturePopup: React.FC<LeadCapturePopupProps> = ({ isOpen, onClose }) 
                       value={formData.mobile}
                       onChange={handleChange}
                       placeholder="Mobile number"
-                      className={`flex-1 min-w-0 px-3.5 py-3 bg-white/95 rounded-r-lg text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-400 font-normal transition-all shadow-sm ${errors.mobile ? 'ring-2 ring-red-400' : ''}`}
+                      className={`flex-1 min-w-0 px-3.5 py-2.5 bg-white/95 rounded-r-lg text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-400 font-normal transition-all shadow-sm ${errors.mobile ? 'ring-2 ring-red-400' : ''}`}
                     />
                   </div>
                   {errors.mobile && <p className="text-red-300 text-[11px] mt-1 text-left">{errors.mobile}</p>}
@@ -318,7 +324,7 @@ const LeadCapturePopup: React.FC<LeadCapturePopupProps> = ({ isOpen, onClose }) 
                       name="country"
                       value={formData.country}
                       onChange={handleChange}
-                      className={`w-full px-3 py-3 rounded-lg text-xs sm:text-sm text-gray-900 bg-white/95 focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all ${errors.country ? 'ring-2 ring-red-400' : ''}`}
+                      className={`w-full px-3 py-2.5 rounded-lg text-xs sm:text-sm text-gray-900 bg-white/95 focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all ${errors.country ? 'ring-2 ring-red-400' : ''}`}
                     >
                       <option value="">Select country</option>
                       {countryNames.map(n => <option key={n} value={n}>{n}</option>)}
@@ -333,7 +339,7 @@ const LeadCapturePopup: React.FC<LeadCapturePopupProps> = ({ isOpen, onClose }) 
                       value={formData.pincode}
                       onChange={handleChange}
                       placeholder="ZIP / Pincode"
-                      className="w-full pl-8 pr-3 py-3 rounded-lg text-xs sm:text-sm text-gray-900 bg-white/95 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all"
+                      className="w-full pl-8 pr-3 py-2.5 rounded-lg text-xs sm:text-sm text-gray-900 bg-white/95 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all"
                     />
                   </div>
                 </div>
@@ -342,7 +348,7 @@ const LeadCapturePopup: React.FC<LeadCapturePopupProps> = ({ isOpen, onClose }) 
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full mt-2 bg-white text-gray-900 py-3.5 rounded-lg text-xs sm:text-sm font-bold uppercase tracking-[0.2em] hover:bg-gray-100 active:scale-[0.99] transition-all shadow-lg text-center disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full mt-1.5 bg-white text-gray-900 py-3 rounded-lg text-xs sm:text-sm font-bold uppercase tracking-[0.2em] hover:bg-gray-100 active:scale-[0.99] transition-all shadow-lg text-center disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? 'Unlocking...' : 'GET MY DISCOUNT'}
                 </button>
@@ -352,13 +358,13 @@ const LeadCapturePopup: React.FC<LeadCapturePopupProps> = ({ isOpen, onClose }) 
               <button
                 type="button"
                 onClick={handleClose}
-                className="mt-4 text-xs text-gray-300 hover:text-white underline decoration-gray-400 underline-offset-4 transition-colors font-light"
+                className="mt-3 text-xs text-gray-300 hover:text-white underline decoration-gray-400 underline-offset-4 transition-colors font-light"
               >
                 No, thanks.
               </button>
 
               {/* Footer disclaimer */}
-              <p className="text-[10px] text-gray-300/80 mt-4 font-light tracking-wide">
+              <p className="text-[10px] text-gray-300/80 mt-2.5 font-light tracking-wide">
                 Hurry, these exclusive deals are time-limited. *Terms & conditions apply.
               </p>
             </>

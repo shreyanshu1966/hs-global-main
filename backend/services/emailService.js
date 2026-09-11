@@ -1294,7 +1294,8 @@ exports.sendChatNotificationEmail = async ({ userName, userEmail, message, chatI
 exports.sendAdminReplyNotificationEmail = async ({ userEmail, userName, adminReply, chatId }) => {
     try {
         const fromEmail = process.env.EMAIL_FROM || 'inquiry@hsglobalexport.com';
-        const websiteUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+        const rawWebsiteUrl = (process.env.FRONTEND_URL || 'http://localhost:3000').replace(/\/$/, '');
+        const chatUrl = `${rawWebsiteUrl}/?openChat=true`;
 
         const mailOptions = {
             from: `"HS Global Export Support" <${fromEmail}>`,
@@ -1332,7 +1333,7 @@ exports.sendAdminReplyNotificationEmail = async ({ userEmail, userName, adminRep
 
                             <p>To continue the conversation, click the button below to open the chat on our website:</p>
 
-                            <a href="${websiteUrl}" class="cta-button">
+                            <a href="${chatUrl}" class="cta-button">
                                 → Continue Chat on Website
                             </a>
 

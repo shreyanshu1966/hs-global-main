@@ -195,8 +195,8 @@ export const SlabCustomizationModal: React.FC = () => {
           />
           <div
             ref={modalRef}
-            className="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl max-h-[90vh] overflow-y-auto"
-            style={{ opacity: 0, transform: 'scale(0.95) translateY(20px)', overscrollBehavior: 'contain' }}
+            className="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl max-h-[90vh] overflow-y-auto no-scrollbar"
+            style={{ opacity: 0, transform: 'scale(0.95) translateY(20px)', overscrollBehavior: 'contain', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             onClick={(e) => e.stopPropagation()}
             onWheel={(e) => {
               e.stopPropagation();

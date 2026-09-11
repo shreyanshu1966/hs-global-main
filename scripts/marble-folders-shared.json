@@ -1,0 +1,26 @@
+[
+  {
+    "sku": "Coffee Table",
+    "folder": "hs-global/products/furniture/Coffee Table/"
+  },
+  {
+    "sku": "Dining Table",
+    "folder": "hs-global/products/furniture/Dining Table/"
+  },
+  {
+    "sku": "Console Table",
+    "folder": "hs-global/products/furniture/Console Table/"
+  },
+  {
+    "sku": "Side Table",
+    "folder": "hs-global/products/furniture/Side Table/"
+  },
+  {
+    "sku": "Sink",
+    "folder": "hs-global/products/furniture/Sink/"
+  },
+  {
+    "sku": "Pedestal Sink",
+    "folder": "hs-global/products/furniture/Pedestal Sink/"
+  }
+]

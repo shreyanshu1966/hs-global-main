@@ -1,0 +1,992 @@
+[
+  {
+    "sku": "HSG-MBL-001",
+    "code": "HSMCETWH37",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783587981/hs-global/furniture/etsy/HSMCETWH37/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-002",
+    "code": "HSMCETBE10",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285638/hs-global/furniture/etsy/HSMCETBE10/5.webp"
+  },
+  {
+    "sku": "HSG-MBL-003",
+    "code": "Coffee%20Table",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1784559828/hs-global/products/furniture/Coffee%20Table/file_r48vzy.webp"
+  },
+  {
+    "sku": "HSG-MBL-004",
+    "code": "HSMCETWH3",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285343/hs-global/furniture/etsy/HSMCETWH3/22222.webp"
+  },
+  {
+    "sku": "HSG-MBL-005",
+    "code": "HSMCETWH1",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285316/hs-global/furniture/etsy/HSMCETWH1/3.webp"
+  },
+  {
+    "sku": "HSG-MBL-006",
+    "code": "HSMCETBL4",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285347/hs-global/furniture/etsy/HSMCETBL4/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-007",
+    "code": "Coffee%20Table",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1784382000/hs-global/products/furniture/Coffee%20Table/file_df9cew.webp"
+  },
+  {
+    "sku": "HSG-MBL-008",
+    "code": "HSMCETGR14",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1778264611/hs-global/furniture/etsy/HSMCETGR14/Screenshot%202026-03-19%20160357.webp"
+  },
+  {
+    "sku": "HSG-MBL-009",
+    "code": "HSMCETGRWH25",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783517207/hs-global/furniture/etsy/HSMCETGRWH25/693335bf-ca30-4c0a-bb8c-f499991929c3.webp"
+  },
+  {
+    "sku": "HSG-MBL-010",
+    "code": "Coffee%20Table",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1784559753/hs-global/products/furniture/Coffee%20Table/file_b0xhlo.webp"
+  },
+  {
+    "sku": "HSG-MBL-011",
+    "code": "Coffee%20Table",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783631741/hs-global/products/furniture/Coffee%20Table/file_af2b6f.jpg"
+  },
+  {
+    "sku": "HSG-MBL-012",
+    "code": "HSMCETGR26",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783587366/hs-global/furniture/etsy/HSMCETGR26/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-013",
+    "code": "HSMCETBE6",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285356/hs-global/furniture/etsy/HSMCETBE6/4.webp"
+  },
+  {
+    "sku": "HSG-MBL-014",
+    "code": "HSMCETBE23",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783587874/hs-global/furniture/etsy/HSMCETBE23/3.webp"
+  },
+  {
+    "sku": "HSG-MBL-015",
+    "code": "HSMCETBR12",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285666/hs-global/furniture/etsy/HSMCETBR12/3.webp"
+  },
+  {
+    "sku": "HSG-MBL-016",
+    "code": "Coffee%20Table",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1784559930/hs-global/products/furniture/Coffee%20Table/file_ohbfur.webp"
+  },
+  {
+    "sku": "HSG-MBL-017",
+    "code": "Coffee%20Table",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779454413/hs-global/products/furniture/Coffee%20Table/file_mlbp48.webp"
+  },
+  {
+    "sku": "HSG-MBL-018",
+    "code": "HSMCETWH30",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783587622/hs-global/furniture/etsy/HSMCETWH30/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-019",
+    "code": "HSMCETBLWH11",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285651/hs-global/furniture/etsy/HSMCETBLWH11/6.webp"
+  },
+  {
+    "sku": "HSG-MBL-020",
+    "code": "Coffee%20Table",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783631354/hs-global/products/furniture/Coffee%20Table/file_ccvus9.jpg"
+  },
+  {
+    "sku": "HSG-MBL-021",
+    "code": "Coffee%20Table",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779515185/hs-global/products/furniture/Coffee%20Table/file_dv89yf.webp"
+  },
+  {
+    "sku": "HSG-MBL-022",
+    "code": "HSMCETWHBR16",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285734/hs-global/furniture/etsy/HSMCETWHBR16/3.webp"
+  },
+  {
+    "sku": "HSG-MBL-023",
+    "code": "HSMCETWH13",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285706/hs-global/furniture/etsy/HSMCETWH13/WhatsApp%20Image%202025-05-25%20at%202.43.29%20PM%20%281%29.webp"
+  },
+  {
+    "sku": "HSG-MBL-024",
+    "code": "Coffee%20Table",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1784289795/hs-global/products/furniture/Coffee%20Table/file_kl9nqa.webp"
+  },
+  {
+    "sku": "HSG-MBL-025",
+    "code": "Coffee%20Table",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1784560411/hs-global/products/furniture/Coffee%20Table/file_pnvx2b.webp"
+  },
+  {
+    "sku": "HSG-MBL-026",
+    "code": "HSMCETBE36",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783587879/hs-global/furniture/etsy/HSMCETBE36/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-027",
+    "code": "HSMCETBE34",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783588022/hs-global/furniture/etsy/HSMCETBE34/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-028",
+    "code": "HSMCETBE29",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783587726/hs-global/furniture/etsy/HSMCETBE29/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-029",
+    "code": "HSMDTBE3",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783587757/hs-global/furniture/etsy/HSMDTBE3/4.webp"
+  },
+  {
+    "sku": "HSG-MBL-030",
+    "code": "HSMCETBE17",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285753/hs-global/furniture/etsy/HSMCETBE17/5.webp"
+  },
+  {
+    "sku": "HSG-MBL-031",
+    "code": "HSMDTMU4",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783587905/hs-global/furniture/etsy/HSMDTMU4/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-032",
+    "code": "Dining%20Table",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1785495978/hs-global/products/furniture/Dining%20Table/file_rsxpdt.webp"
+  },
+  {
+    "sku": "HSG-MBL-033",
+    "code": "HSMDTWHBL8",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779286860/hs-global/furniture/etsy/HSMDTWHBL8/ChatGPT%20Image%20May%2018%2C%202026%2C%2006_46_41%20PM.webp"
+  },
+  {
+    "sku": "HSG-MBL-034",
+    "code": "HSMDTBE6",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783587703/hs-global/furniture/etsy/HSMDTBE6/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-035",
+    "code": "Dining%20Table",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1780661992/hs-global/products/furniture/Dining%20Table/file_wwu1nm.webp"
+  },
+  {
+    "sku": "HSG-MBL-036",
+    "code": "HSMDTWH5",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779286813/hs-global/furniture/etsy/HSMDTWH5/file_000000001c1c71fbbd46fd584b2887ca.webp"
+  },
+  {
+    "sku": "HSG-MBL-037",
+    "code": "HSMDTBE7",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783588058/hs-global/furniture/etsy/HSMDTBE7/4.webp"
+  },
+  {
+    "sku": "HSG-MBL-038",
+    "code": "HSMDTWH1",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1778264375/hs-global/furniture/etsy/HSMDTWH1/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-039",
+    "code": "Console%20Table",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1784464716/hs-global/products/furniture/Console%20Table/file_gg5uah.webp"
+  },
+  {
+    "sku": "HSG-MBL-040",
+    "code": "HSMCOGR17",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783587630/hs-global/furniture/etsy/HSMCOGR17/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-041",
+    "code": "HSMCOTGR6",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285840/hs-global/furniture/etsy/HSMCOTGR6/5.webp"
+  },
+  {
+    "sku": "HSG-MBL-042",
+    "code": "HSMCOTGR4",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285814/hs-global/furniture/etsy/HSMCOTGR4/2.webp"
+  },
+  {
+    "sku": "HSG-MBL-043",
+    "code": "HSMCOTGR10",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783587837/hs-global/furniture/etsy/HSMCOTGR10/5.webp"
+  },
+  {
+    "sku": "HSG-MBL-044",
+    "code": "HSMCOGR18",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783587361/hs-global/furniture/etsy/HSMCOGR18/4.webp"
+  },
+  {
+    "sku": "HSG-MBL-045",
+    "code": "HSMCTBE1",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285285/hs-global/furniture/etsy/HSMCTBE1/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-046",
+    "code": "HSMCOBL28",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779286862/hs-global/furniture/etsy/HSMCOBL28/ChatGPT%20Image%20May%2018%2C%202026%2C%2006_39_44%20PM.webp"
+  },
+  {
+    "sku": "HSG-MBL-047",
+    "code": "Console%20Table",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1784398977/hs-global/products/furniture/Console%20Table/file_zh6cla.webp"
+  },
+  {
+    "sku": "HSG-MBL-048",
+    "code": "HSMCOTBL8",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783587926/hs-global/furniture/etsy/HSMCOTBL8/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-049",
+    "code": "HSMCOTWH5",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783588061/hs-global/furniture/etsy/HSMCOTWH5/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-050",
+    "code": "HSMCOTWHBL11",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783587845/hs-global/furniture/etsy/HSMCOTWHBL11/6.webp"
+  },
+  {
+    "sku": "HSG-MBL-051",
+    "code": "HSMCOBLWH24",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783587886/hs-global/furniture/etsy/HSMCOBLWH24/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-052",
+    "code": "HSMCOWHBL16",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783517216/hs-global/furniture/etsy/HSMCOWHBL16/0ef1cf9a-a749-4f8a-abc6-7ce88a2a1590.webp"
+  },
+  {
+    "sku": "HSG-MBL-053",
+    "code": "HSMCORE29",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779286873/hs-global/furniture/etsy/HSMCORE29/ChatGPT%20Image%20May%2018%2C%202026%2C%2006_35_48%20PM.webp"
+  },
+  {
+    "sku": "HSG-MBL-054",
+    "code": "HSMCORE19",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783587902/hs-global/furniture/etsy/HSMCORE19/4.webp"
+  },
+  {
+    "sku": "HSG-MBL-055",
+    "code": "HSMCORE21",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779286637/hs-global/furniture/etsy/HSMCORE21/ChatGPT%20Image%20May%2019%2C%202026%2C%2005_03_22%20PM.webp"
+  },
+  {
+    "sku": "HSG-MBL-056",
+    "code": "HSMCOBE25",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779286674/hs-global/furniture/etsy/HSMCOBE25/ChatGPT%20Image%20May%2019%2C%202026%2C%2004_13_03%20PM.webp"
+  },
+  {
+    "sku": "HSG-MBL-057",
+    "code": "HSMCOBE26",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779286836/hs-global/furniture/etsy/HSMCOBE26/ChatGPT%20Image%20May%2019%2C%202026%2C%2011_04_51%20AM.webp"
+  },
+  {
+    "sku": "HSG-MBL-058",
+    "code": "HSMCOBE27",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779286845/hs-global/furniture/etsy/HSMCOBE27/ChatGPT%20Image%20May%2018%2C%202026%2C%2007_00_26%20PM.webp"
+  },
+  {
+    "sku": "HSG-MBL-059",
+    "code": "Console%20Table",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1784464582/hs-global/products/furniture/Console%20Table/file_sc2hbj.webp"
+  },
+  {
+    "sku": "HSG-MBL-060",
+    "code": "HSMCOTBE2",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285797/hs-global/furniture/etsy/HSMCOTBE2/2.webp"
+  },
+  {
+    "sku": "HSG-MBL-061",
+    "code": "HSMCOBE22",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783589345/hs-global/furniture/etsy/HSMCOBE22/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-062",
+    "code": "HSMCOTBE1",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285786/hs-global/furniture/etsy/HSMCOTBE1/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-063",
+    "code": "HSMCOTWH12",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783587847/hs-global/furniture/etsy/HSMCOTWH12/2.webp"
+  },
+  {
+    "sku": "HSG-MBL-064",
+    "code": "HSMCOTWH7",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285845/hs-global/furniture/etsy/HSMCOTWH7/3.webp"
+  },
+  {
+    "sku": "HSG-MBL-065",
+    "code": "HSMCOTWH9",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783587934/hs-global/furniture/etsy/HSMCOTWH9/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-066",
+    "code": "HSMCOTWH3",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285806/hs-global/furniture/etsy/HSMCOTWH3/2.webp"
+  },
+  {
+    "sku": "HSG-MBL-067",
+    "code": "HSMCETGR27",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783587584/hs-global/furniture/etsy/HSMCETGR27/4.webp"
+  },
+  {
+    "sku": "HSG-MBL-068",
+    "code": "HSMCTGR3",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285680/hs-global/furniture/etsy/HSMCTGR3/5.webp"
+  },
+  {
+    "sku": "HSG-MBL-069",
+    "code": "HSMCTGR2",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285533/hs-global/furniture/etsy/HSMCTGR2/4.webp"
+  },
+  {
+    "sku": "HSG-MBL-070",
+    "code": "HSMCTBL4",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285688/hs-global/furniture/etsy/HSMCTBL4/5.webp"
+  },
+  {
+    "sku": "HSG-MBL-071",
+    "code": "HSMCETWH15",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783588007/hs-global/furniture/etsy/HSMCETWH15/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-072",
+    "code": "HSMCETWH2",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1778264385/hs-global/furniture/etsy/HSMCETWH2/5.webp"
+  },
+  {
+    "sku": "HSG-MBL-073",
+    "code": "HSMCETWH18",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285755/hs-global/furniture/etsy/HSMCETWH18/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-074",
+    "code": "HSMSTBE22",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1778265041/hs-global/furniture/etsy/HSMSTBE22/Gemini_Generated_Image_xa4ve0xa4ve0xa4v.webp"
+  },
+  {
+    "sku": "HSG-MBL-075",
+    "code": "Side%20Table",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779536348/hs-global/products/furniture/Side%20Table/file_dmjdtt.webp"
+  },
+  {
+    "sku": "HSG-MBL-076",
+    "code": "HSMSTBL57",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779286739/hs-global/furniture/etsy/HSMSTBL57/file_000000008bb87208a343763bf2dfd4eb.webp"
+  },
+  {
+    "sku": "HSG-MBL-077",
+    "code": "HSMSTBL21",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1778265027/hs-global/furniture/etsy/HSMSTBL21/Gemini_Generated_Image_9coqgr9coqgr9coq.webp"
+  },
+  {
+    "sku": "HSG-MBL-078",
+    "code": "Side%20Table",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1784431628/hs-global/products/furniture/Side%20Table/file_lyqpgs.jpg"
+  },
+  {
+    "sku": "HSG-MBL-079",
+    "code": "HSMSTWHBL16",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783589341/hs-global/furniture/etsy/HSMSTWHBL16/2.webp"
+  },
+  {
+    "sku": "HSG-MBL-080",
+    "code": "HSMSTWHBL12",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1778264831/hs-global/furniture/etsy/HSMSTWHBL12/Gemini_Generated_Image_36hn2736hn2736hn.webp"
+  },
+  {
+    "sku": "HSG-MBL-081",
+    "code": "Side%20Table",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1784431719/hs-global/products/furniture/Side%20Table/file_zfa3dk.webp"
+  },
+  {
+    "sku": "HSG-MBL-082",
+    "code": "HSMSTWH4",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285375/hs-global/furniture/etsy/HSMSTWH4/4.webp"
+  },
+  {
+    "sku": "HSG-MBL-083",
+    "code": "HSMSTBR7",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285388/hs-global/furniture/etsy/HSMSTBR7/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-084",
+    "code": "HSMSTGR1",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285280/hs-global/furniture/etsy/HSMSTGR1/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-085",
+    "code": "Side%20Table",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779539350/hs-global/products/furniture/Side%20Table/file_feccdx.webp"
+  },
+  {
+    "sku": "HSG-MBL-086",
+    "code": "HSMSTGR47",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783587406/hs-global/furniture/etsy/HSMSTGR47/5.webp"
+  },
+  {
+    "sku": "HSG-MBL-087",
+    "code": "HSMSTGRWH40",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783517188/hs-global/furniture/etsy/HSMSTGRWH40/2cb05e3b-fffe-474b-8291-c1badddded42.webp"
+  },
+  {
+    "sku": "HSG-MBL-088",
+    "code": "HSMSTGR49",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779286579/hs-global/furniture/etsy/HSMSTGR49/file_00000000eb88720896dcbdfe9d1e7b74.webp"
+  },
+  {
+    "sku": "HSG-MBL-089",
+    "code": "HSMSTGR46",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783587319/hs-global/furniture/etsy/HSMSTGR46/3.webp"
+  },
+  {
+    "sku": "HSG-MBL-090",
+    "code": "HSMSTGE13",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1778264841/hs-global/furniture/etsy/HSMSTGE13/Gemini_Generated_Image_1fdjpe1fdjpe1fdj.webp"
+  },
+  {
+    "sku": "HSG-MBL-091",
+    "code": "HSMSTGR24",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783587409/hs-global/furniture/etsy/HSMSTGR24/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-092",
+    "code": "HSMSTGR50",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779286584/hs-global/furniture/etsy/HSMSTGR50/file_00000000d2c472079d3c91e743316e9d.webp"
+  },
+  {
+    "sku": "HSG-MBL-093",
+    "code": "HSMSTGR65",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783587987/hs-global/furniture/etsy/HSMSTGR65/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-094",
+    "code": "HSMSTGR30",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783587892/hs-global/furniture/etsy/HSMSTGR30/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-095",
+    "code": "HSMSTGR23",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783587334/hs-global/furniture/etsy/HSMSTGR23/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-096",
+    "code": "Side%20Table",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1784431502/hs-global/products/furniture/Side%20Table/file_vfwkwm.webp"
+  },
+  {
+    "sku": "HSG-MBL-097",
+    "code": "HSMSTGR11",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1778264821/hs-global/furniture/etsy/HSMSTGR11/Gemini_Generated_Image_3z18063z18063z18.webp"
+  },
+  {
+    "sku": "HSG-MBL-098",
+    "code": "HSMSTGE60",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779286768/hs-global/furniture/etsy/HSMSTGE60/file_00000000df70722fa520bfeb27b72dc2.webp"
+  },
+  {
+    "sku": "HSG-MBL-099",
+    "code": "HSMSTGR6",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285387/hs-global/furniture/etsy/HSMSTGR6/4.webp"
+  },
+  {
+    "sku": "HSG-MBL-100",
+    "code": "HSMSTWH3",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285365/hs-global/furniture/etsy/HSMSTWH3/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-101",
+    "code": "HSMSTWH27",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1778265096/hs-global/furniture/etsy/HSMSTWH27/Gemini_Generated_Image_sudocksudocksudo.webp"
+  },
+  {
+    "sku": "HSG-MBL-102",
+    "code": "HSMSTBL32",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783587865/hs-global/furniture/etsy/HSMSTBL32/5.webp"
+  },
+  {
+    "sku": "HSG-MBL-103",
+    "code": "HSMSTWH26",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783587419/hs-global/furniture/etsy/HSMSTWH26/4.webp"
+  },
+  {
+    "sku": "HSG-MBL-104",
+    "code": "HSMSTMU8",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285594/hs-global/furniture/etsy/HSMSTMU8/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-105",
+    "code": "HSMSTGE59",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779286755/hs-global/furniture/etsy/HSMSTGE59/5.webp"
+  },
+  {
+    "sku": "HSG-MBL-106",
+    "code": "HSMSTWHRE43",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783517208/hs-global/furniture/etsy/HSMSTWHRE43/6ee5bd0b-5dba-4565-8848-cc90e32fe46c.webp"
+  },
+  {
+    "sku": "HSG-MBL-107",
+    "code": "Side%20Table",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1784431444/hs-global/products/furniture/Side%20Table/file_wqit2q.webp"
+  },
+  {
+    "sku": "HSG-MBL-108",
+    "code": "Side%20Table",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779538931/hs-global/products/furniture/Side%20Table/file_ieclrz.webp"
+  },
+  {
+    "sku": "HSG-MBL-109",
+    "code": "HSMSTGE39",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783517180/hs-global/furniture/etsy/HSMSTGE39/cfce28fe-ff59-4136-a49a-805704e66066.webp"
+  },
+  {
+    "sku": "HSG-MBL-110",
+    "code": "Side%20Table",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1784431767/hs-global/products/furniture/Side%20Table/file_ruuc2j.webp"
+  },
+  {
+    "sku": "HSG-MBL-111",
+    "code": "Side%20Table",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779538788/hs-global/products/furniture/Side%20Table/file_ojwb2l.webp"
+  },
+  {
+    "sku": "HSG-MBL-112",
+    "code": "HSMSTBR2",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285298/hs-global/furniture/etsy/HSMSTBR2/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-113",
+    "code": "HSMSTRE56",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783588031/hs-global/furniture/etsy/HSMSTRE56/4.webp"
+  },
+  {
+    "sku": "HSG-MBL-114",
+    "code": "HSMSTRE64",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779286809/hs-global/furniture/etsy/HSMSTRE64/ChatGPT%20Image%20May%2019%2C%202026%2C%2011_44_07%20AM.webp"
+  },
+  {
+    "sku": "HSG-MBL-115",
+    "code": "HSMSTRE55",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779286709/hs-global/furniture/etsy/HSMSTRE55/file_00000000305c71fd8ec5a844e1780703.webp"
+  },
+  {
+    "sku": "HSG-MBL-116",
+    "code": "HSMSTRE63",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779286803/hs-global/furniture/etsy/HSMSTRE63/file_00000000fd4c71fb9a486787519ee24d.webp"
+  },
+  {
+    "sku": "HSG-MBL-117",
+    "code": "HSMSTRE62",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779286796/hs-global/furniture/etsy/HSMSTRE62/file_00000000cacc71fbb0328aa5944ac2ba.webp"
+  },
+  {
+    "sku": "HSG-MBL-118",
+    "code": "HSMSTRE54",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779286705/hs-global/furniture/etsy/HSMSTRE54/ChatGPT%20Image%20May%2019%2C%202026%2C%2002_18_49%20PM.webp"
+  },
+  {
+    "sku": "HSG-MBL-119",
+    "code": "HSMSTRE61",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779286785/hs-global/furniture/etsy/HSMSTRE61/file_000000003e7471fb915fbaf615063742.webp"
+  },
+  {
+    "sku": "HSG-MBL-120",
+    "code": "Side%20Table",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779538572/hs-global/products/furniture/Side%20Table/file_plwruh.jpg"
+  },
+  {
+    "sku": "HSG-MBL-121",
+    "code": "HSMSTWH44",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783517227/hs-global/furniture/etsy/HSMSTWH44/90f46093-7472-448a-a184-da3f9d86cdf2.webp"
+  },
+  {
+    "sku": "HSG-MBL-122",
+    "code": "HSMCETWH19",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1778265042/hs-global/furniture/etsy/HSMCETWH19/Gemini_Generated_Image_kormydkormydkorm.webp"
+  },
+  {
+    "sku": "HSG-MBL-123",
+    "code": "HSMSTBE20",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783589351/hs-global/furniture/etsy/HSMSTBE20/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-124",
+    "code": "HSMSTBE9",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783587299/hs-global/furniture/etsy/HSMSTBE9/13.webp"
+  },
+  {
+    "sku": "HSG-MBL-125",
+    "code": "HSMSTWH28",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783587425/hs-global/furniture/etsy/HSMSTWH28/3.webp"
+  },
+  {
+    "sku": "HSG-MBL-126",
+    "code": "HSMSTWH5",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285376/hs-global/furniture/etsy/HSMSTWH5/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-127",
+    "code": "HSMSTWH45",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783588019/hs-global/furniture/etsy/HSMSTWH45/4.webp"
+  },
+  {
+    "sku": "HSG-MBL-128",
+    "code": "HSMSTWH48",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783587529/hs-global/furniture/etsy/HSMSTWH48/5.webp"
+  },
+  {
+    "sku": "HSG-MBL-129",
+    "code": "HSMSTWH52",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783587994/hs-global/furniture/etsy/HSMSTWH52/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-130",
+    "code": "HSMBTBE4",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783589334/hs-global/furniture/etsy/HSMBTBE4/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-131",
+    "code": "Bathtub",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1784462950/hs-global/products/furniture/Bathtub/file_bedisv.webp"
+  },
+  {
+    "sku": "HSG-MBL-132",
+    "code": "HSMBTGE7",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285559/hs-global/furniture/etsy/HSMBTGE7/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-133",
+    "code": "HSMBTBL2",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783517107/hs-global/furniture/etsy/HSMBTBL2/5.webp"
+  },
+  {
+    "sku": "HSG-MBL-134",
+    "code": "HSMBTBL6",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285557/hs-global/furniture/etsy/HSMBTBL6/4.webp"
+  },
+  {
+    "sku": "HSG-MBL-135",
+    "code": "HSMBTWH5",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1778264521/hs-global/furniture/etsy/HSMBTWH5/2.webp"
+  },
+  {
+    "sku": "HSG-MBL-136",
+    "code": "HSMBTWH8",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285574/hs-global/furniture/etsy/HSMBTWH8/4.webp"
+  },
+  {
+    "sku": "HSG-MBL-137",
+    "code": "HSMBTBE1",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285475/hs-global/furniture/etsy/HSMBTBE1/2.webp"
+  },
+  {
+    "sku": "HSG-MBL-138",
+    "code": "HSMBTWH9",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285591/hs-global/furniture/etsy/HSMBTWH9/5.webp"
+  },
+  {
+    "sku": "HSG-MBL-139",
+    "code": "HSMSBE11",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1778265123/hs-global/furniture/etsy/HSMSBE11/Gemini_Generated_Image_3qp8ms3qp8ms3qp8.webp"
+  },
+  {
+    "sku": "HSG-MBL-140",
+    "code": "HSMSBL25",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1778265259/hs-global/furniture/etsy/HSMSBL25/Gemini_Generated_Image_eesw5heesw5heesw.webp"
+  },
+  {
+    "sku": "HSG-MBL-141",
+    "code": "HSMSWH12",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1778265133/hs-global/furniture/etsy/HSMSWH12/Gemini_Generated_Image_3qp8ms3qp8ms3qp8.webp"
+  },
+  {
+    "sku": "HSG-MBL-142",
+    "code": "HSMSWH24",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1778265248/hs-global/furniture/etsy/HSMSWH24/Gemini_Generated_Image_6nipqd6nipqd6nip.webp"
+  },
+  {
+    "sku": "HSG-MBL-143",
+    "code": "HSMSWH18",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783587963/hs-global/furniture/etsy/HSMSWH18/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-144",
+    "code": "HSMSWH20",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1778265201/hs-global/furniture/etsy/HSMSWH20/Gemini_Generated_Image_6jzz8g6jzz8g6jzz.webp"
+  },
+  {
+    "sku": "HSG-MBL-145",
+    "code": "HSMSGR38",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783587503/hs-global/furniture/etsy/HSMSGR38/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-146",
+    "code": "HSMSGR19",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1778265178/hs-global/furniture/etsy/HSMSGR19/Gemini_Generated_Image_5a8835a8835a8835.webp"
+  },
+  {
+    "sku": "HSG-MBL-147",
+    "code": "HSMSGR13",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783587942/hs-global/furniture/etsy/HSMSGR13/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-148",
+    "code": "HSMSGR16",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1778265160/hs-global/furniture/etsy/HSMSGR16/Gemini_Generated_Image_h6qko7h6qko7h6qk.webp"
+  },
+  {
+    "sku": "HSG-MBL-149",
+    "code": "HSMSBE15",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783587957/hs-global/furniture/etsy/HSMSBE15/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-150",
+    "code": "HSMSPI4",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285459/hs-global/furniture/etsy/HSMSPI4/3.webp"
+  },
+  {
+    "sku": "HSG-MBL-151",
+    "code": "Sink",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1784814510/hs-global/products/furniture/Sink/file_dwrggl.webp"
+  },
+  {
+    "sku": "HSG-MBL-152",
+    "code": "HSMSWH5",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285465/hs-global/furniture/etsy/HSMSWH5/4.webp"
+  },
+  {
+    "sku": "HSG-MBL-153",
+    "code": "HSMSWH7",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285513/hs-global/furniture/etsy/HSMSWH7/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-154",
+    "code": "HSMSPI1",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285444/hs-global/furniture/etsy/HSMSPI1/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-155",
+    "code": "HSMSPIWH2",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285449/hs-global/furniture/etsy/HSMSPIWH2/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-156",
+    "code": "HSMSWH6",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285467/hs-global/furniture/etsy/HSMSWH6/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-157",
+    "code": "HSMSRE8",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285583/hs-global/furniture/etsy/HSMSRE8/4.webp"
+  },
+  {
+    "sku": "HSG-MBL-158",
+    "code": "HSMSWH22",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1778265225/hs-global/furniture/etsy/HSMSWH22/Gemini_Generated_Image_71znf071znf071zn.webp"
+  },
+  {
+    "sku": "HSG-MBL-159",
+    "code": "HSMSWH17",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1778265169/hs-global/furniture/etsy/HSMSWH17/Gemini_Generated_Image_dd6sx7dd6sx7dd6s.webp"
+  },
+  {
+    "sku": "HSG-MBL-160",
+    "code": "HSMSWHBR10",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783587858/hs-global/furniture/etsy/HSMSWHBR10/4.webp"
+  },
+  {
+    "sku": "HSG-MBL-161",
+    "code": "HSMSWHBL21",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1778265220/hs-global/furniture/etsy/HSMSWHBL21/Gemini_Generated_Image_ujl1w6ujl1w6ujl1.webp"
+  },
+  {
+    "sku": "HSG-MBL-162",
+    "code": "Sink",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1784814643/hs-global/products/furniture/Sink/file_kbdvlm.webp"
+  },
+  {
+    "sku": "HSG-MBL-163",
+    "code": "HSMSWH23",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1778265243/hs-global/furniture/etsy/HSMSWH23/Gemini_Generated_Image_ue586gue586gue58.webp"
+  },
+  {
+    "sku": "HSG-MBL-164",
+    "code": "Sink",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1784431944/hs-global/products/furniture/Sink/file_fcppqp.webp"
+  },
+  {
+    "sku": "HSG-MBL-165",
+    "code": "Sink",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1784814384/hs-global/products/furniture/Sink/file_fbasmf.webp"
+  },
+  {
+    "sku": "HSG-MBL-166",
+    "code": "HSMSBE39",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783587807/hs-global/furniture/etsy/HSMSBE39/2.webp"
+  },
+  {
+    "sku": "HSG-MBL-167",
+    "code": "HSMPSBL26",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783587391/hs-global/furniture/etsy/HSMPSBL26/6.webp"
+  },
+  {
+    "sku": "HSG-MBL-168",
+    "code": "HSMPSWH24",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783587708/hs-global/furniture/etsy/HSMPSWH24/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-169",
+    "code": "HSMPSBE22",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783587725/hs-global/furniture/etsy/HSMPSBE22/5.webp"
+  },
+  {
+    "sku": "HSG-MBL-170",
+    "code": "HSMPSWH25",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783588001/hs-global/furniture/etsy/HSMPSWH25/2.webp"
+  },
+  {
+    "sku": "HSG-MBL-171",
+    "code": "HSMPSGR8",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783587794/hs-global/furniture/etsy/HSMPSGR8/6.webp"
+  },
+  {
+    "sku": "HSG-MBL-172",
+    "code": "HSMPSGE13",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1778265197/hs-global/furniture/etsy/HSMPSGE13/Gemini_Generated_Image_hj8lghj8lghj8lgh.webp"
+  },
+  {
+    "sku": "HSG-MBL-173",
+    "code": "HSMPSBL5",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285326/hs-global/furniture/etsy/HSMPSBL5/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-174",
+    "code": "HSMPSWH2",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285309/hs-global/furniture/etsy/HSMPSWH2/3.webp"
+  },
+  {
+    "sku": "HSG-MBL-175",
+    "code": "HSMPSWH23",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783587329/hs-global/furniture/etsy/HSMPSWH23/4.webp"
+  },
+  {
+    "sku": "HSG-MBL-176",
+    "code": "HSMPSWHPU4",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285320/hs-global/furniture/etsy/HSMPSWHPU4/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-177",
+    "code": "HSMPSBE1",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285291/hs-global/furniture/etsy/HSMPSBE1/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-178",
+    "code": "HSMPSWHBL6",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285407/hs-global/furniture/etsy/HSMPSWHBL6/3.webp"
+  },
+  {
+    "sku": "HSG-MBL-179",
+    "code": "Pedestal%20Sink",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1784876844/hs-global/products/furniture/Pedestal%20Sink/file_zjmm2e.webp"
+  },
+  {
+    "sku": "HSG-MBL-180",
+    "code": "HSMSRE35",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783587666/hs-global/furniture/etsy/HSMSRE35/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-181",
+    "code": "Pedestal%20Sink",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1784876660/hs-global/products/furniture/Pedestal%20Sink/file_zzbywe.webp"
+  },
+  {
+    "sku": "HSG-MBL-182",
+    "code": "HSMPSWH12",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1778265111/hs-global/furniture/etsy/HSMPSWH12/Gemini_Generated_Image_hxouzwhxouzwhxou.webp"
+  },
+  {
+    "sku": "HSG-MBL-183",
+    "code": "HSMPSWH7",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1778264766/hs-global/furniture/etsy/HSMPSWH7/Gemini_Generated_Image_2ww4x52ww4x52ww4.webp"
+  },
+  {
+    "sku": "HSG-MBL-184",
+    "code": "HSMPSWH10",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1778264789/hs-global/furniture/etsy/HSMPSWH10/Gemini_Generated_Image_qsgku2qsgku2qsgk.webp"
+  },
+  {
+    "sku": "HSG-MBL-185",
+    "code": "Pedestal%20Sink",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1784876507/hs-global/products/furniture/Pedestal%20Sink/file_nfozxd.webp"
+  },
+  {
+    "sku": "HSG-MBL-186",
+    "code": "HSMPSWH11",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1778264797/hs-global/furniture/etsy/HSMPSWH11/Gemini_Generated_Image_mspynwmspynwmspy.webp"
+  },
+  {
+    "sku": "HSG-MBL-187",
+    "code": "HSMLABR7",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783517258/hs-global/furniture/etsy/HSMLABR7/file_00000000bef071f59807c7bdc4b2f16d.webp"
+  },
+  {
+    "sku": "HSG-MBL-188",
+    "code": "HSMLAWH3",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285508/hs-global/furniture/etsy/HSMLAWH3/2.webp"
+  },
+  {
+    "sku": "HSG-MBL-189",
+    "code": "HSMLAWH4",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783517231/hs-global/furniture/etsy/HSMLAWH4/0d2e169c-2f87-451a-842b-c542cc9a8d47.webp"
+  },
+  {
+    "sku": "HSG-MBL-190",
+    "code": "HSMLABE2",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285398/hs-global/furniture/etsy/HSMLABE2/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-191",
+    "code": "HSMLAMU1",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285393/hs-global/furniture/etsy/HSMLAMU1/1.webp"
+  },
+  {
+    "sku": "HSG-MBL-192",
+    "code": "HSMLABR8",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779286776/hs-global/furniture/etsy/HSMLABR8/gemini-watermark-removed%20%281%29.webp"
+  },
+  {
+    "sku": "HSG-MBL-193",
+    "code": "HSMLABE6",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779286628/hs-global/furniture/etsy/HSMLABE6/ChatGPT%20Image%20May%2019%2C%202026%2C%2005_25_36%20PM.webp"
+  },
+  {
+    "sku": "HSG-MBL-194",
+    "code": "HSMLAWH5",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1783517241/hs-global/furniture/etsy/HSMLAWH5/4e331d6e-012e-49fd-94be-0caf65555d12.webp"
+  },
+  {
+    "sku": "HSG-MBL-195",
+    "code": "HSMMFPI1",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285525/hs-global/furniture/etsy/HSMMFPI1/4.webp"
+  },
+  {
+    "sku": "HSG-MBL-196",
+    "code": "HSMMFWH2",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285608/hs-global/furniture/etsy/HSMMFWH2/3.webp"
+  },
+  {
+    "sku": "HSG-MBL-197",
+    "code": "HSMVAWH1",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285410/hs-global/furniture/etsy/HSMVAWH1/2.webp"
+  },
+  {
+    "sku": "HSG-MBL-198",
+    "code": "HSMCCGR1",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/v1779285540/hs-global/furniture/etsy/HSMCCGR1/1.webp"
+  }
+]

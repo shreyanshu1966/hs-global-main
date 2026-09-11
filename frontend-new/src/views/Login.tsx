@@ -51,9 +51,14 @@ const Login: React.FC = () => {
 
         setIsLoading(true);
 
+        const getRedirectTarget = () => {
+            const searchRedirect = new URLSearchParams(location.search).get('redirect');
+            return (location.state as any)?.from || searchRedirect || '/profile';
+        };
+
         try {
             await login(email, password);
-            const from = (location.state as any)?.from || '/profile';
+            const from = getRedirectTarget();
             navigate(from);
         } catch (err: any) {
             console.error('Login error:', err);
@@ -72,9 +77,14 @@ const Login: React.FC = () => {
     const handleGoogleSuccess = async (credential: string) => {
         setError('');
         setIsLoading(true);
+        const getRedirectTarget = () => {
+            const searchRedirect = new URLSearchParams(location.search).get('redirect');
+            return (location.state as any)?.from || searchRedirect || '/profile';
+        };
+
         try {
             await googleLogin(credential);
-            const from = (location.state as any)?.from || '/profile';
+            const from = getRedirectTarget();
             navigate(from);
         } catch (err: any) {
             console.error('Google login error:', err);
@@ -99,9 +109,14 @@ const Login: React.FC = () => {
         
         setError('');
         setIsLoading(true);
+        const getRedirectTarget = () => {
+            const searchRedirect = new URLSearchParams(location.search).get('redirect');
+            return (location.state as any)?.from || searchRedirect || '/profile';
+        };
+
         try {
             await googleLogin(pendingCredential, googlePhone);
-            const from = (location.state as any)?.from || '/profile';
+            const from = getRedirectTarget();
             navigate(from);
         } catch (err: any) {
             console.error('Google login with phone error:', err);
@@ -200,7 +215,7 @@ const Login: React.FC = () => {
                                 <h1 className="text-3xl font-bold text-gray-900 mb-3 tracking-tight font-sans">Log in</h1>
                                 <p className="text-gray-500 text-sm">
                                     Don't have an account?{' '}
-                                    <Link to="/signup" className="text-black font-semibold hover:underline decoration-1 underline-offset-4">
+                                    <Link to={location.search ? `/signup${location.search}` : '/signup'} className="text-black font-semibold hover:underline decoration-1 underline-offset-4">
                                         Sign up
                                     </Link>
                                 </p>

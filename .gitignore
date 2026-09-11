@@ -74,3 +74,8 @@ frontend-new/public/gallery
 frontend-new/src/assets/
 frontend-new/public/images/
 
+
+# Local tools (Real-ESRGAN binary, downloaded, not committed)
+.tools/
+tools/
+temp-brochure-crops/

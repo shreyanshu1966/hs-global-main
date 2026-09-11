@@ -3,7 +3,8 @@
     "allow": [
       "Bash(npx tsc *)",
       "Bash(node scripts/auto-generate-carousels.js --dry-run)",
-      "Bash(node scripts/update-homepage-banners.js)"
+      "Bash(node scripts/update-homepage-banners.js)",
+      "Bash(node -e ' *)"
     ]
   }
 }

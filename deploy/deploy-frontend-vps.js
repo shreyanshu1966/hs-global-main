@@ -102,7 +102,8 @@ function runViaSsh(host, user, keyPath, password, script) {
     return false;
   }
 
-  const result = spawnSync('python', [pythonHelper, host, user], {
+  const pythonCommand = findPythonCommand();
+  const result = spawnSync(pythonCommand, [pythonHelper, host, user], {
     input: script,
     stdio: ['pipe', 'inherit', 'inherit'],
     env,
@@ -115,6 +116,20 @@ function runViaSsh(host, user, keyPath, password, script) {
   }
 
   return result.status === 0;
+}
+
+function findPythonCommand() {
+  if (process.platform !== 'win32') return 'python';
+  const pythonRoot = path.join(process.env.LOCALAPPDATA || '', 'Programs', 'Python');
+  if (fs.existsSync(pythonRoot)) {
+    const candidates = fs.readdirSync(pythonRoot)
+      .sort()
+      .reverse()
+      .map(dir => path.join(pythonRoot, dir, 'python.exe'));
+    const installedPython = candidates.find(fs.existsSync);
+    if (installedPython) return installedPython;
+  }
+  return 'py';
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────

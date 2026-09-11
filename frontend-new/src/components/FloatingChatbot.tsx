@@ -46,6 +46,29 @@ const MinimizeIcon = () => (
     </svg>
 );
 
+const QUICK_REPLIES = [
+    "What's your MOQ & pricing?",
+    "Can you customize designs for us?",
+    "What are your shipping & export terms?",
+    "Do you offer product samples?"
+];
+
+const QuickReplyChips: React.FC<{ onSelect: (text: string) => void }> = ({ onSelect }) => (
+    <div className="flex flex-wrap gap-2">
+        {QUICK_REPLIES.map((q) => (
+            <button
+                key={q}
+                type="button"
+                onClick={() => onSelect(q)}
+                className="px-3 py-1.5 rounded-full text-xs font-medium text-left transition-colors duration-200 hover:bg-[#EFEAE2]"
+                style={{ background: '#FAF8F5', border: '1px solid #E8E3DC', color: '#2B2B2B' }}
+            >
+                {q}
+            </button>
+        ))}
+    </div>
+);
+
 const LockIcon = () => (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="w-16 h-16 text-[#6B6B6B]">
         <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
@@ -123,6 +146,37 @@ const FloatingChatbot: React.FC = () => {
         }
     }, [isOpen]);
 
+    // Deep-link: automatically open chat when URL has ?openChat=true or ?chat=open
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        const searchParams = new URLSearchParams(window.location.search);
+        const shouldOpen = searchParams.get('openChat') === 'true' || searchParams.get('chat') === 'open';
+
+        if (shouldOpen) {
+            setIsOpen(true);
+            if (!isAuthenticated && !isLoading) {
+                setShowLoginPrompt(true);
+            } else if (isAuthenticated) {
+                setShowLoginPrompt(false);
+                fetchChat();
+
+                const pendingMessage = localStorage.getItem('pendingChatMessage');
+                if (pendingMessage) {
+                    setInputText(pendingMessage);
+                    localStorage.removeItem('pendingChatMessage');
+                    setTimeout(() => textareaRef.current?.focus(), 300);
+                }
+            }
+
+            // Clean up the URL parameter without page reload
+            searchParams.delete('openChat');
+            searchParams.delete('chat');
+            const newSearch = searchParams.toString();
+            const cleanUrl = window.location.pathname + (newSearch ? `?${newSearch}` : '') + window.location.hash;
+            window.history.replaceState({}, '', cleanUrl);
+        }
+    }, [isAuthenticated, isLoading, fetchChat]);
+
     const handleToggle = () => {
         if (!isAuthenticated && !isLoading) {
             setShowLoginPrompt(true);
@@ -173,6 +227,16 @@ const FloatingChatbot: React.FC = () => {
         }
     };
 
+    const handleQuickReplyPreAuth = (text: string) => {
+        localStorage.setItem('pendingChatMessage', text);
+        window.location.href = `/login?redirect=${encodeURIComponent('/?openChat=true')}`;
+    };
+
+    const handleQuickReplyPostAuth = (text: string) => {
+        setInputText(text);
+        setTimeout(() => textareaRef.current?.focus(), 0);
+    };
+
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
@@ -204,6 +268,9 @@ const FloatingChatbot: React.FC = () => {
                 
                 .chat-window {
                     animation: chatSlideUp 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+                    overscroll-behavior: contain;
+                    height: min(560px, calc(100vh - 180px));
+                    height: min(560px, calc(100dvh - 180px));
                 }
                 .chat-fab {
                     transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
@@ -245,7 +312,7 @@ const FloatingChatbot: React.FC = () => {
                         background: '#2B2B2B', // primary color
                         border: '2px solid #FFFFFF'
                     }}
-                    aria-label="Open support chat"
+                    aria-label="Chat with our export team"
                 >
                     <div style={{ color: '#FFFFFF' }} className="flex items-center justify-center">
                         {isOpen ? <CloseIcon /> : <ChatIcon />}
@@ -274,7 +341,6 @@ const FloatingChatbot: React.FC = () => {
                         className="chat-window absolute bottom-[calc(100%+16px)] right-0 origin-bottom-right flex flex-col rounded-xl overflow-hidden bg-white"
                         style={{
                             width: 'min(360px, calc(100vw - 32px))',
-                            height: 'min(580px, calc(100vh - 220px))',
                             boxShadow: '0 20px 40px rgba(43, 43, 43, 0.15)',
                             border: '1px solid #E8E3DC'
                         }}
@@ -293,11 +359,11 @@ const FloatingChatbot: React.FC = () => {
                                 </div>
                                 <div>
                                     <h3 className="font-semibold text-[15px] tracking-wide leading-tight">
-                                        HS Global Support
+                                        HS Global Export Team
                                     </h3>
                                     <div className="flex items-center gap-1.5 mt-0.5">
                                         <span className="w-1.5 h-1.5 rounded-full bg-green-400 inline-block"></span>
-                                        <span className="text-xs font-medium text-gray-300">Online</span>
+                                        <span className="text-xs font-medium text-gray-300">Export Executive · Online</span>
                                     </div>
                                 </div>
                             </div>
@@ -313,16 +379,20 @@ const FloatingChatbot: React.FC = () => {
                         {/* Content Area */}
                         {!isAuthenticated ? (
                             /* ── Login Gate ────────────────────────────────────── */
-                            <div className="flex flex-col items-center justify-center flex-1 p-8 text-center bg-[#FAF8F5]">
+                            <div data-lenis-prevent className="flex flex-col items-center justify-center flex-1 p-8 text-center bg-[#FAF8F5] overflow-y-auto overscroll-contain">
                                 <div className="mb-6">
                                     <LockIcon />
                                 </div>
-                                <h3 className="text-[#1C1C1C] font-semibold text-xl mb-2">Member Support</h3>
-                                <p className="text-[14px] mb-8 text-[#4A4A4A] leading-relaxed">
-                                    Please log in to your account to connect with our support team.
+                                <h3 className="text-[#1C1C1C] font-semibold text-xl mb-2">Talk to an Export Executive</h3>
+                                <p className="text-[14px] mb-6 text-[#4A4A4A] leading-relaxed">
+                                    Sign in to start chatting with our team about customization, shipping, or pricing.
                                 </p>
+                                <div className="mb-6">
+                                    <p className="text-[12px] mb-2 text-[#9CA3AF] font-medium">Quick questions to get started:</p>
+                                    <QuickReplyChips onSelect={handleQuickReplyPreAuth} />
+                                </div>
                                 <a
-                                    href="/login"
+                                    href={`/login?redirect=${encodeURIComponent('/?openChat=true')}`}
                                     id="chat-login-btn"
                                     className="block w-full py-3 px-6 rounded-lg text-center text-[14px] font-medium transition-all duration-200"
                                     style={{
@@ -334,13 +404,13 @@ const FloatingChatbot: React.FC = () => {
                                 </a>
                                 <p className="text-[13px] mt-4 text-[#6B6B6B]">
                                     New here?{' '}
-                                    <a href="/register" className="text-[#2B2B2B] font-medium underline underline-offset-2">Register now</a>
+                                    <a href={`/signup?redirect=${encodeURIComponent('/?openChat=true')}`} className="text-[#2B2B2B] font-medium underline underline-offset-2">Register now</a>
                                 </p>
                             </div>
                         ) : (
                             <>
                                 {/* ── Messages Area ──────────────────────────────── */}
-                                <div className="flex-1 overflow-y-auto p-5 space-y-4 chat-scrollbar bg-[#FAF8F5]" id="chat-messages">
+                                <div data-lenis-prevent className="flex-1 overflow-y-auto overscroll-contain p-5 space-y-4 chat-scrollbar bg-[#FAF8F5]" id="chat-messages">
                                     
                                     {isLoadingChat ? (
                                         <div className="flex justify-center items-center h-full">
@@ -360,9 +430,16 @@ const FloatingChatbot: React.FC = () => {
                                                 <div
                                                     className="px-4 py-2.5 rounded-2xl rounded-bl-sm text-[14px] max-w-[85%] leading-relaxed bg-white text-[#1C1C1C] border border-[#E8E3DC]"
                                                 >
-                                                    Welcome, {user?.name?.split(' ')[0]}. How can we help you today?
+                                                    Hi {user?.name?.split(' ')[0]}! Ask us anything about customization, shipping, or pricing.
                                                 </div>
                                             </div>
+
+                                            {/* Quick replies (only before the conversation has started) */}
+                                            {(!chat?.messages || chat.messages.length === 0) && (
+                                                <div className="msg-bubble pl-[38px]" style={{ animationDelay: '0.2s' }}>
+                                                    <QuickReplyChips onSelect={handleQuickReplyPostAuth} />
+                                                </div>
+                                            )}
 
                                             {/* Chat messages */}
                                             {chat?.messages?.map((msg, idx) => (
@@ -425,7 +502,7 @@ const FloatingChatbot: React.FC = () => {
                                             {chat?.status === 'open' && !isSending && (chat?.messages?.length || 0) > 0 && (
                                                 <div className="text-center mt-4 mb-2">
                                                     <span className="text-[11px] px-3 py-1 rounded-full font-medium text-[#6B6B6B] bg-[#E8E3DC]">
-                                                        Our team will reply shortly
+                                                        We'll get back to you personally, shortly
                                                     </span>
                                                 </div>
                                             )}
@@ -447,7 +524,7 @@ const FloatingChatbot: React.FC = () => {
                                                 maxHeight: '120px',
                                                 border: 'none',
                                             }}
-                                            placeholder="Type a message..."
+                                            placeholder="Ask about customization, shipping, pricing..."
                                             value={inputText}
                                             onChange={e => {
                                                 setInputText(e.target.value);
@@ -474,7 +551,7 @@ const FloatingChatbot: React.FC = () => {
                                     </div>
                                     <div className="text-center mt-2 flex items-center justify-center gap-1.5">
                                         <p className="text-[10px] text-[#9CA3AF]">
-                                            Secured Connection
+                                            Direct line to our export team
                                         </p>
                                     </div>
                                 </div>

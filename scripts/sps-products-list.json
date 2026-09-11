@@ -1,0 +1,410 @@
+[
+  {
+    "num": "1",
+    "sku": "HSG-SPS-001",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.035,y_0,w_0.925,h_1.0,c_crop,fl_relative/v1783574047/hs-global/products/semi-precious-stone/Agate/African-Carnelian/4.webp",
+    "alt": "African Carnelian — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "2",
+    "sku": "HSG-SPS-002",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.090,y_0,w_0.825,h_1.0,c_crop,fl_relative/v1783574118/hs-global/products/semi-precious-stone/Agate/Banded-Agate-Slab/7.webp",
+    "alt": "Banded Agate Slab — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "3",
+    "sku": "HSG-SPS-003",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.075,y_0,w_0.840,h_1.0,c_crop,fl_relative/v1783574060/hs-global/products/semi-precious-stone/Agate/Black-Agate/6.webp",
+    "alt": "Black Agate — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "4",
+    "sku": "HSG-SPS-004",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.090,y_0,w_0.825,h_1.0,c_crop,fl_relative/v1783574069/hs-global/products/semi-precious-stone/Agate/Blue-Agate/7.webp",
+    "alt": "BlueAgate — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "5",
+    "sku": "HSG-SPS-005",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.115,y_0,w_0.785,h_1.0,c_crop,fl_relative/v1783574191/hs-global/products/semi-precious-stone/Agate/Brazilian-Black-Agate/7.webp",
+    "alt": "Brazilian Black Agate — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "6",
+    "sku": "HSG-SPS-006",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.090,y_0,w_0.830,h_1.0,c_crop,fl_relative/v1783574251/hs-global/products/semi-precious-stone/Agate/BRAZILIAN-BLUE-AGATE/6.webp",
+    "alt": "BRAZILIAN BLUE AGATE — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "7",
+    "sku": "HSG-SPS-007",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.905,h_1.0,c_crop,fl_relative/v1783574165/hs-global/products/semi-precious-stone/Agate/Brazilian-Green-Agate/7.webp",
+    "alt": "Brazilian Green Agate — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "8",
+    "sku": "HSG-SPS-008",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.900,h_1.0,c_crop,fl_relative/v1783574260/hs-global/products/semi-precious-stone/Agate/Brazilian-Red-Agate/7.webp",
+    "alt": "Brazilian Red Agate — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "9",
+    "sku": "HSG-SPS-009",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.090,y_0,w_0.825,h_1.0,c_crop,fl_relative/v1783574077/hs-global/products/semi-precious-stone/Agate/Brown-Agate/6.webp",
+    "alt": "Brown Agate — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "10",
+    "sku": "HSG-SPS-010",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.090,y_0,w_0.825,h_1.0,c_crop,fl_relative/v1783574087/hs-global/products/semi-precious-stone/Agate/crystal-agate/7.webp",
+    "alt": "Crystal Agate — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "11",
+    "sku": "HSG-SPS-011",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.090,y_0,w_0.825,h_1.0,c_crop,fl_relative/v1783574087/hs-global/products/semi-precious-stone/Agate/crystal-agate/7.webp",
+    "alt": "Crystal Agate — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "12",
+    "sku": "HSG-SPS-012",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.895,h_1.0,c_crop,fl_relative/v1783574096/hs-global/products/semi-precious-stone/Agate/Crystal-Agate-With-Golden-Glitter/7.webp",
+    "alt": "Crystal Agate With Golden Glitter — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "13",
+    "sku": "HSG-SPS-013",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.085,y_0,w_0.840,h_1.0,c_crop,fl_relative/v1783574202/hs-global/products/semi-precious-stone/Agate/Dendrite-Agate/8.webp",
+    "alt": "Dendrite Agate — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "14",
+    "sku": "HSG-SPS-014",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.085,y_0,w_0.830,h_1.0,c_crop,fl_relative/v1783574108/hs-global/products/semi-precious-stone/Agate/Earth-Agate/5.webp",
+    "alt": "Earth Agate — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "15",
+    "sku": "HSG-SPS-015",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.040,y_0,w_0.915,h_1.0,c_crop,fl_relative/v1783574154/hs-global/products/semi-precious-stone/Agate/Fossil-Agate/5.webp",
+    "alt": "Fossil Agate — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "16",
+    "sku": "HSG-SPS-016",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.900,h_1.0,c_crop,fl_relative/v1783574243/hs-global/products/semi-precious-stone/Agate/grey-agate/8.webp",
+    "alt": "Grey Agate — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "17",
+    "sku": "HSG-SPS-017",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.035,y_0,w_0.935,h_1.0,c_crop,fl_relative/v1783574137/hs-global/products/semi-precious-stone/Agate/Lace-Agate/10.webp",
+    "alt": "Lace Agate — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "18",
+    "sku": "HSG-SPS-018",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.905,h_1.0,c_crop,fl_relative/v1783574182/hs-global/products/semi-precious-stone/Agate/Mix-Agate/7.webp",
+    "alt": "Mix Agate — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "19",
+    "sku": "HSG-SPS-019",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.905,h_1.0,c_crop,fl_relative/v1783574174/hs-global/products/semi-precious-stone/Agate/Mix-Agate-Slabs/7.webp",
+    "alt": "Mix Agate Slabs — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "20",
+    "sku": "HSG-SPS-020",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.890,h_1.0,c_crop,fl_relative/v1783574218/hs-global/products/semi-precious-stone/Agate/Moss-Agate/6.webp",
+    "alt": "Moss Agate — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "21",
+    "sku": "HSG-SPS-021",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.085,y_0,w_0.830,h_1.0,c_crop,fl_relative/v1783574125/hs-global/products/semi-precious-stone/Agate/Ruby-Agate/6.webp",
+    "alt": "Ruby Agate — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "22",
+    "sku": "HSG-SPS-022",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.085,y_0,w_0.855,h_1.0,c_crop,fl_relative/v1783574271/hs-global/products/semi-precious-stone/Agate/Straight-Line/7.webp",
+    "alt": "Straight Line — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "23",
+    "sku": "HSG-SPS-023",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.895,h_1.0,c_crop,fl_relative/v1783574230/hs-global/products/semi-precious-stone/Agate/White-Quartz/7.webp",
+    "alt": "White Quartz — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "24",
+    "sku": "HSG-SPS-024",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.890,h_1.0,c_crop,fl_relative/v1783574100/hs-global/products/semi-precious-stone/Agate/Yellow-Agate/4.webp",
+    "alt": "Yellow Agate — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "25",
+    "sku": "HSG-SPS-025",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.055,y_0,w_0.885,h_1.0,c_crop,fl_relative/v1783574534/hs-global/products/semi-precious-stone/Quartz/Blue-Calcite/7.webp",
+    "alt": "Blue Calcite — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "26",
+    "sku": "HSG-SPS-026",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.080,y_0,w_0.855,h_1.0,c_crop,fl_relative/v1783574545/hs-global/products/semi-precious-stone/Quartz/crystal-quartz-with-rose-gold/3.webp",
+    "alt": "Crystal Quartz with Rose Gold — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "27",
+    "sku": "HSG-SPS-027",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.900,h_1.0,c_crop,fl_relative/v1783574509/hs-global/products/semi-precious-stone/Quartz/Golden-Hematite-Quartz-Slab/7.webp",
+    "alt": "Golden Hematite Quartz Slab — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "28",
+    "sku": "HSG-SPS-028",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.115,y_0,w_0.780,h_1.0,c_crop,fl_relative/v1783574516/hs-global/products/semi-precious-stone/Quartz/Golden-Quartz/5.webp",
+    "alt": "Golden Quartz — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "29",
+    "sku": "HSG-SPS-029",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.060,y_0,w_0.875,h_1.0,c_crop,fl_relative/v1783574486/hs-global/products/semi-precious-stone/Quartz/Green-Quartz/6.webp",
+    "alt": "Green Quartz — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "30",
+    "sku": "HSG-SPS-030",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.900,h_1.0,c_crop,fl_relative/v1783574525/hs-global/products/semi-precious-stone/Quartz/Hemotied-Quartz/7.webp",
+    "alt": "Hemotied Quartz — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "31",
+    "sku": "HSG-SPS-031",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.110,y_0,w_0.790,h_1.0,c_crop,fl_relative/v1783574471/hs-global/products/semi-precious-stone/Quartz/Obsidian-Black-with-Gold/6.webp",
+    "alt": "Obsidian Black with Gold — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "32",
+    "sku": "HSG-SPS-032",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.900,h_1.0,c_crop,fl_relative/v1783574541/hs-global/products/semi-precious-stone/Quartz/Obsidian-Black-with-Silver/7.webp",
+    "alt": "Obsidian Black with Silver — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "33",
+    "sku": "HSG-SPS-033",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.895,h_1.0,c_crop,fl_relative/v1783574480/hs-global/products/semi-precious-stone/Quartz/Orange-Quartz/7.webp",
+    "alt": "Orange Quartz — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "34",
+    "sku": "HSG-SPS-034",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.900,h_1.0,c_crop,fl_relative/v1783574432/hs-global/products/semi-precious-stone/Quartz/Rose-Quartz-Slabs/7.webp",
+    "alt": "Rose Quartz Slabs — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "35",
+    "sku": "HSG-SPS-035",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.900,h_1.0,c_crop,fl_relative/v1783574496/hs-global/products/semi-precious-stone/Quartz/Septaria-Yellow/6.webp",
+    "alt": "Septaria Yellow — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "36",
+    "sku": "HSG-SPS-036",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.040,y_0,w_0.915,h_1.0,c_crop,fl_relative/v1783574453/hs-global/products/semi-precious-stone/Quartz/Smoky-Quartz-Dark/5.webp",
+    "alt": "Smoky Quartz Dark — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "37",
+    "sku": "HSG-SPS-037",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.040,y_0,w_0.915,h_1.0,c_crop,fl_relative/v1783574453/hs-global/products/semi-precious-stone/Quartz/Smoky-Quartz-Dark/5.webp",
+    "alt": "Smoky Quartz Dark — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "38",
+    "sku": "HSG-SPS-038",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.055,y_0,w_0.890,h_1.0,c_crop,fl_relative/v1783574447/hs-global/products/semi-precious-stone/Quartz/White-MOP/7.webp",
+    "alt": "White MOP — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "39",
+    "sku": "HSG-SPS-039",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.085,y_0,w_0.830,h_1.0,c_crop,fl_relative/v1783574439/hs-global/products/semi-precious-stone/Quartz/White-Quartz-with-Sparkle/6.webp",
+    "alt": "White Quartz with Sparkle — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "40",
+    "sku": "HSG-SPS-040",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.160,y_0,w_0.690,h_1.0,c_crop,fl_relative/v1783574346/hs-global/products/semi-precious-stone/Gemstone/Emerald-quartz/4.webp",
+    "alt": "Emerald Quartz — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "41",
+    "sku": "HSG-SPS-041",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.045,y_0,w_0.905,h_1.0,c_crop,fl_relative/v1783574340/hs-global/products/semi-precious-stone/Gemstone/Labradorite/8.webp",
+    "alt": "Labradorite — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "42",
+    "sku": "HSG-SPS-042",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.040,y_0,w_0.905,h_1.0,c_crop,fl_relative/v1783574328/hs-global/products/semi-precious-stone/Gemstone/Lapis-Lazulli/5.webp",
+    "alt": "Lapis Lazulli — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "43",
+    "sku": "HSG-SPS-043",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.900,h_1.0,c_crop,fl_relative/v1783574306/hs-global/products/semi-precious-stone/Gemstone/Malachite/7.webp",
+    "alt": "Malachite — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "44",
+    "sku": "HSG-SPS-044",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.125,y_0,w_0.750,h_1.0,c_crop,fl_relative/v1783574298/hs-global/products/semi-precious-stone/Gemstone/Malachite-Flower-Slabs/7.webp",
+    "alt": "Malachite Flower Slabs — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "45",
+    "sku": "HSG-SPS-045",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.900,h_1.0,c_crop,fl_relative/v1783574322/hs-global/products/semi-precious-stone/Gemstone/Rose-Quartz/7.webp",
+    "alt": "Rose Quartz — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "46",
+    "sku": "HSG-SPS-046",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.075,y_0,w_0.850,h_1.0,c_crop,fl_relative/v1783574313/hs-global/products/semi-precious-stone/Gemstone/Sodalite-Blue/6.webp",
+    "alt": "Sodalite Blue — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "47",
+    "sku": "HSG-SPS-047",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.035,y_0,w_0.895,h_1.0,c_crop,fl_relative/v1783574369/hs-global/products/semi-precious-stone/Jasper/Angel-Jasper/3.webp",
+    "alt": "Angel Jasper — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "48",
+    "sku": "HSG-SPS-048",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.055,y_0,w_0.885,h_1.0,c_crop,fl_relative/v1783574389/hs-global/products/semi-precious-stone/Jasper/Green-Jasper/5.webp",
+    "alt": "Green Jasper — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "49",
+    "sku": "HSG-SPS-049",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.020,y_0,w_0.955,h_1.0,c_crop,fl_relative/v1783574363/hs-global/products/semi-precious-stone/Jasper/Jamaican-Jasper-Slabs/5.webp",
+    "alt": "Jamaican Jasper Slabs — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "50",
+    "sku": "HSG-SPS-050",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.900,h_1.0,c_crop,fl_relative/v1783574383/hs-global/products/semi-precious-stone/Jasper/Mockite-Jasper/8.webp",
+    "alt": "Mockite Jasper — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "51",
+    "sku": "HSG-SPS-051",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.030,y_0,w_0.940,h_1.0,c_crop,fl_relative/v1783574396/hs-global/products/semi-precious-stone/Jasper/Polychrome-Jasper/4.webp",
+    "alt": "Polychrome Jasper — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "52",
+    "sku": "HSG-SPS-052",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.070,y_0,w_0.860,h_1.0,c_crop,fl_relative/v1783574357/hs-global/products/semi-precious-stone/Jasper/Red-Jasper/7.webp",
+    "alt": "Red Jasper — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "53",
+    "sku": "HSG-SPS-053",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.095,y_0,w_0.810,h_1.0,c_crop,fl_relative/v1783574666/hs-global/products/semi-precious-stone/petrified%20wood/Beige-Petrified-Wood-Slab/4.webp",
+    "alt": "Beige Petrified Wood Slab — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "54",
+    "sku": "HSG-SPS-054",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.065,y_0,w_0.880,h_1.0,c_crop,fl_relative/v1783574635/hs-global/products/semi-precious-stone/petrified%20wood/Black-Petrified-Wood-Retro-Slab/3.webp",
+    "alt": "Black Petrified Wood Retro Slab — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "55",
+    "sku": "HSG-SPS-055",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.090,y_0,w_0.910,h_1.0,c_crop,fl_relative/v1783574660/hs-global/products/semi-precious-stone/petrified%20wood/Brown-Petrified-Wood-Retro-Slabs/5.webp",
+    "alt": "Brown Petrified Wood Retro Slabs — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "56",
+    "sku": "HSG-SPS-056",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.070,y_0,w_0.830,h_1.0,c_crop,fl_relative/v1783574650/hs-global/products/semi-precious-stone/petrified%20wood/Brown-Petrified-Wood-Slabs/3.webp",
+    "alt": "Brown Petrified Wood Slabs — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "57",
+    "sku": "HSG-SPS-057",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.070,y_0,w_0.855,h_1.0,c_crop,fl_relative/v1783574645/hs-global/products/semi-precious-stone/petrified%20wood/White-Petrified-Wood/5.webp",
+    "alt": "White Petrified Wood — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "58",
+    "sku": "HSG-SPS-058",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.900,h_1.0,c_crop,fl_relative/v1783574605/hs-global/products/semi-precious-stone/Tiger%20eye/Red-Tiger-Eye/8.webp",
+    "alt": "Red Tiger Eye — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "59",
+    "sku": "HSG-SPS-059",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.900,h_1.0,c_crop,fl_relative/v1783574629/hs-global/products/semi-precious-stone/Tiger%20eye/Tiger-Eye/5.webp",
+    "alt": "Tiger Eye — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "60",
+    "sku": "HSG-SPS-060",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.045,y_0,w_0.900,h_1.0,c_crop,fl_relative/v1783574623/hs-global/products/semi-precious-stone/Tiger%20eye/Tiger-Eye-Blue/7.webp",
+    "alt": "Tiger Eye Blue — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "61",
+    "sku": "HSG-SPS-061",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.900,h_1.0,c_crop,fl_relative/v1783574615/hs-global/products/semi-precious-stone/Tiger%20eye/Tiger-Eye-Retro/7.webp",
+    "alt": "Tiger Eye Retro — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "62",
+    "sku": "HSG-SPS-062",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.900,h_1.0,c_crop,fl_relative/v1783574423/hs-global/products/semi-precious-stone/Mother%20Of%20Pearl/Black-MOP/7.webp",
+    "alt": "Black MOP — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "63",
+    "sku": "HSG-SPS-063",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.045,y_0,w_0.915,h_1.0,c_crop,fl_relative/v1783574413/hs-global/products/semi-precious-stone/Mother%20Of%20Pearl/Golden%20Mop/5.webp",
+    "alt": "Golden Mop — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "64",
+    "sku": "HSG-SPS-064",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.900,h_1.0,c_crop,fl_relative/v1783574407/hs-global/products/semi-precious-stone/Mother%20Of%20Pearl/Green-Abalone/7.webp",
+    "alt": "Green Abalone — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "65",
+    "sku": "HSG-SPS-065",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.900,h_1.0,c_crop,fl_relative/v1783574557/hs-global/products/semi-precious-stone/Semiprecious%20Stone/Green-Fluorite/7.webp",
+    "alt": "Green Fluorite — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "66",
+    "sku": "HSG-SPS-066",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.900,h_1.0,c_crop,fl_relative/v1783574593/hs-global/products/semi-precious-stone/Semiprecious%20Stone/Red-Carnelian-Agate-Slabs/8.webp",
+    "alt": "Red Carnelian Agate Slabs — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "67",
+    "sku": "HSG-SPS-067",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.065,y_0,w_0.860,h_1.0,c_crop,fl_relative/v1783574279/hs-global/products/semi-precious-stone/Amazonite/Amazonite/7.webp",
+    "alt": "Amazonite — Semi Precious Stone by HS Global Export"
+  },
+  {
+    "num": "68",
+    "sku": "HSG-SPS-068",
+    "src": "https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.900,h_1.0,c_crop,fl_relative/v1783574290/hs-global/products/semi-precious-stone/Amethyst/Amethyst/8.webp",
+    "alt": "Amethyst — Semi Precious Stone by HS Global Export"
+  }
+]

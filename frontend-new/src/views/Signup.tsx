@@ -119,9 +119,10 @@ const Signup: React.FC = () => {
     const handleGoogleSuccess = async (credential: string) => {
         setError('');
         setIsLoading(true);
+        const searchRedirect = new URLSearchParams(location.search).get('redirect');
         try {
             await googleLogin(credential);
-            navigate('/profile');
+            navigate(searchRedirect || '/profile');
         } catch (err: any) {
             console.error('Google signup error:', err);
             if (err.requiresPhone) {
@@ -137,16 +138,18 @@ const Signup: React.FC = () => {
 
     const handleGooglePhoneSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!validatePhone(googlePhone)) {
+        const phoneRegex = /^\+?[\d\s-]{10,15}$/;
+        if (!phoneRegex.test(googlePhone)) {
             setError('Please enter a valid phone number');
             return;
         }
         
         setError('');
         setIsLoading(true);
+        const searchRedirect = new URLSearchParams(location.search).get('redirect');
         try {
             await googleLogin(pendingCredential, googlePhone);
-            navigate('/profile');
+            navigate(searchRedirect || '/profile');
         } catch (err: any) {
             console.error('Google signup with phone error:', err);
             setError(err.message || 'Google authentication failed.');
@@ -250,7 +253,7 @@ const Signup: React.FC = () => {
                             </div>
                             <div className="space-y-4 pt-4">
                                 <Link
-                                    to="/login"
+                                    to={location.search ? `/login${location.search}` : '/login'}
                                     className="block w-full py-3 bg-black text-white text-sm font-semibold rounded-md hover:bg-gray-800 transition-colors text-center"
                                 >
                                     Log in
@@ -263,7 +266,7 @@ const Signup: React.FC = () => {
                                 <h1 className="text-3xl font-bold text-gray-900 mb-3 tracking-tight font-sans">Create an account</h1>
                                 <p className="text-gray-500 text-sm">
                                     Already have an account?{' '}
-                                    <Link to="/login" className="text-black font-semibold hover:underline decoration-1 underline-offset-4">
+                                    <Link to={location.search ? `/login${location.search}` : '/login'} className="text-black font-semibold hover:underline decoration-1 underline-offset-4">
                                         Log in
                                     </Link>
                                 </p>

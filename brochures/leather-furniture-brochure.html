@@ -192,36 +192,30 @@
       z-index: 4;
     }
 
-    /* Stitch detail border on image right edge */
-    .stitch-edge {
-      position: absolute;
-      top: 0; right: 0; bottom: 0;
-      width: 8px;
-      background: var(--onyx-lt);
-      z-index: 5;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-around;
-      padding: 6mm 0;
-    }
-
-    .stitch-dot {
-      width: 3px;
-      height: 3px;
-      background: var(--tan);
-      border-radius: 50%;
-      opacity: 0.6;
-    }
-
     /* ── RIGHT — DETAILS PANEL (dark) ── */
     .product-details {
+      position: relative;
       background: var(--onyx-lt);
       padding: 8mm 10mm 6mm 9mm;
       display: flex;
       flex-direction: column;
       gap: 4.5mm;
       border-left: 1pt solid rgba(139,69,19,0.3);
+    }
+
+    /* Stitch detail accent — lives on the details panel's own left edge,
+       never overlapping the product photo. */
+    .product-details::before {
+      content: '';
+      position: absolute;
+      top: 6mm; bottom: 6mm; left: 0;
+      width: 3px;
+      background: repeating-linear-gradient(
+        180deg,
+        var(--tan) 0px, var(--tan) 3px,
+        transparent 3px, transparent 11px
+      );
+      opacity: 0.6;
     }
 
     /* Product identity */
@@ -911,17 +905,9 @@
 
       <!-- LEFT IMAGE -->
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587816/hs-global/leather/etsy/HSLSOGR1/1.webp" alt="Chesterfield Green Leather Sofa Luxury Living Room Couch — Leather Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787753395/hs-global/leather-brochure-hero/HSG-LTH-001.webp" alt="Chesterfield Green Leather Sofa Luxury Living Room Couch — Leather Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
         <div class="img-sku-badge">SKU · HSG-LTH-001</div>
-        <div class="stitch-edge">
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-        </div>
       </div>
 
       <!-- RIGHT DETAILS -->
@@ -1007,17 +993,9 @@
 
       <!-- LEFT IMAGE -->
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587673/hs-global/leather/etsy/HSLSOBR3/1.webp" alt="Chesterfield Leather Sofa Classic Tufted Loveseat — Leather Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787753505/hs-global/leather-brochure-hero/HSG-LTH-002.webp" alt="Chesterfield Leather Sofa Classic Tufted Loveseat — Leather Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
         <div class="img-sku-badge">SKU · HSG-LTH-002</div>
-        <div class="stitch-edge">
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-        </div>
       </div>
 
       <!-- RIGHT DETAILS -->
@@ -1103,17 +1081,9 @@
 
       <!-- LEFT IMAGE -->
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587429/hs-global/leather/etsy/HSLCHBR1/1.webp" alt="Chesterfield Wingback Leather Accent Chair Classic Armchair — Leather Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787753666/hs-global/leather-brochure-hero/HSG-LTH-003.webp" alt="Chesterfield Wingback Leather Accent Chair Classic Armchair — Leather Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
         <div class="img-sku-badge">SKU · HSG-LTH-003</div>
-        <div class="stitch-edge">
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-        </div>
       </div>
 
       <!-- RIGHT DETAILS -->
@@ -1199,17 +1169,9 @@
 
       <!-- LEFT IMAGE -->
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587639/hs-global/leather/etsy/HSLCHRE2/1.webp" alt="Luxury Leather Accent Armchair Modern Dining Chair — Leather Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787753917/hs-global/leather-brochure-hero/HSG-LTH-004.webp" alt="Luxury Leather Accent Armchair Modern Dining Chair — Leather Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
         <div class="img-sku-badge">SKU · HSG-LTH-004</div>
-        <div class="stitch-edge">
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-        </div>
       </div>
 
       <!-- RIGHT DETAILS -->
@@ -1295,17 +1257,9 @@
 
       <!-- LEFT IMAGE -->
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587456/hs-global/leather/etsy/HSLSOBR2/1.webp" alt="Modern Leather Accent Armchair Luxury Lounge Chair — Leather Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787754048/hs-global/leather-brochure-hero/HSG-LTH-005.webp" alt="Modern Leather Accent Armchair Luxury Lounge Chair — Leather Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
         <div class="img-sku-badge">SKU · HSG-LTH-005</div>
-        <div class="stitch-edge">
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-        </div>
       </div>
 
       <!-- RIGHT DETAILS -->
@@ -1391,17 +1345,9 @@
 
       <!-- LEFT IMAGE -->
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587714/hs-global/leather/etsy/HSLBENGR1/1.webp" alt="Modern Green Upholstered Bench Entryway Bedroom Seat — Leather Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787754147/hs-global/leather-brochure-hero/HSG-LTH-006.webp" alt="Modern Green Upholstered Bench Entryway Bedroom Seat — Leather Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
         <div class="img-sku-badge">SKU · HSG-LTH-006</div>
-        <div class="stitch-edge">
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-        </div>
       </div>
 
       <!-- RIGHT DETAILS -->
@@ -1487,17 +1433,9 @@
 
       <!-- LEFT IMAGE -->
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587620/hs-global/leather/etsy/HSLBENBE2/5.webp" alt="Modern Upholstered Storage Bench Ottoman Entryway Seat — Leather Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787754229/hs-global/leather-brochure-hero/HSG-LTH-007.webp" alt="Modern Upholstered Storage Bench Ottoman Entryway Seat — Leather Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
         <div class="img-sku-badge">SKU · HSG-LTH-007</div>
-        <div class="stitch-edge">
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-        </div>
       </div>
 
       <!-- RIGHT DETAILS -->
@@ -1583,17 +1521,9 @@
 
       <!-- LEFT IMAGE -->
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587447/hs-global/leather/etsy/HSLSTOGR2/1.webp" alt="Green Leather Ottoman Luxury Accent Stool — Leather Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787754348/hs-global/leather-brochure-hero/HSG-LTH-008.webp" alt="Green Leather Ottoman Luxury Accent Stool — Leather Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
         <div class="img-sku-badge">SKU · HSG-LTH-008</div>
-        <div class="stitch-edge">
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-        </div>
       </div>
 
       <!-- RIGHT DETAILS -->
@@ -1679,17 +1609,9 @@
 
       <!-- LEFT IMAGE -->
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587496/hs-global/leather/etsy/HSLSTOBR1/1.webp" alt="Luxury Leather Ottoman Round Accent Stool — Leather Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787754560/hs-global/leather-brochure-hero/HSG-LTH-009.webp" alt="Luxury Leather Ottoman Round Accent Stool — Leather Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
         <div class="img-sku-badge">SKU · HSG-LTH-009</div>
-        <div class="stitch-edge">
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-        </div>
       </div>
 
       <!-- RIGHT DETAILS -->
@@ -1775,17 +1697,9 @@
 
       <!-- LEFT IMAGE -->
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587479/hs-global/leather/etsy/HSLBEGR1/1.webp" alt="Green Tufted Upholstered Bed Frame Modern Luxury Bed — Leather Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787754681/hs-global/leather-brochure-hero/HSG-LTH-010.webp" alt="Green Tufted Upholstered Bed Frame Modern Luxury Bed — Leather Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
         <div class="img-sku-badge">SKU · HSG-LTH-010</div>
-        <div class="stitch-edge">
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-        </div>
       </div>
 
       <!-- RIGHT DETAILS -->
@@ -1871,17 +1785,9 @@
 
       <!-- LEFT IMAGE -->
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587556/hs-global/leather/etsy/HSLDRBR2/1.webp" alt="Luxury Leather Dresser Crocodile Texture Storage Cabinet — Leather Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787754766/hs-global/leather-brochure-hero/HSG-LTH-011.webp" alt="Luxury Leather Dresser Crocodile Texture Storage Cabinet — Leather Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
         <div class="img-sku-badge">SKU · HSG-LTH-011</div>
-        <div class="stitch-edge">
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-        </div>
       </div>
 
       <!-- RIGHT DETAILS -->
@@ -1967,17 +1873,9 @@
 
       <!-- LEFT IMAGE -->
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587784/hs-global/leather/etsy/HSLDRBE1/1.webp" alt="Modern 6 Drawer Dresser Beige Storage Cabinet — Leather Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787754862/hs-global/leather-brochure-hero/HSG-LTH-012.webp" alt="Modern 6 Drawer Dresser Beige Storage Cabinet — Leather Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
         <div class="img-sku-badge">SKU · HSG-LTH-012</div>
-        <div class="stitch-edge">
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-        </div>
       </div>
 
       <!-- RIGHT DETAILS -->
@@ -2063,17 +1961,9 @@
 
       <!-- LEFT IMAGE -->
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587468/hs-global/leather/etsy/HSLCETBR3/4.webp" alt="Luxury Leather Coffee Table Modern Brass Accent Table — Leather Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787754980/hs-global/leather-brochure-hero/HSG-LTH-013.webp" alt="Luxury Leather Coffee Table Modern Brass Accent Table — Leather Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
         <div class="img-sku-badge">SKU · HSG-LTH-013</div>
-        <div class="stitch-edge">
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-        </div>
       </div>
 
       <!-- RIGHT DETAILS -->
@@ -2159,17 +2049,9 @@
 
       <!-- LEFT IMAGE -->
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587573/hs-global/leather/etsy/HSLCETCR2/1.webp" alt="Luxury Marble Top Coffee Table with Storage Drawer — Leather Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787755086/hs-global/leather-brochure-hero/HSG-LTH-014.webp" alt="Luxury Marble Top Coffee Table with Storage Drawer — Leather Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
         <div class="img-sku-badge">SKU · HSG-LTH-014</div>
-        <div class="stitch-edge">
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-        </div>
       </div>
 
       <!-- RIGHT DETAILS -->
@@ -2255,17 +2137,9 @@
 
       <!-- LEFT IMAGE -->
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587744/hs-global/leather/etsy/HSLCETGR1/4.webp" alt="Vintage Storage Trunk Coffee Table Green Faux Leather Chest — Leather Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787755215/hs-global/leather-brochure-hero/HSG-LTH-015.webp" alt="Vintage Storage Trunk Coffee Table Green Faux Leather Chest — Leather Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
         <div class="img-sku-badge">SKU · HSG-LTH-015</div>
-        <div class="stitch-edge">
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-        </div>
       </div>
 
       <!-- RIGHT DETAILS -->
@@ -2351,17 +2225,9 @@
 
       <!-- LEFT IMAGE -->
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587530/hs-global/leather/etsy/HSLCOTGR1/1.webp" alt="Luxury Console Table Green Entryway Accent Table — Leather Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787755346/hs-global/leather-brochure-hero/HSG-LTH-016.webp" alt="Luxury Console Table Green Entryway Accent Table — Leather Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
         <div class="img-sku-badge">SKU · HSG-LTH-016</div>
-        <div class="stitch-edge">
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-        </div>
       </div>
 
       <!-- RIGHT DETAILS -->
@@ -2447,17 +2313,9 @@
 
       <!-- LEFT IMAGE -->
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587596/hs-global/leather/etsy/HSLCOTBR2/1.webp" alt="Luxury Console Table Leather Entryway Sofa Table — Leather Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787755443/hs-global/leather-brochure-hero/HSG-LTH-017.webp" alt="Luxury Console Table Leather Entryway Sofa Table — Leather Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
         <div class="img-sku-badge">SKU · HSG-LTH-017</div>
-        <div class="stitch-edge">
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-        </div>
       </div>
 
       <!-- RIGHT DETAILS -->
@@ -2543,17 +2401,9 @@
 
       <!-- LEFT IMAGE -->
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285389/hs-global/leather/etsy/HSLSTBR3/1.webp" alt="Luxury 3 Piece Nesting Tables Gold Accent Side Table Set — Leather Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787755728/hs-global/leather-brochure-hero/HSG-LTH-018.webp" alt="Luxury 3 Piece Nesting Tables Gold Accent Side Table Set — Leather Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
         <div class="img-sku-badge">SKU · HSG-LTH-018</div>
-        <div class="stitch-edge">
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-        </div>
       </div>
 
       <!-- RIGHT DETAILS -->
@@ -2639,17 +2489,9 @@
 
       <!-- LEFT IMAGE -->
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587548/hs-global/leather/etsy/HSLSTBR2/1.webp" alt="Luxury Nesting Side Tables Faux Leather Accent Table Se — Leather Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787755834/hs-global/leather-brochure-hero/HSG-LTH-019.webp" alt="Luxury Nesting Side Tables Faux Leather Accent Table Se — Leather Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
         <div class="img-sku-badge">SKU · HSG-LTH-019</div>
-        <div class="stitch-edge">
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-        </div>
       </div>
 
       <!-- RIGHT DETAILS -->
@@ -2735,17 +2577,9 @@
 
       <!-- LEFT IMAGE -->
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587687/hs-global/leather/etsy/HSLSTBR7/1.webp" alt="Luxury Nesting Side Tables Leather Accent Table Set — Leather Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787756029/hs-global/leather-brochure-hero/HSG-LTH-020.webp" alt="Luxury Nesting Side Tables Leather Accent Table Set — Leather Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
         <div class="img-sku-badge">SKU · HSG-LTH-020</div>
-        <div class="stitch-edge">
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-        </div>
       </div>
 
       <!-- RIGHT DETAILS -->
@@ -2831,17 +2665,9 @@
 
       <!-- LEFT IMAGE -->
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587649/hs-global/leather/etsy/HSLSTBL6/1.webp" alt="Luxury Tray Side Table Black Croc Accent Table — Leather Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787756221/hs-global/leather-brochure-hero/HSG-LTH-021.webp" alt="Luxury Tray Side Table Black Croc Accent Table — Leather Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
         <div class="img-sku-badge">SKU · HSG-LTH-021</div>
-        <div class="stitch-edge">
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-        </div>
       </div>
 
       <!-- RIGHT DETAILS -->
@@ -2927,17 +2753,9 @@
 
       <!-- LEFT IMAGE -->
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587472/hs-global/leather/etsy/HSLSTBL4/1.webp" alt="Modern Black Tray Side Table Gold Accent End Table — Leather Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787756407/hs-global/leather-brochure-hero/HSG-LTH-022.webp" alt="Modern Black Tray Side Table Gold Accent End Table — Leather Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
         <div class="img-sku-badge">SKU · HSG-LTH-022</div>
-        <div class="stitch-edge">
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-        </div>
       </div>
 
       <!-- RIGHT DETAILS -->
@@ -3023,17 +2841,9 @@
 
       <!-- LEFT IMAGE -->
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1780660572/hs-global/products/leather/Side%20Table/file_bbcgjh.webp" alt="Modern Nesting Side Table Set Gold Accent End Tables — Leather Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787756721/hs-global/leather-brochure-hero/HSG-LTH-023.webp" alt="Modern Nesting Side Table Set Gold Accent End Tables — Leather Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
         <div class="img-sku-badge">SKU · HSG-LTH-023</div>
-        <div class="stitch-edge">
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-        </div>
       </div>
 
       <!-- RIGHT DETAILS -->
@@ -3119,17 +2929,9 @@
 
       <!-- LEFT IMAGE -->
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587517/hs-global/leather/etsy/HSLSTBR1/1.webp" alt="Modern Nesting Side Tables Wood &amp; Metal Accent Tables Set — Leather Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787756901/hs-global/leather-brochure-hero/HSG-LTH-024.webp" alt="Modern Nesting Side Tables Wood &amp; Metal Accent Tables Set — Leather Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
         <div class="img-sku-badge">SKU · HSG-LTH-024</div>
-        <div class="stitch-edge">
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-        </div>
       </div>
 
       <!-- RIGHT DETAILS -->
@@ -3215,17 +3017,9 @@
 
       <!-- LEFT IMAGE -->
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587782/hs-global/leather/etsy/HSLBOBR1/4.webp" alt="Luxury Leather Jewelry Box Organizer Vintage Storage Chest — Leather Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787757122/hs-global/leather-brochure-hero/HSG-LTH-025.webp" alt="Luxury Leather Jewelry Box Organizer Vintage Storage Chest — Leather Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
         <div class="img-sku-badge">SKU · HSG-LTH-025</div>
-        <div class="stitch-edge">
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-        </div>
       </div>
 
       <!-- RIGHT DETAILS -->
@@ -3311,17 +3105,9 @@
 
       <!-- LEFT IMAGE -->
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587539/hs-global/leather/etsy/HSLCABBL1/2.webp" alt="Vintage Trunk Storage Cabinet Leather Accent Chest — Leather Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787757292/hs-global/leather-brochure-hero/HSG-LTH-026.webp" alt="Vintage Trunk Storage Cabinet Leather Accent Chest — Leather Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
         <div class="img-sku-badge">SKU · HSG-LTH-026</div>
-        <div class="stitch-edge">
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-        </div>
       </div>
 
       <!-- RIGHT DETAILS -->
@@ -3407,17 +3193,9 @@
 
       <!-- LEFT IMAGE -->
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587565/hs-global/leather/etsy/HSLMFBR2/1.webp" alt="Round Leather Wall Mirror Luxury Accent Mirror — Leather Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787757404/hs-global/leather-brochure-hero/HSG-LTH-027.webp" alt="Round Leather Wall Mirror Luxury Accent Mirror — Leather Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
         <div class="img-sku-badge">SKU · HSG-LTH-027</div>
-        <div class="stitch-edge">
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-        </div>
       </div>
 
       <!-- RIGHT DETAILS -->
@@ -3503,17 +3281,9 @@
 
       <!-- LEFT IMAGE -->
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587605/hs-global/leather/etsy/HSLMFBE1/1.webp" alt="Modern Wall Mirror Minimalist Rectangular Vanity Mirror — Leather Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787757597/hs-global/leather-brochure-hero/HSG-LTH-028.webp" alt="Modern Wall Mirror Minimalist Rectangular Vanity Mirror — Leather Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
         <div class="img-sku-badge">SKU · HSG-LTH-028</div>
-        <div class="stitch-edge">
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-          <div class="stitch-dot"></div><div class="stitch-dot"></div>
-        </div>
       </div>
 
       <!-- RIGHT DETAILS -->

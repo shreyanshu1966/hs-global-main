@@ -118,6 +118,7 @@ const Header = () => {
         setIsFurnitureMegaOpen(false);
         setIsWoodenFurnitureMegaOpen(false);
         setIsLeatherMegaOpen(false);
+        setIsSemiPreciousStoneMegaOpen(false);
       }
     };
 
@@ -387,6 +388,7 @@ const Header = () => {
       setIsFurnitureMegaOpen(true);
       setIsWoodenFurnitureMegaOpen(false);
       setIsLeatherMegaOpen(false);
+      setIsSemiPreciousStoneMegaOpen(false);
       furnitureMegaOpenTimerRef.current = null;
     }, 80);
   };
@@ -419,6 +421,7 @@ const Header = () => {
       setIsWoodenFurnitureMegaOpen(true);
       setIsFurnitureMegaOpen(false);
       setIsLeatherMegaOpen(false);
+      setIsSemiPreciousStoneMegaOpen(false);
       woodenFurnitureMegaOpenTimerRef.current = null;
     }, 80);
   };
@@ -451,6 +454,7 @@ const Header = () => {
       setIsLeatherMegaOpen(true);
       setIsFurnitureMegaOpen(false);
       setIsWoodenFurnitureMegaOpen(false);
+      setIsSemiPreciousStoneMegaOpen(false);
       leatherMegaOpenTimerRef.current = null;
     }, 80);
   };
@@ -502,6 +506,13 @@ const Header = () => {
       }
       semiPreciousStoneMegaCloseTimerRef.current = null;
     }, 280);
+  };
+
+  const closeAllMegaMenus = () => {
+    closeFurnitureMega();
+    closeWoodenFurnitureMega();
+    closeLeatherMega();
+    closeSemiPreciousStoneMega();
   };
 
   return (
@@ -1000,7 +1011,7 @@ const Header = () => {
         <nav
           className="flex items-center itsbits-header-inner itsbits-nav-inner relative overflow-visible"
           style={{ overflow: 'visible' }}
-          onMouseLeave={closeFurnitureMega}
+          onMouseLeave={closeAllMegaMenus}
         >
           <ul className="flex m-0 p-0 list-none justify-center w-full itsbits-nav-list overflow-visible">
             {navItems.map((item) => (
@@ -1049,209 +1060,213 @@ const Header = () => {
                     <span className={`ml-1 inline-block text-[10px] transition-transform ${(item.megaMenuType === 'furniture' ? isFurnitureMegaOpen : item.megaMenuType === 'wooden-furniture' ? isWoodenFurnitureMegaOpen : item.megaMenuType === 'leather' ? isLeatherMegaOpen : isSemiPreciousStoneMegaOpen) ? 'rotate-180' : ''}`} aria-hidden="true">▼</span>
                   )}
                 </a>
+
+                {/* Marble Furniture Mega Menu — drawn directly below Marble Furniture */}
+                {item.megaMenuType === 'furniture' && isFurnitureMegaOpen && (
+                  <div
+                    className="absolute left-0 top-full pt-1.5 z-[120]"
+                    onMouseEnter={() => {
+                      isFurnitureMegaHoveredRef.current = true;
+                      if (furnitureMegaCloseTimerRef.current) {
+                        clearTimeout(furnitureMegaCloseTimerRef.current);
+                        furnitureMegaCloseTimerRef.current = null;
+                      }
+                    }}
+                    onMouseLeave={() => {
+                      isFurnitureMegaHoveredRef.current = false;
+                      closeFurnitureMega();
+                    }}
+                  >
+                    <div className="w-[740px] max-w-[calc(100vw-2rem)] bg-white border border-[#e5e7eb] shadow-[0_18px_46px_rgba(0,0,0,0.14)] rounded-2xl p-5 relative">
+                      <div className="flex items-center justify-between border-b border-[#eef2f7] pb-3 mb-4">
+                        <p style={{ fontSize: '10px', letterSpacing: '0.18em', fontWeight: 400 }} className="uppercase text-[#94a3b8]">Marble Furniture Collections</p>
+                        <a
+                          href="/products/furniture"
+                          style={{ fontSize: '11px', letterSpacing: '0.1em', fontWeight: 500 }}
+                          className="uppercase text-[#0f172a] hover:text-black no-underline transition-colors"
+                          onClick={() => setIsFurnitureMegaOpen(false)}
+                        >
+                          View All →
+                        </a>
+                      </div>
+                      <div className="grid grid-cols-3 gap-5">
+                        {furnitureMegaGroups.map((group) => (
+                          <div key={group.title} className="space-y-0.5">
+                            <p style={{ fontSize: '9px', letterSpacing: '0.2em', fontWeight: 400 }} className="uppercase text-[#b4c0cc] px-2 pb-2">{group.title}</p>
+                            {group.items.map((megaItem) => (
+                              <a
+                                key={megaItem.label}
+                                href={megaItem.href}
+                                style={{ fontSize: '13.5px', fontWeight: 300, letterSpacing: '0.01em' }}
+                                className="block text-[#1f2937] hover:text-black hover:bg-[#f8fafc] rounded-md px-2 py-[7px] transition-colors capitalize no-underline leading-snug"
+                                onClick={() => setIsFurnitureMegaOpen(false)}
+                              >
+                                {megaItem.label}
+                              </a>
+                            ))}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Wooden Furniture Mega Menu — drawn directly below Wooden Furniture */}
+                {item.megaMenuType === 'wooden-furniture' && isWoodenFurnitureMegaOpen && (
+                  <div
+                    className="absolute -left-20 lg:-left-12 xl:left-0 top-full pt-1.5 z-[120]"
+                    onMouseEnter={() => {
+                      isWoodenFurnitureMegaHoveredRef.current = true;
+                      if (woodenFurnitureMegaCloseTimerRef.current) {
+                        clearTimeout(woodenFurnitureMegaCloseTimerRef.current);
+                        woodenFurnitureMegaCloseTimerRef.current = null;
+                      }
+                    }}
+                    onMouseLeave={() => {
+                      isWoodenFurnitureMegaHoveredRef.current = false;
+                      closeWoodenFurnitureMega();
+                    }}
+                  >
+                    <div className="w-[740px] max-w-[calc(100vw-2rem)] bg-white border border-[#e5e7eb] shadow-[0_18px_46px_rgba(0,0,0,0.14)] rounded-2xl p-5 relative">
+                      <div className="flex items-center justify-between border-b border-[#eef2f7] pb-3 mb-4">
+                        <p style={{ fontSize: '10px', letterSpacing: '0.18em', fontWeight: 400 }} className="uppercase text-[#94a3b8]">Wooden Furniture Collections</p>
+                        <a
+                          href="/products/wooden-furniture"
+                          style={{ fontSize: '11px', letterSpacing: '0.1em', fontWeight: 500 }}
+                          className="uppercase text-[#0f172a] hover:text-black no-underline transition-colors"
+                          onClick={() => setIsWoodenFurnitureMegaOpen(false)}
+                        >
+                          View All →
+                        </a>
+                      </div>
+                      <div className="grid grid-cols-3 gap-5">
+                        {woodenFurnitureMegaGroups.map((group) => (
+                          <div key={group.title} className="space-y-0.5">
+                            <p style={{ fontSize: '9px', letterSpacing: '0.2em', fontWeight: 400 }} className="uppercase text-[#b4c0cc] px-2 pb-2">{group.title}</p>
+                            {group.items.map((megaItem) => (
+                              <a
+                                key={megaItem.label}
+                                href={megaItem.href}
+                                style={{ fontSize: '13.5px', fontWeight: 300, letterSpacing: '0.01em' }}
+                                className="block text-[#1f2937] hover:text-black hover:bg-[#f8fafc] rounded-md px-2 py-[7px] transition-colors capitalize no-underline leading-snug"
+                                onClick={() => setIsWoodenFurnitureMegaOpen(false)}
+                              >
+                                {megaItem.label}
+                              </a>
+                            ))}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Leather Furniture Mega Menu — drawn directly below Leather Furniture */}
+                {item.megaMenuType === 'leather' && isLeatherMegaOpen && (
+                  <div
+                    className="absolute left-1/2 -translate-x-1/2 top-full pt-1.5 z-[120]"
+                    onMouseEnter={() => {
+                      isLeatherMegaHoveredRef.current = true;
+                      if (leatherMegaCloseTimerRef.current) {
+                        clearTimeout(leatherMegaCloseTimerRef.current);
+                        leatherMegaCloseTimerRef.current = null;
+                      }
+                    }}
+                    onMouseLeave={() => {
+                      isLeatherMegaHoveredRef.current = false;
+                      closeLeatherMega();
+                    }}
+                  >
+                    <div className="w-[740px] max-w-[calc(100vw-2rem)] bg-white border border-[#e5e7eb] shadow-[0_18px_46px_rgba(0,0,0,0.14)] rounded-2xl p-5 relative">
+                      <div className="flex items-center justify-between border-b border-[#eef2f7] pb-3 mb-4">
+                        <p style={{ fontSize: '10px', letterSpacing: '0.18em', fontWeight: 400 }} className="uppercase text-[#94a3b8]">Leather Collections</p>
+                        <a
+                          href="/products/leather"
+                          style={{ fontSize: '11px', letterSpacing: '0.1em', fontWeight: 500 }}
+                          className="uppercase text-[#0f172a] hover:text-black no-underline transition-colors"
+                          onClick={() => setIsLeatherMegaOpen(false)}
+                        >
+                          View All →
+                        </a>
+                      </div>
+                      <div className="grid grid-cols-3 gap-5">
+                        {leatherMegaGroups.map((group) => (
+                          <div key={group.title} className="space-y-0.5">
+                            <p style={{ fontSize: '9px', letterSpacing: '0.2em', fontWeight: 400 }} className="uppercase text-[#b4c0cc] px-2 pb-2">{group.title}</p>
+                            {group.items.map((megaItem) => (
+                              <a
+                                key={megaItem.label}
+                                href={megaItem.href}
+                                style={{ fontSize: '13.5px', fontWeight: 300, letterSpacing: '0.01em' }}
+                                className="block text-[#1f2937] hover:text-black hover:bg-[#f8fafc] rounded-md px-2 py-[7px] transition-colors capitalize no-underline leading-snug"
+                                onClick={() => setIsLeatherMegaOpen(false)}
+                              >
+                                {megaItem.label}
+                              </a>
+                            ))}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Semi Precious Stone Mega Menu — drawn directly below Semi Precious Stone */}
+                {item.megaMenuType === 'semi-precious-stone' && isSemiPreciousStoneMegaOpen && (
+                  <div
+                    className="absolute right-0 xl:left-1/2 xl:-translate-x-1/2 top-full pt-1.5 z-[120]"
+                    onMouseEnter={() => {
+                      isSemiPreciousStoneHoveredRef.current = true;
+                      if (semiPreciousStoneMegaCloseTimerRef.current) {
+                        clearTimeout(semiPreciousStoneMegaCloseTimerRef.current);
+                        semiPreciousStoneMegaCloseTimerRef.current = null;
+                      }
+                    }}
+                    onMouseLeave={() => {
+                      isSemiPreciousStoneHoveredRef.current = false;
+                      closeSemiPreciousStoneMega();
+                    }}
+                  >
+                    <div className="w-[480px] max-w-[calc(100vw-2rem)] bg-white border border-[#e5e7eb] shadow-[0_18px_46px_rgba(0,0,0,0.14)] rounded-2xl p-5 relative">
+                      <div className="flex items-center justify-between border-b border-[#eef2f7] pb-3 mb-4">
+                        <p style={{ fontSize: '10px', letterSpacing: '0.18em', fontWeight: 400 }} className="uppercase text-[#94a3b8]">Semi Precious Stone Collections</p>
+                        <a
+                          href="/products/semi-precious-stone"
+                          style={{ fontSize: '11px', letterSpacing: '0.1em', fontWeight: 500 }}
+                          className="uppercase text-[#0f172a] hover:text-black no-underline transition-colors"
+                          onClick={() => setIsSemiPreciousStoneMegaOpen(false)}
+                        >
+                          View All →
+                        </a>
+                      </div>
+                      {semiPreciousStoneMegaGroups.some(g => g.items.length > 0) ? (
+                        <div className="grid grid-cols-2 gap-5">
+                          {semiPreciousStoneMegaGroups.map((group) => (
+                            <div key={group.title} className="space-y-0.5">
+                              <p style={{ fontSize: '9px', letterSpacing: '0.2em', fontWeight: 400 }} className="uppercase text-[#b4c0cc] px-2 pb-2">{group.title}</p>
+                              {group.items.map((megaItem) => (
+                                <a
+                                  key={megaItem.label}
+                                  href={megaItem.href}
+                                  style={{ fontSize: '13.5px', fontWeight: 300, letterSpacing: '0.01em' }}
+                                  className="block text-[#1f2937] hover:text-black hover:bg-[#f8fafc] rounded-md px-2 py-[7px] transition-colors capitalize no-underline leading-snug"
+                                  onClick={() => setIsSemiPreciousStoneMegaOpen(false)}
+                                >
+                                  {megaItem.label}
+                                </a>
+                              ))}
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <p style={{ fontSize: '13px', fontWeight: 300 }} className="text-[#6b7280] px-1">Browse our full collection of semi precious stones.</p>
+                      )}
+                    </div>
+                  </div>
+                )}
               </li>
             ))}
           </ul>
-
-          {isFurnitureMegaOpen && (
-            <div
-              className="absolute left-1/2 -translate-x-1/2 top-full pt-1 z-[120]"
-              onMouseEnter={() => {
-                isFurnitureMegaHoveredRef.current = true;
-                if (furnitureMegaCloseTimerRef.current) {
-                  clearTimeout(furnitureMegaCloseTimerRef.current);
-                  furnitureMegaCloseTimerRef.current = null;
-                }
-              }}
-              onMouseLeave={() => {
-                isFurnitureMegaHoveredRef.current = false;
-                closeFurnitureMega();
-              }}
-            >
-              <div className="w-[760px] bg-white border border-[#e5e7eb] shadow-[0_18px_46px_rgba(0,0,0,0.14)] rounded-2xl p-5">
-                <div className="flex items-center justify-between border-b border-[#eef2f7] pb-3 mb-4">
-                  <p style={{ fontSize: '10px', letterSpacing: '0.18em', fontWeight: 400 }} className="uppercase text-[#94a3b8]">Marble Furniture Collections</p>
-                  <a
-                    href="/products/furniture"
-                    style={{ fontSize: '11px', letterSpacing: '0.1em', fontWeight: 500 }}
-                    className="uppercase text-[#0f172a] hover:text-black no-underline transition-colors"
-                    onClick={() => setIsFurnitureMegaOpen(false)}
-                  >
-                    View All →
-                  </a>
-                </div>
-                <div className="grid grid-cols-3 gap-5">
-                  {furnitureMegaGroups.map((group) => (
-                    <div key={group.title} className="space-y-0.5">
-                      <p style={{ fontSize: '9px', letterSpacing: '0.2em', fontWeight: 400 }} className="uppercase text-[#b4c0cc] px-2 pb-2">{group.title}</p>
-                      {group.items.map((megaItem) => (
-                        <a
-                          key={megaItem.label}
-                          href={megaItem.href}
-                          style={{ fontSize: '13.5px', fontWeight: 300, letterSpacing: '0.01em' }}
-                          className="block text-[#1f2937] hover:text-black hover:bg-[#f8fafc] rounded-md px-2 py-[7px] transition-colors capitalize no-underline leading-snug"
-                          onClick={() => setIsFurnitureMegaOpen(false)}
-                        >
-                          {megaItem.label}
-                        </a>
-                      ))}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-
-          {isWoodenFurnitureMegaOpen && (
-            <div
-              className="absolute left-1/2 -translate-x-1/2 top-full pt-1 z-[120]"
-              onMouseEnter={() => {
-                isWoodenFurnitureMegaHoveredRef.current = true;
-                if (woodenFurnitureMegaCloseTimerRef.current) {
-                  clearTimeout(woodenFurnitureMegaCloseTimerRef.current);
-                  woodenFurnitureMegaCloseTimerRef.current = null;
-                }
-              }}
-              onMouseLeave={() => {
-                isWoodenFurnitureMegaHoveredRef.current = false;
-                closeWoodenFurnitureMega();
-              }}
-            >
-              <div className="w-[760px] bg-white border border-[#e5e7eb] shadow-[0_18px_46px_rgba(0,0,0,0.14)] rounded-2xl p-5">
-                <div className="flex items-center justify-between border-b border-[#eef2f7] pb-3 mb-4">
-                  <p style={{ fontSize: '10px', letterSpacing: '0.18em', fontWeight: 400 }} className="uppercase text-[#94a3b8]">Wooden Furniture Collections</p>
-                  <a
-                    href="/products/wooden-furniture"
-                    style={{ fontSize: '11px', letterSpacing: '0.1em', fontWeight: 500 }}
-                    className="uppercase text-[#0f172a] hover:text-black no-underline transition-colors"
-                    onClick={() => setIsWoodenFurnitureMegaOpen(false)}
-                  >
-                    View All →
-                  </a>
-                </div>
-                <div className="grid grid-cols-3 gap-5">
-                  {woodenFurnitureMegaGroups.map((group) => (
-                    <div key={group.title} className="space-y-0.5">
-                      <p style={{ fontSize: '9px', letterSpacing: '0.2em', fontWeight: 400 }} className="uppercase text-[#b4c0cc] px-2 pb-2">{group.title}</p>
-                      {group.items.map((megaItem) => (
-                        <a
-                          key={megaItem.label}
-                          href={megaItem.href}
-                          style={{ fontSize: '13.5px', fontWeight: 300, letterSpacing: '0.01em' }}
-                          className="block text-[#1f2937] hover:text-black hover:bg-[#f8fafc] rounded-md px-2 py-[7px] transition-colors capitalize no-underline leading-snug"
-                          onClick={() => setIsWoodenFurnitureMegaOpen(false)}
-                        >
-                          {megaItem.label}
-                        </a>
-                      ))}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-
-          {isLeatherMegaOpen && (
-            <div
-              className="absolute left-1/2 -translate-x-1/2 top-full pt-1 z-[120]"
-              onMouseEnter={() => {
-                isLeatherMegaHoveredRef.current = true;
-                if (leatherMegaCloseTimerRef.current) {
-                  clearTimeout(leatherMegaCloseTimerRef.current);
-                  leatherMegaCloseTimerRef.current = null;
-                }
-              }}
-              onMouseLeave={() => {
-                isLeatherMegaHoveredRef.current = false;
-                closeLeatherMega();
-              }}
-            >
-              <div className="w-[760px] bg-white border border-[#e5e7eb] shadow-[0_18px_46px_rgba(0,0,0,0.14)] rounded-2xl p-5">
-                <div className="flex items-center justify-between border-b border-[#eef2f7] pb-3 mb-4">
-                  <p style={{ fontSize: '10px', letterSpacing: '0.18em', fontWeight: 400 }} className="uppercase text-[#94a3b8]">Leather Collections</p>
-                  <a
-                    href="/products/leather"
-                    style={{ fontSize: '11px', letterSpacing: '0.1em', fontWeight: 500 }}
-                    className="uppercase text-[#0f172a] hover:text-black no-underline transition-colors"
-                    onClick={() => setIsLeatherMegaOpen(false)}
-                  >
-                    View All →
-                  </a>
-                </div>
-                <div className="grid grid-cols-3 gap-5">
-                  {leatherMegaGroups.map((group) => (
-                    <div key={group.title} className="space-y-0.5">
-                      <p style={{ fontSize: '9px', letterSpacing: '0.2em', fontWeight: 400 }} className="uppercase text-[#b4c0cc] px-2 pb-2">{group.title}</p>
-                      {group.items.map((megaItem) => (
-                        <a
-                          key={megaItem.label}
-                          href={megaItem.href}
-                          style={{ fontSize: '13.5px', fontWeight: 300, letterSpacing: '0.01em' }}
-                          className="block text-[#1f2937] hover:text-black hover:bg-[#f8fafc] rounded-md px-2 py-[7px] transition-colors capitalize no-underline leading-snug"
-                          onClick={() => setIsLeatherMegaOpen(false)}
-                        >
-                          {megaItem.label}
-                        </a>
-                      ))}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-
-          {isSemiPreciousStoneMegaOpen && (
-            <div
-              className="absolute left-1/2 -translate-x-1/2 top-full pt-1 z-[120]"
-              onMouseEnter={() => {
-                isSemiPreciousStoneHoveredRef.current = true;
-                if (semiPreciousStoneMegaCloseTimerRef.current) {
-                  clearTimeout(semiPreciousStoneMegaCloseTimerRef.current);
-                  semiPreciousStoneMegaCloseTimerRef.current = null;
-                }
-              }}
-              onMouseLeave={() => {
-                isSemiPreciousStoneHoveredRef.current = false;
-                closeSemiPreciousStoneMega();
-              }}
-            >
-              <div className="w-[480px] bg-white border border-[#e5e7eb] shadow-[0_18px_46px_rgba(0,0,0,0.14)] rounded-2xl p-5">
-                <div className="flex items-center justify-between border-b border-[#eef2f7] pb-3 mb-4">
-                  <p style={{ fontSize: '10px', letterSpacing: '0.18em', fontWeight: 400 }} className="uppercase text-[#94a3b8]">Semi Precious Stone Collections</p>
-                  <a
-                    href="/products/semi-precious-stone"
-                    style={{ fontSize: '11px', letterSpacing: '0.1em', fontWeight: 500 }}
-                    className="uppercase text-[#0f172a] hover:text-black no-underline transition-colors"
-                    onClick={() => setIsSemiPreciousStoneMegaOpen(false)}
-                  >
-                    View All →
-                  </a>
-                </div>
-                {semiPreciousStoneMegaGroups.some(g => g.items.length > 0) ? (
-                  <div className="grid grid-cols-2 gap-5">
-                    {semiPreciousStoneMegaGroups.map((group) => (
-                      <div key={group.title} className="space-y-0.5">
-                        <p style={{ fontSize: '9px', letterSpacing: '0.2em', fontWeight: 400 }} className="uppercase text-[#b4c0cc] px-2 pb-2">{group.title}</p>
-                        {group.items.map((megaItem) => (
-                          <a
-                            key={megaItem.label}
-                            href={megaItem.href}
-                            style={{ fontSize: '13.5px', fontWeight: 300, letterSpacing: '0.01em' }}
-                            className="block text-[#1f2937] hover:text-black hover:bg-[#f8fafc] rounded-md px-2 py-[7px] transition-colors capitalize no-underline leading-snug"
-                            onClick={() => setIsSemiPreciousStoneMegaOpen(false)}
-                          >
-                            {megaItem.label}
-                          </a>
-                        ))}
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p style={{ fontSize: '13px', fontWeight: 300 }} className="text-[#6b7280] px-1">Browse our full collection of semi precious stones.</p>
-                )}
-              </div>
-            </div>
-          )}
         </nav>
       </div>
       </header>

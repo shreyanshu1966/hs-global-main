@@ -1,0 +1,487 @@
+{
+  "htmlPath": "brochures/semi-precious-stone-brochure.html",
+  "skuPrefix": "HSG-SPS-",
+  "imageWrapClass": "image-panel",
+  "cropStrategy": "cover-entropy",
+  "ratioW": 297,
+  "ratioH": 82,
+  "cloudinaryUploadFolder": "hs-global/sps-brochure-hero",
+  "products": [
+    {
+      "sku": "HSG-SPS-001",
+      "name": "african-carnelian",
+      "version": "v1783574047",
+      "publicPath": "hs-global/products/semi-precious-stone/Agate/African-Carnelian/4",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-002",
+      "name": "banded-agate-slab",
+      "version": "v1783574118",
+      "publicPath": "hs-global/products/semi-precious-stone/Agate/Banded-Agate-Slab/5",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-003",
+      "name": "black-agate",
+      "version": "v1783574060",
+      "publicPath": "hs-global/products/semi-precious-stone/Agate/Black-Agate/4",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-004",
+      "name": "blueagate",
+      "version": "v1783574069",
+      "publicPath": "hs-global/products/semi-precious-stone/Agate/Blue-Agate/5",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-005",
+      "name": "brazilian-black-agate",
+      "version": "v1783574191",
+      "publicPath": "hs-global/products/semi-precious-stone/Agate/Brazilian-Black-Agate/5",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-006",
+      "name": "brazilian-blue-agate",
+      "version": "v1783574251",
+      "publicPath": "hs-global/products/semi-precious-stone/Agate/BRAZILIAN-BLUE-AGATE/4",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-007",
+      "name": "brazilian-green-agate",
+      "version": "v1783574165",
+      "publicPath": "hs-global/products/semi-precious-stone/Agate/Brazilian-Green-Agate/5",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-008",
+      "name": "brazilian-red-agate",
+      "version": "v1783574260",
+      "publicPath": "hs-global/products/semi-precious-stone/Agate/Brazilian-Red-Agate/5",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-009",
+      "name": "brown-agate",
+      "version": "v1783574077",
+      "publicPath": "hs-global/products/semi-precious-stone/Agate/Brown-Agate/4",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-010",
+      "name": "crystal-agate",
+      "version": "v1783574087",
+      "publicPath": "hs-global/products/semi-precious-stone/Agate/crystal-agate/5",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-011",
+      "name": "crystal-agate",
+      "version": "v1783574087",
+      "publicPath": "hs-global/products/semi-precious-stone/Agate/crystal-agate/5",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-012",
+      "name": "crystal-agate-with-golden-glitter",
+      "version": "v1783574096",
+      "publicPath": "hs-global/products/semi-precious-stone/Agate/Crystal-Agate-With-Golden-Glitter/5",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-013",
+      "name": "dendrite-agate",
+      "version": "v1783574202",
+      "publicPath": "hs-global/products/semi-precious-stone/Agate/Dendrite-Agate/6",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-014",
+      "name": "earth-agate",
+      "version": "v1783574108",
+      "publicPath": "hs-global/products/semi-precious-stone/Agate/Earth-Agate/4",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-015",
+      "name": "fossil-agate",
+      "version": "v1783574154",
+      "publicPath": "hs-global/products/semi-precious-stone/Agate/Fossil-Agate/5",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-016",
+      "name": "grey-agate",
+      "version": "v1783574243",
+      "publicPath": "hs-global/products/semi-precious-stone/Agate/grey-agate/6",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-017",
+      "name": "lace-agate",
+      "version": "v1783574137",
+      "publicPath": "hs-global/products/semi-precious-stone/Agate/Lace-Agate/10",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-018",
+      "name": "mix-agate",
+      "version": "v1783574182",
+      "publicPath": "hs-global/products/semi-precious-stone/Agate/Mix-Agate/5",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-019",
+      "name": "mix-agate-slabs",
+      "version": "v1783574174",
+      "publicPath": "hs-global/products/semi-precious-stone/Agate/Mix-Agate-Slabs/5",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-020",
+      "name": "moss-agate",
+      "version": "v1783574218",
+      "publicPath": "hs-global/products/semi-precious-stone/Agate/Moss-Agate/6",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-021",
+      "name": "ruby-agate",
+      "version": "v1783574125",
+      "publicPath": "hs-global/products/semi-precious-stone/Agate/Ruby-Agate/4",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-022",
+      "name": "straight-line",
+      "version": "v1783574271",
+      "publicPath": "hs-global/products/semi-precious-stone/Agate/Straight-Line/5",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-023",
+      "name": "white-quartz",
+      "version": "v1783574230",
+      "publicPath": "hs-global/products/semi-precious-stone/Agate/White-Quartz/5",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-024",
+      "name": "yellow-agate",
+      "version": "v1783574100",
+      "publicPath": "hs-global/products/semi-precious-stone/Agate/Yellow-Agate/4",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-025",
+      "name": "blue-calcite",
+      "version": "v1783574534",
+      "publicPath": "hs-global/products/semi-precious-stone/Quartz/Blue-Calcite/5",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-026",
+      "name": "crystal-quartz-with-rose-gold",
+      "version": "v1783574545",
+      "publicPath": "hs-global/products/semi-precious-stone/Quartz/crystal-quartz-with-rose-gold/2",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-027",
+      "name": "golden-hematite-quartz-slab",
+      "version": "v1783574509",
+      "publicPath": "hs-global/products/semi-precious-stone/Quartz/Golden-Hematite-Quartz-Slab/5",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-028",
+      "name": "golden-quartz",
+      "version": "v1783574516",
+      "publicPath": "hs-global/products/semi-precious-stone/Quartz/Golden-Quartz/1",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-029",
+      "name": "green-quartz",
+      "version": "v1783574486",
+      "publicPath": "hs-global/products/semi-precious-stone/Quartz/Green-Quartz/6",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-030",
+      "name": "hemotied-quartz",
+      "version": "v1783574525",
+      "publicPath": "hs-global/products/semi-precious-stone/Quartz/Hemotied-Quartz/5",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-031",
+      "name": "obsidian-black-with-gold",
+      "version": "v1783574471",
+      "publicPath": "hs-global/products/semi-precious-stone/Quartz/Obsidian-Black-with-Gold/4",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-032",
+      "name": "obsidian-black-with-silver",
+      "version": "v1783574541",
+      "publicPath": "hs-global/products/semi-precious-stone/Quartz/Obsidian-Black-with-Silver/5",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-033",
+      "name": "orange-quartz",
+      "version": "v1783574480",
+      "publicPath": "hs-global/products/semi-precious-stone/Quartz/Orange-Quartz/6",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-034",
+      "name": "rose-quartz-slabs",
+      "version": "v1783574432",
+      "publicPath": "hs-global/products/semi-precious-stone/Quartz/Rose-Quartz-Slabs/5",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-035",
+      "name": "septaria-yellow",
+      "version": "v1783574496",
+      "publicPath": "hs-global/products/semi-precious-stone/Quartz/Septaria-Yellow/4",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-036",
+      "name": "smoky-quartz-dark",
+      "version": "v1783574453",
+      "publicPath": "hs-global/products/semi-precious-stone/Quartz/Smoky-Quartz-Dark/5",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-037",
+      "name": "smoky-quartz-dark",
+      "version": "v1783574453",
+      "publicPath": "hs-global/products/semi-precious-stone/Quartz/Smoky-Quartz-Dark/5",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-038",
+      "name": "white-mop",
+      "version": "v1783574447",
+      "publicPath": "hs-global/products/semi-precious-stone/Quartz/White-MOP/5",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-039",
+      "name": "white-quartz-with-sparkle",
+      "version": "v1783574439",
+      "publicPath": "hs-global/products/semi-precious-stone/Quartz/White-Quartz-with-Sparkle/4",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-040",
+      "name": "emerald-quartz",
+      "version": "v1783574346",
+      "publicPath": "hs-global/products/semi-precious-stone/Gemstone/Emerald-quartz/3",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-041",
+      "name": "labradorite",
+      "version": "v1783574340",
+      "publicPath": "hs-global/products/semi-precious-stone/Gemstone/Labradorite/6",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-042",
+      "name": "lapis-lazulli",
+      "version": "v1783574328",
+      "publicPath": "hs-global/products/semi-precious-stone/Gemstone/Lapis-Lazulli/5",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-043",
+      "name": "malachite",
+      "version": "v1783574306",
+      "publicPath": "hs-global/products/semi-precious-stone/Gemstone/Malachite/5",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-044",
+      "name": "malachite-flower-slabs",
+      "version": "v1783574298",
+      "publicPath": "hs-global/products/semi-precious-stone/Gemstone/Malachite-Flower-Slabs/5",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-045",
+      "name": "rose-quartz",
+      "version": "v1783574322",
+      "publicPath": "hs-global/products/semi-precious-stone/Gemstone/Rose-Quartz/5",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-046",
+      "name": "sodalite-blue",
+      "version": "v1783574313",
+      "publicPath": "hs-global/products/semi-precious-stone/Gemstone/Sodalite-Blue/4",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-047",
+      "name": "angel-jasper",
+      "version": "v1783574369",
+      "publicPath": "hs-global/products/semi-precious-stone/Jasper/Angel-Jasper/1",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-048",
+      "name": "green-jasper",
+      "version": "v1783574389",
+      "publicPath": "hs-global/products/semi-precious-stone/Jasper/Green-Jasper/5",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-049",
+      "name": "jamaican-jasper-slabs",
+      "version": "v1783574363",
+      "publicPath": "hs-global/products/semi-precious-stone/Jasper/Jamaican-Jasper-Slabs/5",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-050",
+      "name": "mockite-jasper",
+      "version": "v1783574383",
+      "publicPath": "hs-global/products/semi-precious-stone/Jasper/Mockite-Jasper/6",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-051",
+      "name": "polychrome-jasper",
+      "version": "v1783574396",
+      "publicPath": "hs-global/products/semi-precious-stone/Jasper/Polychrome-Jasper/4",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-052",
+      "name": "red-jasper",
+      "version": "v1783574357",
+      "publicPath": "hs-global/products/semi-precious-stone/Jasper/Red-Jasper/5",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-053",
+      "name": "beige-petrified-wood-slab",
+      "version": "v1783574666",
+      "publicPath": "hs-global/products/semi-precious-stone/petrified wood/Beige-Petrified-Wood-Slab/4",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-054",
+      "name": "black-petrified-wood-retro-slab",
+      "version": "v1783574635",
+      "publicPath": "hs-global/products/semi-precious-stone/petrified wood/Black-Petrified-Wood-Retro-Slab/3",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-055",
+      "name": "brown-petrified-wood-retro-slabs",
+      "version": "v1783574660",
+      "publicPath": "hs-global/products/semi-precious-stone/petrified wood/Brown-Petrified-Wood-Retro-Slabs/5",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-056",
+      "name": "brown-petrified-wood-slabs",
+      "version": "v1783574650",
+      "publicPath": "hs-global/products/semi-precious-stone/petrified wood/Brown-Petrified-Wood-Slabs/4",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-057",
+      "name": "white-petrified-wood",
+      "version": "v1783574645",
+      "publicPath": "hs-global/products/semi-precious-stone/petrified wood/White-Petrified-Wood/2",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-058",
+      "name": "red-tiger-eye",
+      "version": "v1783574605",
+      "publicPath": "hs-global/products/semi-precious-stone/Tiger eye/Red-Tiger-Eye/6",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-059",
+      "name": "tiger-eye",
+      "version": "v1783574629",
+      "publicPath": "hs-global/products/semi-precious-stone/Tiger eye/Tiger-Eye/5",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-060",
+      "name": "tiger-eye-blue",
+      "version": "v1783574623",
+      "publicPath": "hs-global/products/semi-precious-stone/Tiger eye/Tiger-Eye-Blue/5",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-061",
+      "name": "tiger-eye-retro",
+      "version": "v1783574615",
+      "publicPath": "hs-global/products/semi-precious-stone/Tiger eye/Tiger-Eye-Retro/5",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-062",
+      "name": "black-mop",
+      "version": "v1783574423",
+      "publicPath": "hs-global/products/semi-precious-stone/Mother Of Pearl/Black-MOP/5",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-063",
+      "name": "golden-mop",
+      "version": "v1783574413",
+      "publicPath": "hs-global/products/semi-precious-stone/Mother Of Pearl/Golden Mop/5",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-064",
+      "name": "green-abalone",
+      "version": "v1783574407",
+      "publicPath": "hs-global/products/semi-precious-stone/Mother Of Pearl/Green-Abalone/5",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-065",
+      "name": "green-fluorite",
+      "version": "v1783574557",
+      "publicPath": "hs-global/products/semi-precious-stone/Semiprecious Stone/Green-Fluorite/5",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-066",
+      "name": "red-carnelian-agate-slabs",
+      "version": "v1783574593",
+      "publicPath": "hs-global/products/semi-precious-stone/Semiprecious Stone/Red-Carnelian-Agate-Slabs/6",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-067",
+      "name": "amazonite",
+      "version": "v1783574279",
+      "publicPath": "hs-global/products/semi-precious-stone/Amazonite/Amazonite/5",
+      "ext": "webp"
+    },
+    {
+      "sku": "HSG-SPS-068",
+      "name": "amethyst",
+      "version": "v1783574290",
+      "publicPath": "hs-global/products/semi-precious-stone/Amethyst/Amethyst/6",
+      "ext": "webp"
+    }
+  ]
+}

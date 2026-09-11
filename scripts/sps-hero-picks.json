@@ -1,0 +1,21 @@
+{
+  "_note": "FULL AUDIT COMPLETE — all 68 products verified against their complete Cloudinary folder listing. Unlike wooden/leather, this brochure's source images were already well-curated: each product folder has 3-5 lifestyle/room shots first, then a clean white-bg 'on-stand mockup' shot (stone slab mounted like a TV panel on small legs, sometimes preceded by a texture-only close-up or an alternate furniture-style render). The original HTML's hero image was already pointing to a correct white-bg full-slab shot in every single case checked — no swaps needed anywhere in this brochure.",
+  "bug_fixed": "Folder-prefix derivation initially left literal '%20' text in paths with spaces (e.g. 'petrified wood', 'Tiger eye', 'Mother Of Pearl', 'Semiprecious Stone' category folders), causing the Cloudinary Admin API prefix search to return 0 results for products 53-68. Fixed by decodeURIComponent-ing all derived folder paths before use.",
+  "verified_ok_no_change": [
+    "HSG-SPS-001","HSG-SPS-002","HSG-SPS-003","HSG-SPS-004","HSG-SPS-005",
+    "HSG-SPS-006","HSG-SPS-007","HSG-SPS-008","HSG-SPS-009","HSG-SPS-010",
+    "HSG-SPS-011","HSG-SPS-012","HSG-SPS-013","HSG-SPS-014","HSG-SPS-015",
+    "HSG-SPS-016","HSG-SPS-017","HSG-SPS-018","HSG-SPS-019","HSG-SPS-020",
+    "HSG-SPS-021","HSG-SPS-022","HSG-SPS-023","HSG-SPS-024","HSG-SPS-025",
+    "HSG-SPS-026","HSG-SPS-027","HSG-SPS-028","HSG-SPS-029","HSG-SPS-030",
+    "HSG-SPS-031","HSG-SPS-032","HSG-SPS-033","HSG-SPS-034","HSG-SPS-035",
+    "HSG-SPS-036","HSG-SPS-037","HSG-SPS-038","HSG-SPS-039","HSG-SPS-040",
+    "HSG-SPS-041","HSG-SPS-042","HSG-SPS-043","HSG-SPS-044","HSG-SPS-045",
+    "HSG-SPS-046","HSG-SPS-047","HSG-SPS-048","HSG-SPS-049","HSG-SPS-050",
+    "HSG-SPS-051","HSG-SPS-052","HSG-SPS-053","HSG-SPS-054","HSG-SPS-055",
+    "HSG-SPS-056","HSG-SPS-057","HSG-SPS-058","HSG-SPS-059","HSG-SPS-060",
+    "HSG-SPS-061","HSG-SPS-062","HSG-SPS-063","HSG-SPS-064","HSG-SPS-065",
+    "HSG-SPS-066","HSG-SPS-067","HSG-SPS-068"
+  ],
+  "needs_change": {}
+}

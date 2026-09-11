@@ -110,7 +110,10 @@ export const StoneQuotationModal: React.FC = () => {
   return (
     <>
       {isRendered && pendingProduct && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
+        <div
+          className="fixed inset-0 z-[200] flex items-center justify-center p-4 overflow-y-auto no-scrollbar"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
           <div
             ref={backdropRef}
             className="absolute inset-0 bg-black/50 backdrop-blur-sm"
@@ -120,8 +123,8 @@ export const StoneQuotationModal: React.FC = () => {
 
           <div
             ref={modalRef}
-            className="relative z-10 w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden"
-            style={{ opacity: 0 }}
+            className="relative z-10 w-full max-w-md bg-white rounded-2xl shadow-2xl max-h-[90vh] overflow-y-auto no-scrollbar"
+            style={{ opacity: 0, scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             {/* Header */}
             <div className="px-6 py-5 border-b border-[#f3f4f6] flex items-start justify-between">

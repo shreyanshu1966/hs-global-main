@@ -88,17 +88,6 @@
       z-index: 1;
     }
 
-    /* Diagonal cut on right edge */
-    .left-panel::after {
-      content: '';
-      position: absolute;
-      top: 0; right: -24px; bottom: 0;
-      width: 48px;
-      background: var(--forest);
-      clip-path: polygon(0 0, 50% 0, 100% 100%, 0 100%);
-      z-index: 3;
-    }
-
     /* Brass top accent line */
     .left-panel::before {
       content: '';
@@ -120,6 +109,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      object-position: center;
       display: block;
     }
 
@@ -178,6 +168,18 @@
       display: flex;
       flex-direction: column;
       gap: 4mm;
+    }
+
+    /* Diagonal cut accent — lives entirely inside the right panel's own
+       left padding gutter, never overlapping the product photo. */
+    .right-panel::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; bottom: 0;
+      width: 24px;
+      background: var(--forest);
+      clip-path: polygon(0 0, 50% 0, 100% 100%, 0 100%);
+      z-index: 1;
     }
 
     /* Brand header top right */
@@ -1013,7 +1015,7 @@
     <!-- ── LEFT DARK PANEL ── -->
     <div class="left-panel">
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587809/hs-global/handicraft/etsy/HCBCETBR2/1.webp" alt="Brass Inlay Wooden Coffee Table Vintage Accent Table — Wooden Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787601816/hs-global/brochure-hero/HSG-WD-001.webp" alt="Brass Inlay Wooden Coffee Table Vintage Accent Table — Wooden Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
       </div>
 
@@ -1095,7 +1097,7 @@
     <!-- ── LEFT DARK PANEL ── -->
     <div class="left-panel">
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587681/hs-global/handicraft/etsy/HCBSTBR7/1.webp" alt="Round Wooden Coffee Table Brass Inlay Accent Table — Wooden Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787603100/hs-global/brochure-hero/HSG-WD-002.webp" alt="Round Wooden Coffee Table Brass Inlay Accent Table — Wooden Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
       </div>
 
@@ -1177,7 +1179,7 @@
     <!-- ── LEFT DARK PANEL ── -->
     <div class="left-panel">
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587803/hs-global/handicraft/etsy/HCBCETBR1/2.webp" alt="Wooden Coffee Table Brass Inlay Rustic Center Table — Wooden Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787604383/hs-global/brochure-hero/HSG-WD-003.webp" alt="Wooden Coffee Table Brass Inlay Rustic Center Table — Wooden Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
       </div>
 
@@ -1259,7 +1261,7 @@
     <!-- ── LEFT DARK PANEL ── -->
     <div class="left-panel">
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587440/hs-global/handicraft/etsy/HCBDTBR1/2.webp" alt="Round Wooden Dining Table Set Brass Inlay 4 Chairs — Wooden Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787604573/hs-global/brochure-hero/HSG-WD-004.webp" alt="Round Wooden Dining Table Set Brass Inlay 4 Chairs — Wooden Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
       </div>
 
@@ -1341,7 +1343,7 @@
     <!-- ── LEFT DARK PANEL ── -->
     <div class="left-panel">
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587771/hs-global/handicraft/etsy/HCBCOBR2/1.webp" alt="Brass Inlay Console Table Wooden Entryway Table 3 Drawer — Wooden Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787604728/hs-global/brochure-hero/HSG-WD-005.webp" alt="Brass Inlay Console Table Wooden Entryway Table 3 Drawer — Wooden Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
       </div>
 
@@ -1423,7 +1425,7 @@
     <!-- ── LEFT DARK PANEL ── -->
     <div class="left-panel">
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587696/hs-global/handicraft/etsy/HCBCOBR3/1.webp" alt="Elephant Brass Inlay Wooden Sideboard Cabinet Large Storage — Wooden Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787604848/hs-global/brochure-hero/HSG-WD-006.webp" alt="Elephant Brass Inlay Wooden Sideboard Cabinet Large Storage — Wooden Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
       </div>
 
@@ -1505,7 +1507,7 @@
     <!-- ── LEFT DARK PANEL ── -->
     <div class="left-panel">
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587394/hs-global/handicraft/etsy/HCBCOBR1/1.webp" alt="Hand Carved Wooden Sideboard Peacock Cabinet — Wooden Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787604979/hs-global/brochure-hero/HSG-WD-007.webp" alt="Hand Carved Wooden Sideboard Peacock Cabinet — Wooden Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
       </div>
 
@@ -1587,7 +1589,7 @@
     <!-- ── LEFT DARK PANEL ── -->
     <div class="left-panel">
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587308/hs-global/handicraft/etsy/HCBSTGO2/1.webp" alt="Brass Embossed Bedside Cabinet Vintage Storage Table — Wooden Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787605135/hs-global/brochure-hero/HSG-WD-008.webp" alt="Brass Embossed Bedside Cabinet Vintage Storage Table — Wooden Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
       </div>
 
@@ -1669,7 +1671,7 @@
     <!-- ── LEFT DARK PANEL ── -->
     <div class="left-panel">
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587348/hs-global/handicraft/etsy/HCBSTBR4/1.webp" alt="Brass Inlay 5 Drawer Bedside Chest Wooden Storage Table — Wooden Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787605308/hs-global/brochure-hero/HSG-WD-009.webp" alt="Brass Inlay 5 Drawer Bedside Chest Wooden Storage Table — Wooden Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
       </div>
 
@@ -1751,7 +1753,7 @@
     <!-- ── LEFT DARK PANEL ── -->
     <div class="left-panel">
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587487/hs-global/handicraft/etsy/HCBCOBR4/1.webp" alt="Brass Inlay Console Table Wooden Entryway Desk 4 Drawer — Wooden Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787605510/hs-global/brochure-hero/HSG-WD-010.webp" alt="Brass Inlay Console Table Wooden Entryway Desk 4 Drawer — Wooden Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
       </div>
 
@@ -1833,7 +1835,7 @@
     <!-- ── LEFT DARK PANEL ── -->
     <div class="left-panel">
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516935/hs-global/handicraft/etsy/HCBSTBR3/file_00000000d9a471fa8fcc441df085ecff.webp" alt="Brass Inlay Curved Chest of Drawers Vintage Accent Table — Wooden Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787605750/hs-global/brochure-hero/HSG-WD-011.webp" alt="Brass Inlay Curved Chest of Drawers Vintage Accent Table — Wooden Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
       </div>
 
@@ -1915,7 +1917,7 @@
     <!-- ── LEFT DARK PANEL ── -->
     <div class="left-panel">
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587662/hs-global/handicraft/etsy/HCBSTBR5/4.webp" alt="Brass Inlay Wooden Bedside Table 3 Drawer Nightstand — Wooden Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787605940/hs-global/brochure-hero/HSG-WD-012.webp" alt="Brass Inlay Wooden Bedside Table 3 Drawer Nightstand — Wooden Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
       </div>
 
@@ -1997,7 +1999,7 @@
     <!-- ── LEFT DARK PANEL ── -->
     <div class="left-panel">
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587375/hs-global/handicraft/etsy/HCBSTBR6/1.webp" alt="Brass Inlay Wooden Side Table Vintage Accent Nightstand — Wooden Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787606078/hs-global/brochure-hero/HSG-WD-013.webp" alt="Brass Inlay Wooden Side Table Vintage Accent Nightstand — Wooden Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
       </div>
 
@@ -2079,7 +2081,7 @@
     <!-- ── LEFT DARK PANEL ── -->
     <div class="left-panel">
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587734/hs-global/handicraft/etsy/HCBSTBR1/1.webp" alt="Vintage Brass Inlay Wooden Chest of Drawers Table — Wooden Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787606240/hs-global/brochure-hero/HSG-WD-014.webp" alt="Vintage Brass Inlay Wooden Chest of Drawers Table — Wooden Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
       </div>
 
@@ -2161,7 +2163,7 @@
     <!-- ── LEFT DARK PANEL ── -->
     <div class="left-panel">
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587513/hs-global/handicraft/etsy/HCBSOBR1/3.webp" alt="Wooden Brass Inlay Sofa Bench Traditional Accent Sofa — Wooden Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787606363/hs-global/brochure-hero/HSG-WD-015.webp" alt="Wooden Brass Inlay Sofa Bench Traditional Accent Sofa — Wooden Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
       </div>
 
@@ -2243,7 +2245,7 @@
     <!-- ── LEFT DARK PANEL ── -->
     <div class="left-panel">
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517022/hs-global/handicraft/etsy/HCFARGR1/1%20%2811%29.webp" alt="Hand Carved Wooden Armoire Cabinet Rustic Green Storage — Wooden Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787606452/hs-global/brochure-hero/HSG-WD-016.webp" alt="Hand Carved Wooden Armoire Cabinet Rustic Green Storage — Wooden Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
       </div>
 
@@ -2325,7 +2327,7 @@
     <!-- ── LEFT DARK PANEL ── -->
     <div class="left-panel">
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516957/hs-global/handicraft/etsy/HCFBSBR1/1%20%281%29.webp" alt="Hand Carved Wooden Bookshelf Rustic Display Bookcase — Wooden Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787606617/hs-global/brochure-hero/HSG-WD-017.webp" alt="Hand Carved Wooden Bookshelf Rustic Display Bookcase — Wooden Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
       </div>
 
@@ -2407,7 +2409,7 @@
     <!-- ── LEFT DARK PANEL ── -->
     <div class="left-panel">
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516998/hs-global/handicraft/etsy/HCFBSBR2/1%20%288%29.webp" alt="Solid Wood Bookrack Tall Display Bookshelf Storage Unit. — Wooden Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787606659/hs-global/brochure-hero/HSG-WD-018.webp" alt="Solid Wood Bookrack Tall Display Bookshelf Storage Unit. — Wooden Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
       </div>
 
@@ -2489,7 +2491,7 @@
     <!-- ── LEFT DARK PANEL ── -->
     <div class="left-panel">
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517047/hs-global/handicraft/etsy/HCFCABBR8/1%20%2814%29.webp" alt="Antique Wooden Display Cabinet Rustic Glass Storage Cabinet — Wooden Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787606771/hs-global/brochure-hero/HSG-WD-019.webp" alt="Antique Wooden Display Cabinet Rustic Glass Storage Cabinet — Wooden Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
       </div>
 
@@ -2571,7 +2573,7 @@
     <!-- ── LEFT DARK PANEL ── -->
     <div class="left-panel">
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516977/hs-global/handicraft/etsy/HCFCABBR3/5%20%283%29.webp" alt="Hand Carved Rustic Wooden Sideboard Storage Cabinet — Wooden Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787606865/hs-global/brochure-hero/HSG-WD-020.webp" alt="Hand Carved Rustic Wooden Sideboard Storage Cabinet — Wooden Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
       </div>
 
@@ -2653,7 +2655,7 @@
     <!-- ── LEFT DARK PANEL ── -->
     <div class="left-panel">
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516965/hs-global/handicraft/etsy/HCFCABBR2/1%20%282%29.webp" alt="Hand Carved Wooden Chest of Drawers Rustic Storage Cabinet — Wooden Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787606955/hs-global/brochure-hero/HSG-WD-021.webp" alt="Hand Carved Wooden Chest of Drawers Rustic Storage Cabinet — Wooden Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
       </div>
 
@@ -2735,7 +2737,7 @@
     <!-- ── LEFT DARK PANEL ── -->
     <div class="left-panel">
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517054/hs-global/handicraft/etsy/HCFCABBR9/1%20%2815%29.webp" alt="Handcrafted Damchiya Storage Sideboard Rustic Wooden Console — Wooden Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787607008/hs-global/brochure-hero/HSG-WD-022.webp" alt="Handcrafted Damchiya Storage Sideboard Rustic Wooden Console — Wooden Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
       </div>
 
@@ -2817,7 +2819,7 @@
     <!-- ── LEFT DARK PANEL ── -->
     <div class="left-panel">
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516984/hs-global/handicraft/etsy/HCFCABBR4/5%20%285%29.webp" alt="Handcrafted Wooden Home Temple Prayer Cabinet Shrine — Wooden Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787607062/hs-global/brochure-hero/HSG-WD-023.webp" alt="Handcrafted Wooden Home Temple Prayer Cabinet Shrine — Wooden Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
       </div>
 
@@ -2899,7 +2901,7 @@
     <!-- ── LEFT DARK PANEL ── -->
     <div class="left-panel">
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516949/hs-global/handicraft/etsy/HCFCABBR1/1.webp" alt="Rustic Distressed Wood Cabinet Vintage Storage Armoire — Wooden Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787607191/hs-global/brochure-hero/HSG-WD-024.webp" alt="Rustic Distressed Wood Cabinet Vintage Storage Armoire — Wooden Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
       </div>
 
@@ -2981,7 +2983,7 @@
     <!-- ── LEFT DARK PANEL ── -->
     <div class="left-panel">
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517015/hs-global/handicraft/etsy/HCFCABBU7/1%20%2810%29.webp" alt="Rustic Glass Door Wooden Almirah Cabinet 2 Drawer — Wooden Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787607257/hs-global/brochure-hero/HSG-WD-025.webp" alt="Rustic Glass Door Wooden Almirah Cabinet 2 Drawer — Wooden Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
       </div>
 
@@ -3063,7 +3065,7 @@
     <!-- ── LEFT DARK PANEL ── -->
     <div class="left-panel">
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517013/hs-global/handicraft/etsy/HCFCABBR6/5%20%289%29.webp" alt="Rustic Reclaimed Wood Sideboard Cabinet 4 Door 4 Drawer — Wooden Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787607358/hs-global/brochure-hero/HSG-WD-026.webp" alt="Rustic Reclaimed Wood Sideboard Cabinet 4 Door 4 Drawer — Wooden Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
       </div>
 
@@ -3145,7 +3147,7 @@
     <!-- ── LEFT DARK PANEL ── -->
     <div class="left-panel">
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516997/hs-global/handicraft/etsy/HCFCABBU5/5%20%287%29.webp" alt="Vintage 4 Door Sideboard Rustic Wooden Buffet Cabinet — Wooden Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787607467/hs-global/brochure-hero/HSG-WD-027.webp" alt="Vintage 4 Door Sideboard Rustic Wooden Buffet Cabinet — Wooden Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
       </div>
 
@@ -3227,7 +3229,7 @@
     <!-- ── LEFT DARK PANEL ── -->
     <div class="left-panel">
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783516990/hs-global/handicraft/etsy/HCFTRBU1/5%20%286%29.webp" alt="Antique Damchiya Storage Box Vintage Wooden Chest — Wooden Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787607585/hs-global/brochure-hero/HSG-WD-028.webp" alt="Antique Damchiya Storage Box Vintage Wooden Chest — Wooden Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
       </div>
 
@@ -3309,7 +3311,7 @@
     <!-- ── LEFT DARK PANEL ── -->
     <div class="left-panel">
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517030/hs-global/handicraft/etsy/HCFDOBR2/1%20%2812%29.webp" alt="Antique Metal Fitted Wooden Double Door Rustic Entry Door — Wooden Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787607727/hs-global/brochure-hero/HSG-WD-029.webp" alt="Antique Metal Fitted Wooden Double Door Rustic Entry Door — Wooden Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
       </div>
 
@@ -3391,7 +3393,7 @@
     <!-- ── LEFT DARK PANEL ── -->
     <div class="left-panel">
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517039/hs-global/handicraft/etsy/HCFDOBR3/1%20%2813%29.webp" alt="Antique Teak Wood Double Entry Door Hand Carved Rustic Door — Wooden Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787607801/hs-global/brochure-hero/HSG-WD-030.webp" alt="Antique Teak Wood Double Entry Door Hand Carved Rustic Door — Wooden Furniture by HS Global Export" loading="lazy" />
         <div class="img-overlay"></div>
       </div>
 

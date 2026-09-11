@@ -11,9 +11,23 @@ import { useProducts, useCategories } from "../hooks/useProducts";
 import { ProductCard } from "../components/cards/ProductCard";
 import { ProductCardSkeleton } from "../components/cards/ProductCardSkeleton";
 import { SORT_OPTIONS, DEFAULT_SORT, getSortOptionLabel } from "../components/filters/SortDropdown";
+import { PriceRangeFilter } from "../components/filters/PriceRangeFilter";
+import { useCurrency } from "../contexts/CurrencyContext";
+
+// Parses a non-negative integer from a URL query param, or undefined if absent/invalid.
+const parsePriceParam = (v: string | null): number | undefined => {
+  if (!v) return undefined;
+  const n = Number(v);
+  return Number.isFinite(n) && n >= 0 ? n : undefined;
+};
 
 const toSlug = (v: string) => v.toLowerCase().trim().replace(/\s+/g, "-");
 const LIMIT = 12;
+
+// "All" subcategory (no specific subcategory picked) defaults to alphabetical
+// order; a specific subcategory keeps the curated/relevance default.
+const defaultSortFor = (subcategory: string) =>
+  subcategory ? DEFAULT_SORT : { sortBy: "name", sortOrder: "asc" as const };
 
 const CATEGORY_DISPLAY_NAMES: Record<string, string> = {
   furniture: 'Marble Furniture',
@@ -125,10 +139,13 @@ export default function Products({ initialProducts }: { initialProducts?: any[] 
   const initParams = useMemo(() => {
     // "all" is a virtual category used in cross-category routes, not a real category
     const rawCategory = paramCategory === "all" ? "" : (paramCategory || "");
+    const searchParams = new URLSearchParams(location.search);
     return {
       category: rawCategory,
       subcategory: toSlug(paramSubcategory || ""),
       categoryFilter: ((paramCategoryFilter || "") as "" | "furniture" | "wooden-furniture"),
+      minPrice: parsePriceParam(searchParams.get("minPrice")),
+      maxPrice: parsePriceParam(searchParams.get("maxPrice")),
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -137,8 +154,12 @@ export default function Products({ initialProducts }: { initialProducts?: any[] 
   const [activeCategory, setActiveCategory] = useState(initParams.category);
   const [activeSubcategory, setActiveSubcategory] = useState(initParams.subcategory);
   const [crossCategoryFilter, setCrossCategoryFilter] = useState<"" | "furniture" | "wooden-furniture">(initParams.categoryFilter);
-  const [sortBy, setSortBy] = useState(DEFAULT_SORT.sortBy);
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">(DEFAULT_SORT.sortOrder);
+  const [priceMin, setPriceMin] = useState<number | undefined>(initParams.minPrice);
+  const [priceMax, setPriceMax] = useState<number | undefined>(initParams.maxPrice);
+  const [sortBy, setSortBy] = useState(defaultSortFor(initParams.subcategory).sortBy);
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">(defaultSortFor(initParams.subcategory).sortOrder);
+  // Once the visitor manually picks a sort, stop auto-switching it when they browse subcategories.
+  const hasUserSortedRef = useRef(false);
   const [page, setPage] = useState(1);
   const [visibleProducts, setVisibleProducts] = useState<Product[]>(initialProducts ?? []);
   const [firstNewIndex, setFirstNewIndex] = useState(0);
@@ -196,6 +217,7 @@ export default function Products({ initialProducts }: { initialProducts?: any[] 
 
   // Data
   const { categories } = useCategories();
+  const { currency } = useCurrency();
   const { products, loading, error, pagination } = useProducts({
     category: effectiveCategory,
     subcategory: activeSubcategory,
@@ -203,6 +225,8 @@ export default function Products({ initialProducts }: { initialProducts?: any[] 
     sortOrder,
     page,
     limit: LIMIT,
+    minPrice: priceMin,
+    maxPrice: priceMax,
     initialProducts,
   });
 
@@ -250,7 +274,7 @@ export default function Products({ initialProducts }: { initialProducts?: any[] 
     };
   }, [checkTabScroll, normalizedCats]);
 
-  // Sync URL — build clean path-based URL
+  // Sync URL — build clean path-based URL, with price range as query params
   useEffect(() => {
     let path = "/products";
     if (activeCategory) {
@@ -262,8 +286,13 @@ export default function Products({ initialProducts }: { initialProducts?: any[] 
       if (crossCategoryFilter) path += `/${crossCategoryFilter}`;
     }
 
-    navigateRef.current({ pathname: path }, { replace: true });
-  }, [activeCategory, activeSubcategory, crossCategoryFilter]);
+    const searchParams = new URLSearchParams();
+    if (priceMin != null) searchParams.set("minPrice", String(priceMin));
+    if (priceMax != null) searchParams.set("maxPrice", String(priceMax));
+    const search = searchParams.toString();
+
+    navigateRef.current({ pathname: path, search: search ? `?${search}` : "" }, { replace: true });
+  }, [activeCategory, activeSubcategory, crossCategoryFilter, priceMin, priceMax]);
 
   // Accumulate pages
   useEffect(() => {
@@ -309,10 +338,19 @@ export default function Products({ initialProducts }: { initialProducts?: any[] 
     setVisibleProducts([]);
   }, []);
 
+  const handlePriceChange = useCallback((min?: number, max?: number) => {
+    setPriceMin(min);
+    setPriceMax(max);
+    setPage(1);
+    setVisibleProducts([]);
+  }, []);
+
   const clearFilters = useCallback(() => {
     setActiveCategory("");
     setActiveSubcategory("");
     setCrossCategoryFilter("");
+    setPriceMin(undefined);
+    setPriceMax(undefined);
     setPage(1);
     setVisibleProducts([]);
   }, []);
@@ -339,6 +377,20 @@ export default function Products({ initialProducts }: { initialProducts?: any[] 
     observer.observe(el);
     return () => observer.disconnect();
   }, [hasMore, loading]);
+
+  // Re-apply the "All" (alphabetical) vs. specific-subcategory (relevance) default
+  // sort whenever the subcategory changes, unless the visitor picked a sort manually.
+  const isFirstSortDefaultRun = useRef(true);
+  useEffect(() => {
+    if (isFirstSortDefaultRun.current) {
+      isFirstSortDefaultRun.current = false;
+      return;
+    }
+    if (hasUserSortedRef.current) return;
+    const next = defaultSortFor(activeSubcategory);
+    setSortBy(next.sortBy);
+    setSortOrder(next.sortOrder);
+  }, [activeSubcategory]);
 
   // ── Subcategory scroll-spy ───────────────────────────────────────────────────
   // Reset the "viewing" hint whenever the active filters change.
@@ -393,8 +445,9 @@ export default function Products({ initialProducts }: { initialProducts?: any[] 
   }, [spySubcategory]);
 
   const sortLabel = getSortOptionLabel(sortBy, sortOrder);
-  const hasFilters = !!(activeCategory || activeSubcategory || crossCategoryFilter);
-  const filterCount = [activeCategory, activeSubcategory, crossCategoryFilter].filter(Boolean).length;
+  const hasPriceFilter = priceMin != null || priceMax != null;
+  const hasFilters = !!(activeCategory || activeSubcategory || crossCategoryFilter || hasPriceFilter);
+  const filterCount = [activeCategory, activeSubcategory, crossCategoryFilter].filter(Boolean).length + (hasPriceFilter ? 1 : 0);
 
   // Desktop sidebar subcategory item classes: selected (solid) > viewing (spy hint) > idle.
   const subItemClass = (sub: string) => {
@@ -669,6 +722,14 @@ export default function Products({ initialProducts }: { initialProducts?: any[] 
                 </div>
               )}
 
+              {/* Price range */}
+              <div className="mb-5 pb-5 border-b border-gray-100">
+                <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-widest mb-3">
+                  Price ({currency})
+                </p>
+                <PriceRangeFilter minPrice={priceMin} maxPrice={priceMax} onCommit={handlePriceChange} />
+              </div>
+
               {/* Category list — shown when nothing is selected */}
               {!activeCategory && normalizedCats.length > 0 && (
                 <div className="mb-5 pb-5 border-b border-gray-100">
@@ -749,6 +810,7 @@ export default function Products({ initialProducts }: { initialProducts?: any[] 
                   sortBy={sortBy}
                   sortOrder={sortOrder}
                   onChange={(by, order) => {
+                    hasUserSortedRef.current = true;
                     setSortBy(by);
                     setSortOrder(order);
                     setPage(1);
@@ -911,6 +973,7 @@ export default function Products({ initialProducts }: { initialProducts?: any[] 
                       <button
                         key={`${opt.sortBy}-${opt.sortOrder}`}
                         onClick={() => {
+                          hasUserSortedRef.current = true;
                           setSortBy(opt.sortBy);
                           setSortOrder(opt.sortOrder);
                           setPage(1);
@@ -962,6 +1025,14 @@ export default function Products({ initialProducts }: { initialProducts?: any[] 
                   >
                     <X className="w-5 h-5 text-gray-500" />
                   </button>
+                </div>
+
+                {/* Price range */}
+                <div className="flex-1 overflow-y-auto">
+                  <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-widest mb-3">
+                    Price ({currency})
+                  </p>
+                  <PriceRangeFilter minPrice={priceMin} maxPrice={priceMax} onCommit={handlePriceChange} />
                 </div>
 
                 {/* Actions */}

@@ -1,0 +1,142 @@
+{
+  "HSG-LTH-001": {
+    "publicPath": "hs-global/leather/etsy/HSLSOGR1/1",
+    "version": "v1783587816",
+    "ext": "webp"
+  },
+  "HSG-LTH-002": {
+    "publicPath": "hs-global/leather/etsy/HSLSOBR3/2",
+    "version": "v1783587674",
+    "ext": "webp"
+  },
+  "HSG-LTH-003": {
+    "publicPath": "hs-global/leather/etsy/HSLCHBR1/3",
+    "version": "v1783587433",
+    "ext": "webp"
+  },
+  "HSG-LTH-004": {
+    "publicPath": "hs-global/leather/etsy/HSLCHRE2/1",
+    "version": "v1783587639",
+    "ext": "webp"
+  },
+  "HSG-LTH-005": {
+    "publicPath": "hs-global/leather/etsy/HSLSOBR2/3",
+    "version": "v1783587459",
+    "ext": "webp"
+  },
+  "HSG-LTH-006": {
+    "publicPath": "hs-global/leather/etsy/HSLBENGR1/1",
+    "version": "v1783587714",
+    "ext": "webp"
+  },
+  "HSG-LTH-007": {
+    "publicPath": "hs-global/leather/etsy/HSLBENBE2/1",
+    "version": "v1783587614",
+    "ext": "webp"
+  },
+  "HSG-LTH-008": {
+    "publicPath": "hs-global/leather/etsy/HSLSTOGR2/1",
+    "version": "v1783587447",
+    "ext": "webp"
+  },
+  "HSG-LTH-009": {
+    "publicPath": "hs-global/leather/etsy/HSLSTOBR1/2",
+    "version": "v1783587498",
+    "ext": "webp"
+  },
+  "HSG-LTH-010": {
+    "publicPath": "hs-global/leather/etsy/HSLBEGR1/1",
+    "version": "v1783587479",
+    "ext": "webp"
+  },
+  "HSG-LTH-011": {
+    "publicPath": "hs-global/leather/etsy/HSLDRBR2/1",
+    "version": "v1783587556",
+    "ext": "webp"
+  },
+  "HSG-LTH-012": {
+    "publicPath": "hs-global/leather/etsy/HSLDRBE1/3",
+    "version": "v1783587786",
+    "ext": "webp"
+  },
+  "HSG-LTH-013": {
+    "publicPath": "hs-global/leather/etsy/HSLCETBR3/1",
+    "version": "v1783587464",
+    "ext": "webp"
+  },
+  "HSG-LTH-014": {
+    "publicPath": "hs-global/leather/etsy/HSLCETCR2/5",
+    "version": "v1783587579",
+    "ext": "webp"
+  },
+  "HSG-LTH-015": {
+    "publicPath": "hs-global/leather/etsy/HSLCETGR1/4",
+    "version": "v1783587744",
+    "ext": "webp"
+  },
+  "HSG-LTH-016": {
+    "publicPath": "hs-global/leather/etsy/HSLCOTGR1/1",
+    "version": "v1783587530",
+    "ext": "webp"
+  },
+  "HSG-LTH-017": {
+    "publicPath": "hs-global/leather/etsy/HSLCOTBR2/1",
+    "version": "v1783587596",
+    "ext": "webp"
+  },
+  "HSG-LTH-018": {
+    "publicPath": "hs-global/leather/etsy/HSLSTBR3/3",
+    "version": "v1783075050",
+    "ext": "jpg"
+  },
+  "HSG-LTH-019": {
+    "publicPath": "hs-global/leather/etsy/HSLSTBR2/1",
+    "version": "v1783587548",
+    "ext": "webp"
+  },
+  "HSG-LTH-020": {
+    "publicPath": "hs-global/leather/etsy/HSLSTBR7/3",
+    "version": "v1783587690",
+    "ext": "webp"
+  },
+  "HSG-LTH-021": {
+    "publicPath": "hs-global/leather/etsy/HSLSTBL6/1",
+    "version": "v1783587649",
+    "ext": "webp"
+  },
+  "HSG-LTH-022": {
+    "publicPath": "hs-global/leather/etsy/HSLSTBL4/1",
+    "version": "v1783587472",
+    "ext": "webp"
+  },
+  "HSG-LTH-023": {
+    "publicPath": "hs-global/products/leather/Side Table/file_bqqjtl",
+    "version": "v1780660575",
+    "ext": "webp"
+  },
+  "HSG-LTH-024": {
+    "publicPath": "hs-global/leather/etsy/HSLSTBR1/3",
+    "version": "v1783587519",
+    "ext": "webp"
+  },
+  "HSG-LTH-025": {
+    "publicPath": "hs-global/leather/etsy/HSLBOBR1/4",
+    "version": "v1783587782",
+    "ext": "webp"
+  },
+  "HSG-LTH-026": {
+    "publicPath": "hs-global/leather/etsy/HSLCABBL1/1",
+    "version": "v1783587538",
+    "ext": "webp"
+  },
+  "HSG-LTH-027": {
+    "publicPath": "hs-global/leather/etsy/HSLMFBR2/2",
+    "version": "v1783587566",
+    "ext": "webp"
+  },
+  "HSG-LTH-028": {
+    "publicPath": "hs-global/leather/etsy/HSLMFBE1/1",
+    "version": "v1783587605",
+    "ext": "webp"
+  }
+}
