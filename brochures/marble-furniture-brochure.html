@@ -874,6 +874,71 @@
       margin-left: 2px;
     }
 
+  
+    /* ── END-PRODUCT THUMBNAIL IMAGES (top of right panel, above description) ── */
+    .end-images {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2mm;
+      margin-bottom: 4mm;
+      flex-shrink: 0;
+    }
+    .end-images img {
+      width: 100%;
+      height: 30mm;
+      object-fit: cover;
+      border: 0.5pt solid var(--rule);
+      filter: saturate(1.05) contrast(1.05);
+    }
+    .desc-content {
+      display: flex;
+      flex-direction: column;
+      gap: 2mm;
+      margin-top: auto;
+    }
+    /* overflow guard */
+    .product-details {
+      overflow: hidden;
+      min-height: 0;
+    }
+    .page-body { min-height: 0; }
+    /* ── REDUCED HEADING SIZE ── */
+    .product-name {
+      font-size: 14pt !important;
+      line-height: 1.2 !important;
+    }
+    /* ── 2×2 SPEC GRID ── */
+    .spec-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2mm 3mm;
+    }
+    .spec-cell {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5mm;
+    }
+    .spec-cell .s-label {
+      font-size: 5.5pt;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--stone);
+    }
+    .spec-cell .s-value {
+      font-size: 7pt;
+      color: var(--charcoal);
+      font-weight: 300;
+      line-height: 1.3;
+    }
+    /* Price unit helper */
+    .price-unit {
+      font-size: 9pt;
+      font-weight: 300;
+      color: var(--stone);
+      margin-left: 2px;
+    }
+
   </style>
 </head>
 <body>
@@ -1055,7 +1120,7 @@
 
       <!-- LEFT — IMAGE -->
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1788808183/hs-global/marble-brochure-hero/HSG-MBL-002.webp" alt="Beige Marble Coffee Table Round Luxury Center Table | Modern Center Table | Balls Coffee Table — Marble Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1789488193/hs-global/marble-brochure-hero/HSG-MBL-002.webp" alt="Beige Marble Coffee Table Round Luxury Center Table | Modern Center Table | Balls Coffee Table — Marble Furniture by HS Global Export" loading="lazy" />
         <div class="img-vignette"></div>
         <div class="product-number">SKU · HSG-MBL-002</div>
       </div>
@@ -1065,9 +1130,9 @@
 
         <!-- 4 THUMBNAIL IMAGES (top) -->
         <div class="end-images">
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285638/hs-global/furniture/etsy/HSMCETBE10/5.webp" alt="View 1" loading="lazy" />
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285636/hs-global/furniture/etsy/HSMCETBE10/4.webp" alt="View 2" loading="lazy" />
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285639/hs-global/furniture/etsy/HSMCETBE10/6.webp" alt="View 3" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285639/hs-global/furniture/etsy/HSMCETBE10/6.webp" alt="View 1" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285638/hs-global/furniture/etsy/HSMCETBE10/5.webp" alt="View 2" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285636/hs-global/furniture/etsy/HSMCETBE10/4.webp" alt="View 3" loading="lazy" />
           <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285634/hs-global/furniture/etsy/HSMCETBE10/3.webp" alt="View 4" loading="lazy" />
         </div>
 
@@ -2636,7 +2701,7 @@
 
       <!-- LEFT — IMAGE -->
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1788808365/hs-global/marble-brochure-hero/HSG-MBL-019.webp" alt="Panda White Marble Coffee Table Modern Round Center Table — Marble Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1789488205/hs-global/marble-brochure-hero/HSG-MBL-019.webp" alt="Panda White Marble Coffee Table Modern Round Center Table — Marble Furniture by HS Global Export" loading="lazy" />
         <div class="img-vignette"></div>
         <div class="product-number">SKU · HSG-MBL-019</div>
       </div>
@@ -2646,8 +2711,8 @@
 
         <!-- 4 THUMBNAIL IMAGES (top) -->
         <div class="end-images">
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285651/hs-global/furniture/etsy/HSMCETBLWH11/6.webp" alt="View 1" loading="lazy" />
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285642/hs-global/furniture/etsy/HSMCETBLWH11/1.webp" alt="View 2" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285642/hs-global/furniture/etsy/HSMCETBLWH11/1.webp" alt="View 1" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285651/hs-global/furniture/etsy/HSMCETBLWH11/6.webp" alt="View 2" loading="lazy" />
           <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285645/hs-global/furniture/etsy/HSMCETBLWH11/3.webp" alt="View 3" loading="lazy" />
           <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285647/hs-global/furniture/etsy/HSMCETBLWH11/4.webp" alt="View 4" loading="lazy" />
         </div>
@@ -4217,7 +4282,7 @@
 
       <!-- LEFT — IMAGE -->
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1788808559/hs-global/marble-brochure-hero/HSG-MBL-036.webp" alt="Taj Mehal Marble Dining Table Luxury Stone Dining Table — Marble Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1789491074/hs-global/marble-brochure-hero/HSG-MBL-036.webp" alt="Taj Mehal Marble Dining Table Luxury Stone Dining Table — Marble Furniture by HS Global Export" loading="lazy" />
         <div class="img-vignette"></div>
         <div class="product-number">SKU · HSG-MBL-036</div>
       </div>
@@ -6170,7 +6235,7 @@
 
       <!-- LEFT — IMAGE -->
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1788808801/hs-global/marble-brochure-hero/HSG-MBL-057.webp" alt="Travertine Console Table Fluted Stone Entryway Table — Marble Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1789491070/hs-global/marble-brochure-hero/HSG-MBL-057.webp" alt="Travertine Console Table Fluted Stone Entryway Table — Marble Furniture by HS Global Export" loading="lazy" />
         <div class="img-vignette"></div>
         <div class="product-number">SKU · HSG-MBL-057</div>
       </div>
@@ -6180,9 +6245,9 @@
 
         <!-- 4 THUMBNAIL IMAGES (top) -->
         <div class="end-images">
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779286836/hs-global/furniture/etsy/HSMCOBE26/ChatGPT%20Image%20May%2019%2C%202026%2C%2011_04_51%20AM.webp" alt="View 1" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/hs-global/furniture/etsy/HSMCOBE26/839d4bc6-112c-4489-afc5-76493acee0e6.webp" alt="View 1" loading="lazy" />
           <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779286836/hs-global/furniture/etsy/HSMCOBE26/ChatGPT%20Image%20May%2019%2C%202026%2C%2011_04_51%20AM.webp" alt="View 2" loading="lazy" />
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779286836/hs-global/furniture/etsy/HSMCOBE26/ChatGPT%20Image%20May%2019%2C%202026%2C%2011_04_51%20AM.webp" alt="View 3" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/hs-global/furniture/etsy/HSMCOBE26/839d4bc6-112c-4489-afc5-76493acee0e6.webp" alt="View 3" loading="lazy" />
           <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779286836/hs-global/furniture/etsy/HSMCOBE26/ChatGPT%20Image%20May%2019%2C%202026%2C%2011_04_51%20AM.webp" alt="View 4" loading="lazy" />
         </div>
 
@@ -6635,7 +6700,7 @@
 
       <!-- LEFT — IMAGE -->
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1788808858/hs-global/marble-brochure-hero/HSG-MBL-062.webp" alt="travertine stone Marble Console Table Modern Entryway Stone Table | Modern Entryway &amp; Living Room — Marble Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1789488229/hs-global/marble-brochure-hero/HSG-MBL-062.webp" alt="travertine stone Marble Console Table Modern Entryway Stone Table | Modern Entryway &amp; Living Room — Marble Furniture by HS Global Export" loading="lazy" />
         <div class="img-vignette"></div>
         <div class="product-number">SKU · HSG-MBL-062</div>
       </div>
@@ -6645,10 +6710,10 @@
 
         <!-- 4 THUMBNAIL IMAGES (top) -->
         <div class="end-images">
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285786/hs-global/furniture/etsy/HSMCOTBE1/1.webp" alt="View 1" loading="lazy" />
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285790/hs-global/furniture/etsy/HSMCOTBE1/3.webp" alt="View 2" loading="lazy" />
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285791/hs-global/furniture/etsy/HSMCOTBE1/4.webp" alt="View 3" loading="lazy" />
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285788/hs-global/furniture/etsy/HSMCOTBE1/2.webp" alt="View 4" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285788/hs-global/furniture/etsy/HSMCOTBE1/2.webp" alt="View 1" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285786/hs-global/furniture/etsy/HSMCOTBE1/1.webp" alt="View 2" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285790/hs-global/furniture/etsy/HSMCOTBE1/3.webp" alt="View 3" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285791/hs-global/furniture/etsy/HSMCOTBE1/4.webp" alt="View 4" loading="lazy" />
         </div>
 
         <!-- DESCRIPTION (pushed to bottom) -->
@@ -7389,8 +7454,8 @@
 
         <!-- 4 THUMBNAIL IMAGES (top) -->
         <div class="end-images">
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285688/hs-global/furniture/etsy/HSMCTBL4/5.webp" alt="View 1" loading="lazy" />
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285682/hs-global/furniture/etsy/HSMCTBL4/1.webp" alt="View 2" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285682/hs-global/furniture/etsy/HSMCTBL4/1.webp" alt="View 1" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285688/hs-global/furniture/etsy/HSMCTBL4/5.webp" alt="View 2" loading="lazy" />
           <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285685/hs-global/furniture/etsy/HSMCTBL4/3.webp" alt="View 3" loading="lazy" />
           <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285686/hs-global/furniture/etsy/HSMCTBL4/4.webp" alt="View 4" loading="lazy" />
         </div>
@@ -8960,7 +9025,7 @@
 
       <!-- LEFT — IMAGE -->
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1788809140/hs-global/marble-brochure-hero/HSG-MBL-087.webp" alt="Floral Marble Side Table Luxury Stone Accent Table — Marble Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1789491067/hs-global/marble-brochure-hero/HSG-MBL-087.webp" alt="Floral Marble Side Table Luxury Stone Accent Table — Marble Furniture by HS Global Export" loading="lazy" />
         <div class="img-vignette"></div>
         <div class="product-number">SKU · HSG-MBL-087</div>
       </div>
@@ -9621,8 +9686,8 @@
 
         <!-- 4 THUMBNAIL IMAGES (top) -->
         <div class="end-images">
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587892/hs-global/furniture/etsy/HSMSTGR30/1.webp" alt="View 1" loading="lazy" />
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587895/hs-global/furniture/etsy/HSMSTGR30/3.webp" alt="View 2" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587895/hs-global/furniture/etsy/HSMSTGR30/3.webp" alt="View 1" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587892/hs-global/furniture/etsy/HSMSTGR30/1.webp" alt="View 2" loading="lazy" />
           <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587896/hs-global/furniture/etsy/HSMSTGR30/4.webp" alt="View 3" loading="lazy" />
           <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587893/hs-global/furniture/etsy/HSMSTGR30/2.webp" alt="View 4" loading="lazy" />
         </div>
@@ -10727,7 +10792,7 @@
 
       <!-- LEFT — IMAGE -->
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1788809360/hs-global/marble-brochure-hero/HSG-MBL-106.webp" alt="Modern Marble Side Table Luxury Stone Accent Table — Marble Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1789491065/hs-global/marble-brochure-hero/HSG-MBL-106.webp" alt="Modern Marble Side Table Luxury Stone Accent Table — Marble Furniture by HS Global Export" loading="lazy" />
         <div class="img-vignette"></div>
         <div class="product-number">SKU · HSG-MBL-106</div>
       </div>
@@ -11006,7 +11071,7 @@
 
       <!-- LEFT — IMAGE -->
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1788809397/hs-global/marble-brochure-hero/HSG-MBL-109.webp" alt="Modern Travertine Side Table Geometric Stone Accent Table — Marble Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1789491062/hs-global/marble-brochure-hero/HSG-MBL-109.webp" alt="Modern Travertine Side Table Geometric Stone Accent Table — Marble Furniture by HS Global Export" loading="lazy" />
         <div class="img-vignette"></div>
         <div class="product-number">SKU · HSG-MBL-109</div>
       </div>
@@ -12122,7 +12187,7 @@
 
       <!-- LEFT — IMAGE -->
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1788809509/hs-global/marble-brochure-hero/HSG-MBL-121.webp" alt="Sculptural Marble Side Table Modern Stone Pedestal — Marble Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1789491058/hs-global/marble-brochure-hero/HSG-MBL-121.webp" alt="Sculptural Marble Side Table Modern Stone Pedestal — Marble Furniture by HS Global Export" loading="lazy" />
         <div class="img-vignette"></div>
         <div class="product-number">SKU · HSG-MBL-121</div>
       </div>
@@ -12132,8 +12197,8 @@
 
         <!-- 4 THUMBNAIL IMAGES (top) -->
         <div class="end-images">
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517227/hs-global/furniture/etsy/HSMSTWH44/90f46093-7472-448a-a184-da3f9d86cdf2.webp" alt="View 1" loading="lazy" />
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517229/hs-global/furniture/etsy/HSMSTWH44/60784e2c-04f0-42d0-9410-5ab8dc0d69be.webp" alt="View 2" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517229/hs-global/furniture/etsy/HSMSTWH44/60784e2c-04f0-42d0-9410-5ab8dc0d69be.webp" alt="View 1" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517227/hs-global/furniture/etsy/HSMSTWH44/90f46093-7472-448a-a184-da3f9d86cdf2.webp" alt="View 2" loading="lazy" />
           <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517230/hs-global/furniture/etsy/HSMSTWH44/c0b311ca-f87c-4fa8-9933-5d257706548c.webp" alt="View 3" loading="lazy" />
           <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783517225/hs-global/furniture/etsy/HSMSTWH44/74d838f5-75ed-4a17-8b66-f6aaf8e31268.webp" alt="View 4" loading="lazy" />
         </div>
@@ -12597,10 +12662,10 @@
 
         <!-- 4 THUMBNAIL IMAGES (top) -->
         <div class="end-images">
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285376/hs-global/furniture/etsy/HSMSTWH5/1.webp" alt="View 1" loading="lazy" />
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285378/hs-global/furniture/etsy/HSMSTWH5/3.webp" alt="View 2" loading="lazy" />
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285380/hs-global/furniture/etsy/HSMSTWH5/4.webp" alt="View 3" loading="lazy" />
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285377/hs-global/furniture/etsy/HSMSTWH5/2.webp" alt="View 4" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285377/hs-global/furniture/etsy/HSMSTWH5/2.webp" alt="View 1" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285376/hs-global/furniture/etsy/HSMSTWH5/1.webp" alt="View 2" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285378/hs-global/furniture/etsy/HSMSTWH5/3.webp" alt="View 3" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285380/hs-global/furniture/etsy/HSMSTWH5/4.webp" alt="View 4" loading="lazy" />
         </div>
 
         <!-- DESCRIPTION (pushed to bottom) -->
@@ -15387,10 +15452,10 @@
 
         <!-- 4 THUMBNAIL IMAGES (top) -->
         <div class="end-images">
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285467/hs-global/furniture/etsy/HSMSWH6/1.webp" alt="View 1" loading="lazy" />
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285469/hs-global/furniture/etsy/HSMSWH6/2.webp" alt="View 2" loading="lazy" />
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285470/hs-global/furniture/etsy/HSMSWH6/3.webp" alt="View 3" loading="lazy" />
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285472/hs-global/furniture/etsy/HSMSWH6/4.webp" alt="View 4" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285472/hs-global/furniture/etsy/HSMSWH6/4.webp" alt="View 1" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285467/hs-global/furniture/etsy/HSMSWH6/1.webp" alt="View 2" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285469/hs-global/furniture/etsy/HSMSWH6/2.webp" alt="View 3" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285470/hs-global/furniture/etsy/HSMSWH6/3.webp" alt="View 4" loading="lazy" />
         </div>
 
         <!-- DESCRIPTION (pushed to bottom) -->
@@ -16410,10 +16475,10 @@
 
         <!-- 4 THUMBNAIL IMAGES (top) -->
         <div class="end-images">
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587391/hs-global/furniture/etsy/HSMPSBL26/6.webp" alt="View 1" loading="lazy" />
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587389/hs-global/furniture/etsy/HSMPSBL26/5.webp" alt="View 2" loading="lazy" />
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587388/hs-global/furniture/etsy/HSMPSBL26/4.webp" alt="View 3" loading="lazy" />
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587384/hs-global/furniture/etsy/HSMPSBL26/2.webp" alt="View 4" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587384/hs-global/furniture/etsy/HSMPSBL26/2.webp" alt="View 1" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587391/hs-global/furniture/etsy/HSMPSBL26/6.webp" alt="View 2" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587389/hs-global/furniture/etsy/HSMPSBL26/5.webp" alt="View 3" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587388/hs-global/furniture/etsy/HSMPSBL26/4.webp" alt="View 4" loading="lazy" />
         </div>
 
         <!-- DESCRIPTION (pushed to bottom) -->
@@ -16503,9 +16568,9 @@
 
         <!-- 4 THUMBNAIL IMAGES (top) -->
         <div class="end-images">
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587708/hs-global/furniture/etsy/HSMPSWH24/1.webp" alt="View 1" loading="lazy" />
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587709/hs-global/furniture/etsy/HSMPSWH24/2.webp" alt="View 2" loading="lazy" />
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587710/hs-global/furniture/etsy/HSMPSWH24/3.webp" alt="View 3" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587710/hs-global/furniture/etsy/HSMPSWH24/3.webp" alt="View 1" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587708/hs-global/furniture/etsy/HSMPSWH24/1.webp" alt="View 2" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587709/hs-global/furniture/etsy/HSMPSWH24/2.webp" alt="View 3" loading="lazy" />
           <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587712/hs-global/furniture/etsy/HSMPSWH24/4.webp" alt="View 4" loading="lazy" />
         </div>
 
@@ -16596,10 +16661,10 @@
 
         <!-- 4 THUMBNAIL IMAGES (top) -->
         <div class="end-images">
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587725/hs-global/furniture/etsy/HSMPSBE22/5.webp" alt="View 1" loading="lazy" />
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587721/hs-global/furniture/etsy/HSMPSBE22/1.webp" alt="View 2" loading="lazy" />
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587724/hs-global/furniture/etsy/HSMPSBE22/4.webp" alt="View 3" loading="lazy" />
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587722/hs-global/furniture/etsy/HSMPSBE22/2.webp" alt="View 4" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587722/hs-global/furniture/etsy/HSMPSBE22/2.webp" alt="View 1" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587725/hs-global/furniture/etsy/HSMPSBE22/5.webp" alt="View 2" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587721/hs-global/furniture/etsy/HSMPSBE22/1.webp" alt="View 3" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783587724/hs-global/furniture/etsy/HSMPSBE22/4.webp" alt="View 4" loading="lazy" />
         </div>
 
         <!-- DESCRIPTION (pushed to bottom) -->
@@ -16968,8 +17033,8 @@
 
         <!-- 4 THUMBNAIL IMAGES (top) -->
         <div class="end-images">
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285326/hs-global/furniture/etsy/HSMPSBL5/1.webp" alt="View 1" loading="lazy" />
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285327/hs-global/furniture/etsy/HSMPSBL5/2.webp" alt="View 2" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285327/hs-global/furniture/etsy/HSMPSBL5/2.webp" alt="View 1" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285326/hs-global/furniture/etsy/HSMPSBL5/1.webp" alt="View 2" loading="lazy" />
           <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285329/hs-global/furniture/etsy/HSMPSBL5/3.webp" alt="View 3" loading="lazy" />
           <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285330/hs-global/furniture/etsy/HSMPSBL5/4.webp" alt="View 4" loading="lazy" />
         </div>
@@ -17433,9 +17498,9 @@
 
         <!-- 4 THUMBNAIL IMAGES (top) -->
         <div class="end-images">
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285407/hs-global/furniture/etsy/HSMPSWHBL6/3.webp" alt="View 1" loading="lazy" />
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285406/hs-global/furniture/etsy/HSMPSWHBL6/2.webp" alt="View 2" loading="lazy" />
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285404/hs-global/furniture/etsy/HSMPSWHBL6/1.webp" alt="View 3" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285404/hs-global/furniture/etsy/HSMPSWHBL6/1.webp" alt="View 1" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285407/hs-global/furniture/etsy/HSMPSWHBL6/3.webp" alt="View 2" loading="lazy" />
+          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285406/hs-global/furniture/etsy/HSMPSWHBL6/2.webp" alt="View 3" loading="lazy" />
           <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1779285408/hs-global/furniture/etsy/HSMPSWHBL6/4.webp" alt="View 4" loading="lazy" />
         </div>
 
@@ -18260,7 +18325,7 @@
 
       <!-- LEFT — IMAGE -->
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1788810245/hs-global/marble-brochure-hero/HSG-MBL-187.webp" alt="Brown Marble Table Lamp Modern Bedside Lighting — Marble Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1789491057/hs-global/marble-brochure-hero/HSG-MBL-187.webp" alt="Brown Marble Table Lamp Modern Bedside Lighting — Marble Furniture by HS Global Export" loading="lazy" />
         <div class="img-vignette"></div>
         <div class="product-number">SKU · HSG-MBL-187</div>
       </div>
@@ -18818,7 +18883,7 @@
 
       <!-- LEFT — IMAGE -->
       <div class="product-image-wrap">
-        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1788810306/hs-global/marble-brochure-hero/HSG-MBL-193.webp" alt="Travertine Mushroom Table Lamp Organic Stone Lighting — Marble Furniture by HS Global Export" loading="lazy" />
+        <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1789491055/hs-global/marble-brochure-hero/HSG-MBL-193.webp" alt="Travertine Mushroom Table Lamp Organic Stone Lighting — Marble Furniture by HS Global Export" loading="lazy" />
         <div class="img-vignette"></div>
         <div class="product-number">SKU · HSG-MBL-193</div>
       </div>

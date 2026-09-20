@@ -357,6 +357,47 @@ const getCategoriesV2 = async (req, res) => {
     }
 };
 
+// Simple string hash -> 32-bit int (for deterministic, non-persisted "live" values)
+const hashString = (str) => {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+        hash = (hash * 31 + str.charCodeAt(i)) | 0;
+    }
+    return hash;
+};
+
+// Deterministic pseudo-random float in [0, 1) from an integer seed
+const seededRandom = (seed) => {
+    let x = seed | 0;
+    x ^= x << 13;
+    x ^= x >>> 17;
+    x ^= x << 5;
+    return (x >>> 0) / 4294967296;
+};
+
+// Get a fake "N people are viewing this" count (1-50).
+// Not real telemetry - deterministically derived from productId + a 5-minute
+// time bucket, so the number stays stable across refetches/refreshes within
+// the same window instead of jumping on every request.
+const getProductViewerCount = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const bucket = Math.floor(Date.now() / (5 * 60 * 1000));
+        const seed = hashString(`${id}:${bucket}`);
+        const viewerCount = Math.floor(seededRandom(seed) * 50) + 1;
+
+        res.set('Cache-Control', 'no-store');
+        res.json({ success: true, viewerCount });
+    } catch (error) {
+        console.error('Get product viewer count error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to fetch viewer count',
+            error: error.message
+        });
+    }
+};
+
 module.exports = {
     getAllProducts,
     getProductById,
@@ -373,5 +414,6 @@ module.exports = {
     deleteProduct,
     trackAddToCart,
     getCategories,
-    getCategoriesV2
+    getCategoriesV2,
+    getProductViewerCount
 };

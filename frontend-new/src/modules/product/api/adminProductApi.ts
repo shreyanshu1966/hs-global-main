@@ -121,6 +121,20 @@ export const adminProductApi = {
     return response.data;
   },
 
+  /** Merges an existing standalone product into this one as a new variant, and deactivates the source listing. */
+  async addVariantFromExistingProduct(
+    targetProductId: string,
+    sourceProductId: string,
+    attributes: Record<string, string>
+  ): Promise<{ success: boolean; data: Product; deactivatedProduct: { productId: string; name: string }; message: string }> {
+    const response = await axios.post(
+      `${API_URL}/admin/products/${targetProductId}/variants/from-product`,
+      { sourceProductId, attributes },
+      getAuthHeader()
+    );
+    return response.data;
+  },
+
   async reorderProductImages(
     productId: string,
     imageUrls: string[]

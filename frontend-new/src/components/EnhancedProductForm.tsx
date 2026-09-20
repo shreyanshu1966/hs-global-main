@@ -6,6 +6,7 @@ import ProductImageManager from '../components/ProductImageManager';
 import ProductSpecsEditor, { type ProductSpecifications } from '../components/ProductSpecsEditor';
 import ProductVideoManager from '../components/ProductVideoManager';
 import { productService, type Category } from '../services/productService';
+import { adminProductApi } from '../modules/product/api/adminProductApi';
 import { DEFAULT_RATES } from '../utils/pricing';
 import { useCurrency } from '../contexts/CurrencyContext';
 
@@ -76,6 +77,8 @@ interface VariantSku {
   sku: string;
   available: boolean;
   images: string[];
+  /** This row IS the current product itself — protected from deletion, always available. */
+  isDefault?: boolean;
 }
 
 const defaultRegionalPricing = (): Record<RegionKey, { enabled: boolean; adjustmentType: AdjustmentType; adjustmentValue: number }> => ({
@@ -150,6 +153,27 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
   const [bulkPriceInput, setBulkPriceInput]       = useState('');
   const [bulkStockInput, setBulkStockInput]       = useState('');
   const [activeBulkField, setActiveBulkField]     = useState<'price' | 'stock' | null>(null);
+  const [showMergeModal, setShowMergeModal]       = useState(false);
+  const [mergeSearch, setMergeSearch]             = useState('');
+  const [mergeResults, setMergeResults]           = useState<any[]>([]);
+  const [mergeSearching, setMergeSearching]       = useState(false);
+  const [mergeSelected, setMergeSelected]         = useState<any | null>(null);
+  const [mergeAttrValues, setMergeAttrValues]     = useState<Record<string, string>>({});
+  const [mergeSubmitting, setMergeSubmitting]     = useState(false);
+  const [mergeError, setMergeError]               = useState<string | null>(null);
+  // Required popup: switching to "Has variants" opens this before anything else happens.
+  const [showSetupModal, setShowSetupModal]       = useState(false);
+  const [setupOptionName, setSetupOptionName]     = useState('Color');
+  const [setupCustomName, setSetupCustomName]     = useState('');
+  const [setupValue, setSetupValue]               = useState('');
+  // "+ Add Variant" — a small choice, then either the manual popup or the existing merge modal.
+  const [showAddVariantChoice, setShowAddVariantChoice] = useState(false);
+  const [showAddVariantModal, setShowAddVariantModal]   = useState(false);
+  const [addVariantValues, setAddVariantValues]   = useState<Record<string, string>>({});
+  const [addVariantPrice, setAddVariantPrice]     = useState('');
+  const [addVariantStock, setAddVariantStock]     = useState('999');
+  const [addVariantSku, setAddVariantSku]         = useState('');
+  const [showManageOptions, setShowManageOptions] = useState(false);
   const [simSearch, setSimSearch]         = useState('');
   const [simResults, setSimResults]       = useState<any[]>([]);
   const [simSearching, setSimSearching]   = useState(false);
@@ -307,6 +331,7 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
         sku: v.sku || '',
         available: v.available !== false,
         images: v.images || [],
+        isDefault: v.isDefault === true,
       })));
     }
     if (editingProduct.hasVideo && editingProduct.videoUrl) {
@@ -350,6 +375,27 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
     const t = setTimeout(run, 300);
     return () => { cancelled = true; clearTimeout(t); };
   }, [simSearch, formData.productId, similarProductIds]);
+
+  // ─── "Add variant from existing product" search ────────────────────────────
+  useEffect(() => {
+    if (!showMergeModal || mergeSelected || !mergeSearch.trim()) { setMergeResults([]); return; }
+    let cancelled = false;
+    const run = async () => {
+      setMergeSearching(true);
+      try {
+        const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
+        const token   = localStorage.getItem('authToken');
+        const res     = await fetch(`${API_URL}/admin/products?search=${encodeURIComponent(mergeSearch.trim())}&limit=10`, { headers: { Authorization: `Bearer ${token}` } });
+        if (!cancelled && res.ok) {
+          const data = await res.json();
+          setMergeResults((data.data || []).filter((p: any) => p.productId !== formData.productId));
+        }
+      } catch { if (!cancelled) setMergeResults([]); }
+      finally  { if (!cancelled) setMergeSearching(false); }
+    };
+    const t = setTimeout(run, 300);
+    return () => { cancelled = true; clearTimeout(t); };
+  }, [mergeSearch, showMergeModal, mergeSelected, formData.productId]);
 
   // ─── Scroll-spy (uses window scroll) ──────────────────────────────────────
   useEffect(() => {
@@ -445,6 +491,7 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
               available: v.available,
               images: v.images || [],
               position: i,
+              isDefault: v.isDefault === true,
             }))
           : [],
       }, images, customSpecs, video && !video.isExisting ? video.file : null);
@@ -514,13 +561,26 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
     return combos;
   };
 
+  const attrsEqual = (a: Record<string, string>, b: Record<string, string>): boolean => {
+    const keys = Object.keys(a);
+    return keys.length === Object.keys(b).length && keys.every(k => b[k] === a[k]);
+  };
+
   const mergeIntoCombinations = (combos: Record<string, string>[], existing: VariantSku[]): VariantSku[] =>
-    combos.map(attrs => {
-      const match = existing.find(e => {
-        const keys = Object.keys(attrs);
-        return keys.length === Object.keys(e.attributes).length && keys.every(k => e.attributes[k] === attrs[k]);
-      });
-      return match ?? { attributes: attrs, priceINR: '', compareAtPriceINR: '', stockQuantity: 0, sku: '', available: true, images: [] };
+    combos.map((attrs, i) => {
+      const match = existing.find(e => attrsEqual(attrs, e.attributes));
+      if (match) return match;
+      // The very first variant ever created for this product IS this product —
+      // leave its price blank (rather than copying a snapshot) so it keeps
+      // tracking the base price above forever via the existing "blank = use
+      // base product's price" fallback, with no risk of going stale if the
+      // base price is edited later. You just type in which value it represents.
+      if (existing.length === 0 && i === 0) {
+        return { attributes: attrs, priceINR: '', compareAtPriceINR: '', stockQuantity: 999, sku: formData.productId || '', available: true, images: [], isDefault: true };
+      }
+      // Stock defaults to "in stock" rather than 0 — a freshly generated row
+      // shouldn't look sold out just because nobody has typed a stock count in yet.
+      return { attributes: attrs, priceINR: '', compareAtPriceINR: '', stockQuantity: 999, sku: '', available: true, images: [] };
     });
 
   const addOption = () => {
@@ -529,12 +589,24 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
     setVariantDraftInput(prev => [...prev, '']);
   };
 
+  // Refuses an options edit that would make the default ("current product") row
+  // impossible to regenerate — it's protected from deletion, including indirectly
+  // via removing the option/value that defines it.
+  const wouldRemoveDefaultRow = (newOptions: VariantOption[]): boolean => {
+    const defaultRow = variantSkus.find(v => v.isDefault);
+    if (!defaultRow) return false;
+    const combos = computeCombinations(newOptions);
+    return !combos.some(c => attrsEqual(c, defaultRow.attributes));
+  };
+
   const removeOption = (idx: number) => {
-    setVariantOptions(prev => {
-      const updated = prev.filter((_, i) => i !== idx);
-      setVariantSkus(existing => mergeIntoCombinations(computeCombinations(updated), existing));
-      return updated;
-    });
+    const updated = variantOptions.filter((_, i) => i !== idx);
+    if (wouldRemoveDefaultRow(updated)) {
+      alert('This option defines the current product\'s default variant and can\'t be removed. Switch back to "Simple product" if you want to remove all variants.');
+      return;
+    }
+    setVariantOptions(updated);
+    setVariantSkus(existing => mergeIntoCombinations(computeCombinations(updated), existing));
     setVariantDraftInput(prev => prev.filter((_, i) => i !== idx));
     setSelectedRows(new Set());
   };
@@ -562,17 +634,23 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
   };
 
   const removeOptionValue = (optIdx: number, valIdx: number) => {
-    setVariantOptions(prev => {
-      const updated = prev.map((o, i) =>
-        i === optIdx ? { ...o, values: o.values.filter((_, vi) => vi !== valIdx) } : o
-      );
-      setVariantSkus(existing => mergeIntoCombinations(computeCombinations(updated), existing));
-      return updated;
-    });
+    const updated = variantOptions.map((o, i) =>
+      i === optIdx ? { ...o, values: o.values.filter((_, vi) => vi !== valIdx) } : o
+    );
+    if (wouldRemoveDefaultRow(updated)) {
+      alert('This value is the current product\'s default variant and can\'t be removed. Switch back to "Simple product" if you want to remove all variants.');
+      return;
+    }
+    setVariantOptions(updated);
+    setVariantSkus(existing => mergeIntoCombinations(computeCombinations(updated), existing));
     setSelectedRows(new Set());
   };
 
   const removeVariant = (idx: number) => {
+    if (variantSkus[idx]?.isDefault) {
+      alert('This is the current product\'s default variant and can\'t be removed. Switch back to "Simple product" if you want to remove all variants.');
+      return;
+    }
     setVariantSkus(prev => prev.filter((_, i) => i !== idx));
     setSelectedRows(prev => {
       const next = new Set<number>();
@@ -583,6 +661,140 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
 
   const updateVariantSku = (idx: number, field: keyof VariantSku, value: any) => {
     setVariantSkus(prev => prev.map((v, i) => i === idx ? { ...v, [field]: value } : v));
+  };
+
+  // ─── Required setup popup: this product IS Variant 1 ────────────────────────
+  const resolvedSetupName = setupOptionName === '__custom' ? setupCustomName.trim() : setupOptionName;
+
+  const cancelSetup = () => {
+    setShowSetupModal(false);
+    setProductTypeField('simple');
+  };
+
+  const submitSetup = () => {
+    const name = resolvedSetupName;
+    const value = setupValue.trim();
+    if (!name || !value) return;
+    setVariantOptions([{ name, values: [value] }]);
+    setVariantDraftInput(['']);
+    // Price stays blank rather than copying the current price — it keeps tracking
+    // the base price above via the existing fallback, so editing the price later
+    // (in the Pricing tab) can't leave this variant showing a stale number.
+    setVariantSkus([{
+      attributes: { [name]: value },
+      priceINR: '', compareAtPriceINR: '', stockQuantity: 999,
+      sku: formData.productId || '', available: true, images: [], isDefault: true,
+    }]);
+    setShowSetupModal(false);
+  };
+
+  // ─── "+ Add Variant" (manual entry for variant 2+) ───────────────────────────
+  const openAddVariantModal = () => {
+    setAddVariantValues(Object.fromEntries(namedOptions.map(o => [o.name, ''])));
+    setAddVariantPrice('');
+    setAddVariantStock('999');
+    setAddVariantSku('');
+    setShowAddVariantChoice(false);
+    setShowAddVariantModal(true);
+  };
+
+  const submitAddVariant = () => {
+    const missing = namedOptions.filter(o => !addVariantValues[o.name]?.trim());
+    if (missing.length > 0) return;
+    const attrs = Object.fromEntries(namedOptions.map(o => [o.name, addVariantValues[o.name].trim()]));
+    if (variantSkus.some(v => attrsEqual(v.attributes, attrs))) {
+      alert('A variant with these exact values already exists.');
+      return;
+    }
+    setVariantOptions(prev => prev.map(o =>
+      attrs[o.name] && !o.values.includes(attrs[o.name]) ? { ...o, values: [...o.values, attrs[o.name]] } : o
+    ));
+    setVariantSkus(prev => [...prev, {
+      attributes: attrs,
+      priceINR: addVariantPrice.trim(),
+      compareAtPriceINR: '',
+      stockQuantity: parseInt(addVariantStock) || 0,
+      sku: addVariantSku.trim(),
+      available: true,
+      images: [],
+    }]);
+    setShowAddVariantModal(false);
+  };
+
+  // ─── "Add variant from existing product" ────────────────────────────────────
+  // For catalogs where color/size options were originally uploaded as separate
+  // product listings: pick one of those listings and merge it in as a variant
+  // row here, instead of manually re-entering its price/stock/photos. The
+  // source listing is deactivated by the server once the merge succeeds.
+  const namedOptions = variantOptions.filter(o => o.name.trim());
+  // Gates the setup popup / empty state — "has any variant" rather than
+  // specifically a default-flagged one, so a product with pre-existing
+  // variants from before this feature existed isn't forced back through setup.
+  const hasAnyVariant = variantSkus.length > 0;
+
+  const closeMergeModal = () => {
+    setShowMergeModal(false);
+    setMergeSearch('');
+    setMergeResults([]);
+    setMergeSelected(null);
+    setMergeAttrValues({});
+    setMergeError(null);
+  };
+
+  const submitMerge = async () => {
+    if (!formData.productId || !mergeSelected) return;
+    const missing = namedOptions.filter(o => !mergeAttrValues[o.name]?.trim());
+    if (missing.length > 0) {
+      setMergeError(`Enter a value for: ${missing.map(o => o.name).join(', ')}`);
+      return;
+    }
+    const attrs = Object.fromEntries(namedOptions.map(o => [o.name, mergeAttrValues[o.name].trim()]));
+    if (variantSkus.some(v => attrsEqual(v.attributes, attrs))) {
+      setMergeError('A variant with these exact values already exists.');
+      return;
+    }
+    setMergeSubmitting(true);
+    setMergeError(null);
+    try {
+      // This endpoint reads/writes the product straight from the database (it also
+      // has to deactivate the source product there) — it knows nothing about any
+      // local, not-yet-saved edits in this form (e.g. an unsaved Variant 1, or a
+      // variant added via "New variant" since the last save). So we only pull the
+      // one new variant it created out of the response and append it locally,
+      // rather than replacing the whole variants list with the server's view.
+      const response = await adminProductApi.addVariantFromExistingProduct(formData.productId, mergeSelected.productId, attrs);
+      const updated = response.data;
+      const serverVariant = Array.isArray(updated.variants)
+        ? updated.variants.find((v: any) => {
+            const vAttrs = v.attributes instanceof Map ? Object.fromEntries(v.attributes) : (v.attributes || {});
+            return attrsEqual(vAttrs, attrs);
+          })
+        : null;
+      if (!serverVariant) {
+        setMergeError('Merge succeeded, but the new variant could not be read back — please refresh and check.');
+        return;
+      }
+
+      setProductTypeField('configurable');
+      setVariantOptions(prev => prev.map(o =>
+        attrs[o.name] && !o.values.includes(attrs[o.name]) ? { ...o, values: [...o.values, attrs[o.name]] } : o
+      ));
+      setVariantSkus(prev => [...prev, {
+        attributes: serverVariant.attributes instanceof Map ? Object.fromEntries(serverVariant.attributes) : (serverVariant.attributes || attrs),
+        priceINR: serverVariant.priceINR != null ? String(serverVariant.priceINR) : '',
+        compareAtPriceINR: serverVariant.compareAtPriceINR != null ? String(serverVariant.compareAtPriceINR) : '',
+        stockQuantity: serverVariant.stockQuantity || 0,
+        sku: serverVariant.sku || '',
+        available: serverVariant.available !== false,
+        images: serverVariant.images || [],
+      }]);
+      closeMergeModal();
+      alert(response.message || `Merged "${mergeSelected.name}" as a variant. That listing has been deactivated.`);
+    } catch (err: any) {
+      setMergeError(err?.response?.data?.message || 'Failed to merge product as variant');
+    } finally {
+      setMergeSubmitting(false);
+    }
   };
 
   // ─── Variant image helpers ───────────────────────────────────────────────────
@@ -616,7 +828,10 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
     ));
   };
 
+  // The default ("current product") row is never selectable — keeps every bulk
+  // action (price/stock/enable/disable/delete) from being able to touch it.
   const toggleRow = (idx: number) => {
+    if (variantSkus[idx]?.isDefault) return;
     setSelectedRows(prev => {
       const next = new Set(prev);
       next.has(idx) ? next.delete(idx) : next.add(idx);
@@ -624,8 +839,11 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
     });
   };
 
+  const selectableCount = variantSkus.filter(v => !v.isDefault).length;
   const toggleAllRows = () => {
-    setSelectedRows(prev => prev.size === variantSkus.length ? new Set() : new Set(variantSkus.map((_, i) => i)));
+    setSelectedRows(prev => prev.size === selectableCount
+      ? new Set()
+      : new Set(variantSkus.map((v, i) => i).filter(i => !variantSkus[i].isDefault)));
   };
 
   const applyBulkPrice = () => {
@@ -1184,7 +1402,7 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
           <div ref={secRef('variants')} id="variants" className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
             <div className="px-6 py-4 border-b border-gray-50">
               <h2 className="font-semibold text-gray-900 text-[15px]">Variants</h2>
-              <p className="text-xs text-gray-400 mt-0.5">Add options like Color or Size. Each combination becomes a separate purchasable SKU.</p>
+              <p className="text-xs text-gray-400 mt-0.5">Sell this product in a Color, Size, etc. Each variant is its own price, stock and photos.</p>
             </div>
             <div className="px-6 py-5 space-y-6">
 
@@ -1192,7 +1410,17 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
               <div className="flex gap-3">
                 {(['simple', 'configurable'] as const).map(pt => (
                   <button key={pt} type="button"
-                    onClick={() => setProductTypeField(pt)}
+                    onClick={() => {
+                      setProductTypeField(pt);
+                      // First time switching on: require the popup before anything else —
+                      // there's no way to have a variant without knowing what it represents.
+                      if (pt === 'configurable' && !hasAnyVariant) {
+                        setSetupOptionName('Color');
+                        setSetupCustomName('');
+                        setSetupValue('');
+                        setShowSetupModal(true);
+                      }
+                    }}
                     disabled={isFormDisabled}
                     className={`flex-1 py-2.5 rounded-xl border text-sm font-medium transition-colors ${
                       productTypeField === pt
@@ -1204,12 +1432,59 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
                 ))}
               </div>
 
-              {productTypeField === 'configurable' && (
-                <>
-                  {/* ── Options panel ── */}
-                  <div className="space-y-3">
-                    <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Options</p>
+              {productTypeField === 'configurable' && !hasAnyVariant && (
+                <div className="text-center py-8 border border-dashed border-gray-200 rounded-xl">
+                  <p className="text-sm text-gray-500 mb-3 max-w-sm mx-auto">
+                    This product needs to become its own first variant before you can add any others.
+                  </p>
+                  <button type="button" onClick={() => setShowSetupModal(true)}
+                    className="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-sm font-semibold transition-colors">
+                    Set Up Variant 1
+                  </button>
+                </div>
+              )}
 
+              {productTypeField === 'configurable' && hasAnyVariant && (
+                <>
+                  {/* ── Add Variant ── */}
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                      Variants <span className="font-normal text-gray-400 normal-case">({variantSkus.length} SKU{variantSkus.length !== 1 ? 's' : ''})</span>
+                    </p>
+                    <div className="relative">
+                      <button type="button" onClick={() => setShowAddVariantChoice(v => !v)} disabled={isFormDisabled}
+                        className="px-3 py-1.5 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5">
+                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
+                        Add Variant
+                      </button>
+                      {showAddVariantChoice && (
+                        <>
+                          <div className="fixed inset-0 z-40" onClick={() => setShowAddVariantChoice(false)} />
+                          <div className="absolute right-0 top-full mt-1.5 z-50 w-56 bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden">
+                            <button type="button" onClick={openAddVariantModal}
+                              className="w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors border-b border-gray-50">
+                              <span className="font-medium block">New variant</span>
+                              <span className="text-xs text-gray-400">Type in a value, price & stock</span>
+                            </button>
+                            {!!formData.productId && (
+                              <button type="button" onClick={() => { setShowAddVariantChoice(false); setShowMergeModal(true); }}
+                                className="w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                <span className="font-medium block">From existing product</span>
+                                <span className="text-xs text-gray-400">Merge in an already-listed product</span>
+                              </button>
+                            )}
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* ── Options panel (advanced) ── */}
+                  <details className="group border border-gray-100 rounded-xl" open={showManageOptions} onToggle={e => setShowManageOptions((e.target as HTMLDetailsElement).open)}>
+                    <summary className="px-4 py-2.5 text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer select-none hover:bg-gray-50 rounded-xl">
+                      Advanced: manage options
+                    </summary>
+                    <div className="px-4 pb-4 pt-1 space-y-3">
                     {variantOptions.map((opt, optIdx) => (
                       <div key={optIdx} className="border border-gray-200 rounded-xl p-4 space-y-3 bg-gray-50/50">
                         {/* Option name row */}
@@ -1266,8 +1541,8 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
                               }
                             }}
                             onBlur={() => { if (variantDraftInput[optIdx]?.trim()) addOptionValue(optIdx, variantDraftInput[optIdx]); }}
-                            disabled={isFormDisabled}
-                            placeholder={opt.values.length === 0 ? 'Add value, press Enter' : 'Add another…'}
+                            disabled={isFormDisabled || !opt.name.trim()}
+                            placeholder={!opt.name.trim() ? 'Pick a name above first' : opt.values.length === 0 ? 'Add value, press Enter' : 'Add another…'}
                             className="px-2 py-1 text-xs border-0 border-b border-dashed border-gray-300 bg-transparent focus:outline-none focus:border-orange-400 min-w-[120px]"
                           />
                         </div>
@@ -1278,21 +1553,16 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
                       <button type="button" onClick={addOption} disabled={isFormDisabled}
                         className="text-sm text-orange-500 hover:text-orange-600 font-medium transition-colors flex items-center gap-1.5">
                         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
-                        Add {variantOptions.length === 0 ? 'an option' : 'another option'}
-                        {variantOptions.length > 0 && <span className="text-gray-400 font-normal">({3 - variantOptions.length} remaining)</span>}
+                        Add another option
+                        <span className="text-gray-400 font-normal">({3 - variantOptions.length} remaining)</span>
                       </button>
                     )}
-                  </div>
+                    </div>
+                  </details>
 
                   {/* ── Variants table ── */}
                   {variantSkus.length > 0 && (
                     <div className="space-y-2">
-                      <div className="flex items-center justify-between">
-                        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                          Variants <span className="font-normal text-gray-400 normal-case">({variantSkus.length} SKU{variantSkus.length !== 1 ? 's' : ''})</span>
-                        </p>
-                      </div>
-
                       {/* Bulk action bar */}
                       {selectedRows.size > 0 && (
                         <div className="flex items-center gap-2 px-3 py-2 bg-orange-50 border border-orange-200 rounded-lg">
@@ -1345,7 +1615,7 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
                             <tr>
                               <th className="px-3 py-2.5 w-8">
                                 <input type="checkbox"
-                                  checked={selectedRows.size === variantSkus.length && variantSkus.length > 0}
+                                  checked={selectedRows.size === selectableCount && selectableCount > 0}
                                   onChange={toggleAllRows}
                                   className="w-3.5 h-3.5 text-orange-500 rounded border-gray-300 cursor-pointer" />
                               </th>
@@ -1364,13 +1634,18 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
                             {variantSkus.map((sku, idx) => (
                               <tr key={idx} className={`transition-colors hover:bg-gray-50/80 ${!sku.available ? 'opacity-50' : ''} ${selectedRows.has(idx) ? 'bg-orange-50/40' : ''}`}>
                                 <td className="px-3 py-2 text-center">
-                                  <input type="checkbox" checked={selectedRows.has(idx)} onChange={() => toggleRow(idx)}
-                                    className="w-3.5 h-3.5 text-orange-500 rounded border-gray-300 cursor-pointer" />
+                                  {!sku.isDefault && (
+                                    <input type="checkbox" checked={selectedRows.has(idx)} onChange={() => toggleRow(idx)}
+                                      className="w-3.5 h-3.5 text-orange-500 rounded border-gray-300 cursor-pointer" />
+                                  )}
                                 </td>
                                 <td className="px-3 py-2">
                                   <button type="button" onClick={() => setDrawerIdx(idx)}
                                     className="text-xs text-gray-800 font-medium hover:text-orange-600 transition-colors text-left">
-                                    {Object.values(sku.attributes).join(' / ')}
+                                    {Object.values(sku.attributes).join(' / ') || <span className="text-gray-400 italic">unnamed</span>}
+                                    {sku.isDefault && (
+                                      <span className="ml-1.5 px-1.5 py-0.5 rounded-full bg-orange-50 text-orange-600 text-[10px] font-semibold uppercase tracking-wide">Current product</span>
+                                    )}
                                     {sku.images.length > 0 && <span className="ml-1.5 text-[10px] text-gray-400">📷{sku.images.length}</span>}
                                   </button>
                                 </td>
@@ -1405,8 +1680,11 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
                                     className="w-24 px-2 py-1.5 border border-gray-200 rounded-lg text-xs focus:ring-1 focus:ring-orange-400 focus:border-transparent" />
                                 </td>
                                 <td className="px-3 py-2 text-center">
-                                  <button type="button" onClick={() => updateVariantSku(idx, 'available', !sku.available)} disabled={isFormDisabled}
-                                    className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none ${sku.available ? 'bg-green-500' : 'bg-gray-200'}`}>
+                                  <button type="button"
+                                    onClick={() => !sku.isDefault && updateVariantSku(idx, 'available', !sku.available)}
+                                    disabled={isFormDisabled || sku.isDefault}
+                                    title={sku.isDefault ? 'This is the current product — always available' : undefined}
+                                    className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none ${sku.available ? 'bg-green-500' : 'bg-gray-200'} ${sku.isDefault ? 'opacity-70 cursor-not-allowed' : ''}`}>
                                     <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow-sm transition-transform ${sku.available ? 'translate-x-5' : 'translate-x-0.5'}`} />
                                   </button>
                                 </td>
@@ -1416,10 +1694,12 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
                                       className="p-1 text-gray-400 hover:text-orange-500 transition-colors rounded">
                                       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
                                     </button>
-                                    <button type="button" onClick={() => removeVariant(idx)} title="Delete"
-                                      className="p-1 text-gray-400 hover:text-red-500 transition-colors rounded">
-                                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
-                                    </button>
+                                    {!sku.isDefault && (
+                                      <button type="button" onClick={() => removeVariant(idx)} title="Delete"
+                                        className="p-1 text-gray-400 hover:text-red-500 transition-colors rounded">
+                                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                      </button>
+                                    )}
                                   </div>
                                 </td>
                               </tr>
@@ -1434,6 +1714,107 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
             </div>
           </div>
 
+          {/* ── Required setup popup: this product becomes Variant 1 ── */}
+          {showSetupModal && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+              <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={cancelSetup} />
+              <div className="relative w-full max-w-sm bg-white rounded-2xl shadow-2xl overflow-hidden">
+                <div className="px-5 py-4 border-b border-gray-100">
+                  <h3 className="font-semibold text-gray-900 text-[15px]">Set up your first variant</h3>
+                  <p className="text-xs text-gray-500 mt-1">
+                    This product becomes Variant 1 automatically, always matching its own price and
+                    photos above — even if you change them later. Just tell us what it is.
+                  </p>
+                </div>
+                <div className="px-5 py-4 space-y-3">
+                  <div>
+                    <label className={labelCls}>Option</label>
+                    <div className="flex items-center gap-2">
+                      <select value={setupOptionName} onChange={e => setSetupOptionName(e.target.value)}
+                        className="px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white focus:ring-2 focus:ring-orange-400 focus:border-transparent">
+                        {OPTION_PRESETS.map(p => <option key={p} value={p}>{p}</option>)}
+                        <option value="__custom">Custom…</option>
+                      </select>
+                      {setupOptionName === '__custom' && (
+                        <input type="text" value={setupCustomName} onChange={e => setSetupCustomName(e.target.value)}
+                          placeholder="Option name" className="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-orange-400 focus:border-transparent" />
+                      )}
+                    </div>
+                  </div>
+                  <div>
+                    <label className={labelCls}>This product's value for "{resolvedSetupName || '…'}"</label>
+                    <input type="text" value={setupValue} onChange={e => setSetupValue(e.target.value)}
+                      onKeyDown={e => { if (e.key === 'Enter' && resolvedSetupName && setupValue.trim()) submitSetup(); }}
+                      placeholder="e.g. Red" autoFocus
+                      className={inputCls} />
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 px-5 py-4 border-t border-gray-100">
+                  <button type="button" onClick={cancelSetup}
+                    className="flex-1 py-2.5 border border-gray-200 text-gray-600 rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors">
+                    Cancel
+                  </button>
+                  <button type="button" onClick={submitSetup} disabled={!resolvedSetupName || !setupValue.trim()}
+                    className="flex-1 py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-sm font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                    Add as Variant 1
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ── "+ Add Variant" manual entry popup ── */}
+          {showAddVariantModal && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+              <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setShowAddVariantModal(false)} />
+              <div className="relative w-full max-w-sm bg-white rounded-2xl shadow-2xl overflow-hidden">
+                <div className="px-5 py-4 border-b border-gray-100">
+                  <h3 className="font-semibold text-gray-900 text-[15px]">Add a new variant</h3>
+                </div>
+                <div className="px-5 py-4 space-y-3">
+                  {namedOptions.map(opt => (
+                    <div key={opt.name}>
+                      <label className={labelCls}>{opt.name}</label>
+                      <input type="text" value={addVariantValues[opt.name] ?? ''}
+                        onChange={e => setAddVariantValues(prev => ({ ...prev, [opt.name]: e.target.value }))}
+                        placeholder={opt.values[0] ? `e.g. ${opt.values[0]}` : 'e.g. Blue'}
+                        className={inputCls} />
+                    </div>
+                  ))}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className={labelCls}>Price ₹ <span className="text-gray-400 font-normal">(blank = base)</span></label>
+                      <input type="number" min="0" value={addVariantPrice} onChange={e => setAddVariantPrice(e.target.value)}
+                        placeholder={priceINR || '—'} className={inputCls} />
+                    </div>
+                    <div>
+                      <label className={labelCls}>Stock</label>
+                      <input type="number" min="0" value={addVariantStock} onChange={e => setAddVariantStock(e.target.value)}
+                        className={inputCls} />
+                    </div>
+                  </div>
+                  <div>
+                    <label className={labelCls}>SKU <span className="text-gray-400 font-normal">(optional)</span></label>
+                    <input type="text" value={addVariantSku} onChange={e => setAddVariantSku(e.target.value)}
+                      placeholder="SKU-001" className={inputCls} />
+                  </div>
+                  <p className="text-xs text-gray-400">Photos can be added afterwards from the variant's row in the table.</p>
+                </div>
+                <div className="flex items-center gap-3 px-5 py-4 border-t border-gray-100">
+                  <button type="button" onClick={() => setShowAddVariantModal(false)}
+                    className="flex-1 py-2.5 border border-gray-200 text-gray-600 rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors">
+                    Cancel
+                  </button>
+                  <button type="button" onClick={submitAddVariant}
+                    disabled={namedOptions.some(o => !addVariantValues[o.name]?.trim())}
+                    className="flex-1 py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-sm font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                    Add Variant
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* ── Variant Detail Drawer ── */}
           {drawerIdx !== null && variantSkus[drawerIdx] && (() => {
             const v = variantSkus[drawerIdx];
@@ -1446,7 +1827,12 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
                   <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
                     <div>
                       <p className="text-[10px] uppercase tracking-wider text-gray-400 font-medium">Variant</p>
-                      <h3 className="font-semibold text-gray-900 text-[15px]">{label}</h3>
+                      <h3 className="font-semibold text-gray-900 text-[15px] flex items-center gap-1.5">
+                        {label || <span className="text-gray-400 italic font-normal">unnamed</span>}
+                        {v.isDefault && (
+                          <span className="px-1.5 py-0.5 rounded-full bg-orange-50 text-orange-600 text-[10px] font-semibold uppercase tracking-wide">Current product</span>
+                        )}
+                      </h3>
                     </div>
                     <button type="button" onClick={() => setDrawerIdx(null)}
                       className="p-2 text-gray-400 hover:text-gray-700 transition-colors rounded-lg hover:bg-gray-100">
@@ -1576,10 +1962,14 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
                     <div className="flex items-center justify-between py-2.5 px-3 bg-gray-50 rounded-xl">
                       <div>
                         <p className="text-sm font-medium text-gray-700">Available for purchase</p>
-                        <p className="text-xs text-gray-400">When off, variant is hidden from customers</p>
+                        <p className="text-xs text-gray-400">
+                          {v.isDefault ? 'This is the current product — always available' : 'When off, variant is hidden from customers'}
+                        </p>
                       </div>
-                      <button type="button" onClick={() => updateVariantSku(drawerIdx, 'available', !v.available)}
-                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${v.available ? 'bg-green-500' : 'bg-gray-200'}`}>
+                      <button type="button"
+                        onClick={() => !v.isDefault && updateVariantSku(drawerIdx, 'available', !v.available)}
+                        disabled={v.isDefault}
+                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${v.available ? 'bg-green-500' : 'bg-gray-200'} ${v.isDefault ? 'opacity-70 cursor-not-allowed' : ''}`}>
                         <span className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-sm transition-transform ${v.available ? 'translate-x-6' : 'translate-x-1'}`} />
                       </button>
                     </div>
@@ -1587,11 +1977,15 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
 
                   {/* Footer */}
                   <div className="px-5 py-4 border-t border-gray-100 flex items-center justify-between gap-3">
-                    <button type="button" onClick={() => { removeVariant(drawerIdx); setDrawerIdx(null); }}
-                      className="text-sm text-red-500 hover:text-red-600 font-medium transition-colors flex items-center gap-1.5">
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
-                      Delete variant
-                    </button>
+                    {v.isDefault ? (
+                      <p className="text-xs text-gray-400 max-w-[140px]">Current product's default variant — can't be removed</p>
+                    ) : (
+                      <button type="button" onClick={() => { removeVariant(drawerIdx); setDrawerIdx(null); }}
+                        className="text-sm text-red-500 hover:text-red-600 font-medium transition-colors flex items-center gap-1.5">
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                        Delete variant
+                      </button>
+                    )}
                     <button type="button" onClick={() => setDrawerIdx(null)}
                       className="flex-1 py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-sm font-semibold transition-colors">
                       Done
@@ -1601,6 +1995,109 @@ const EnhancedProductForm: React.FC<EnhancedProductFormProps> = ({
               </div>
             );
           })()}
+
+          {/* ── Add Variant From Existing Product Modal ── */}
+          {showMergeModal && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+              <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={closeMergeModal} />
+              <div className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden max-h-[85vh]">
+                <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+                  <h3 className="font-semibold text-gray-900 text-[15px]">Add variant from existing product</h3>
+                  <button type="button" onClick={closeMergeModal}
+                    className="p-2 text-gray-400 hover:text-gray-700 transition-colors rounded-lg hover:bg-gray-100">
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+
+                <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4">
+                  {!mergeSelected ? (
+                    <>
+                      <p className="text-xs text-gray-500">
+                        Search for a standalone product listing that's really just a color/size option of this
+                        product. It'll be merged in as a variant and its own listing will be deactivated.
+                      </p>
+                      <div className="relative">
+                        <input type="text" value={mergeSearch} onChange={e => setMergeSearch(e.target.value)}
+                          placeholder="Search product by name or ID…" className={inputCls} autoFocus />
+                        {mergeSearching && (
+                          <div className="absolute right-4 top-1/2 -translate-y-1/2">
+                            <div className="w-4 h-4 border-2 border-orange-400 border-t-transparent rounded-full animate-spin" />
+                          </div>
+                        )}
+                      </div>
+                      {mergeResults.length > 0 && (
+                        <div className="border border-gray-200 rounded-xl max-h-64 overflow-y-auto divide-y divide-gray-50">
+                          {mergeResults.map((p: any) => (
+                            <button key={p.productId} type="button"
+                              onClick={() => { setMergeSelected(p); setMergeError(null); }}
+                              className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-50 text-left text-sm">
+                              {p.image && <img src={p.image} alt={p.name} className="w-9 h-9 object-cover rounded-lg flex-shrink-0" />}
+                              <div className="min-w-0">
+                                <p className="font-medium text-gray-900 truncate">{p.name}</p>
+                                <p className="text-xs text-gray-400">{p.productId} · ₹{p.priceINR ?? '—'}</p>
+                              </div>
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                      {!mergeSearching && mergeSearch.trim().length > 0 && mergeResults.length === 0 && (
+                        <p className="text-xs text-gray-400">No matching products found.</p>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-200">
+                        {mergeSelected.image && <img src={mergeSelected.image} alt={mergeSelected.name} className="w-11 h-11 object-cover rounded-lg flex-shrink-0" />}
+                        <div className="min-w-0 flex-1">
+                          <p className="font-medium text-gray-900 text-sm truncate">{mergeSelected.name}</p>
+                          <p className="text-xs text-gray-400">{mergeSelected.productId} · ₹{mergeSelected.priceINR ?? '—'}</p>
+                        </div>
+                        <button type="button" onClick={() => { setMergeSelected(null); setMergeError(null); }}
+                          className="text-xs text-orange-500 hover:text-orange-600 font-medium flex-shrink-0">Change</button>
+                      </div>
+
+                      <div className="space-y-3">
+                        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                          What is "{mergeSelected.name}" for this product?
+                        </p>
+                        {namedOptions.map(opt => (
+                          <div key={opt.name}>
+                            <label className={labelCls}>{opt.name}</label>
+                            <input type="text" value={mergeAttrValues[opt.name] ?? ''}
+                              onChange={e => setMergeAttrValues(prev => ({ ...prev, [opt.name]: e.target.value }))}
+                              placeholder={opt.values[0] ? `e.g. ${opt.values[0]}` : 'e.g. Red'}
+                              className={inputCls} />
+                          </div>
+                        ))}
+                      </div>
+
+                      <p className="text-xs text-gray-400">
+                        Its price (₹{mergeSelected.priceINR ?? '—'}) and photos will be copied into the new variant,
+                        and this listing will be deactivated once merged.
+                      </p>
+                    </>
+                  )}
+
+                  {mergeError && (
+                    <p className="text-xs text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2">{mergeError}</p>
+                  )}
+                </div>
+
+                {mergeSelected && (
+                  <div className="flex items-center gap-3 px-5 py-4 border-t border-gray-100">
+                    <button type="button" onClick={closeMergeModal}
+                      className="flex-1 py-2.5 border border-gray-200 text-gray-600 rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors">
+                      Cancel
+                    </button>
+                    <button type="button" onClick={submitMerge} disabled={mergeSubmitting}
+                      className="flex-1 py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-sm font-semibold transition-colors disabled:opacity-60 disabled:cursor-not-allowed">
+                      {mergeSubmitting ? 'Merging…' : 'Merge as variant'}
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
 
           {/* ⑦ Similar Products */}
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">

@@ -1631,6 +1631,113 @@ const bulkUpdateRegionalPricing = async (req, res) => {
 };
 
 /**
+ * Merge an existing standalone product into another product as one of its
+ * variants — for catalogs where color/size options were originally uploaded
+ * as separate product listings. Copies the source product's price, stock and
+ * images into a new variant row on the target, then deactivates the source
+ * so it stops appearing as its own listing.
+ * POST /api/admin/products/:id/variants/from-product
+ */
+const addVariantFromExistingProduct = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { sourceProductId, attributes } = req.body;
+
+        if (!sourceProductId || typeof sourceProductId !== 'string') {
+            return res.status(400).json({ success: false, message: 'sourceProductId is required' });
+        }
+        if (sourceProductId === id) {
+            return res.status(400).json({ success: false, message: 'A product cannot be merged into itself' });
+        }
+        if (!attributes || typeof attributes !== 'object' || Array.isArray(attributes) || Object.keys(attributes).length === 0) {
+            return res.status(400).json({ success: false, message: 'attributes (option name → value) is required' });
+        }
+
+        const target = await Product.findOne({ productId: id });
+        if (!target) {
+            return res.status(404).json({ success: false, message: 'Target product not found' });
+        }
+
+        const source = await Product.findOne({ productId: sourceProductId });
+        if (!source) {
+            return res.status(404).json({ success: false, message: 'Source product not found' });
+        }
+        if (Array.isArray(source.variants) && source.variants.length > 0) {
+            return res.status(400).json({ success: false, message: 'Source product already has its own variants — merge a simple product instead' });
+        }
+
+        // Every existing option axis on the target must get a value — a variant
+        // missing an axis can never be reached once a shopper picks a value for
+        // that axis on the PDP.
+        const existingOptionNames = (target.variantAttributes || []).map(a => a.name);
+        const providedNames = Object.keys(attributes);
+        const missing = existingOptionNames.filter(name => !providedNames.includes(name));
+        if (missing.length > 0) {
+            return res.status(400).json({ success: false, message: `Missing a value for: ${missing.join(', ')}` });
+        }
+        for (const [name, value] of Object.entries(attributes)) {
+            if (typeof value !== 'string' || !value.trim()) {
+                return res.status(400).json({ success: false, message: `Value for "${name}" cannot be empty` });
+            }
+        }
+
+        // Reject an exact duplicate combination
+        const isDuplicate = (target.variants || []).some(v => {
+            const existingAttrs = v.attributes instanceof Map ? Object.fromEntries(v.attributes) : (v.attributes || {});
+            const existingKeys = Object.keys(existingAttrs);
+            return existingKeys.length === providedNames.length
+                && existingKeys.every(k => existingAttrs[k] === attributes[k]);
+        });
+        if (isDuplicate) {
+            return res.status(409).json({ success: false, message: 'A variant with these exact option values already exists' });
+        }
+
+        target.productType = 'configurable';
+
+        // Add any new option names/values this merge introduces
+        for (const [name, value] of Object.entries(attributes)) {
+            let option = target.variantAttributes.find(a => a.name === name);
+            if (!option) {
+                option = { name, values: [] };
+                target.variantAttributes.push(option);
+            }
+            if (!option.values.includes(value)) {
+                option.values.push(value);
+            }
+        }
+
+        target.variants.push({
+            attributes,
+            priceINR: source.priceINR ?? null,
+            compareAtPriceINR: null,
+            // A source product that never tracked its own stock was always
+            // purchasable — default the merged variant to "in stock" rather
+            // than 0, which would otherwise make it look sold out.
+            stockQuantity: source.inventory?.trackStock ? (source.inventory.stockQuantity || 0) : 999,
+            sku: source.productCode || source.productId,
+            images: Array.isArray(source.images) ? source.images : [],
+            available: true,
+            position: target.variants.length,
+        });
+
+        await target.save();
+
+        source.status = 'inactive';
+        await source.save();
+
+        res.json({
+            success: true,
+            data: target,
+            deactivatedProduct: { productId: source.productId, name: source.name },
+            message: `Merged "${source.name}" as a variant and deactivated its standalone listing`
+        });
+    } catch (error) {
+        console.error('Add variant from existing product error:', error);
+        res.status(500).json({ success: false, message: 'Failed to merge product as variant', error: error.message });
+    }
+};
+
+/**
  * Get overview of regional pricing across all products
  * GET /api/admin/products/regional-pricing/overview
  */
@@ -1660,6 +1767,7 @@ module.exports = {
     processProductImages,
     updateProductSpecifications,
     updateProductInventoryAndShipping,
+    addVariantFromExistingProduct,
     // Discount management
     getDiscountAnalytics,
     disableExpiredDiscounts,

@@ -128,6 +128,12 @@ const orderSchema = new mongoose.Schema({
             startDate: Date,
             endDate: Date,
             description: String
+        },
+        // Which variant (color/size/etc.) was purchased, for configurable products
+        selectedVariant: {
+            attributes: { type: Map, of: String },
+            sku: String,
+            compareAtPriceINR: Number
         }
     }],
     shippingAddress: {

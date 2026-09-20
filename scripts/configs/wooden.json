@@ -1,0 +1,10 @@
+{
+  "htmlPath": "brochures/wooden-furniture-brochure.html",
+  "skuPrefix": "HSG-WD-",
+  "ratioW": 150,
+  "ratioH": 210,
+  "cloudinaryUploadFolder": "hs-global/brochure-hero",
+  "products": [
+    { "sku": "HSG-WD-015", "name": "wooden-brass-inlay-sofa-bench-clean-front", "version": "v1783587516", "publicPath": "hs-global/handicraft/etsy/HCBSOBR1/5", "ext": "webp" }
+  ]
+}

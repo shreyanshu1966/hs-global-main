@@ -24,10 +24,12 @@ const parsePriceParam = (v: string | null): number | undefined => {
 const toSlug = (v: string) => v.toLowerCase().trim().replace(/\s+/g, "-");
 const LIMIT = 12;
 
-// "All" subcategory (no specific subcategory picked) defaults to alphabetical
-// order; a specific subcategory keeps the curated/relevance default.
-const defaultSortFor = (subcategory: string) =>
-  subcategory ? DEFAULT_SORT : { sortBy: "name", sortOrder: "asc" as const };
+// Global "All categories + All subcategories" defaults to flat alphabetical
+// order by product name. Any other selection (a specific category with "All"
+// subcategories, or a specific subcategory) uses the curated/relevance default,
+// which groups products by subcategory (curated order, alphabetical fallback).
+const defaultSortFor = (category: string, subcategory: string) =>
+  (category || subcategory) ? DEFAULT_SORT : { sortBy: "name", sortOrder: "asc" as const };
 
 const CATEGORY_DISPLAY_NAMES: Record<string, string> = {
   furniture: 'Marble Furniture',
@@ -156,8 +158,8 @@ export default function Products({ initialProducts }: { initialProducts?: any[] 
   const [crossCategoryFilter, setCrossCategoryFilter] = useState<"" | "furniture" | "wooden-furniture">(initParams.categoryFilter);
   const [priceMin, setPriceMin] = useState<number | undefined>(initParams.minPrice);
   const [priceMax, setPriceMax] = useState<number | undefined>(initParams.maxPrice);
-  const [sortBy, setSortBy] = useState(defaultSortFor(initParams.subcategory).sortBy);
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">(defaultSortFor(initParams.subcategory).sortOrder);
+  const [sortBy, setSortBy] = useState(defaultSortFor(initParams.category, initParams.subcategory).sortBy);
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">(defaultSortFor(initParams.category, initParams.subcategory).sortOrder);
   // Once the visitor manually picks a sort, stop auto-switching it when they browse subcategories.
   const hasUserSortedRef = useRef(false);
   const [page, setPage] = useState(1);
@@ -378,8 +380,8 @@ export default function Products({ initialProducts }: { initialProducts?: any[] 
     return () => observer.disconnect();
   }, [hasMore, loading]);
 
-  // Re-apply the "All" (alphabetical) vs. specific-subcategory (relevance) default
-  // sort whenever the subcategory changes, unless the visitor picked a sort manually.
+  // Re-apply the default sort whenever the category/subcategory selection changes,
+  // unless the visitor picked a sort manually.
   const isFirstSortDefaultRun = useRef(true);
   useEffect(() => {
     if (isFirstSortDefaultRun.current) {
@@ -387,10 +389,10 @@ export default function Products({ initialProducts }: { initialProducts?: any[] 
       return;
     }
     if (hasUserSortedRef.current) return;
-    const next = defaultSortFor(activeSubcategory);
+    const next = defaultSortFor(activeCategory, activeSubcategory);
     setSortBy(next.sortBy);
     setSortOrder(next.sortOrder);
-  }, [activeSubcategory]);
+  }, [activeCategory, activeSubcategory]);
 
   // ── Subcategory scroll-spy ───────────────────────────────────────────────────
   // Reset the "viewing" hint whenever the active filters change.

@@ -1,10 +1,10 @@
 'use client';
 import React, { useState, useMemo, useEffect } from 'react';
-import { Star, Package, Share2, MessageCircle, FileText, Heart, Truck, Gem } from 'lucide-react';
+import { Star, Package, Share2, MessageCircle, FileText, Heart, Truck, Gem, Eye } from 'lucide-react';
 import DeliveryChecker from './DeliveryChecker';
 import { useNavigate, Link } from 'react-router-dom';
 import { useCart } from '../../contexts/CartContext';
-import { useTrackAddToCart } from '../../hooks/useProducts';
+import { useTrackAddToCart, useProductViewerCount } from '../../hooks/useProducts';
 import { AddToCartButton } from '../AddToCartButton';
 import { usePrice } from '../../hooks/usePrice';
 import { useCurrency } from '../../contexts/CurrencyContext';
@@ -17,7 +17,6 @@ import { Button } from '../ui/Button';
 interface ProductInfoProps {
     product: any;
     reviewStats: any;
-    isInCart: boolean;
     handleShare: () => void;
     reviewsRef: React.RefObject<HTMLDivElement>;
     /** Notifies the parent so the main gallery can swap to the selected variant's photos */
@@ -27,17 +26,17 @@ interface ProductInfoProps {
 export function ProductInfo({
     product,
     reviewStats,
-    isInCart,
     handleShare,
     reviewsRef,
     onVariantImagesChange,
 }: ProductInfoProps) {
     const navigate = useNavigate();
-    const { addItem } = useCart();
+    const { addItem, state: cartState } = useCart();
     const trackAddToCart = useTrackAddToCart();
     const { isInWishlist, toggleWishlist } = useWishlist();
     const { openModal: openStoneQuotationModal } = useStoneQuotation();
     const isFavorite = isInWishlist(product.id || product._id || product.productId || '');
+    const viewerCount = useProductViewerCount(product.productId || product._id || product.id);
 
     const isSemiPreciousStone = product.category === 'semi-precious-stone';
     const sqFtPrice = product.pricePerSqFt as number | undefined;
@@ -147,7 +146,17 @@ export function ProductInfo({
         return `${baseId}__${suffix}`;
     };
 
+    // Whether this exact product+variant combination is already a line in the cart.
+    // Computed from the real cart-line id (variant-suffixed for configurable
+    // products) rather than the bare product id, so it's correct per-variant.
+    const isInCart = cartState.items.some(item => item.id === buildVariantCartId(getProductId()));
+
+    // A selected variant that's still admin-enabled but has no stock left.
+    const isOutOfStock = isConfigurable && !!selectedVariant && selectedVariant.available !== false
+        && (selectedVariant.stockQuantity ?? 0) <= 0;
+
     const handleBuyNow = () => {
+        if (isOutOfStock) return;
         const resolvedId = getProductId();
 
         if (!resolvedId) {
@@ -254,6 +263,14 @@ export function ProductInfo({
                 )}
             </div>
 
+            {/* Viewer count */}
+            {viewerCount !== null && (
+                <div className="flex items-center gap-1.5 mb-3 text-[11px] text-[#b45309]">
+                    <Eye className="w-3.5 h-3.5" strokeWidth={1.5} />
+                    <span>{viewerCount} people are viewing this right now</span>
+                </div>
+            )}
+
             {/* Variant Selector */}
             {isConfigurable && variantAttributes.length > 0 && (
                 <div className="mb-4 space-y-4">
@@ -322,7 +339,9 @@ export function ProductInfo({
                         );
                     })}
                     {/* Stock indicator */}
-                    {selectedVariant && selectedVariant.stockQuantity > 0 && selectedVariant.stockQuantity <= 5 && (
+                    {isOutOfStock ? (
+                        <p className="text-[11px] font-semibold text-[#b91c1c]">Out of stock</p>
+                    ) : selectedVariant && selectedVariant.stockQuantity > 0 && selectedVariant.stockQuantity <= 5 && (
                         <p className="text-[11px] font-semibold text-amber-600">
                             Only {selectedVariant.stockQuantity} left in stock
                         </p>
@@ -415,7 +434,7 @@ export function ProductInfo({
                         <button
                             type="button"
                             onClick={handleBuyNow}
-                            disabled={isConfigurable && !selectedVariant}
+                            disabled={(isConfigurable && !selectedVariant) || isOutOfStock}
                             className="w-full h-[44px] bg-[#111827] text-white hover:bg-black transition-colors duration-300 font-semibold tracking-[0.1em] text-[12px] uppercase flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed"
                         >
                             Buy Now
@@ -423,9 +442,9 @@ export function ProductInfo({
                         {isConfigurable ? (
                             <button
                                 type="button"
-                                disabled={!selectedVariant}
+                                disabled={!selectedVariant || isOutOfStock}
                                 onClick={() => {
-                                    if (!selectedVariant) return;
+                                    if (!selectedVariant || isOutOfStock) return;
                                     const resolvedId = getProductId();
                                     const cartId = buildVariantCartId(resolvedId);
                                     addItem({

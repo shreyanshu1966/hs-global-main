@@ -42,13 +42,137 @@ const getPayPalAccessToken = async () => {
 };
 
 /**
+ * Thrown by validateAndPriceCartItems for any per-item rejection (product
+ * gone, no price, invalid quantity, unavailable variant). Callers catch this
+ * specifically and forward `status`/`body` as the HTTP response, bypassing
+ * generic error handling so existing error codes/messages are preserved.
+ */
+class CartValidationError extends Error {
+    constructor(status, body) {
+        super(body.error || 'Cart validation failed');
+        this.status = status;
+        this.body = body;
+    }
+}
+
+/**
+ * Validates and authoritatively re-prices a cart's line items against the
+ * database — shared by /calculate-cart-total and /create-order so the two
+ * endpoints can never drift apart on pricing (including variant pricing).
+ * NEVER trusts prices from the frontend.
+ *
+ * @param {Array} items - Each: { lineId?, productId, id?, quantity, variantSku?, variantAttributes?, name? }
+ * @param {string} region
+ * @param {number} inrRate - 1 USD = X INR, for the PayPal charge amount
+ * @returns {Promise<{ validatedItems: Array, totalINR: number, totalUSD: number }>}
+ */
+async function validateAndPriceCartItems(items, region, inrRate) {
+    const { getRegionalPriceINR, resolveItemBasePrice } = require('../utils/pricingCalculator');
+    const Product = require('../models/Product');
+
+    const validatedItems = [];
+    let totalINR = 0;
+    let totalUSD = 0;
+
+    for (const item of items) {
+        const requestedId = String(item.productId || item.id || '').trim();
+        const lineId = String(item.lineId || item.id || requestedId).trim();
+
+        if (!requestedId) {
+            throw new CartValidationError(400, { ok: false, error: 'Invalid product identifier in cart item', code: 'INVALID_PRODUCT_ID' });
+        }
+
+        const lookup = [{ productId: requestedId }];
+        if (mongoose.Types.ObjectId.isValid(requestedId)) {
+            lookup.push({ _id: requestedId });
+        }
+
+        // Fetch product from database
+        const product = await Product.findOne({
+            status: 'active',
+            available: true,
+            $or: lookup
+        });
+
+        if (!product) {
+            throw new CartValidationError(400, { ok: false, error: `Product ${item.name || requestedId} is no longer available`, code: 'PRODUCT_UNAVAILABLE' });
+        }
+
+        // Resolve the base price for this line — the selected variant's own
+        // price if one applies, otherwise the product's base price.
+        const { baseINR, selectedVariant } = resolveItemBasePrice(product, {
+            variantSku: item.variantSku,
+            variantAttributes: item.variantAttributes,
+        });
+
+        if (baseINR === null) {
+            throw new CartValidationError(400, { ok: false, error: `${product.name} — selected option is no longer available`, code: 'VARIANT_UNAVAILABLE' });
+        }
+        if (!baseINR) {
+            throw new CartValidationError(400, { ok: false, error: `Product ${item.name || product.name} does not have a price`, code: 'PRODUCT_NO_PRICE' });
+        }
+
+        if (!item.quantity || item.quantity < 1) {
+            throw new CartValidationError(400, { ok: false, error: `Invalid quantity for ${item.name || product.name}`, code: 'INVALID_QUANTITY' });
+        }
+
+        // Apply regional adjustment on top of the resolved (possibly variant) base price
+        const actualPriceINR = getRegionalPriceINR(product, region, baseINR);
+
+        // Check if discount is actually active (server-side validation)
+        const isDiscountActive = product.isDiscountActive();
+        const discountPercentage = isDiscountActive ? product.discount.percentage : 0;
+        const discountAmountINR = isDiscountActive ? Math.round((actualPriceINR * discountPercentage) / 100 * 100) / 100 : 0;
+        const finalPriceINR = parseFloat((actualPriceINR - discountAmountINR).toFixed(2));
+        const finalPriceUSD = parseFloat((finalPriceINR / inrRate).toFixed(2));
+
+        const quantity = item.quantity;
+
+        totalINR += finalPriceINR * quantity;
+        totalUSD += finalPriceUSD * quantity;
+
+        validatedItems.push({
+            lineId,
+            requestedId,
+            productId: product.productId,
+            name: product.name,
+            priceINR: baseINR,
+            regionalPriceINR: actualPriceINR,
+            originalPrice: actualPriceINR,
+            finalPriceINR,
+            finalPriceUSD,
+            quantity,
+            discountPercentage,
+            discountAmount: discountAmountINR,
+            region,
+            image: product.image,
+            category: product.category,
+            selectedVariant,
+            discount: isDiscountActive ? {
+                enabled: true,
+                percentage: product.discount.percentage,
+                startDate: product.discount.startDate,
+                endDate: product.discount.endDate,
+                description: product.discount.description
+            } : null
+        });
+    }
+
+    return {
+        validatedItems,
+        totalINR: parseFloat(totalINR.toFixed(2)),
+        totalUSD: parseFloat(totalUSD.toFixed(2))
+    };
+}
+
+/**
  * Calculate cart total from backend prices
  * POST /api/calculate-cart-total
  */
 exports.calculateCartTotal = async (req, res) => {
     try {
         const { items, currency = 'USD', region = 'default', couponCode } = req.body;
-        const { getRegionalPriceINR, getLiveINRRate } = require('../utils/pricingCalculator');
+        const { getLiveINRRate } = require('../utils/pricingCalculator');
 
         if (!items || items.length === 0) {
             return res.status(400).json({ ok: false, error: 'Cart items are required' });
@@ -58,69 +182,14 @@ exports.calculateCartTotal = async (req, res) => {
         // happens, and only for the USD amount PayPal will actually charge.
         const inrRate = await getLiveINRRate();
 
-        const Product = require('../models/Product');
-        const validatedItems = [];
-        let totalINR = 0;
-        let totalUSD = 0;
-
-        for (const item of items) {
-            const requestedId = String(item.productId || item.id || '').trim();
-
-            if (!requestedId) {
-                return res.status(400).json({ ok: false, error: 'Invalid product identifier in cart item' });
+        let validatedItems, totalINR, totalUSD;
+        try {
+            ({ validatedItems, totalINR, totalUSD } = await validateAndPriceCartItems(items, region, inrRate));
+        } catch (err) {
+            if (err instanceof CartValidationError) {
+                return res.status(err.status).json(err.body);
             }
-
-            const lookup = [{ productId: requestedId }];
-            if (mongoose.Types.ObjectId.isValid(requestedId)) {
-                lookup.push({ _id: requestedId });
-            }
-
-            // Fetch product from database
-            const product = await Product.findOne({
-                status: 'active',
-                available: true,
-                $or: lookup
-            });
-
-            if (!product) {
-                return res.status(400).json({
-                    ok: false,
-                    error: `Product ${item.name || requestedId} is no longer available`
-                });
-            }
-
-            // Get actual price from database (canonical INR), apply regional adjustment
-            const baseINR = product.priceINR;
-            const actualPriceINR = getRegionalPriceINR(product, region);
-
-            // Check if discount is actually active (server-side validation)
-            const isDiscountActive = product.isDiscountActive();
-            const discountPercentage = isDiscountActive ? product.discount.percentage : 0;
-            const discountAmountINR = isDiscountActive ? Math.round((actualPriceINR * discountPercentage) / 100 * 100) / 100 : 0;
-            const finalPriceINR = parseFloat((actualPriceINR - discountAmountINR).toFixed(2));
-            const finalPriceUSD = parseFloat((finalPriceINR / inrRate).toFixed(2));
-
-            const quantity = item.quantity || 1;
-
-            totalINR += finalPriceINR * quantity;
-            totalUSD += finalPriceUSD * quantity;
-
-            validatedItems.push({
-                requestedId,
-                productId: product.productId,
-                name: product.name,
-                priceINR: baseINR,
-                regionalPriceINR: actualPriceINR,
-                finalPriceINR: finalPriceINR,
-                finalPriceUSD: finalPriceUSD,
-                quantity: quantity,
-                discountPercentage: discountPercentage,
-                region,
-                discount: isDiscountActive ? {
-                    enabled: true,
-                    percentage: product.discount.percentage
-                } : null
-            });
+            throw err;
         }
 
         // Validate and apply coupon if provided (coupon math stays USD-denominated, unchanged from prior behavior)
@@ -175,7 +244,7 @@ exports.calculateCartTotal = async (req, res) => {
 exports.createOrder = async (req, res) => {
     try {
         const { amount, currency = 'USD', receipt, items, shippingAddress, customer, region = 'default', couponCode } = req.body;
-        const { getRegionalPriceINR, getLiveINRRate } = require('../utils/pricingCalculator');
+        const { getLiveINRRate } = require('../utils/pricingCalculator');
 
         // Enhanced validation with comprehensive security checks
         if (!amount || amount <= 0) {
@@ -233,87 +302,18 @@ exports.createOrder = async (req, res) => {
             // happens, and only for the USD amount PayPal will actually charge.
             const inrRate = await getLiveINRRate();
 
-            const Product = require('../models/Product');
-            const validatedItems = [];
-            let serverCalculatedTotal = 0;
-            let serverCalculatedTotalINR = 0;
-
-            for (const item of items) {
-                // Fetch product from database
-                const product = await Product.findOne({
-                    productId: item.id || item.productId,
-                    status: 'active',
-                    available: true
-                });
-
-                if (!product) {
-                    console.error(`❌ Product not found or unavailable: ${item.id || item.productId}`);
-                    return res.status(400).json({
-                        ok: false,
-                        error: `Product ${item.name} is no longer available`,
-                        code: 'PRODUCT_UNAVAILABLE'
-                    });
+            let validatedItems, serverCalculatedTotal, serverCalculatedTotalINR;
+            try {
+                const priced = await validateAndPriceCartItems(items, region, inrRate);
+                validatedItems = priced.validatedItems;
+                serverCalculatedTotal = priced.totalUSD;
+                serverCalculatedTotalINR = priced.totalINR;
+            } catch (err) {
+                if (err instanceof CartValidationError) {
+                    return res.status(err.status).json(err.body);
                 }
-
-                // Get actual price from database (canonical INR), apply regional adjustment
-                const baseINR = product.priceINR;
-                const actualPriceINR = getRegionalPriceINR(product, region);
-
-                if (!baseINR) {
-                    return res.status(400).json({
-                        ok: false,
-                        error: `Product ${item.name} does not have a price`,
-                        code: 'PRODUCT_NO_PRICE'
-                    });
-                }
-
-                // Check if discount is actually active (server-side validation)
-                const isDiscountActive = product.isDiscountActive();
-                const discountPercentage = isDiscountActive ? product.discount.percentage : 0;
-                const discountAmountINR = isDiscountActive ? Math.round((actualPriceINR * discountPercentage) / 100 * 100) / 100 : 0;
-                const finalPriceINR = parseFloat((actualPriceINR - discountAmountINR).toFixed(2));
-                // Converted once, server-side, purely for the PayPal charge amount
-                const finalPriceUSD = parseFloat((finalPriceINR / inrRate).toFixed(2));
-
-                // Validate quantity
-                if (!item.quantity || item.quantity < 1) {
-                    return res.status(400).json({
-                        ok: false,
-                        error: `Invalid quantity for ${item.name}`,
-                        code: 'INVALID_QUANTITY'
-                    });
-                }
-
-                serverCalculatedTotal += finalPriceUSD * item.quantity;
-                serverCalculatedTotalINR += finalPriceINR * item.quantity;
-
-                validatedItems.push({
-                    productId: product.productId,
-                    name: product.name,
-                    quantity: item.quantity,
-                    priceINR: baseINR,
-                    regionalPriceINR: actualPriceINR,
-                    originalPrice: actualPriceINR,
-                    discountPercentage: discountPercentage,
-                    discountAmount: discountAmountINR,
-                    finalPriceINR: finalPriceINR,
-                    finalPriceUSD: finalPriceUSD,
-                    image: product.image,
-                    category: product.category,
-                    discount: isDiscountActive ? {
-                        enabled: true,
-                        percentage: product.discount.percentage,
-                        startDate: product.discount.startDate,
-                        endDate: product.discount.endDate,
-                        description: product.discount.description
-                    } : undefined
-                });
-
-                console.log(`✅ Validated: ${product.name} - Base: ₹${baseINR}, Regional (${region}): ₹${actualPriceINR}, Discount: ${discountPercentage}%, Final: ₹${finalPriceINR} ($${finalPriceUSD})`);
+                throw err;
             }
-
-            // Round to 2 decimal places
-            serverCalculatedTotal = parseFloat(serverCalculatedTotal.toFixed(2));
 
             // Validate and apply coupon server-side (never trust frontend discount)
             let appliedCoupon = null;
@@ -399,17 +399,22 @@ exports.createOrder = async (req, res) => {
                             }
                         }
                     },
-                    items: validatedItems.map(item => ({
+                    items: validatedItems.map(item => {
+                        const variantSummary = item.selectedVariant?.attributes
+                            ? Object.entries(item.selectedVariant.attributes).map(([k, v]) => `${k}: ${v}`).join(', ')
+                            : null;
+                        return {
                         name: item.name.substring(0, 127), // PayPal has 127 char limit
-                        description: `${item.category || 'Product'}`.substring(0, 127),
-                        sku: item.productId.toString().substring(0, 127),
+                        description: `${variantSummary ? `${item.category || 'Product'} — ${variantSummary}` : (item.category || 'Product')}`.substring(0, 127),
+                        sku: (item.selectedVariant?.sku || item.productId).toString().substring(0, 127),
                         unit_amount: {
                             currency_code: paymentCurrency,
                             value: item.finalPriceUSD.toFixed(2) // Use server-validated price
                         },
                         quantity: item.quantity.toString(),
                         category: 'PHYSICAL_GOODS'
-                    })),
+                        };
+                    }),
                     shipping: {
                         name: {
                             full_name: customer?.name || req.user.name
@@ -499,7 +504,8 @@ exports.createOrder = async (req, res) => {
                         discountAmount: item.discountAmount,
                         image: item.image,
                         category: item.category,
-                        discount: item.discount
+                        discount: item.discount,
+                        selectedVariant: item.selectedVariant || undefined
                     })),
                     shippingAddress: {
                         street: shippingAddress?.street || '',

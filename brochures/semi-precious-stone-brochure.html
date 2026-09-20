@@ -1713,6 +1713,486 @@
     .facet-overlay {
       box-shadow: inset 12mm 0 0 var(--page-bg), inset -12mm 0 0 var(--page-bg);
     }
+  
+    /* ═══════════════════════════════════════════
+       INDEX / TABLE OF CONTENTS PAGE
+    ═══════════════════════════════════════════ */
+    .index-page {
+      width: var(--page-w);
+      height: var(--page-h);
+      background: var(--void);
+      position: relative;
+      overflow: hidden;
+      page-break-after: always;
+      break-after: page;
+      padding: 12mm 16mm 10mm;
+      display: flex;
+      flex-direction: column;
+      gap: 5mm;
+    }
+    .index-page::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 8% 0%, rgba(107,63,160,0.14) 0%, transparent 55%),
+        radial-gradient(ellipse 60% 60% at 95% 100%, rgba(26,122,122,0.10) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .index-header, .category-summary, .index-columns { position: relative; z-index: 1; }
+    .index-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .index-eyebrow {
+      font-size: 6pt;
+      font-weight: 300;
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      color: var(--teal-lt);
+      margin-bottom: 2mm;
+    }
+    .index-title {
+      font-family: var(--ff-title);
+      font-size: 24pt;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      color: var(--crystal);
+      line-height: 1;
+    }
+    .index-count {
+      text-align: right;
+      font-family: var(--ff-title);
+      font-size: 16pt;
+      color: var(--amethyst-lt);
+    }
+    .index-count span {
+      display: block;
+      font-family: var(--ff-body);
+      font-size: 5.5pt;
+      font-weight: 300;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 1mm;
+    }
+    .index-rule {
+      height: 1pt;
+      background: linear-gradient(90deg, var(--amethyst), var(--teal-lt) 60%, transparent);
+    }
+    .category-summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .category-chip {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      border: 0.5pt solid rgba(240,238,248,0.18);
+      padding: 3px 9px;
+    }
+    .category-chip-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .category-chip-name {
+      font-size: 6pt;
+      font-weight: 300;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--fog);
+    }
+    .category-chip-count {
+      font-size: 6pt;
+      font-weight: 300;
+      color: var(--muted);
+    }
+    .index-columns {
+      display: flex;
+      gap: 9mm;
+      flex: 1;
+      min-height: 0;
+    }
+    .index-col {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .index-cat-heading {
+      font-size: 6.5pt;
+      font-weight: 400;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      margin-top: 3.5mm;
+      margin-bottom: 1.5mm;
+      padding-bottom: 1mm;
+      border-bottom: 0.5pt solid rgba(240,238,248,0.22);
+    }
+    .index-cat-heading:first-child { margin-top: 0; }
+    .index-item {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      font-size: 6.3pt;
+      font-weight: 300;
+      color: var(--fog);
+      padding: 1.1px 0;
+    }
+    .index-item-name {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .index-item-leader {
+      flex: 1;
+      border-bottom: 1px dotted rgba(196,192,212,0.28);
+      margin-bottom: 2.5px;
+      min-width: 4px;
+    }
+    .index-item-page {
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+      flex-shrink: 0;
+    }
+    .index-footer {
+      position: relative;
+      z-index: 1;
+      font-size: 5.5pt;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(240,238,248,0.5);
+      text-align: center;
+    }
+    .facet-overlay {
+      box-shadow: inset 12mm 0 0 var(--page-bg), inset -12mm 0 0 var(--page-bg);
+    }
+  
+    /* ═══════════════════════════════════════════
+       INDEX / TABLE OF CONTENTS PAGE
+    ═══════════════════════════════════════════ */
+    .index-page {
+      width: var(--page-w);
+      height: var(--page-h);
+      background: var(--void);
+      position: relative;
+      overflow: hidden;
+      page-break-after: always;
+      break-after: page;
+      padding: 12mm 16mm 10mm;
+      display: flex;
+      flex-direction: column;
+      gap: 5mm;
+    }
+    .index-page::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 8% 0%, rgba(107,63,160,0.14) 0%, transparent 55%),
+        radial-gradient(ellipse 60% 60% at 95% 100%, rgba(26,122,122,0.10) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .index-header, .category-summary, .index-columns { position: relative; z-index: 1; }
+    .index-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .index-eyebrow {
+      font-size: 6pt;
+      font-weight: 300;
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      color: var(--teal-lt);
+      margin-bottom: 2mm;
+    }
+    .index-title {
+      font-family: var(--ff-title);
+      font-size: 24pt;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      color: var(--crystal);
+      line-height: 1;
+    }
+    .index-count {
+      text-align: right;
+      font-family: var(--ff-title);
+      font-size: 16pt;
+      color: var(--amethyst-lt);
+    }
+    .index-count span {
+      display: block;
+      font-family: var(--ff-body);
+      font-size: 5.5pt;
+      font-weight: 300;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 1mm;
+    }
+    .index-rule {
+      height: 1pt;
+      background: linear-gradient(90deg, var(--amethyst), var(--teal-lt) 60%, transparent);
+    }
+    .category-summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .category-chip {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      border: 0.5pt solid rgba(240,238,248,0.18);
+      padding: 3px 9px;
+    }
+    .category-chip-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .category-chip-name {
+      font-size: 6pt;
+      font-weight: 300;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--fog);
+    }
+    .category-chip-count {
+      font-size: 6pt;
+      font-weight: 300;
+      color: var(--muted);
+    }
+    .index-columns {
+      display: flex;
+      gap: 9mm;
+      flex: 1;
+      min-height: 0;
+    }
+    .index-col {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .index-cat-heading {
+      font-size: 6.5pt;
+      font-weight: 400;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      margin-top: 3.5mm;
+      margin-bottom: 1.5mm;
+      padding-bottom: 1mm;
+      border-bottom: 0.5pt solid rgba(240,238,248,0.22);
+    }
+    .index-cat-heading:first-child { margin-top: 0; }
+    .index-item {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      font-size: 6.3pt;
+      font-weight: 300;
+      color: var(--fog);
+      padding: 1.1px 0;
+    }
+    .index-item-name {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .index-item-leader {
+      flex: 1;
+      border-bottom: 1px dotted rgba(196,192,212,0.28);
+      margin-bottom: 2.5px;
+      min-width: 4px;
+    }
+    .index-item-page {
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+      flex-shrink: 0;
+    }
+    .index-footer {
+      position: relative;
+      z-index: 1;
+      font-size: 5.5pt;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(240,238,248,0.5);
+      text-align: center;
+    }
+    .facet-overlay {
+      box-shadow: inset 12mm 0 0 var(--page-bg), inset -12mm 0 0 var(--page-bg);
+    }
+  
+    /* ═══════════════════════════════════════════
+       INDEX / TABLE OF CONTENTS PAGE
+    ═══════════════════════════════════════════ */
+    .index-page {
+      width: var(--page-w);
+      height: var(--page-h);
+      background: var(--void);
+      position: relative;
+      overflow: hidden;
+      page-break-after: always;
+      break-after: page;
+      padding: 12mm 16mm 10mm;
+      display: flex;
+      flex-direction: column;
+      gap: 5mm;
+    }
+    .index-page::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 8% 0%, rgba(107,63,160,0.14) 0%, transparent 55%),
+        radial-gradient(ellipse 60% 60% at 95% 100%, rgba(26,122,122,0.10) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .index-header, .category-summary, .index-columns { position: relative; z-index: 1; }
+    .index-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .index-eyebrow {
+      font-size: 6pt;
+      font-weight: 300;
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      color: var(--teal-lt);
+      margin-bottom: 2mm;
+    }
+    .index-title {
+      font-family: var(--ff-title);
+      font-size: 24pt;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      color: var(--crystal);
+      line-height: 1;
+    }
+    .index-count {
+      text-align: right;
+      font-family: var(--ff-title);
+      font-size: 16pt;
+      color: var(--amethyst-lt);
+    }
+    .index-count span {
+      display: block;
+      font-family: var(--ff-body);
+      font-size: 5.5pt;
+      font-weight: 300;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 1mm;
+    }
+    .index-rule {
+      height: 1pt;
+      background: linear-gradient(90deg, var(--amethyst), var(--teal-lt) 60%, transparent);
+    }
+    .category-summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .category-chip {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      border: 0.5pt solid rgba(240,238,248,0.18);
+      padding: 3px 9px;
+    }
+    .category-chip-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .category-chip-name {
+      font-size: 6pt;
+      font-weight: 300;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--fog);
+    }
+    .category-chip-count {
+      font-size: 6pt;
+      font-weight: 300;
+      color: var(--muted);
+    }
+    .index-columns {
+      display: flex;
+      gap: 9mm;
+      flex: 1;
+      min-height: 0;
+    }
+    .index-col {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .index-cat-heading {
+      font-size: 6.5pt;
+      font-weight: 400;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      margin-top: 3.5mm;
+      margin-bottom: 1.5mm;
+      padding-bottom: 1mm;
+      border-bottom: 0.5pt solid rgba(240,238,248,0.22);
+    }
+    .index-cat-heading:first-child { margin-top: 0; }
+    .index-item {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      font-size: 6.3pt;
+      font-weight: 300;
+      color: var(--fog);
+      padding: 1.1px 0;
+    }
+    .index-item-name {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .index-item-leader {
+      flex: 1;
+      border-bottom: 1px dotted rgba(196,192,212,0.28);
+      margin-bottom: 2.5px;
+      min-width: 4px;
+    }
+    .index-item-page {
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+      flex-shrink: 0;
+    }
+    .index-footer {
+      position: relative;
+      z-index: 1;
+      font-size: 5.5pt;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(240,238,248,0.5);
+      text-align: center;
+    }
+    .facet-overlay {
+      box-shadow: inset 12mm 0 0 var(--page-bg), inset -12mm 0 0 var(--page-bg);
+    }
   </style>
 </head>
 <body>
@@ -1791,7 +2271,7 @@
       <div class="cover-right-overlay"></div>
 
       <div class="cover-gem-data">
-        <div class="cover-stone-count">68</div>
+        <div class="cover-stone-count">64</div>
         <div class="cover-stone-label">Live Stone Varieties · 10 Categories</div>
       </div>
 
@@ -1811,7 +2291,7 @@
         <div class="index-eyebrow">Full Catalogue</div>
         <h2 class="index-title">Index of Stones</h2>
       </div>
-      <div class="index-count">68<span>Products Across 10 Categories</span></div>
+      <div class="index-count">64<span>Products Across 10 Categories</span></div>
     </div>
 
     <div class="index-rule"></div>
@@ -1820,12 +2300,12 @@
       <div class="category-chip">
         <span class="category-chip-dot" style="background: #C79EDD;"></span>
         <span class="category-chip-name">Agate</span>
-        <span class="category-chip-count">24</span>
+        <span class="category-chip-count">22</span>
       </div>
       <div class="category-chip">
         <span class="category-chip-dot" style="background: #8FB8D9;"></span>
         <span class="category-chip-name">Quartz</span>
-        <span class="category-chip-count">15</span>
+        <span class="category-chip-count">13</span>
       </div>
       <div class="category-chip">
         <span class="category-chip-dot" style="background: #5FBE8A;"></span>
@@ -1923,307 +2403,287 @@
           <span class="index-item-page">10</span>
         </div>
         <div class="index-item">
-          <span class="index-item-name">Crystal Agate</span>
+          <span class="index-item-name">Crystal Agate With Golden Glitter</span>
           <span class="index-item-leader"></span>
           <span class="index-item-page">11</span>
         </div>
         <div class="index-item">
-          <span class="index-item-name">Crystal Agate With Golden Glitter</span>
+          <span class="index-item-name">Dendrite Agate</span>
           <span class="index-item-leader"></span>
           <span class="index-item-page">12</span>
         </div>
         <div class="index-item">
-          <span class="index-item-name">Dendrite Agate</span>
+          <span class="index-item-name">Earth Agate</span>
           <span class="index-item-leader"></span>
           <span class="index-item-page">13</span>
         </div>
         <div class="index-item">
-          <span class="index-item-name">Earth Agate</span>
+          <span class="index-item-name">Fossil Agate</span>
           <span class="index-item-leader"></span>
           <span class="index-item-page">14</span>
         </div>
         <div class="index-item">
-          <span class="index-item-name">Fossil Agate</span>
+          <span class="index-item-name">Grey Agate</span>
           <span class="index-item-leader"></span>
           <span class="index-item-page">15</span>
         </div>
         <div class="index-item">
-          <span class="index-item-name">Grey Agate</span>
+          <span class="index-item-name">Lace Agate</span>
           <span class="index-item-leader"></span>
           <span class="index-item-page">16</span>
         </div>
         <div class="index-item">
-          <span class="index-item-name">Lace Agate</span>
+          <span class="index-item-name">Mix Agate Slabs</span>
           <span class="index-item-leader"></span>
           <span class="index-item-page">17</span>
         </div>
         <div class="index-item">
-          <span class="index-item-name">Mix Agate</span>
+          <span class="index-item-name">Moss Agate</span>
           <span class="index-item-leader"></span>
           <span class="index-item-page">18</span>
         </div>
         <div class="index-item">
-          <span class="index-item-name">Mix Agate Slabs</span>
+          <span class="index-item-name">Ruby Agate</span>
           <span class="index-item-leader"></span>
           <span class="index-item-page">19</span>
         </div>
         <div class="index-item">
-          <span class="index-item-name">Moss Agate</span>
+          <span class="index-item-name">Straight Line</span>
           <span class="index-item-leader"></span>
           <span class="index-item-page">20</span>
         </div>
         <div class="index-item">
-          <span class="index-item-name">Ruby Agate</span>
+          <span class="index-item-name">White Quartz</span>
           <span class="index-item-leader"></span>
           <span class="index-item-page">21</span>
         </div>
         <div class="index-item">
-          <span class="index-item-name">Straight Line</span>
+          <span class="index-item-name">Yellow Agate</span>
           <span class="index-item-leader"></span>
           <span class="index-item-page">22</span>
         </div>
-        <div class="index-item">
-          <span class="index-item-name">White Quartz</span>
-          <span class="index-item-leader"></span>
-          <span class="index-item-page">23</span>
-        </div>
       </div>
       <div class="index-col">
-        <div class="index-item">
-          <span class="index-item-name">Yellow Agate</span>
-          <span class="index-item-leader"></span>
-          <span class="index-item-page">24</span>
-        </div>
         <div class="index-cat-heading" style="color: #8FB8D9;">Quartz</div>
         <div class="index-item">
           <span class="index-item-name">Blue Calcite</span>
           <span class="index-item-leader"></span>
-          <span class="index-item-page">25</span>
+          <span class="index-item-page">23</span>
         </div>
         <div class="index-item">
           <span class="index-item-name">Crystal Quartz with Rose Gold</span>
           <span class="index-item-leader"></span>
-          <span class="index-item-page">26</span>
+          <span class="index-item-page">24</span>
         </div>
         <div class="index-item">
           <span class="index-item-name">Golden Hematite Quartz Slab</span>
           <span class="index-item-leader"></span>
-          <span class="index-item-page">27</span>
+          <span class="index-item-page">25</span>
         </div>
         <div class="index-item">
           <span class="index-item-name">Golden Quartz</span>
           <span class="index-item-leader"></span>
-          <span class="index-item-page">28</span>
+          <span class="index-item-page">26</span>
         </div>
         <div class="index-item">
           <span class="index-item-name">Green Quartz</span>
           <span class="index-item-leader"></span>
-          <span class="index-item-page">29</span>
+          <span class="index-item-page">27</span>
         </div>
         <div class="index-item">
           <span class="index-item-name">Hemotied Quartz</span>
           <span class="index-item-leader"></span>
-          <span class="index-item-page">30</span>
+          <span class="index-item-page">28</span>
         </div>
         <div class="index-item">
           <span class="index-item-name">Obsidian Black with Gold</span>
           <span class="index-item-leader"></span>
-          <span class="index-item-page">31</span>
+          <span class="index-item-page">29</span>
         </div>
         <div class="index-item">
           <span class="index-item-name">Obsidian Black with Silver</span>
           <span class="index-item-leader"></span>
-          <span class="index-item-page">32</span>
+          <span class="index-item-page">30</span>
         </div>
         <div class="index-item">
           <span class="index-item-name">Orange Quartz</span>
           <span class="index-item-leader"></span>
-          <span class="index-item-page">33</span>
-        </div>
-        <div class="index-item">
-          <span class="index-item-name">Rose Quartz Slabs</span>
-          <span class="index-item-leader"></span>
-          <span class="index-item-page">34</span>
+          <span class="index-item-page">31</span>
         </div>
         <div class="index-item">
           <span class="index-item-name">Septaria Yellow</span>
           <span class="index-item-leader"></span>
-          <span class="index-item-page">35</span>
+          <span class="index-item-page">32</span>
         </div>
         <div class="index-item">
           <span class="index-item-name">Smoky Quartz Dark</span>
           <span class="index-item-leader"></span>
-          <span class="index-item-page">36</span>
-        </div>
-        <div class="index-item">
-          <span class="index-item-name">Smoky Quartz Dark</span>
-          <span class="index-item-leader"></span>
-          <span class="index-item-page">37</span>
+          <span class="index-item-page">33</span>
         </div>
         <div class="index-item">
           <span class="index-item-name">White MOP</span>
           <span class="index-item-leader"></span>
-          <span class="index-item-page">38</span>
+          <span class="index-item-page">34</span>
         </div>
         <div class="index-item">
           <span class="index-item-name">White Quartz with Sparkle</span>
           <span class="index-item-leader"></span>
-          <span class="index-item-page">39</span>
+          <span class="index-item-page">35</span>
         </div>
         <div class="index-cat-heading" style="color: #5FBE8A;">Gemstone</div>
         <div class="index-item">
           <span class="index-item-name">Emerald Quartz</span>
           <span class="index-item-leader"></span>
-          <span class="index-item-page">40</span>
+          <span class="index-item-page">36</span>
         </div>
         <div class="index-item">
           <span class="index-item-name">Labradorite</span>
           <span class="index-item-leader"></span>
-          <span class="index-item-page">41</span>
+          <span class="index-item-page">37</span>
         </div>
         <div class="index-item">
           <span class="index-item-name">Lapis Lazulli</span>
           <span class="index-item-leader"></span>
-          <span class="index-item-page">42</span>
+          <span class="index-item-page">38</span>
         </div>
         <div class="index-item">
           <span class="index-item-name">Malachite</span>
           <span class="index-item-leader"></span>
-          <span class="index-item-page">43</span>
+          <span class="index-item-page">39</span>
         </div>
         <div class="index-item">
           <span class="index-item-name">Malachite Flower Slabs</span>
           <span class="index-item-leader"></span>
-          <span class="index-item-page">44</span>
+          <span class="index-item-page">40</span>
         </div>
         <div class="index-item">
           <span class="index-item-name">Rose Quartz</span>
           <span class="index-item-leader"></span>
-          <span class="index-item-page">45</span>
+          <span class="index-item-page">41</span>
         </div>
         <div class="index-item">
           <span class="index-item-name">Sodalite Blue</span>
           <span class="index-item-leader"></span>
-          <span class="index-item-page">46</span>
+          <span class="index-item-page">42</span>
         </div>
-      </div>
-      <div class="index-col">
         <div class="index-cat-heading" style="color: #D97A5C;">Jasper</div>
         <div class="index-item">
           <span class="index-item-name">Angel Jasper</span>
           <span class="index-item-leader"></span>
-          <span class="index-item-page">47</span>
+          <span class="index-item-page">43</span>
         </div>
         <div class="index-item">
           <span class="index-item-name">Green Jasper</span>
           <span class="index-item-leader"></span>
-          <span class="index-item-page">48</span>
+          <span class="index-item-page">44</span>
         </div>
+      </div>
+      <div class="index-col">
         <div class="index-item">
           <span class="index-item-name">Jamaican Jasper Slabs</span>
           <span class="index-item-leader"></span>
-          <span class="index-item-page">49</span>
+          <span class="index-item-page">45</span>
         </div>
         <div class="index-item">
           <span class="index-item-name">Mockite Jasper</span>
           <span class="index-item-leader"></span>
-          <span class="index-item-page">50</span>
+          <span class="index-item-page">46</span>
         </div>
         <div class="index-item">
           <span class="index-item-name">Polychrome Jasper</span>
           <span class="index-item-leader"></span>
-          <span class="index-item-page">51</span>
+          <span class="index-item-page">47</span>
         </div>
         <div class="index-item">
           <span class="index-item-name">Red Jasper</span>
           <span class="index-item-leader"></span>
-          <span class="index-item-page">52</span>
+          <span class="index-item-page">48</span>
         </div>
         <div class="index-cat-heading" style="color: #D9A15C;">Petrified Wood</div>
         <div class="index-item">
           <span class="index-item-name">Beige Petrified Wood Slab</span>
           <span class="index-item-leader"></span>
-          <span class="index-item-page">53</span>
+          <span class="index-item-page">49</span>
         </div>
         <div class="index-item">
           <span class="index-item-name">Black Petrified Wood Retro Slab</span>
           <span class="index-item-leader"></span>
-          <span class="index-item-page">54</span>
+          <span class="index-item-page">50</span>
         </div>
         <div class="index-item">
           <span class="index-item-name">Brown Petrified Wood Retro Slabs</span>
           <span class="index-item-leader"></span>
-          <span class="index-item-page">55</span>
+          <span class="index-item-page">51</span>
         </div>
         <div class="index-item">
           <span class="index-item-name">Brown Petrified Wood Slabs</span>
           <span class="index-item-leader"></span>
-          <span class="index-item-page">56</span>
+          <span class="index-item-page">52</span>
         </div>
         <div class="index-item">
           <span class="index-item-name">White Petrified Wood</span>
           <span class="index-item-leader"></span>
-          <span class="index-item-page">57</span>
+          <span class="index-item-page">53</span>
         </div>
         <div class="index-cat-heading" style="color: #F0C440;">Tiger Eye</div>
         <div class="index-item">
           <span class="index-item-name">Red Tiger Eye</span>
           <span class="index-item-leader"></span>
-          <span class="index-item-page">58</span>
+          <span class="index-item-page">54</span>
         </div>
         <div class="index-item">
           <span class="index-item-name">Tiger Eye</span>
           <span class="index-item-leader"></span>
-          <span class="index-item-page">59</span>
+          <span class="index-item-page">55</span>
         </div>
         <div class="index-item">
           <span class="index-item-name">Tiger Eye Blue</span>
           <span class="index-item-leader"></span>
-          <span class="index-item-page">60</span>
+          <span class="index-item-page">56</span>
         </div>
         <div class="index-item">
           <span class="index-item-name">Tiger Eye Retro</span>
           <span class="index-item-leader"></span>
-          <span class="index-item-page">61</span>
+          <span class="index-item-page">57</span>
         </div>
         <div class="index-cat-heading" style="color: #E8EDF5;">Mother Of Pearl</div>
         <div class="index-item">
           <span class="index-item-name">Black MOP</span>
           <span class="index-item-leader"></span>
-          <span class="index-item-page">62</span>
+          <span class="index-item-page">58</span>
         </div>
         <div class="index-item">
           <span class="index-item-name">Golden Mop</span>
           <span class="index-item-leader"></span>
-          <span class="index-item-page">63</span>
+          <span class="index-item-page">59</span>
         </div>
         <div class="index-item">
           <span class="index-item-name">Green Abalone</span>
           <span class="index-item-leader"></span>
-          <span class="index-item-page">64</span>
+          <span class="index-item-page">60</span>
         </div>
         <div class="index-cat-heading" style="color: #2EA8A8;">Semiprecious Stone</div>
         <div class="index-item">
           <span class="index-item-name">Green Fluorite</span>
           <span class="index-item-leader"></span>
-          <span class="index-item-page">65</span>
+          <span class="index-item-page">61</span>
         </div>
         <div class="index-item">
           <span class="index-item-name">Red Carnelian Agate Slabs</span>
           <span class="index-item-leader"></span>
-          <span class="index-item-page">66</span>
+          <span class="index-item-page">62</span>
         </div>
         <div class="index-cat-heading" style="color: #7FBF7F;">Amazonite</div>
         <div class="index-item">
           <span class="index-item-name">Amazonite</span>
           <span class="index-item-leader"></span>
-          <span class="index-item-page">67</span>
+          <span class="index-item-page">63</span>
         </div>
         <div class="index-cat-heading" style="color: #8B5CC0;">Amethyst</div>
         <div class="index-item">
           <span class="index-item-name">Amethyst</span>
           <span class="index-item-leader"></span>
-          <span class="index-item-page">68</span>
+          <span class="index-item-page">64</span>
         </div>
       </div>
     </div>
@@ -2233,12 +2693,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 01 / 68 — AFRICAN CARNELIAN (AGATE)
+       PRODUCT 01 / 64 — AFRICAN CARNELIAN (AGATE)
   ════════════════════════════════════════════ -->
   <article class="product-page" id="product-1" style="--acc-rgb:162,116,73; --acc-lt:#d3b192; --page-bg:#20170e;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787943457/hs-global/sps-brochure-hero/HSG-SPS-001.webp" alt="African Carnelian — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.035,y_0,w_0.925,h_1.0,c_crop,fl_relative/v1783574047/hs-global/products/semi-precious-stone/Agate/African-Carnelian/4.webp" alt="African Carnelian — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -2267,7 +2727,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">01 / 68</div>
+          <div class="page-indicator">01 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -2354,12 +2814,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 02 / 68 — BANDED AGATE SLAB (AGATE)
+       PRODUCT 02 / 64 — BANDED AGATE SLAB (AGATE)
   ════════════════════════════════════════════ -->
   <article class="product-page" id="product-2" style="--acc-rgb:162,159,73; --acc-lt:#d3d092; --page-bg:#1d1c11;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787943847/hs-global/sps-brochure-hero/HSG-SPS-002.webp" alt="Banded Agate Slab — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.090,y_0,w_0.825,h_1.0,c_crop,fl_relative/v1783574118/hs-global/products/semi-precious-stone/Agate/Banded-Agate-Slab/7.webp" alt="Banded Agate Slab — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -2388,7 +2848,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">02 / 68</div>
+          <div class="page-indicator">02 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -2475,12 +2935,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 03 / 68 — BLACK AGATE (AGATE)
+       PRODUCT 03 / 64 — BLACK AGATE (AGATE)
   ════════════════════════════════════════════ -->
   <article class="product-page" id="product-3" style="--acc-rgb:162,148,73; --acc-lt:#d3c892; --page-bg:#1d1b11;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787944048/hs-global/sps-brochure-hero/HSG-SPS-003.webp" alt="Black Agate — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.075,y_0,w_0.840,h_1.0,c_crop,fl_relative/v1783574060/hs-global/products/semi-precious-stone/Agate/Black-Agate/6.webp" alt="Black Agate — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -2509,7 +2969,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">03 / 68</div>
+          <div class="page-indicator">03 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -2596,12 +3056,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 04 / 68 — BLUEAGATE (AGATE)
+       PRODUCT 04 / 64 — BLUEAGATE (AGATE)
   ════════════════════════════════════════════ -->
   <article class="product-page" id="product-4" style="--acc-rgb:73,121,162; --acc-lt:#92b5d3; --page-bg:#11171d;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787944207/hs-global/sps-brochure-hero/HSG-SPS-004.webp" alt="BlueAgate — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.090,y_0,w_0.825,h_1.0,c_crop,fl_relative/v1783574069/hs-global/products/semi-precious-stone/Agate/Blue-Agate/7.webp" alt="BlueAgate — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -2630,7 +3090,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">04 / 68</div>
+          <div class="page-indicator">04 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -2717,12 +3177,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 05 / 68 — BRAZILIAN BLACK AGATE (AGATE)
+       PRODUCT 05 / 64 — BRAZILIAN BLACK AGATE (AGATE)
   ════════════════════════════════════════════ -->
   <article class="product-page" id="product-5" style="--acc-rgb:154,162,73; --acc-lt:#cdd392; --page-bg:#1c1d11;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787944395/hs-global/sps-brochure-hero/HSG-SPS-005.webp" alt="Brazilian Black Agate — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.115,y_0,w_0.785,h_1.0,c_crop,fl_relative/v1783574191/hs-global/products/semi-precious-stone/Agate/Brazilian-Black-Agate/7.webp" alt="Brazilian Black Agate — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -2751,7 +3211,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">05 / 68</div>
+          <div class="page-indicator">05 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -2838,12 +3298,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 06 / 68 — BRAZILIAN BLUE AGATE (AGATE)
+       PRODUCT 06 / 64 — BRAZILIAN BLUE AGATE (AGATE)
   ════════════════════════════════════════════ -->
   <article class="product-page" id="product-6" style="--acc-rgb:73,130,162; --acc-lt:#92bcd3; --page-bg:#11191d;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787944571/hs-global/sps-brochure-hero/HSG-SPS-006.webp" alt="BRAZILIAN BLUE AGATE — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.090,y_0,w_0.830,h_1.0,c_crop,fl_relative/v1783574251/hs-global/products/semi-precious-stone/Agate/BRAZILIAN-BLUE-AGATE/6.webp" alt="BRAZILIAN BLUE AGATE — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -2872,7 +3332,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">06 / 68</div>
+          <div class="page-indicator">06 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -2959,12 +3419,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 07 / 68 — BRAZILIAN GREEN AGATE (AGATE)
+       PRODUCT 07 / 64 — BRAZILIAN GREEN AGATE (AGATE)
   ════════════════════════════════════════════ -->
   <article class="product-page" id="product-7" style="--acc-rgb:73,162,105; --acc-lt:#92d3a9; --page-bg:#111d15;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787944754/hs-global/sps-brochure-hero/HSG-SPS-007.webp" alt="Brazilian Green Agate — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.905,h_1.0,c_crop,fl_relative/v1783574165/hs-global/products/semi-precious-stone/Agate/Brazilian-Green-Agate/7.webp" alt="Brazilian Green Agate — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -2993,7 +3453,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">07 / 68</div>
+          <div class="page-indicator">07 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -3080,12 +3540,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 08 / 68 — BRAZILIAN RED AGATE (AGATE)
+       PRODUCT 08 / 64 — BRAZILIAN RED AGATE (AGATE)
   ════════════════════════════════════════════ -->
   <article class="product-page" id="product-8" style="--acc-rgb:162,119,73; --acc-lt:#d3b492; --page-bg:#1d1711;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787944942/hs-global/sps-brochure-hero/HSG-SPS-008.webp" alt="Brazilian Red Agate — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.900,h_1.0,c_crop,fl_relative/v1783574260/hs-global/products/semi-precious-stone/Agate/Brazilian-Red-Agate/7.webp" alt="Brazilian Red Agate — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -3114,7 +3574,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">08 / 68</div>
+          <div class="page-indicator">08 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -3201,12 +3661,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 09 / 68 — BROWN AGATE (AGATE)
+       PRODUCT 09 / 64 — BROWN AGATE (AGATE)
   ════════════════════════════════════════════ -->
   <article class="product-page" id="product-9" style="--acc-rgb:162,125,73; --acc-lt:#d3b892; --page-bg:#1d1811;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787945111/hs-global/sps-brochure-hero/HSG-SPS-009.webp" alt="Brown Agate — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.090,y_0,w_0.825,h_1.0,c_crop,fl_relative/v1783574077/hs-global/products/semi-precious-stone/Agate/Brown-Agate/6.webp" alt="Brown Agate — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -3235,7 +3695,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">09 / 68</div>
+          <div class="page-indicator">09 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -3322,12 +3782,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 10 / 68 — CRYSTAL AGATE (AGATE)
+       PRODUCT 10 / 64 — CRYSTAL AGATE (AGATE)
   ════════════════════════════════════════════ -->
   <article class="product-page" id="product-10" style="--acc-rgb:162,129,73; --acc-lt:#d3bb92; --page-bg:#1e1910;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787945321/hs-global/sps-brochure-hero/HSG-SPS-010.webp" alt="Crystal Agate — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.090,y_0,w_0.825,h_1.0,c_crop,fl_relative/v1783574087/hs-global/products/semi-precious-stone/Agate/crystal-agate/7.webp" alt="Crystal Agate — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -3356,7 +3816,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">10 / 68</div>
+          <div class="page-indicator">10 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -3443,133 +3903,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 11 / 68 — CRYSTAL AGATE (AGATE)
+       PRODUCT 11 / 64 — CRYSTAL AGATE WITH GOLDEN GLITTER (AGATE)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-11" style="--acc-rgb:162,129,73; --acc-lt:#d3bb92; --page-bg:#1e1910;">
+  <article class="product-page" id="product-11" style="--acc-rgb:162,137,73; --acc-lt:#d3c192; --page-bg:#1d1a11;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787945514/hs-global/sps-brochure-hero/HSG-SPS-011.webp" alt="Crystal Agate — Semi Precious Stone by HS Global Export" loading="lazy" />
-      <div class="facet-overlay"></div>
-      <div class="refraction-lines"></div>
-
-      <div class="stone-badge">
-        <div class="stone-type">
-          <span class="stone-dot" style="background: #d3bb92;"></span>
-          <span class="stone-type-name">Agate</span>
-        </div>
-      </div>
-
-      <div class="hardness-badge">
-        <span class="hardness-label">Mohs Hardness</span>
-        <div class="hardness-value">	7</div>
-        <div class="hardness-scale">on 10-point scale</div>
-      </div>
-
-      <div class="img-sku">SKU · HSG-SPS-011</div>
-    </div>
-
-    <div class="content-row">
-
-      <div class="info-panel">
-
-        <div class="brand-bar">
-          <div>
-            <div class="brand-name">HS Global Export</div>
-            <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
-          </div>
-          <div class="page-indicator">11 / 68</div>
-        </div>
-
-        <div class="gem-rule"></div>
-
-        <div class="cat-header">Semi Precious Stone — Agate Series</div>
-
-        <div>
-          <h1 class="product-name">Crystal Agate</h1>
-          <div class="product-variant">	Polished Finish · Slab</div>
-        </div>
-
-        <div class="gem-data-box">
-          <div class="gem-data-title">Gemological Properties</div>
-          <div class="gem-props">
-            <div class="gem-prop">
-              <span class="gem-prop-label">Mineral Group</span>
-              <span class="gem-prop-value">Agate</span>
-            </div>
-            <div class="gem-prop">
-              <span class="gem-prop-label">Crystal System</span>
-              <span class="gem-prop-value">Trigonal</span>
-            </div>
-            <div class="gem-prop">
-              <span class="gem-prop-label">Refractive Index</span>
-              <span class="gem-prop-value">1.53 – 1.54</span>
-            </div>
-            <div class="gem-prop">
-              <span class="gem-prop-label">Water Absorption</span>
-              <span class="gem-prop-value">Nonporous</span>
-            </div>
-          </div>
-        </div>
-
-        <table class="spec-table">
-          <tbody>
-            <tr><td>Product Type</td><td>Slab</td></tr>
-            <tr><td>Slab Size Range</td><td>2 ft x 2 ft – 350 cm x 190 cm</td></tr>
-            <tr><td>Thickness</td><td>1cm, 2cm, 3cm, 4cm</td></tr>
-            <tr><td>Finish</td><td>	Polished</td></tr>
-            <tr><td>Usage</td><td>Flooring, Countertops, Wall Panels, Furniture</td></tr>
-            <tr><td>Origin</td><td>Kishangarh, Rajasthan, India</td></tr>
-          </tbody>
-        </table>
-
-        <div class="spectrum-row">
-          <span class="spectrum-chip">Agate</span><span class="spectrum-chip teal">Natural Stone</span><span class="spectrum-chip rose">	Polished</span>
-        </div>
-
-        <div class="price-row">
-          <div>
-            <div class="price-label">Export Price</div>
-            <div class="price-amount">₹4000<span class="price-unit"> / sq.ft</span></div>
-          </div>
-          <div class="price-note">Thickness: 1cm, 2cm, 3cm, 4cm<br/>Kishangarh, Rajasthan</div>
-        </div>
-
-      </div>
-
-      <div class="desc-panel">
-        <div class="end-images">
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783574079/hs-global/products/semi-precious-stone/Agate/crystal-agate/1.webp" alt="View 1" loading="lazy" />
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783574081/hs-global/products/semi-precious-stone/Agate/crystal-agate/2.webp" alt="View 2" loading="lazy" />
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783574082/hs-global/products/semi-precious-stone/Agate/crystal-agate/3.webp" alt="View 3" loading="lazy" />
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783574083/hs-global/products/semi-precious-stone/Agate/crystal-agate/4.webp" alt="View 4" loading="lazy" />
-        </div>
-        <div class="desc-content">
-          <div class="desc-eyebrow">The Provenance</div>
-          <p class="product-description">
-            Crystal Agate slabs by Precious Gem Surfaces embody purity and brilliance, with their translucent base and delicate agate banding that exudes timeless elegance.
-          </p>
-        </div>
-        <div class="desc-footer">
-          <div class="gem-rule-mini"></div>
-          <div class="footer-contact">
-            export@hsglobalexport.com<br/>
-            +91 98765 43210<br/>
-            www.hsglobalexport.com
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-  </article>
-
-  <!-- ════════════════════════════════════════════
-       PRODUCT 12 / 68 — CRYSTAL AGATE WITH GOLDEN GLITTER (AGATE)
-  ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-12" style="--acc-rgb:162,137,73; --acc-lt:#d3c192; --page-bg:#1d1a11;">
-
-    <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787945682/hs-global/sps-brochure-hero/HSG-SPS-012.webp" alt="Crystal Agate With Golden Glitter — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.895,h_1.0,c_crop,fl_relative/v1783574096/hs-global/products/semi-precious-stone/Agate/Crystal-Agate-With-Golden-Glitter/7.webp" alt="Crystal Agate With Golden Glitter — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -3586,7 +3925,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-012</div>
+      <div class="img-sku">SKU · HSG-SPS-011</div>
     </div>
 
     <div class="content-row">
@@ -3598,7 +3937,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">12 / 68</div>
+          <div class="page-indicator">11 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -3685,12 +4024,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 13 / 68 — DENDRITE AGATE (AGATE)
+       PRODUCT 12 / 64 — DENDRITE AGATE (AGATE)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-13" style="--acc-rgb:162,131,73; --acc-lt:#d3bd92; --page-bg:#1d1911;">
+  <article class="product-page" id="product-12" style="--acc-rgb:162,131,73; --acc-lt:#d3bd92; --page-bg:#1d1911;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787945801/hs-global/sps-brochure-hero/HSG-SPS-013.webp" alt="Dendrite Agate — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.085,y_0,w_0.840,h_1.0,c_crop,fl_relative/v1783574202/hs-global/products/semi-precious-stone/Agate/Dendrite-Agate/8.webp" alt="Dendrite Agate — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -3707,7 +4046,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-013</div>
+      <div class="img-sku">SKU · HSG-SPS-012</div>
     </div>
 
     <div class="content-row">
@@ -3719,7 +4058,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">13 / 68</div>
+          <div class="page-indicator">12 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -3806,12 +4145,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 14 / 68 — EARTH AGATE (AGATE)
+       PRODUCT 13 / 64 — EARTH AGATE (AGATE)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-14" style="--acc-rgb:73,162,126; --acc-lt:#92d3b9; --page-bg:#111d18;">
+  <article class="product-page" id="product-13" style="--acc-rgb:73,162,126; --acc-lt:#92d3b9; --page-bg:#111d18;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787945933/hs-global/sps-brochure-hero/HSG-SPS-014.webp" alt="Earth Agate — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.085,y_0,w_0.830,h_1.0,c_crop,fl_relative/v1783574108/hs-global/products/semi-precious-stone/Agate/Earth-Agate/5.webp" alt="Earth Agate — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -3828,7 +4167,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-014</div>
+      <div class="img-sku">SKU · HSG-SPS-013</div>
     </div>
 
     <div class="content-row">
@@ -3840,7 +4179,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">14 / 68</div>
+          <div class="page-indicator">13 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -3927,12 +4266,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 15 / 68 — FOSSIL AGATE (AGATE)
+       PRODUCT 14 / 64 — FOSSIL AGATE (AGATE)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-15" style="--acc-rgb:162,142,73; --acc-lt:#d3c492; --page-bg:#1d1a11;">
+  <article class="product-page" id="product-14" style="--acc-rgb:162,142,73; --acc-lt:#d3c492; --page-bg:#1d1a11;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787946093/hs-global/sps-brochure-hero/HSG-SPS-015.webp" alt="Fossil Agate — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.040,y_0,w_0.915,h_1.0,c_crop,fl_relative/v1783574154/hs-global/products/semi-precious-stone/Agate/Fossil-Agate/5.webp" alt="Fossil Agate — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -3949,7 +4288,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-015</div>
+      <div class="img-sku">SKU · HSG-SPS-014</div>
     </div>
 
     <div class="content-row">
@@ -3961,7 +4300,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">15 / 68</div>
+          <div class="page-indicator">14 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -4048,12 +4387,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 16 / 68 — GREY AGATE (AGATE)
+       PRODUCT 15 / 64 — GREY AGATE (AGATE)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-16" style="--acc-rgb:73,162,73; --acc-lt:#92d392; --page-bg:#111d11;">
+  <article class="product-page" id="product-15" style="--acc-rgb:73,162,73; --acc-lt:#92d392; --page-bg:#111d11;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787946228/hs-global/sps-brochure-hero/HSG-SPS-016.webp" alt="Grey Agate — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.900,h_1.0,c_crop,fl_relative/v1783574243/hs-global/products/semi-precious-stone/Agate/grey-agate/8.webp" alt="Grey Agate — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -4070,7 +4409,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-016</div>
+      <div class="img-sku">SKU · HSG-SPS-015</div>
     </div>
 
     <div class="content-row">
@@ -4082,7 +4421,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">16 / 68</div>
+          <div class="page-indicator">15 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -4169,12 +4508,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 17 / 68 — LACE AGATE (AGATE)
+       PRODUCT 16 / 64 — LACE AGATE (AGATE)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-17" style="--acc-rgb:162,134,73; --acc-lt:#d3bf92; --page-bg:#1d1911;">
+  <article class="product-page" id="product-16" style="--acc-rgb:162,134,73; --acc-lt:#d3bf92; --page-bg:#1d1911;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787946355/hs-global/sps-brochure-hero/HSG-SPS-017.webp" alt="Lace Agate — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.035,y_0,w_0.935,h_1.0,c_crop,fl_relative/v1783574137/hs-global/products/semi-precious-stone/Agate/Lace-Agate/10.webp" alt="Lace Agate — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -4191,7 +4530,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-017</div>
+      <div class="img-sku">SKU · HSG-SPS-016</div>
     </div>
 
     <div class="content-row">
@@ -4203,7 +4542,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">17 / 68</div>
+          <div class="page-indicator">16 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -4290,133 +4629,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 18 / 68 — MIX AGATE (AGATE)
+       PRODUCT 17 / 64 — MIX AGATE SLABS (AGATE)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-18" style="--acc-rgb:162,123,73; --acc-lt:#d3b692; --page-bg:#1d1811;">
+  <article class="product-page" id="product-17" style="--acc-rgb:162,123,73; --acc-lt:#d3b692; --page-bg:#1d1811;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787946521/hs-global/sps-brochure-hero/HSG-SPS-018.webp" alt="Mix Agate — Semi Precious Stone by HS Global Export" loading="lazy" />
-      <div class="facet-overlay"></div>
-      <div class="refraction-lines"></div>
-
-      <div class="stone-badge">
-        <div class="stone-type">
-          <span class="stone-dot" style="background: #d3b692;"></span>
-          <span class="stone-type-name">Agate</span>
-        </div>
-      </div>
-
-      <div class="hardness-badge">
-        <span class="hardness-label">Mohs Hardness</span>
-        <div class="hardness-value">7</div>
-        <div class="hardness-scale">on 10-point scale</div>
-      </div>
-
-      <div class="img-sku">SKU · HSG-SPS-018</div>
-    </div>
-
-    <div class="content-row">
-
-      <div class="info-panel">
-
-        <div class="brand-bar">
-          <div>
-            <div class="brand-name">HS Global Export</div>
-            <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
-          </div>
-          <div class="page-indicator">18 / 68</div>
-        </div>
-
-        <div class="gem-rule"></div>
-
-        <div class="cat-header">Semi Precious Stone — Agate Series</div>
-
-        <div>
-          <h1 class="product-name">Mix Agate</h1>
-          <div class="product-variant">Polished Finish · Slab</div>
-        </div>
-
-        <div class="gem-data-box">
-          <div class="gem-data-title">Gemological Properties</div>
-          <div class="gem-props">
-            <div class="gem-prop">
-              <span class="gem-prop-label">Mineral Group</span>
-              <span class="gem-prop-value">Agate</span>
-            </div>
-            <div class="gem-prop">
-              <span class="gem-prop-label">Crystal System</span>
-              <span class="gem-prop-value">Trigonal</span>
-            </div>
-            <div class="gem-prop">
-              <span class="gem-prop-label">Refractive Index</span>
-              <span class="gem-prop-value">1.53 – 1.54</span>
-            </div>
-            <div class="gem-prop">
-              <span class="gem-prop-label">Water Absorption</span>
-              <span class="gem-prop-value">Nonporous</span>
-            </div>
-          </div>
-        </div>
-
-        <table class="spec-table">
-          <tbody>
-            <tr><td>Product Type</td><td>Slab</td></tr>
-            <tr><td>Slab Size Range</td><td>2 ft x 2 ft – 350 cm x 190 cm</td></tr>
-            <tr><td>Thickness</td><td>1cm, 2cm, 3cm, 4cm</td></tr>
-            <tr><td>Finish</td><td>Polished</td></tr>
-            <tr><td>Usage</td><td>Flooring, Countertops, Wall Panels, Furniture</td></tr>
-            <tr><td>Origin</td><td>Kishangarh, Rajasthan, India</td></tr>
-          </tbody>
-        </table>
-
-        <div class="spectrum-row">
-          <span class="spectrum-chip">Agate</span><span class="spectrum-chip teal">Natural Stone</span><span class="spectrum-chip rose">Polished</span>
-        </div>
-
-        <div class="price-row">
-          <div>
-            <div class="price-label">Export Price</div>
-            <div class="price-amount">₹4315<span class="price-unit"> / sq.ft</span></div>
-          </div>
-          <div class="price-note">Thickness: 1cm, 2cm, 3cm, 4cm<br/>Kishangarh, Rajasthan</div>
-        </div>
-
-      </div>
-
-      <div class="desc-panel">
-        <div class="end-images">
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783574175/hs-global/products/semi-precious-stone/Agate/Mix-Agate/1.webp" alt="View 1" loading="lazy" />
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783574176/hs-global/products/semi-precious-stone/Agate/Mix-Agate/2.webp" alt="View 2" loading="lazy" />
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783574177/hs-global/products/semi-precious-stone/Agate/Mix-Agate/3.webp" alt="View 3" loading="lazy" />
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783574178/hs-global/products/semi-precious-stone/Agate/Mix-Agate/4.webp" alt="View 4" loading="lazy" />
-        </div>
-        <div class="desc-content">
-          <div class="desc-eyebrow">The Provenance</div>
-          <p class="product-description">
-            Mix Agate slabs by Precious Gem Surfaces embody the vibrant diversity of nature, combining multiple agate varieties into a single stunning surface.
-          </p>
-        </div>
-        <div class="desc-footer">
-          <div class="gem-rule-mini"></div>
-          <div class="footer-contact">
-            export@hsglobalexport.com<br/>
-            +91 98765 43210<br/>
-            www.hsglobalexport.com
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-  </article>
-
-  <!-- ════════════════════════════════════════════
-       PRODUCT 19 / 68 — MIX AGATE SLABS (AGATE)
-  ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-19" style="--acc-rgb:162,123,73; --acc-lt:#d3b692; --page-bg:#1d1811;">
-
-    <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787946684/hs-global/sps-brochure-hero/HSG-SPS-019.webp" alt="Mix Agate Slabs — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.905,h_1.0,c_crop,fl_relative/v1783574174/hs-global/products/semi-precious-stone/Agate/Mix-Agate-Slabs/7.webp" alt="Mix Agate Slabs — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -4433,7 +4651,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-019</div>
+      <div class="img-sku">SKU · HSG-SPS-017</div>
     </div>
 
     <div class="content-row">
@@ -4445,7 +4663,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">19 / 68</div>
+          <div class="page-indicator">17 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -4532,12 +4750,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 20 / 68 — MOSS AGATE (AGATE)
+       PRODUCT 18 / 64 — MOSS AGATE (AGATE)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-20" style="--acc-rgb:162,150,73; --acc-lt:#d3ca92; --page-bg:#1d1b11;">
+  <article class="product-page" id="product-18" style="--acc-rgb:162,150,73; --acc-lt:#d3ca92; --page-bg:#1d1b11;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787946844/hs-global/sps-brochure-hero/HSG-SPS-020.webp" alt="Moss Agate — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.890,h_1.0,c_crop,fl_relative/v1783574218/hs-global/products/semi-precious-stone/Agate/Moss-Agate/6.webp" alt="Moss Agate — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -4554,7 +4772,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-020</div>
+      <div class="img-sku">SKU · HSG-SPS-018</div>
     </div>
 
     <div class="content-row">
@@ -4566,7 +4784,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">20 / 68</div>
+          <div class="page-indicator">18 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -4653,12 +4871,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 21 / 68 — RUBY AGATE (AGATE)
+       PRODUCT 19 / 64 — RUBY AGATE (AGATE)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-21" style="--acc-rgb:162,106,73; --acc-lt:#d3ab92; --page-bg:#1d1511;">
+  <article class="product-page" id="product-19" style="--acc-rgb:162,106,73; --acc-lt:#d3ab92; --page-bg:#1d1511;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787946979/hs-global/sps-brochure-hero/HSG-SPS-021.webp" alt="Ruby Agate — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.085,y_0,w_0.830,h_1.0,c_crop,fl_relative/v1783574125/hs-global/products/semi-precious-stone/Agate/Ruby-Agate/6.webp" alt="Ruby Agate — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -4675,7 +4893,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-021</div>
+      <div class="img-sku">SKU · HSG-SPS-019</div>
     </div>
 
     <div class="content-row">
@@ -4687,7 +4905,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">21 / 68</div>
+          <div class="page-indicator">19 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -4774,12 +4992,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 22 / 68 — STRAIGHT LINE (AGATE)
+       PRODUCT 20 / 64 — STRAIGHT LINE (AGATE)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-22" style="--acc-rgb:155,162,73; --acc-lt:#ced392; --page-bg:#1c1d11;">
+  <article class="product-page" id="product-20" style="--acc-rgb:155,162,73; --acc-lt:#ced392; --page-bg:#1c1d11;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787947144/hs-global/sps-brochure-hero/HSG-SPS-022.webp" alt="Straight Line — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.085,y_0,w_0.855,h_1.0,c_crop,fl_relative/v1783574271/hs-global/products/semi-precious-stone/Agate/Straight-Line/7.webp" alt="Straight Line — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -4796,7 +5014,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-022</div>
+      <div class="img-sku">SKU · HSG-SPS-020</div>
     </div>
 
     <div class="content-row">
@@ -4808,7 +5026,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">22 / 68</div>
+          <div class="page-indicator">20 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -4895,12 +5113,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 23 / 68 — WHITE QUARTZ (AGATE)
+       PRODUCT 21 / 64 — WHITE QUARTZ (AGATE)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-23" style="--acc-rgb:151,162,73; --acc-lt:#cbd392; --page-bg:#1c1d11;">
+  <article class="product-page" id="product-21" style="--acc-rgb:151,162,73; --acc-lt:#cbd392; --page-bg:#1c1d11;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787947305/hs-global/sps-brochure-hero/HSG-SPS-023.webp" alt="White Quartz — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.895,h_1.0,c_crop,fl_relative/v1783574230/hs-global/products/semi-precious-stone/Agate/White-Quartz/7.webp" alt="White Quartz — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -4917,7 +5135,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-023</div>
+      <div class="img-sku">SKU · HSG-SPS-021</div>
     </div>
 
     <div class="content-row">
@@ -4929,7 +5147,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">23 / 68</div>
+          <div class="page-indicator">21 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -5016,12 +5234,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 24 / 68 — YELLOW AGATE (AGATE)
+       PRODUCT 22 / 64 — YELLOW AGATE (AGATE)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-24" style="--acc-rgb:162,133,73; --acc-lt:#d3be92; --page-bg:#1d1911;">
+  <article class="product-page" id="product-22" style="--acc-rgb:162,133,73; --acc-lt:#d3be92; --page-bg:#1d1911;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787947461/hs-global/sps-brochure-hero/HSG-SPS-024.webp" alt="Yellow Agate — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.890,h_1.0,c_crop,fl_relative/v1783574100/hs-global/products/semi-precious-stone/Agate/Yellow-Agate/4.webp" alt="Yellow Agate — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -5038,7 +5256,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-024</div>
+      <div class="img-sku">SKU · HSG-SPS-022</div>
     </div>
 
     <div class="content-row">
@@ -5050,7 +5268,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">24 / 68</div>
+          <div class="page-indicator">22 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -5137,12 +5355,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 25 / 68 — BLUE CALCITE (QUARTZ)
+       PRODUCT 23 / 64 — BLUE CALCITE (QUARTZ)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-25" style="--acc-rgb:73,153,162; --acc-lt:#92ccd3; --page-bg:#111c1d;">
+  <article class="product-page" id="product-23" style="--acc-rgb:73,153,162; --acc-lt:#92ccd3; --page-bg:#111c1d;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787947624/hs-global/sps-brochure-hero/HSG-SPS-025.webp" alt="Blue Calcite — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.055,y_0,w_0.885,h_1.0,c_crop,fl_relative/v1783574534/hs-global/products/semi-precious-stone/Quartz/Blue-Calcite/7.webp" alt="Blue Calcite — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -5159,7 +5377,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-025</div>
+      <div class="img-sku">SKU · HSG-SPS-023</div>
     </div>
 
     <div class="content-row">
@@ -5171,7 +5389,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">25 / 68</div>
+          <div class="page-indicator">23 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -5258,12 +5476,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 26 / 68 — CRYSTAL QUARTZ WITH ROSE GOLD (QUARTZ)
+       PRODUCT 24 / 64 — CRYSTAL QUARTZ WITH ROSE GOLD (QUARTZ)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-26" style="--acc-rgb:162,73,107; --acc-lt:#d392ab; --page-bg:#1d1116;">
+  <article class="product-page" id="product-24" style="--acc-rgb:162,73,107; --acc-lt:#d392ab; --page-bg:#1d1116;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787947733/hs-global/sps-brochure-hero/HSG-SPS-026.webp" alt="Crystal Quartz with Rose Gold — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.080,y_0,w_0.855,h_1.0,c_crop,fl_relative/v1783574545/hs-global/products/semi-precious-stone/Quartz/crystal-quartz-with-rose-gold/3.webp" alt="Crystal Quartz with Rose Gold — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -5280,7 +5498,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-026</div>
+      <div class="img-sku">SKU · HSG-SPS-024</div>
     </div>
 
     <div class="content-row">
@@ -5292,7 +5510,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">26 / 68</div>
+          <div class="page-indicator">24 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -5379,12 +5597,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 27 / 68 — GOLDEN HEMATITE QUARTZ SLAB (QUARTZ)
+       PRODUCT 25 / 64 — GOLDEN HEMATITE QUARTZ SLAB (QUARTZ)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-27" style="--acc-rgb:162,114,73; --acc-lt:#d3b092; --page-bg:#1e1610;">
+  <article class="product-page" id="product-25" style="--acc-rgb:162,114,73; --acc-lt:#d3b092; --page-bg:#1e1610;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787947918/hs-global/sps-brochure-hero/HSG-SPS-027.webp" alt="Golden Hematite Quartz Slab — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.900,h_1.0,c_crop,fl_relative/v1783574509/hs-global/products/semi-precious-stone/Quartz/Golden-Hematite-Quartz-Slab/7.webp" alt="Golden Hematite Quartz Slab — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -5401,7 +5619,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-027</div>
+      <div class="img-sku">SKU · HSG-SPS-025</div>
     </div>
 
     <div class="content-row">
@@ -5413,7 +5631,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">27 / 68</div>
+          <div class="page-indicator">25 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -5500,12 +5718,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 28 / 68 — GOLDEN QUARTZ (QUARTZ)
+       PRODUCT 26 / 64 — GOLDEN QUARTZ (QUARTZ)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-28" style="--acc-rgb:162,118,73; --acc-lt:#d3b392; --page-bg:#1e1710;">
+  <article class="product-page" id="product-26" style="--acc-rgb:162,118,73; --acc-lt:#d3b392; --page-bg:#1e1710;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787948039/hs-global/sps-brochure-hero/HSG-SPS-028.webp" alt="Golden Quartz — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.115,y_0,w_0.780,h_1.0,c_crop,fl_relative/v1783574516/hs-global/products/semi-precious-stone/Quartz/Golden-Quartz/5.webp" alt="Golden Quartz — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -5522,7 +5740,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-028</div>
+      <div class="img-sku">SKU · HSG-SPS-026</div>
     </div>
 
     <div class="content-row">
@@ -5534,7 +5752,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">28 / 68</div>
+          <div class="page-indicator">26 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -5621,12 +5839,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 29 / 68 — GREEN QUARTZ (QUARTZ)
+       PRODUCT 27 / 64 — GREEN QUARTZ (QUARTZ)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-29" style="--acc-rgb:73,162,77; --acc-lt:#92d395; --page-bg:#111d12;">
+  <article class="product-page" id="product-27" style="--acc-rgb:73,162,77; --acc-lt:#92d395; --page-bg:#111d12;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787948246/hs-global/sps-brochure-hero/HSG-SPS-029.webp" alt="Green Quartz — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.060,y_0,w_0.875,h_1.0,c_crop,fl_relative/v1783574486/hs-global/products/semi-precious-stone/Quartz/Green-Quartz/6.webp" alt="Green Quartz — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -5643,7 +5861,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-029</div>
+      <div class="img-sku">SKU · HSG-SPS-027</div>
     </div>
 
     <div class="content-row">
@@ -5655,7 +5873,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">29 / 68</div>
+          <div class="page-indicator">27 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -5742,12 +5960,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 30 / 68 — HEMOTIED QUARTZ (QUARTZ)
+       PRODUCT 28 / 64 — HEMOTIED QUARTZ (QUARTZ)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-30" style="--acc-rgb:162,115,73; --acc-lt:#d3b192; --page-bg:#1d1711;">
+  <article class="product-page" id="product-28" style="--acc-rgb:162,115,73; --acc-lt:#d3b192; --page-bg:#1d1711;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787948419/hs-global/sps-brochure-hero/HSG-SPS-030.webp" alt="Hemotied Quartz — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.900,h_1.0,c_crop,fl_relative/v1783574525/hs-global/products/semi-precious-stone/Quartz/Hemotied-Quartz/7.webp" alt="Hemotied Quartz — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -5764,7 +5982,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-030</div>
+      <div class="img-sku">SKU · HSG-SPS-028</div>
     </div>
 
     <div class="content-row">
@@ -5776,7 +5994,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">30 / 68</div>
+          <div class="page-indicator">28 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -5863,12 +6081,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 31 / 68 — OBSIDIAN BLACK WITH GOLD (QUARTZ)
+       PRODUCT 29 / 64 — OBSIDIAN BLACK WITH GOLD (QUARTZ)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-31" style="--acc-rgb:162,118,73; --acc-lt:#d3b392; --page-bg:#1d1711;">
+  <article class="product-page" id="product-29" style="--acc-rgb:162,118,73; --acc-lt:#d3b392; --page-bg:#1d1711;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787948652/hs-global/sps-brochure-hero/HSG-SPS-031.webp" alt="Obsidian Black with Gold — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.110,y_0,w_0.790,h_1.0,c_crop,fl_relative/v1783574471/hs-global/products/semi-precious-stone/Quartz/Obsidian-Black-with-Gold/6.webp" alt="Obsidian Black with Gold — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -5885,7 +6103,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-031</div>
+      <div class="img-sku">SKU · HSG-SPS-029</div>
     </div>
 
     <div class="content-row">
@@ -5897,7 +6115,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">31 / 68</div>
+          <div class="page-indicator">29 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -5984,12 +6202,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 32 / 68 — OBSIDIAN BLACK WITH SILVER (QUARTZ)
+       PRODUCT 30 / 64 — OBSIDIAN BLACK WITH SILVER (QUARTZ)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-32" style="--acc-rgb:122,162,73; --acc-lt:#b6d392; --page-bg:#181d11;">
+  <article class="product-page" id="product-30" style="--acc-rgb:122,162,73; --acc-lt:#b6d392; --page-bg:#181d11;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787950116/hs-global/sps-brochure-hero/HSG-SPS-032.webp" alt="Obsidian Black with Silver — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.900,h_1.0,c_crop,fl_relative/v1783574541/hs-global/products/semi-precious-stone/Quartz/Obsidian-Black-with-Silver/7.webp" alt="Obsidian Black with Silver — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -6006,7 +6224,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-032</div>
+      <div class="img-sku">SKU · HSG-SPS-030</div>
     </div>
 
     <div class="content-row">
@@ -6018,7 +6236,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">32 / 68</div>
+          <div class="page-indicator">30 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -6105,12 +6323,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 33 / 68 — ORANGE QUARTZ (QUARTZ)
+       PRODUCT 31 / 64 — ORANGE QUARTZ (QUARTZ)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-33" style="--acc-rgb:162,130,73; --acc-lt:#d3bc92; --page-bg:#1d1911;">
+  <article class="product-page" id="product-31" style="--acc-rgb:162,130,73; --acc-lt:#d3bc92; --page-bg:#1d1911;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787950128/hs-global/sps-brochure-hero/HSG-SPS-033.webp" alt="Orange Quartz — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.895,h_1.0,c_crop,fl_relative/v1783574480/hs-global/products/semi-precious-stone/Quartz/Orange-Quartz/7.webp" alt="Orange Quartz — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -6127,7 +6345,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-033</div>
+      <div class="img-sku">SKU · HSG-SPS-031</div>
     </div>
 
     <div class="content-row">
@@ -6139,7 +6357,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">33 / 68</div>
+          <div class="page-indicator">31 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -6226,133 +6444,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 34 / 68 — ROSE QUARTZ SLABS (QUARTZ)
+       PRODUCT 32 / 64 — SEPTARIA YELLOW (QUARTZ)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-34" style="--acc-rgb:162,92,73; --acc-lt:#d3a092; --page-bg:#1d1411;">
+  <article class="product-page" id="product-32" style="--acc-rgb:162,120,73; --acc-lt:#d3b592; --page-bg:#1d1711;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787950139/hs-global/sps-brochure-hero/HSG-SPS-034.webp" alt="Rose Quartz Slabs — Semi Precious Stone by HS Global Export" loading="lazy" />
-      <div class="facet-overlay"></div>
-      <div class="refraction-lines"></div>
-
-      <div class="stone-badge">
-        <div class="stone-type">
-          <span class="stone-dot" style="background: #d3a092;"></span>
-          <span class="stone-type-name">Gemstone Slab</span>
-        </div>
-      </div>
-
-      <div class="hardness-badge">
-        <span class="hardness-label">Mohs Hardness</span>
-        <div class="hardness-value">7</div>
-        <div class="hardness-scale">on 10-point scale</div>
-      </div>
-
-      <div class="img-sku">SKU · HSG-SPS-034</div>
-    </div>
-
-    <div class="content-row">
-
-      <div class="info-panel">
-
-        <div class="brand-bar">
-          <div>
-            <div class="brand-name">HS Global Export</div>
-            <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
-          </div>
-          <div class="page-indicator">34 / 68</div>
-        </div>
-
-        <div class="gem-rule"></div>
-
-        <div class="cat-header">Semi Precious Stone — Quartz Series</div>
-
-        <div>
-          <h1 class="product-name">Rose Quartz Slabs</h1>
-          <div class="product-variant">Polished Finish · Slab</div>
-        </div>
-
-        <div class="gem-data-box">
-          <div class="gem-data-title">Gemological Properties</div>
-          <div class="gem-props">
-            <div class="gem-prop">
-              <span class="gem-prop-label">Mineral Group</span>
-              <span class="gem-prop-value">Gemstone Slab</span>
-            </div>
-            <div class="gem-prop">
-              <span class="gem-prop-label">Crystal System</span>
-              <span class="gem-prop-value">Varies</span>
-            </div>
-            <div class="gem-prop">
-              <span class="gem-prop-label">Refractive Index</span>
-              <span class="gem-prop-value">1.53 – 1.54</span>
-            </div>
-            <div class="gem-prop">
-              <span class="gem-prop-label">Water Absorption</span>
-              <span class="gem-prop-value">Nonporous</span>
-            </div>
-          </div>
-        </div>
-
-        <table class="spec-table">
-          <tbody>
-            <tr><td>Product Type</td><td>Slab</td></tr>
-            <tr><td>Slab Size Range</td><td>2 ft x 2 ft – 350 cm x 190 cm</td></tr>
-            <tr><td>Thickness</td><td>1cm, 2cm, 3cm, 4cm</td></tr>
-            <tr><td>Finish</td><td>Polished</td></tr>
-            <tr><td>Usage</td><td>Flooring, Countertops, Wall Panels, Furniture</td></tr>
-            <tr><td>Origin</td><td>Kishangarh, Rajasthan, India</td></tr>
-          </tbody>
-        </table>
-
-        <div class="spectrum-row">
-          <span class="spectrum-chip">Quartz</span><span class="spectrum-chip teal">Natural Stone</span><span class="spectrum-chip rose">Polished</span>
-        </div>
-
-        <div class="price-row">
-          <div>
-            <div class="price-label">Export Price</div>
-            <div class="price-amount">₹4825<span class="price-unit"> / sq.ft</span></div>
-          </div>
-          <div class="price-note">Thickness: 1cm, 2cm, 3cm, 4cm<br/>Kishangarh, Rajasthan</div>
-        </div>
-
-      </div>
-
-      <div class="desc-panel">
-        <div class="end-images">
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783574424/hs-global/products/semi-precious-stone/Quartz/Rose-Quartz-Slabs/1.webp" alt="View 1" loading="lazy" />
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783574426/hs-global/products/semi-precious-stone/Quartz/Rose-Quartz-Slabs/2.webp" alt="View 2" loading="lazy" />
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783574427/hs-global/products/semi-precious-stone/Quartz/Rose-Quartz-Slabs/3.webp" alt="View 3" loading="lazy" />
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783574428/hs-global/products/semi-precious-stone/Quartz/Rose-Quartz-Slabs/4.webp" alt="View 4" loading="lazy" />
-        </div>
-        <div class="desc-content">
-          <div class="desc-eyebrow">The Provenance</div>
-          <p class="product-description">
-            Rose Quartz slabs by Precious Gem Surfaces radiate warmth, romance, and timeless elegance.
-          </p>
-        </div>
-        <div class="desc-footer">
-          <div class="gem-rule-mini"></div>
-          <div class="footer-contact">
-            export@hsglobalexport.com<br/>
-            +91 98765 43210<br/>
-            www.hsglobalexport.com
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-  </article>
-
-  <!-- ════════════════════════════════════════════
-       PRODUCT 35 / 68 — SEPTARIA YELLOW (QUARTZ)
-  ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-35" style="--acc-rgb:162,120,73; --acc-lt:#d3b592; --page-bg:#1d1711;">
-
-    <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787950149/hs-global/sps-brochure-hero/HSG-SPS-035.webp" alt="Septaria Yellow — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.900,h_1.0,c_crop,fl_relative/v1783574496/hs-global/products/semi-precious-stone/Quartz/Septaria-Yellow/6.webp" alt="Septaria Yellow — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -6369,7 +6466,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-035</div>
+      <div class="img-sku">SKU · HSG-SPS-032</div>
     </div>
 
     <div class="content-row">
@@ -6381,7 +6478,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">35 / 68</div>
+          <div class="page-indicator">32 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -6468,12 +6565,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 36 / 68 — SMOKY QUARTZ DARK (QUARTZ)
+       PRODUCT 33 / 64 — SMOKY QUARTZ DARK (QUARTZ)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-36" style="--acc-rgb:162,114,73; --acc-lt:#d3b092; --page-bg:#1d1711;">
+  <article class="product-page" id="product-33" style="--acc-rgb:162,114,73; --acc-lt:#d3b092; --page-bg:#1d1711;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787950158/hs-global/sps-brochure-hero/HSG-SPS-036.webp" alt="Smoky Quartz Dark — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.040,y_0,w_0.915,h_1.0,c_crop,fl_relative/v1783574453/hs-global/products/semi-precious-stone/Quartz/Smoky-Quartz-Dark/5.webp" alt="Smoky Quartz Dark — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -6490,7 +6587,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-036</div>
+      <div class="img-sku">SKU · HSG-SPS-033</div>
     </div>
 
     <div class="content-row">
@@ -6502,7 +6599,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">36 / 68</div>
+          <div class="page-indicator">33 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -6589,133 +6686,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 37 / 68 — SMOKY QUARTZ DARK (QUARTZ)
+       PRODUCT 34 / 64 — WHITE MOP (QUARTZ)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-37" style="--acc-rgb:162,114,73; --acc-lt:#d3b092; --page-bg:#1d1711;">
+  <article class="product-page" id="product-34" style="--acc-rgb:162,151,73; --acc-lt:#d3cb92; --page-bg:#1d1c11;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787950168/hs-global/sps-brochure-hero/HSG-SPS-037.webp" alt="Smoky Quartz Dark — Semi Precious Stone by HS Global Export" loading="lazy" />
-      <div class="facet-overlay"></div>
-      <div class="refraction-lines"></div>
-
-      <div class="stone-badge">
-        <div class="stone-type">
-          <span class="stone-dot" style="background: #d3b092;"></span>
-          <span class="stone-type-name">Amethyst</span>
-        </div>
-      </div>
-
-      <div class="hardness-badge">
-        <span class="hardness-label">Mohs Hardness</span>
-        <div class="hardness-value">7</div>
-        <div class="hardness-scale">on 10-point scale</div>
-      </div>
-
-      <div class="img-sku">SKU · HSG-SPS-037</div>
-    </div>
-
-    <div class="content-row">
-
-      <div class="info-panel">
-
-        <div class="brand-bar">
-          <div>
-            <div class="brand-name">HS Global Export</div>
-            <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
-          </div>
-          <div class="page-indicator">37 / 68</div>
-        </div>
-
-        <div class="gem-rule"></div>
-
-        <div class="cat-header">Semi Precious Stone — Quartz Series</div>
-
-        <div>
-          <h1 class="product-name">Smoky Quartz Dark</h1>
-          <div class="product-variant">Polished Finish · Slab</div>
-        </div>
-
-        <div class="gem-data-box">
-          <div class="gem-data-title">Gemological Properties</div>
-          <div class="gem-props">
-            <div class="gem-prop">
-              <span class="gem-prop-label">Mineral Group</span>
-              <span class="gem-prop-value">Amethyst</span>
-            </div>
-            <div class="gem-prop">
-              <span class="gem-prop-label">Crystal System</span>
-              <span class="gem-prop-value">Trigonal</span>
-            </div>
-            <div class="gem-prop">
-              <span class="gem-prop-label">Refractive Index</span>
-              <span class="gem-prop-value">1.53 – 1.54</span>
-            </div>
-            <div class="gem-prop">
-              <span class="gem-prop-label">Water Absorption</span>
-              <span class="gem-prop-value">Nonporous</span>
-            </div>
-          </div>
-        </div>
-
-        <table class="spec-table">
-          <tbody>
-            <tr><td>Product Type</td><td>Slab</td></tr>
-            <tr><td>Slab Size Range</td><td>2 ft x 2 ft – 350 cm x 190 cm</td></tr>
-            <tr><td>Thickness</td><td>1cm, 2cm, 3cm, 4cm</td></tr>
-            <tr><td>Finish</td><td>Polished</td></tr>
-            <tr><td>Usage</td><td>Flooring, Countertops, Wall Panels, Furniture</td></tr>
-            <tr><td>Origin</td><td>Kishangarh, Rajasthan, India</td></tr>
-          </tbody>
-        </table>
-
-        <div class="spectrum-row">
-          <span class="spectrum-chip">Quartz</span><span class="spectrum-chip teal">Natural Stone</span><span class="spectrum-chip rose">Polished</span>
-        </div>
-
-        <div class="price-row">
-          <div>
-            <div class="price-label">Export Price</div>
-            <div class="price-amount">₹4400<span class="price-unit"> / sq.ft</span></div>
-          </div>
-          <div class="price-note">Thickness: 1cm, 2cm, 3cm, 4cm<br/>Kishangarh, Rajasthan</div>
-        </div>
-
-      </div>
-
-      <div class="desc-panel">
-        <div class="end-images">
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783574448/hs-global/products/semi-precious-stone/Quartz/Smoky-Quartz-Dark/1.webp" alt="View 1" loading="lazy" />
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783574449/hs-global/products/semi-precious-stone/Quartz/Smoky-Quartz-Dark/2.webp" alt="View 2" loading="lazy" />
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783574451/hs-global/products/semi-precious-stone/Quartz/Smoky-Quartz-Dark/3.webp" alt="View 3" loading="lazy" />
-          <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1783574452/hs-global/products/semi-precious-stone/Quartz/Smoky-Quartz-Dark/4.webp" alt="View 4" loading="lazy" />
-        </div>
-        <div class="desc-content">
-          <div class="desc-eyebrow">The Provenance</div>
-          <p class="product-description">
-            Smoky Quartz Dark slabs by Precious Gem Surfaces exude bold elegance and dramatic sophistication.
-          </p>
-        </div>
-        <div class="desc-footer">
-          <div class="gem-rule-mini"></div>
-          <div class="footer-contact">
-            export@hsglobalexport.com<br/>
-            +91 98765 43210<br/>
-            www.hsglobalexport.com
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-  </article>
-
-  <!-- ════════════════════════════════════════════
-       PRODUCT 38 / 68 — WHITE MOP (QUARTZ)
-  ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-38" style="--acc-rgb:162,151,73; --acc-lt:#d3cb92; --page-bg:#1d1c11;">
-
-    <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787950178/hs-global/sps-brochure-hero/HSG-SPS-038.webp" alt="White MOP — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.055,y_0,w_0.890,h_1.0,c_crop,fl_relative/v1783574447/hs-global/products/semi-precious-stone/Quartz/White-MOP/7.webp" alt="White MOP — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -6732,7 +6708,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-038</div>
+      <div class="img-sku">SKU · HSG-SPS-034</div>
     </div>
 
     <div class="content-row">
@@ -6744,7 +6720,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">38 / 68</div>
+          <div class="page-indicator">34 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -6831,12 +6807,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 39 / 68 — WHITE QUARTZ WITH SPARKLE (QUARTZ)
+       PRODUCT 35 / 64 — WHITE QUARTZ WITH SPARKLE (QUARTZ)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-39" style="--acc-rgb:89,162,73; --acc-lt:#9ed392; --page-bg:#131d11;">
+  <article class="product-page" id="product-35" style="--acc-rgb:89,162,73; --acc-lt:#9ed392; --page-bg:#131d11;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787950187/hs-global/sps-brochure-hero/HSG-SPS-039.webp" alt="White Quartz with Sparkle — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.085,y_0,w_0.830,h_1.0,c_crop,fl_relative/v1783574439/hs-global/products/semi-precious-stone/Quartz/White-Quartz-with-Sparkle/6.webp" alt="White Quartz with Sparkle — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -6853,7 +6829,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-039</div>
+      <div class="img-sku">SKU · HSG-SPS-035</div>
     </div>
 
     <div class="content-row">
@@ -6865,7 +6841,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">39 / 68</div>
+          <div class="page-indicator">35 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -6952,12 +6928,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 40 / 68 — EMERALD QUARTZ (GEMSTONE)
+       PRODUCT 36 / 64 — EMERALD QUARTZ (GEMSTONE)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-40" style="--acc-rgb:73,162,104; --acc-lt:#92d3a9; --page-bg:#111d15;">
+  <article class="product-page" id="product-36" style="--acc-rgb:73,162,104; --acc-lt:#92d3a9; --page-bg:#111d15;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787950195/hs-global/sps-brochure-hero/HSG-SPS-040.webp" alt="Emerald Quartz — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.160,y_0,w_0.690,h_1.0,c_crop,fl_relative/v1783574346/hs-global/products/semi-precious-stone/Gemstone/Emerald-quartz/4.webp" alt="Emerald Quartz — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -6974,7 +6950,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-040</div>
+      <div class="img-sku">SKU · HSG-SPS-036</div>
     </div>
 
     <div class="content-row">
@@ -6986,7 +6962,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">40 / 68</div>
+          <div class="page-indicator">36 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -7073,12 +7049,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 41 / 68 — LABRADORITE (GEMSTONE)
+       PRODUCT 37 / 64 — LABRADORITE (GEMSTONE)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-41" style="--acc-rgb:73,141,162; --acc-lt:#92c4d3; --page-bg:#111a1d;">
+  <article class="product-page" id="product-37" style="--acc-rgb:73,141,162; --acc-lt:#92c4d3; --page-bg:#111a1d;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787950207/hs-global/sps-brochure-hero/HSG-SPS-041.webp" alt="Labradorite — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.045,y_0,w_0.905,h_1.0,c_crop,fl_relative/v1783574340/hs-global/products/semi-precious-stone/Gemstone/Labradorite/8.webp" alt="Labradorite — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -7095,7 +7071,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-041</div>
+      <div class="img-sku">SKU · HSG-SPS-037</div>
     </div>
 
     <div class="content-row">
@@ -7107,7 +7083,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">41 / 68</div>
+          <div class="page-indicator">37 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -7194,12 +7170,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 42 / 68 — LAPIS LAZULLI (GEMSTONE)
+       PRODUCT 38 / 64 — LAPIS LAZULLI (GEMSTONE)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-42" style="--acc-rgb:73,107,162; --acc-lt:#92abd3; --page-bg:#11161d;">
+  <article class="product-page" id="product-38" style="--acc-rgb:73,107,162; --acc-lt:#92abd3; --page-bg:#11161d;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787950220/hs-global/sps-brochure-hero/HSG-SPS-042.webp" alt="Lapis Lazulli — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.040,y_0,w_0.905,h_1.0,c_crop,fl_relative/v1783574328/hs-global/products/semi-precious-stone/Gemstone/Lapis-Lazulli/5.webp" alt="Lapis Lazulli — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -7216,7 +7192,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-042</div>
+      <div class="img-sku">SKU · HSG-SPS-038</div>
     </div>
 
     <div class="content-row">
@@ -7228,7 +7204,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">42 / 68</div>
+          <div class="page-indicator">38 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -7315,12 +7291,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 43 / 68 — MALACHITE (GEMSTONE)
+       PRODUCT 39 / 64 — MALACHITE (GEMSTONE)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-43" style="--acc-rgb:73,162,114; --acc-lt:#92d3b0; --page-bg:#111d17;">
+  <article class="product-page" id="product-39" style="--acc-rgb:73,162,114; --acc-lt:#92d3b0; --page-bg:#111d17;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787950232/hs-global/sps-brochure-hero/HSG-SPS-043.webp" alt="Malachite — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.900,h_1.0,c_crop,fl_relative/v1783574306/hs-global/products/semi-precious-stone/Gemstone/Malachite/7.webp" alt="Malachite — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -7337,7 +7313,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-043</div>
+      <div class="img-sku">SKU · HSG-SPS-039</div>
     </div>
 
     <div class="content-row">
@@ -7349,7 +7325,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">43 / 68</div>
+          <div class="page-indicator">39 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -7436,12 +7412,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 44 / 68 — MALACHITE FLOWER SLABS (GEMSTONE)
+       PRODUCT 40 / 64 — MALACHITE FLOWER SLABS (GEMSTONE)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-44" style="--acc-rgb:73,162,112; --acc-lt:#92d3af; --page-bg:#111d16;">
+  <article class="product-page" id="product-40" style="--acc-rgb:73,162,112; --acc-lt:#92d3af; --page-bg:#111d16;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787950246/hs-global/sps-brochure-hero/HSG-SPS-044.webp" alt="Malachite Flower Slabs — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.125,y_0,w_0.750,h_1.0,c_crop,fl_relative/v1783574298/hs-global/products/semi-precious-stone/Gemstone/Malachite-Flower-Slabs/7.webp" alt="Malachite Flower Slabs — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -7458,7 +7434,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-044</div>
+      <div class="img-sku">SKU · HSG-SPS-040</div>
     </div>
 
     <div class="content-row">
@@ -7470,7 +7446,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">44 / 68</div>
+          <div class="page-indicator">40 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -7557,12 +7533,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 45 / 68 — ROSE QUARTZ (GEMSTONE)
+       PRODUCT 41 / 64 — ROSE QUARTZ (GEMSTONE)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-45" style="--acc-rgb:162,92,73; --acc-lt:#d3a092; --page-bg:#1d1411;">
+  <article class="product-page" id="product-41" style="--acc-rgb:162,92,73; --acc-lt:#d3a092; --page-bg:#1d1411;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787950258/hs-global/sps-brochure-hero/HSG-SPS-045.webp" alt="Rose Quartz — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.900,h_1.0,c_crop,fl_relative/v1783574322/hs-global/products/semi-precious-stone/Gemstone/Rose-Quartz/7.webp" alt="Rose Quartz — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -7579,7 +7555,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-045</div>
+      <div class="img-sku">SKU · HSG-SPS-041</div>
     </div>
 
     <div class="content-row">
@@ -7591,7 +7567,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">45 / 68</div>
+          <div class="page-indicator">41 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -7678,12 +7654,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 46 / 68 — SODALITE BLUE (GEMSTONE)
+       PRODUCT 42 / 64 — SODALITE BLUE (GEMSTONE)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-46" style="--acc-rgb:73,120,162; --acc-lt:#92b5d3; --page-bg:#11171d;">
+  <article class="product-page" id="product-42" style="--acc-rgb:73,120,162; --acc-lt:#92b5d3; --page-bg:#11171d;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787950273/hs-global/sps-brochure-hero/HSG-SPS-046.webp" alt="Sodalite Blue — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.075,y_0,w_0.850,h_1.0,c_crop,fl_relative/v1783574313/hs-global/products/semi-precious-stone/Gemstone/Sodalite-Blue/6.webp" alt="Sodalite Blue — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -7700,7 +7676,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-046</div>
+      <div class="img-sku">SKU · HSG-SPS-042</div>
     </div>
 
     <div class="content-row">
@@ -7712,7 +7688,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">46 / 68</div>
+          <div class="page-indicator">42 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -7799,12 +7775,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 47 / 68 — ANGEL JASPER (JASPER)
+       PRODUCT 43 / 64 — ANGEL JASPER (JASPER)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-47" style="--acc-rgb:100,162,73; --acc-lt:#a6d392; --page-bg:#151d11;">
+  <article class="product-page" id="product-43" style="--acc-rgb:100,162,73; --acc-lt:#a6d392; --page-bg:#151d11;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787950287/hs-global/sps-brochure-hero/HSG-SPS-047.webp" alt="Angel Jasper — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.035,y_0,w_0.895,h_1.0,c_crop,fl_relative/v1783574369/hs-global/products/semi-precious-stone/Jasper/Angel-Jasper/3.webp" alt="Angel Jasper — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -7821,7 +7797,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-047</div>
+      <div class="img-sku">SKU · HSG-SPS-043</div>
     </div>
 
     <div class="content-row">
@@ -7833,7 +7809,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">47 / 68</div>
+          <div class="page-indicator">43 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -7920,12 +7896,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 48 / 68 — GREEN JASPER (JASPER)
+       PRODUCT 44 / 64 — GREEN JASPER (JASPER)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-48" style="--acc-rgb:154,162,73; --acc-lt:#cdd392; --page-bg:#1c1d11;">
+  <article class="product-page" id="product-44" style="--acc-rgb:154,162,73; --acc-lt:#cdd392; --page-bg:#1c1d11;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787950299/hs-global/sps-brochure-hero/HSG-SPS-048.webp" alt="Green Jasper — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.055,y_0,w_0.885,h_1.0,c_crop,fl_relative/v1783574389/hs-global/products/semi-precious-stone/Jasper/Green-Jasper/5.webp" alt="Green Jasper — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -7942,7 +7918,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-048</div>
+      <div class="img-sku">SKU · HSG-SPS-044</div>
     </div>
 
     <div class="content-row">
@@ -7954,7 +7930,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">48 / 68</div>
+          <div class="page-indicator">44 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -8041,12 +8017,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 49 / 68 — JAMAICAN JASPER SLABS (JASPER)
+       PRODUCT 45 / 64 — JAMAICAN JASPER SLABS (JASPER)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-49" style="--acc-rgb:162,138,73; --acc-lt:#d3c292; --page-bg:#1d1a11;">
+  <article class="product-page" id="product-45" style="--acc-rgb:162,138,73; --acc-lt:#d3c292; --page-bg:#1d1a11;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787950314/hs-global/sps-brochure-hero/HSG-SPS-049.webp" alt="Jamaican Jasper Slabs — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.020,y_0,w_0.955,h_1.0,c_crop,fl_relative/v1783574363/hs-global/products/semi-precious-stone/Jasper/Jamaican-Jasper-Slabs/5.webp" alt="Jamaican Jasper Slabs — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -8063,7 +8039,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-049</div>
+      <div class="img-sku">SKU · HSG-SPS-045</div>
     </div>
 
     <div class="content-row">
@@ -8075,7 +8051,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">49 / 68</div>
+          <div class="page-indicator">45 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -8162,12 +8138,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 50 / 68 — MOCKITE JASPER (JASPER)
+       PRODUCT 46 / 64 — MOCKITE JASPER (JASPER)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-50" style="--acc-rgb:162,120,73; --acc-lt:#d3b492; --page-bg:#1e1710;">
+  <article class="product-page" id="product-46" style="--acc-rgb:162,120,73; --acc-lt:#d3b492; --page-bg:#1e1710;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787950325/hs-global/sps-brochure-hero/HSG-SPS-050.webp" alt="Mockite Jasper — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.900,h_1.0,c_crop,fl_relative/v1783574383/hs-global/products/semi-precious-stone/Jasper/Mockite-Jasper/8.webp" alt="Mockite Jasper — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -8184,7 +8160,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-050</div>
+      <div class="img-sku">SKU · HSG-SPS-046</div>
     </div>
 
     <div class="content-row">
@@ -8196,7 +8172,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">50 / 68</div>
+          <div class="page-indicator">46 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -8283,12 +8259,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 51 / 68 — POLYCHROME JASPER (JASPER)
+       PRODUCT 47 / 64 — POLYCHROME JASPER (JASPER)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-51" style="--acc-rgb:162,116,73; --acc-lt:#d3b292; --page-bg:#1d1711;">
+  <article class="product-page" id="product-47" style="--acc-rgb:162,116,73; --acc-lt:#d3b292; --page-bg:#1d1711;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787950335/hs-global/sps-brochure-hero/HSG-SPS-051.webp" alt="Polychrome Jasper — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.030,y_0,w_0.940,h_1.0,c_crop,fl_relative/v1783574396/hs-global/products/semi-precious-stone/Jasper/Polychrome-Jasper/4.webp" alt="Polychrome Jasper — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -8305,7 +8281,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-051</div>
+      <div class="img-sku">SKU · HSG-SPS-047</div>
     </div>
 
     <div class="content-row">
@@ -8317,7 +8293,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">51 / 68</div>
+          <div class="page-indicator">47 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -8404,12 +8380,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 52 / 68 — RED JASPER (JASPER)
+       PRODUCT 48 / 64 — RED JASPER (JASPER)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-52" style="--acc-rgb:162,89,73; --acc-lt:#d39e92; --page-bg:#1d1311;">
+  <article class="product-page" id="product-48" style="--acc-rgb:162,89,73; --acc-lt:#d39e92; --page-bg:#1d1311;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787950345/hs-global/sps-brochure-hero/HSG-SPS-052.webp" alt="Red Jasper — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.070,y_0,w_0.860,h_1.0,c_crop,fl_relative/v1783574357/hs-global/products/semi-precious-stone/Jasper/Red-Jasper/7.webp" alt="Red Jasper — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -8426,7 +8402,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-052</div>
+      <div class="img-sku">SKU · HSG-SPS-048</div>
     </div>
 
     <div class="content-row">
@@ -8438,7 +8414,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">52 / 68</div>
+          <div class="page-indicator">48 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -8525,12 +8501,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 53 / 68 — BEIGE PETRIFIED WOOD SLAB (PETRIFIED WOOD)
+       PRODUCT 49 / 64 — BEIGE PETRIFIED WOOD SLAB (PETRIFIED WOOD)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-53" style="--acc-rgb:162,120,73; --acc-lt:#d3b492; --page-bg:#1d1711;">
+  <article class="product-page" id="product-49" style="--acc-rgb:162,120,73; --acc-lt:#d3b492; --page-bg:#1d1711;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787950358/hs-global/sps-brochure-hero/HSG-SPS-053.webp" alt="Beige Petrified Wood Slab — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.095,y_0,w_0.810,h_1.0,c_crop,fl_relative/v1783574666/hs-global/products/semi-precious-stone/petrified%20wood/Beige-Petrified-Wood-Slab/4.webp" alt="Beige Petrified Wood Slab — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -8547,7 +8523,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-053</div>
+      <div class="img-sku">SKU · HSG-SPS-049</div>
     </div>
 
     <div class="content-row">
@@ -8559,7 +8535,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">53 / 68</div>
+          <div class="page-indicator">49 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -8646,12 +8622,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 54 / 68 — BLACK PETRIFIED WOOD RETRO SLAB (PETRIFIED WOOD)
+       PRODUCT 50 / 64 — BLACK PETRIFIED WOOD RETRO SLAB (PETRIFIED WOOD)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-54" style="--acc-rgb:162,115,73; --acc-lt:#d3b192; --page-bg:#1d1711;">
+  <article class="product-page" id="product-50" style="--acc-rgb:162,115,73; --acc-lt:#d3b192; --page-bg:#1d1711;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787950372/hs-global/sps-brochure-hero/HSG-SPS-054.webp" alt="Black Petrified Wood Retro Slab — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.065,y_0,w_0.880,h_1.0,c_crop,fl_relative/v1783574635/hs-global/products/semi-precious-stone/petrified%20wood/Black-Petrified-Wood-Retro-Slab/3.webp" alt="Black Petrified Wood Retro Slab — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -8668,7 +8644,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-054</div>
+      <div class="img-sku">SKU · HSG-SPS-050</div>
     </div>
 
     <div class="content-row">
@@ -8680,7 +8656,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">54 / 68</div>
+          <div class="page-indicator">50 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -8767,12 +8743,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 55 / 68 — BROWN PETRIFIED WOOD RETRO SLABS (PETRIFIED WOOD)
+       PRODUCT 51 / 64 — BROWN PETRIFIED WOOD RETRO SLABS (PETRIFIED WOOD)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-55" style="--acc-rgb:162,114,73; --acc-lt:#d3b092; --page-bg:#1d1711;">
+  <article class="product-page" id="product-51" style="--acc-rgb:162,114,73; --acc-lt:#d3b092; --page-bg:#1d1711;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787950387/hs-global/sps-brochure-hero/HSG-SPS-055.webp" alt="Brown Petrified Wood Retro Slabs — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.090,y_0,w_0.910,h_1.0,c_crop,fl_relative/v1783574660/hs-global/products/semi-precious-stone/petrified%20wood/Brown-Petrified-Wood-Retro-Slabs/5.webp" alt="Brown Petrified Wood Retro Slabs — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -8789,7 +8765,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-055</div>
+      <div class="img-sku">SKU · HSG-SPS-051</div>
     </div>
 
     <div class="content-row">
@@ -8801,7 +8777,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">55 / 68</div>
+          <div class="page-indicator">51 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -8888,12 +8864,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 56 / 68 — BROWN PETRIFIED WOOD SLABS (PETRIFIED WOOD)
+       PRODUCT 52 / 64 — BROWN PETRIFIED WOOD SLABS (PETRIFIED WOOD)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-56" style="--acc-rgb:162,126,73; --acc-lt:#d3b992; --page-bg:#1d1811;">
+  <article class="product-page" id="product-52" style="--acc-rgb:162,126,73; --acc-lt:#d3b992; --page-bg:#1d1811;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787950395/hs-global/sps-brochure-hero/HSG-SPS-056.webp" alt="Brown Petrified Wood Slabs — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.070,y_0,w_0.830,h_1.0,c_crop,fl_relative/v1783574650/hs-global/products/semi-precious-stone/petrified%20wood/Brown-Petrified-Wood-Slabs/3.webp" alt="Brown Petrified Wood Slabs — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -8910,7 +8886,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-056</div>
+      <div class="img-sku">SKU · HSG-SPS-052</div>
     </div>
 
     <div class="content-row">
@@ -8922,7 +8898,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">56 / 68</div>
+          <div class="page-indicator">52 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -9009,12 +8985,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 57 / 68 — WHITE PETRIFIED WOOD (PETRIFIED WOOD)
+       PRODUCT 53 / 64 — WHITE PETRIFIED WOOD (PETRIFIED WOOD)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-57" style="--acc-rgb:162,125,73; --acc-lt:#d3b892; --page-bg:#1d1811;">
+  <article class="product-page" id="product-53" style="--acc-rgb:162,125,73; --acc-lt:#d3b892; --page-bg:#1d1811;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787950411/hs-global/sps-brochure-hero/HSG-SPS-057.webp" alt="White Petrified Wood — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.070,y_0,w_0.855,h_1.0,c_crop,fl_relative/v1783574645/hs-global/products/semi-precious-stone/petrified%20wood/White-Petrified-Wood/5.webp" alt="White Petrified Wood — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -9031,7 +9007,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-057</div>
+      <div class="img-sku">SKU · HSG-SPS-053</div>
     </div>
 
     <div class="content-row">
@@ -9043,7 +9019,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">57 / 68</div>
+          <div class="page-indicator">53 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -9130,12 +9106,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 58 / 68 — RED TIGER EYE (TIGER EYE)
+       PRODUCT 54 / 64 — RED TIGER EYE (TIGER EYE)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-58" style="--acc-rgb:162,94,73; --acc-lt:#d3a292; --page-bg:#1d1411;">
+  <article class="product-page" id="product-54" style="--acc-rgb:162,94,73; --acc-lt:#d3a292; --page-bg:#1d1411;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787950423/hs-global/sps-brochure-hero/HSG-SPS-058.webp" alt="Red Tiger Eye — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.900,h_1.0,c_crop,fl_relative/v1783574605/hs-global/products/semi-precious-stone/Tiger%20eye/Red-Tiger-Eye/8.webp" alt="Red Tiger Eye — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -9152,7 +9128,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-058</div>
+      <div class="img-sku">SKU · HSG-SPS-054</div>
     </div>
 
     <div class="content-row">
@@ -9164,7 +9140,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">58 / 68</div>
+          <div class="page-indicator">54 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -9251,12 +9227,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 59 / 68 — TIGER EYE (TIGER EYE)
+       PRODUCT 55 / 64 — TIGER EYE (TIGER EYE)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-59" style="--acc-rgb:162,124,73; --acc-lt:#d3b792; --page-bg:#1d1811;">
+  <article class="product-page" id="product-55" style="--acc-rgb:162,124,73; --acc-lt:#d3b792; --page-bg:#1d1811;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787950437/hs-global/sps-brochure-hero/HSG-SPS-059.webp" alt="Tiger Eye — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.900,h_1.0,c_crop,fl_relative/v1783574629/hs-global/products/semi-precious-stone/Tiger%20eye/Tiger-Eye/5.webp" alt="Tiger Eye — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -9273,7 +9249,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-059</div>
+      <div class="img-sku">SKU · HSG-SPS-055</div>
     </div>
 
     <div class="content-row">
@@ -9285,7 +9261,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">59 / 68</div>
+          <div class="page-indicator">55 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -9372,12 +9348,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 60 / 68 — TIGER EYE BLUE (TIGER EYE)
+       PRODUCT 56 / 64 — TIGER EYE BLUE (TIGER EYE)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-60" style="--acc-rgb:114,162,73; --acc-lt:#b0d392; --page-bg:#171d11;">
+  <article class="product-page" id="product-56" style="--acc-rgb:114,162,73; --acc-lt:#b0d392; --page-bg:#171d11;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787950451/hs-global/sps-brochure-hero/HSG-SPS-060.webp" alt="Tiger Eye Blue — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.045,y_0,w_0.900,h_1.0,c_crop,fl_relative/v1783574623/hs-global/products/semi-precious-stone/Tiger%20eye/Tiger-Eye-Blue/7.webp" alt="Tiger Eye Blue — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -9394,7 +9370,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-060</div>
+      <div class="img-sku">SKU · HSG-SPS-056</div>
     </div>
 
     <div class="content-row">
@@ -9406,7 +9382,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">60 / 68</div>
+          <div class="page-indicator">56 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -9493,12 +9469,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 61 / 68 — TIGER EYE RETRO (TIGER EYE)
+       PRODUCT 57 / 64 — TIGER EYE RETRO (TIGER EYE)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-61" style="--acc-rgb:162,125,73; --acc-lt:#d3b892; --page-bg:#1d1811;">
+  <article class="product-page" id="product-57" style="--acc-rgb:162,125,73; --acc-lt:#d3b892; --page-bg:#1d1811;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787950465/hs-global/sps-brochure-hero/HSG-SPS-061.webp" alt="Tiger Eye Retro — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.900,h_1.0,c_crop,fl_relative/v1783574615/hs-global/products/semi-precious-stone/Tiger%20eye/Tiger-Eye-Retro/7.webp" alt="Tiger Eye Retro — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -9515,7 +9491,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-061</div>
+      <div class="img-sku">SKU · HSG-SPS-057</div>
     </div>
 
     <div class="content-row">
@@ -9527,7 +9503,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">61 / 68</div>
+          <div class="page-indicator">57 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -9614,12 +9590,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 62 / 68 — BLACK MOP (MOTHER OF PEARL)
+       PRODUCT 58 / 64 — BLACK MOP (MOTHER OF PEARL)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-62" style="--acc-rgb:73,158,162; --acc-lt:#92d0d3; --page-bg:#111c1d;">
+  <article class="product-page" id="product-58" style="--acc-rgb:73,158,162; --acc-lt:#92d0d3; --page-bg:#111c1d;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787950477/hs-global/sps-brochure-hero/HSG-SPS-062.webp" alt="Black MOP — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.900,h_1.0,c_crop,fl_relative/v1783574423/hs-global/products/semi-precious-stone/Mother%20Of%20Pearl/Black-MOP/7.webp" alt="Black MOP — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -9636,7 +9612,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-062</div>
+      <div class="img-sku">SKU · HSG-SPS-058</div>
     </div>
 
     <div class="content-row">
@@ -9648,7 +9624,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">62 / 68</div>
+          <div class="page-indicator">58 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -9735,12 +9711,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 63 / 68 — GOLDEN MOP (MOTHER OF PEARL)
+       PRODUCT 59 / 64 — GOLDEN MOP (MOTHER OF PEARL)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-63" style="--acc-rgb:162,135,73; --acc-lt:#d3bf92; --page-bg:#1d1911;">
+  <article class="product-page" id="product-59" style="--acc-rgb:162,135,73; --acc-lt:#d3bf92; --page-bg:#1d1911;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787950490/hs-global/sps-brochure-hero/HSG-SPS-063.webp" alt="Golden Mop — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.045,y_0,w_0.915,h_1.0,c_crop,fl_relative/v1783574413/hs-global/products/semi-precious-stone/Mother%20Of%20Pearl/Golden%20Mop/5.webp" alt="Golden Mop — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -9757,7 +9733,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-063</div>
+      <div class="img-sku">SKU · HSG-SPS-059</div>
     </div>
 
     <div class="content-row">
@@ -9769,7 +9745,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">63 / 68</div>
+          <div class="page-indicator">59 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -9856,12 +9832,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 64 / 68 — GREEN ABALONE (MOTHER OF PEARL)
+       PRODUCT 60 / 64 — GREEN ABALONE (MOTHER OF PEARL)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-64" style="--acc-rgb:74,162,73; --acc-lt:#93d392; --page-bg:#111d11;">
+  <article class="product-page" id="product-60" style="--acc-rgb:74,162,73; --acc-lt:#93d392; --page-bg:#111d11;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787950502/hs-global/sps-brochure-hero/HSG-SPS-064.webp" alt="Green Abalone — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.900,h_1.0,c_crop,fl_relative/v1783574407/hs-global/products/semi-precious-stone/Mother%20Of%20Pearl/Green-Abalone/7.webp" alt="Green Abalone — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -9878,7 +9854,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-064</div>
+      <div class="img-sku">SKU · HSG-SPS-060</div>
     </div>
 
     <div class="content-row">
@@ -9890,7 +9866,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">64 / 68</div>
+          <div class="page-indicator">60 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -9977,12 +9953,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 65 / 68 — GREEN FLUORITE (SEMIPRECIOUS STONE)
+       PRODUCT 61 / 64 — GREEN FLUORITE (SEMIPRECIOUS STONE)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-65" style="--acc-rgb:73,162,104; --acc-lt:#92d3a9; --page-bg:#111d15;">
+  <article class="product-page" id="product-61" style="--acc-rgb:73,162,104; --acc-lt:#92d3a9; --page-bg:#111d15;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787950517/hs-global/sps-brochure-hero/HSG-SPS-065.webp" alt="Green Fluorite — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.900,h_1.0,c_crop,fl_relative/v1783574557/hs-global/products/semi-precious-stone/Semiprecious%20Stone/Green-Fluorite/7.webp" alt="Green Fluorite — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -9999,7 +9975,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-065</div>
+      <div class="img-sku">SKU · HSG-SPS-061</div>
     </div>
 
     <div class="content-row">
@@ -10011,7 +9987,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">65 / 68</div>
+          <div class="page-indicator">61 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -10098,12 +10074,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 66 / 68 — RED CARNELIAN AGATE SLABS (SEMIPRECIOUS STONE)
+       PRODUCT 62 / 64 — RED CARNELIAN AGATE SLABS (SEMIPRECIOUS STONE)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-66" style="--acc-rgb:162,95,73; --acc-lt:#d3a392; --page-bg:#1d1411;">
+  <article class="product-page" id="product-62" style="--acc-rgb:162,95,73; --acc-lt:#d3a392; --page-bg:#1d1411;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787950531/hs-global/sps-brochure-hero/HSG-SPS-066.webp" alt="Red Carnelian Agate Slabs — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.900,h_1.0,c_crop,fl_relative/v1783574593/hs-global/products/semi-precious-stone/Semiprecious%20Stone/Red-Carnelian-Agate-Slabs/8.webp" alt="Red Carnelian Agate Slabs — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -10120,7 +10096,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-066</div>
+      <div class="img-sku">SKU · HSG-SPS-062</div>
     </div>
 
     <div class="content-row">
@@ -10132,7 +10108,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">66 / 68</div>
+          <div class="page-indicator">62 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -10219,12 +10195,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 67 / 68 — AMAZONITE (AMAZONITE)
+       PRODUCT 63 / 64 — AMAZONITE (AMAZONITE)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-67" style="--acc-rgb:73,162,139; --acc-lt:#92d3c2; --page-bg:#111d1a;">
+  <article class="product-page" id="product-63" style="--acc-rgb:73,162,139; --acc-lt:#92d3c2; --page-bg:#111d1a;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787950546/hs-global/sps-brochure-hero/HSG-SPS-067.webp" alt="Amazonite — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.065,y_0,w_0.860,h_1.0,c_crop,fl_relative/v1783574279/hs-global/products/semi-precious-stone/Amazonite/Amazonite/7.webp" alt="Amazonite — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -10241,7 +10217,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-067</div>
+      <div class="img-sku">SKU · HSG-SPS-063</div>
     </div>
 
     <div class="content-row">
@@ -10253,7 +10229,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">67 / 68</div>
+          <div class="page-indicator">63 / 64</div>
         </div>
 
         <div class="gem-rule"></div>
@@ -10340,12 +10316,12 @@
   </article>
 
   <!-- ════════════════════════════════════════════
-       PRODUCT 68 / 68 — AMETHYST (AMETHYST)
+       PRODUCT 64 / 64 — AMETHYST (AMETHYST)
   ════════════════════════════════════════════ -->
-  <article class="product-page" id="product-68" style="--acc-rgb:162,73,127; --acc-lt:#d392ba; --page-bg:#1d1118;">
+  <article class="product-page" id="product-64" style="--acc-rgb:162,73,127; --acc-lt:#d392ba; --page-bg:#1d1118;">
 
     <div class="image-panel">
-      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/v1787950558/hs-global/sps-brochure-hero/HSG-SPS-068.webp" alt="Amethyst — Semi Precious Stone by HS Global Export" loading="lazy" />
+      <img src="https://res.cloudinary.com/dynd1aan0/image/upload/x_0.050,y_0,w_0.900,h_1.0,c_crop,fl_relative/v1783574290/hs-global/products/semi-precious-stone/Amethyst/Amethyst/8.webp" alt="Amethyst — Semi Precious Stone by HS Global Export" loading="lazy" />
       <div class="facet-overlay"></div>
       <div class="refraction-lines"></div>
 
@@ -10362,7 +10338,7 @@
         <div class="hardness-scale">on 10-point scale</div>
       </div>
 
-      <div class="img-sku">SKU · HSG-SPS-068</div>
+      <div class="img-sku">SKU · HSG-SPS-064</div>
     </div>
 
     <div class="content-row">
@@ -10374,7 +10350,7 @@
             <div class="brand-name">HS Global Export</div>
             <div class="brand-sub">Semi Precious Stone Collection · Est. 2004</div>
           </div>
-          <div class="page-indicator">68 / 68</div>
+          <div class="page-indicator">64 / 64</div>
         </div>
 
         <div class="gem-rule"></div>

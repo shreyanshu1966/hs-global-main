@@ -51,4 +51,8 @@ export const legacyCompatibleProductApi = {
   async trackAddToCart(productId: string): Promise<{ success: boolean; message: string }> {
     return productApiV2.trackAddToCart(productId);
   },
+
+  async getViewerCount(id: string): Promise<{ success: boolean; viewerCount: number }> {
+    return productApiV2.getViewerCount(id);
+  },
 };

@@ -50,7 +50,7 @@ const QUICK_REPLIES = [
     "What's your MOQ & pricing?",
     "Can you customize designs for us?",
     "What are your shipping & export terms?",
-    "Do you offer product samples?"
+    "Can you handle large bulk/wholesale orders?"
 ];
 
 const QuickReplyChips: React.FC<{ onSelect: (text: string) => void }> = ({ onSelect }) => (
@@ -86,6 +86,7 @@ const FloatingChatbot: React.FC = () => {
     const [hasUnread, setHasUnread] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+    const [showTeaser, setShowTeaser] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const pollIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -142,6 +143,7 @@ const FloatingChatbot: React.FC = () => {
     useEffect(() => {
         if (isOpen) {
             setHasUnread(false);
+            setShowTeaser(false);
             setTimeout(() => textareaRef.current?.focus(), 300);
         }
     }, [isOpen]);
@@ -177,7 +179,24 @@ const FloatingChatbot: React.FC = () => {
         }
     }, [isAuthenticated, isLoading, fetchChat]);
 
+    // Greeting teaser bubble: shown once until dismissed or chat is opened (per browser session)
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        if (window.location.pathname.startsWith('/admin')) return;
+        try {
+            if (sessionStorage.getItem('chatTeaserDismissed')) return;
+        } catch { /* ignore */ }
+        const timer = setTimeout(() => setShowTeaser(true), 1500);
+        return () => clearTimeout(timer);
+    }, []);
+
+    const dismissTeaser = () => {
+        setShowTeaser(false);
+        try { sessionStorage.setItem('chatTeaserDismissed', '1'); } catch { /* ignore */ }
+    };
+
     const handleToggle = () => {
+        if (showTeaser) dismissTeaser();
         if (!isAuthenticated && !isLoading) {
             setShowLoginPrompt(true);
             setIsOpen(true);
@@ -265,6 +284,13 @@ const FloatingChatbot: React.FC = () => {
                     0%, 80%, 100% { transform: translateY(0); opacity: 0.3; }
                     40% { transform: translateY(-4px); opacity: 1; }
                 }
+                @keyframes teaserPop {
+                    from { opacity: 0; transform: translateX(8px) scale(0.95); }
+                    to { opacity: 1; transform: translateX(0) scale(1); }
+                }
+                .teaser-bubble {
+                    animation: teaserPop 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+                }
                 
                 .chat-window {
                     animation: chatSlideUp 0.3s cubic-bezier(0.25, 1, 0.5, 1);
@@ -304,6 +330,45 @@ const FloatingChatbot: React.FC = () => {
 
             {/* ─── Floating Action Button ──────────────────────────────────────── */}
             <div className="fixed bottom-8 right-4 sm:bottom-10 sm:right-6 z-50" id="chat-fab-container">
+                {/* ─── Greeting Teaser Bubble ──────────────────────────────────── */}
+                {showTeaser && !isOpen && (
+                    <div className="absolute right-[68px] sm:right-[76px] bottom-0 h-14 flex items-center pointer-events-none">
+                        <div
+                            className="teaser-bubble pointer-events-auto relative flex items-start gap-2.5 pl-2.5 pr-7 py-2.5 rounded-2xl cursor-pointer max-w-[calc(100vw-110px)] sm:max-w-[250px] bg-white"
+                            style={{
+                                border: '1px solid #E8E3DC',
+                                boxShadow: '0 8px 24px rgba(0,0,0,0.12)'
+                            }}
+                            onClick={handleToggle}
+                            role="button"
+                            aria-label="Open chat: Ask us anything about customization, shipping, or pricing"
+                        >
+                            <div
+                                className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold flex-shrink-0 bg-[#FAF8F5] text-[#2B2B2B] border border-[#E8E3DC]"
+                            >
+                                HS
+                            </div>
+                            <div>
+                                <p className="text-[13px] font-semibold text-[#1C1C1C] leading-tight">Hi there! 👋</p>
+                                <p className="text-[12px] mt-0.5 text-[#6B6B6B] leading-snug">
+                                    Ask us anything about customization, shipping, or pricing.
+                                </p>
+                            </div>
+                            <button
+                                onClick={(e) => { e.stopPropagation(); dismissTeaser(); }}
+                                aria-label="Dismiss"
+                                className="absolute top-2 right-2 w-4 h-4 rounded-full flex items-center justify-center text-[9px] text-[#9CA3AF] hover:text-[#2B2B2B] hover:bg-[#FAF8F5] transition-colors"
+                            >
+                                ✕
+                            </button>
+                            <div
+                                className="absolute top-1/2 -right-[6px] -translate-y-1/2 w-3 h-3 rotate-45 bg-white"
+                                style={{ borderRight: '1px solid #E8E3DC', borderBottom: '1px solid #E8E3DC' }}
+                            />
+                        </div>
+                    </div>
+                )}
+
                 <button
                     id="chat-fab-btn"
                     onClick={handleToggle}

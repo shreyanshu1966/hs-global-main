@@ -426,6 +426,8 @@ const productSchema = new mongoose.Schema({
         images: [{ type: String }],
         available: { type: Boolean, default: true },
         position: { type: Number, default: 0 },
+        // This variant IS the product's own original listing (admin UI protects it from deletion)
+        isDefault: { type: Boolean, default: false },
         _id: false,
     }],
 

@@ -7,6 +7,7 @@ import {
   fetchFeaturedProducts,
   fetchProductById,
   fetchProductList,
+  fetchProductViewerCount,
   fetchSearchedProducts,
   trackAddToCart as trackAddToCartEvent,
 } from '../modules/product/store';
@@ -283,6 +284,38 @@ export const useCategories = (): UseCategoriesReturn => {
     fetchCategories,
     refetch: fetchCategories
   };
+};
+
+// Hook for the "N people are viewing this" badge on the product detail page.
+// Fetches once per productId; the backend intentionally returns a stable
+// value for a few minutes rather than a fresh random number every call.
+export const useProductViewerCount = (productId: string | undefined): number | null => {
+  const [viewerCount, setViewerCount] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (!productId) {
+      setViewerCount(null);
+      return;
+    }
+
+    let cancelled = false;
+
+    fetchProductViewerCount(productId)
+      .then((response) => {
+        if (!cancelled && response.success) {
+          setViewerCount(response.viewerCount);
+        }
+      })
+      .catch(() => {
+        // Silently fail - this is just a social-proof nicety, not core functionality.
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [productId]);
+
+  return viewerCount;
 };
 
 // Hook for tracking add to cart

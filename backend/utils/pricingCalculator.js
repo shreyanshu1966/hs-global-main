@@ -4,10 +4,12 @@
  *
  * @param {Object} product - Mongoose product document or plain object
  * @param {string} region - One of: 'UAE', 'Europe', 'India', 'USA', 'UK', 'default'
+ * @param {number} [overrideBaseINR] - Use this instead of product.priceINR as the
+ *   pre-adjustment base (e.g. a selected variant's own price).
  * @returns {number} Effective price in INR
  */
-function getRegionalPriceINR(product, region) {
-    const base = product.priceINR;
+function getRegionalPriceINR(product, region, overrideBaseINR) {
+    const base = overrideBaseINR != null ? overrideBaseINR : product.priceINR;
     if (!base || base <= 0) return base || 0;
     if (!region || region === 'default') return base;
 
@@ -49,4 +51,52 @@ async function getLiveINRRate() {
     return 83.5;
 }
 
-module.exports = { getRegionalPriceINR, getLiveINRRate };
+/**
+ * Resolves the base price (and selected-variant info) to use for a cart line,
+ * given the product it belongs to and whichever variant selector the client
+ * sent. Mirrors the matching logic in ProductInfo.tsx's `selectedVariant` memo
+ * so the price shown on the PDP and the price charged at checkout agree.
+ *
+ * @param {Object} product - Mongoose Product document
+ * @param {{ variantSku?: string, variantAttributes?: Record<string,string> }} selector
+ * @returns {{ baseINR: number|null, selectedVariant: {attributes: Object, sku: string|null, compareAtPriceINR: number|null}|null }}
+ *   baseINR is null when the product is configurable but no available variant
+ *   matches the selector — callers should treat this as a rejected line item.
+ */
+function resolveItemBasePrice(product, { variantSku, variantAttributes } = {}) {
+    if (product.productType !== 'configurable') {
+        return { baseINR: product.priceINR, selectedVariant: null };
+    }
+
+    const variants = Array.isArray(product.variants) ? product.variants : [];
+    const toPlainAttrs = (attrs) => (attrs instanceof Map ? Object.fromEntries(attrs) : (attrs || {}));
+
+    let match = null;
+    if (variantSku) {
+        match = variants.find(v => v.sku && v.sku === variantSku) || null;
+    }
+    if (!match && variantAttributes && typeof variantAttributes === 'object') {
+        const wanted = Object.entries(variantAttributes);
+        if (wanted.length > 0) {
+            match = variants.find(v => {
+                const attrs = toPlainAttrs(v.attributes);
+                return wanted.every(([k, val]) => attrs[k] === val);
+            }) || null;
+        }
+    }
+
+    if (!match || match.available === false) {
+        return { baseINR: null, selectedVariant: null };
+    }
+
+    return {
+        baseINR: match.priceINR ?? product.priceINR,
+        selectedVariant: {
+            attributes: toPlainAttrs(match.attributes),
+            sku: match.sku || null,
+            compareAtPriceINR: match.compareAtPriceINR ?? null,
+        },
+    };
+}
+
+module.exports = { getRegionalPriceINR, getLiveINRRate, resolveItemBasePrice };

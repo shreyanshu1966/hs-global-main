@@ -16,7 +16,8 @@ const {
     deleteProduct,
     trackAddToCart,
     getCategories,
-    getCategoriesV2
+    getCategoriesV2,
+    getProductViewerCount
 } = require('../controllers/productController');
 
 const { authMiddleware, adminMiddleware } = require('../middleware/authMiddleware');
@@ -33,6 +34,7 @@ router.get('/products/featured', publicCache, getFeaturedProducts);
 router.get('/products/categories', publicCache, getCategories);
 router.get('/products/category/:category', publicCache, getProductsByCategory);
 router.get('/products/:id', publicCache, getProductById);
+router.get('/products/:id/viewer-count', getProductViewerCount); // no publicCache - must stay fresh
 
 // Public v2 routes (centralized DTO contract)
 router.get('/products-v2', publicCache, getAllProductsV2);

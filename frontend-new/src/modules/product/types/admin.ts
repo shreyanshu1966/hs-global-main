@@ -50,6 +50,19 @@ export interface AdminProduct {
   featured: boolean;
   createdAt: string;
   updatedAt: string;
+  productType?: 'simple' | 'configurable' | 'custom-order';
+  variantAttributes?: { name: string; values: string[] }[];
+  variants?: Array<{
+    attributes: Record<string, string> | Map<string, string>;
+    priceINR?: number | null;
+    compareAtPriceINR?: number | null;
+    stockQuantity?: number;
+    sku?: string | null;
+    images?: string[];
+    available?: boolean;
+    position?: number;
+    isDefault?: boolean;
+  }>;
 }
 
 export interface AdminProductFormData {

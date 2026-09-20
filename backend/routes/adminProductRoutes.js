@@ -12,6 +12,7 @@ const {
     processProductImages,
     updateProductSpecifications,
     updateProductInventoryAndShipping,
+    addVariantFromExistingProduct,
     // Discount management
     getDiscountAnalytics,
     disableExpiredDiscounts,
@@ -87,6 +88,7 @@ router.post('/:id/process-images',
 );
 router.patch('/:id/specifications', updateProductSpecifications);
 router.patch('/:id/inventory-shipping', updateProductInventoryAndShipping);
+router.post('/:id/variants/from-product', addVariantFromExistingProduct);
 
 // Discount management routes
 router.get('/analytics/discounts', getDiscountAnalytics);

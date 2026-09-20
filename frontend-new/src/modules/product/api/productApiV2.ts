@@ -67,4 +67,8 @@ export const productApiV2 = {
       body: JSON.stringify({ productId }),
     });
   },
+
+  async getViewerCount(id: string): Promise<{ success: boolean; viewerCount: number }> {
+    return requestJson<{ success: boolean; viewerCount: number }>(`/products/${id}/viewer-count`);
+  },
 };

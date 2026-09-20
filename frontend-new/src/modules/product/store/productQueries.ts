@@ -35,5 +35,8 @@ export const fetchCategories = async (): Promise<{ success: boolean; data: Legac
 export const trackAddToCart = async (productId: string): Promise<{ success: boolean; message: string }> =>
   legacyCompatibleProductApi.trackAddToCart(productId);
 
+export const fetchProductViewerCount = async (id: string): Promise<{ success: boolean; viewerCount: number }> =>
+  legacyCompatibleProductApi.getViewerCount(id);
+
 export const normalizeProductList = (response: LegacyProductResponse): LegacyProduct[] =>
   response.success && Array.isArray(response.data) ? response.data : [];

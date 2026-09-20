@@ -24,6 +24,11 @@ interface OrderItem {
         percentage: number;
         description?: string;
     };
+    selectedVariant?: {
+        attributes?: Record<string, string>;
+        sku?: string | null;
+        compareAtPriceINR?: number | null;
+    };
 }
 
 interface ShippingAddress {
@@ -278,6 +283,11 @@ const OrderDetails: React.FC = () => {
                                             </div>
                                             <div className="flex-1">
                                                 <h3 className="font-semibold text-gray-900">{item.name}</h3>
+                                                {item.selectedVariant?.attributes && (
+                                                    <p className="text-sm text-gray-500">
+                                                        {Object.entries(item.selectedVariant.attributes).map(([k, v]) => `${k}: ${v}`).join(' · ')}
+                                                    </p>
+                                                )}
                                                 {item.category && (
                                                     <p className="text-sm text-gray-500">{item.category}</p>
                                                 )}

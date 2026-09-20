@@ -7,7 +7,6 @@ import { motion } from "framer-motion";
 import ContactUs from "../components/ContactUs";
 import { ProductDetailsSkeleton } from "../components/ProductDetailsSkeleton";
 import { ProductGallery } from "../components/product/ProductGallery";
-import { useCart } from "../contexts/CartContext";
 import { useProduct } from "../hooks/useProducts";
 import { useProductSEO, formatRobotsMeta } from "../hooks/useProductSEO";
 import { fetchCategoryProducts, fetchFeaturedProducts, fetchProductList } from "../modules/product/store";
@@ -32,7 +31,6 @@ const ProductDetails = ({ initialData }: { initialData?: any } = {}) => {
   const [subcategoryProducts, setSubcategoryProducts] = useState<Record<string, any[]>>({});
   const [subcategories, setSubcategories] = useState<string[]>([]);
 
-  const { state: cartState } = useCart();
   const reviewsRef = useRef<HTMLDivElement>(null);
   // Tall scroll-space wrapper — drives image transitions inside
   const heroWrapperRef = useRef<HTMLDivElement>(null);
@@ -114,9 +112,6 @@ const ProductDetails = ({ initialData }: { initialData?: any } = {}) => {
   const seoMeta = useProductSEO(product);
 
 
-
-  // Check if product is in cart
-  const isInCart = product ? cartState.items.some((item) => item.id === product.id) : false;
 
   // Scroll to top immediately when navigating to product (before paint)
   useLayoutEffect(() => {
@@ -428,7 +423,6 @@ const ProductDetails = ({ initialData }: { initialData?: any } = {}) => {
                 <ProductInfo
                   product={product}
                   reviewStats={reviewStats}
-                  isInCart={isInCart}
                   handleShare={handleShare}
                   reviewsRef={reviewsRef}
                   onVariantImagesChange={setVariantImages}
